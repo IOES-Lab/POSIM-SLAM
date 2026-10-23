@@ -13,6 +13,8 @@ using Mat36=Eigen::Matrix<double,3,6>;
 
 inline Mat3 crossMatrix(const Vec3& v) {return Sophus::SO3d::hat(v);}
 
+struct PingPlaneReference {Vec3 normal;double distance;};
+
 struct WorldLandmark {
   Vec3 point;
   Mat36 host_jacobian;

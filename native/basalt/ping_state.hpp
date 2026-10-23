@@ -4,22 +4,27 @@
 #include <map>
 
 namespace posim_slam {
-struct PingPlaneState {Vec3 normal;double distance;};
+struct PingPlaneState {Vec3 normal;double distance;PingPlaneReference reference;Vec3 delta;};
 
 class PingPlaneStore {
  public:
   void set(int id,const Vec3& normal,double distance) {
     planeBasis(normal);
-    if(id<0 || !std::isfinite(distance) || (!planes_.count(id) && planes_.size()>=8))
+    if(id<0 || !std::isfinite(distance) || planes_.count(id) || planes_.size()>=8)
       throw std::invalid_argument("invalid_or_excess_ping_plane");
-    planes_[id]={normal,distance};
+    planes_[id]={normal,distance,{normal,distance},Vec3::Zero()};
   }
   const PingPlaneState& at(int id) const {return planes_.at(id);}
   size_t size() const {return planes_.size();}
   void apply(int id,const Vec3& delta) {
     if(!delta.allFinite())throw std::invalid_argument("invalid_ping_plane_increment");
-    const auto& p=at(id);
-    set(id,Sophus::SO3d::exp(planeBasis(p.normal)*delta.head<2>())*p.normal,p.distance+delta[2]);
+    auto& p=planes_.at(id);const Vec3 changed=p.delta+delta;
+    if(!changed.allFinite())throw std::invalid_argument("invalid_ping_plane_increment");
+    const Vec3 normal=Sophus::SO3d::exp(planeBasis(p.reference.normal)*changed.head<2>())*p.reference.normal;
+    const double distance=p.reference.distance+changed[2];
+    planeBasis(normal);
+    if(!std::isfinite(distance))throw std::invalid_argument("invalid_ping_plane_increment");
+    p.normal=normal;p.distance=distance;p.delta=changed;
   }
   void backup() {backup_=planes_;}
   void restore() {planes_=backup_;}

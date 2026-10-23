@@ -445,3 +445,35 @@ Basalt의 `LinearizationBase<double,6>` 인터페이스를 구현합니다. 선�
 사용하며, 수락한 갱신의 비용은 3.50에서 0.43으로 감소합니다. 이 수치 검증은
 실시간 평면 선택이나 스트리밍 Ping 융합을 활성화하지 않습니다. 실시간 관측 연결,
 최초 추정 기준 야코비안의 일관성, 반영한 관측의 제거는 호출자가 관리해야 합니다.
+
+
+The coupled route requires an explicit plane reference, reference host geometry
+and reference Ping pose. Residuals and footprint checks use the current state;
+Jacobians use the host/measurement `getPoseLin()` states and the plane's fixed
+reference. Landmark coordinates remain current, matching the visual block's
+landmark parameterization. The active beam is chosen at the current state and
+that same ray is differentiated at the reference. Mixed/missing references are
+rejected. `PingPlaneStore.set` initializes a plane once; increments accumulate
+in its fixed two-coordinate rotation chart plus distance. Backup/restore includes
+that reference and accumulated delta.
+
+The native probe checks six global-frame gauge directions of the visual/Ping
+group after an accepted state update. Its reference-consistent Jacobian has
+`||J N||` below 3e-13; using current-state auxiliary derivatives with the existing
+reference gives about 0.89 in the same fixture. This is a group consistency test,
+not a claim that the entire gravity-aided VIO has six unobservable directions or
+that live trajectory covariance has been validated.
+
+공동 경로에는 평면 기준점, 호스트 자세 기준점에서 계산한 랜드마크 기하와
+Ping 자세 기준점이 필요합니다. 잔차와 관측 영역 검사는 현재 상태를 사용하고,
+야코비안은 `getPoseLin()` 자세와 고정된 평면 기준점을 사용합니다. 랜드마크
+좌표는 영상 블록의 매개변수와 맞도록 현재 값을 사용합니다. 현재 상태에서
+선택한 빔을 기준점에서도 그대로 미분합니다. 기준점이 누락되거나 섞이면 거부합니다.
+`PingPlaneStore.set`은 평면을 한 번 초기화하며, 증분은 고정된 두 회전 좌표와
+거리 좌표에 누적합니다. 백업·복구에는 기준점과 누적 변화량도 포함됩니다.
+
+네이티브 검증은 상태 갱신 후 영상·Ping 그룹의 전역 좌표계 자유도 6개를
+검사합니다. 일관된 기준점의 야코비안에서는 `||J N||`이 3e-13 미만이며,
+기존 기준점에 현재 상태의 보조 잔차 미분을 섞으면 같은 검증에서 약 0.89입니다.
+이는 그룹의 기준점 일관성 검사입니다. 중력을 사용하는 전체 VIO의 비관측 방향이
+6개라는 뜻이나, 실시간 궤적 공분산을 검증했다는 뜻은 아닙니다.

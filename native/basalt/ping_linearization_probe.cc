@@ -70,16 +70,19 @@ int main(int argc,char** argv) {
     }
     Sophus::SE3d mount;mount.translation()<<.02,.03,.1;
     const double measured=pingRange(owner.getPoseStateWithLin(times[2]).getPose(),mount,rays,normal,distance,.1).prediction+.04;
-    NativePingGroup raw;
+    NativePingGroup raw;bool use_reference=true;
+    std::map<basalt::KeypointId,basalt::LandmarkBlock<double>*> latest_blocks;
     JointPingGroupSpec spec{1,ids,[&](const auto& blocks) {
+      latest_blocks=blocks;
       std::vector<PingGroupLandmark> landmarks;
       for(const auto& [id,block]:blocks) {
         const auto& point=owner.lmdb.getLandmark(id);const auto t=point.host_kf_id.frame_id;
-        landmarks.push_back({id,block,worldLandmark(owner.getPoseStateWithLin(t).getPose(),owner.calib.T_i_c[0],point.direction,point.inv_dist),order.abs_order_map.at(t).first});
+        landmarks.push_back({id,block,worldLandmark(owner.getPoseStateWithLin(t).getPose(),owner.calib.T_i_c[0],point.direction,point.inv_dist),order.abs_order_map.at(t).first,
+          use_reference ? std::optional<WorldLandmark>(worldLandmark(owner.getPoseStateWithLin(t).getPoseLin(),owner.calib.T_i_c[0],point.direction,point.inv_dist)) : std::nullopt});
       }
       const auto& plane=owner.posim_ping_planes.at(1);
-      PingGroupObservation observation{times[2],times[2],30,owner.getPoseStateWithLin(times[2]).getPose(),mount,rays,measured,.1,.02,.2,50.};
-      raw=assemblePingGroup(45,plane.normal,plane.distance,landmarks,{observation},.02,.23);return raw;
+      PingGroupObservation observation{times[2],times[2],30,owner.getPoseStateWithLin(times[2]).getPose(),mount,rays,measured,.1,.02,.2,50.,use_reference ? std::optional<Sophus::SE3d>(owner.getPoseStateWithLin(times[2]).getPoseLin()) : std::nullopt};
+      raw=assemblePingGroup(45,plane.normal,plane.distance,landmarks,{observation},.02,.23,use_reference ? std::optional<PingPlaneReference>(plane.reference) : std::nullopt);return raw;
     }};
     bool duplicate=false;
     try {PingLinearization invalid(&owner,order,options,{spec,spec},&prior,&imu);}
@@ -128,13 +131,29 @@ int main(int argc,char** argv) {
       for(int i=0;i<3;++i)owner.frame_states.at(times[i]).applyInc(delta.segment<15>(15*i));
       after=api->linearizeProblem();accepted=trial.accept(before,after,predicted);
     }
+    Eigen::MatrixXd gauge=Eigen::MatrixXd::Zero(raw.jacobian.cols(),6);
+    for(int i=0;i<3;++i) {
+      gauge.block<3,3>(15*i,0).setIdentity();
+      gauge.block<3,3>(15*i,3)=-crossMatrix(owner.getPoseStateWithLin(times[i]).getPoseLin().translation());
+      gauge.block<3,3>(15*i+3,3).setIdentity();
+    }
+    gauge.block<2,3>(45,3)=planeBasis(normal).transpose();gauge.block<1,3>(47,0)=normal.transpose();
+    const double reference_gauge_error=(raw.jacobian*gauge).norm();
+    const auto& plane=owner.posim_ping_planes.at(1);
+    const bool plane_reference_preserved=(plane.reference.normal-normal).norm()==0 && plane.reference.distance==distance && plane.delta.norm()>0;
+    use_reference=false;const auto inconsistent=spec.build(latest_blocks);
+    const double inconsistent_gauge_error=(inconsistent.jacobian*gauge).norm();
+    bool missing_reference=false;
+    try {api->linearizeProblem();}catch(const std::invalid_argument&){missing_reference=true;}
     const double prediction_error=std::abs(predicted-reference_decrease);
-    bool passed=std::abs(before-3.5)<1e-9 && valid && duplicate && transaction_required && square_root_error/normal_scale<1e-12 && information_error/normal_scale<1e-12 && prediction_error<1e-7 && step_error<1e-7 && stale && rollback_stale && restored_cost && accepted;
+    bool passed=reference_gauge_error<1e-8 && inconsistent_gauge_error>1e-7 && plane_reference_preserved && missing_reference && std::abs(before-3.5)<1e-9 && valid && duplicate && transaction_required && square_root_error/normal_scale<1e-12 && information_error/normal_scale<1e-12 && prediction_error<1e-7 && step_error<1e-7 && stale && rollback_stale && restored_cost && accepted;
     std::cout<<Json({{"passed",passed},{"joint_landmarks",25},{"independent_landmarks",1},{"imu_intervals",2},
       {"square_root_normal_error",square_root_error},{"single_ownership_information_error",information_error},
       {"normal_system_scale",normal_scale},{"relative_square_root_error",square_root_error/normal_scale},
       {"relative_information_error",information_error/normal_scale},{"model_decrease_error",prediction_error},{"reference_decrease",reference_decrease},{"first_prediction",first_prediction},{"reference_initial_cost",.5*full_r.squaredNorm()},{"independent_eliminated_visual_cost",eliminated_visual_constant},
-      {"transaction_required",transaction_required},
+      {"transaction_required",transaction_required},{"reference_gauge_error",reference_gauge_error},
+      {"inconsistent_reference_gauge_error",inconsistent_gauge_error},{"plane_reference_preserved",plane_reference_preserved},
+      {"missing_reference_rejected",missing_reference},
       {"full_system_pose_step_error",step_error},{"cost_before",before},{"cost_after",after},
       {"predicted_decrease",predicted},{"duplicate_group_rejected",duplicate},{"stale_rows_rejected",stale},
       {"rollback_rows_rejected",rollback_stale},{"rollback_cost_restored",restored_cost},{"trial_accepted",accepted}}).dump()<<'\n';

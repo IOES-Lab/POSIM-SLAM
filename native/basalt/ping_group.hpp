@@ -5,6 +5,7 @@
 #include <basalt/linearization/landmark_block.hpp>
 #include <set>
 #include <vector>
+#include <optional>
 
 namespace posim_slam {
 struct PingGroupLandmark {
@@ -12,6 +13,7 @@ struct PingGroupLandmark {
   basalt::LandmarkBlock<double>* block;
   WorldLandmark geometry;
   Eigen::Index host_column;
+  std::optional<WorldLandmark> reference_geometry;
 };
 struct PingGroupObservation {
   int64_t stamp_ns;
@@ -20,6 +22,7 @@ struct PingGroupObservation {
   Sophus::SE3d pose,mount;
   Eigen::MatrixXd rays;
   double measured,bias,sigma,minimum,maximum;
+  std::optional<Sophus::SE3d> reference_pose;
 };
 
 inline void requireNativeSurfaceSupport(const Eigen::MatrixXd& points,const Eigen::MatrixXd& queries,
@@ -60,6 +63,7 @@ struct NativePingGroup {
   std::vector<basalt::LandmarkBlock<double>*> blocks;
   std::vector<int64_t> observation_stamps;
   double auxiliary_cost=0.;
+  std::optional<PingPlaneReference> reference;
   // Called only by the estimator owner thread after accepting a whole trial.
   // The first three nuisance coordinates belong to the caller-owned plane.
   bool applyLandmarks(const Eigen::VectorXd& nuisance) const {
@@ -73,8 +77,10 @@ struct NativePingGroup {
 
 inline NativePingGroup assemblePingGroup(Eigen::Index pose_columns,const Vec3& normal,double distance,
     const std::vector<PingGroupLandmark>& landmarks,const std::vector<PingGroupObservation>& observations,
-    double surface_sigma,double support_radius) {
+    double surface_sigma,double support_radius,
+    const std::optional<PingPlaneReference>& reference=std::nullopt) {
   planeBasis(normal);
+  if(reference) {planeBasis(reference->normal);if(!std::isfinite(reference->distance))throw std::invalid_argument("invalid_plane_reference");}
   if(pose_columns<6 || pose_columns>512 || landmarks.size()<3 || landmarks.size()>64 ||
      observations.empty() || observations.size()>64 || !std::isfinite(distance) ||
      !std::isfinite(surface_sigma) || surface_sigma<=0)
@@ -85,6 +91,7 @@ inline NativePingGroup assemblePingGroup(Eigen::Index pose_columns,const Vec3& n
   Eigen::MatrixXd points(count,3);Eigen::Index rows=count+observations.size();
   for(Eigen::Index i=0;i<count;++i) {
     const auto& l=landmarks[i];
+    if(l.reference_geometry.has_value()!=reference.has_value())throw std::invalid_argument("mixed_ping_linearization_reference");
     if(!l.block || !ids.insert(l.id).second || !blocks.insert(l.block).second ||
        l.host_column<0 || l.host_column+6>pose_columns)
       throw std::invalid_argument("duplicate_or_invalid_ping_landmark");
@@ -94,13 +101,17 @@ inline NativePingGroup assemblePingGroup(Eigen::Index pose_columns,const Vec3& n
     rows+=rv[i].size();points.row(i)=l.geometry.point.transpose();
   }
   if(rows>4096)throw std::invalid_argument("ping_group_row_limit");
-  NativePingGroup group;group.jacobian=Eigen::MatrixXd::Zero(rows,columns);
+  NativePingGroup group;group.reference=reference;group.jacobian=Eigen::MatrixXd::Zero(rows,columns);
   group.residual=Eigen::VectorXd::Zero(rows);Eigen::Index offset=0;
   for(Eigen::Index i=0;i<count;++i) {
     const auto size=rv[i].size();group.jacobian.block(offset,0,size,pose_columns)=jp[i];
     group.jacobian.block(offset,pose_columns+3+3*i,size,3)=jl[i];
     group.residual.segment(offset,size)=rv[i];offset+=size;group.blocks.push_back(landmarks[i].block);
-    const auto row=surfaceRow(landmarks[i].geometry,normal,distance);
+    auto row=surfaceRow(landmarks[i].geometry,normal,distance);
+    if(reference) {
+      auto fixed=surfaceRow(*landmarks[i].reference_geometry,reference->normal,reference->distance);
+      fixed.residual=row.residual;row=fixed;
+    }
     group.residual[offset]=row.residual/surface_sigma;
     group.auxiliary_cost+=.5*group.residual[offset]*group.residual[offset];
     group.jacobian.block<1,6>(offset,landmarks[i].host_column)=row.host_jacobian/surface_sigma;
@@ -108,6 +119,7 @@ inline NativePingGroup assemblePingGroup(Eigen::Index pose_columns,const Vec3& n
     group.jacobian.block<1,3>(offset,pose_columns+3+3*i)=row.landmark_jacobian/surface_sigma;++offset;
   }
   for(const auto& observation:observations) {
+    if(observation.reference_pose.has_value()!=reference.has_value())throw std::invalid_argument("mixed_ping_linearization_reference");
     if(observation.stamp_ns<=0 || observation.stamp_ns!=observation.pose_stamp_ns ||
        !stamps.insert(observation.stamp_ns).second ||
        observation.pose_column<0 || observation.pose_column+6>pose_columns ||
@@ -116,7 +128,14 @@ inline NativePingGroup assemblePingGroup(Eigen::Index pose_columns,const Vec3& n
        !(observation.minimum>0 && observation.minimum<observation.maximum) ||
        !std::isfinite(observation.measured) || observation.measured<observation.minimum || observation.measured>observation.maximum)
       throw std::invalid_argument("invalid_or_duplicate_ping_observation");
-    const auto row=pingRange(observation.pose,observation.mount,observation.rays,normal,distance,observation.bias);
+    auto row=pingRange(observation.pose,observation.mount,observation.rays,normal,distance,observation.bias);
+    if(reference) {
+      // Keep the current active beam association while evaluating derivatives
+      // at the same fixed pose/plane reference as the marginal prior.
+      const auto fixed=pingRange(*observation.reference_pose,observation.mount,
+          observation.rays.row(row.active_ray),reference->normal,reference->distance,observation.bias);
+      row.pose_jacobian=fixed.pose_jacobian;row.plane_jacobian=fixed.plane_jacobian;
+    }
     if(row.prediction<observation.minimum || row.prediction>observation.maximum ||
        row.prediction-observation.bias<observation.minimum || row.prediction-observation.bias>observation.maximum)
       throw std::invalid_argument("predicted_ping_out_of_range");

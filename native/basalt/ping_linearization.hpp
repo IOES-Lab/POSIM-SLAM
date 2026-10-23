@@ -69,6 +69,10 @@ class PingLinearization final : public basalt::LinearizationAbsQR<double,6> {
         blocks.emplace(id,block.get());expected.insert(block.get());
       }
       group.raw=group.spec.build(blocks);
+      const auto& reference=owner_->posim_ping_planes.at(group.spec.plane_id).reference;
+      if(!group.raw.reference || (group.raw.reference->normal-reference.normal).norm()>1e-12 ||
+         std::abs(group.raw.reference->distance-reference.distance)>1e-12)
+        throw std::invalid_argument("joint_plane_reference_mismatch");
       const std::set<basalt::LandmarkBlock<double>*> actual(group.raw.blocks.begin(),group.raw.blocks.end());
       if(actual!=expected || actual.size()!=group.raw.blocks.size() || group.raw.observation_stamps.empty() ||
          group.raw.jacobian.cols()!=Eigen::Index(aom.total_size+3+3*expected.size()))

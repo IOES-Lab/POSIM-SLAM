@@ -65,6 +65,9 @@ int main(int argc,char** argv) {
     bool duplicate_rejected=false;
     try {assemblePingGroup(18,normal,distance,inputs,{observation,observation},.02,.23);}
     catch(const std::invalid_argument&){duplicate_rejected=true;}
+    bool mixed_reference_rejected=false;auto mixed=observation;mixed.reference_pose=observation.pose;
+    try {assemblePingGroup(18,normal,distance,inputs,{mixed},.02,.23);}
+    catch(const std::invalid_argument&){mixed_reference_rejected=true;}
     bool time_mismatch_rejected=false;auto stale=observation;stale.pose_stamp_ns-=100000000;
     try {assemblePingGroup(18,normal,distance,inputs,{stale},.02,.23);}
     catch(const std::invalid_argument&){time_mismatch_rejected=true;}
@@ -127,12 +130,12 @@ int main(int argc,char** argv) {
     update_relative();observation.pose=poses[2];
     const auto updated=assemblePingGroup(18,normal,distance,landmarks(),{observation},.02,.23);
     const double after=updated.residual.squaredNorm()+25.*delta.squaredNorm();
-    bool passed=marginal_passed && solve_error<1e-8 && after<before && duplicate_rejected && atomic_rejection && time_mismatch_rejected;
+    bool passed=mixed_reference_rejected && marginal_passed && solve_error<1e-8 && after<before && duplicate_rejected && atomic_rejection && time_mismatch_rejected;
     std::cout<<Json({{"passed",passed},{"landmarks",points.size()},{"host_frames",3},
       {"marginal_covariance_error",covariance_error},{"future_factor_step_error",future_error},
       {"basalt_prior_rebasing_error",rebasing_error},{"gauge_preserved",gauge_preserved},{"invalid_order_rejected",invalid_order},
       {"full_vs_reduced_step_error",solve_error},{"objective_before",before},{"objective_after",after},
-      {"duplicate_rejected",duplicate_rejected},{"time_mismatch_rejected",time_mismatch_rejected},
+      {"duplicate_rejected",duplicate_rejected},{"mixed_reference_rejected",mixed_reference_rejected},{"time_mismatch_rejected",time_mismatch_rejected},
       {"invalid_increment_atomic_rejection",atomic_rejection}}).dump()<<'\n';
     return passed?0:1;
   }catch(const std::exception& error){std::cerr<<error.what()<<'\n';return 1;}

@@ -23,6 +23,8 @@ int main() {
       append(estimator.frame_states.at(200).getDelta());
       append(estimator.lmdb.getLandmark(7).direction);values.push_back(estimator.lmdb.getLandmark(7).inv_dist);
       append(estimator.posim_ping_planes.at(1).normal);values.push_back(estimator.posim_ping_planes.at(1).distance);
+      append(estimator.posim_ping_planes.at(1).reference.normal);values.push_back(estimator.posim_ping_planes.at(1).reference.distance);
+      append(estimator.posim_ping_planes.at(1).delta);
       return values;
     };
     auto mutate=[&] {
