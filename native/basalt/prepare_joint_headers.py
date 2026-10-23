@@ -8,8 +8,9 @@ from pathlib import Path
 import sys
 
 HASHES={
-    'landmark_block.hpp':'491cbd5cb633f13923b8c440364e2b72db1ea8abf5b88c604a348367fa57115e',
-    'landmark_block_abs_dynamic.hpp':'5ed3a2082aa09ad41c22dd7ce36e4e904329b3d9ed446c84b106e57dc88e8927',
+    'linearization/landmark_block.hpp':'491cbd5cb633f13923b8c440364e2b72db1ea8abf5b88c604a348367fa57115e',
+    'linearization/landmark_block_abs_dynamic.hpp':'5ed3a2082aa09ad41c22dd7ce36e4e904329b3d9ed446c84b106e57dc88e8927',
+    'vi_estimator/ba_base.h':'4cab57e494fdb04d8a6c72bfc0e2046d5cfc11a2a02895cbaafbafd16a37add2',
 }
 
 METHODS='''
@@ -48,12 +49,20 @@ def replace_once(text,old,new):
 
 
 def prepare(source,destination):
-    output=Path(destination)/'basalt/linearization';output.mkdir(parents=True,exist_ok=True)
+    output=Path(destination)/'basalt';output.mkdir(parents=True,exist_ok=True)
     for name,checksum in HASHES.items():
-        raw=(Path(source)/'include/basalt/linearization'/name).read_bytes()
+        raw=(Path(source)/'include/basalt'/name).read_bytes()
         if hashlib.sha256(raw).hexdigest()!=checksum:raise ValueError('pinned_basalt_joint_header_changed:'+name)
         text=raw.decode()
-        if name=='landmark_block.hpp':
+        if name.endswith('/ba_base.h'):
+            text=replace_once(text,'#pragma once','#pragma once\n#include "ping_state.hpp"')
+            text=replace_once(text,'  inline void backup() {','''  posim_slam::PingPlaneStore posim_ping_planes;
+  bool posim_ping_trial_active = false;
+
+  inline void backup() {
+    posim_ping_planes.backup();''')
+            text=replace_once(text,'  inline void restore() {','  inline void restore() {\n    posim_ping_planes.restore();')
+        elif name.endswith('/landmark_block.hpp'):
             marker='  virtual void performQR() = 0;'
             text=replace_once(text,marker,'''  virtual void exportJointLinearization(MatX&, MatX&, VecX&) const = 0;
   virtual bool jointIncrementValid(const Vec3&) const = 0;
@@ -67,6 +76,7 @@ def prepare(source,destination):
             text=replace_once(text,'  virtual inline void scaleJl_cols() override {','  virtual inline void scaleJl_cols() override {\n    posim_joint_raw_ = false;')
             text=replace_once(text,'  State state = State::Uninitialized;','  bool posim_joint_raw_ = false;\n  State state = State::Uninitialized;')
         target=output/name
+        target.parent.mkdir(parents=True,exist_ok=True)
         rendered='// Build-local POSIM joint-landmark interface; see prepare_joint_headers.py.\n'+text
         if not target.exists() or target.read_text()!=rendered:target.write_text(rendered)
 

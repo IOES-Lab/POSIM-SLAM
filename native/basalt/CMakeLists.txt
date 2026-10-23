@@ -20,7 +20,10 @@ set(B ${SOURCE_ROOT}/source)
 find_package(Python3 COMPONENTS Interpreter REQUIRED)
 set(JOINT_HEADERS ${CMAKE_CURRENT_BINARY_DIR}/joint_include)
 set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS
- ${CMAKE_CURRENT_SOURCE_DIR}/prepare_joint_headers.py)
+ ${CMAKE_CURRENT_SOURCE_DIR}/prepare_joint_headers.py
+ ${B}/include/basalt/linearization/landmark_block.hpp
+ ${B}/include/basalt/linearization/landmark_block_abs_dynamic.hpp
+ ${B}/include/basalt/vi_estimator/ba_base.h)
 execute_process(COMMAND ${Python3_EXECUTABLE}
  ${CMAKE_CURRENT_SOURCE_DIR}/prepare_joint_headers.py ${B} ${JOINT_HEADERS}
  RESULT_VARIABLE JOINT_HEADERS_STATUS)
@@ -64,7 +67,7 @@ add_library(basalt_core STATIC
  ${B}/src/vi_estimator/sqrt_keypoint_vo.cpp
  ${B}/src/vi_estimator/vio_estimator.cpp)
 target_include_directories(basalt_core PUBLIC
- ${JOINT_HEADERS} ${B}/include ${SOURCE_ROOT}/headers/include ${SOURCE_ROOT}/sophus
+ ${JOINT_HEADERS} ${CMAKE_CURRENT_SOURCE_DIR} ${B}/include ${SOURCE_ROOT}/headers/include ${SOURCE_ROOT}/sophus
  ${SOURCE_ROOT}/cereal/include ${SOURCE_ROOT}/magic_enum/include
  ${SOURCE_ROOT}/opengv/include ${SOURCE_ROOT}/json/single_include ${OpenCV_INCLUDE_DIRS})
 target_compile_options(basalt_core PRIVATE -Wno-error=missing-template-arg-list-after-template-kw)
@@ -84,3 +87,5 @@ add_executable(basalt_ping_geometry_probe ping_geometry_probe.cc)
 target_link_libraries(basalt_ping_geometry_probe PRIVATE basalt_core)
 add_executable(basalt_ping_group_probe ping_group_probe.cc)
 target_link_libraries(basalt_ping_group_probe PRIVATE basalt_core)
+add_executable(basalt_ping_state_probe ping_state_probe.cc)
+target_link_libraries(basalt_ping_state_probe PRIVATE basalt_core)

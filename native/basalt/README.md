@@ -321,3 +321,16 @@ group selection, trial acceptance and marginalization are not yet connected.
 자세·측정 시각 일치를 검사하고 특징점 보정량을 모두 확인한 뒤 적용합니다.
 `basalt_ping_group_probe`는 특징점 25개와 호스트 프레임 3개로 비선형 보정
 단계를 검증합니다. 스트리밍 그룹 선택·보정 수락·주변화는 아직 연결되지 않았습니다.
+
+`ping_state.hpp` stores up to eight local planes in the actual Basalt estimator
+backup/restore lifecycle. `JointPingTrial` retains accepted finite cost decreases
+and restores poses, inertial states, landmarks and planes on rejection or
+exception. Associations stay fixed during a trial; rebuild linearization rows
+after completion. `basalt_ping_state_probe` tests these transitions on the native
+estimator. Live grouped-Ping optimization remains unconnected.
+
+`ping_state.hpp`는 최대 8개 국소 평면을 실제 Basalt 추정기의 백업·복원에
+포함합니다. `JointPingTrial`은 수락한 비용 감소만 유지하고 거부·예외 시
+자세, 관성 상태, 특징점과 평면을 복원합니다. 보정 중 관측 연결을 고정하고
+종료 후 선형화 행렬을 다시 구성해야 합니다. `basalt_ping_state_probe`가
+실제 추정기로 이를 검증하며, 실시간 Ping 공동 최적화 연결은 남아 있습니다.
