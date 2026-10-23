@@ -46,3 +46,8 @@ add_executable(basalt_synthetic_probe synthetic_probe.cc)
 target_link_libraries(basalt_synthetic_probe PRIVATE basalt_core)
 add_executable(basalt_replay replay.cc)
 target_link_libraries(basalt_replay PRIVATE basalt_core)
+add_executable(basalt_stream stream.cc)
+target_link_libraries(basalt_stream PRIVATE basalt_core)
+
+add_executable(basalt_input_probe input_probe.cc)
+target_link_libraries(basalt_input_probe PRIVATE basalt_core)

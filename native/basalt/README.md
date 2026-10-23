@@ -86,6 +86,50 @@ cover a rotating sensor baseline, gauge, scale drift, gravity tilt and gaps:
 python -m unittest discover -s native/basalt -p 'test_*.py'
 ```
 
+## Live worker transport
+
+`basalt_stream calibration.json` accepts framed raw IMU and grayscale pixels
+over stdin and emits JSON states/local-window point samples over stdout. The
+independent `posim_slam.live_client.LiveClient` provides asynchronous transport.
+The worker uses two computation workers, one OpenCV thread, two queued images, 256 queued IMU
+measurements and four queued state/map outputs. Python queues allow at most
+256 input packets / 4 MiB and eight outputs. Backlog is a segment fault, not a
+silent packet drop. Display samples contain at most 1,000 points.
+
+The client rejects sensor packets until a single valid protocol-ready message
+arrives. The owner keeps a bounded sensor buffer during process startup and
+bootstraps from the current sensor window after readiness. Recorded streaming
+starts its playback clock after the same handshake. Startup latency therefore
+does not turn into a burst of stale sensor packets.
+
+클라이언트는 유효한 준비 신호를 한 번 받은 뒤 센서 패킷을 전달합니다.
+실시간 소유자는 프로세스 시작 중 제한된 센서 버퍼를 유지하고, 준비 후
+현재 센서 구간으로 초기화합니다. 기록 재생도 같은 준비 절차 후 시계를
+시작하므로 시작 지연이 오래된 입력의 일괄 전송으로 이어지지 않습니다.
+
+Protocol readiness only means the worker accepts input. It does not establish
+navigation readiness, scale observability, calibrated noise or a loop-closed
+map. State/map packets share the exposure timestamp and describe the active
+local VIO window. Clock reversal, the declared IMU gap, saturation, image gaps
+over 500 ms and backlog terminate the isolated worker. A ROS/application owner
+must invalidate its entire segment, clear old samples and create a new worker
+with a new frame; the worker never joins trajectories across a failure.
+
+```sh
+python tools/stream_recording.py --binary /absolute/new-build/build/basalt_stream \
+  --inputs /absolute/recording/inputs \
+  --recording-receipt /absolute/recording/receipt.json \
+  --output /absolute/new-stream-result --speed 1
+POSIM_SLAM_STREAM_BINARY=/absolute/new-build/build/basalt_stream \
+  python -m unittest discover -s native/basalt -p 'test_*.py'
+```
+
+The paced-packet test includes native state/map outputs and thread/process
+shutdown. Native clock/saturation/protocol tests require the explicit binary;
+they are skipped in Python-only CI. ROS transport, live sensor timing, local-map
+display and failure recovery need their own application acceptance. This target
+is not selected by WWW-POSIM's default SLAM panel.
+
 ## 한국어
 
 이 연구용 실행 파일은 Basalt의 square-root 시각·관성 추정기로 위치·속도·자세와
@@ -117,3 +161,53 @@ IMU 바이어스를 함께 갱신합니다. 앱에서 선택하는 Stella 공급
 ATE·1초 RPE·이동 거리와 평가 비율을 기록합니다. 기본값은 정답 구간이 부족하면
 실패합니다. 명시적 경계 자르기 옵션은 앞뒤 상태 최대 2개만 제외하고 수를 표시하며,
 내부 정답 누락 구간은 계속 거부합니다. 실시간 앱 공급자나 지도 출력은 별도 구현입니다.
+
+`basalt_stream`과 `LiveClient`는 원본 IMU·흑백 영상의 비동기 실시간 전송을 제공합니다.
+두 계산 worker, 영상 2개·IMU 256개·상태/지도 각각 4개의 네이티브 큐와 Python 입력
+256패킷/4 MiB·출력 8개의 한도를 사용합니다. 출력 점군은 활성 로컬 VIO 창의 최대
+1,000개 표본입니다. 큐 초과를 숨기고 버리거나 고장 전후 지도를 연결하지 않습니다.
+프로토콜 준비는 항법 준비 판정이 아닙니다. 오류가 나면 앱 소유자가 구간 전체를
+무효화하고 새 프레임으로 워커를 다시 만들어야 합니다. Python 전용 CI는 네이티브
+실행 파일이 필요한 시험을 명시적으로 건너뜁니다. ROS 연결·실시간 센서·점군 표시·
+복구는 앱에서 별도로 검증해야 하며 기본 SLAM 패널의 공급자는 바뀌지 않습니다.
+
+The development owner accepts `--max-image-pixels` (default 120,000) and
+`--max-image-rate` (default 10 Hz). It sends the original grayscale image and
+calibration. The common native input boundary derives a bounded resolution,
+applies OpenCV area resampling and scales pinhole intrinsics with the same
+pixel-center transform. Odd dimensions are supported. Replay uses this same
+boundary; recordings without a pixel budget keep their original resolution.
+An 800×600 input at the default budget becomes 400×300. Basalt's default
+feature grid and five-frame keyframe hold apply.
+
+Current optimized landmark projections are matched to observed feature IDs.
+Status reports their count, pixel RMSE and the count inside the backend's
+Huber threshold. Local-window cardinality and display sampling do not establish
+current visual support. Outputs distinguish visual measurements from inertial
+prediction; either remains an experimental estimate. Sparse maps do not reset
+the estimator. Sensor/worker faults still invalidate the whole segment.
+These diagnostics do not qualify observability, covariance or navigation.
+
+개발용 소유자는 `--max-image-pixels`(기본 120,000)와
+`--max-image-rate`(기본 10 Hz)를 받습니다. 원본 흑백 영상과 보정을 전송하면
+공통 네이티브 입력 경계가 처리 해상도를 계산합니다. OpenCV 영역 평균과 동일한
+픽셀 중심 변환으로 영상·내부 보정을 함께 조정하며 홀수 해상도도 지원합니다.
+재생도 같은 경계를 사용합니다. 픽셀 예산이 없는 기록은 원래 해상도를 유지합니다.
+기본 예산에서 800×600 입력은 400×300이 됩니다. Basalt 기본 특징 격자와
+다섯 프레임의 키프레임 대기 설정을 사용합니다.
+
+현재 지도 특징의 최적화된 투영을 영상의 특징 ID와 대응해 개수·픽셀 RMSE·
+백엔드 Huber 경계 안의 개수를 보고합니다. 로컬 지도와 표시 표본의 점 수를
+현재 시각 관측의 근거로 사용하지 않습니다. 시각 관측이 있는 출력과 관성 예측을
+구분하며 둘 다 실험용 추정값입니다. 희소한 지도만으로 추정기를 재시작하지 않습니다.
+센서·워커 오류는 전체 구간을 무효화합니다. 이 진단은 관측 가능성·공분산·항법
+준비를 보장하지 않습니다.
+
+Native image-contract checks include odd/asymmetric dimensions, normalized-ray
+invariance, area sampling, input budgets and known reprojection residuals:
+
+```sh
+POSIM_SLAM_INPUT_PROBE=/absolute/new-build/build/basalt_input_probe \
+POSIM_SLAM_STREAM_BINARY=/absolute/new-build/build/basalt_stream \
+  python -m unittest discover -s native/basalt -p 'test_*.py'
+```
