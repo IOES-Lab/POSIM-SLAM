@@ -297,3 +297,14 @@ optimizer does not yet select or consume Ping groups.
 방향·역거리 좌표에서 검증된 보정량을 적용합니다. `basalt_joint_landmark_probe`는
 변수 제거와 역대입을 기존 Basalt 계산과 비교합니다. 실행 중인 최적화기는
 아직 Ping 그룹을 선택하거나 사용하지 않습니다.
+
+`ping_geometry.hpp` expresses mounted range and surface residual derivatives in
+Basalt's map-frame left-rotation pose coordinates and stereographic landmark
+coordinates. `basalt_ping_geometry_probe` checks them against numerical
+derivatives using Basalt's actual pose update, including an inverted IMU pose.
+The helper is not yet assembled into the streaming optimizer.
+
+`ping_geometry.hpp`는 거리·표면 잔차 미분을 Basalt의 지도 기준 왼쪽 회전
+증분과 특징점 방향·역거리 좌표로 표현합니다. `basalt_ping_geometry_probe`는
+뒤집힌 IMU 자세를 포함해 실제 Basalt 자세 갱신의 수치 미분과 비교합니다.
+아직 스트리밍 최적화기에 이 관측을 조립하지는 않습니다.
