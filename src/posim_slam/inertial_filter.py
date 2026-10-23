@@ -13,10 +13,11 @@ from .inertial import exp_so3,skew,error_transition
 from .dvl_scale import rotation,vector
 
 
-def covariance(value,size):
+def covariance(value,size,*,allow_singular=False):
     result=np.asarray(value,dtype=float)
     if (result.shape!=(size,size) or not np.isfinite(result).all() or
-        not np.allclose(result,result.T,atol=1e-10,rtol=0) or np.linalg.eigvalsh(result).min()<=0):
+        not np.allclose(result,result.T,atol=1e-10,rtol=0) or (np.linalg.eigvalsh(result).min() < -1e-12*np.linalg.norm(result,2)
+            if allow_singular else np.linalg.eigvalsh(result).min()<=0)):
         raise ValueError('positive_covariance_required')
     return result.copy()
 
@@ -31,7 +32,11 @@ class InertialFilter:
         if type(stamp) not in (int,float) or not math.isfinite(stamp) or stamp<0:raise ValueError('invalid_state_stamp')
         self.stamp=float(stamp);self.position=vector(position).copy();self.velocity=vector(velocity).copy()
         self.attitude=rotation(attitude).copy();self.gyro_bias=vector(gyro_bias).copy();self.accel_bias=vector(accel_bias).copy()
-        self.covariance=covariance(state_covariance,15);self.gravity=vector(gravity).copy()
+        self.covariance=covariance(state_covariance,15,allow_singular=True)
+        # Calibrated bias directions may be exact; pose/velocity uncertainty
+        # must still be supplied rather than invented as an all-zero state.
+        covariance(self.covariance[:9,:9],9)
+        self.gravity=vector(gravity).copy()
         self.noise=np.array(noise_density,dtype=float,copy=True)
         if self.noise.shape!=(4,) or not np.isfinite(self.noise).all() or np.any(self.noise<=0):
             raise ValueError('imu_noise_calibration_required')

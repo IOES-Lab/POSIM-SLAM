@@ -159,6 +159,13 @@ PYTHONPATH=src python tools/evaluate_moving_initialization.py --output /tmp/movi
 아래 정지 초기화는 잔잔한 조건에서 선택하는 방법입니다. 안내 시간 30초가
 지났다고 수렴이나 준비 완료를 보장하지 않습니다.
 
+
+양의 준정부호 바이어스 prior는 정확히 보정된 방향을 표현할 수 있습니다.
+해당 방향은 작은 분산으로 근사하지 않고 최적화 변수에서 제거합니다. 알 수 없는
+공분산을 0으로 표시하면 안 됩니다. 호출자가 보정 출처를 확인해야 하며 잡음이
+있는 실제 센서는 측정한 prior가 필요합니다. 위치·속도·자세의 상태 공분산은
+양의 정부호를 유지합니다.
+
 ## 측정값으로 정지 초기화
 
 `posim_slam.inertial_initialization.stationary_initialize` 알고리즘 **0.1.0**은

@@ -170,6 +170,13 @@ PYTHONPATH=src python tools/evaluate_moving_initialization.py --output /tmp/movi
 Stationary initialization below is an optional calm-condition method. An elapsed
 30-second information period does not guarantee convergence or readiness.
 
+
+A positive-semidefinite bias prior can express exactly calibrated directions.
+Those directions are eliminated from optimization, not approximated with tiny
+variance. Unknown covariance must not be encoded as zero. The caller must verify
+the calibration source; noisy hardware requires a measured prior. State
+pose/velocity covariance remains positive definite.
+
 ## Measured stationary initialization
 
 `posim_slam.inertial_initialization.stationary_initialize`, algorithm **0.1.0**,

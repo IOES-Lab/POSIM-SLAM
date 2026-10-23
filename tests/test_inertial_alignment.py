@@ -25,6 +25,17 @@ class AlignmentTests(unittest.TestCase):
    self.assertGreater(np.linalg.norm(f.covariance[6:9,12:15]),0)
    self.assertLess(abs(f.gyro_bias[2]),.002) # unexcited yaw bias stays near its calibration prior
 
+ def test_exact_calibration_eliminates_bias_unknowns_without_epsilon_priors(self):
+  w,dvl=inputs()
+  f,d=align(w,dvl,gyro_bias=[.002,-.001,.003],gyro_bias_covariance=np.zeros((3,3)),
+            accel_bias=[.03,-.02,.04],accel_bias_covariance=np.zeros((3,3)))
+  self.assertEqual(d['fixed_bias_directions'],6)
+  np.testing.assert_array_equal(f.covariance[9:,:],np.zeros((6,15)))
+  self.assertLess(d['attitude_three_sigma_deg'],1.)
+  self.assertFalse(d['navigation_ready'])
+  for invalid in (-np.eye(3),np.full((3,3),np.nan)):
+   with self.assertRaises(ValueError):align(w,dvl,gyro_bias_covariance=invalid)
+
  def test_missing_lock_gaps_and_unknown_covariance_reject(self):
   w,dvl=inputs()
   for sample in [(3.,[.3,0,0],np.eye(3)*1e-4,False),(3.,[.3,0,0],np.zeros((3,3)),True),(2.,[.3,0,0],np.eye(3)*1e-4,True)]:

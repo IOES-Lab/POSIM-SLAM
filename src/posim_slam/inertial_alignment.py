@@ -40,7 +40,7 @@ def moving_initialize(window,dvl_samples,*,dvl_to_imu,imu_to_dvl,gyro_bias,gyro_
     if not 8<=n<=24:raise ValueError('moving_dvl_samples_required')
     mount=rotation(dvl_to_imu);lever=vector(imu_to_dvl)
     bg0=vector(gyro_bias);ba0=vector(accel_bias)
-    bg_cov=covariance(gyro_bias_covariance,3);ba_cov=covariance(accel_bias_covariance,3)
+    bg_cov=covariance(gyro_bias_covariance,3,allow_singular=True);ba_cov=covariance(accel_bias_covariance,3,allow_singular=True)
     noise=np.asarray(noise_density,dtype=float)
     if noise.shape!=(4,) or not np.isfinite(noise).all() or np.any(noise<=0):raise ValueError('imu_noise_calibration_required')
     if not math.isfinite(gravity_m_s2) or not 9<gravity_m_s2<11:raise ValueError('invalid_gravity')
@@ -68,7 +68,18 @@ def moving_initialize(window,dvl_samples,*,dvl_to_imu,imu_to_dvl,gyro_bias,gyro_
     dimension=9+3*(n-1)+3*n
     def ri(i):return 9+3*(i-1)
     def vi(i):return 9+3*(n-1)+3*i
-    wb=np.linalg.inv(np.linalg.cholesky(bg_cov));wa=np.linalg.inv(np.linalg.cholesky(ba_cov))
+    def prior_basis(c):
+        values,axes=np.linalg.eigh(c);positive=values>0
+        return axes[:,positive],(axes[:,positive]/np.sqrt(values[positive])).T
+    bg_axes,wb=prior_basis(bg_cov);ba_axes,wa=prior_basis(ba_cov)
+    # Zero-variance calibrated directions are exact constraints, not tiny-noise
+    # pseudo-observations. Optimize only the remaining degrees of freedom.
+    columns=[np.eye(dimension)[:,i] for i in range(3)]
+    for offset,axes in ((3,bg_axes),(6,ba_axes)):
+        for axis in axes.T:
+            column=np.zeros(dimension);column[offset:offset+3]=axis;columns.append(column)
+    columns.extend(np.eye(dimension)[:,i] for i in range(9,dimension))
+    basis=np.array(columns).T;free_dimension=basis.shape[1]
     def apply(s,delta,amount=1.):
         return dict(g=s['g']+amount*delta[:3],bg=s['bg']+amount*delta[3:6],ba=s['ba']+amount*delta[6:9],
             r=[s['r'][0]]+[s['r'][i]@exp_so3(amount*delta[ri(i):ri(i)+3]) for i in range(1,n)],
@@ -113,7 +124,7 @@ def moving_initialize(window,dvl_samples,*,dvl_to_imu,imu_to_dvl,gyro_bias,gyro_
     iterations=0
     for iterations in range(12):
         residual,j=build(state);cost=float(residual@residual)
-        delta=np.linalg.lstsq(j,-residual,rcond=1e-10)[0]
+        delta=basis@np.linalg.lstsq(j@basis,-residual,rcond=1e-10)[0]
         if np.linalg.norm(delta)<1e-6:break
         accepted=False
         for step in (1.,.5,.25,.125,.0625,.03125):
@@ -121,17 +132,17 @@ def moving_initialize(window,dvl_samples,*,dvl_to_imu,imu_to_dvl,gyro_bias,gyro_
             if candidate_residual@candidate_residual<cost:
                 state=candidate;accepted=True;break
         if not accepted:
-            if np.linalg.norm(j.T@residual,np.inf)<1e-3:break
+            if np.linalg.norm((j@basis).T@residual,np.inf)<1e-3:break
             raise ValueError('moving_alignment_not_converged')
     else:
         raise ValueError('moving_alignment_iteration_limit')
-    residual,j=build(state);singular=np.linalg.svd(j,compute_uv=False)
+    residual,j=build(state);reduced_j=j@basis;singular=np.linalg.svd(reduced_j,compute_uv=False)
     if singular[-1]<=singular[0]*1e-10:raise ValueError('moving_alignment_rank_deficient')
-    reduced=float(residual@residual)/max(1,len(residual)-dimension)
+    reduced=float(residual@residual)/max(1,len(residual)-free_dimension)
     if reduced>5 or np.max(np.abs(residual))>8:raise ValueError('moving_alignment_residual_rejected')
     if np.linalg.norm(state['bg']-bg0)>.05 or np.linalg.norm(state['ba']-ba0)>.5:
         raise ValueError('moving_bias_linearization_exceeded')
-    posterior=np.linalg.solve(j.T@j,np.eye(dimension))*max(1.,reduced)
+    posterior=basis@np.linalg.solve(reduced_j.T@reduced_j,np.eye(free_dimension))@basis.T*max(1.,reduced)
     def endpoint(s):
         up=-s['g']/np.linalg.norm(s['g']);world=gravity_attitude(up)
         return world@s['v'][-1],world@s['r'][-1]
@@ -145,12 +156,12 @@ def moving_initialize(window,dvl_samples,*,dvl_to_imu,imu_to_dvl,gyro_bias,gyro_
     p=transform@posterior@transform.T;p[:3,:3]=np.eye(3)*1e-8;p=(p+p.T)*.5
     estimator=InertialFilter(stamp=times[-1],position=[0,0,0],velocity=velocity,attitude=attitude,
         gyro_bias=state['bg'],accel_bias=state['ba'],state_covariance=p,noise_density=noise,gravity=[0,0,-gravity_m_s2])
-    data_j=j[:3*n+6*(n-1)]
+    data_j=j[:3*n+6*(n-1)]@basis
     data_singular=np.linalg.svd(data_j,compute_uv=False)
     return estimator,dict(algorithm_version=ALGORITHM_VERSION,start=times[0],end=times[-1],dvl_samples=n,
         iterations=iterations+1,reduced_chi_square=reduced,max_whitened_residual=float(np.max(np.abs(residual))),
         covariance_condition=float((singular[0]/singular[-1])**2),data_rank=int(np.sum(data_singular>data_singular[0]*1e-8)),
-        variables=dimension,calibration_priors_used=True,bias_observability_qualified=False,
+        variables=free_dimension,fixed_bias_directions=6-bg_axes.shape[1]-ba_axes.shape[1],calibration_priors_used=True,bias_observability_qualified=False,
         attitude_three_sigma_deg=float(3*np.sqrt(np.linalg.eigvalsh(p[6:9,6:9]).max())*180/math.pi),
         velocity_three_sigma_m_s=float(3*np.sqrt(np.linalg.eigvalsh(p[3:6,3:6]).max())),
         stationary_required=False,orientation_measurement_used=False,navigation_ready=False,
