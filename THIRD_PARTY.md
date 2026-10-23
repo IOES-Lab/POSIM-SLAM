@@ -65,3 +65,23 @@ ORB-SLAM3 코드·사전·학습 가중치는 포함하지 않습니다. Basalt�
 실행 백엔드가 아닙니다. 후보의 최상위 라이선스만으로 향후 의존성 전체를 승인하지
 않습니다. Kimera 기본 빌드의 Triangle 고지에는 상업 시스템 배포 시 저자와의 별도
 협의 조건이 있습니다.
+
+## Experimental Basalt research recipe / 실험적 Basalt 연구
+
+The opt-in [headless target](native/basalt/README.md) has its own exact
+[source pins](native/basalt/sources.json): Basalt/basalt-headers and OpenGV
+(BSD-3-Clause), Sophus (MIT), cereal (BSD-3-Clause), magic_enum (MIT), and
+nlohmann JSON (MIT). The recipe does not redistribute these source trees in
+the Python wheel. The builder verifies clean pinned checkouts, retains them
+and copies original license files beside its experimental binary receipt.
+SDK Eigen **5.0.1** (MPL-2.0 and per-file notices), OpenCV, TBB and fmt have
+their own SDK notices and source obligations. The existing Stella Eigen 3.4.0
+notices do not substitute for the experimental SDK's Eigen 5.0.1 notices.
+No GUI/AprilTag/camera-driver target is linked. This research recipe does not
+qualify another dependency closure for application redistribution.
+
+선택형 연구 대상의 고정 버전과 고지는 위 파일에서 관리합니다. 외부 소스는 Python
+wheel에 포함하지 않으며 빌더가 정확한 원본 체크아웃을 검사하고 고지를 보존합니다.
+SDK의 Eigen 5.0.1·OpenCV·TBB·fmt 고지와 해당 소스 의무는 별도로 적용됩니다.
+Stella용 Eigen 3.4.0 고지를 이 연구 대상에 대신 적용하지 않습니다. GUI·AprilTag·
+카메라 드라이버 대상은 연결하지 않습니다. 앱의 기본 실행 백엔드는 바뀌지 않습니다.

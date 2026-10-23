@@ -98,3 +98,11 @@ use the same source ownership.
 Original code: [Apache-2.0](LICENSE). See [NOTICE.md](NOTICE.md). Third-party
 licenses remain applicable. No ORB-SLAM3 code, vocabulary or model weights are
 included. Basalt and Kimera are not active backends in this package.
+
+## Experimental visual-inertial research
+
+The [headless Basalt target](native/basalt/README.md) builds a pinned square-root
+VIO core and runs noisy 6DoF track/image plus raw-IMU regressions. It jointly
+updates pose, velocity and biases in that standalone executable. It is not
+selected by WWW-POSIM or included in the default Python/native provider build.
+Native-world timing, calibration, recovery and package acceptance remain separate.

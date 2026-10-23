@@ -92,3 +92,11 @@ python -m unittest discover -s tests
 자체 코드는 [Apache-2.0](LICENSE)입니다. [NOTICE.md](NOTICE.md)와 제3자 라이선스를
 확인하세요. ORB-SLAM3 코드·특징 사전·학습 가중치는 포함하지 않습니다.
 Basalt와 Kimera는 이 패키지에서 실행되는 백엔드가 아닙니다.
+
+## 실험적인 시각·관성 연구
+
+[Headless Basalt 대상](native/basalt/README.md#한국어)은 버전을 고정한 square-root
+VIO 코어를 빌드하고 잡음이 있는 6자유도 특징·영상과 원본 IMU 회귀를 실행합니다.
+이 독립 실행 파일에서는 위치·속도·자세와 바이어스를 함께 갱신합니다. WWW-POSIM이
+선택하는 백엔드나 기본 Python·네이티브 공급자 빌드에는 포함하지 않습니다. 실제
+월드의 시각·보정·복구와 배포 패키지는 별도로 검증해야 합니다.

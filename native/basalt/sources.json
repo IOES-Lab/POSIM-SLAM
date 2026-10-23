@@ -1,0 +1,48 @@
+{
+  "schema": 1,
+  "scope": "experimental headless VIO only; not selected by application",
+  "dependencies": {
+    "source": {
+      "repository": "https://github.com/VladyslavUsenko/basalt.git",
+      "revision": "0f3b2b52c807f70ff4e2973ce253c73329eea7bc",
+      "license": "BSD-3-Clause",
+      "notice": "LICENSE"
+    },
+    "headers": {
+      "repository": "https://github.com/VladyslavUsenko/basalt-headers.git",
+      "revision": "b7f915b195c87c8373bf93f97a0710bcdaffd718",
+      "license": "BSD-3-Clause",
+      "notice": "LICENSE"
+    },
+    "sophus": {
+      "repository": "https://github.com/strasdat/Sophus.git",
+      "revision": "d0b7315a0d90fc6143defa54596a3a95d9fa10ec",
+      "license": "MIT",
+      "notice": "LICENSE.txt"
+    },
+    "cereal": {
+      "repository": "https://github.com/USCiLab/cereal.git",
+      "revision": "22a1b369f39be918ca79206a83c4facd759f9105",
+      "license": "BSD-3-Clause",
+      "notice": "LICENSE"
+    },
+    "magic_enum": {
+      "repository": "https://github.com/Neargye/magic_enum.git",
+      "revision": "5de969c9005938a27a34d3af3ea5923d18679ad8",
+      "license": "MIT",
+      "notice": "LICENSE"
+    },
+    "opengv": {
+      "repository": "https://github.com/laurentkneip/opengv.git",
+      "revision": "91f4b19c73450833a40e463ad3648aae80b3a7f3",
+      "license": "BSD-3-Clause",
+      "notice": "License.txt"
+    },
+    "json": {
+      "repository": "https://github.com/nlohmann/json.git",
+      "revision": "55f93686c01528224f448c19128836e7df245f72",
+      "license": "MIT",
+      "notice": "LICENSE.MIT"
+    }
+  }
+}
