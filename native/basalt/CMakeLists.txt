@@ -44,3 +44,5 @@ target_compile_options(basalt_core PRIVATE -Wno-error=missing-template-arg-list-
 target_link_libraries(basalt_core PUBLIC Eigen3::Eigen TBB::tbb fmt::fmt opengv ${OpenCV_LIBS})
 add_executable(basalt_synthetic_probe synthetic_probe.cc)
 target_link_libraries(basalt_synthetic_probe PRIVATE basalt_core)
+add_executable(basalt_replay replay.cc)
+target_link_libraries(basalt_replay PRIVATE basalt_core)

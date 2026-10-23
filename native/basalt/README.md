@@ -45,6 +45,47 @@ Retain the pinned source trees, copied notices and SDK notices with any binary
 redistribution. `EIGEN_MPL2_ONLY` applies to this build too. The build receipt
 does not establish complete licensing compliance for a different SDK or build.
 
+## Recorded pixel/IMU replay
+
+The same recipe builds `basalt_replay`. It accepts a recording directory with
+`calibration.json`, `imu.csv`, `frames.json` and grayscale PNG images. Camera
+intrinsics describe undistorted pinhole images. `T_i_c` transforms optical RDF
+camera coordinates into the physical IMU axes, including the rotating baseline.
+Gyro is rad/s, specific force is m/s², and all timestamps are integer nanoseconds
+from one sensor clock. The calibration requires explicit continuous noise
+densities and bias random walks; a zero sensor covariance is not calibration.
+No pose/orientation truth channel is accepted.
+
+```sh
+python tools/replay_vio.py --binary /absolute/new-build/build/basalt_replay \
+  --inputs /absolute/recording/inputs \
+  --recording-receipt /absolute/recording/receipt.json --output /absolute/new-replay
+python tools/evaluate_vio.py --states /absolute/new-replay/states.csv \
+  --truth /absolute/recording/evaluation-truth.csv \
+  --recording-receipt /absolute/recording/receipt.json --output /absolute/new-evaluation
+```
+
+The wrapper verifies recording and pixel hashes before replay. The C++ reader
+rejects clock reversals, gaps above the declared IMU limit (at most 100 ms),
+saturation, missing endpoint coverage, image gaps above 500 ms, changed image
+dimensions and files outside the recording directory. It keeps bounded input
+queues and uses two estimation workers. Existing output paths are rejected.
+The state output contains estimated position, orientation, velocity and biases
+at each exposure. It is a VIO research replay, not a live provider or SLAM map.
+
+The independent evaluator reads truth from a separate directory/file argument.
+It transforms body-origin truth to the IMU origin, interpolates bracketing
+poses, fixes initial yaw/translation, and retains gravity tilt and scale errors.
+It reports ATE, one-second RPE, traveled distances and evaluated coverage. It
+never fits scale or the entire trajectory. Missing truth brackets fail by
+default; `--trim-boundary-states` explicitly permits at most two uncovered edge
+states and reports them. Internal truth gaps still fail. Four analytic tests
+cover a rotating sensor baseline, gauge, scale drift, gravity tilt and gaps:
+
+```sh
+python -m unittest discover -s native/basalt -p 'test_*.py'
+```
+
 ## 한국어
 
 이 연구용 실행 파일은 Basalt의 square-root 시각·관성 추정기로 위치·속도·자세와
@@ -64,3 +105,15 @@ IMU 바이어스를 함께 갱신합니다. 앱에서 선택하는 Stella 공급
 정렬은 하지 않습니다. 위 오차 한도는 짧은 합성 회귀 기준이며 실제 수중 정확도나
 네이티브 월드·설치형 앱 검증을 대신하지 않습니다. 바이너리 배포 시 고정 소스,
 복사된 고지와 SDK 고지를 보존해야 합니다.
+
+`basalt_replay`는 보정 JSON·원본 IMU CSV·영상 목록·흑백 PNG를 받아 영상과 관성을
+재생합니다. 래퍼는 파일·픽셀 해시를 확인합니다. 물리 IMU 축과 카메라 optical RDF
+사이의 고정 장착값, 같은 시계의 나노초 시각과 명시적 잡음 설정을 사용합니다.
+정답 위치·자세 채널은 입력하지 않습니다. 시각 역전·IMU 누락·포화·구간 미포함·
+영상 크기 변경·외부 파일 경로를 거부하며 큐와 worker 수를 제한합니다.
+
+별도 평가기는 정답 본체 자세를 IMU 원점으로 변환하고 실제로 구간을 덮는 자세만
+보간합니다. 초기 yaw·이동 원점만 맞추며 중력 기울기와 축척 오차는 남깁니다.
+ATE·1초 RPE·이동 거리와 평가 비율을 기록합니다. 기본값은 정답 구간이 부족하면
+실패합니다. 명시적 경계 자르기 옵션은 앞뒤 상태 최대 2개만 제외하고 수를 표시하며,
+내부 정답 누락 구간은 계속 거부합니다. 실시간 앱 공급자나 지도 출력은 별도 구현입니다.
