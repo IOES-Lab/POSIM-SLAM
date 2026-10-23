@@ -357,3 +357,18 @@ the caller; the wire format accepts finite positive ranges up to 1000 m.
 입력 전달 단계임을 나타내며, 실시간 최적화기는 아직 이 관측을 사용하지 않습니다.
 센서별 거리 범위와 보정은 호출자가 검증합니다. 전송 형식은 1000 m 이하의
 유한한 양수 거리를 허용합니다.
+
+
+`posim_slam.exact_pair.ExactImagePing` joins independently delivered images and
+single ranges by exact nanosecond timestamps. It waits up to 0.15 seconds for a
+missing pair, then releases the image without a range. Invalid returns are
+represented by `None`; late observations never modify an already released image.
+It bounds pending input to four images and 64 ranges. The single-threaded owner
+must replace the buffer when its sensor clock or estimator segment resets.
+
+`posim_slam.exact_pair.ExactImagePing`은 따로 도착하는 영상과 단일 거리를
+나노초 타임스탬프가 정확히 같은 경우에만 묶습니다. 짝이 없으면 최대 0.15초
+기다린 뒤 거리 없이 영상을 내보냅니다. 무효 반환값은 `None`으로 표현하며,
+늦게 온 관측으로 이미 내보낸 영상을 수정하지 않습니다. 대기 입력은 영상 4개와
+거리 64개로 제한됩니다. 단일 스레드에서 사용하는 호출자는 센서 시계나 추정
+구간이 초기화될 때 버퍼도 교체해야 합니다.
