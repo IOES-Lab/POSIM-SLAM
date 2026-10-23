@@ -13,6 +13,7 @@
 #include <thread>
 #include <array>
 #include <iomanip>
+#include <map>
 
 uint32_t u32(const char* p) {
   return uint32_t(uint8_t(p[0])) | uint32_t(uint8_t(p[1])) << 8 |
@@ -48,6 +49,10 @@ int main(int argc,char** argv) {
   try {
     auto c=input_calibration(argv[1]);
     struct Snapshot {int64_t stamp;std::vector<std::array<float,3>> points;};
+    // Exact image/Ping pairs travel atomically. This is observation transport;
+    // the joint optimizer must explicitly consume them before claiming fusion.
+    std::mutex ping_mutex;
+    std::map<int64_t,double> image_pings;
     std::mutex snapshot_mutex;
     std::shared_ptr<const Snapshot> snapshot;
     const fs::path export_file=fs::absolute(argv[1]).parent_path()/"worker-map.ply";
@@ -71,13 +76,18 @@ int main(int argc,char** argv) {
         if(!s)fail("estimator_finished");
         if(!s->T_w_i.matrix().allFinite() || !s->vel_w_i.allFinite() ||
            !s->bias_gyro.allFinite() || !s->bias_accel.allFinite())fail("invalid_estimate");
+        Json ping=nullptr;
+        {std::lock_guard<std::mutex> lock(ping_mutex);
+         auto found=image_pings.find(s->t_ns);
+         if(found!=image_pings.end())ping={{"stamp_ns",found->first},{"range_m",found->second}};
+         image_pings.erase(image_pings.begin(),image_pings.upper_bound(s->t_ns));}
         auto q=s->T_w_i.unit_quaternion();
         emit({{"type","state"},{"stamp_ns",s->t_ns},
               {"position",vector3(s->T_w_i.translation())},
               {"orientation_xyzw",{q.x(),q.y(),q.z(),q.w()}},
               {"velocity",vector3(s->vel_w_i)},
               {"gyro_bias",vector3(s->bias_gyro)},
-              {"accel_bias",vector3(s->bias_accel)}});
+              {"accel_bias",vector3(s->bias_accel)},{"ping_observation",ping},{"ping_fused",false}});
       }
     });
     std::thread map_reader([&] {
@@ -106,6 +116,7 @@ int main(int argc,char** argv) {
     });
     vio->initialize(Vec3::Zero(),Vec3::Zero());
     emit({{"type","ready"},{"protocol",1},{"inertial_fused",true},{"map_export","segment_landmark_archive_ply_1"},
+          {"image_ping_transport","exact_stamp_range_v1"},{"ping_fused",false},
           {"opencv_threads",1},{"estimation_threads",2},
           {"keyframe_hold_frames",config.vio_min_frames_after_kf},
           {"feature_grid",config.optical_flow_detection_grid_size},
@@ -118,7 +129,7 @@ int main(int argc,char** argv) {
       if(!std::cin)std::_Exit(0);
       auto type=u32(header),size=u32(header+4);
       if(type==3 && size==0)std::_Exit(0);
-      if((type!=1 && type!=2 && type!=4) || size>uint32_t(c.width*c.height+16))fail("packet_size_or_type");
+      if((type!=1 && type!=2 && type!=4 && type!=5) || size>uint32_t(c.width*c.height+32))fail("packet_size_or_type");
       std::vector<char> bytes(size);std::cin.read(bytes.data(),size);
       if(!std::cin)fail("incomplete_packet");
       if(type==4) {
@@ -160,12 +171,22 @@ int main(int argc,char** argv) {
         imu_stamp=d->t_ns;
         if(!vio->imu_data_queue.try_push(d))fail("imu_backlog");
       } else {
-        if(size!=uint32_t(c.width*c.height+16))fail("image_packet_size");
+        const int offset=type==5 ? 32 : 16;
+        if(size!=uint32_t(c.width*c.height+offset))fail("image_packet_size");
         int64_t stamp=int64_t(u64(bytes.data()));
         if(u32(bytes.data()+8)!=uint32_t(c.width) || u32(bytes.data()+12)!=uint32_t(c.height))fail("image_shape");
         if(stamp<=0 || !imu_stamp || (image_stamp && (stamp<=image_stamp || stamp-image_stamp>500000000)))fail("image_gap_or_reset");
+        if(type==5) {
+          const auto ping_stamp=int64_t(u64(bytes.data()+16));
+          const auto range=number(bytes.data()+24);
+          if(ping_stamp!=stamp || !std::isfinite(range) || range<=0 || range>1000)
+            fail("invalid_exact_image_ping");
+          std::lock_guard<std::mutex> lock(ping_mutex);
+          if(image_pings.size()>=64)fail("image_ping_backlog");
+          image_pings.emplace(stamp,range);
+        }
         image_stamp=stamp;
-        cv::Mat raw(c.height,c.width,CV_8UC1,bytes.data()+16);
+        cv::Mat raw(c.height,c.width,CV_8UC1,bytes.data()+offset);
         auto pixels=estimator_image(c,raw);
         auto data=std::make_shared<basalt::OpticalFlowInput>();
         data->t_ns=stamp;data->img_data.resize(1);data->img_data[0].img=pixels;

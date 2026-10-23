@@ -334,3 +334,26 @@ estimator. Live grouped-Ping optimization remains unconnected.
 자세, 관성 상태, 특징점과 평면을 복원합니다. 보정 중 관측 연결을 고정하고
 종료 후 선형화 행렬을 다시 구성해야 합니다. `basalt_ping_state_probe`가
 실제 추정기로 이를 검증하며, 실시간 Ping 공동 최적화 연결은 남아 있습니다.
+
+
+### Exact image/Ping transport / 영상·Ping 시각 정합 전송
+
+`LiveClient.image(..., ping=(stamp_ns, range_m))` sends an optional single-range
+observation atomically with its image. The timestamps must match exactly. The
+worker advertises `image_ping_transport: exact_stamp_range_v1`; unsupported workers
+are rejected before sending. Packet type 5 carries the image header, Ping timestamp
+and float64 range, then grayscale pixels. State output echoes `ping_observation`
+only at that exact timestamp. Pending observations are bounded to 64 per process.
+`ping_fused: false` identifies this transport stage; the live optimizer does not
+consume these observations yet. Sensor-specific bounds and calibration belong to
+the caller; the wire format accepts finite positive ranges up to 1000 m.
+
+`LiveClient.image(..., ping=(stamp_ns, range_m))`은 영상과 단일 거리 관측을
+하나의 패킷으로 전달합니다. 두 타임스탬프는 정확히 같아야 합니다. 워커는
+`image_ping_transport: exact_stamp_range_v1` 지원 여부를 알리며, 지원하지 않으면
+전송 전에 거부합니다. 패킷 유형 5에는 영상 헤더, Ping 시각과 float64 거리,
+흑백 픽셀이 들어갑니다. 자세 출력의 `ping_observation`에는 동일 시각의 관측만
+포함됩니다. 대기 관측은 프로세스당 64개로 제한됩니다. `ping_fused: false`는
+입력 전달 단계임을 나타내며, 실시간 최적화기는 아직 이 관측을 사용하지 않습니다.
+센서별 거리 범위와 보정은 호출자가 검증합니다. 전송 형식은 1000 m 이하의
+유한한 양수 거리를 허용합니다.

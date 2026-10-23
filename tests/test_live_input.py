@@ -1,4 +1,4 @@
-import io,json,queue,threading,unittest
+import io,json,queue,struct,threading,unittest
 import numpy as np
 from posim_slam.image_input import gray8
 from posim_slam.live_client import LiveClient,WorkerNotReady
@@ -78,6 +78,21 @@ class LiveInputTests(unittest.TestCase):
         c.image(1,1920,1080,pixels);c.image(2,1920,1080,pixels)
         with self.assertRaisesRegex(RuntimeError,'byte_budget'):c.image(3,1920,1080,pixels)
         self.assertLessEqual(c.pending_bytes,4*1024*1024)
+
+    def test_ping_is_atomic_and_exact_time_without_silent_fallback(self):
+        c=self.client();pixels=bytes(32*32)
+        with self.assertRaisesRegex(ValueError,'unsupported'):
+            c.image(100,32,32,pixels,ping=(100,2.5))
+        c.ping_transport=True
+        for ping in ((99,2.5),(True,2.5),(100,float('nan')),(100,0),(100,True),(100,1001)):
+            with self.assertRaises(ValueError):c.image(100,32,32,pixels,ping=ping)
+        self.assertTrue(c.input.empty());self.assertEqual(c.pending_bytes,0)
+        c.image(100,32,32,pixels,ping=(100,2.5))
+        packet=c.input.get_nowait()
+        self.assertEqual(struct.unpack('<IIqIIqd',packet[:40]),(5,1056,100,32,32,100,2.5))
+        self.assertEqual(packet[40:],pixels)
+        c.image(101,32,32,pixels)
+        self.assertEqual(struct.unpack('<I',c.input.get_nowait()[:4]),(2,))
 
     def test_worker_fault_prevents_old_buffered_output_from_escaping(self):
         c=self.client();c.output.put({'type':'state','stamp_ns':1});c.fault='worker_closed'

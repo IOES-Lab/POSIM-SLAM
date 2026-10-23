@@ -31,6 +31,7 @@ class LiveClient:
         self.budget_lock=threading.Lock();self.pending_bytes=0
         self.closed=threading.Event()
         self.ready=threading.Event()
+        self.ping_transport=False
         self.process=subprocess.Popen([str(Path(binary).resolve()),str(Path(calibration).resolve())],
             stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=log,bufsize=65536)
         self.writer=threading.Thread(target=self._write,daemon=True)
@@ -67,6 +68,7 @@ class LiveClient:
                     if self.ready.is_set() or value.get('protocol')!=1 or value.get('inertial_fused') is not True:
                         raise ValueError('worker_protocol')
                     self._check_processing_ready(value)
+                    self.ping_transport=value.get("image_ping_transport")=="exact_stamp_range_v1"
                 elif not self.ready.is_set():
                     raise ValueError('worker_output_before_ready')
                 # Never silently drop poses/maps while calling the segment live.
@@ -110,12 +112,22 @@ class LiveClient:
             raise ValueError('invalid_imu_packet')
         self.send(1,struct.pack('<q6d',stamp_ns,*values))
 
-    def image(self,stamp_ns,width,height,pixels):
+    def image(self,stamp_ns,width,height,pixels,*,ping=None):
         if (type(stamp_ns) is not int or not 0<stamp_ns<2**63 or
             type(width) is not int or type(height) is not int or
             not 32<=width<=1920 or not 32<=height<=1080 or len(pixels)!=width*height):
             raise ValueError('invalid_image_packet')
-        self.send(2,struct.pack('<qII',stamp_ns,width,height)+pixels)
+        payload=struct.pack('<qII',stamp_ns,width,height)
+        if ping is not None:
+            if (not isinstance(ping,(tuple,list)) or len(ping)!=2 or
+                type(ping[0]) is not int or ping[0]!=stamp_ns or
+                not isinstance(ping[1],numbers.Real) or isinstance(ping[1],bool) or
+                not math.isfinite(ping[1]) or not 0<ping[1]<=1000):
+                raise ValueError('invalid_exact_image_ping')
+            if not getattr(self,'ping_transport',False):
+                raise ValueError('worker_image_ping_unsupported')
+            payload+=struct.pack('<qd',*ping)
+        self.send(5 if ping is not None else 2,payload+pixels)
 
     def snapshot(self,request_id):
         if type(request_id) is not int or not 0<request_id<2**63:

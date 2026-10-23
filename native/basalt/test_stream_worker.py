@@ -1,5 +1,5 @@
 """Native clock/saturation/packet failure and process cleanup checks."""
-import json,os,tempfile,time,unittest
+import json,os,struct,tempfile,time,unittest
 from pathlib import Path
 from posim_slam.live_client import LiveClient
 
@@ -26,6 +26,10 @@ class StreamWorkerTests(unittest.TestCase):
                     if kind=='saturation':client.imu(1_010_000_000,[100,0,0],[0,0,9.8])
                     if kind=='packet':client.send(2,b'')
                     if kind=='snapshot':client.send(4,b'')
+                    if kind.startswith('ping_'):
+                        pt=999_999_999 if kind=='ping_stamp' else 1_000_000_000
+                        r=float('nan') if kind=='ping_nan' else -1 if kind=='ping_negative' else 2.5
+                        client.send(5,struct.pack('<qIIqd',1_000_000_000,32,32,pt,r)+bytes(1024))
                     deadline=time.monotonic()+3
                     while not client.fault and time.monotonic()<deadline:time.sleep(.005)
                     self.assertIn(reason,client.fault or '')
@@ -33,6 +37,10 @@ class StreamWorkerTests(unittest.TestCase):
                 finally:client.close()
                 self.assertFalse(client.writer.is_alive());self.assertFalse(client.reader.is_alive())
                 self.assertIsNotNone(client.process.poll())
+
+    def test_ping_timestamp_mismatch(self):self.check_fault('ping_stamp','invalid_exact_image_ping')
+    def test_ping_nonfinite(self):self.check_fault('ping_nan','invalid_exact_image_ping')
+    def test_ping_negative(self):self.check_fault('ping_negative','invalid_exact_image_ping')
 
     def test_clock_reversal(self):self.check_fault('duplicate','imu_gap_or_reset')
     def test_imu_gap(self):self.check_fault('gap','imu_gap_or_reset')
