@@ -45,7 +45,7 @@ int main(int argc,char** argv) {
     std::cout<<Json({{"width",resized.cols},{"height",resized.rows},
       {"feature_grid",grid},{"feature_cells",(resized.cols/grid)*(resized.rows/grid)},
       {"intrinsics",{k[0],k[1],k[2],k[3]}},{"first_pixel",resized.at<uint8_t>(0,0)},
-      {"estimator_first_pixel",(*pixels)(0,0)},{"visual_support",support},
+      {"estimator_first_pixel",(*pixels)(0,0)},{"visual_support",support},{"mapping_inliers",mapping_inliers(data,c.processed_width,c.processed_height,1.)},
       {"map_export",{{"ids",ids},{"points",coordinates}}}}).dump()<<'\n';
   } catch(const std::exception& e){std::cerr<<e.what()<<'\n';return 1;}
 }

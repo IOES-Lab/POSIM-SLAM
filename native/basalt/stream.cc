@@ -3,6 +3,7 @@
 // reconnecting a new clock or calibration to an old estimator window.
 #include "calibration.hpp"
 #include "visual_support.hpp"
+#include "landmark_archive.hpp"
 #include <tbb/global_control.h>
 #include <opencv2/core.hpp>
 #include <algorithm>
@@ -80,34 +81,37 @@ int main(int argc,char** argv) {
       }
     });
     std::thread map_reader([&] {
+      LandmarkArchive archive;
       for(;;) {
         basalt::VioVisualizationData::Ptr data;maps.pop(data);
         if(!data)fail("estimator_finished");
         auto full=std::make_shared<Snapshot>();full->stamp=data->t_ns;
-        if(data->points.size()>100000)fail("map_snapshot_budget");
-        for(const auto& point:data->points) {
-          if(point.allFinite() && point.norm()<10000)
-            full->points.push_back({float(point.x()),float(point.y()),float(point.z())});
-        }
+        std::vector<LandmarkArchive::Point> active;
+        for(const auto& point:data->points)active.push_back({float(point.x()),float(point.y()),float(point.z())});
+        try {
+          archive.update(data->t_ns,data->point_ids,active,
+              mapping_inliers(*data,c.processed_width,c.processed_height,config.vio_obs_huber_thresh));
+        } catch(const std::exception& error) {fail(error.what());}
+        full->points=archive.points();
         {std::lock_guard<std::mutex> lock(snapshot_mutex);snapshot=full;}
         Json points=Json::array();
         const size_t count=full->points.size();
-        const size_t stride=std::max(size_t(1),(count+999)/1000);
-        for(size_t i=0;i<count;i+=stride)points.push_back(full->points[i]);
+        for(const auto& point:LandmarkArchive::display_sample(full->points))points.push_back(point);
         emit({{"type","map"},{"stamp_ns",data->t_ns},
-              {"landmarks_window",count},{"points",points},
+              {"landmarks_window",data->points.size()},{"landmarks_accumulated",count},
+              {"archive_evicted",archive.evicted()},{"points",points},
               {"visual_support",visual_support(*data,c.processed_width,c.processed_height,config.vio_obs_huber_thresh)},
               {"observations",data->opt_flow_res && !data->opt_flow_res->observations.empty() ? data->opt_flow_res->observations[0].size() : 0}});
       }
     });
     vio->initialize(Vec3::Zero(),Vec3::Zero());
-    emit({{"type","ready"},{"protocol",1},{"inertial_fused",true},{"map_export","active_local_window_ply_1"},
+    emit({{"type","ready"},{"protocol",1},{"inertial_fused",true},{"map_export","segment_landmark_archive_ply_1"},
           {"opencv_threads",1},{"estimation_threads",2},
           {"keyframe_hold_frames",config.vio_min_frames_after_kf},
           {"feature_grid",config.optical_flow_detection_grid_size},
           {"raw_resolution",{c.width,c.height}},
           {"processed_resolution",{c.processed_width,c.processed_height}},
-          {"scope","experimental local visual-inertial odometry"}});
+          {"scope","experimental local visual-inertial odometry with sparse landmark archive"}});
     int64_t imu_stamp=0,image_stamp=0;
     for(;;) {
       char header[8];std::cin.read(header,8);
@@ -132,7 +136,7 @@ int main(int argc,char** argv) {
         std::ofstream file(temporary,std::ios::binary|std::ios::trunc);
         if(!file)fail("snapshot_unwritable");
         file<<"ply\nformat binary_little_endian 1.0\n"
-            <<"comment scope complete_active_local_vio_window\n"
+            <<"comment scope accumulated_local_vio_landmarks\n"
             <<"comment request_id "<<request<<"\ncomment stamp_ns "<<full->stamp<<'\n'
             <<"element vertex "<<full->points.size()<<"\nproperty float x\nproperty float y\nproperty float z\nend_header\n";
         // The wire/file format is little endian even on other host byte orders.

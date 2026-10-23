@@ -89,7 +89,7 @@ python -m unittest discover -s native/basalt -p 'test_*.py'
 ## Live worker transport
 
 `basalt_stream calibration.json` accepts framed raw IMU and grayscale pixels
-over stdin and emits JSON states/local-window point samples over stdout. The
+over stdin and emits JSON states/accumulated-landmark point samples over stdout. The
 independent `posim_slam.live_client.LiveClient` provides asynchronous transport.
 The worker uses two computation workers, one OpenCV thread, two queued images, 256 queued IMU
 measurements and four queued state/map outputs. Python queues allow at most
@@ -213,7 +213,7 @@ POSIM_SLAM_STREAM_BINARY=/absolute/new-build/build/basalt_stream \
 ```
 
 
-## Complete local-window snapshots
+## Segment-local accumulated landmark snapshots
 
 Optional calibration `max_feature_cells` (32–512) sets the spatial detection
 budget on the processed image. The grid is at least 16 pixels and otherwise
@@ -247,22 +247,32 @@ Distinct landmark IDs remain distinct even if their estimated coordinates coinci
 점을 읽습니다. 여러 영상에서 관측해도 지도점 수를 늘리지 않습니다. ID가 다른
 랜드마크는 추정 좌표가 같아도 별도 점으로 유지합니다.
 
-`LiveClient.snapshot(request_id)` requests a complete optimized active-window
-PLY instead of the 1,000-point display sample. The worker writes `worker-map.ply`
-atomically beside its runtime calibration file and replies with request ID,
-exposure timestamp and valid point count. At most 100,000 finite points are
-accepted. An empty map returns a nonfatal unavailable response. Owners allow one
-outstanding export, read/validate that response before another request, and add
-session, frame and meter-unit provenance using `posim_slam.map_snapshot`.
-The file explicitly identifies its active local-window scope and unqualified
-navigation state. It does not accumulate old marginalised landmarks into a
-claimed loop-closed map. Input recordings remain read-only; the paced test tool
-materializes runtime calibration in its output directory before requesting PLYs.
+The native archive admits an ID after full-weight reprojection support in three
+separate exposures. Active IDs receive optimized coordinates; departed IDs keep
+last coordinates. Unconfirmed departed tracks are discarded. Up to 100,000
+tracks are retained, with oldest-track eviction and explicit eviction counts.
+The archive lifetime is exactly one worker/coordinate segment. It provides
+sparse odometry mapping without loop closure, dense reconstruction or retrospective
+correction of departed points. New IDs on revisits may describe the same feature.
 
-`LiveClient.snapshot(request_id)`는 표시용 1,000개 표본 대신 현재 최적화된 로컬
-창 전체의 PLY를 요청합니다. 워커는 실행용 보정 파일 옆의 `worker-map.ply`를 원자적으로
-기록하고 요청 ID·노출 시각·유효 점 수를 반환합니다. 유효한 점은 최대 100,000개이며
-빈 지도는 워커 재시작 없이 사용 불가 응답을 반환합니다. 소유자는 내보내기를 하나씩
-처리하고 결과를 검증한 뒤 `posim_slam.map_snapshot`으로 세션·프레임·미터 단위 고지를
-추가합니다. 파일은 활성 로컬 창이라는 범위와 미검증 항법 상태를 기록합니다.
-오래된 주변화 랜드마크를 모아 전역 루프 폐쇄 지도라고 표시하지 않습니다.
+`LiveClient.snapshot(request_id)` exports all retained mature landmarks, separately
+from the at-most-1,000-point display sample. The worker atomically writes
+`worker-map.ply` beside runtime calibration and returns request ID, exposure
+stamp and count. The ready contract is `segment_landmark_archive_ply_1`; PLY
+scope is `accumulated_local_vio_landmarks`. `landmarks_window` reports active
+estimator points; `landmarks_accumulated` reports retained mature points and
+`archive_evicted` reports capacity eviction. Owners validate provenance and allow
+one pending export. Recordings remain read-only. Legacy active-window PLY files
+remain readable by `map_snapshot`, preserving their original scope.
+
+네이티브 누적 저장소는 서로 다른 영상 세 장에서 정상 가중치의 재투영 검사를 통과한
+ID를 채택합니다. 활성 ID는 최적화 좌표로 갱신하고 추정 창에서 빠진 점은 마지막
+좌표를 유지합니다. 확인되지 않은 이탈 트랙은 버립니다. 최대 100,000개 트랙을
+보존하고 가장 오래 유지된 트랙부터 제거하며 제거 수를 보고합니다. 워커·좌표 구간이
+바뀌면 새 지도를 시작합니다. 희소 odometry 지도이며 루프 폐쇄, 조밀한 표면 복원,
+이탈 점의 사후 보정은 제공하지 않습니다. 재방문 시 같은 특징에 새 ID가 생길 수 있습니다.
+
+내보내기는 표시용 최대 1,000점과 별도로 보존된 성숙 랜드마크 전체를 담습니다.
+워커는 실행용 보정 옆에 PLY를 원자적으로 기록하고 요청 ID·시각·점 수를 반환합니다.
+소유자는 세션·프레임·단위를 검증하고 한 번에 하나의 내보내기를 처리합니다.
+기존 활성 로컬 창 파일도 원래 범위를 유지한 채 검증할 수 있습니다.

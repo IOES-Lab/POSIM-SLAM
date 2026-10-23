@@ -53,7 +53,7 @@ if __name__=='__main__':
             elif value['type']=='map':
                 maps.append(value)
                 if value['stamp_ns'] in sent:latencies.append(time.monotonic()-sent.pop(value['stamp_ns']))
-                if value['landmarks_window']>1000 and 1 not in requested:
+                if value.get('landmarks_accumulated',value['landmarks_window'])>1000 and 1 not in requested:
                     client.snapshot(1);requested.append(1)
             elif value['type']=='export':
                 assert value['success'],value
@@ -90,14 +90,15 @@ if __name__=='__main__':
             while time.monotonic()<deadline and len(exports)<len(requested):poll();time.sleep(.005)
             assert len(exports)==len(requested)
             final=next(e for e in exports if e['request_id']==2)
-            assert final['points']==maps[-1]['landmarks_window'] and final['stamp_ns']==maps[-1]['stamp_ns']
+            assert final['points']==maps[-1].get('landmarks_accumulated',maps[-1]['landmarks_window']) and final['stamp_ns']==maps[-1]['stamp_ns']
         finally:client.close()
     with (a.output/'states.csv').open('w') as f:
         w=csv.writer(f,lineterminator='\n');w.writerow(['stamp_ns','x','y','z','qx','qy','qz','qw','vx','vy','vz','bgx','bgy','bgz','bax','bay','baz'])
         for s in states:w.writerow([s['stamp_ns'],*s['position'],*s['orientation_xyzw'],*s['velocity'],*s['gyro_bias'],*s['accel_bias']])
     proof=dict(passed=True,scope='Paced recorded packets through the live worker; ROS ownership separate',
                states=len(states),maps=len(maps),exports=exports,max_points=max(len(m['points']) for m in maps),
-               final_landmarks_window=maps[-1]['landmarks_window'],worker_ready=ready,
+               final_landmarks_window=maps[-1]['landmarks_window'],
+               final_landmarks_accumulated=maps[-1].get('landmarks_accumulated'),archive_evicted=maps[-1].get('archive_evicted'),worker_ready=ready,
                binary_sha256=hashlib.sha256(a.binary.read_bytes()).hexdigest(),
                worker_returncode=client.process.returncode,worker_threads_stopped=not(client.reader.is_alive() or client.writer.is_alive()))
     proof['runtime_calibration_sha256']=hashlib.sha256(calibration.read_bytes()).hexdigest()
@@ -106,4 +107,4 @@ if __name__=='__main__':
         proof['image_to_map_latency_ms']={name:float(np.percentile(latencies,q)*1000) for name,q in [('p50',50),('p95',95),('max',100)]}
     (a.output/'receipt.json').write_text(json.dumps(proof,indent=2)+'\n');print(json.dumps(proof))
     (a.output/'map-support.json').write_text(json.dumps([dict(stamp_ns=m['stamp_ns'],points=len(m['points']),
-         observations=m['observations'],landmarks_window=m['landmarks_window']) for m in maps],indent=2)+'\n')
+         observations=m['observations'],landmarks_window=m['landmarks_window'],landmarks_accumulated=m.get('landmarks_accumulated')) for m in maps],indent=2)+'\n')

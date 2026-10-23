@@ -1,7 +1,6 @@
-"""Complete optimized local-window PLY contract, independent of ROS/apps.
+"""Provenance-checked local-window and accumulated-landmark PLY contracts, independent of ROS/apps.
 
-A local-window snapshot is neither a display sample nor a loop-closed global
-map. Provenance is checked at each process boundary; raw worker output carries
+These sparse odometry snapshots have explicit scope and no loop closure. Provenance is checked at each process boundary; raw worker output carries
 request identity and acquisition time before its owner adds session/frame tags.
 """
 import re
@@ -9,7 +8,7 @@ import numpy as np
 
 MAX_POINTS=100000
 MAX_BYTES=MAX_POINTS*12+4096
-SCOPE='complete_active_local_vio_window'
+SCOPES={'complete_active_local_vio_window','accumulated_local_vio_landmarks'}
 
 
 def validate_snapshot(data,expected):
@@ -31,7 +30,7 @@ def validate_snapshot(data,expected):
         else:raise ValueError('snapshot_schema')
     if (count is None or not 0<count<=MAX_POINTS or
             properties!=['property float x','property float y','property float z'] or
-            len(data)!=end+11+count*12 or metadata.get('scope')!=SCOPE):
+            len(data)!=end+11+count*12 or metadata.get('scope') not in SCOPES):
         raise ValueError('snapshot_schema')
     for key in ('request_id','stamp_ns'):
         if not metadata.get(key,'').isdigit() or not 0<int(metadata[key])<2**63:
@@ -40,7 +39,7 @@ def validate_snapshot(data,expected):
         raise ValueError('snapshot_provenance')
     if not np.isfinite(np.frombuffer(data[end+11:],dtype='<f4')).all():
         raise ValueError('snapshot_coordinates')
-    return dict(points=count,stamp_ns=int(metadata['stamp_ns']),request_id=int(metadata['request_id']))
+    return dict(scope=metadata['scope'],points=count,stamp_ns=int(metadata['stamp_ns']),request_id=int(metadata['request_id']))
 
 
 def annotate_snapshot(data,*,nonce,frame,request_id,stamp_ns,points):

@@ -50,6 +50,7 @@ class InputContractTests(unittest.TestCase):
 
     def test_diagnostics_match_optimized_projections_to_current_feature_ids(self):
         _,r=self.probe(320,240)
+        self.assertEqual(r['mapping_inliers'],[0])
         support=r['visual_support']
         self.assertEqual(support['reprojected_landmarks'],2)
         self.assertEqual(support['full_weight_reprojections'],1)

@@ -14,6 +14,13 @@ class SnapshotTests(unittest.TestCase):
         self.assertEqual(validate_snapshot(data,dict(session_nonce='a'))['points'],1001)
         self.assertIn(b'comment navigation_ready false\n',data)
 
+    def test_accumulated_scope_is_preserved_and_cannot_masquerade_as_active_window(self):
+        data=raw(1).replace(b'complete_active_local_vio_window',b'accumulated_local_vio_landmarks')
+        result=annotate_snapshot(data,nonce='a',frame='vehicle/vio_a_segment_1',request_id=4,stamp_ns=100,points=1)
+        self.assertEqual(validate_snapshot(result,{})['scope'],'accumulated_local_vio_landmarks')
+        with self.assertRaisesRegex(ValueError,'provenance'):
+            validate_snapshot(result,dict(scope='complete_active_local_vio_window'))
+
     def test_previous_request_and_cross_session_results_are_rejected(self):
         with self.assertRaisesRegex(ValueError,'provenance'):
             annotate_snapshot(raw(),nonce='a',frame='vehicle/vio_a_segment_1',request_id=5,stamp_ns=100,points=1001)
