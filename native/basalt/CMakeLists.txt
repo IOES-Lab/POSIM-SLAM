@@ -17,6 +17,16 @@ add_subdirectory(${SOURCE_ROOT}/opengv opengv EXCLUDE_FROM_ALL)
 set_target_properties(opengv PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
 target_compile_options(opengv PRIVATE -include cassert)
 set(B ${SOURCE_ROOT}/source)
+find_package(Python3 COMPONENTS Interpreter REQUIRED)
+set(JOINT_HEADERS ${CMAKE_CURRENT_BINARY_DIR}/joint_include)
+set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS
+ ${CMAKE_CURRENT_SOURCE_DIR}/prepare_joint_headers.py)
+execute_process(COMMAND ${Python3_EXECUTABLE}
+ ${CMAKE_CURRENT_SOURCE_DIR}/prepare_joint_headers.py ${B} ${JOINT_HEADERS}
+ RESULT_VARIABLE JOINT_HEADERS_STATUS)
+if(NOT JOINT_HEADERS_STATUS EQUAL 0)
+ message(FATAL_ERROR "Pinned Basalt joint landmark interface preparation failed")
+endif()
 # Replace only the pinned visualization export function in a build-local copy.
 # The upstream checkout stays clean and retains its original license header.
 file(READ ${B}/src/vi_estimator/ba_base.cpp BA_SOURCE)
@@ -54,7 +64,7 @@ add_library(basalt_core STATIC
  ${B}/src/vi_estimator/sqrt_keypoint_vo.cpp
  ${B}/src/vi_estimator/vio_estimator.cpp)
 target_include_directories(basalt_core PUBLIC
- ${B}/include ${SOURCE_ROOT}/headers/include ${SOURCE_ROOT}/sophus
+ ${JOINT_HEADERS} ${B}/include ${SOURCE_ROOT}/headers/include ${SOURCE_ROOT}/sophus
  ${SOURCE_ROOT}/cereal/include ${SOURCE_ROOT}/magic_enum/include
  ${SOURCE_ROOT}/opengv/include ${SOURCE_ROOT}/json/single_include ${OpenCV_INCLUDE_DIRS})
 target_compile_options(basalt_core PRIVATE -Wno-error=missing-template-arg-list-after-template-kw)
@@ -68,3 +78,5 @@ target_link_libraries(basalt_stream PRIVATE basalt_core)
 
 add_executable(basalt_input_probe input_probe.cc)
 target_link_libraries(basalt_input_probe PRIVATE basalt_core)
+add_executable(basalt_joint_landmark_probe joint_landmark_probe.cc)
+target_link_libraries(basalt_joint_landmark_probe PRIVATE basalt_core)

@@ -280,3 +280,20 @@ ID를 채택합니다. 활성 ID는 최적화 좌표로 갱신하고 추정 창�
 워커는 실행용 보정 옆에 PLY를 원자적으로 기록하고 요청 ID·시각·점 수를 반환합니다.
 소유자는 세션·프레임·단위를 검증하고 한 번에 하나의 내보내기를 처리합니다.
 기존 활성 로컬 창 파일도 원래 범위를 유지한 채 검증할 수 있습니다.
+
+## Joint Ping adapter development / Ping 공동 최적화 어댑터
+
+`prepare_joint_headers.py` verifies the exact pinned Basalt landmark headers
+and creates a build-local include overlay. The original checkout and its
+BSD-3-Clause notices remain intact. The added interface exports unscaled visual
+rows before QR and applies validated landmark increments in Basalt's own
+stereographic-direction/inverse-distance coordinates. `basalt_joint_landmark_probe`
+compares raw-row reduction and back substitution against Basalt. The live
+optimizer does not yet select or consume Ping groups.
+
+`prepare_joint_headers.py`는 고정된 Basalt 특징점 헤더의 해시를 확인하고
+빌드 폴더 안에 확장 헤더를 생성합니다. 원본 체크아웃과 BSD-3-Clause 고지는
+유지됩니다. 추가 인터페이스는 QR 이전의 원본 시각 잔차를 내보내고 Basalt의
+방향·역거리 좌표에서 검증된 보정량을 적용합니다. `basalt_joint_landmark_probe`는
+변수 제거와 역대입을 기존 Basalt 계산과 비교합니다. 실행 중인 최적화기는
+아직 Ping 그룹을 선택하거나 사용하지 않습니다.
