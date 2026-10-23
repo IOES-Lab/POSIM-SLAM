@@ -308,3 +308,16 @@ The helper is not yet assembled into the streaming optimizer.
 증분과 특징점 방향·역거리 좌표로 표현합니다. `basalt_ping_geometry_probe`는
 뒤집힌 IMU 자세를 포함해 실제 Basalt 자세 갱신의 수치 미분과 비교합니다.
 아직 스트리밍 최적화기에 이 관측을 조립하지는 않습니다.
+
+`ping_group.hpp` assembles raw Basalt visual rows and shared surface/range
+constraints with native host-pose and landmark columns. It checks footprint
+support, explicit noise, duplicate identity and exact-time pose association.
+Landmark trial updates are preflighted as a group. `basalt_ping_group_probe`
+checks a nonlinear trial with 25 landmarks and three host frames. Streaming
+group selection, trial acceptance and marginalization are not yet connected.
+
+`ping_group.hpp`는 원본 시각 잔차와 공유 표면·거리 제약을 호스트 자세 및
+특징점 변수에 함께 조립합니다. 관측 영역, 명시한 잡음, 중복 식별자와
+자세·측정 시각 일치를 검사하고 특징점 보정량을 모두 확인한 뒤 적용합니다.
+`basalt_ping_group_probe`는 특징점 25개와 호스트 프레임 3개로 비선형 보정
+단계를 검증합니다. 스트리밍 그룹 선택·보정 수락·주변화는 아직 연결되지 않았습니다.
