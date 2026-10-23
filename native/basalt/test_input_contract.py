@@ -44,7 +44,7 @@ class InputContractTests(unittest.TestCase):
         self.assertEqual(r['estimator_first_pixel'],2<<8)
 
     def test_invalid_budget_is_rejected_before_constructing_estimator(self):
-        for budget in (True,1023,120000.5,2073601):
+        for budget in (True,1023,120000.5,2073601,2**32+120000):
             with self.subTest(budget=budget),self.assertRaisesRegex(ValueError,'invalid_pixel_budget'):
                 self.probe(800,600,budget)
 
@@ -63,6 +63,23 @@ class InputContractTests(unittest.TestCase):
         self.assertEqual(sorted(export['ids']),[7,42])
         # Different IDs at identical coordinates must remain distinct landmarks.
         self.assertEqual(export['points'],[[0.,0.,2.],[0.,0.,2.]])
+
+    def test_feature_cell_budget_preserves_coverage_across_processing_sizes(self):
+        cells=[]
+        for width,height,budget in ((800,600,480000),(800,600,120000),(803,601,120000),(1920,1080,120000)):
+            _,r=self.probe(width,height,budget,max_feature_cells=200)
+            self.assertLessEqual(r['feature_cells'],200)
+            self.assertGreaterEqual(r['feature_cells'],170)
+            self.assertGreaterEqual(r['feature_grid'],16)
+            cells.append(r['feature_cells'])
+        self.assertEqual(cells[0],cells[1])
+
+    def test_invalid_feature_budgets_and_unsupported_aspect_ratios_are_rejected(self):
+        for cells in (True,31,513,200.5,2**32+200):
+            with self.subTest(cells=cells),self.assertRaisesRegex(ValueError,'invalid_feature_budget'):
+                self.probe(800,600,120000,max_feature_cells=cells)
+        with self.assertRaisesRegex(ValueError,'feature_budget_aspect_ratio'):
+            self.probe(1920,64,None,max_feature_cells=32)
 
 
 if __name__=='__main__':unittest.main()

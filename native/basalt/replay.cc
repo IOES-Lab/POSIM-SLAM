@@ -83,7 +83,7 @@ int main(int argc, char** argv) {
     if (!states) throw std::runtime_error("output_unwritable");
 
     tbb::global_control workers(tbb::global_control::max_allowed_parallelism, 2);
-    basalt::VioConfig config;
+    auto config=processing_config(settings);
     auto vio = basalt::VioEstimatorFactory::getVioEstimator(
         config, cal, Vec3(0, 0, -gravity), true, true);
     auto flow = basalt::OpticalFlowFactory::getOpticalFlow(config, cal);

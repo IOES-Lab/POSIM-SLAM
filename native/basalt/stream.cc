@@ -52,7 +52,7 @@ int main(int argc,char** argv) {
     const fs::path export_file=fs::absolute(argv[1]).parent_path()/"worker-map.ply";
     cv::setNumThreads(1);
     tbb::global_control workers(tbb::global_control::max_allowed_parallelism,2);
-    basalt::VioConfig config;
+    auto config=processing_config(c);
     auto vio=basalt::VioEstimatorFactory::getVioEstimator(
         config,c.cal,Vec3(0,0,-c.gravity),true,true);
     auto flow=basalt::OpticalFlowFactory::getOpticalFlow(config,c.cal);

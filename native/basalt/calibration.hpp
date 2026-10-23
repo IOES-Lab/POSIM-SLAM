@@ -23,11 +23,20 @@ inline double positive(const Json& config, const char* name) {
   return value;
 }
 
+inline int integer_budget(const Json& config,const char* name,int minimum,int maximum,const char* error) {
+  const auto& value=config.at(name);
+  if(!value.is_number_integer())throw std::runtime_error(error);
+  const auto number=value.get<int64_t>();
+  if(number<minimum || number>maximum)throw std::runtime_error(error);
+  return int(number);
+}
+
 struct InputCalibration {
  int width,height,processed_width,processed_height;
  basalt::Calibration<double> cal;
  double gravity;
  int64_t max_gap;
+ int feature_grid;
 };
 inline InputCalibration input_calibration(const fs::path& file) {
     auto c = read_json(file);
@@ -39,9 +48,7 @@ inline InputCalibration input_calibration(const fs::path& file) {
       throw std::runtime_error("invalid_resolution");
     int processed_width=width,processed_height=height;
     if(c.contains("max_image_pixels")) {
-      if(!c.at("max_image_pixels").is_number_integer())throw std::runtime_error("invalid_pixel_budget");
-      int budget=c.at("max_image_pixels");
-      if(budget<1024 || budget>1920*1080)throw std::runtime_error("invalid_pixel_budget");
+      int budget=integer_budget(c,"max_image_pixels",1024,1920*1080,"invalid_pixel_budget");
       double scale=std::min(1.,std::sqrt(double(budget)/(width*height)));
       processed_width=std::max(1,int(std::floor(width*scale)));
       processed_height=std::max(1,int(std::floor(height*scale)));
@@ -78,7 +85,20 @@ inline InputCalibration input_calibration(const fs::path& file) {
     int64_t max_gap = std::llround(positive(c, "max_imu_gap_s") * 1e9);
     if (max_gap > 100000000) throw std::runtime_error("invalid_gap_limit");
 
-    return {width,height,processed_width,processed_height,cal,gravity,max_gap};
+    int feature_grid=0;
+    if(c.contains("max_feature_cells")) {
+      int cells=integer_budget(c,"max_feature_cells",32,512,"invalid_feature_budget");
+      feature_grid=std::max(16,int(std::ceil(std::sqrt(double(processed_width)*processed_height/cells))));
+      if(feature_grid*2>std::min(processed_width,processed_height))
+        throw std::runtime_error("feature_budget_aspect_ratio");
+    }
+    return {width,height,processed_width,processed_height,cal,gravity,max_gap,feature_grid};
+}
+
+inline basalt::VioConfig processing_config(const InputCalibration& c) {
+  basalt::VioConfig config;
+  if(c.feature_grid)config.optical_flow_detection_grid_size=c.feature_grid;
+  return config;
 }
 
 // Pixels and pinhole calibration share one resize contract in replay and live

@@ -41,7 +41,9 @@ int main(int argc,char** argv) {
     Eigen::aligned_vector<Eigen::Vector3d> landmarks;std::vector<int> ids;
     map.get_current_points(landmarks,ids);
     Json coordinates=Json::array();for(const auto& point:landmarks)coordinates.push_back({point.x(),point.y(),point.z()});
+    const int grid=processing_config(c).optical_flow_detection_grid_size;
     std::cout<<Json({{"width",resized.cols},{"height",resized.rows},
+      {"feature_grid",grid},{"feature_cells",(resized.cols/grid)*(resized.rows/grid)},
       {"intrinsics",{k[0],k[1],k[2],k[3]}},{"first_pixel",resized.at<uint8_t>(0,0)},
       {"estimator_first_pixel",(*pixels)(0,0)},{"visual_support",support},
       {"map_export",{{"ids",ids},{"points",coordinates}}}}).dump()<<'\n';

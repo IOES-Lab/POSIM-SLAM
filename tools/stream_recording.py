@@ -32,6 +32,8 @@ if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__)
     for name in ('binary','inputs','recording-receipt','output'):p.add_argument('--'+name,type=Path,required=True)
     p.add_argument('--speed',type=float,default=1)
+    p.add_argument('--max-image-pixels',type=int)
+    p.add_argument('--max-feature-cells',type=int)
     a=p.parse_args()
     if a.output.exists() or not .5<=a.speed<=2:p.error('Use a new output and speed 0.5–2')
     root=a.inputs.resolve();receipt=json.loads(a.recording_receipt.read_text())
@@ -41,13 +43,16 @@ if __name__=='__main__':
     with (root/'imu.csv').open() as f:imu=list(csv.DictReader(f))
     events=[(int(r['stamp_ns']),0,r) for r in imu]+[(r['stamp_ns'],1,r) for r in frames]
     events.sort(key=lambda r:(r[0],r[1]));a.output.mkdir(parents=True)
-    states=[];maps=[];ready=[];exports=[];requested=[]
-    calibration=a.output/'calibration.json';calibration.write_bytes((root/'calibration.json').read_bytes())
+    states=[];maps=[];ready=[];exports=[];requested=[];sent={};latencies=[]
+    if a.max_image_pixels is not None:config['max_image_pixels']=a.max_image_pixels
+    if a.max_feature_cells is not None:config['max_feature_cells']=a.max_feature_cells
+    calibration=a.output/'calibration.json';calibration.write_text(json.dumps(config,indent=2)+'\n')
     def poll():
         for value in client.poll():
             if value['type']=='state':states.append(value)
             elif value['type']=='map':
                 maps.append(value)
+                if value['stamp_ns'] in sent:latencies.append(time.monotonic()-sent.pop(value['stamp_ns']))
                 if value['landmarks_window']>1000 and 1 not in requested:
                     client.snapshot(1);requested.append(1)
             elif value['type']=='export':
@@ -71,7 +76,10 @@ if __name__=='__main__':
                     poll();time.sleep(min(.005,max(0,due-time.monotonic())))
                 poll()
                 if kind==0:client.imu(stamp,[float(row[k]) for k in ('gx','gy','gz')],[float(row[k]) for k in ('ax','ay','az')])
-                else:client.image(stamp,config['width'],config['height'],pixels(root/row['file'],config['width'],config['height']))
+                else:
+                    image=pixels(root/row['file'],config['width'],config['height'])
+                    sent[stamp]=time.monotonic()
+                    client.image(stamp,config['width'],config['height'],image)
             deadline=time.monotonic()+5
             while time.monotonic()<deadline and (len(states)<len(frames) or len(maps)<len(frames)):
                 poll();time.sleep(.005)
@@ -92,6 +100,10 @@ if __name__=='__main__':
                final_landmarks_window=maps[-1]['landmarks_window'],worker_ready=ready,
                binary_sha256=hashlib.sha256(a.binary.read_bytes()).hexdigest(),
                worker_returncode=client.process.returncode,worker_threads_stopped=not(client.reader.is_alive() or client.writer.is_alive()))
+    proof['runtime_calibration_sha256']=hashlib.sha256(calibration.read_bytes()).hexdigest()
+    if latencies:
+        import numpy as np
+        proof['image_to_map_latency_ms']={name:float(np.percentile(latencies,q)*1000) for name,q in [('p50',50),('p95',95),('max',100)]}
     (a.output/'receipt.json').write_text(json.dumps(proof,indent=2)+'\n');print(json.dumps(proof))
     (a.output/'map-support.json').write_text(json.dumps([dict(stamp_ns=m['stamp_ns'],points=len(m['points']),
          observations=m['observations'],landmarks_window=m['landmarks_window']) for m in maps],indent=2)+'\n')

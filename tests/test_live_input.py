@@ -7,6 +7,7 @@ from posim_slam.live_client import LiveClient,WorkerNotReady
 class LiveInputTests(unittest.TestCase):
     def client(self):
         c=LiveClient.__new__(LiveClient);c.closed=threading.Event();c.fault=None
+        c.processing_request={}
         c.input=queue.Queue(maxsize=256);c.output=queue.Queue(maxsize=8)
         c.budget_lock=threading.Lock();c.pending_bytes=0
         c.ready=threading.Event();c.ready.set()
@@ -51,6 +52,19 @@ class LiveInputTests(unittest.TestCase):
         a=gray8(32,32,100,'rgb8',rgb.tobytes());b=gray8(32,32,100,'bgr8',bgr.tobytes())
         self.assertTrue(np.array_equal(a,b));self.assertTrue(np.all(a==77))
         with self.assertRaises(ValueError):gray8(32,32,95,'rgb8',rgb.tobytes())
+
+    def test_ready_cannot_silently_ignore_requested_processing_budgets(self):
+        ready=dict(type='ready',protocol=1,inertial_fused=True,raw_resolution=[800,600],processed_resolution=[400,300],feature_grid=25)
+        for change,reason in (({'feature_grid':50},'worker_feature_budget'),
+                              ({'processed_resolution':[800,600]},'worker_pixel_budget'),
+                              ({'processed_resolution':None},'worker_processing_resolution'),
+                              ({'raw_resolution':[640,480]},'worker_raw_resolution')):
+            c=self.client();c.ready.clear()
+            c.processing_request=dict(width=800,height=600,max_image_pixels=120000,max_feature_cells=200)
+            c.process=type('Process',(),{'stdout':io.BytesIO((json.dumps(ready|change)+'\n').encode())})()
+            c._read();self.assertEqual(c.fault,reason);self.assertFalse(c.ready.is_set())
+        c=self.client();c.processing_request=dict(width=800,height=600,max_image_pixels=120000,max_feature_cells=200)
+        c._check_processing_ready(ready)
 
     def test_imu_vectors_must_have_separate_three_axis_shapes(self):
         c=self.client()

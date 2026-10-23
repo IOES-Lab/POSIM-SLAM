@@ -19,6 +19,12 @@ class WorkerNotReady(RuntimeError):
 
 class LiveClient:
     def __init__(self, binary, calibration, log):
+        self.processing_request=json.loads(Path(calibration).read_text())
+        if not isinstance(self.processing_request,dict):raise ValueError('invalid_worker_calibration')
+        for name,low,high in (('max_image_pixels',1024,1920*1080),('max_feature_cells',32,512)):
+            if name in self.processing_request:
+                value=self.processing_request[name]
+                if type(value) is not int or not low<=value<=high:raise ValueError('invalid_'+name)
         self.input=queue.Queue(maxsize=256)
         self.output=queue.Queue(maxsize=8)
         self.fault=None
@@ -60,6 +66,7 @@ class LiveClient:
                 if value['type']=='ready':
                     if self.ready.is_set() or value.get('protocol')!=1 or value.get('inertial_fused') is not True:
                         raise ValueError('worker_protocol')
+                    self._check_processing_ready(value)
                 elif not self.ready.is_set():
                     raise ValueError('worker_output_before_ready')
                 # Never silently drop poses/maps while calling the segment live.
@@ -67,6 +74,20 @@ class LiveClient:
                 if value['type']=='ready':self.ready.set()
         except (OSError,ValueError,EOFError,queue.Full) as error:
             if not self.closed.is_set():self.fault=str(error) or 'worker_output_backlog'
+
+    def _check_processing_ready(self,value):
+        request=self.processing_request
+        pixels=request.get('max_image_pixels');cells=request.get('max_feature_cells')
+        if pixels is None and cells is None:return
+        size=value.get('processed_resolution')
+        if not isinstance(size,list) or len(size)!=2 or any(type(n) is not int or n<32 for n in size):
+            raise ValueError('worker_processing_resolution')
+        if value.get('raw_resolution')!=[request.get('width'),request.get('height')]:
+            raise ValueError('worker_raw_resolution')
+        if pixels is not None and size[0]*size[1]>pixels:raise ValueError('worker_pixel_budget')
+        if cells is not None:
+            expected=max(16,math.ceil(math.sqrt(size[0]*size[1]/cells)))
+            if value.get('feature_grid')!=expected:raise ValueError('worker_feature_budget')
 
     def send(self,kind,payload):
         if self.closed.is_set() or self.fault:raise RuntimeError(self.fault or 'worker_closed')

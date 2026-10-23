@@ -215,6 +215,30 @@ POSIM_SLAM_STREAM_BINARY=/absolute/new-build/build/basalt_stream \
 
 ## Complete local-window snapshots
 
+Optional calibration `max_feature_cells` (32–512) sets the spatial detection
+budget on the processed image. The grid is at least 16 pixels and otherwise
+`ceil(sqrt(processed_width * processed_height / max_feature_cells))`; unsupported
+aspect ratios that cannot support the detector pyramid are rejected. Live and
+replay share this calculation. The application default is 200 cells, independently
+of the 1,000-point display sample. This budgets new-feature search cells, not the
+number of retained landmarks. Without the field, upstream's 50-pixel grid remains
+available for controlled baseline comparison. `tools/stream_recording.py` accepts
+`--max-image-pixels` and `--max-feature-cells`, verifies the original input hashes,
+and writes the overridden runtime calibration outside the read-only recording.
+The client verifies the worker's reported raw/processed dimensions and detector
+spacing before accepting a requested processing budget, so an older worker cannot
+silently ignore it.
+
+선택형 보정 값 `max_feature_cells`(32–512)는 처리 영상의 공간 검출 예산입니다.
+격자는 최소 16픽셀이며 그 외에는 위 식으로 계산합니다. 검출 피라미드를 지원하지
+못하는 종횡비는 거부합니다. 실시간·재생 경로가 같은 계산을 사용합니다. 앱 기본값은
+200셀이며 표시용 1,000점 표본과 독립적입니다. 새 특징을 탐색하는 셀 예산이며 유지하는
+랜드마크 수의 상한은 아닙니다. 값이 없으면 비교 시험을 위한 원본 50픽셀 격자를
+사용합니다. 기록 재생 도구의 영상·특징 셀 옵션은 원본 입력 해시를 검증한 뒤
+읽기 전용 기록 밖에 실행용 보정을 작성합니다.
+클라이언트는 워커가 보고한 원본·처리 해상도와 검출 간격을 확인한 뒤 요청한 처리
+예산을 수락하므로 오래된 워커가 설정을 무시한 채 실행되지 않습니다.
+
 The build-local Basalt export modification enumerates the landmark database by
 landmark ID once. Multiple image observations do not create extra map points.
 Distinct landmark IDs remain distinct even if their estimated coordinates coincide.
