@@ -139,3 +139,36 @@ a two-second stationary raw-gyro calibration. It compares IMU-only propagation
 with DVL/pressure updates, with no truth observation updates or scale alignment.
 It does not qualify native sensor initialization, field accuracy, acoustic map
 integration or application defaults.
+
+## Measured stationary initialization
+
+`posim_slam.inertial_initialization.stationary_initialize`, algorithm **0.1.0**,
+starts an independent filter from 2–3 seconds of raw IMU plus at least three
+bottom-locked DVL samples bracketing the whole interval (maximum DVL gap 1.5 s).
+It uses physical IMU/DVL mounts, explicit noise densities, accelerometer bias
+calibration/covariance and residual-motion uncertainty. Zero or unknown DVL
+covariance is rejected. Conservative low-dynamics gates require mean gyro norm
+≤0.03 rad/s, gyro RMS ≤0.02 rad/s, accel RMS ≤0.12 m/s², gravity-norm mismatch
+≤0.25 m/s² and each DVL speed plus 3σ ≤0.06 m/s. These are experimental
+low-noise stationary-profile limits, not calibrated defaults for every sensor.
+
+Mean specific force supplies roll/pitch, including inverted physical IMU axes.
+Initial position and yaw define a gravity-aligned local gauge, not geographic
+heading. Mean stationary gyro supplies its bias estimate. Accelerometer bias
+is retained as a calibration prior, with its cross-covariance to initial tilt;
+rest cannot identify all its components separately from gravity. DVL supports
+linear stationarity, while IMU dynamics support angular stationarity. Constant
+motions may remain ambiguous; satisfying these gates does not prove full
+observability or navigation readiness. No ideal orientation or pose enters the
+initializer. The application has no adapter for this initialization path yet.
+
+```sh
+PYTHONPATH=src python tools/evaluate_stationary_initialization.py --output /tmp/initialization.json
+```
+
+The synthetic fixture starts from stationary measured inputs, then follows 20 s
+of smooth 6DoF motion. Truth is used only to generate measurements and evaluate
+in the initial local position/yaw gauge, without trajectory or scale fitting.
+
+Pressure observations must use the initialized local vertical reference; an
+absolute sea-level height cannot be mixed with a zero local origin.

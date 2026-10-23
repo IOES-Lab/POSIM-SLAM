@@ -129,3 +129,33 @@ PYTHONPATH=src python tools/evaluate_inertial_filter.py --output /tmp/inertial.j
 raw gyro 보정을 사용합니다. 정답 관측 갱신이나 축척 정렬 없이 IMU 예측과
 DVL·수압 갱신을 비교합니다. 네이티브 초기화·현장 정확도·음향 지도 연결·앱 기본값의
 승인 시험은 아닙니다.
+
+## 측정값으로 정지 초기화
+
+`posim_slam.inertial_initialization.stationary_initialize` 알고리즘 **0.1.0**은
+2–3초 raw IMU와 구간 전체를 덮는 바닥 잠금 DVL 표본 3개 이상으로 독립 필터를
+시작합니다. DVL 간격 상한은 1.5초입니다. 물리 장착, 잡음 밀도, accel 바이어스
+보정·공분산과 잔여 운동 불확실성을 명시해야 합니다. DVL 공분산이 0이거나
+불명확하면 거부합니다. 실험적 저잡음 정지 프로필의 조건은 평균 gyro 크기
+≤0.03 rad/s, gyro RMS ≤0.02 rad/s, accel RMS ≤0.12 m/s², 중력 크기 차이
+≤0.25 m/s², 각 DVL 속도와 3σ의 합 ≤0.06 m/s입니다. 모든 센서에 보정된 기본
+한도라는 뜻은 아닙니다.
+
+평균 specific force로 roll/pitch를 구하며 뒤집힌 IMU 장착도 처리합니다.
+초기 위치·yaw는 중력에 맞춘 로컬 좌표계의 기준이며 지리 방위가 아닙니다.
+정지 gyro 평균으로 gyro 바이어스를 구합니다. accel 바이어스는 초기 기울기와의
+교차 공분산을 유지하는 보정 prior이며, 정지만으로 중력과 모든 바이어스 성분을
+분리하지 않습니다. DVL은 선형 정지를, IMU 변화량은 각운동의 정지를 뒷받침합니다.
+일부 일정한 운동은 모호하게 남으므로 gate 통과가 전체 관측 가능성·항법 준비를
+보장하지 않습니다. 정답 자세·위치를 입력받지 않으며 앱 어댑터는 아직 없습니다.
+
+```sh
+PYTHONPATH=src python tools/evaluate_stationary_initialization.py --output /tmp/initialization.json
+```
+
+합성 장면은 정지 측정값으로 시작한 뒤 20초의 부드러운 6DoF 운동을 수행합니다.
+정답은 측정 생성과 평가에만 사용하며, 초기 로컬 위치·yaw 좌표계를 기준으로
+궤적·축척 피팅 없이 평가합니다.
+
+수압 관측은 초기화한 로컬 수직 기준으로 변환해야 합니다. 절대 해수면 기준 높이와
+0으로 정한 로컬 원점을 그대로 혼용할 수 없습니다.
