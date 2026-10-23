@@ -106,4 +106,3 @@ def estimate(previous, current, variant):
                 inlier_points_current_fan_m=source[best].tolist(),
                 yaw_rad=float(np.arctan2(rotation[1, 0], rotation[0, 0])),
                 rmse_m=float(np.sqrt(np.mean(residual ** 2))))
-

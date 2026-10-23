@@ -1,0 +1,3 @@
+# Preserve upstream license and patch bytes; their hashes are integrity inputs.
+src/posim_slam/data/notices/*.txt -whitespace
+src/posim_slam/data/visual/*.patch -whitespace
