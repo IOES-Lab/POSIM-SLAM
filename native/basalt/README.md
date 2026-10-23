@@ -215,6 +215,14 @@ POSIM_SLAM_STREAM_BINARY=/absolute/new-build/build/basalt_stream \
 
 ## Complete local-window snapshots
 
+The build-local Basalt export modification enumerates the landmark database by
+landmark ID once. Multiple image observations do not create extra map points.
+Distinct landmark IDs remain distinct even if their estimated coordinates coincide.
+
+빌드 시 적용하는 Basalt 내보내기 수정은 랜드마크 데이터베이스에서 ID마다 한 번씩
+점을 읽습니다. 여러 영상에서 관측해도 지도점 수를 늘리지 않습니다. ID가 다른
+랜드마크는 추정 좌표가 같아도 별도 점으로 유지합니다.
+
 `LiveClient.snapshot(request_id)` requests a complete optimized active-window
 PLY instead of the 1,000-point display sample. The worker writes `worker-map.ply`
 atomically beside its runtime calibration file and replies with request ID,

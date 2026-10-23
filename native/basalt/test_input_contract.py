@@ -57,5 +57,12 @@ class InputContractTests(unittest.TestCase):
         self.assertTrue(support['visual_measurements_present'])
         self.assertFalse(support['observability_qualified'])
 
+    def test_map_exports_landmark_ids_once_despite_repeated_observations(self):
+        _,r=self.probe(320,240)
+        export=r['map_export']
+        self.assertEqual(sorted(export['ids']),[7,42])
+        # Different IDs at identical coordinates must remain distinct landmarks.
+        self.assertEqual(export['points'],[[0.,0.,2.],[0.,0.,2.]])
+
 
 if __name__=='__main__':unittest.main()

@@ -17,6 +17,23 @@ add_subdirectory(${SOURCE_ROOT}/opengv opengv EXCLUDE_FROM_ALL)
 set_target_properties(opengv PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
 target_compile_options(opengv PRIVATE -include cassert)
 set(B ${SOURCE_ROOT}/source)
+# Replace only the pinned visualization export function in a build-local copy.
+# The upstream checkout stays clean and retains its original license header.
+file(READ ${B}/src/vi_estimator/ba_base.cpp BA_SOURCE)
+set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS
+ ${CMAKE_CURRENT_SOURCE_DIR}/map_points.inc ${B}/src/vi_estimator/ba_base.cpp)
+set(MAP_BEGIN "template <class Scalar_>\ntemplate <class Scalar2>\nvoid BundleAdjustmentBase<Scalar_>::get_current_points(")
+set(MAP_END "template <class Scalar_>\nvoid BundleAdjustmentBase<Scalar_>::filterOutliers(")
+string(FIND "${BA_SOURCE}" "${MAP_BEGIN}" MAP_START)
+string(FIND "${BA_SOURCE}" "${MAP_END}" MAP_STOP)
+if(MAP_START LESS 0 OR MAP_STOP LESS MAP_START)
+ message(FATAL_ERROR "Pinned Basalt map export function not found")
+endif()
+math(EXPR MAP_LENGTH "${MAP_STOP}-${MAP_START}")
+string(SUBSTRING "${BA_SOURCE}" ${MAP_START} ${MAP_LENGTH} MAP_ORIGINAL)
+file(READ ${CMAKE_CURRENT_SOURCE_DIR}/map_points.inc MAP_REPLACEMENT)
+string(REPLACE "${MAP_ORIGINAL}" "${MAP_REPLACEMENT}\n" BA_PATCHED "${BA_SOURCE}")
+file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/ba_base.cpp "${BA_PATCHED}")
 add_library(basalt_core STATIC
  ${B}/src/linearization/landmark_block.cpp
  ${B}/src/linearization/linearization_abs_qr.cpp
@@ -28,7 +45,7 @@ add_library(basalt_core STATIC
  ${B}/src/utils/system_utils.cpp
  ${B}/src/utils/time_utils.cpp
  ${B}/src/utils/vio_config.cpp
- ${B}/src/vi_estimator/ba_base.cpp
+ ${CMAKE_CURRENT_BINARY_DIR}/ba_base.cpp
  ${B}/src/vi_estimator/landmark_database.cpp
  ${B}/src/vi_estimator/marg_helper.cpp
  ${B}/src/vi_estimator/sc_ba_base.cpp
