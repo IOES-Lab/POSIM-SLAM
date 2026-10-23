@@ -26,6 +26,28 @@ def exp_so3(value):
     return np.eye(3)+a*cross+b*cross@cross
 
 
+def error_transition(mid,omega,accel,dt,noise):
+    """Shared midpoint right-error dynamics and integrated process noise.
+
+    Position/velocity errors use the integration frame; attitude error uses the
+    current IMU frame. Three-point positive quadrature preserves PSD noise and
+    position/velocity/bias correlations at sensor cadence.
+    """
+    f=np.zeros((15,15));f[:3,3:6]=np.eye(3)
+    f[3:6,6:9]=-mid@skew(accel);f[3:6,12:15]=-mid
+    f[6:9,6:9]=-skew(omega);f[6:9,9:12]=-np.eye(3)
+    squared=f@f;identity=np.eye(15)
+    def transition(t):return identity+f*t+.5*squared*t*t
+    q=np.zeros((15,15))
+    for a,b,density in ((3,6,noise[1]),(6,9,noise[0]),(9,12,noise[2]),(12,15,noise[3])):
+        q[a:b,a:b]=np.eye(3)*density**2
+    discrete=np.zeros((15,15))
+    for node,weight in ((-math.sqrt(3/5),5/9),(0.,8/9),(math.sqrt(3/5),5/9)):
+        transport=transition(.5*dt*(node+1))
+        discrete+=.5*dt*weight*(transport@q@transport.T)
+    return transition(dt),discrete
+
+
 class ImuWindow:
     """Up to 8192 samples (8.19 seconds at 1 kHz), with strict coverage.
 
@@ -86,7 +108,6 @@ class ImuWindow:
         knots,values=self.interval(start,end)
         attitude=np.eye(3);velocity=np.zeros(3);position=np.zeros(3)
         covariance=np.zeros((15,15));jacobian=np.zeros((9,6))
-        identity=np.eye(15)
         for i,dt in enumerate(np.diff(knots)):
             omega=(values[i,:3]+values[i+1,:3])*.5-bg
             accel=(values[i,3:]+values[i+1,3:])*.5-ba
@@ -94,21 +115,7 @@ class ImuWindow:
             specific=mid@accel
             position+=velocity*dt+.5*specific*dt**2
             velocity+=specific*dt
-            # Continuous right-error dynamics, frozen at the midpoint. A
-            # second-order transition and positive Gauss quadrature retain
-            # position/velocity/bias cross-covariances at sensor cadence.
-            f=np.zeros((15,15));f[:3,3:6]=np.eye(3)
-            f[3:6,6:9]=-mid@skew(accel);f[3:6,12:15]=-mid
-            f[6:9,6:9]=-skew(omega);f[6:9,9:12]=-np.eye(3)
-            def transition(t):return identity+f*t+.5*(f@f)*t*t
-            phi=transition(dt)
-            q=np.zeros((15,15))
-            for a,b,density in ((3,6,noise[1]),(6,9,noise[0]),(9,12,noise[2]),(12,15,noise[3])):
-                q[a:b,a:b]=np.eye(3)*density**2
-            discrete=np.zeros((15,15))
-            for node,weight in ((-math.sqrt(3/5),5/9),(0.,8/9),(math.sqrt(3/5),5/9)):
-                transport=transition(.5*dt*(node+1))
-                discrete+=.5*dt*weight*(transport@q@transport.T)
+            phi,discrete=error_transition(mid,omega,accel,dt,noise)
             covariance=phi@covariance@phi.T+discrete
             jacobian=phi[:9,:9]@jacobian+phi[:9,9:15]
             attitude=attitude@exp_so3(omega*dt)

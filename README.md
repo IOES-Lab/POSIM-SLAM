@@ -18,6 +18,7 @@ version; acoustic/DVL fusion retains its algorithm version **0.2.0**.
 | Acoustic + DVL | Bracketed velocity integration for translation, acoustic yaw/features and displacement consistency gate; planar experimental odometry; elevation unresolved |
 | Surface filter | Pressure/orientation-derived mean-water plane and calibrated metric-map clipping; does not classify individual surface echoes |
 | Inertial core | Raw gyro/accelerometer midpoint SO(3) preintegration, bias Jacobian and 15-state error covariance; preparation code, not a complete fused estimator |
+| Experimental inertial filter | Algorithm 0.1.0: 15-state right-error EKF, raw-IMU prediction, mounted DVL velocity, calibrated pressure height and correlated cloned planar relative-pose updates; explicit initialization/calibration, no application adapter yet |
 
 Running visual/acoustic modes do not yet use the inertial preintegration core.
 No estimator accepts simulator pose or ideal orientation as a localization
@@ -106,3 +107,35 @@ VIO core and runs noisy 6DoF track/image plus raw-IMU regressions. It jointly
 updates pose, velocity and biases in that standalone executable. It is not
 selected by default in WWW-POSIM or included in the default Python/native provider build.
 Native-world timing, calibration, recovery and package acceptance remain separate.
+
+## Experimental inertial observation filter
+
+`posim_slam.inertial_filter.InertialFilter` advances one local segment using
+position/velocity, IMU attitude and gyro/accelerometer bias states. Continuous
+noise densities are ordered gyro, accelerometer, gyro-bias walk, accel-bias
+walk. All calibration, initial state and positive covariance are explicit.
+The owner supplies synchronized measurements at the propagated timestamp;
+delayed measurements require replay, and duplicate observation times are rejected.
+DVL vectors use the actual mounted axes and rotational lever arm. Pressure input
+is calibrated ENU sensor height, not a Ping range. A cloned pose preserves
+cross-correlation for planar acoustic relative translation/yaw; normal movement
+and tilt beyond configured limits reject the planar observation. It does not
+resolve sonar echo elevations or create a global loop closure.
+
+Updates use innovation gates, Joseph covariance updates and right-attitude
+error reset. Three consecutive innovation rejections of one kind or missing
+IMU coverage invalidate the segment. The owner must clear dependent maps and
+reinitialize; it must also enforce required-sensor freshness and prediction
+age limits. Statistical gates cannot establish initialization observability.
+The math follows the [error-state formulation](https://arxiv.org/abs/1711.02508);
+this module is original Apache-2.0 code with NumPy as its sole dependency.
+
+```sh
+PYTHONPATH=src python tools/evaluate_inertial_filter.py --output /tmp/inertial.json
+```
+
+This six-seed synthetic 6DoF experiment uses a known local-frame pose prior and
+a two-second stationary raw-gyro calibration. It compares IMU-only propagation
+with DVL/pressure updates, with no truth observation updates or scale alignment.
+It does not qualify native sensor initialization, field accuracy, acoustic map
+integration or application defaults.
