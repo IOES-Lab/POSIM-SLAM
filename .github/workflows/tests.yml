@@ -3,6 +3,22 @@ on: [push, pull_request, workflow_dispatch]
 permissions:
   contents: read
 jobs:
+  native-ping:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: sudo apt-get update -qq && sudo apt-get install -y libeigen3-dev
+      - run: python -m pip install -e .
+      - name: Compile grouped Ping elimination probe
+        run: >-
+          c++ -std=c++17 -O2 -DEIGEN_MPL2_ONLY -DEIGEN_DONT_PARALLELIZE
+          -I/usr/include/eigen3 native/basalt/ping_joint_probe.cc
+          -o "$RUNNER_TEMP/ping_joint_probe"
+      - name: Compare native and reference solutions
+        run: POSIM_SLAM_PING_PROBE="$RUNNER_TEMP/ping_joint_probe" python native/basalt/test_ping_joint_native.py
   independent-python:
     runs-on: ubuntu-latest
     strategy:
