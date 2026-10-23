@@ -39,6 +39,14 @@ class ScaleTests(unittest.TestCase):
             with self.assertRaises(ValueError):candidate_scale(points,value)
         with self.assertRaises(ValueError):candidate_scale(points[:10],distance)
         with self.assertRaises(ValueError):candidate_scale(np.zeros((30,3)),distance)
+
+    def test_triangular_patch_cannot_extrapolate_into_missing_corner(self):
+        points,distance=self.plane(scale=1.,normal=np.array([0.,0.,1.]))
+        triangle=points[points[:,0]+points[:,1]<.2]
+        # Its x/y bounding rectangle encloses the Ping footprint but its hull
+        # does not; the positive-x/positive-y corner has no observed surface.
+        with self.assertRaisesRegex(ValueError,'does_not_cover'):
+            candidate_scale(triangle,distance)
     def test_outliers_and_rough_surface(self):
         points,distance=self.plane()
         noisy=points.copy();noisy[:20,2]+=.3

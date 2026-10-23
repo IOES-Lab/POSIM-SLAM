@@ -6,6 +6,7 @@ No simulator position, depth map or ground-truth transform is used.
 from collections import deque
 import math
 import numpy as np
+from .surface_support import require_surface_support
 
 # Optical axes: x right, y down in image, z forward. Derived from Orca5's
 # camera link + sensor poses and Ping link pose (metres, not visual units).
@@ -75,10 +76,9 @@ introduce a systematic error. This approximation is rejected on rough patches.
     # support, rather than extrapolating far beyond the visual measurements.
     ranges = (scale*distance-normal@origin)/(rays@normal)
     intersections = (origin+ranges[:,None]*rays)/scale
-    if np.any(intersections[:,:2].min(axis=0)<patch[:,:2].min(axis=0)) or np.any(intersections[:,:2].max(axis=0)>patch[:,:2].max(axis=0)):
-        raise ValueError('surface_does_not_cover_ping')
     if not math.isfinite(scale) or not 1e-4 < scale < 1e4:
         raise ValueError('invalid_scale')
+    require_surface_support(patch,intersections,normal,max_distance=.05*distance)
     return {'scale':scale,'inliers':int(best.sum()),'relative_residual':residual}
 
 

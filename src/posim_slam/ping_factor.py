@@ -8,6 +8,19 @@ import math
 import numpy as np
 from .dvl_scale import rotation, vector
 from .inertial import skew
+from .surface_support import require_surface_support
+
+
+def supported_plane_range_factor(*,support_points,max_support_distance,**geometry):
+    """Evaluate a factor only within its associated local visual patch.
+
+    Support points must be plane inliers in the same map frame. Their pose
+    and plane correlations still belong to the calling joint optimizer.
+    """
+    result=plane_range_factor(**geometry)
+    require_surface_support(support_points,result['intersections'],geometry['plane_normal'],
+                            max_distance=max_support_distance)
+    return result
 
 
 def plane_range_factor(*, position, attitude, imu_to_ping, ping_to_imu,

@@ -2,7 +2,7 @@
 import unittest
 import numpy as np
 from posim_slam.inertial import exp_so3
-from posim_slam.ping_factor import plane_range_factor
+from posim_slam.ping_factor import plane_range_factor, supported_plane_range_factor
 from posim_slam.ping_scale import PING_DIRECTIONS
 
 
@@ -21,6 +21,15 @@ class PingFactorTests(unittest.TestCase):
         lengths=np.linalg.norm(f['intersections']-origin,axis=1)
         self.assertAlmostEqual(f['predicted_range'],min(lengths)+.1)
         self.assertAlmostEqual(f['residual'],2.-f['predicted_range'])
+
+    def test_supported_factor_requires_observed_patch(self):
+        a=self.args;n=a['plane_normal']
+        xy=np.array([(x,y) for x in np.linspace(-1,1,50) for y in np.linspace(-1,1,50)])
+        patch=np.column_stack([xy,(a['plane_distance']-xy@n[:2])/n[2]])
+        value=supported_plane_range_factor(support_points=patch,max_support_distance=.1,**a)
+        self.assertAlmostEqual(value['predicted_range'],plane_range_factor(**a)['predicted_range'])
+        with self.assertRaises(ValueError):
+            supported_plane_range_factor(support_points=patch+np.array([10.,0.,0.]),max_support_distance=.1,**a)
 
     def test_pose_and_plane_derivatives(self):
         a=self.args;f=plane_range_factor(**a);self.assertTrue(f['differentiable'])
