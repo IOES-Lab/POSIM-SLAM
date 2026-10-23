@@ -18,7 +18,7 @@ version; acoustic/DVL fusion retains its algorithm version **0.2.0**.
 | Acoustic + DVL | Bracketed velocity integration for translation, acoustic yaw/features and displacement consistency gate; planar experimental odometry; elevation unresolved |
 | Surface filter | Pressure/orientation-derived mean-water plane and calibrated metric-map clipping; does not classify individual surface echoes |
 | Inertial core | Raw gyro/accelerometer midpoint SO(3) preintegration, bias Jacobian and 15-state error covariance; preparation code, not a complete fused estimator |
-| Experimental inertial filter | Algorithm 0.1.0: 15-state right-error EKF, raw-IMU prediction, mounted DVL velocity, calibrated pressure height and correlated cloned planar relative-pose updates; explicit initialization/calibration, no application adapter yet |
+| Experimental inertial filter | Algorithm 0.1.0: 15-state right-error EKF, raw-IMU prediction, mounted DVL velocity, calibrated pressure height and correlated cloned planar relative-pose updates; explicit initialization/calibration; streaming IMU/DVL session owner |
 
 Running visual/acoustic modes do not yet use the inertial preintegration core.
 No estimator accepts simulator pose or ideal orientation as a localization
@@ -154,8 +154,8 @@ lost bottom lock, unknown covariance, timing gaps, inconsistent residuals and
 failed convergence reject the window. Posterior attitude/velocity three-sigma
 bounds and state cross-covariances accompany the estimate. Small residuals or
 numerical rank alone do not qualify bias observability or navigation readiness.
-Weakly excited motion depends on bias calibration; the application has no adapter
-for this experimental path. Pressure must share the local vertical origin.
+Weakly excited motion depends on bias calibration. The transport owner supplies
+source validation and lifecycle. Pressure must share the local vertical origin.
 
 The synthetic moving benchmark uses an independent noisy gyro calibration
 measurement, then 12 seconds of moving initialization and 8 seconds of tracking.
@@ -176,6 +176,23 @@ Those directions are eliminated from optimization, not approximated with tiny
 variance. Unknown covariance must not be encoded as zero. The caller must verify
 the calibration source; noisy hardware requires a measured prior. State
 pose/velocity covariance remains positive definite.
+
+## Streaming inertial ownership
+
+`InertialDvlSession` owns moving initialization and subsequent IMU/DVL updates.
+It waits for at least 12 seconds of actual bottom-locked DVL coverage and raw IMU,
+then checks maximum posterior 3-sigma bounds (3 degrees attitude, 0.1 m/s velocity).
+It buffers 32,768 IMU and 2,048 DVL samples and bounds the initialization graph to
+24 DVL endpoints. `ImuWindow` retains 8,192 samples by default and supports an
+explicit capacity of 32–65,536 samples for high-rate owners.
+
+DVL arriving ahead of IMU waits for real endpoint coverage. Invalid timestamps,
+IMU gaps, bottom-lock loss, repeated innovation rejection or stale sensor input
+invalidate the segment and clear its pose. Recovery collects a fresh moving
+window. Snapshot timestamps are DVL acquisition times; poses are never retimed
+to publication time. The transport owner validates source/session identity and
+bounds its callback queue. Output is local inertial odometry without a map or
+navigation-readiness claim.
 
 ## Measured stationary initialization
 

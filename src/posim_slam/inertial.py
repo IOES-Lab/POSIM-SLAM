@@ -49,17 +49,19 @@ def error_transition(mid,omega,accel,dt,noise):
 
 
 class ImuWindow:
-    """Up to 8192 samples (8.19 seconds at 1 kHz), with strict coverage.
+    """8192 samples by default; configurable bounded capacity up to 65536.
 
     Sensor timestamps must increase. Invalid input clears the entire window;
     callers must also invalidate their fused segment. Endpoint interpolation
     requires real bracketing samples and never extrapolates through a gap.
     """
-    def __init__(self,*,max_gap=.02):
+    def __init__(self,*,max_gap=.02,max_samples=8192):
         if type(max_gap) not in (int,float) or not math.isfinite(max_gap) or not 0<max_gap<=.1:
             raise ValueError('invalid_imu_max_gap')
         self.max_gap=float(max_gap)
-        self.samples=deque(maxlen=8192)
+        if type(max_samples) is not int or not 32<=max_samples<=65536:
+            raise ValueError("invalid_imu_sample_capacity")
+        self.samples=deque(maxlen=max_samples)
 
     def clear(self):self.samples.clear()
 
