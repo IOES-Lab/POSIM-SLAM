@@ -407,3 +407,41 @@ marginalization routine. Basalt omits a constant term from prior costs, so
 전체 문제의 공분산·추가 관측 결과와 Basalt의 주변화 함수를 비교합니다.
 Basalt는 사전정보 비용에서 상수항을 생략하므로 `JointPingTrial`은 보고된 비용이
 음수여도 유한한 비용 감소를 수락합니다.
+
+
+### Coupled linearization / 공동 선형화
+
+`ping_linearization.hpp::PingLinearization` implements Basalt's
+`LinearizationBase<double,6>` interface for fixed Ping groups. It moves selected
+landmark blocks out of independent QR and reduces their raw visual, shared
+surface and range rows together. Other visual landmarks, IMU blocks and the
+existing prior retain Basalt's path. Both square-root and normal-equation outputs
+contain each selected visual block once. Robust visual costs remain separate
+from the Gaussian surface/range costs.
+
+Back substitution requires `JointPingTrial`. Duplicate plane/landmark ownership
+and duplicate Ping timestamps across groups are rejected. Applying a trial
+invalidates its cached reduction. Base-state restoration advances a revision,
+so even matrices rebuilt at the trial state cannot be reused after rollback.
+The caller relinearizes before retrying. `basalt_ping_linearization_probe` checks
+this interface with 25 grouped landmarks, one independent landmark, two actual
+IMU preintegrations and an existing prior. Its accepted trial lowers cost from
+3.50 to 0.43. This numerical fixture does not select live patches or activate
+streaming Ping fusion; live association, FEJ consistency and observation
+retirement remain caller responsibilities.
+
+`ping_linearization.hpp::PingLinearization`은 고정된 Ping 그룹에 대해
+Basalt의 `LinearizationBase<double,6>` 인터페이스를 구현합니다. 선택한
+랜드마크를 개별 QR 처리에서 분리하고 원본 영상·공유 표면·거리 잔차를 함께
+축약합니다. 나머지 영상 랜드마크, IMU 블록과 기존 사전정보는 Basalt 경로를
+유지합니다. 제곱근 행렬과 정규방정식 모두 선택한 영상 관측을 한 번만 포함합니다.
+강건 영상 비용과 가우시안 표면·거리 비용을 구분합니다.
+
+역대입에는 `JointPingTrial`이 필요합니다. 평면·랜드마크의 중복 소유와 그룹 간
+중복 Ping 시각을 거부합니다. 갱신 적용 후에는 저장된 축약 행렬을 무효화합니다.
+상태 복구 시 변경 번호가 증가하므로 갱신 후보에서 다시 만든 행렬도 복구 후에는
+재사용할 수 없습니다. 재시도 전에 다시 선형화해야 합니다. 네이티브 검증기는
+그룹 랜드마크 25개, 별도 랜드마크 1개, 실제 IMU 사전적분 2개와 기존 사전정보를
+사용하며, 수락한 갱신의 비용은 3.50에서 0.43으로 감소합니다. 이 수치 검증은
+실시간 평면 선택이나 스트리밍 Ping 융합을 활성화하지 않습니다. 실시간 관측 연결,
+최초 추정 기준 야코비안의 일관성, 반영한 관측의 제거는 호출자가 관리해야 합니다.

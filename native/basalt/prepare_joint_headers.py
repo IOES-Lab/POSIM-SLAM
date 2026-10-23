@@ -58,10 +58,11 @@ def prepare(source,destination):
             text=replace_once(text,'#pragma once','#pragma once\n#include "ping_state.hpp"')
             text=replace_once(text,'  inline void backup() {','''  posim_slam::PingPlaneStore posim_ping_planes;
   bool posim_ping_trial_active = false;
+  uint64_t posim_ping_state_revision = 0;
 
   inline void backup() {
     posim_ping_planes.backup();''')
-            text=replace_once(text,'  inline void restore() {','  inline void restore() {\n    posim_ping_planes.restore();')
+            text=replace_once(text,'  inline void restore() {','  inline void restore() {\n    ++posim_ping_state_revision;\n    posim_ping_planes.restore();')
         elif name.endswith('/landmark_block.hpp'):
             marker='  virtual void performQR() = 0;'
             text=replace_once(text,marker,'''  virtual void exportJointLinearization(MatX&, MatX&, VecX&) const = 0;

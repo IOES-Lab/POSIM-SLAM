@@ -49,7 +49,7 @@ int main(int argc,char** argv) {
       std::vector<PingGroupLandmark> result;
       for(size_t i=0;i<points.size();++i) {
         blocks[i]->linearizeLandmark();const int host=int(points[i].host_kf_id.frame_id-100);
-        result.push_back({int(i),blocks[i].get(),worldLandmark(poses[host],cal.T_i_c[0],points[i].direction,points[i].inv_dist),6*host});
+        result.push_back({i,blocks[i].get(),worldLandmark(poses[host],cal.T_i_c[0],points[i].direction,points[i].inv_dist),6*host});
       }
       return result;
     };

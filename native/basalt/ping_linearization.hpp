@@ -1,0 +1,149 @@
+// SPDX-License-Identifier: Apache-2.0
+#pragma once
+#include "ping_group.hpp"
+#include <basalt/linearization/linearization_abs_qr.hpp>
+#include <functional>
+#include <map>
+
+namespace posim_slam {
+struct JointPingGroupSpec {
+  int plane_id;
+  std::set<basalt::KeypointId> landmark_ids;
+  // Build geometry/rows at the current state with the caller's FEJ convention.
+  // Membership and observed measurement identities stay fixed during a trial.
+  std::function<NativePingGroup(const std::map<basalt::KeypointId,basalt::LandmarkBlock<double>*>&)> build;
+};
+
+// A real Basalt LinearizationBase implementation. Selected visual blocks are
+// moved out of independent QR, so their rows enter exactly one coupled group.
+// Caller owns group association, nonlinear auxiliary cost, marginalization and
+// a JointPingTrial transaction around backSubstitute + state updates.
+class PingLinearization final : public basalt::LinearizationAbsQR<double,6> {
+  using Parent=basalt::LinearizationAbsQR<double,6>;
+  struct Group {
+    JointPingGroupSpec spec;
+    std::map<basalt::KeypointId,LandmarkBlockPtr> owned;
+    NativePingGroup raw;
+    JointPatchReduction reduced;
+  };
+ public:
+  PingLinearization(basalt::BundleAdjustmentBase<double>* owner,
+      const basalt::AbsOrderMap& order,const Options& options,
+      std::vector<JointPingGroupSpec> specs,
+      const basalt::MargLinData<double>* prior=nullptr,
+      const basalt::ImuLinData<double>* imu=nullptr)
+      :Parent(owner,order,options,prior,imu),owner_(owner) {
+    if(specs.empty() || specs.size()>8)throw std::invalid_argument("invalid_joint_group_count");
+    std::map<basalt::KeypointId,size_t> membership;std::set<int> planes;
+    for(auto& spec:specs) {
+      if(!spec.build || spec.landmark_ids.size()<3 || spec.landmark_ids.size()>64 ||
+         !planes.insert(spec.plane_id).second)throw std::invalid_argument("invalid_joint_group_membership");
+      owner_->posim_ping_planes.at(spec.plane_id);
+      for(auto id:spec.landmark_ids)
+        if(!membership.emplace(id,groups_.size()).second)throw std::invalid_argument("duplicate_joint_landmark_owner");
+      Group group;group.spec=std::move(spec);groups_.push_back(std::move(group));
+    }
+    std::vector<LandmarkBlockPtr> independent;std::vector<basalt::KeypointId> independent_ids;
+    for(size_t i=0;i<landmark_ids.size();++i) {
+      auto found=membership.find(landmark_ids[i]);
+      if(found==membership.end()) {
+        independent_ids.push_back(landmark_ids[i]);independent.push_back(std::move(landmark_blocks[i]));
+      }else groups_[found->second].owned.emplace(landmark_ids[i],std::move(landmark_blocks[i]));
+    }
+    for(const auto& group:groups_)
+      if(group.owned.size()!=group.spec.landmark_ids.size())throw std::invalid_argument("missing_joint_landmark");
+    landmark_blocks=std::move(independent);landmark_ids=std::move(independent_ids);
+    landmark_block_idx.clear();num_rows_Q2r=0;
+    for(const auto& block:landmark_blocks) {
+      landmark_block_idx.push_back(num_rows_Q2r);num_rows_Q2r+=block->numQ2rows();
+    }
+  }
+
+  double linearizeProblem(bool* valid=nullptr) override {
+    phase_=Phase::Empty;bool all_valid=true;
+    double cost=Parent::linearizeProblem(&all_valid);std::set<int64_t> observations;
+    for(auto& group:groups_) {
+      std::map<basalt::KeypointId,basalt::LandmarkBlock<double>*> blocks;std::set<basalt::LandmarkBlock<double>*> expected;
+      for(auto& [id,block]:group.owned) {
+        cost+=block->linearizeLandmark();all_valid=all_valid && !block->isNumericalFailure();
+        blocks.emplace(id,block.get());expected.insert(block.get());
+      }
+      group.raw=group.spec.build(blocks);
+      const std::set<basalt::LandmarkBlock<double>*> actual(group.raw.blocks.begin(),group.raw.blocks.end());
+      if(actual!=expected || actual.size()!=group.raw.blocks.size() || group.raw.observation_stamps.empty() ||
+         group.raw.jacobian.cols()!=Eigen::Index(aom.total_size+3+3*expected.size()))
+        throw std::invalid_argument("joint_builder_changed_membership");
+      for(int64_t stamp:group.raw.observation_stamps)
+        if(!observations.insert(stamp).second)throw std::invalid_argument("duplicate_joint_ping_owner");
+      cost+=group.raw.auxiliary_cost;
+    }
+    if(!std::isfinite(cost))throw std::runtime_error("nonfinite_joint_cost");
+    if(valid)*valid=all_valid;
+    revision_=owner_->posim_ping_state_revision;
+    if(all_valid)phase_=Phase::Raw;
+    return cost;
+  }
+
+  void performQR() override {
+    if(phase_!=Phase::Raw || revision_!=owner_->posim_ping_state_revision)throw std::logic_error("joint_qr_requires_linearization");
+    Parent::performQR();
+    for(auto& group:groups_)
+      group.reduced=eliminateJointPatch(group.raw.jacobian,group.raw.residual,aom.total_size);
+    phase_=Phase::Reduced;
+  }
+
+  void get_dense_H_b(MatX& h,VecX& b) const override {
+    requireReduced();Parent::get_dense_H_b(h,b);
+    for(const auto& group:groups_) {
+      h.noalias()+=group.reduced.jacobian.transpose()*group.reduced.jacobian;
+      b.noalias()+=group.reduced.jacobian.transpose()*group.reduced.residual;
+    }
+  }
+  void get_dense_Q2Jp_Q2r(MatX& j,VecX& r) const override {
+    requireReduced();Parent::get_dense_Q2Jp_Q2r(j,r);
+    for(const auto& group:groups_) {
+      const auto rows=group.reduced.jacobian.rows(),start=j.rows();
+      j.conservativeResize(start+rows,Eigen::NoChange);r.conservativeResize(start+rows);
+      j.bottomRows(rows)=group.reduced.jacobian;r.tail(rows)=group.reduced.residual;
+    }
+  }
+
+  double backSubstitute(const VecX& pose_delta) override {
+    requireReduced();
+    if(!owner_->posim_ping_trial_active)throw std::logic_error("joint_trial_required");
+    if(pose_delta.size()!=Eigen::Index(aom.total_size) || !pose_delta.allFinite())
+      throw std::invalid_argument("invalid_joint_pose_increment");
+    std::vector<VecX> nuisance;
+    for(const auto& group:groups_) {
+      nuisance.push_back(group.reduced.backSubstitute(pose_delta));
+      const auto& delta=nuisance.back();
+      if(!delta.allFinite())throw std::invalid_argument("invalid_joint_nuisance_increment");
+      for(size_t i=0;i<group.raw.blocks.size();++i)
+        if(!group.raw.blocks[i]->jointIncrementValid(delta.segment<3>(3+3*i)))
+          throw std::invalid_argument("invalid_joint_landmark_increment");
+    }
+    // Blocks cache the trial's state after applying an increment. A restored
+    // owner must relinearize too; stale matrices never survive a trial retry.
+    phase_=Phase::Applied;
+    double change=Parent::backSubstitute(pose_delta);
+    for(size_t i=0;i<groups_.size();++i) {
+      auto& group=groups_[i];VecX delta(pose_delta.size()+nuisance[i].size());delta<<pose_delta,nuisance[i];
+      change+=.5*(group.raw.residual.squaredNorm()-(group.raw.residual+group.raw.jacobian*delta).squaredNorm());
+      owner_->posim_ping_planes.apply(group.spec.plane_id,nuisance[i].head<3>());
+      if(!group.raw.applyLandmarks(nuisance[i]))throw std::runtime_error("joint_landmark_apply_failed");
+    }
+    return change;
+  }
+ private:
+  // The joint route uses unscaled coordinates and external pose damping.
+  using Parent::scaleJl_cols;using Parent::scaleJp_cols;using Parent::setLandmarkDamping;
+  using Parent::setPoseDamping;using Parent::getJp_diag2;
+  enum class Phase {Empty,Raw,Reduced,Applied};Phase phase_=Phase::Empty;
+  void requireReduced() const {
+    if(phase_!=Phase::Reduced || revision_!=owner_->posim_ping_state_revision)throw std::logic_error("joint_rows_require_fresh_reduction");
+  }
+  uint64_t revision_=0;
+  basalt::BundleAdjustmentBase<double>* owner_;
+  std::vector<Group> groups_;
+};
+}  // namespace posim_slam

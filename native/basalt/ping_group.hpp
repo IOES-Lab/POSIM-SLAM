@@ -8,7 +8,7 @@
 
 namespace posim_slam {
 struct PingGroupLandmark {
-  int id;
+  basalt::KeypointId id;
   basalt::LandmarkBlock<double>* block;
   WorldLandmark geometry;
   Eigen::Index host_column;
@@ -58,6 +58,8 @@ struct NativePingGroup {
   Eigen::MatrixXd jacobian;
   Eigen::VectorXd residual;
   std::vector<basalt::LandmarkBlock<double>*> blocks;
+  std::vector<int64_t> observation_stamps;
+  double auxiliary_cost=0.;
   // Called only by the estimator owner thread after accepting a whole trial.
   // The first three nuisance coordinates belong to the caller-owned plane.
   bool applyLandmarks(const Eigen::VectorXd& nuisance) const {
@@ -78,7 +80,7 @@ inline NativePingGroup assemblePingGroup(Eigen::Index pose_columns,const Vec3& n
      !std::isfinite(surface_sigma) || surface_sigma<=0)
     throw std::invalid_argument("invalid_ping_group");
   const Eigen::Index count=landmarks.size(),columns=pose_columns+3+3*count;
-  std::set<int> ids;std::set<basalt::LandmarkBlock<double>*> blocks;std::set<int64_t> stamps;
+  std::set<basalt::KeypointId> ids;std::set<basalt::LandmarkBlock<double>*> blocks;std::set<int64_t> stamps;
   std::vector<Eigen::MatrixXd> jp(count),jl(count);std::vector<Eigen::VectorXd> rv(count);
   Eigen::MatrixXd points(count,3);Eigen::Index rows=count+observations.size();
   for(Eigen::Index i=0;i<count;++i) {
@@ -100,6 +102,7 @@ inline NativePingGroup assemblePingGroup(Eigen::Index pose_columns,const Vec3& n
     group.residual.segment(offset,size)=rv[i];offset+=size;group.blocks.push_back(landmarks[i].block);
     const auto row=surfaceRow(landmarks[i].geometry,normal,distance);
     group.residual[offset]=row.residual/surface_sigma;
+    group.auxiliary_cost+=.5*group.residual[offset]*group.residual[offset];
     group.jacobian.block<1,6>(offset,landmarks[i].host_column)=row.host_jacobian/surface_sigma;
     group.jacobian.block<1,3>(offset,pose_columns)=row.plane_jacobian/surface_sigma;
     group.jacobian.block<1,3>(offset,pose_columns+3+3*i)=row.landmark_jacobian/surface_sigma;++offset;
@@ -119,6 +122,8 @@ inline NativePingGroup assemblePingGroup(Eigen::Index pose_columns,const Vec3& n
       throw std::invalid_argument("predicted_ping_out_of_range");
     requireNativeSurfaceSupport(points,row.intersections,normal,support_radius);
     group.residual[offset]=(row.prediction-observation.measured)/observation.sigma;
+    group.auxiliary_cost+=.5*group.residual[offset]*group.residual[offset];
+    group.observation_stamps.push_back(observation.stamp_ns);
     group.jacobian.block<1,6>(offset,observation.pose_column)=row.pose_jacobian/observation.sigma;
     group.jacobian.block<1,3>(offset,pose_columns)=row.plane_jacobian/observation.sigma;++offset;
   }
