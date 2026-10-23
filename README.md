@@ -140,6 +140,36 @@ with DVL/pressure updates, with no truth observation updates or scale alignment.
 It does not qualify native sensor initialization, field accuracy, acoustic map
 integration or application defaults.
 
+## Moving IMU/DVL initialization
+
+`posim_slam.inertial_alignment.moving_initialize`, algorithm **0.1.0**, fits a
+bounded factor graph to 7–30 seconds of raw IMU and 8–24 bottom-locked DVL
+endpoints. Adjacent endpoints must be at most 1.5 seconds apart. It estimates
+gravity, endpoint rotations and velocities, and constant interval gyro/accel
+biases using explicit calibration priors. DVL mounting and rotating lever-arm
+velocity are included. It supplies a local endpoint origin and initial yaw gauge.
+
+Wave/current motion does not require a stationary RMS threshold. Missing IMU,
+lost bottom lock, unknown covariance, timing gaps, inconsistent residuals and
+failed convergence reject the window. Posterior attitude/velocity three-sigma
+bounds and state cross-covariances accompany the estimate. Small residuals or
+numerical rank alone do not qualify bias observability or navigation readiness.
+Weakly excited motion depends on bias calibration; the application has no adapter
+for this experimental path. Pressure must share the local vertical origin.
+
+The synthetic moving benchmark uses an independent noisy gyro calibration
+measurement, then 12 seconds of moving initialization and 8 seconds of tracking.
+It uses no pose/orientation observations. `--weak-prior` exercises uncalibrated
+zero-mean gyro bias against the same accuracy limits; this profile can fail even
+when residuals pass. These profiles do not qualify an installed sensor.
+
+```bash
+PYTHONPATH=src python tools/evaluate_moving_initialization.py --output /tmp/moving.json
+```
+
+Stationary initialization below is an optional calm-condition method. An elapsed
+30-second information period does not guarantee convergence or readiness.
+
 ## Measured stationary initialization
 
 `posim_slam.inertial_initialization.stationary_initialize`, algorithm **0.1.0**,

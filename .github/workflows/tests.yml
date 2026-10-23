@@ -18,6 +18,7 @@ jobs:
       - run: python -m unittest discover -s tests
       - run: python tools/evaluate_inertial_filter.py --output "$RUNNER_TEMP/inertial-filter.json"
       - run: python tools/evaluate_stationary_initialization.py --output "$RUNNER_TEMP/inertial-initialization.json"
+      - run: python tools/evaluate_moving_initialization.py --output "$RUNNER_TEMP/moving-initialization.json"
       - run: python -m unittest discover -s native/basalt -p 'test_*.py'
       - run: python -m pip wheel --no-deps --no-build-isolation . --wheel-dir dist
       - name: Verify installed wheel outside the checkout
