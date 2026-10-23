@@ -27,8 +27,12 @@ int main() {
     assert(threw && archive.retained()==3 && archive.evicted()==1);
   };
   rejected(9,{},{});rejected(10,{6,6},{{0,0,0},{0,0,0}});
-  rejected(10,{6},{{std::numeric_limits<float>::quiet_NaN(),0,0}});
   rejected(10,{-1},{{0,0,0}});rejected(10,{6},{});
+  // A degenerate triangulation is a map-quality rejection, not a state fault.
+  archive.update(10,{3},{{std::numeric_limits<float>::quiet_NaN(),0,0}},{3});
+  assert(archive.rejected()==1 && archive.points().size()==1);
+  archive.update(11,{3},{{3,0,0}},{3});
+  assert(archive.points().size()==1); // Re-admission requires fresh support.
   std::vector<Point> large;
   for(int i=0;i<1001;++i)large.push_back({float(i),0,0});
   const auto sample=LandmarkArchive::display_sample(large);

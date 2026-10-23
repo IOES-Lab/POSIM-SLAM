@@ -98,7 +98,7 @@ if __name__=='__main__':
     proof=dict(passed=True,scope='Paced recorded packets through the live worker; ROS ownership separate',
                states=len(states),maps=len(maps),exports=exports,max_points=max(len(m['points']) for m in maps),
                final_landmarks_window=maps[-1]['landmarks_window'],
-               final_landmarks_accumulated=maps[-1].get('landmarks_accumulated'),archive_evicted=maps[-1].get('archive_evicted'),worker_ready=ready,
+               final_landmarks_accumulated=maps[-1].get('landmarks_accumulated'),archive_evicted=maps[-1].get('archive_evicted'),archive_rejected=maps[-1].get('archive_rejected'),worker_ready=ready,
                binary_sha256=hashlib.sha256(a.binary.read_bytes()).hexdigest(),
                worker_returncode=client.process.returncode,worker_threads_stopped=not(client.reader.is_alive() or client.writer.is_alive()))
     proof['runtime_calibration_sha256']=hashlib.sha256(calibration.read_bytes()).hexdigest()

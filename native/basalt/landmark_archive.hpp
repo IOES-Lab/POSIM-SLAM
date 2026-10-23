@@ -24,20 +24,23 @@ class LandmarkArchive {
               const std::vector<Point>& points,const std::set<int>& inliers) {
     if(stamp<=stamp_ || ids.size()!=points.size() || ids.size()>100000)
       throw std::runtime_error("archive_input");
-    std::set<int> active;
+    std::set<int> active,invalid,seen;
     for(size_t i=0;i<ids.size();++i) {
-      if(ids[i]<0 || !active.insert(ids[i]).second)throw std::runtime_error("archive_ids");
-      for(float x:points[i])if(!std::isfinite(x) || std::abs(x)>=10000)
-        throw std::runtime_error("archive_coordinates");
+      if(ids[i]<0 || !seen.insert(ids[i]).second)throw std::runtime_error("archive_ids");
+      bool valid=true;
+      for(float x:points[i])if(!std::isfinite(x) || std::abs(x)>=10000)valid=false;
+      (valid?active:invalid).insert(ids[i]);
     }
+    rejected_+=invalid.size();
     // Unconfirmed departed tracks are not mapping evidence.
     for(auto it=entries_.begin();it!=entries_.end();) {
-      if(!active.count(it->first) && it->second.support<3) {
+      if(invalid.count(it->first) || (!active.count(it->first) && it->second.support<3)) {
         order_.erase({it->second.last,it->first});it=entries_.erase(it);
       } else ++it;
     }
     for(size_t i=0;i<ids.size();++i) {
-      const int id=ids[i];auto it=entries_.find(id);
+      const int id=ids[i];if(invalid.count(id))continue;
+      auto it=entries_.find(id);
       if(it==entries_.end()) {
         if(!inliers.count(id))continue;
         if(entries_.size()==budget_) {
@@ -67,8 +70,9 @@ class LandmarkArchive {
   }
   size_t retained() const{return entries_.size();}
   size_t evicted() const{return evicted_;}
+  size_t rejected() const{return rejected_;}
  private:
-  size_t budget_,evicted_=0;int64_t stamp_=0;
+  size_t budget_,evicted_=0,rejected_=0;int64_t stamp_=0;
   std::map<int,Entry> entries_;
   std::set<std::pair<int64_t,int>> order_;
 };

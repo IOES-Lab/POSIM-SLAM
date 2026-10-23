@@ -249,7 +249,9 @@ Distinct landmark IDs remain distinct even if their estimated coordinates coinci
 
 The native archive admits an ID after full-weight reprojection support in three
 separate exposures. Active IDs receive optimized coordinates; departed IDs keep
-last coordinates. Unconfirmed departed tracks are discarded. Up to 100,000
+last coordinates. Unconfirmed departed tracks are discarded. Nonfinite or out-of-bound triangulation
+candidates are rejected and counted without invalidating valid state estimation.
+Previously retained IDs with invalid coordinates are removed and require fresh admission. Up to 100,000
 tracks are retained, with oldest-track eviction and explicit eviction counts.
 The archive lifetime is exactly one worker/coordinate segment. It provides
 sparse odometry mapping without loop closure, dense reconstruction or retrospective
@@ -267,7 +269,9 @@ remain readable by `map_snapshot`, preserving their original scope.
 
 네이티브 누적 저장소는 서로 다른 영상 세 장에서 정상 가중치의 재투영 검사를 통과한
 ID를 채택합니다. 활성 ID는 최적화 좌표로 갱신하고 추정 창에서 빠진 점은 마지막
-좌표를 유지합니다. 확인되지 않은 이탈 트랙은 버립니다. 최대 100,000개 트랙을
+좌표를 유지합니다. 확인되지 않은 이탈 트랙은 버립니다. 유한하지 않거나 허용 범위를 벗어난 삼각측량
+후보는 제외하고 거부 수를 보고하며 유효한 자세 추정은 유지합니다. 기존 ID도 좌표가
+무효하면 제거하고 다시 관측 검사를 거칩니다. 최대 100,000개 트랙을
 보존하고 가장 오래 유지된 트랙부터 제거하며 제거 수를 보고합니다. 워커·좌표 구간이
 바뀌면 새 지도를 시작합니다. 희소 odometry 지도이며 루프 폐쇄, 조밀한 표면 복원,
 이탈 점의 사후 보정은 제공하지 않습니다. 재방문 시 같은 특징에 새 ID가 생길 수 있습니다.

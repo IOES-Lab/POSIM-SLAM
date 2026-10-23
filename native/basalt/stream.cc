@@ -99,7 +99,7 @@ int main(int argc,char** argv) {
         for(const auto& point:LandmarkArchive::display_sample(full->points))points.push_back(point);
         emit({{"type","map"},{"stamp_ns",data->t_ns},
               {"landmarks_window",data->points.size()},{"landmarks_accumulated",count},
-              {"archive_evicted",archive.evicted()},{"points",points},
+              {"archive_evicted",archive.evicted()},{"archive_rejected",archive.rejected()},{"points",points},
               {"visual_support",visual_support(*data,c.processed_width,c.processed_height,config.vio_obs_huber_thresh)},
               {"observations",data->opt_flow_res && !data->opt_flow_res->observations.empty() ? data->opt_flow_res->observations[0].size() : 0}});
       }
