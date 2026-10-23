@@ -24,7 +24,7 @@ Running visual/acoustic modes do not yet use the inertial preintegration core.
 No estimator accepts simulator pose or ideal orientation as a localization
 measurement. Sonar intensity features are not classified 3D obstacles.
 
-Ping scale support requires every ray intersection inside the observed plane hull and within 5% of plane distance of a landmark. The `ping_factor` module supplies pose/plane range Jacobians and a supported-patch wrapper for joint optimization; it is not yet connected to the native VIO worker.
+Ping scale support requires every ray intersection inside the observed plane hull and within 5% of plane distance of a landmark. The `ping_factor` module supplies pose/plane range Jacobians and a supported-patch wrapper for joint optimization; it is not yet connected to the native VIO worker. `ping_joint` provides a bounded reference linearization and correlated plane/landmark elimination, with explicit range and surface noise.
 
 ## Install and use
 
