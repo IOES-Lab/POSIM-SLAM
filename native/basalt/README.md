@@ -372,3 +372,38 @@ must replace the buffer when its sensor clock or estimator segment resets.
 늦게 온 관측으로 이미 내보낸 영상을 수정하지 않습니다. 대기 입력은 영상 4개와
 거리 64개로 제한됩니다. 단일 스레드에서 사용하는 호출자는 센서 시계나 추정
 구간이 초기화될 때 버퍼도 교체해야 합니다.
+
+
+### Joint marginal prior / 공동 주변화 사전정보
+
+`ping_marginal.hpp::marginalizeJointSystem` eliminates shared plane/landmark
+coordinates and departing states together, returning Basalt `MargLinData<double>`
+in square-root form. Retained blocks may contain a six-coordinate pose or a
+15-coordinate pose/velocity/bias state; a departing inertial state can retain
+only its pose. Explicit block orders support reordered retained columns and
+reject gaps, overlaps and unknown states. The residual is shifted to Basalt's
+existing linearization point using the supplied current state delta. No small
+artificial prior is added in unobservable directions.
+
+The caller must include each raw factor once, retire its consumed observations,
+and supply consistent first-estimate Jacobians. This adapter does not choose
+patches or activate the live optimizer. `basalt_ping_group_probe` checks joint
+covariance and a subsequent measurement against the full problem;
+`basalt_ping_marginal_probe` compares mixed inertial/pose blocks with Basalt's
+marginalization routine. Basalt omits a constant term from prior costs, so
+`JointPingTrial` accepts finite decreases even when the reported costs are negative.
+
+`ping_marginal.hpp::marginalizeJointSystem`은 공유 평면·랜드마크 좌표와
+제거할 상태를 함께 주변화해 Basalt의 제곱근 형식 `MargLinData<double>`을
+반환합니다. 유지할 블록은 자세 6개 좌표 또는 자세·속도·바이어스 15개 좌표를
+포함합니다. 관성 상태에서 자세만 남길 수도 있습니다. 명시적인 블록 순서는
+유지할 열의 재배치를 지원하고, 빈 구간·중복·알 수 없는 상태를 거부합니다.
+현재 상태 변화량을 사용해 잔차를 Basalt의 기존 선형화 기준점으로 옮깁니다.
+관측할 수 없는 방향에 임의의 작은 사전정보를 추가하지 않습니다.
+
+호출자는 원본 관측을 한 번씩만 포함하고, 사전정보에 반영한 관측을 제거하며,
+일관된 최초 추정 기준 야코비안을 제공해야 합니다. 이 어댑터는 평면 연결을
+선택하거나 실시간 최적화 경로를 활성화하지 않습니다. 두 네이티브 검증기는
+전체 문제의 공분산·추가 관측 결과와 Basalt의 주변화 함수를 비교합니다.
+Basalt는 사전정보 비용에서 상수항을 생략하므로 `JointPingTrial`은 보고된 비용이
+음수여도 유한한 비용 감소를 수락합니다.

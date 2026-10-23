@@ -40,10 +40,11 @@ template<class Estimator> class JointPingTrial {
   JointPingTrial(const JointPingTrial&)=delete;
   JointPingTrial& operator=(const JointPingTrial&)=delete;
   ~JointPingTrial() {if(!finished_)rollback();}
+  // Basalt omits a constant prior term, so valid total costs may be negative.
   bool accept(double before,double after,double predicted_decrease) {
     if(finished_)throw std::logic_error("ping_trial_already_finished");
     if(!std::isfinite(before) || !std::isfinite(after) || !std::isfinite(predicted_decrease) ||
-       before<0 || after<0 || predicted_decrease<=0 || after>=before) {
+       !std::isfinite(before-after) || predicted_decrease<=0 || after>=before) {
       rollback();return false;
     }
     finished_=true;owner_.posim_ping_trial_active=false;return true;

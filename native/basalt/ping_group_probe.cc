@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 #include "calibration.hpp"
 #include "ping_group.hpp"
+#include "ping_marginal.hpp"
+#include <basalt/vi_estimator/ba_base.h>
 #include <basalt/linearization/landmark_block_abs_dynamic.hpp>
 #include <memory>
 #include <iostream>
@@ -12,7 +14,7 @@ int main(int argc,char** argv) {
     auto calibration=input_calibration(argv[1]);auto& cal=calibration.cal;
     cal.T_i_c[0]=Sophus::SE3d();
     std::vector<Sophus::SE3d> poses(3);
-    basalt::AbsOrderMap order;order.total_size=18;
+    basalt::AbsOrderMap order;order.total_size=18;order.items=3;
     for(int i=0;i<3;++i){poses[i].translation()<<.08*i,.02*i,0;order.abs_order_map[100+i]={6*i,6};}
     Eigen::aligned_unordered_map<std::pair<basalt::TimeCamId,basalt::TimeCamId>,basalt::RelPoseLin<double>> relative;
     auto update_relative=[&] {
@@ -77,6 +79,47 @@ int main(int argc,char** argv) {
     Eigen::VectorXd nuisance=reduced.backSubstitute(delta);
     Eigen::VectorXd joined(j.cols());joined<<delta,nuisance;
     const double solve_error=(joined-j.colPivHouseholderQr().solve(-residual)).norm();
+    // Retire the middle pose and the entire correlated plane/landmark group.
+    basalt::AbsOrderMap keep;keep.total_size=12;keep.items=2;
+    keep.abs_order_map[100]={0,6};keep.abs_order_map[102]={6,6};
+    basalt::BundleAdjustmentBase<double> estimator;
+    for(int i=0;i<3;++i) {
+      estimator.frame_poses.emplace(100+i,basalt::PoseStateWithLin<double>(100+i,poses[i],true));
+      estimator.frame_poses.at(100+i).applyInc(Eigen::Matrix<double,6,1>::Constant(.003*(i+1)));
+    }
+    Eigen::VectorXd current_delta;estimator.computeDelta(keep,current_delta);
+    const auto prior=marginalizeJointSystem(j,residual,order,keep,current_delta);
+    // Marginal information must agree with the corresponding block of the
+    // full joint covariance. Future retained-state rows must give the same MAP.
+    Eigen::MatrixXd full_h=j.transpose()*j;
+    Eigen::MatrixXd full_cov=full_h.ldlt().solve(Eigen::MatrixXd::Identity(j.cols(),j.cols()));
+    std::vector<int> selected={0,1,2,3,4,5,12,13,14,15,16,17};
+    Eigen::MatrixXd expected_cov(12,12);
+    for(int a=0;a<12;++a)for(int b=0;b<12;++b)expected_cov(a,b)=full_cov(selected[a],selected[b]);
+    Eigen::MatrixXd marginal_cov=(prior.H.transpose()*prior.H).ldlt().solve(Eigen::MatrixXd::Identity(12,12));
+    const double covariance_error=(expected_cov-marginal_cov).norm();
+    Eigen::MatrixXd future=Eigen::MatrixXd::Zero(12,j.cols());
+    for(int a=0;a<12;++a)future(a,selected[a])=2.;
+    Eigen::MatrixXd batch(j.rows()+12,j.cols());batch<<j,future;
+    Eigen::VectorXd future_r=Eigen::VectorXd::LinSpaced(12,-.03,.03);
+    Eigen::VectorXd batch_r(residual.size()+12);batch_r<<residual,future_r;
+    Eigen::VectorXd full_step=batch.colPivHouseholderQr().solve(-batch_r);
+    Eigen::MatrixXd condensed(prior.H.rows()+12,12);condensed<<prior.H,2.*Eigen::MatrixXd::Identity(12,12);
+    Eigen::VectorXd condensed_r(prior.b.size()+12);condensed_r<<prior.H*current_delta+prior.b,future_r;
+    const Eigen::VectorXd step=condensed.colPivHouseholderQr().solve(-condensed_r);
+    Eigen::VectorXd expected_step(12);for(int a=0;a<12;++a)expected_step[a]=full_step[selected[a]];
+    const double future_error=(step-expected_step).norm();
+    double actual_cost;estimator.computeMargPriorError(prior,actual_cost);
+    const double rebasing_error=std::abs(actual_cost+.5*prior.b.squaredNorm()-.5*(prior.H*current_delta+prior.b).squaredNorm());
+    // Preserve a free common translation rather than inventing a plane prior.
+    Eigen::MatrixXd free_j=Eigen::MatrixXd::Zero(2,21);Eigen::VectorXd free_r(2);free_r<<0.,3.;
+    free_j(0,0)=-1.;free_j(0,6)=1.;free_j(0,18)=1.;
+    const auto free_prior=marginalizeJointSystem(free_j,free_r,order,keep,current_delta);
+    const bool gauge_preserved=free_prior.H.norm()<1e-12 && std::abs(free_prior.b.squaredNorm()-9.)<1e-12;
+    bool invalid_order=false;auto broken=keep;broken.abs_order_map[102].first=3;
+    try {marginalizeJointSystem(j,residual,order,broken,current_delta);}
+    catch(const std::invalid_argument&){invalid_order=true;}
+    const bool marginal_passed=covariance_error<1e-7 && future_error<1e-8 && rebasing_error<1e-12 && gauge_preserved && invalid_order;
     const double before=group.residual.squaredNorm();
     if(!group.applyLandmarks(nuisance))throw std::runtime_error("joint_trial_rejected");
     normal=Sophus::SO3d::exp(planeBasis(normal)*nuisance.head<2>())*normal;distance+=nuisance[2];
@@ -84,8 +127,10 @@ int main(int argc,char** argv) {
     update_relative();observation.pose=poses[2];
     const auto updated=assemblePingGroup(18,normal,distance,landmarks(),{observation},.02,.23);
     const double after=updated.residual.squaredNorm()+25.*delta.squaredNorm();
-    bool passed=solve_error<1e-8 && after<before && duplicate_rejected && atomic_rejection && time_mismatch_rejected;
+    bool passed=marginal_passed && solve_error<1e-8 && after<before && duplicate_rejected && atomic_rejection && time_mismatch_rejected;
     std::cout<<Json({{"passed",passed},{"landmarks",points.size()},{"host_frames",3},
+      {"marginal_covariance_error",covariance_error},{"future_factor_step_error",future_error},
+      {"basalt_prior_rebasing_error",rebasing_error},{"gauge_preserved",gauge_preserved},{"invalid_order_rejected",invalid_order},
       {"full_vs_reduced_step_error",solve_error},{"objective_before",before},{"objective_after",after},
       {"duplicate_rejected",duplicate_rejected},{"time_mismatch_rejected",time_mismatch_rejected},
       {"invalid_increment_atomic_rejection",atomic_rejection}}).dump()<<'\n';

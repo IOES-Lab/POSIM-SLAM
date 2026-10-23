@@ -60,11 +60,24 @@ int main() {
     }
     {posim_slam::JointPingTrial trial(estimator);mutate();}
     bool abandoned_restored=capture()==committed;
-    bool passed=reject_restored && exception_restored && accepted && invalid_costs && nested && abandoned_restored;
+    basalt::BundleAdjustmentBase<double> prior_estimator;
+    prior_estimator.frame_poses.emplace(100,basalt::PoseStateWithLin<double>(100,Sophus::SE3d(),true));
+    basalt::MargLinData<double> prior;prior.order.total_size=6;prior.order.items=1;prior.order.abs_order_map[100]={0,6};
+    prior.H=Eigen::MatrixXd::Identity(6,6);prior.b=Eigen::VectorXd::Constant(6,-10.);
+    double before_cost,after_cost;prior_estimator.computeMargPriorError(prior,before_cost);
+    bool negative_prior_cost_accepted=false;
+    {
+      posim_slam::JointPingTrial trial(prior_estimator);
+      prior_estimator.frame_poses.at(100).applyInc(Eigen::Matrix<double,6,1>::Constant(.01));
+      prior_estimator.computeMargPriorError(prior,after_cost);
+      negative_prior_cost_accepted=after_cost<0 && trial.accept(before_cost,after_cost,before_cost-after_cost);
+    }
+    bool passed=negative_prior_cost_accepted && reject_restored && exception_restored && accepted && invalid_costs && nested && abandoned_restored;
     std::cout<<Json({{"passed",passed},{"rejected_trial_restored",reject_restored},
       {"exception_restored",exception_restored},{"accepted_trial_retained",accepted},
       {"invalid_costs_restored",invalid_costs},{"nested_trial_rejected",nested},
-      {"abandoned_trial_restored",abandoned_restored}}).dump()<<'\n';
+      {"abandoned_trial_restored",abandoned_restored},{"negative_basalt_prior_cost_accepted",negative_prior_cost_accepted},
+      {"basalt_prior_cost_before",before_cost},{"basalt_prior_cost_after",after_cost}}).dump()<<'\n';
     return passed?0:1;
   }catch(const std::exception& error){std::cerr<<error.what()<<'\n';return 1;}
 }
