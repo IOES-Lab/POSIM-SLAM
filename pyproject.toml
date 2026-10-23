@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "posim-slam"
+version = "0.1.0"
+description = "Sensor-based visual, acoustic and inertial estimation components for POSIM"
+requires-python = ">=3.10"
+license = {text = "Apache-2.0"}
+readme = "README.md"
+dependencies = ["numpy>=1.24"]
+
+[project.optional-dependencies]
+research = ["opencv-python-headless>=4.10,<5"]
+
+[project.urls]
+Repository = "https://github.com/IOES-Lab/POSIM-SLAM"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+posim_slam = ["data/**/*"]

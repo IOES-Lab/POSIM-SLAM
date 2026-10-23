@@ -1,0 +1,7 @@
+{
+  "stella_vslam": "e445b5452535e781fdf6777ec33a06f5f8f5e416",
+  "g2o": "e8df2004e07ea8f5b8e6a8b9f2dc067b45b45036",
+  "eigen": "3147391d946bb4b6c68edd901f2add6ac1f31f8c",
+  "stella_vslam/3rd/FBoW": "c6e3c29e3332a0b0834021797e2aa4e8eb66a3c1",
+  "stella_vslam/3rd/tinycolormap": "67198d2b2b48ca5e97600c83b5c0f2310cfd4c03"
+}

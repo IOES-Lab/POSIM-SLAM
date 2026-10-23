@@ -1,0 +1,110 @@
+diff --git a/src/stella_vslam/CMakeLists.txt b/src/stella_vslam/CMakeLists.txt
+index a3f348b..839f9bb 100644
+--- a/src/stella_vslam/CMakeLists.txt
++++ b/src/stella_vslam/CMakeLists.txt
+@@ -17,11 +17,7 @@ find_package(g2o REQUIRED
+              g2o::types_sba
+              g2o::types_sim3
+              g2o::solver_dense
+-             g2o::solver_eigen
+-             g2o::solver_csparse
+-             g2o::csparse_extension
+-             OPTIONAL_COMPONENTS
+-             g2o::csparse)
++             g2o::solver_eigen)
+ 
+ # gtsam
+ set(USE_GTSAM OFF CACHE BOOL "Enable gtsam")
+@@ -35,28 +31,6 @@ else()
+     message(STATUS "gtsam: disabled")
+ endif()
+ 
+-# Check first if CSparse is built from g2o
+-if(TARGET g2o::csparse)
+-    set(${CXSPARSE_LIBRARIES} g2o::csparse)
+-else()
+-    # CXSparse for g2o
+-    find_package(CXSparse)
+-    if(CXSPARSE_FOUND)
+-        include_directories(${CXSPARSE_INCLUDE_DIRS})
+-    endif()
+-    # SuiteSparse for g2o
+-    if(NOT SUITESPARSE_FOUND)
+-        if(MSVC)
+-            find_package(SuiteSparse CONFIG)
+-        else()
+-            find_package(SuiteSparse)
+-        endif()
+-        if(SUITESPARSE_FOUND)
+-            include_directories(${SUITESPARSE_INCLUDE_DIRS})
+-        endif()
+-    endif()
+-endif()
+-
+ # Check BoW Framework
+ if(BOW_FRAMEWORK MATCHES "DBoW2")
+     find_package(DBoW2 REQUIRED)
+@@ -231,7 +205,7 @@ target_link_libraries(${PROJECT_NAME}
+                       Threads::Threads
+                       OpenMP::OpenMP_CXX
+                       Eigen3::Eigen
+-                      yaml-cpp
++                      yaml-cpp::yaml-cpp
+                       ${SQLite3_LIBRARIES}
+                       opencv_core
+                       opencv_features2d
+@@ -244,11 +218,7 @@ target_link_libraries(${PROJECT_NAME}
+                       g2o::types_sim3
+                       g2o::solver_dense
+                       g2o::solver_eigen
+-                      g2o::solver_csparse
+-                      g2o::csparse_extension
+                       "$<$<BOOL:${USE_GTSAM}>:gtsam>"
+-                      ${CXSPARSE_LIBRARIES}
+-                      ${SUITESPARSE_LIBRARIES}
+                       ${BoW_LIBRARY}
+                       "$<$<BOOL:${spdlog_FOUND}>:spdlog::spdlog>"
+                       "$<$<BOOL:${USE_CUDA_EFFICIENT_DESCRIPTORS}>:${cuda_efficient_features_LIBRARY};opencv_cudafilters;opencv_cudawarping>"
+diff --git a/src/stella_vslam/optimize/global_bundle_adjuster.cc b/src/stella_vslam/optimize/global_bundle_adjuster.cc
+index 8846e64..15d30ce 100644
+--- a/src/stella_vslam/optimize/global_bundle_adjuster.cc
++++ b/src/stella_vslam/optimize/global_bundle_adjuster.cc
+@@ -17,7 +17,6 @@
+ #include <g2o/core/robust_kernel_impl.h>
+ #include <g2o/types/sba/types_six_dof_expmap.h>
+ #include <g2o/solvers/eigen/linear_solver_eigen.h>
+-#include <g2o/solvers/csparse/linear_solver_csparse.h>
+ #include <g2o/core/optimization_algorithm_levenberg.h>
+ 
+ namespace stella_vslam {
+@@ -40,7 +39,7 @@ void optimize_impl(g2o::SparseOptimizer& optimizer,
+     // 2. Construct an optimizer
+ 
+     std::unique_ptr<g2o::BlockSolverBase> block_solver;
+-    auto linear_solver = stella_vslam::make_unique<g2o::LinearSolverCSparse<g2o::BlockSolver_6_3::PoseMatrixType>>();
++    auto linear_solver = stella_vslam::make_unique<g2o::LinearSolverEigen<g2o::BlockSolver_6_3::PoseMatrixType>>();
+     block_solver = stella_vslam::make_unique<g2o::BlockSolver_6_3>(std::move(linear_solver));
+     auto algorithm = new g2o::OptimizationAlgorithmLevenberg(std::move(block_solver));
+ 
+diff --git a/src/stella_vslam/optimize/graph_optimizer.cc b/src/stella_vslam/optimize/graph_optimizer.cc
+index de69a29..f52d96c 100644
+--- a/src/stella_vslam/optimize/graph_optimizer.cc
++++ b/src/stella_vslam/optimize/graph_optimizer.cc
+@@ -12,7 +12,7 @@
+ #include <g2o/core/block_solver.h>
+ #include <g2o/core/sparse_optimizer.h>
+ #include <g2o/core/robust_kernel_impl.h>
+-#include <g2o/solvers/csparse/linear_solver_csparse.h>
++#include <g2o/solvers/eigen/linear_solver_eigen.h>
+ #include <g2o/core/optimization_algorithm_levenberg.h>
+ #include <g2o/core/sparse_optimizer_terminate_action.h>
+ 
+@@ -30,7 +30,7 @@ void graph_optimizer::optimize(const std::shared_ptr<data::keyframe>& loop_keyfr
+                                std::unordered_map<unsigned int, unsigned int>& found_lm_to_ref_keyfrm_id) const {
+     // 1. Construct an optimizer
+ 
+-    auto linear_solver = stella_vslam::make_unique<g2o::LinearSolverCSparse<g2o::BlockSolver_7_3::PoseMatrixType>>();
++    auto linear_solver = stella_vslam::make_unique<g2o::LinearSolverEigen<g2o::BlockSolver_7_3::PoseMatrixType>>();
+     auto block_solver = stella_vslam::make_unique<g2o::BlockSolver_7_3>(std::move(linear_solver));
+     auto algorithm = new g2o::OptimizationAlgorithmLevenberg(std::move(block_solver));
+ 

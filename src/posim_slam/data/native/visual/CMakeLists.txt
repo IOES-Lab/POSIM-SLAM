@@ -1,0 +1,15 @@
+cmake_minimum_required(VERSION 3.22)
+project(wwos_practice_slam LANGUAGES CXX)
+find_package(stella_vslam 0.7.0 EXACT REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(sensor_msgs REQUIRED)
+find_package(geometry_msgs REQUIRED)
+find_package(std_msgs REQUIRED)
+find_package(std_srvs REQUIRED)
+add_executable(wwos_visual_slam visual.cc)
+target_compile_definitions(wwos_visual_slam PRIVATE EIGEN_MPL2_ONLY
+  WWOS_SLAM_VERSION="0.7.0"
+  WWOS_SLAM_REVISION="e445b5452535e781fdf6777ec33a06f5f8f5e416")
+target_compile_features(wwos_visual_slam PRIVATE cxx_std_17)
+target_link_libraries(wwos_visual_slam PRIVATE stella_vslam::stella_vslam rclcpp::rclcpp ${sensor_msgs_TARGETS} ${geometry_msgs_TARGETS} ${std_msgs_TARGETS} ${std_srvs_TARGETS})
+install(TARGETS wwos_visual_slam DESTINATION bin)

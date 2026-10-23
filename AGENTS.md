@@ -1,0 +1,1 @@
+Keep English/Korean public documentation aligned. Preserve independent library use and source/third-party license notices. Never import WWW-POSIM application modules. Report sensor transport, estimator accuracy and package acceptance separately. Run affected tests; do not describe experimental planar odometry or preintegration as full inertial SLAM.
