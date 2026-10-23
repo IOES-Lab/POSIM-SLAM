@@ -217,8 +217,8 @@ POSIM_SLAM_STREAM_BINARY=/absolute/new-build/build/basalt_stream \
 
 Optional calibration `max_feature_cells` (32–512) sets the spatial detection
 budget on the processed image. The grid is at least 16 pixels and otherwise
-`ceil(sqrt(processed_width * processed_height / max_feature_cells))`; unsupported
-aspect ratios that cannot support the detector pyramid are rejected. Live and
+`ceil(sqrt(processed_width * processed_height / max_feature_cells))`; aspect
+ratios that cannot provide two detector cells along each image axis are rejected. Live and
 replay share this calculation. The application default is 200 cells, independently
 of the 1,000-point display sample. This budgets new-feature search cells, not the
 number of retained landmarks. Without the field, upstream's 50-pixel grid remains
@@ -230,8 +230,8 @@ spacing before accepting a requested processing budget, so an older worker canno
 silently ignore it.
 
 선택형 보정 값 `max_feature_cells`(32–512)는 처리 영상의 공간 검출 예산입니다.
-격자는 최소 16픽셀이며 그 외에는 위 식으로 계산합니다. 검출 피라미드를 지원하지
-못하는 종횡비는 거부합니다. 실시간·재생 경로가 같은 계산을 사용합니다. 앱 기본값은
+격자는 최소 16픽셀이며 그 외에는 위 식으로 계산합니다. 각 영상 축에 검출 셀을 두 개
+이상 배치할 수 없는 종횡비는 거부합니다. 실시간·재생 경로가 같은 계산을 사용합니다. 앱 기본값은
 200셀이며 표시용 1,000점 표본과 독립적입니다. 새 특징을 탐색하는 셀 예산이며 유지하는
 랜드마크 수의 상한은 아닙니다. 값이 없으면 비교 시험을 위한 원본 50픽셀 격자를
 사용합니다. 기록 재생 도구의 영상·특징 셀 옵션은 원본 입력 해시를 검증한 뒤
