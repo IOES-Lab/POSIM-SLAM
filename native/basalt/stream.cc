@@ -10,6 +10,8 @@
 #include <iostream>
 #include <mutex>
 #include <thread>
+#include <array>
+#include <iomanip>
 
 uint32_t u32(const char* p) {
   return uint32_t(uint8_t(p[0])) | uint32_t(uint8_t(p[1])) << 8 |
@@ -44,6 +46,10 @@ int main(int argc,char** argv) {
   };
   try {
     auto c=input_calibration(argv[1]);
+    struct Snapshot {int64_t stamp;std::vector<std::array<float,3>> points;};
+    std::mutex snapshot_mutex;
+    std::shared_ptr<const Snapshot> snapshot;
+    const fs::path export_file=fs::absolute(argv[1]).parent_path()/"worker-map.ply";
     cv::setNumThreads(1);
     tbb::global_control workers(tbb::global_control::max_allowed_parallelism,2);
     basalt::VioConfig config;
@@ -77,13 +83,17 @@ int main(int argc,char** argv) {
       for(;;) {
         basalt::VioVisualizationData::Ptr data;maps.pop(data);
         if(!data)fail("estimator_finished");
-        Json points=Json::array();
-        const size_t count=data->points.size();
-        const size_t stride=std::max(size_t(1),(count+999)/1000);
-        for(size_t i=0;i<count;i+=stride) {
-          if(data->points[i].allFinite() && data->points[i].norm()<10000)
-            points.push_back(vector3(data->points[i]));
+        auto full=std::make_shared<Snapshot>();full->stamp=data->t_ns;
+        if(data->points.size()>100000)fail("map_snapshot_budget");
+        for(const auto& point:data->points) {
+          if(point.allFinite() && point.norm()<10000)
+            full->points.push_back({float(point.x()),float(point.y()),float(point.z())});
         }
+        {std::lock_guard<std::mutex> lock(snapshot_mutex);snapshot=full;}
+        Json points=Json::array();
+        const size_t count=full->points.size();
+        const size_t stride=std::max(size_t(1),(count+999)/1000);
+        for(size_t i=0;i<count;i+=stride)points.push_back(full->points[i]);
         emit({{"type","map"},{"stamp_ns",data->t_ns},
               {"landmarks_window",count},{"points",points},
               {"visual_support",visual_support(*data,c.processed_width,c.processed_height,config.vio_obs_huber_thresh)},
@@ -91,7 +101,7 @@ int main(int argc,char** argv) {
       }
     });
     vio->initialize(Vec3::Zero(),Vec3::Zero());
-    emit({{"type","ready"},{"protocol",1},{"inertial_fused",true},
+    emit({{"type","ready"},{"protocol",1},{"inertial_fused",true},{"map_export","active_local_window_ply_1"},
           {"opencv_threads",1},{"estimation_threads",2},
           {"keyframe_hold_frames",config.vio_min_frames_after_kf},
           {"feature_grid",config.optical_flow_detection_grid_size},
@@ -104,10 +114,38 @@ int main(int argc,char** argv) {
       if(!std::cin)std::_Exit(0);
       auto type=u32(header),size=u32(header+4);
       if(type==3 && size==0)std::_Exit(0);
-      if((type!=1 && type!=2) || size>uint32_t(c.width*c.height+16))fail("packet_size_or_type");
+      if((type!=1 && type!=2 && type!=4) || size>uint32_t(c.width*c.height+16))fail("packet_size_or_type");
       std::vector<char> bytes(size);std::cin.read(bytes.data(),size);
       if(!std::cin)fail("incomplete_packet");
-      if(type==1) {
+      if(type==4) {
+        if(size!=8)fail("snapshot_request_size");
+        const uint64_t request=u64(bytes.data());
+        if(!request)fail("snapshot_request_id");
+        std::shared_ptr<const Snapshot> full;
+        {std::lock_guard<std::mutex> lock(snapshot_mutex);full=snapshot;}
+        if(!full || full->points.empty()) {
+          emit({{"type","export"},{"request_id",request},{"success",false},{"reason","map_unavailable"}});
+          continue;
+        }
+        const fs::path temporary=export_file.string()+".tmp";
+        if(fs::is_symlink(export_file) || fs::is_symlink(temporary))fail("snapshot_path");
+        std::ofstream file(temporary,std::ios::binary|std::ios::trunc);
+        if(!file)fail("snapshot_unwritable");
+        file<<"ply\nformat binary_little_endian 1.0\n"
+            <<"comment scope complete_active_local_vio_window\n"
+            <<"comment request_id "<<request<<"\ncomment stamp_ns "<<full->stamp<<'\n'
+            <<"element vertex "<<full->points.size()<<"\nproperty float x\nproperty float y\nproperty float z\nend_header\n";
+        // The wire/file format is little endian even on other host byte orders.
+        for(const auto& point:full->points)for(float coordinate:point) {
+          uint32_t bits;std::memcpy(&bits,&coordinate,4);
+          char bytes[4];for(int i=0;i<4;++i)bytes[i]=char((bits>>(8*i))&255);
+          file.write(bytes,4);
+        }
+        file.flush();if(!file)fail("snapshot_write_failed");file.close();
+        fs::rename(temporary,export_file);
+        emit({{"type","export"},{"request_id",request},{"success",true},
+              {"stamp_ns",full->stamp},{"points",full->points.size()}});
+      } else if(type==1) {
         if(size!=56)fail("imu_packet_size");
         auto d=std::make_shared<basalt::ImuData<double>>();
         d->t_ns=int64_t(u64(bytes.data()));

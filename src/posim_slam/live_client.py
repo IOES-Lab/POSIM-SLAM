@@ -56,7 +56,7 @@ class LiveClient:
                 value=json.loads(line)
                 if not isinstance(value,dict):raise ValueError('worker_output_object')
                 if value.get('type')=='error':raise ValueError('worker:'+str(value.get('reason')))
-                if value.get('type') not in ('ready','state','map'):raise ValueError('worker_output_type')
+                if value.get('type') not in ('ready','state','map','export'):raise ValueError('worker_output_type')
                 if value['type']=='ready':
                     if self.ready.is_set() or value.get('protocol')!=1 or value.get('inertial_fused') is not True:
                         raise ValueError('worker_protocol')
@@ -95,6 +95,11 @@ class LiveClient:
             not 32<=width<=1920 or not 32<=height<=1080 or len(pixels)!=width*height):
             raise ValueError('invalid_image_packet')
         self.send(2,struct.pack('<qII',stamp_ns,width,height)+pixels)
+
+    def snapshot(self,request_id):
+        if type(request_id) is not int or not 0<request_id<2**63:
+            raise ValueError('invalid_snapshot_request_id')
+        self.send(4,struct.pack('<Q',request_id))
 
     def poll(self):
         if self.fault:raise RuntimeError(self.fault)

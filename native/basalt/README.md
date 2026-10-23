@@ -211,3 +211,26 @@ POSIM_SLAM_INPUT_PROBE=/absolute/new-build/build/basalt_input_probe \
 POSIM_SLAM_STREAM_BINARY=/absolute/new-build/build/basalt_stream \
   python -m unittest discover -s native/basalt -p 'test_*.py'
 ```
+
+
+## Complete local-window snapshots
+
+`LiveClient.snapshot(request_id)` requests a complete optimized active-window
+PLY instead of the 1,000-point display sample. The worker writes `worker-map.ply`
+atomically beside its runtime calibration file and replies with request ID,
+exposure timestamp and valid point count. At most 100,000 finite points are
+accepted. An empty map returns a nonfatal unavailable response. Owners allow one
+outstanding export, read/validate that response before another request, and add
+session, frame and meter-unit provenance using `posim_slam.map_snapshot`.
+The file explicitly identifies its active local-window scope and unqualified
+navigation state. It does not accumulate old marginalised landmarks into a
+claimed loop-closed map. Input recordings remain read-only; the paced test tool
+materializes runtime calibration in its output directory before requesting PLYs.
+
+`LiveClient.snapshot(request_id)`는 표시용 1,000개 표본 대신 현재 최적화된 로컬
+창 전체의 PLY를 요청합니다. 워커는 실행용 보정 파일 옆의 `worker-map.ply`를 원자적으로
+기록하고 요청 ID·노출 시각·유효 점 수를 반환합니다. 유효한 점은 최대 100,000개이며
+빈 지도는 워커 재시작 없이 사용 불가 응답을 반환합니다. 소유자는 내보내기를 하나씩
+처리하고 결과를 검증한 뒤 `posim_slam.map_snapshot`으로 세션·프레임·미터 단위 고지를
+추가합니다. 파일은 활성 로컬 창이라는 범위와 미검증 항법 상태를 기록합니다.
+오래된 주변화 랜드마크를 모아 전역 루프 폐쇄 지도라고 표시하지 않습니다.

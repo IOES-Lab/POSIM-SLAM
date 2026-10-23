@@ -104,5 +104,5 @@ included. Basalt and Kimera are not active backends in this package.
 The [headless Basalt target](native/basalt/README.md) builds a pinned square-root
 VIO core and runs noisy 6DoF track/image plus raw-IMU regressions. It jointly
 updates pose, velocity and biases in that standalone executable. It is not
-selected by WWW-POSIM or included in the default Python/native provider build.
+selected by default in WWW-POSIM or included in the default Python/native provider build.
 Native-world timing, calibration, recovery and package acceptance remain separate.

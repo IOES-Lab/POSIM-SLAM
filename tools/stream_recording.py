@@ -7,6 +7,7 @@ import argparse,csv,hashlib,json,runpy,struct,sys,time,zlib
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'src'))
 from posim_slam.live_client import LiveClient
+from posim_slam.map_snapshot import annotate_snapshot
 
 
 def pixels(path,width,height):
@@ -40,14 +41,23 @@ if __name__=='__main__':
     with (root/'imu.csv').open() as f:imu=list(csv.DictReader(f))
     events=[(int(r['stamp_ns']),0,r) for r in imu]+[(r['stamp_ns'],1,r) for r in frames]
     events.sort(key=lambda r:(r[0],r[1]));a.output.mkdir(parents=True)
-    states=[];maps=[];ready=[]
+    states=[];maps=[];ready=[];exports=[];requested=[]
+    calibration=a.output/'calibration.json';calibration.write_bytes((root/'calibration.json').read_bytes())
     def poll():
         for value in client.poll():
             if value['type']=='state':states.append(value)
-            elif value['type']=='map':maps.append(value)
+            elif value['type']=='map':
+                maps.append(value)
+                if value['landmarks_window']>1000 and 1 not in requested:
+                    client.snapshot(1);requested.append(1)
+            elif value['type']=='export':
+                assert value['success'],value
+                data=annotate_snapshot((a.output/'worker-map.ply').read_bytes(),nonce='recorded',
+                    frame='recorded/vio_segment_0',request_id=value['request_id'],stamp_ns=value['stamp_ns'],points=value['points'])
+                (a.output/('map-%d.ply'%value['request_id'])).write_bytes(data);exports.append(value)
             else:ready.append(value)
     with (a.output/'worker.log').open('w') as log:
-        client=LiveClient(a.binary,root/'calibration.json',log)
+        client=LiveClient(a.binary,calibration,log)
         try:
             deadline=time.monotonic()+3
             while not client.ready.is_set():
@@ -68,12 +78,17 @@ if __name__=='__main__':
             assert len(states)==len(frames) and len(maps)==len(frames),(len(states),len(maps))
             assert ready and ready[0]['inertial_fused'] is True
             assert all(len(m['points'])<=1000 for m in maps)
+            client.snapshot(2);requested.append(2);deadline=time.monotonic()+2
+            while time.monotonic()<deadline and len(exports)<len(requested):poll();time.sleep(.005)
+            assert len(exports)==len(requested)
+            final=next(e for e in exports if e['request_id']==2)
+            assert final['points']==maps[-1]['landmarks_window'] and final['stamp_ns']==maps[-1]['stamp_ns']
         finally:client.close()
     with (a.output/'states.csv').open('w') as f:
         w=csv.writer(f,lineterminator='\n');w.writerow(['stamp_ns','x','y','z','qx','qy','qz','qw','vx','vy','vz','bgx','bgy','bgz','bax','bay','baz'])
         for s in states:w.writerow([s['stamp_ns'],*s['position'],*s['orientation_xyzw'],*s['velocity'],*s['gyro_bias'],*s['accel_bias']])
     proof=dict(passed=True,scope='Paced recorded packets through the live worker; ROS ownership separate',
-               states=len(states),maps=len(maps),max_points=max(len(m['points']) for m in maps),
+               states=len(states),maps=len(maps),exports=exports,max_points=max(len(m['points']) for m in maps),
                final_landmarks_window=maps[-1]['landmarks_window'],worker_ready=ready,
                binary_sha256=hashlib.sha256(a.binary.read_bytes()).hexdigest(),
                worker_returncode=client.process.returncode,worker_threads_stopped=not(client.reader.is_alive() or client.writer.is_alive()))

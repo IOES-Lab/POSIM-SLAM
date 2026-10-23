@@ -25,6 +25,7 @@ class StreamWorkerTests(unittest.TestCase):
                     if kind=='gap':client.imu(1_050_000_000,[0,0,0],[0,0,9.8])
                     if kind=='saturation':client.imu(1_010_000_000,[100,0,0],[0,0,9.8])
                     if kind=='packet':client.send(2,b'')
+                    if kind=='snapshot':client.send(4,b'')
                     deadline=time.monotonic()+3
                     while not client.fault and time.monotonic()<deadline:time.sleep(.005)
                     self.assertIn(reason,client.fault or '')
@@ -37,6 +38,7 @@ class StreamWorkerTests(unittest.TestCase):
     def test_imu_gap(self):self.check_fault('gap','imu_gap_or_reset')
     def test_saturation(self):self.check_fault('saturation','invalid_imu')
     def test_incomplete_image(self):self.check_fault('packet','image_packet_size')
+    def test_incomplete_snapshot_request(self):self.check_fault('snapshot','snapshot_request_size')
 
 
 if __name__=='__main__':unittest.main()
