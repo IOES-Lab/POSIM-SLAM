@@ -28,6 +28,9 @@ Ping scale support requires every ray intersection inside the observed plane hul
 
 ## Joint fusion building blocks
 
+See the [paired point-cloud/RGB comparison protocol](docs/comparison.md) for
+qualifying and documenting each completed sensor combination.
+
 `sonar_inertial.optimize_window` jointly adjusts position, velocity, attitude,
 IMU biases and shared sonar points over 2–4 states. It requires an initial-state
 prior with covariance, calibrated gravity and sensor mounts, point seeds,
