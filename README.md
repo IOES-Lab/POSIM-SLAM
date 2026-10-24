@@ -254,3 +254,5 @@ Add `--joint-ping` to fuse recorded ranges with exactly matching image timestamp
 Native stream states include `initialization_window`: the oldest retained optimizer state after optimization and before marginalization. Its timestamp, pose, velocity and biases allow recorded startup diagnostics to distinguish the emitted prediction from subsequent window corrections. This field does not certify initialization or change estimator inputs.
 
 The native worker retains startup velocity/bias states until visual landmarks exist. The stream rejects a retained state window exceeding 128 states or 30 seconds of sensor time. This preserves variables for subsequent visual correction; it does not estimate initial velocity from IMU alone or qualify initialization.
+
+Use `--first-image-stamp-ns` with `--gravity-seed` to reproduce a recorded live startup timestamp. The requested image must exist exactly and have covered IMU history. Delayed marginalization establishes a linearization reference for every newly retained pose before constructing its prior; existing references remain unchanged.

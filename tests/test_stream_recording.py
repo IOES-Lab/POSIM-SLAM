@@ -20,6 +20,11 @@ class RecordingTests(unittest.TestCase):
         self.assertEqual(selected,frames[10:])
         self.assertEqual(int(samples[0]['stamp_ns']),1_800_000_000)
         with self.assertRaisesRegex(ValueError,'seed_history_missing'):stream.seeded_inputs(frames[:5],imu)
+        chosen,_,later=stream.seeded_inputs(frames,imu,2_300_000_000)
+        self.assertEqual(chosen,frames[13:]);self.assertEqual(later[0],2_300_000_000)
+        for stamp in (1_500_000_000,2_300_000_001):
+            with self.assertRaisesRegex(ValueError,'requested_seed_image_not_covered'):
+                stream.seeded_inputs(frames,imu,stamp)
         broken=imu[:30]+imu[40:]
         with self.assertRaisesRegex(ValueError,'imu_time_gap'):stream.seeded_inputs(frames,broken)
 

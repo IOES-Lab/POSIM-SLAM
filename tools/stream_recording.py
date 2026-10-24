@@ -30,7 +30,7 @@ def pixels(path,width,height):
     return b''.join(raw[y*(width+1)+1:(y+1)*(width+1)] for y in range(height))
 
 
-def seeded_inputs(frames,imu):
+def seeded_inputs(frames,imu,first_image_stamp_ns=None):
     """Select the first image with a measured one-second IMU history.
 
     Matches the live numerical seed and 200 ms bootstrap buffer. This is not
@@ -43,7 +43,10 @@ def seeded_inputs(frames,imu):
                    [float(row[k]) for k in ('gx','gy','gz')],
                    [float(row[k]) for k in ('ax','ay','az')])
     first=int(imu[0]['stamp_ns']);last=int(imu[-1]['stamp_ns'])
-    selected=next((f['stamp_ns'] for f in frames if first+1_000_000_000<=f['stamp_ns']<=last),None)
+    eligible=[f['stamp_ns'] for f in frames if first+1_000_000_000<=f['stamp_ns']<=last]
+    if first_image_stamp_ns is not None and first_image_stamp_ns not in eligible:
+        raise ValueError('requested_seed_image_not_covered')
+    selected=first_image_stamp_ns if first_image_stamp_ns is not None else next(iter(eligible),None)
     if selected is None:raise ValueError('recording_seed_history_missing')
     seed=gravity_seed(window,selected/1e9-1.,selected/1e9,gyro_bias=[0,0,0],accel_bias=[0,0,0])
     return ([f for f in frames if f['stamp_ns']>=selected],
@@ -71,16 +74,18 @@ if __name__=='__main__':
     p.add_argument('--max-image-pixels',type=int)
     p.add_argument('--max-feature-cells',type=int)
     p.add_argument('--gravity-seed',action='store_true',help='Use the live one-second numerical gravity seed')
+    p.add_argument('--first-image-stamp-ns',type=int,help='Exact recorded startup image; requires --gravity-seed')
     p.add_argument('--joint-ping',action='store_true',help='Fuse hash-checked Ping observations at exact image timestamps')
     a=p.parse_args()
     if a.output.exists() or not .5<=a.speed<=2:p.error('Use a new output and speed 0.5–2')
+    if a.first_image_stamp_ns is not None and not a.gravity_seed:p.error('Explicit startup image requires --gravity-seed')
     root=a.inputs.resolve();receipt=json.loads(a.recording_receipt.read_text())
     runpy.run_path(str(Path(__file__).with_name('replay_vio.py')))['verify'](root,receipt)
     config=json.loads((root/'calibration.json').read_text())
     frames=json.loads((root/'frames.json').read_text())
     with (root/'imu.csv').open() as f:imu=list(csv.DictReader(f))
     original_frames=len(frames);seed=None;pings={}
-    if a.gravity_seed:frames,imu,seed=seeded_inputs(frames,imu)
+    if a.gravity_seed:frames,imu,seed=seeded_inputs(frames,imu,a.first_image_stamp_ns)
     if a.joint_ping:
         if not {'ping.csv','ping-calibration.json'}<=set(receipt['input_files']):p.error('Joint Ping requires hash-checked recorded Ping inputs')
         with (root/'ping.csv').open() as f:pings=exact_pings(csv.DictReader(f))

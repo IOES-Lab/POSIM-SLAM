@@ -111,6 +111,12 @@ def prepare(source,destination):
         '      if (!posim_joint_started && kv.first > last_state_to_marg) break;')
     text=replace_once(text,'      if (kv.first != last_state_to_marg) {',
         '      if (kv.first < last_state_to_marg) {')
+    # A delayed first marginalization can retire several startup keyframes at
+    # once. Each retained pose needs a valid FEJ reference before it enters the
+    # prior; the upstream short-window path normally converts only old states.
+    text=replace_once(text,'      PoseStateWithLin<Scalar> pose(state);',
+        '      PoseStateWithLin<Scalar> pose(state);\n'
+        '      if (!pose.isLinearized()) pose.setLinTrue();')
     text=replace_once(text,'    Timer t_actual_marg;', '''    if (posim_joint_started) {
       std::set<int64_t> removed = poses_to_marg;
       removed.insert(states_to_marg_all.begin(), states_to_marg_all.end());
