@@ -26,7 +26,13 @@ measurement. Sonar intensity features are not classified 3D obstacles.
 
 Ping scale support requires every ray intersection inside the observed plane hull and within 5% of plane distance of a landmark. The `ping_factor` module supplies pose/plane range Jacobians and a supported-patch wrapper for joint optimization; the native worker implements the corresponding joint factors in `native/basalt/ping_factors.hpp` and `ping_linearization.hpp`. `ping_joint` provides a bounded reference linearization and correlated plane/landmark elimination, with explicit range and surface noise.
 
-## Install and use
+## Joint fusion building blocks
+
+`inertial_factor.pair_residual` uses measured `ImuWindow` preintegration to
+constrain endpoint position, velocity, rotation and biases with their full
+15-state covariance. Gravity and endpoint states are explicit optimization
+variables. Bias corrections are first order; nonlinear bias steps require
+re-integration. This supplies joint solver residuals, not a live estimator.
 
 `sonar_joint.linearize_track` builds correlated pose/point rows for up to 16
 observations of one associated acoustic return. It requires exact state times
@@ -57,6 +63,8 @@ measurement dimensions leave elevation unobserved. This original Apache-2.0
 geometry helper uses NumPy and is not yet wired into a live joint optimizer.
 The caller must establish point-return association, model uncertainty and retain
 cross-sensor correlations; a collapsed intensity bin is not a known seabed point.
+
+## Install and use
 
 Python 3.10 or later and NumPy are required. The pure geometric components do
 not require ROS, Gazebo or WWW-POSIM.
