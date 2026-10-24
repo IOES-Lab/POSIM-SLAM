@@ -113,3 +113,7 @@ target_compile_features(basalt_ping_return_probe PRIVATE cxx_std_17)
 add_executable(basalt_sonar_track_probe sonar_track_probe.cc)
 target_link_libraries(basalt_sonar_track_probe PRIVATE Eigen3::Eigen)
 target_compile_options(basalt_sonar_track_probe PRIVATE -UNDEBUG)
+
+add_executable(basalt_sonar_factors_probe sonar_factors_probe.cc)
+target_link_libraries(basalt_sonar_factors_probe PRIVATE Eigen3::Eigen)
+target_compile_options(basalt_sonar_factors_probe PRIVATE -UNDEBUG)

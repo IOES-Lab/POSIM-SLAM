@@ -23,6 +23,7 @@ int main() {
     Eigen::VectorXd delta(18);for(int j=0;j<18;++j)delta[j]=.001*std::sin(k+2*j);
     Eigen::VectorXd b=rows.residual+rows.pose_jacobian*delta;
     Eigen::VectorXd dx=rows.point_jacobian.completeOrthogonalDecomposition().solve(-b);
+    assert((dx-reduced.backSubstitute(delta)).norm()<1e-9);
     const double cost=(b+rows.point_jacobian*dx).squaredNorm();
     assert(std::abs(cost-(reduced.residual+reduced.pose_jacobian*delta).squaredNorm())<1e-8);
   }
@@ -33,7 +34,11 @@ int main() {
   for(int i=0;i<3;++i)gauge.block<3,3>(6*i,0).setIdentity();
   assert((reduced.pose_jacobian*gauge).norm()<1e-9);
   auto stationary=whitenSonarTrack({observations[0],observations[0]}, {0,1},2,Eigen::MatrixXd::Identity(4,4));
-  assert(eliminateSonarPoint(stationary).point_rank==2);
+  const auto stationary_reduced=eliminateSonarPoint(stationary);
+  assert(stationary_reduced.point_rank==2);
+  const Eigen::Vector3d elevation_null=observations[0].point_jacobian.row(0).transpose().cross(
+    observations[0].point_jacobian.row(1).transpose()).normalized();
+  assert(std::abs(elevation_null.dot(stationary_reduced.backSubstitute(Eigen::VectorXd::Zero(12))))<1e-12);
   auto single=whitenSonarTrack({observations[0]}, {0},1,Eigen::MatrixXd::Identity(2,2));
   assert(eliminateSonarPoint(single).residual.size()==0);
   for(int mode=0;mode<3;++mode) {

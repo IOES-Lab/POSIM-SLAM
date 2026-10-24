@@ -807,3 +807,20 @@ helpers are not yet registered in the streaming estimator.
 전에 사전정보와 다른 센서 관측을 포함한 모든 관련 행을 모아야 합니다. 호출자가
 대응점과 보정된 공분산을 제공합니다. 이 함수들은 아직 스트리밍 추정기에
 등록되지 않았습니다.
+
+`sonar_factors.hpp` stores up to 16 independently associated acoustic points,
+with up to 64 observations per point. Appending an observation requires the full
+extended covariance and preserves its existing block. Point updates use the
+same rank threshold as elimination and leave unobserved directions unchanged.
+A trial restores every point on rejection; topology changes and stale rows are
+rejected. The estimator must accept or restore its pose states in the same
+transaction. Shared optical/acoustic landmarks require a joint block. Streaming
+registration and retirement into the estimator's marginal prior remain pending.
+
+`sonar_factors.hpp`는 독립적으로 대응된 음향 점 최대 16개와 점마다 관측 최대
+64개를 보관합니다. 관측 추가 시 기존 공분산 블록을 유지한 전체 확장 공분산이
+필요합니다. 점 갱신은 소거와 같은 순위 기준을 사용하고 관측되지 않은 방향을
+유지합니다. 거절된 시도는 모든 점을 복원하며 관측 구성 변경과 오래된 선형화
+결과 사용을 차단합니다. 추정기의 자세도 같은 트랜잭션에서 승인하거나 복원해야
+합니다. 시각·음향 공유 랜드마크에는 공동 블록이 필요합니다. 스트리밍 연결과
+추정기의 주변화 사전정보로 이전하는 처리는 아직 남아 있습니다.

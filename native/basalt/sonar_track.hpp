@@ -13,6 +13,15 @@ struct SonarReducedRows {
   Eigen::MatrixXd pose_jacobian;
   Eigen::VectorXd residual;
   Eigen::Index point_rank;
+  Eigen::MatrixXd point_from_pose;
+  Eigen::Vector3d point_offset;
+  Eigen::Vector3d backSubstitute(const Eigen::VectorXd& pose_delta) const {
+    if(pose_delta.size()!=point_from_pose.cols() || !pose_delta.allFinite())
+      throw std::invalid_argument("invalid_sonar_pose_increment");
+    const Eigen::Vector3d delta=point_offset+point_from_pose*pose_delta;
+    if(!delta.allFinite())throw std::invalid_argument("nonfinite_sonar_point_increment");
+    return delta;
+  }
 };
 
 // Covariance order is [range, azimuth] for each observation, including temporal
@@ -63,10 +72,14 @@ inline SonarReducedRows eliminateSonarPoint(const SonarTrackRows& rows,
       !rows.point_jacobian.allFinite() || !rows.residual.allFinite() ||
       !std::isfinite(relative_rank_tolerance) || relative_rank_tolerance<=0 || relative_rank_tolerance>=1)
     throw std::invalid_argument("invalid_sonar_elimination_rows");
-  Eigen::JacobiSVD<Eigen::MatrixXd> svd(rows.point_jacobian,Eigen::ComputeFullU);
+  Eigen::JacobiSVD<Eigen::MatrixXd> svd(rows.point_jacobian,Eigen::ComputeFullU | Eigen::ComputeFullV);
   const double cutoff=relative_rank_tolerance*svd.singularValues()[0];
   const Eigen::Index rank=(svd.singularValues().array()>cutoff).count();
   const Eigen::MatrixXd nullspace=svd.matrixU().rightCols(m-rank).transpose();
-  return {nullspace*rows.pose_jacobian,nullspace*rows.residual,rank};
+  Eigen::MatrixXd inverse=Eigen::MatrixXd::Zero(3,m);
+  for(Eigen::Index i=0;i<rank;++i)
+    inverse.noalias()+=svd.matrixV().col(i)*svd.matrixU().col(i).transpose()/svd.singularValues()[i];
+  return {nullspace*rows.pose_jacobian,nullspace*rows.residual,rank,
+    -inverse*rows.pose_jacobian,-inverse*rows.residual};
 }
 }
