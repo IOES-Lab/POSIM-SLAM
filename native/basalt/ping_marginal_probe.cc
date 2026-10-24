@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 #include "calibration.hpp"
-#include "ping_marginal.hpp"
+#include "ping_commit.hpp"
+#include <basalt/imu/preintegration.h>
 #include <basalt/vi_estimator/ba_base.h>
 #include <basalt/vi_estimator/marg_helper.h>
 #include <iostream>
@@ -71,8 +72,51 @@ int main() {
     Eigen::MatrixXd expected_covariance(42,42);
     for(int i=0;i<42;++i)for(int k=0;k<42;++k)expected_covariance(i,k)=covariance(columns[i],columns[k]);
     const double expanded_error=(expected_covariance-(expanded_prior.H.transpose()*expanded_prior.H).ldlt().solve(Eigen::MatrixXd::Identity(42,42))).norm();
-    bool passed=layout_ok && dependency_rejected && expanded_error<1e-9 && information_error<1e-9 && gradient_error<1e-9 && change_error<1e-10 && invalid_state;
-    std::cout<<Json({{"expanded_layout_passed",layout_ok},{"expanded_covariance_error",expanded_error},{"missing_dependency_rejected",dependency_rejected},{"passed",passed},{"imu_states",2},{"retained_columns",21},
+    live.posim_ping_planes.set(1,Vec3(0,0,1),3.);
+    JointPingGroupSpec commit_group{1,{0,1,2},[](const auto&){return NativePingGroup{};},{300}};
+    std::vector<JointPingGroupSpec> commit_groups={commit_group};
+    for(int id=0;id<3;++id) {
+      basalt::Keypoint<double> point;point.host_kf_id={200,0};point.direction=Eigen::Vector2d(.1*id,0);point.inv_dist=1./3.;
+      live.lmdb.addLandmark(id,point);
+      for(int64_t t:{200,300,400})live.lmdb.addObservation({t,0},basalt::KeypointObservation<double>{id,Eigen::Vector2d::Zero()});
+    }
+    std::map<int64_t,basalt::IntegratedImuMeasurement<double>> commit_imu;
+    for(int64_t t:{100,200,300}) {
+      auto [it,inserted]=commit_imu.emplace(t,basalt::IntegratedImuMeasurement<double>(t,Vec3::Zero(),Vec3::Zero()));
+      basalt::ImuData<double> data;data.t_ns=t+100;data.gyro.setZero();data.accel=Vec3(0,0,9.80665);
+      it->second.integrate(data,Vec3::Ones(),Vec3::Ones());
+    }
+    const auto retirement=planPingRetirement(live,commit_groups,{100},{100},{0});
+    basalt::MargLinData<double> installed;installed.H=Eigen::MatrixXd::Identity(66,66);installed.b=Eigen::VectorXd::Zero(66);installed.order=layout.source;installed.is_sqrt=true;
+    auto broken_prior=expanded_prior;broken_prior.b[0]=std::numeric_limits<double>::quiet_NaN();bool commit_failure_atomic=false;
+    try{installPingMarginalPrior(live,installed,commit_groups,commit_imu,retirement,layout,{100},{200},broken_prior);}
+    catch(const std::invalid_argument&){commit_failure_atomic=live.frame_states.size()==4 && live.lmdb.numLandmarks()==3 && commit_imu.size()==3 && installed.H.cols()==66 && live.posim_ping_planes.size()==1;}
+    live.frame_states.at(300).applyInc(Eigen::Matrix<double,15,1>::Constant(.003));
+    live.frame_states.at(400).setLinFalse();
+    live.frame_states.at(400).applyInc(Eigen::Matrix<double,15,1>::Constant(.004));
+    const auto retained_pose=live.frame_states.at(300).getState().T_w_i;
+    const auto retained_reference=live.frame_states.at(300).getStateLin().T_w_i;
+    const auto newly_fixed_pose=live.frame_states.at(400).getState().T_w_i;
+    // Rebase the synthetic prior for the newly frozen fourth state's reference.
+    auto commit_prior=expanded_prior;Eigen::VectorXd reference_shift=Eigen::VectorXd::Zero(42);
+    reference_shift.tail<15>().setConstant(.004);commit_prior.b+=commit_prior.H*reference_shift;
+    const auto revision=live.posim_ping_state_revision;
+    installPingMarginalPrior(live,installed,commit_groups,commit_imu,retirement,layout,{100},{200},commit_prior);
+    bool repeat_rejected=false;
+    try{installPingMarginalPrior(live,installed,commit_groups,commit_imu,retirement,layout,{100},{200},commit_prior);}
+    catch(const std::invalid_argument&){repeat_rejected=true;}
+    const bool commit_ok=commit_failure_atomic && repeat_rejected && live.frame_states.size()==2 &&
+      live.frame_poses.size()==2 && live.frame_poses.count(200) && live.lmdb.numLandmarks()==0 &&
+      live.posim_ping_planes.size()==0 && commit_groups.empty() && commit_imu.size()==1 && commit_imu.count(300) &&
+      live.posim_ping_state_revision==revision+1 &&
+      (live.frame_states.at(300).getState().T_w_i.matrix()-retained_pose.matrix()).norm()==0 &&
+      (live.frame_states.at(300).getStateLin().T_w_i.matrix()-retained_reference.matrix()).norm()==0 &&
+      live.frame_states.at(400).isLinearized() &&
+      (live.frame_states.at(400).getState().T_w_i.matrix()-newly_fixed_pose.matrix()).norm()==0 &&
+      (installed.H-commit_prior.H).norm()==0 &&
+      (installed.b-commit_prior.b).norm()==0 && installed.order.abs_order_map==layout.retained.abs_order_map;
+    bool passed=commit_ok && layout_ok && dependency_rejected && expanded_error<1e-9 && information_error<1e-9 && gradient_error<1e-9 && change_error<1e-10 && invalid_state;
+    std::cout<<Json({{"prior_installation_passed",commit_ok},{"invalid_prior_left_state_unchanged",commit_failure_atomic},{"repeated_installation_rejected",repeat_rejected},{"expanded_layout_passed",layout_ok},{"expanded_covariance_error",expanded_error},{"missing_dependency_rejected",dependency_rejected},{"passed",passed},{"imu_states",2},{"retained_columns",21},
       {"basalt_information_error",information_error},{"basalt_gradient_error",gradient_error},
       {"rebased_trial_cost_change_error",change_error},{"invalid_state_order_rejected",invalid_state}}).dump()<<'\n';
     return passed?0:1;

@@ -16,6 +16,9 @@ class PingPlaneStore {
   }
   const PingPlaneState& at(int id) const {return planes_.at(id);}
   size_t size() const {return planes_.size();}
+  void erase(int id) {
+    if(!planes_.erase(id))throw std::invalid_argument("unknown_ping_plane_retirement");
+  }
   void apply(int id,const Vec3& delta) {
     if(!delta.allFinite())throw std::invalid_argument("invalid_ping_plane_increment");
     auto& p=planes_.at(id);const Vec3 changed=p.delta+delta;

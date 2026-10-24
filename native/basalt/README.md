@@ -432,6 +432,26 @@ the function does not install a prior or mutate the estimator.
 남는 두 끝점 사이 구간은 실시간 관측으로 유지합니다. 누락 프레임과 잘못된
 전환은 거부하며, 사전정보 설치나 추정 상태 변경은 수행하지 않습니다.
 
+`installPingMarginalPrior` validates retirement dependencies, state layout and
+the supplied square-root prior before changing live containers. It stages state
+demotion/removal, landmark and plane retirement, group removal and consumed IMU
+removal on copies. Retained reference states are frozen if needed; existing
+linearized references are preserved. It installs the prior and invalidates
+cached Ping rows through the owner's revision. Call it on the owner thread
+after building the prior from those exact factors, with no intervening state
+edits and after releasing old linearizations. The caller separately maintains
+keyframe IDs, optical-flow history and queues. This API is not yet called by
+the streaming estimator's schedule.
+
+`installPingMarginalPrior`는 실제 컨테이너를 바꾸기 전에 제거 의존관계,
+상태 구성과 제곱근 사전정보를 검증합니다. 복사본에서 상태 전환·삭제,
+특징점·평면·그룹·반영된 IMU 구간 제거를 준비합니다. 유지할 기준 상태는
+필요하면 고정하고 기존에 고정된 기준은 보존합니다. 사전정보 설치 후 소유자의
+개정 번호를 올려 캐시된 Ping 행렬을 무효화합니다. 정확히 해당 관측들로
+사전정보를 만든 뒤, 중간 상태 변경 없이 이전 선형화 객체를 해제하고 소유자
+스레드에서 호출해야 합니다. 키프레임 ID·영상 추적 이력·큐는 호출자가 별도로
+관리합니다. 아직 스트리밍 추정기의 실행 순서에는 연결되지 않았습니다.
+
 `ping_state.hpp` stores up to eight local planes in the actual Basalt estimator
 backup/restore lifecycle. `JointPingTrial` retains accepted finite cost decreases
 and restores poses, inertial states, landmarks and planes on rejection or
