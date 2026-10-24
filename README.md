@@ -240,3 +240,5 @@ acceleration can bias it even with noise-free measurements. The native Basalt
 worker accepts this direction through a first-image timestamp-bound seed packet
 when its calibration requests `require_gravity_seed`. Raw IMU packets remain
 unchanged; velocity and bias seeds still require their own assumptions.
+
+`sonar_input.projected_frame` decodes bounded float32 multibeam messages with either byte order. It validates timestamps, range bins and unit beam directions, and preserves negative infinity as a missing return. The decoder has no ROS dependency.

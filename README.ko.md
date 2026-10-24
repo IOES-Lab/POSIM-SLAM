@@ -225,3 +225,5 @@ PYTHONPATH=src python tools/evaluate_stationary_initialization.py --output /tmp/
 있습니다. 네이티브 Basalt 작업자는 보정 설정의 `require_gravity_seed`가 켜져 있으면
 첫 영상의 타임스탬프와 결합된 초기값 패킷으로 이 방향을 받습니다. 원본 IMU 패킷은
 그대로 유지하며 속도와 바이어스 초기값에는 별도의 가정이 필요합니다.
+
+`sonar_input.projected_frame`은 크기를 제한한 float32 멀티빔 메시지를 두 바이트 순서로 읽습니다. 시각·거리 구간·단위 빔 방향을 검증하며 음의 무한대는 반사 없음으로 보존합니다. 디코더는 ROS에 의존하지 않습니다.
