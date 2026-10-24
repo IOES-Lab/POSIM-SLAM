@@ -179,3 +179,7 @@ comparison can be presented as an operational method.
 [Vertical excursion and shallow survey repeat](diagnostics/vertical-excursion.md)
 
 [수직 움직임을 포함한 얕은 관측 경로 재현 시험](diagnostics/vertical-excursion.md)
+
+[Two-lane survey and surface proximity](diagnostics/two-lane-survey.md)
+
+[두 관측 경로와 표면 근접도](diagnostics/two-lane-survey.md)
