@@ -8,7 +8,7 @@
 namespace posim_slam {
 inline void requireStateOrder(const basalt::AbsOrderMap& order) {
   if(order.total_size<6 || order.total_size>512 || order.items!=order.abs_order_map.size())
-    throw std::invalid_argument("invalid_joint_state_order");
+    throw std::invalid_argument("invalid_joint_state_order:size="+std::to_string(order.total_size)+",items="+std::to_string(order.items)+",blocks="+std::to_string(order.abs_order_map.size()));
   std::vector<bool> occupied(order.total_size,false);
   for(const auto& [stamp,block]:order.abs_order_map) {
     const auto [offset,size]=block;

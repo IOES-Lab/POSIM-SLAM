@@ -65,6 +65,7 @@ def prepare(source,destination):
   std::shared_ptr<posim_slam::PingFactorStore> posim_ping_factors;
   std::shared_ptr<posim_slam::SonarFactorStore> posim_sonar_factors;
   bool posim_joint_started = false;
+  bool posim_had_visual_landmarks = false;
   int posim_joint_last_accepted = 0;
   void posim_optimize_joint();''')
         elif name.endswith('/ba_base.h'):
@@ -112,8 +113,9 @@ def prepare(source,destination):
         '    posim_joint_started = true; opt_started = true; posim_optimize_joint();\n'
         '  }\n'
         '  if (posim_after_joint) posim_after_joint(*this, last_state_t_ns);\n'
-        '  // Keep unobserved startup velocity/bias states until visual constraints exist.\n'
-        '  if (lmdb.numLandmarks() > 0) marginalize(num_points_connected, lost_landmaks);\n'
+        '  // Preserve the first unobserved startup, not every later visual dropout.\n'
+        '  posim_had_visual_landmarks = posim_had_visual_landmarks || lmdb.numLandmarks() > 0;\n'
+        '  if (posim_had_visual_landmarks) marginalize(num_points_connected, lost_landmaks);\n'
         '  if (posim_after_marginalization) posim_after_marginalization(*this, last_state_t_ns);')
     # An empty camera list explicitly denotes a non-camera sensor event. It
     # advances the inertial state without declaring every visual track lost.

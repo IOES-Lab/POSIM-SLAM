@@ -1020,6 +1020,19 @@ fixture inputs; this check covers state retention and factor lifecycle.
 보관 개수 `6`으로 실행하면 초기 관측 만료로 실패하도록 검사합니다. 대응점과
 측정 잡음은 검사 입력이며, 상태 보관과 관측 요인의 등록·제거를 확인합니다.
 
+The worker preserves unobserved velocity and bias states during the first visual
+startup. Once visual landmarks exist, marginalization continues even if every
+visual track is later lost. Run `basalt_synthetic_probe OUTPUT.csv 10
+sonar-2hz-dropout 16` to remove visual observations after four seconds and check
+that the full-state window remains bounded. This checks retention, not position
+accuracy during loss of visual tracking.
+
+작업자는 최초 시각 초기화 중에 관측되지 않은 속도·바이어스 상태를 보존합니다.
+시각 랜드마크가 한 번 생성된 뒤에는 모든 시각 추적이 끊겨도 주변화를 계속합니다.
+위 `sonar-2hz-dropout` 명령은 4초 뒤 시각 관측을 제거하여 전체 상태의 보관
+개수가 한도를 넘지 않는지 검사합니다. 시각 추적 소실 중의 위치 정확도는
+별도로 검증해야 합니다.
+
 
 `posim_slam.sonar_snapshots.SonarSnapshots` manages snapshots for one estimator
 segment. Feed ordered native state responses to `observe`, then call `prepare`
