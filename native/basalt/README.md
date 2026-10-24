@@ -322,6 +322,27 @@ group selection, trial acceptance and marginalization are not yet connected.
 `basalt_ping_group_probe`는 특징점 25개와 호스트 프레임 3개로 비선형 보정
 단계를 검증합니다. 스트리밍 그룹 선택·보정 수락·주변화는 아직 연결되지 않았습니다.
 
+`ping_patch.hpp` selects candidate planes from active visual landmarks supported
+by at least three observations. Replay enables this with `--ping-patches` and
+writes `<states>.patches.jsonl`. The selector requires eight plane inliers,
+uses a 0.03 m surface tolerance and checks every modeled beam intersection
+against the observed hull. Its nearest-sample support radius is 1.5 times the
+median projected nearest-neighbor spacing, capped at 10% of predicted range.
+Spacing is measured before selecting up to 64 solver landmarks. This defines
+the interpolation resolution; holes smaller than that resolution cannot be
+excluded. Observed foreground points reject a farther surface. These are
+candidate diagnostics; replay still reports `ping_fused: false`.
+
+`ping_patch.hpp`는 세 번 이상 관측된 현재 시각 특징점에서 평면 후보를
+선택합니다. 재생 시 `--ping-patches`를 사용하면 `<states>.patches.jsonl`에
+진단 결과를 저장합니다. 평면 내점은 최소 8개이며 표면 허용 오차는 0.03m입니다.
+각 빔 교점이 관측 영역의 볼록 껍질 안에 있는지 검사합니다. 최근접 특징점
+지원 반경은 평면에 투영한 최근접 이웃 간격 중앙값의 1.5배이며, 예측 거리의
+10%를 넘지 않습니다. 간격은 최적화용 특징점을 최대 64개로 줄이기 전에
+계산합니다. 이 값은 보간 해상도이며 그보다 작은 구멍은 배제할 수 없습니다.
+앞쪽 물체의 관측점이 있으면 뒤쪽 평면을 거부합니다. 후보 진단 단계이므로
+재생 결과의 `ping_fused`는 계속 `false`입니다.
+
 `ping_state.hpp` stores up to eight local planes in the actual Basalt estimator
 backup/restore lifecycle. `JointPingTrial` retains accepted finite cost decreases
 and restores poses, inertial states, landmarks and planes on rejection or

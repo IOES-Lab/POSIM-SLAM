@@ -10,11 +10,15 @@ int main() {
   const std::vector<Point> points{{1,0,0},{2,0,0}};
   archive.update(1,ids,points,{1,2});archive.update(2,ids,points,{1,2});
   assert(archive.points().empty());
+  assert(archive.active_mature({1,2}).empty());
   archive.update(3,ids,points,{1});
+  assert(archive.active_mature({1,2}).size()==1 && archive.active_mature({1,2})[0].first==1);
+  assert(archive.active_mature({2}).empty());
   assert(archive.points().size()==1); // Unconfirmed second track is excluded.
   archive.update(4,{1},{{1.5,0,0}},{1});
   assert(archive.retained()==1 && archive.points()[0][0]==1.5);
   archive.update(5,{}, {}, {});
+  assert(archive.active_mature({1}).empty());
   assert(archive.points().size()==1); // Mature marginalized point survives.
   archive.update(6,{3,4},{{3,0,0},{4,0,0}},{3,4});
   archive.update(7,{3,4},{{3,0,0},{4,0,0}},{3,4});

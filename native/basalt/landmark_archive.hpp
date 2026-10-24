@@ -61,6 +61,15 @@ class LandmarkArchive {
     for(const auto& item:entries_)if(item.second.support>=3)result.push_back(item.second.point);
     return result;
   }
+  std::vector<std::pair<int,Point>> active_mature(const std::set<int>& inliers) const {
+    std::vector<std::pair<int,Point>> result;
+    for(int id:inliers) {
+      const auto found=entries_.find(id);
+      if(found!=entries_.end() && found->second.last==stamp_ && found->second.support>=3)
+        result.emplace_back(id,found->second.point);
+    }
+    return result;
+  }
   static std::vector<Point> display_sample(const std::vector<Point>& points) {
     const size_t count=std::min(points.size(),size_t(1000));
     std::vector<Point> result;result.reserve(count);

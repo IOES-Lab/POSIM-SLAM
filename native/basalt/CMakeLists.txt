@@ -95,3 +95,6 @@ target_link_libraries(basalt_ping_marginal_probe PRIVATE basalt_core)
 
 add_executable(basalt_ping_linearization_probe ping_linearization_probe.cc)
 target_link_libraries(basalt_ping_linearization_probe PRIVATE basalt_core)
+
+add_executable(basalt_ping_patch_probe ping_patch_probe.cc)
+target_link_libraries(basalt_ping_patch_probe PRIVATE basalt_core)
