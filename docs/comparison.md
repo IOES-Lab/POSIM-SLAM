@@ -175,3 +175,7 @@ comparison can be presented as an operational method.
 [Survey depth diagnostic: exposure and failed position gate](diagnostics/depth-observability.md)
 
 [관측 깊이 진단: 표면 관측 범위와 위치 기준 실패](diagnostics/depth-observability.md)
+
+[Vertical excursion and shallow survey repeat](diagnostics/vertical-excursion.md)
+
+[수직 움직임을 포함한 얕은 관측 경로 재현 시험](diagnostics/vertical-excursion.md)
