@@ -7,6 +7,24 @@ introduced. Finite seed sampling cannot prove uniqueness of a physical return.
 import math
 import numpy as np
 from .sonar_joint import linearize_track
+from .constrained_step import feasible_step
+
+
+def geometric_margins(point,observations,states,geometry):
+    values=[];gradients=[];mount=np.asarray(geometry['sonar_to_imu'])
+    for observation in observations:
+        pose=states[observation['stamp_ns']];transform=mount.T@np.asarray(pose['attitude']).T
+        local=transform@(point-pose['position'])-mount.T@geometry['imu_to_sonar']
+        x,y,z=local;rho=math.hypot(x,y);distance=float(np.linalg.norm(local))
+        az=math.atan2(y,x);el=math.atan2(z,rho)
+        az_j=np.array([-y,x,0.])/rho**2
+        el_j=np.array([-z*x/rho,-z*y/rho,rho])/distance**2
+        radial=local/distance
+        values.extend([x,geometry['horizontal_fov']/2-az,geometry['horizontal_fov']/2+az,
+            geometry['vertical_fov']/2-el,geometry['vertical_fov']/2+el,
+            distance-geometry['range_min'],geometry['range_max']-distance])
+        gradients.extend(np.array([[1.,0.,0.],-az_j,az_j,-el_j,el_j,radial,-radial])@transform)
+    return np.asarray(values),np.asarray(gradients)
 
 
 def point_hypotheses(*,observations,states,measurement_covariance,geometry,
@@ -32,8 +50,11 @@ def point_hypotheses(*,observations,states,measurement_covariance,geometry,
             invalid+=1;continue
         initial_cost=float(residual@residual);reason='iteration_limit';invalid_trials=0;valid_trials=0
         for _ in range(max_iterations):
-            delta=np.linalg.lstsq(j,-residual,rcond=1e-10)[0]
-            if np.linalg.norm(delta)<1e-7:reason='stationary';break
+            margins,gradients=geometric_margins(point,observations,states,geometry)
+            step_result=feasible_step(j,residual,np.maximum(margins,0.)*.99,gradients)
+            delta=step_result['step']
+            if np.linalg.norm(delta)<1e-7 and step_result['converged']:
+                reason='constrained_stationary' if step_result['active_constraints'] else 'stationary';break
             accepted=False;invalid_in_step=0
             for step in (1.,.5,.25,.125,.0625,.03125):
                 candidate=point+step*delta
