@@ -28,6 +28,13 @@ Ping scale support requires every ray intersection inside the observed plane hul
 
 ## Install and use
 
+`sonar_joint.linearize_track` builds correlated pose/point rows for up to 16
+observations of one associated acoustic return. It requires exact state times
+and an explicit full range/azimuth covariance, including temporal correlations.
+Shared visual/Ping rows must be assembled before the existing rank-aware
+`ping_joint.eliminate_patch` removes point variables. No artificial elevation
+or pose prior is added. This is a solver building block, not live fused SLAM.
+
 `acoustic_tracks.AcousticTracks` retains up to 300 intensity-flow chains across
 frames. Surviving pixels seed the next flow pass; fresh corners receive fresh
 segment-local IDs. Time gaps, invalid calibration and complete loss break the
