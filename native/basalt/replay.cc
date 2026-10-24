@@ -1,5 +1,5 @@
 #include "calibration.hpp"
-#include "ping_patch.hpp"
+#include "ping_input.hpp"
 #include "landmark_archive.hpp"
 #include "visual_support.hpp"
 #include <condition_variable>
@@ -90,21 +90,8 @@ int main(int argc, char** argv) {
     std::ofstream patch_file;
     if(inspect_ping) {
       const auto p=read_json(input/"ping-calibration.json");
-      if(p.at("schema")!="posim-slam-ping-calibration-1")throw std::runtime_error("ping_calibration_schema");
-      Eigen::Matrix3d rotation;Vec3 translation;
-      for(int i=0;i<3;++i) {
-        translation[i]=p.at("imu_to_ping").at(i).get<double>();
-        for(int k=0;k<3;++k)rotation(i,k)=p.at("ping_to_imu").at(i).at(k).get<double>();
-      }
-      if(!translation.allFinite() || !rotation.allFinite() ||
-         (rotation.transpose()*rotation-Eigen::Matrix3d::Identity()).norm()>1e-8 || std::abs(rotation.determinant()-1)>1e-8)
-        throw std::runtime_error("ping_calibration_mount");
-      ping_mount=Sophus::SE3d(rotation,translation);
-      if(!p.at("rays").is_array() || p.at("rays").size()<1 || p.at("rays").size()>256)throw std::runtime_error("ping_calibration_rays");
-      ping_rays.resize(p.at("rays").size(),3);
-      for(Eigen::Index i=0;i<ping_rays.rows();++i)for(int k=0;k<3;++k)ping_rays(i,k)=p.at("rays").at(i).at(k).get<double>();
-      ping_min=p.at("range_min");ping_max=p.at("range_max");
-      posim_slam::selectPingPatch({},Sophus::SE3d(),ping_mount,ping_rays,ping_min,ping_max);
+      const auto calibrated=posim_slam::pingInputCalibration(p);
+      ping_mount=calibrated.mount;ping_rays=calibrated.rays;ping_min=calibrated.minimum;ping_max=calibrated.maximum;
       std::ifstream ping(input/"ping.csv");std::getline(ping,line);
       if(line!="stamp_ns,range_m,valid,field_of_view_rad")throw std::runtime_error("ping_header");
       int64_t previous_ping=0;

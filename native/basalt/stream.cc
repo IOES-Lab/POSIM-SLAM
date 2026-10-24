@@ -4,6 +4,7 @@
 #include "calibration.hpp"
 #include "visual_support.hpp"
 #include "landmark_archive.hpp"
+#include "ping_input.hpp"
 #include <basalt/vi_estimator/sqrt_keypoint_vio.h>
 #include <tbb/global_control.h>
 #include <opencv2/core.hpp>
@@ -53,7 +54,7 @@ int main(int argc,char** argv) {
     // Exact image/Ping pairs travel atomically. This is observation transport;
     // the joint optimizer must explicitly consume them before claiming fusion.
     std::mutex ping_mutex;
-    struct PendingPing {double range;bool owner_received=false;};
+    struct PendingPing {double range;bool owner_received=false;Json candidate=nullptr;};
     std::map<int64_t,PendingPing> image_pings;
     std::mutex snapshot_mutex;
     std::shared_ptr<const Snapshot> snapshot;
@@ -63,15 +64,34 @@ int main(int argc,char** argv) {
     auto config=processing_config(c);
     auto vio=basalt::VioEstimatorFactory::getVioEstimator(
         config,c.cal,Vec3(0,0,-c.gravity),true,true);
+    std::optional<posim_slam::PingInputCalibration> ping_calibration;
+    const auto ping_file=fs::path(argv[1]).parent_path()/"ping-calibration.json";
+    if(fs::exists(ping_file))ping_calibration=posim_slam::pingInputCalibration(read_json(ping_file));
     auto owner=std::dynamic_pointer_cast<basalt::SqrtKeypointVioEstimator<double>>(vio);
     if(!owner)throw std::runtime_error("unsupported_ping_estimator_owner");
     owner->posim_before_optimization=[&](auto& estimator,int64_t stamp) {
-      std::lock_guard<std::mutex> lock(ping_mutex);
-      const auto found=image_pings.find(stamp);
-      if(found==image_pings.end())return;
-      if(!static_cast<basalt::BundleAdjustmentBase<double>&>(estimator).frame_states.count(stamp) || found->second.owner_received)
-        fail("invalid_ping_owner_delivery");
-      found->second.owner_received=true;
+      auto& base=static_cast<basalt::BundleAdjustmentBase<double>&>(estimator);
+      {
+        std::lock_guard<std::mutex> lock(ping_mutex);
+        const auto found=image_pings.find(stamp);
+        if(found==image_pings.end())return;
+        if(!base.frame_states.count(stamp) || found->second.owner_received)fail("invalid_ping_owner_delivery");
+        found->second.owner_received=true;
+      }
+      Json candidate={{"reason","calibration_unavailable"}};
+      if(ping_calibration) {
+        const auto points=posim_slam::activePingPoints(base,stamp,c.processed_width,c.processed_height);
+        const auto& p=*ping_calibration;posim_slam::PingPatchDiagnostics diagnostics;
+        const auto patch=posim_slam::selectPingPatch(points,base.getPoseStateWithLin(stamp).getPose(),p.mount,p.rays,p.minimum,p.maximum,.03,&diagnostics);
+        candidate={{"reason",patch?"candidate_only":"no_supported_patch"},{"active_mature_points",points.size()},
+          {"local_points",diagnostics.local_points},{"max_plane_inliers",diagnostics.max_inliers}};
+        if(patch) {
+          candidate["landmark_ids"]=patch->ids;candidate["normal"]=vector3(patch->normal);
+          candidate["distance_m"]=patch->distance;candidate["predicted_range_m"]=patch->predicted_range;
+          candidate["rms_m"]=patch->rms;candidate["support_radius_m"]=patch->support_radius;
+        }
+      }
+      std::lock_guard<std::mutex> lock(ping_mutex);image_pings.at(stamp).candidate=std::move(candidate);
     };
     auto flow=basalt::OpticalFlowFactory::getOpticalFlow(config,c.cal);
     tbb::concurrent_bounded_queue<basalt::PoseVelBiasState<double>::Ptr> states;
@@ -88,10 +108,10 @@ int main(int argc,char** argv) {
         if(!s)fail("estimator_finished");
         if(!s->T_w_i.matrix().allFinite() || !s->vel_w_i.allFinite() ||
            !s->bias_gyro.allFinite() || !s->bias_accel.allFinite())fail("invalid_estimate");
-        Json ping=nullptr;bool owner_received=false;
+        Json ping=nullptr,candidate=nullptr;bool owner_received=false;
         {std::lock_guard<std::mutex> lock(ping_mutex);
          auto found=image_pings.find(s->t_ns);
-         if(found!=image_pings.end()) {ping={{"stamp_ns",found->first},{"range_m",found->second.range}};owner_received=found->second.owner_received;}
+         if(found!=image_pings.end()) {ping={{"stamp_ns",found->first},{"range_m",found->second.range}};owner_received=found->second.owner_received;candidate=found->second.candidate;}
          image_pings.erase(image_pings.begin(),image_pings.upper_bound(s->t_ns));}
         auto q=s->T_w_i.unit_quaternion();
         emit({{"type","state"},{"stamp_ns",s->t_ns},
@@ -99,7 +119,7 @@ int main(int argc,char** argv) {
               {"orientation_xyzw",{q.x(),q.y(),q.z(),q.w()}},
               {"velocity",vector3(s->vel_w_i)},
               {"gyro_bias",vector3(s->bias_gyro)},
-              {"accel_bias",vector3(s->bias_accel)},{"ping_observation",ping},{"ping_owner_received",owner_received},{"ping_fused",false}});
+              {"accel_bias",vector3(s->bias_accel)},{"ping_observation",ping},{"ping_owner_received",owner_received},{"ping_candidate",candidate},{"ping_fused",false}});
       }
     });
     std::thread map_reader([&] {

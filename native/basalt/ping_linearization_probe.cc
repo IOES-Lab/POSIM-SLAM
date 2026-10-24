@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 #include "calibration.hpp"
 #include "ping_linearization.hpp"
+#include "ping_input.hpp"
 #include <basalt/imu/preintegration.h>
 #include <iostream>
 
@@ -50,6 +51,13 @@ int main(int argc,char** argv) {
       }
       if(id<25)ids.insert(id);
     }
+    const auto eligible=activePingPoints(owner,times[2],c.processed_width,c.processed_height);
+    const auto saved_observation=owner.lmdb.getLandmark(0).obs.at({times[0],0});
+    owner.lmdb.removeObservations(0,{{times[0],0}});
+    const auto immature=activePingPoints(owner,times[2],c.processed_width,c.processed_height);
+    owner.lmdb.addObservation({times[0],0},basalt::KeypointObservation<double>{0,saved_observation});
+    const bool owner_support_passed=eligible.size()==25 && immature.size()==24 &&
+      std::none_of(eligible.begin(),eligible.end(),[](const auto& p){return p.id==25;});
     Vec3 gravity(0,0,-9.80665),gyro_weight=Vec3::Constant(100.),accel_weight=Vec3::Constant(100.);
     std::vector<basalt::IntegratedImuMeasurement<double>> preintegrations;
     preintegrations.reserve(2);
@@ -183,8 +191,8 @@ int main(int argc,char** argv) {
     bool missing_reference=false;
     try {api->linearizeProblem();}catch(const std::invalid_argument&){missing_reference=true;}
     const double prediction_error=std::abs(predicted-reference_decrease);
-    bool passed=changed_dependencies_rejected && retirement_passed && incomplete_rejected && selection_error/normal_scale<1e-12 && reference_gauge_error<1e-8 && inconsistent_gauge_error>1e-7 && plane_reference_preserved && missing_reference && std::abs(before-3.5)<1e-9 && valid && duplicate && transaction_required && square_root_error/normal_scale<1e-12 && information_error/normal_scale<1e-12 && prediction_error<1e-7 && step_error<1e-7 && stale && rollback_stale && restored_cost && accepted;
-    std::cout<<Json({{"changed_observation_dependencies_rejected",changed_dependencies_rejected},{"retirement_dependency_closure_passed",retirement_passed},{"marginal_selection_error",selection_error},{"incomplete_group_rejected",incomplete_rejected},{"passed",passed},{"joint_landmarks",25},{"independent_landmarks",1},{"imu_intervals",2},
+    bool passed=owner_support_passed && changed_dependencies_rejected && retirement_passed && incomplete_rejected && selection_error/normal_scale<1e-12 && reference_gauge_error<1e-8 && inconsistent_gauge_error>1e-7 && plane_reference_preserved && missing_reference && std::abs(before-3.5)<1e-9 && valid && duplicate && transaction_required && square_root_error/normal_scale<1e-12 && information_error/normal_scale<1e-12 && prediction_error<1e-7 && step_error<1e-7 && stale && rollback_stale && restored_cost && accepted;
+    std::cout<<Json({{"owner_visual_support_passed",owner_support_passed},{"changed_observation_dependencies_rejected",changed_dependencies_rejected},{"retirement_dependency_closure_passed",retirement_passed},{"marginal_selection_error",selection_error},{"incomplete_group_rejected",incomplete_rejected},{"passed",passed},{"joint_landmarks",25},{"independent_landmarks",1},{"imu_intervals",2},
       {"square_root_normal_error",square_root_error},{"single_ownership_information_error",information_error},
       {"normal_system_scale",normal_scale},{"relative_square_root_error",square_root_error/normal_scale},
       {"relative_information_error",information_error/normal_scale},{"model_decrease_error",prediction_error},{"reference_decrease",reference_decrease},{"first_prediction",first_prediction},{"reference_initial_cost",.5*full_r.squaredNorm()},{"independent_eliminated_visual_cost",eliminated_visual_constant},

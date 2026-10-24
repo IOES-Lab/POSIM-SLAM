@@ -468,6 +468,23 @@ still runs. Upstream headers/source are hash-checked and remain unmodified.
 `ping_fused`는 계속 거짓입니다. 원본 헤더·소스는 해시로 확인하며 수정하지
 않습니다.
 
+When `ping-calibration.json` is present beside the worker calibration, the
+owner callback selects candidate patches from current raw landmarks. A point
+needs a current full-weight reprojection and support in three distinct frames.
+Replay and streaming share `pingInputCalibration` and `selectPingPatch`.
+`ping_candidate` reports support counts and candidate geometry; it does not
+mean the range has been accepted or fused. Candidate fitting is independent
+of display/archive point limits. Initial depth/scale errors may still produce
+a geometrically coherent candidate inconsistent with the measured range.
+
+워커 보정 파일 옆에 `ping-calibration.json`이 있으면 소유자 콜백이 현재
+원본 특징점에서 평면 후보를 선택합니다. 현재 영상에서 완전 가중치를 받는
+재투영과 서로 다른 세 프레임의 지지가 필요합니다. 기록 재생과 스트리밍은
+`pingInputCalibration`과 `selectPingPatch`를 공유합니다. `ping_candidate`는
+지원 점 개수와 후보 형상을 나타내며 거리 관측의 수락·융합을 의미하지 않습니다.
+후보 적합은 표시·보관 점군의 점 개수 제한과 독립적입니다. 초기 깊이·축척
+오차가 있으면 형상상 일관된 후보도 실제 거리와 다를 수 있습니다.
+
 `ping_state.hpp` stores up to eight local planes in the actual Basalt estimator
 backup/restore lifecycle. `JointPingTrial` retains accepted finite cost decreases
 and restores poses, inertial states, landmarks and planes on rejection or
