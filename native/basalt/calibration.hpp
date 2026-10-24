@@ -37,6 +37,7 @@ struct InputCalibration {
  double gravity;
  int64_t max_gap;
  int feature_grid;
+ int max_recent_states;
 };
 inline InputCalibration input_calibration(const fs::path& file) {
     auto c = read_json(file);
@@ -92,11 +93,15 @@ inline InputCalibration input_calibration(const fs::path& file) {
       if(feature_grid*2>std::min(processed_width,processed_height))
         throw std::runtime_error("feature_budget_aspect_ratio");
     }
-    return {width,height,processed_width,processed_height,cal,gravity,max_gap,feature_grid};
+    const int max_recent_states=c.contains("max_recent_states")
+      ? integer_budget(c,"max_recent_states",3,64,"invalid_recent_state_budget")
+      : (c.value("enable_auxiliary_sonar",false) ? 6 : 3);
+    return {width,height,processed_width,processed_height,cal,gravity,max_gap,feature_grid,max_recent_states};
 }
 
 inline basalt::VioConfig processing_config(const InputCalibration& c) {
   basalt::VioConfig config;
+  config.vio_max_states=c.max_recent_states;
   if(c.feature_grid)config.optical_flow_detection_grid_size=c.feature_grid;
   return config;
 }

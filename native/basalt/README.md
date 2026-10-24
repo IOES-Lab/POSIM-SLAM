@@ -939,13 +939,12 @@ marginalization path even before the first acoustic track is ready.
 `basalt_synthetic_probe OUTPUT.csv 5 sonar-async` exercises 61 camera states and
 60 acoustic states offset by 10 ms. It retains six recent states to cover the same
 three-camera interval. Enable `enable_auxiliary_sonar: true` alongside `enable_joint_sonar` to accept
-ordered auxiliary events in the binary stream. This doubles the recent-state
-capacity and permits one auxiliary event between consecutive camera frames.
+ordered auxiliary events in the binary stream. The default recent-state capacity is six and permits one auxiliary event between consecutive camera frames.
 
 위 검사는 카메라 상태 61개와 10ms 늦은 음향 상태 60개를 생성합니다. 카메라
 3프레임에 해당하는 구간을 유지하도록 최근 상태 6개를 보관합니다. `enable_joint_sonar`와 함께 `enable_auxiliary_sonar: true`를 설정하면
-바이너리 스트림에서 보조 이벤트를 입력 순서대로 처리합니다. 최근 상태 용량은
-두 배가 되며, 연속 카메라 프레임 사이에 보조 이벤트 하나를 허용합니다.
+바이너리 스트림에서 보조 이벤트를 입력 순서대로 처리합니다. 최근 상태 용량의 기본값은
+6개이며, 연속 카메라 프레임 사이에 보조 이벤트 하나를 허용합니다.
 
 
 Wait for ready capability `sonar_auxiliary_transport: ordered_imu_state_v1`.
@@ -965,3 +964,19 @@ IMU, 해당 시각의 트랙 스냅샷(있을 때), `LiveClient.sonar_tick(stamp
 500ms 이내여야 합니다. 크기를 제한한 전달 큐가 각 영상의 특징 추적 결과를
 기다린 뒤 다음 이벤트를 전달합니다. 보조 이벤트는 시각 지도 보관 이력을
 진행시키지 않습니다.
+
+
+`max_recent_states` in the calibration file sets the recent full IMU-state budget
+(integer, 3–64). Defaults are three without auxiliary events and six with them.
+The ready response reports the applied value. Count camera and auxiliary events
+across track initialization, with room for the next event. Three 2 Hz sonar
+observations span one second; six states cannot cover a 10 Hz camera stream.
+Camera keyframes do not guarantee retention of auxiliary poses. Larger budgets
+increase optimizer work and require separate map-quality validation.
+
+보정 파일의 `max_recent_states`로 최근 IMU 전체 상태 보관 개수를 지정합니다
+(정수 3–64). 기본값은 보조 이벤트가 없으면 3개, 있으면 6개이며, 준비 응답에서
+적용값을 확인합니다. 트랙 초기화 구간의 카메라·보조 이벤트를 모두 세고 다음
+이벤트를 위한 여유를 둡니다. 2Hz 소나 관측 3개는 1초에 걸치므로 카메라
+10Hz에서 상태 6개로는 부족합니다. 카메라 키프레임 보관은 보조 자세의 보관을
+보장하지 않습니다. 개수가 늘면 최적화 연산량이 증가하며 지도 품질은 별도로 검증합니다.

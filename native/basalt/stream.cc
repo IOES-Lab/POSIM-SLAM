@@ -72,7 +72,6 @@ int main(int argc,char** argv) {
     const bool auxiliary_enabled=input_settings.value("enable_auxiliary_sonar",false);
     if(auxiliary_enabled && !sonar_enabled)fail("auxiliary_sonar_requires_joint_sonar");
     auto config=processing_config(c);
-    if(auxiliary_enabled)config.vio_max_states*=2;
     auto vio=basalt::VioEstimatorFactory::getVioEstimator(
         config,c.cal,Vec3(0,0,-c.gravity),true,true);
     std::optional<posim_slam::PingInputCalibration> ping_calibration;
@@ -301,7 +300,7 @@ int main(int argc,char** argv) {
           {"image_ping_transport","exact_stamp_range_v1"},{"ping_fused",false},{"joint_ping_enabled",joint_enabled},
           {"opencv_threads",1},{"estimation_threads",2},
           {"keyframe_hold_frames",config.vio_min_frames_after_kf},
-          {"feature_grid",config.optical_flow_detection_grid_size},
+          {"feature_grid",config.optical_flow_detection_grid_size},{"max_recent_states",config.vio_max_states},
           {"raw_resolution",{c.width,c.height}},
           {"processed_resolution",{c.processed_width,c.processed_height}},
           {"scope","experimental local visual-inertial odometry with sparse landmark archive"}});
