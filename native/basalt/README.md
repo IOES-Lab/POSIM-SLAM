@@ -396,6 +396,25 @@ constructor filters do not implement the live retirement schedule themselves.
 생성을 거부합니다. 선택되지 않은 독립 시각 특징점은 새 사전정보에서 제외합니다.
 생성자의 필터 전달 기능만으로 실시간 제거 일정이 구현되는 것은 아닙니다.
 
+`planPingRetirement` reads actual landmark hosts and visual target frames,
+plus each group's declared Ping observation poses. Losing one member or
+removing any dependent pose selects the entire group. It returns the complete
+landmark, plane, Ping stamp and required-frame sets without changing the graph.
+Required frames can be newer than Basalt's usual marginalization boundary;
+the caller must include and retain their columns in the new prior. Planning
+during a trial, missing dependencies and duplicate ownership are rejected.
+The linearization checks that built Ping stamps match the declared dependency
+set. The owner still installs the prior and retires exactly those factors.
+
+`planPingRetirement`는 실제 특징점의 호스트·시각 관측 대상 프레임과 그룹에
+명시한 Ping 관측 자세를 읽습니다. 구성 특징점을 잃거나 의존 자세가 제거되면
+그룹 전체를 선택합니다. 그래프를 변경하지 않고 특징점·평면·Ping 시각·필요
+프레임 집합을 반환합니다. Basalt의 기본 주변화 경계보다 최신 프레임도 포함될
+수 있으므로 호출자는 해당 열을 새 사전정보에 유지해야 합니다. 보정 시도 중
+계획, 누락 의존관계와 중복 소유는 거부합니다. 선형화는 실제로 구성한 Ping
+시각이 명시한 의존관계와 일치하는지 검사합니다. 사전정보 설치와 동일 관측의
+제거는 여전히 소유자의 책임입니다.
+
 `ping_state.hpp` stores up to eight local planes in the actual Basalt estimator
 backup/restore lifecycle. `JointPingTrial` retains accepted finite cost decreases
 and restores poses, inertial states, landmarks and planes on rejection or

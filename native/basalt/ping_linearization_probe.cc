@@ -84,6 +84,24 @@ int main(int argc,char** argv) {
       PingGroupObservation observation{times[2],times[2],30,owner.getPoseStateWithLin(times[2]).getPose(),mount,rays,measured,.1,.02,.2,50.,use_reference ? std::optional<Sophus::SE3d>(owner.getPoseStateWithLin(times[2]).getPoseLin()) : std::nullopt};
       raw=assemblePingGroup(45,plane.normal,plane.distance,landmarks,{observation},.02,.23,use_reference ? std::optional<PingPlaneReference>(plane.reference) : std::nullopt);return raw;
     }};
+    spec.observation_pose_stamps={times[2]};
+    const auto untouched=planPingRetirement(owner,{spec},{},{},{});
+    const auto lost_plan=planPingRetirement(owner,{spec},{},{},{*ids.begin()});
+    auto host_only=spec;host_only.landmark_ids.clear();
+    for(auto id:ids)if(owner.lmdb.getLandmark(id).host_kf_id.frame_id==times[0])host_only.landmark_ids.insert(id);
+    const auto target_plan=planPingRetirement(owner,{host_only},{times[1]},{},{});
+    bool trial_plan_rejected=false;owner.posim_ping_trial_active=true;
+    try{planPingRetirement(owner,{spec},{},{},{});}catch(const std::logic_error&){trial_plan_rejected=true;}
+    owner.posim_ping_trial_active=false;
+    bool missing_metadata_rejected=false;auto missing_metadata=spec;missing_metadata.observation_pose_stamps.clear();
+    try{planPingRetirement(owner,{missing_metadata},{},{},{});}catch(const std::invalid_argument&){missing_metadata_rejected=true;}
+    const bool retirement_passed=untouched.groups.empty() && untouched.landmarks.empty() &&
+      lost_plan.groups.size()==1 && lost_plan.landmarks.size()==25 && lost_plan.required_frames==std::set<int64_t>(times.begin(),times.end()) &&
+      lost_plan.observations==spec.observation_pose_stamps && target_plan.groups.size()==1 &&
+      target_plan.landmarks.size()==host_only.landmark_ids.size() && trial_plan_rejected && missing_metadata_rejected && owner.lmdb.numLandmarks()==26;
+    bool changed_dependencies_rejected=false;auto wrong_dependencies=spec;wrong_dependencies.observation_pose_stamps={times[1]};
+    try{PingLinearization wrong(&owner,order,options,{wrong_dependencies},&prior,&imu);wrong.linearizeProblem();}
+    catch(const std::invalid_argument&){changed_dependencies_rejected=true;}
     bool duplicate=false;
     try {PingLinearization invalid(&owner,order,options,{spec,spec},&prior,&imu);}
     catch(const std::invalid_argument&){duplicate=true;}
@@ -165,8 +183,8 @@ int main(int argc,char** argv) {
     bool missing_reference=false;
     try {api->linearizeProblem();}catch(const std::invalid_argument&){missing_reference=true;}
     const double prediction_error=std::abs(predicted-reference_decrease);
-    bool passed=incomplete_rejected && selection_error/normal_scale<1e-12 && reference_gauge_error<1e-8 && inconsistent_gauge_error>1e-7 && plane_reference_preserved && missing_reference && std::abs(before-3.5)<1e-9 && valid && duplicate && transaction_required && square_root_error/normal_scale<1e-12 && information_error/normal_scale<1e-12 && prediction_error<1e-7 && step_error<1e-7 && stale && rollback_stale && restored_cost && accepted;
-    std::cout<<Json({{"marginal_selection_error",selection_error},{"incomplete_group_rejected",incomplete_rejected},{"passed",passed},{"joint_landmarks",25},{"independent_landmarks",1},{"imu_intervals",2},
+    bool passed=changed_dependencies_rejected && retirement_passed && incomplete_rejected && selection_error/normal_scale<1e-12 && reference_gauge_error<1e-8 && inconsistent_gauge_error>1e-7 && plane_reference_preserved && missing_reference && std::abs(before-3.5)<1e-9 && valid && duplicate && transaction_required && square_root_error/normal_scale<1e-12 && information_error/normal_scale<1e-12 && prediction_error<1e-7 && step_error<1e-7 && stale && rollback_stale && restored_cost && accepted;
+    std::cout<<Json({{"changed_observation_dependencies_rejected",changed_dependencies_rejected},{"retirement_dependency_closure_passed",retirement_passed},{"marginal_selection_error",selection_error},{"incomplete_group_rejected",incomplete_rejected},{"passed",passed},{"joint_landmarks",25},{"independent_landmarks",1},{"imu_intervals",2},
       {"square_root_normal_error",square_root_error},{"single_ownership_information_error",information_error},
       {"normal_system_scale",normal_scale},{"relative_square_root_error",square_root_error/normal_scale},
       {"relative_information_error",information_error/normal_scale},{"model_decrease_error",prediction_error},{"reference_decrease",reference_decrease},{"first_prediction",first_prediction},{"reference_initial_cost",.5*full_r.squaredNorm()},{"independent_eliminated_visual_cost",eliminated_visual_constant},

@@ -12,7 +12,62 @@ struct JointPingGroupSpec {
   // Build geometry/rows at the current state with the caller's FEJ convention.
   // Membership and observed measurement identities stay fixed during a trial.
   std::function<NativePingGroup(const std::map<basalt::KeypointId,basalt::LandmarkBlock<double>*>&)> build;
+  std::set<int64_t> observation_pose_stamps;
+
 };
+
+struct PingRetirementPlan {
+  std::vector<JointPingGroupSpec> groups;
+  std::unordered_set<basalt::KeypointId> landmarks;
+  std::set<int64_t> required_frames,observations;
+  std::set<int> planes;
+};
+
+// Read-only closure before constructing the marginal system. Required frames
+// include *all* visual targets, including states newer than Basalt's usual
+// marginal boundary. The owner must include them in its order and retain them
+// in the new prior rather than dropping rows whose columns are missing.
+inline PingRetirementPlan planPingRetirement(const basalt::BundleAdjustmentBase<double>& owner,
+    const std::vector<JointPingGroupSpec>& groups,const std::set<int64_t>& removed_poses,
+    const std::set<int64_t>& removed_hosts,const std::unordered_set<basalt::KeypointId>& lost) {
+  if(owner.posim_ping_trial_active)throw std::logic_error("ping_retirement_during_trial");
+  if(groups.size()>8)throw std::invalid_argument("invalid_joint_group_count");
+  PingRetirementPlan plan;plan.landmarks=lost;
+  std::set<int> plane_ids;std::set<basalt::KeypointId> owned;std::set<int64_t> observations;
+  for(const auto& group:groups) {
+    if(!group.build || group.landmark_ids.size()<3 || group.landmark_ids.size()>64 ||
+       group.observation_pose_stamps.empty() || group.observation_pose_stamps.size()>64 ||
+       !plane_ids.insert(group.plane_id).second)
+      throw std::invalid_argument("invalid_ping_retirement_group");
+    owner.posim_ping_planes.at(group.plane_id);
+    bool retire=false;std::set<int64_t> dependencies=group.observation_pose_stamps;
+    for(int64_t stamp:group.observation_pose_stamps) {
+      if(stamp<=0 || !observations.insert(stamp).second)throw std::invalid_argument("duplicate_joint_ping_owner");
+      retire=retire || removed_poses.count(stamp) || removed_hosts.count(stamp);
+    }
+    for(auto id:group.landmark_ids) {
+      if(!owned.insert(id).second || !owner.lmdb.landmarkExists(id))
+        throw std::invalid_argument("invalid_joint_landmark_owner");
+      const auto& point=owner.lmdb.getLandmark(id);
+      dependencies.insert(point.host_kf_id.frame_id);
+      retire=retire || lost.count(id) || removed_hosts.count(point.host_kf_id.frame_id) || removed_poses.count(point.host_kf_id.frame_id);
+      for(const auto& [target,pixel]:point.obs) {
+        dependencies.insert(target.frame_id);
+        retire=retire || removed_poses.count(target.frame_id) || removed_hosts.count(target.frame_id);
+      }
+    }
+    for(int64_t stamp:dependencies)
+      if(!owner.frame_states.count(stamp) && !owner.frame_poses.count(stamp))
+        throw std::invalid_argument("missing_ping_dependency_pose");
+    if(retire) {
+      plan.groups.push_back(group);plan.planes.insert(group.plane_id);
+      plan.landmarks.insert(group.landmark_ids.begin(),group.landmark_ids.end());
+      plan.observations.insert(group.observation_pose_stamps.begin(),group.observation_pose_stamps.end());
+      plan.required_frames.insert(dependencies.begin(),dependencies.end());
+    }
+  }
+  return plan;
+}
 
 // A real Basalt LinearizationBase implementation. Selected visual blocks are
 // moved out of independent QR, so their rows enter exactly one coupled group.
@@ -83,6 +138,9 @@ class PingLinearization final : public basalt::LinearizationAbsQR<double,6> {
       if(actual!=expected || actual.size()!=group.raw.blocks.size() || group.raw.observation_stamps.empty() ||
          group.raw.jacobian.cols()!=Eigen::Index(aom.total_size+3+3*expected.size()))
         throw std::invalid_argument("joint_builder_changed_membership");
+      if(!group.spec.observation_pose_stamps.empty() &&
+         std::set<int64_t>(group.raw.observation_stamps.begin(),group.raw.observation_stamps.end())!=group.spec.observation_pose_stamps)
+        throw std::invalid_argument("joint_builder_changed_observation_dependencies");
       for(int64_t stamp:group.raw.observation_stamps)
         if(!observations.insert(stamp).second)throw std::invalid_argument("duplicate_joint_ping_owner");
       cost+=group.raw.auxiliary_cost;
