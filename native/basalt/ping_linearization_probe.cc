@@ -105,6 +105,25 @@ int main(int argc,char** argv) {
     Eigen::VectorXd full_r(ir.size()+raw.residual.size());full_r<<ir,raw.residual;
     const auto reduced=eliminateJointPatch(full,full_r,45);
     const double information_error=(h-reduced.jacobian.transpose()*reduced.jacobian).norm();
+    // Marginalization selects the complete coupled group, excluding the
+    // independent visual track that remains live. IMU/prior appear once.
+    const auto saved_raw=raw;
+    std::set<basalt::FrameId> no_hosts;
+    std::unordered_set<basalt::KeypointId> retiring_ids(ids.begin(),ids.end()),no_ids;
+    PingLinearization selected(&owner,order,options,{spec},&prior,&imu,&no_hosts,&retiring_ids);
+    selected.linearizeProblem();selected.performQR();Eigen::MatrixXd selected_h;Eigen::VectorXd selected_b;
+    selected.get_dense_H_b(selected_h,selected_b);
+    IndependentReference inertial_prior(&owner,order,options,&prior,&imu,&no_hosts,&no_ids);
+    inertial_prior.linearizeProblem();inertial_prior.performQR();Eigen::MatrixXd base_j;Eigen::VectorXd base_r;
+    inertial_prior.get_dense_Q2Jp_Q2r(base_j,base_r);
+    const auto group_reduced=eliminateJointPatch(raw.jacobian,raw.residual,45);
+    const double selection_error=(selected_h-base_j.transpose()*base_j-group_reduced.jacobian.transpose()*group_reduced.jacobian).norm()+
+      (selected_b-base_j.transpose()*base_r-group_reduced.jacobian.transpose()*group_reduced.residual).norm();
+    auto incomplete_ids=retiring_ids;incomplete_ids.erase(*ids.begin());bool incomplete_rejected=false;
+    try {PingLinearization incomplete(&owner,order,options,{spec},&prior,&imu,&no_hosts,&incomplete_ids);}
+    catch(const std::invalid_argument&){incomplete_rejected=true;}
+    // Restore callback-owned diagnostic pointers to the optimization instance.
+    joint.linearizeProblem();joint.performQR();raw=saved_raw;
     const Eigen::VectorXd delta=h.ldlt().solve(-b);
     const Eigen::VectorXd batch_delta=full.colPivHouseholderQr().solve(-full_r);
     const double step_error=(delta-batch_delta.head(45)).norm();
@@ -146,8 +165,8 @@ int main(int argc,char** argv) {
     bool missing_reference=false;
     try {api->linearizeProblem();}catch(const std::invalid_argument&){missing_reference=true;}
     const double prediction_error=std::abs(predicted-reference_decrease);
-    bool passed=reference_gauge_error<1e-8 && inconsistent_gauge_error>1e-7 && plane_reference_preserved && missing_reference && std::abs(before-3.5)<1e-9 && valid && duplicate && transaction_required && square_root_error/normal_scale<1e-12 && information_error/normal_scale<1e-12 && prediction_error<1e-7 && step_error<1e-7 && stale && rollback_stale && restored_cost && accepted;
-    std::cout<<Json({{"passed",passed},{"joint_landmarks",25},{"independent_landmarks",1},{"imu_intervals",2},
+    bool passed=incomplete_rejected && selection_error/normal_scale<1e-12 && reference_gauge_error<1e-8 && inconsistent_gauge_error>1e-7 && plane_reference_preserved && missing_reference && std::abs(before-3.5)<1e-9 && valid && duplicate && transaction_required && square_root_error/normal_scale<1e-12 && information_error/normal_scale<1e-12 && prediction_error<1e-7 && step_error<1e-7 && stale && rollback_stale && restored_cost && accepted;
+    std::cout<<Json({{"marginal_selection_error",selection_error},{"incomplete_group_rejected",incomplete_rejected},{"passed",passed},{"joint_landmarks",25},{"independent_landmarks",1},{"imu_intervals",2},
       {"square_root_normal_error",square_root_error},{"single_ownership_information_error",information_error},
       {"normal_system_scale",normal_scale},{"relative_square_root_error",square_root_error/normal_scale},
       {"relative_information_error",information_error/normal_scale},{"model_decrease_error",prediction_error},{"reference_decrease",reference_decrease},{"first_prediction",first_prediction},{"reference_initial_cost",.5*full_r.squaredNorm()},{"independent_eliminated_visual_cost",eliminated_visual_constant},

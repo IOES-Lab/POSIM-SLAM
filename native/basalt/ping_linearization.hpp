@@ -18,6 +18,9 @@ struct JointPingGroupSpec {
 // moved out of independent QR, so their rows enter exactly one coupled group.
 // Caller owns group association, nonlinear auxiliary cost, marginalization and
 // a JointPingTrial transaction around backSubstitute + state updates.
+// Marginalization must pass the parent's retiring-host/landmark selection, with
+// every landmark of each retiring coupled group included. Missing group members
+// reject construction; retained independent visual rows must not enter a prior.
 class PingLinearization final : public basalt::LinearizationAbsQR<double,6> {
   using Parent=basalt::LinearizationAbsQR<double,6>;
   struct Group {
@@ -31,8 +34,11 @@ class PingLinearization final : public basalt::LinearizationAbsQR<double,6> {
       const basalt::AbsOrderMap& order,const Options& options,
       std::vector<JointPingGroupSpec> specs,
       const basalt::MargLinData<double>* prior=nullptr,
-      const basalt::ImuLinData<double>* imu=nullptr)
-      :Parent(owner,order,options,prior,imu),owner_(owner) {
+      const basalt::ImuLinData<double>* imu=nullptr,
+      const std::set<basalt::FrameId>* retiring_hosts=nullptr,
+      const std::unordered_set<basalt::KeypointId>* retiring_landmarks=nullptr,
+      int64_t last_state_to_marg=std::numeric_limits<int64_t>::max())
+      :Parent(owner,order,options,prior,imu,retiring_hosts,retiring_landmarks,last_state_to_marg),owner_(owner) {
     if(specs.empty() || specs.size()>8)throw std::invalid_argument("invalid_joint_group_count");
     std::map<basalt::KeypointId,size_t> membership;std::set<int> planes;
     for(auto& spec:specs) {

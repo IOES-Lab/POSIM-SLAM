@@ -383,6 +383,19 @@ reference. Surface rows keep their separate explicit noise scale.
 기준 상태 모드에서는 모든 광선 미분과 선택 확률을 동일한 기준 자세·평면에서
 계산합니다. 표면 잔차의 잡음 크기는 별도로 명시합니다.
 
+For marginalization, `PingLinearization` accepts Basalt's retiring-host and
+retiring-landmark filters. The owner must include every landmark of each
+retiring Ping group in that selection, and later retire the same factors after
+installing the prior. Partial group selection fails construction. Independent
+visual tracks outside the selection remain excluded from the new prior. These
+constructor filters do not implement the live retirement schedule themselves.
+
+주변화 시 `PingLinearization`은 Basalt의 제거 대상 호스트·특징점 필터를
+전달받습니다. 소유자는 제거할 Ping 그룹의 특징점을 모두 선택에 포함하고,
+사전정보를 설치한 뒤 같은 관측들을 제거해야 합니다. 그룹 일부만 선택하면
+생성을 거부합니다. 선택되지 않은 독립 시각 특징점은 새 사전정보에서 제외합니다.
+생성자의 필터 전달 기능만으로 실시간 제거 일정이 구현되는 것은 아닙니다.
+
 `ping_state.hpp` stores up to eight local planes in the actual Basalt estimator
 backup/restore lifecycle. `JointPingTrial` retains accepted finite cost decreases
 and restores poses, inertial states, landmarks and planes on rejection or
