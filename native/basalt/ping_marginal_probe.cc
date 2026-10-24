@@ -109,7 +109,7 @@ int main() {
     basalt::MargLinData<double> installed;installed.H=Eigen::MatrixXd::Identity(66,66);installed.b=Eigen::VectorXd::Zero(66);installed.order=layout.source;installed.is_sqrt=true;
     auto broken_prior=expanded_prior;broken_prior.b[0]=std::numeric_limits<double>::quiet_NaN();bool commit_failure_atomic=false;
     try{installPingMarginalPrior(live,installed,commit_groups,commit_imu,retirement,layout,{100},{200},broken_prior);}
-    catch(const std::invalid_argument&){commit_failure_atomic=live.frame_states.size()==4 && live.lmdb.numLandmarks()==3 && commit_imu.size()==3 && installed.H.cols()==66 && live.posim_ping_planes.size()==1;}
+    catch(const std::invalid_argument&){commit_failure_atomic=live.posim_consumed_visual.size()==0 && live.frame_states.size()==4 && live.lmdb.numLandmarks()==3 && commit_imu.size()==3 && installed.H.cols()==66 && live.posim_ping_planes.size()==1;}
     live.frame_states.at(300).applyInc(Eigen::Matrix<double,15,1>::Constant(.003));
     live.frame_states.at(400).setLinFalse();
     live.frame_states.at(400).applyInc(Eigen::Matrix<double,15,1>::Constant(.004));

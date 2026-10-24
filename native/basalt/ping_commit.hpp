@@ -37,6 +37,10 @@ template<class Estimator,class ImuMap> void installPingMarginalPrior(
   for(auto id:plan.landmarks)if(!owner.lmdb.landmarkExists(id))
     throw std::invalid_argument("missing_ping_retired_landmark");
   auto states=owner.frame_states;auto poses=owner.frame_poses;
+  auto consumed_visual=owner.posim_consumed_visual;
+  for(auto id:plan.landmarks)
+    for(const auto& [target,pixel]:owner.lmdb.getLandmark(id).obs)
+      consumed_visual.record(id,target.frame_id);
   auto landmarks=owner.lmdb;auto planes=owner.posim_ping_planes;
   auto next_groups=groups;auto next_imu=imu;auto prior=next_prior;
   for(int64_t t:pose_only) {
@@ -54,6 +58,7 @@ template<class Estimator,class ImuMap> void installPingMarginalPrior(
   // Container swaps do not allocate. No semantic failure is possible below.
   owner.frame_states.swap(states);owner.frame_poses.swap(poses);
   std::swap(owner.lmdb,landmarks);std::swap(owner.posim_ping_planes,planes);
+  std::swap(owner.posim_consumed_visual,consumed_visual);
   groups.swap(next_groups);imu.swap(next_imu);
   current_prior.H.swap(prior.H);current_prior.b.swap(prior.b);
   current_prior.order.abs_order_map.swap(prior.order.abs_order_map);

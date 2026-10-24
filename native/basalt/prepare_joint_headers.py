@@ -61,8 +61,9 @@ def prepare(source,destination):
   // Configured before input is submitted; called only by the estimator thread.
   std::function<void(SqrtKeypointVioEstimator&, int64_t)> posim_before_marginalization;''')
         elif name.endswith('/ba_base.h'):
-            text=replace_once(text,'#pragma once','#pragma once\n#include "ping_state.hpp"')
+            text=replace_once(text,'#pragma once','#pragma once\n#include "ping_state.hpp"\n#include "consumed_visual.hpp"')
             text=replace_once(text,'  inline void backup() {','''  posim_slam::PingPlaneStore posim_ping_planes;
+  posim_slam::ConsumedVisualObservations posim_consumed_visual;
   bool posim_ping_trial_active = false;
   uint64_t posim_ping_state_revision = 0;
 
@@ -95,6 +96,18 @@ def prepare(source,destination):
         '  optimize();\n'
         '  if (posim_before_marginalization) posim_before_marginalization(*this, last_state_t_ns);\n'
         '  marginalize(num_points_connected, lost_landmaks);')
+    text=replace_once(text,'  prev_opt_flow_res[opt_flow_meas->t_ns] = opt_flow_meas;',
+        '  prev_opt_flow_res[opt_flow_meas->t_ns] = opt_flow_meas;\n'
+        '  this->posim_consumed_visual.prune(prev_opt_flow_res);')
+    text=replace_once(text,'      int kpt_id = kv_obs.first;',
+        '      int kpt_id = kv_obs.first;\n'
+        '      if (!this->posim_consumed_visual.allows(kpt_id, opt_flow_meas->t_ns)) continue;')
+    text=replace_once(text,'    for (int lm_id : unconnected_obs0) {',
+        '    for (int lm_id : unconnected_obs0) {\n'
+        '      if (!this->posim_consumed_visual.allows(lm_id, opt_flow_meas->t_ns)) continue;')
+    text=replace_once(text,'      for (const auto& kv : prev_opt_flow_res) {',
+        '      for (const auto& kv : prev_opt_flow_res) {\n'
+        '        if (!this->posim_consumed_visual.allows(lm_id, kv.first)) continue;')
     target=Path(destination)/'sqrt_keypoint_vio.cpp'
     if not target.exists() or target.read_text()!=text:target.write_text(text)
 

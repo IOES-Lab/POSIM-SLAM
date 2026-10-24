@@ -726,3 +726,20 @@ activation still requires the native estimator's scheduling and history handling
 네이티브 검증은 네 번째 카메라·IMU 상태와 두 번째 Ping 관측을 추가해
 두 Ping 관측을 함께 최적화한 뒤 그룹을 제거합니다. 실시간 활성화에는
 추정기의 실행 순서와 영상 관측 이력 처리를 연결해야 합니다.
+
+### Consumed visual history / 소비한 영상 관측 이력
+
+Coupled prior installation records each retired track's latest consumed visual
+observation timestamp. The build-local Basalt estimator excludes observations at
+or before that cutoff when adding a current observation or gathering historical
+observations for triangulation. The same track can be triangulated from later
+observations. Cutoffs expire only when no buffered camera observation can replay
+them; retirement does not mutate the original optical-flow frames. Invalid prior
+installation leaves the cutoff store unchanged.
+
+공동 사전정보 설치는 제거한 특징점별로 소비한 영상 관측의 마지막 시각을
+기록합니다. 빌드에 사용하는 Basalt 추정기는 현재 관측을 추가하거나
+삼각측량용 과거 관측을 모을 때 그 시각 이전 및 같은 시각의 관측을 제외합니다.
+같은 특징점도 이후 관측으로 다시 삼각측량할 수 있습니다. 버퍼의 모든 카메라에서
+해당 과거 관측이 사라진 경우에만 제한 기록을 삭제합니다. 원본 영상 추적
+프레임은 수정하지 않으며, 사전정보 설치 실패 시 제한 기록도 유지합니다.
