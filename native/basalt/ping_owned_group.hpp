@@ -11,6 +11,8 @@ struct OwnedPingObservation {
   PingInputCalibration calibration;
   double bias,return_sigma;
   std::optional<double> per_ray_sigma;
+  std::optional<double> range_loss_scale=3.;
+  PingRangeLoss range_loss=PingRangeLoss::Huber;
 };
 
 // Snapshot factor membership, measurement values and weights for a whole trial.
@@ -31,6 +33,7 @@ inline JointPingGroupSpec makeOwnedPingGroup(basalt::BundleAdjustmentBase<double
        !std::isfinite(observation.measured) || !std::isfinite(observation.bias) ||
        observation.measured<observation.calibration.minimum || observation.measured>observation.calibration.maximum ||
        !std::isfinite(observation.return_sigma) || observation.return_sigma<=0 ||
+       (observation.range_loss_scale && (!std::isfinite(*observation.range_loss_scale) || *observation.range_loss_scale<=0)) ||
        (observation.per_ray_sigma && (!std::isfinite(*observation.per_ray_sigma) || *observation.per_ray_sigma<=0)))
       throw std::invalid_argument("invalid_owned_ping_observation");
     selectPingPatch({},Sophus::SE3d(),observation.calibration.mount,observation.calibration.rays,
@@ -61,7 +64,7 @@ inline JointPingGroupSpec makeOwnedPingGroup(basalt::BundleAdjustmentBase<double
       const auto pose=owner.getPoseStateWithLin(observation.stamp);const auto& c=observation.calibration;
       rows.push_back({observation.stamp,observation.stamp,order.abs_order_map.at(observation.stamp).first,
         pose.getPose(),c.mount,c.rays,observation.measured,observation.bias,observation.return_sigma,c.minimum,c.maximum,
-        pose.getPoseLin(),observation.per_ray_sigma});
+        pose.getPoseLin(),observation.per_ray_sigma,observation.range_loss_scale,observation.range_loss});
     }
     return assemblePingGroup(order.total_size,plane.normal,plane.distance,landmarks,rows,surface_sigma,support_radius,reference);
   };

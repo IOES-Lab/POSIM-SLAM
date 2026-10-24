@@ -64,6 +64,26 @@ int main(int argc,char** argv) {
     observation.measured=pingRange(observation.pose,mount,rays,normal,distance,.1).prediction+.04;
     if(observation.per_ray_sigma)observation.measured=expectedPingRange(observation.pose,mount,rays,normal,distance,.1,.005,.2,50.).range.prediction+.04;
     auto inputs=landmarks();auto group=assemblePingGroup(18,normal,distance,inputs,{observation},.02,.23);
+    auto outlier=observation;outlier.measured+=1.;
+    const auto robust_group=assemblePingGroup(18,normal,distance,inputs,{outlier},.02,.23);
+    auto linear_outlier=outlier;linear_outlier.range_loss_scale.reset();
+    const auto linear_group=assemblePingGroup(18,normal,distance,inputs,{linear_outlier},.02,.23);
+    const double robust_ratio=robust_group.jacobian.bottomRows(1).squaredNorm()/linear_group.jacobian.bottomRows(1).squaredNorm();
+    auto plus=outlier,minus=outlier;plus.measured+=1e-6;minus.measured-=1e-6;
+    const double numeric_gradient=(assemblePingGroup(18,normal,distance,inputs,{plus},.02,.23).auxiliary_cost-
+      assemblePingGroup(18,normal,distance,inputs,{minus},.02,.23).auxiliary_cost)/2e-6;
+    const double robust_gradient_error=std::abs(numeric_gradient-3./outlier.sigma);
+    const bool robust_passed=std::abs(robust_group.auxiliary_cost-151.5)<1e-8 &&
+      std::abs(linear_group.auxiliary_cost-1352.)<1e-8 && std::abs(robust_ratio-3./52.)<1e-12 && robust_gradient_error<1e-6;
+    auto cauchy=outlier;cauchy.range_loss=PingRangeLoss::Cauchy;
+    const auto cauchy_group=assemblePingGroup(18,normal,distance,inputs,{cauchy},.02,.23);
+    plus=cauchy;minus=cauchy;plus.measured+=1e-6;minus.measured-=1e-6;
+    const double cauchy_gradient=(assemblePingGroup(18,normal,distance,inputs,{plus},.02,.23).auxiliary_cost-
+      assemblePingGroup(18,normal,distance,inputs,{minus},.02,.23).auxiliary_cost)/2e-6;
+    const double cauchy_weight=1./(1.+52.*52./9.);
+    const bool cauchy_passed=std::abs(cauchy_group.auxiliary_cost-4.5*std::log1p(52.*52./9.))<1e-8 &&
+      std::abs(cauchy_gradient-52.*cauchy_weight/.02)<1e-6 &&
+      std::abs(cauchy_group.jacobian.bottomRows(1).squaredNorm()/linear_group.jacobian.bottomRows(1).squaredNorm()-cauchy_weight)<1e-12;
     bool fixed_reference_passed=true;
     if(observation.per_ray_sigma) {
       auto fixed_inputs=inputs;
@@ -142,8 +162,8 @@ int main(int argc,char** argv) {
     update_relative();observation.pose=poses[2];
     const auto updated=assemblePingGroup(18,normal,distance,landmarks(),{observation},.02,.23);
     const double after=updated.residual.squaredNorm()+25.*delta.squaredNorm();
-    bool passed=fixed_reference_passed && mixed_reference_rejected && marginal_passed && solve_error<1e-8 && after<before && duplicate_rejected && atomic_rejection && time_mismatch_rejected;
-    std::cout<<Json({{"fixed_reference_passed",fixed_reference_passed},{"expected_return",observation.per_ray_sigma.has_value()},{"passed",passed},{"landmarks",points.size()},{"host_frames",3},
+    bool passed=cauchy_passed && robust_passed && fixed_reference_passed && mixed_reference_rejected && marginal_passed && solve_error<1e-8 && after<before && duplicate_rejected && atomic_rejection && time_mismatch_rejected;
+    std::cout<<Json({{"cauchy_range_passed",cauchy_passed},{"robust_range_passed",robust_passed},{"robust_range_gradient_error",robust_gradient_error},{"outlier_information_ratio",robust_ratio},{"fixed_reference_passed",fixed_reference_passed},{"expected_return",observation.per_ray_sigma.has_value()},{"passed",passed},{"landmarks",points.size()},{"host_frames",3},
       {"marginal_covariance_error",covariance_error},{"future_factor_step_error",future_error},
       {"basalt_prior_rebasing_error",rebasing_error},{"gauge_preserved",gauge_preserved},{"invalid_order_rejected",invalid_order},
       {"full_vs_reduced_step_error",solve_error},{"objective_before",before},{"objective_after",after},

@@ -72,6 +72,14 @@ int main(int argc,char** argv) {
     if(!owner)throw std::runtime_error("unsupported_ping_estimator_owner");
     const auto input_settings=read_json(argv[1]);
     const bool joint_enabled=input_settings.value("enable_joint_ping",false);
+    const auto loss_name=input_settings.value("ping_range_loss",std::string("cauchy"));
+    if(loss_name!="cauchy" && loss_name!="huber")throw std::runtime_error("invalid_ping_range_loss");
+    const auto range_loss=loss_name=="cauchy"?posim_slam::PingRangeLoss::Cauchy:posim_slam::PingRangeLoss::Huber;
+    std::optional<double> range_scale=3.;
+    if(input_settings.contains("ping_range_loss_scale")) {
+      if(input_settings.at("ping_range_loss_scale").is_null())range_scale.reset();
+      else range_scale=positive(input_settings,"ping_range_loss_scale");
+    }
     double ping_bias=0.,ping_ray_sigma=0.;int next_plane_id=0;
     if(joint_enabled) {
       if(!ping_calibration)throw std::runtime_error("joint_ping_requires_calibration");
@@ -112,7 +120,7 @@ int main(int argc,char** argv) {
           candidate["rms_m"]=patch->rms;candidate["support_radius_m"]=patch->support_radius;
           if(joint_enabled) {
             const auto order=posim_slam::planPingMarginalLayout(base,{},{},{},{}).source;
-            posim_slam::OwnedPingObservation observation{stamp,measured,p,ping_bias,.02,ping_ray_sigma};
+            posim_slam::OwnedPingObservation observation{stamp,measured,p,ping_bias,.02,ping_ray_sigma,range_scale,range_loss};
             auto& factors=*estimator.posim_ping_factors;bool registered=false;
             for(const auto& group:factors.specs(order)) {
               try{factors.append(order,group.plane_id,observation);registered=true;break;}

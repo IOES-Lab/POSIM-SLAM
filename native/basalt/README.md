@@ -290,6 +290,10 @@ in every optimization, consumes them once into a bounded square-root prior, and
 maintains keyframe/optical-flow bookkeeping. It continues using that prior after
 all Ping groups retire. Registration uses 0.03 m surface and 0.02 m return residual
 weights; these are development model assumptions, not calibrated sensor accuracy.
+The stream uses Cauchy range loss with scale 3 in normalized residual units
+(`ping_range_loss: "cauchy"`, `ping_range_loss_scale: 3`). Huber is available for
+controlled comparison; a null scale disables the robust loss. Trial acceptance
+uses the actual robust cost, and IRLS rows use its current residual weight.
 `ping_fused` is true only when the current observation was registered and a joint
 step was accepted. Installed application defaults are unchanged.
 
@@ -299,7 +303,11 @@ step was accepted. Installed application defaults are unchanged.
 최적화에 포함하고, 한 번씩만 제한된 크기의 제곱근 사전정보로 넘기며,
 키프레임·영상 추적 이력을 정리합니다. 모든 Ping 그룹을 제거한 뒤에도
 그 사전정보를 계속 사용합니다. 표면 0.03 m, 반환 거리 0.02 m 잔차 가중치는
-개발용 모델 가정이며 보정된 센서 정확도가 아닙니다. 현재 관측 등록 후 공동
+개발용 모델 가정이며 보정된 센서 정확도가 아닙니다. 스트림은 정규화한
+거리 잔차에 규모 3의 Cauchy 손실을 씁니다(`ping_range_loss: "cauchy"`,
+`ping_range_loss_scale: 3`). 비교 실험용 Huber도 지원하며, 규모를 null로
+지정하면 강건 손실을 끕니다. 실제 강건 비용으로 보정을 수락하고 IRLS 행에는
+현재 잔차의 가중치를 적용합니다. 현재 관측 등록 후 공동
 보정이 수락된 경우에만 `ping_fused`가 true입니다. 설치형 앱의 기본값은
 변경하지 않습니다.
 
@@ -384,18 +392,20 @@ helper is not real-sonar calibration or a model of surface uncertainty.
 Jacobians and returns the conditional noise variance. Equal noiseless ray
 ranges are supported. A `PingGroupObservation` may select this mean model with
 `per_ray_sigma`; its `sigma` remains a separately specified, fixed residual
-weight. This is a Gaussian moment approximation to the minimum-return
-distribution. The group does not recompute weights during a trial or implement
-an exact minimum-return likelihood. Reference-mode Jacobians evaluate all
+standard deviation. This is a Gaussian moment approximation to the minimum-return
+distribution. Conditional ray variance does not replace `sigma` during a trial.
+Robust loss supplies an additional weight from the current normalized residual.
+The group does not implement an exact minimum-return likelihood. Reference-mode Jacobians evaluate all
 ray derivatives and winning probabilities at the same fixed pose/plane
 reference. Surface rows keep their separate explicit noise scale.
 
 `expectedPingRange`는 각 광선이 최솟값이 될 확률과 장착 위치를 반영한
 광선·평면 미분을 결합하고 조건부 잡음 분산을 반환합니다. 무잡음 거리가 같은
 광선도 처리합니다. `PingGroupObservation`의 `per_ray_sigma`를 지정하면
-이 기대값 모델을 사용하며, `sigma`는 별도로 지정한 고정 잔차 가중치입니다.
-이는 최솟값 분포의 평균·분산을 이용하는 가우스 근사입니다. 보정 시도 중에
-가중치를 다시 계산하지 않으며 정확한 최솟값 우도를 구현하지 않습니다.
+이 기대값 모델을 사용하며, `sigma`는 별도로 지정한 고정 잔차 표준편차입니다.
+이는 최솟값 분포의 평균·분산을 이용하는 가우스 근사입니다. 보정 시도 중
+조건부 광선 분산으로 `sigma`를 대체하지 않습니다. 강건 손실은 현재 정규화한
+잔차에서 추가 가중치를 계산합니다. 정확한 최솟값 우도를 구현하지는 않습니다.
 기준 상태 모드에서는 모든 광선 미분과 선택 확률을 동일한 기준 자세·평면에서
 계산합니다. 표면 잔차의 잡음 크기는 별도로 명시합니다.
 
@@ -635,7 +645,7 @@ landmark blocks out of independent QR and reduces their raw visual, shared
 surface and range rows together. Other visual landmarks, IMU blocks and the
 existing prior retain Basalt's path. Both square-root and normal-equation outputs
 contain each selected visual block once. Robust visual costs remain separate
-from the Gaussian surface/range costs.
+from the Gaussian surface and robust range costs.
 
 Back substitution requires `JointPingTrial`. Duplicate plane/landmark ownership
 and duplicate Ping timestamps across groups are rejected. Applying a trial
@@ -653,7 +663,7 @@ Basalt의 `LinearizationBase<double,6>` 인터페이스를 구현합니다. 선�
 랜드마크를 개별 QR 처리에서 분리하고 원본 영상·공유 표면·거리 잔차를 함께
 축약합니다. 나머지 영상 랜드마크, IMU 블록과 기존 사전정보는 Basalt 경로를
 유지합니다. 제곱근 행렬과 정규방정식 모두 선택한 영상 관측을 한 번만 포함합니다.
-강건 영상 비용과 가우시안 표면·거리 비용을 구분합니다.
+강건 영상·거리 비용과 가우시안 표면 비용을 구분합니다.
 
 역대입에는 `JointPingTrial`이 필요합니다. 평면·랜드마크의 중복 소유와 그룹 간
 중복 Ping 시각을 거부합니다. 갱신 적용 후에는 저장된 축약 행렬을 무효화합니다.

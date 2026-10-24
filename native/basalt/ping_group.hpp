@@ -15,6 +15,7 @@ struct PingGroupLandmark {
   Eigen::Index host_column;
   std::optional<WorldLandmark> reference_geometry;
 };
+enum class PingRangeLoss { Huber, Cauchy };
 struct PingGroupObservation {
   int64_t stamp_ns;
   int64_t pose_stamp_ns;
@@ -27,6 +28,8 @@ struct PingGroupObservation {
   // weight, including any separately justified model uncertainty; it is not
   // silently replaced by the geometry-dependent ray-selection variance.
   std::optional<double> per_ray_sigma;
+  std::optional<double> range_loss_scale=3.;
+  PingRangeLoss range_loss=PingRangeLoss::Huber;
 };
 
 inline void requireNativeSurfaceSupport(const Eigen::MatrixXd& points,const Eigen::MatrixXd& queries,
@@ -128,6 +131,7 @@ inline NativePingGroup assemblePingGroup(Eigen::Index pose_columns,const Vec3& n
        !stamps.insert(observation.stamp_ns).second ||
        observation.pose_column<0 || observation.pose_column+6>pose_columns ||
        !std::isfinite(observation.sigma) || observation.sigma<=0 ||
+       (observation.range_loss_scale && (!std::isfinite(*observation.range_loss_scale) || *observation.range_loss_scale<=0)) ||
        !std::isfinite(observation.minimum) || !std::isfinite(observation.maximum) ||
        !(observation.minimum>0 && observation.minimum<observation.maximum) ||
        !std::isfinite(observation.measured) || observation.measured<observation.minimum || observation.measured>observation.maximum)
@@ -153,11 +157,23 @@ inline NativePingGroup assemblePingGroup(Eigen::Index pose_columns,const Vec3& n
        row.prediction-observation.bias<observation.minimum || row.prediction-observation.bias>observation.maximum)
       throw std::invalid_argument("predicted_ping_out_of_range");
     requireNativeSurfaceSupport(points,row.intersections,normal,support_radius);
-    group.residual[offset]=(row.prediction-observation.measured)/observation.sigma;
-    group.auxiliary_cost+=.5*group.residual[offset]*group.residual[offset];
+    const double error=(row.prediction-observation.measured)/observation.sigma;
+    const double magnitude=std::abs(error);
+    const bool tail=observation.range_loss_scale && magnitude>*observation.range_loss_scale;
+    double weight=tail ? *observation.range_loss_scale/magnitude : 1.;
+    double cost=tail ? *observation.range_loss_scale*(magnitude-.5 * (*observation.range_loss_scale)) : .5*error*error;
+    if(observation.range_loss_scale && observation.range_loss==PingRangeLoss::Cauchy) {
+      const double c=*observation.range_loss_scale,ratio=error/c;
+      weight=1./(1.+ratio*ratio);cost=.5*c*c*std::log1p(ratio*ratio);
+    }
+    // IRLS rows use the current robust weight, while trial acceptance evaluates
+    // the actual robust cost. The FEJ geometric Jacobians remain unchanged.
+    group.auxiliary_cost+=cost;
+    const double scale=std::sqrt(weight)/observation.sigma;
+    group.residual[offset]=std::sqrt(weight)*error;
     group.observation_stamps.push_back(observation.stamp_ns);
-    group.jacobian.block<1,6>(offset,observation.pose_column)=row.pose_jacobian/observation.sigma;
-    group.jacobian.block<1,3>(offset,pose_columns)=row.plane_jacobian/observation.sigma;++offset;
+    group.jacobian.block<1,6>(offset,observation.pose_column)=row.pose_jacobian*scale;
+    group.jacobian.block<1,3>(offset,pose_columns)=row.plane_jacobian*scale;++offset;
   }
   if(!group.jacobian.allFinite() || !group.residual.allFinite())throw std::invalid_argument("nonfinite_ping_group");
   return group;
