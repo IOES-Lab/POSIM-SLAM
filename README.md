@@ -58,6 +58,15 @@ This bounded NumPy reference solver reports local rank and retains unobservable
 directions. Elevation branch ambiguity and point association require separate
 qualification. Streaming integration and navigation readiness remain unqualified.
 
+Optional `visual_geometry` and each track's `visual_observations` /
+`visual_measurement_covariance` add rectified pinhole pixel residuals to the same
+pose/point solve. Camera-only points can share pose states with sonar-only points;
+a shared point ID asserts an externally established physical correspondence.
+Camera and sonar noise blocks are assumed independent. Camera pose, intrinsics,
+image bounds and clip limits are explicit. Duplicate consumed visual observations
+and camera-model changes are rejected when using history. This reference path
+does not replace the native VIO worker or provide live cross-modal association.
+
 Optional `ping_patches` add single Ping returns to the same solve. Each patch
 references shared sonar track IDs and estimates its normal and signed distance.
 Planarity residuals occur once per support point; each independent range return

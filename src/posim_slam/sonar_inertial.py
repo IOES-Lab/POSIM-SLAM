@@ -20,7 +20,7 @@ from .dvl_scale import rotation,vector
 def optimize_window(*,states,tracks,imu_window,noise_density,gravity,
                     initial_state=None,initial_covariance=None,geometry,max_iterations=12,
                     ping_patches=(),retain_state_stamps_ns=None,linearized_prior=None,
-                    independent_new_measurements=False):
+                    independent_new_measurements=False,visual_geometry=None):
     """Optimize 2..4 poses and at most 16 point hypotheses using NumPy.
 
     State order is position, velocity, right attitude, gyro and accel bias (15).
@@ -39,12 +39,18 @@ def optimize_window(*,states,tracks,imu_window,noise_density,gravity,
     history instead of an initial state prior; new observations must be declared
     independent of absorbed ones. Retained Ping patches keep their support and
     noise model; their planarity rows are absorbed once, not added each window.
+    Optional per-track visual_observations add rectified pinhole pixels using
+    visual_geometry and visual_measurement_covariance. Optical/acoustic noise
+    is assumed independent. Sharing an ID asserts a physical cross-modal match;
+    separate visual-only landmarks can instead share just the pose states.
     """
     if not 2<=len(states)<=4 or not 1<=len(tracks)<=16:
         raise ValueError('bounded_sonar_inertial_window_required')
     if type(max_iterations) is not int or not 1<=max_iterations<=30:
         raise ValueError('invalid_solver_iteration_limit')
-    if sum(len(t['observations']) for t in tracks)>64:raise ValueError('too_many_sonar_observations')
+    if sum(len(t['observations'])+len(t.get('visual_observations',[])) for t in tracks)>64:raise ValueError('too_many_joint_observations')
+    if any(t.get('visual_observations') for t in tracks) and visual_geometry is None:
+        raise ValueError('visual_geometry_required')
     def checked(s):
         if not math.isfinite(s['stamp']) or s['stamp']<0:raise ValueError('invalid_state_time')
         return dict(stamp=float(s['stamp']),attitude=rotation(s['attitude']).copy(),
@@ -56,6 +62,11 @@ def optimize_window(*,states,tracks,imu_window,noise_density,gravity,
             raise ValueError('cross_window_measurement_independence_required')
         if linearized_prior.get('schema')!='posim-slam-sonar-frozen-prior-1':raise ValueError('invalid_prior_schema')
         context=linearized_prior.get('model',{})
+        old_visual=context.get('visual_geometry')
+        if ((old_visual is None)!=(visual_geometry is None) or
+                (visual_geometry is not None and (set(old_visual)!=set(visual_geometry)
+                 or any(not np.array_equal(old_visual[k],v) for k,v in visual_geometry.items())))):
+            raise ValueError('marginal_visual_model_changed')
         if (set(context.get('geometry',{}))!=set(geometry)
                 or any(not np.array_equal(context['geometry'][k],v) for k,v in geometry.items())
                 or not np.array_equal(context.get('gravity'),gravity)
@@ -79,6 +90,9 @@ def optimize_window(*,states,tracks,imu_window,noise_density,gravity,
         used={(t['track_id'],stamp) for t in ownership['sonar'] for stamp in t['stamps_ns']}
         if any((t['track_id'],o['stamp_ns']) in used for t in tracks for o in t['observations']):
             raise ValueError('sonar_observation_already_absorbed')
+        used_visual={(t['track_id'],stamp) for t in ownership.get('visual',[]) for stamp in t['stamps_ns']}
+        if any((t['track_id'],o['stamp_ns']) in used_visual for t in tracks for o in t.get('visual_observations',[])):
+            raise ValueError('visual_observation_already_absorbed')
     if len(ping_patches)>4:raise ValueError('too_many_ping_patches')
     inherited=len(linearized_prior['planes']) if linearized_prior is not None else 0
     if len(ping_patches)<inherited:raise ValueError('prior_plane_missing')
@@ -129,8 +143,12 @@ def optimize_window(*,states,tracks,imu_window,noise_density,gravity,
         rows.extend(pair_residual(v,a,b,gravity=g) for v,a,b in zip(pre,s,s[1:]))
         state_map=dict(zip(stamps,s))
         for track,point in zip(tracks,p):
+            if track.get('visual_observations'):
+                from .visual_factor import linearize_visual_track
+                rows.append(linearize_visual_track(observations=track['visual_observations'],states=state_map,
+                    landmark=point,measurement_covariance=track['visual_measurement_covariance'],**visual_geometry)['residual'])
             if not track['observations']:
-                if linearized_prior is None or track['track_id'] not in linearized_prior['track_ids']:
+                if not track.get('visual_observations') and (linearized_prior is None or track['track_id'] not in linearized_prior['track_ids']):
                     raise ValueError('unobserved_landmark_without_prior')
                 continue
             rows.append(linearize_track(observations=track['observations'],states=state_map,
@@ -191,15 +209,16 @@ def optimize_window(*,states,tracks,imu_window,noise_density,gravity,
         from .sonar_marginal import marginalize_window
         prior=marginalize_window(j,r,states=current,landmarks=points,planes=planes,
             track_ids=ids,retain_state_stamps_ns=retain_state_stamps_ns)
-        prior['model']=copy.deepcopy(dict(geometry=geometry,gravity=gravity,noise_density=noise_density))
+        prior['model']=copy.deepcopy(dict(geometry=geometry,gravity=gravity,noise_density=noise_density,visual_geometry=visual_geometry))
         prior['patch_models']=models
         prior['absorbed_measurements']=dict(initial_prior_stamp_ns=stamps[0],
             imu_intervals_ns=list(zip(stamps,stamps[1:])),
             sonar=[dict(track_id=t['track_id'],stamps_ns=[o['stamp_ns'] for o in t['observations']]) for t in tracks],
+            visual=[dict(track_id=t['track_id'],stamps_ns=[o['stamp_ns'] for o in t.get('visual_observations',[])]) for t in tracks],
             ping=[dict(track_ids=list(p['track_ids']),stamps_ns=[o['stamp_ns'] for o in p['observations']]) for p in ping_patches])
         if linearized_prior is not None:
             old=linearized_prior['absorbed_measurements'];new=prior['absorbed_measurements']
             new['initial_prior_stamp_ns']=old['initial_prior_stamp_ns']
-            for key in ('imu_intervals_ns','sonar','ping'):new[key]=copy.deepcopy(old[key])+new[key]
+            for key in ('imu_intervals_ns','sonar','visual','ping'):new[key]=copy.deepcopy(old.get(key,[]))+new[key]
         result['linearized_prior']=prior
     return result
