@@ -764,3 +764,25 @@ installation leaves the cutoff store unchanged.
 같은 특징점도 이후 관측으로 다시 삼각측량할 수 있습니다. 버퍼의 모든 카메라에서
 해당 과거 관측이 사라진 경우에만 제한 기록을 삭제합니다. 원본 영상 추적
 프레임은 수정하지 않으며, 사전정보 설치 실패 시 제한 기록도 유지합니다.
+
+### First-image gravity seed transport
+
+Calibration `require_gravity_seed: true` defers estimator initialization until a
+unit specific-force direction arrives as packet type 6 (`int64 stamp_ns`, three
+little-endian float64 components). It must arrive once, before the first image,
+with exactly that image's timestamp. The ready message advertises
+`gravity_seed_transport: first_image_direction_v1` and echoes the requirement.
+The worker rotates the supplied IMU direction onto local +Z, keeps the raw IMU
+stream unchanged, and initializes zero velocity and bias. Missing, duplicate,
+non-unit or mismatched-stamp seeds fail the segment. Callers must establish
+coverage and supply a direction in the first image's physical IMU frame. This
+protocol does not establish dynamic observability or navigation readiness.
+
+보정 설정의 `require_gravity_seed: true`는 패킷 유형 6으로 단위 비력 방향을 받을
+때까지 추정기 초기화를 미룹니다. 패킷은 little-endian `int64 stamp_ns`와
+float64 성분 세 개로 구성되며 첫 영상 전에 한 번만 보내고 영상 시각과 정확히
+일치해야 합니다. 준비 응답은 `gravity_seed_transport: first_image_direction_v1`과
+설정 여부를 알립니다. 작업자는 입력 IMU 방향을 로컬 +Z에 맞추고 원본 IMU 측정을
+유지하며 속도와 바이어스는 0으로 시작합니다. 누락·중복·비단위 방향·시각 불일치는
+구간 오류입니다. 호출자가 구간 데이터와 첫 영상 시각의 물리 IMU 좌표계를 보장해야
+합니다. 이 규약은 동적 관측 가능성이나 항법 준비를 입증하지 않습니다.

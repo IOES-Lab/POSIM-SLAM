@@ -66,6 +66,23 @@ class LiveInputTests(unittest.TestCase):
         c=self.client();c.processing_request=dict(width=800,height=600,max_image_pixels=120000,max_feature_cells=200)
         c._check_processing_ready(ready)
 
+    def test_gravity_seed_requires_capability_and_unit_direction(self):
+        c=self.client()
+        with self.assertRaisesRegex(ValueError,'unsupported'):c.gravity_seed(12,[0,0,1])
+        c.gravity_seed_transport=True
+        for direction in ([0,0,0],[0,0,2],[False,0,1],[float('nan'),0,1]):
+            with self.assertRaisesRegex(ValueError,'invalid_gravity_seed'):c.gravity_seed(12,direction)
+        c.gravity_seed(12,[0,0,-1])
+        packet=c.input.get_nowait()
+        self.assertEqual(struct.unpack('<IIq3d',packet),(6,32,12,0.,0.,-1.))
+
+    def test_reader_rejects_missing_required_gravity_seed_contract(self):
+        c=self.client();c.ready.clear();c.processing_request={'require_gravity_seed':True}
+        ready=dict(type='ready',protocol=1,inertial_fused=True)
+        c.process=type('Process',(),{'stdout':io.BytesIO((json.dumps(ready)+'\n').encode())})()
+        c._read();self.assertEqual(c.fault,'worker_gravity_seed_unsupported')
+        self.assertFalse(c.ready.is_set())
+
     def test_imu_vectors_must_have_separate_three_axis_shapes(self):
         c=self.client()
         with self.assertRaises(ValueError):c.imu(1,[1,2],[3,4,5,6])

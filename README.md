@@ -237,4 +237,6 @@ sample into the final IMU frame before trapezoidal averaging. Supply explicit
 gyro and accelerometer bias estimates. The returned direction is a numerical
 seed, not a velocity, bias or observability estimate. Constant translational
 acceleration can bias it even with noise-free measurements. The native Basalt
-worker does not yet consume this optional utility.
+worker accepts this direction through a first-image timestamp-bound seed packet
+when its calibration requests `require_gravity_seed`. Raw IMU packets remain
+unchanged; velocity and bias seeds still require their own assumptions.

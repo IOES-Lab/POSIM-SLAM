@@ -31,7 +31,7 @@ class LiveClient:
         self.budget_lock=threading.Lock();self.pending_bytes=0
         self.closed=threading.Event()
         self.ready=threading.Event()
-        self.ping_transport=False
+        self.ping_transport=False;self.gravity_seed_transport=False
         self.process=subprocess.Popen([str(Path(binary).resolve()),str(Path(calibration).resolve())],
             stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=log,bufsize=65536)
         self.writer=threading.Thread(target=self._write,daemon=True)
@@ -68,6 +68,10 @@ class LiveClient:
                     if self.ready.is_set() or value.get('protocol')!=1 or value.get('inertial_fused') is not True:
                         raise ValueError('worker_protocol')
                     self._check_processing_ready(value)
+                    self.gravity_seed_transport=value.get('gravity_seed_transport')=='first_image_direction_v1'
+                    if self.processing_request.get('require_gravity_seed',False) and (
+                        not self.gravity_seed_transport or value.get('gravity_seed_required') is not True):
+                        raise ValueError('worker_gravity_seed_unsupported')
                     self.ping_transport=value.get("image_ping_transport")=="exact_stamp_range_v1"
                 elif not self.ready.is_set():
                     raise ValueError('worker_output_before_ready')
@@ -128,6 +132,14 @@ class LiveClient:
                 raise ValueError('worker_image_ping_unsupported')
             payload+=struct.pack('<qd',*ping)
         self.send(5 if ping is not None else 2,payload+pixels)
+
+    def gravity_seed(self,stamp_ns,direction):
+        values=list(direction)
+        if (type(stamp_ns) is not int or not 0<stamp_ns<2**63 or len(values)!=3
+            or not all(isinstance(v,numbers.Real) and not isinstance(v,bool) and math.isfinite(v) for v in values)
+            or abs(sum(v*v for v in values)-1)>1e-6):raise ValueError('invalid_gravity_seed')
+        if not getattr(self,'gravity_seed_transport',False):raise ValueError('worker_gravity_seed_unsupported')
+        self.send(6,struct.pack('<q3d',stamp_ns,*values))
 
     def snapshot(self,request_id):
         if type(request_id) is not int or not 0<request_id<2**63:

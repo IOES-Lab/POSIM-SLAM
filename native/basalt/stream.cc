@@ -192,8 +192,10 @@ int main(int argc,char** argv) {
               {"observations",data->opt_flow_res && !data->opt_flow_res->observations.empty() ? data->opt_flow_res->observations[0].size() : 0}});
       }
     });
-    vio->initialize(Vec3::Zero(),Vec3::Zero());
-    emit({{"type","ready"},{"protocol",1},{"inertial_fused",true},{"map_export","segment_landmark_archive_ply_1"},
+    const bool require_gravity_seed=input_settings.value("require_gravity_seed",false);
+    if(!require_gravity_seed)vio->initialize(Vec3::Zero(),Vec3::Zero());
+    int64_t gravity_stamp=0;Vec3 gravity_direction=Vec3::Zero();
+    emit({{"type","ready"},{"gravity_seed_transport","first_image_direction_v1"},{"gravity_seed_required",require_gravity_seed},{"protocol",1},{"inertial_fused",true},{"map_export","segment_landmark_archive_ply_1"},
           {"image_ping_transport","exact_stamp_range_v1"},{"ping_fused",false},{"joint_ping_enabled",joint_enabled},
           {"opencv_threads",1},{"estimation_threads",2},
           {"keyframe_hold_frames",config.vio_min_frames_after_kf},
@@ -207,10 +209,16 @@ int main(int argc,char** argv) {
       if(!std::cin)std::_Exit(0);
       auto type=u32(header),size=u32(header+4);
       if(type==3 && size==0)std::_Exit(0);
-      if((type!=1 && type!=2 && type!=4 && type!=5) || size>uint32_t(c.width*c.height+32))fail("packet_size_or_type");
+      if((type!=1 && type!=2 && type!=4 && type!=5 && type!=6) || size>uint32_t(c.width*c.height+32))fail("packet_size_or_type");
       std::vector<char> bytes(size);std::cin.read(bytes.data(),size);
       if(!std::cin)fail("incomplete_packet");
-      if(type==4) {
+      if(type==6) {
+        if(size!=32 || !require_gravity_seed || image_stamp || gravity_stamp)fail("gravity_seed_contract");
+        gravity_stamp=int64_t(u64(bytes.data()));
+        for(int k=0;k<3;++k)gravity_direction[k]=number(bytes.data()+8+k*8);
+        if(gravity_stamp<=0 || !gravity_direction.allFinite() || std::abs(gravity_direction.norm()-1)>1e-6)
+          fail("invalid_gravity_seed");
+      } else if(type==4) {
         if(size!=8)fail("snapshot_request_size");
         const uint64_t request=u64(bytes.data());
         if(!request)fail("snapshot_request_id");
@@ -262,6 +270,11 @@ int main(int argc,char** argv) {
           std::lock_guard<std::mutex> lock(ping_mutex);
           if(image_pings.size()>=64)fail("image_ping_backlog");
           image_pings.emplace(stamp,PendingPing{range,false});
+        }
+        if(!image_stamp && require_gravity_seed) {
+          if(gravity_stamp!=stamp)fail("gravity_seed_image_stamp");
+          const Eigen::Quaterniond q=Eigen::Quaterniond::FromTwoVectors(gravity_direction,Vec3::UnitZ());
+          vio->initialize(stamp,Sophus::SE3d(q,Vec3::Zero()),Vec3::Zero(),Vec3::Zero(),Vec3::Zero());
         }
         image_stamp=stamp;
         cv::Mat raw(c.height,c.width,CV_8UC1,bytes.data()+offset);
