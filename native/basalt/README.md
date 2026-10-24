@@ -1025,3 +1025,18 @@ raw intensity tracks into calibrated acoustic measurements.
 
 이 관리 객체에는 대응 관계와 측정 불확실성을 별도로 제공해야 합니다. 원시
 강도 영상의 트랙을 보정된 음향 관측으로 바꾸는 기능은 포함하지 않습니다.
+
+
+The experimental `AcousticTracks(reference_check=True)` frontend also compares
+chained tracking against direct tracking from the birth frame. Both paths must
+pass forward/backward checks and agree within 0.5 pixels. Tracks expire after
+eight observations and receive new IDs when detected again. Reference images
+are shared and released with their tracks. The default is `False`; this optional
+check does not establish physical scatterer identity or measurement covariance.
+
+실험용 `AcousticTracks(reference_check=True)`는 연속 프레임 추적을 최초
+영상에서 직접 추적한 결과와 비교합니다. 양쪽 모두 왕복 추적 검사를 통과하고
+0.5픽셀 미만으로 일치해야 합니다. 관측 8개 후 트랙을 만료시키며 다시 검출하면
+새 ID를 부여합니다. 참조 영상은 공유하고 해당 트랙이 없어지면 해제합니다.
+기본값은 `False`이며, 이 검사가 물리적 반사점의 동일성이나 측정 공분산을
+확정하지는 않습니다.

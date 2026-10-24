@@ -63,4 +63,35 @@ class PersistentTrackTests(unittest.TestCase):
         self.assertEqual(result['observations'],[])
 
 
+class ReferenceTrackTests(unittest.TestCase):
+    def test_pairwise_survivor_rejected_when_reference_disagrees(self):
+        stream=AcousticTracks(max_tracks=1,reference_check=True)
+        with patch('posim_slam.acoustic_tracks.corner_pixels',return_value=np.array([[5.,5.]],dtype=np.float32)):
+            stream.push(frame(100))
+        pair=dict(matched=1,previous_indices=[0],current_pixels=[[6.,5.]],forward_backward_error_pixels=[.1])
+        with patch('posim_slam.acoustic_tracks.correspondences',return_value=pair),patch(
+                'posim_slam.acoustic_tracks.corner_pixels',return_value=[]):
+            stream.push(frame(200))
+        direct=dict(matched=1,previous_indices=[0],current_pixels=[[8.,5.]],forward_backward_error_pixels=[.1])
+        with patch('posim_slam.acoustic_tracks.correspondences',side_effect=[pair,direct]),patch(
+                'posim_slam.acoustic_tracks.corner_pixels',return_value=[]):
+            result=stream.push(frame(300))
+        self.assertEqual(result['reference_rejected'],1)
+        self.assertEqual(result['observations'],[])
+        self.assertEqual(stream.references,{})
+
+    def test_reference_lifetime_is_bounded_and_id_changes(self):
+        stream=AcousticTracks(max_tracks=1,reference_check=True)
+        pair=dict(matched=1,previous_indices=[0],current_pixels=[[5.,5.]],forward_backward_error_pixels=[.1])
+        with patch('posim_slam.acoustic_tracks.correspondences',return_value=pair),patch(
+                'posim_slam.acoustic_tracks.corner_pixels',return_value=np.array([[5.,5.]],dtype=np.float32)):
+            results=[stream.push(frame(i*100)) for i in range(1,10)]
+        self.assertEqual(results[7]['observations'][0]['length'],8)
+        self.assertEqual(results[8]['reference_expired'],1)
+        self.assertEqual(results[8]['observations'][0]['track_id'],1)
+        self.assertEqual(results[8]['observations'][0]['length'],1)
+        self.assertEqual(len(stream.references),1)
+        stream.reset();self.assertEqual(stream.references,{})
+
+
 if __name__=='__main__':unittest.main()
