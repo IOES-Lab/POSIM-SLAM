@@ -7,6 +7,28 @@ the anchor convention and must not add the absorbed measurements again.
 import copy
 import numpy as np
 from .ping_joint import eliminate_patch
+from .inertial_alignment import log_so3
+
+
+def prior_residual(prior,states,landmarks,track_ids):
+    """Evaluate frozen sonar/IMU history at its original tangent anchors."""
+    if prior['planes']:raise ValueError('persistent_ping_plane_consumer_not_implemented')
+    state_map={int(round(s['stamp']*1e9)):s for s in states}
+    point_map=dict(zip(track_ids,landmarks));delta=[]
+    for stamp,anchor in zip(prior['state_stamps_ns'],prior['states']):
+        if stamp not in state_map:raise ValueError('prior_state_missing')
+        s=state_map[stamp]
+        delta.extend(np.r_[s['position']-anchor['position'],s['velocity']-anchor['velocity'],
+            log_so3(anchor['attitude'].T@s['attitude']),s['gyro_bias']-anchor['gyro_bias'],
+            s['accel_bias']-anchor['accel_bias']])
+    for ident,anchor in zip(prior['track_ids'],prior['landmarks']):
+        if ident not in point_map:raise ValueError('prior_landmark_missing')
+        delta.extend(point_map[ident]-anchor)
+    j=np.asarray(prior['jacobian']);r=np.asarray(prior['residual'])
+    if (j.ndim!=2 or j.shape[1]!=len(delta) or r.shape!=(j.shape[0],)
+            or not np.isfinite(j).all() or not np.isfinite(r).all()):
+        raise ValueError('invalid_frozen_prior')
+    return j@np.asarray(delta)+r
 
 
 def marginalize_window(jacobian,residual,*,states,landmarks,planes,track_ids,

@@ -1,4 +1,5 @@
 import unittest
+import copy
 import numpy as np
 from posim_slam.sonar_marginal import marginalize_window
 from posim_slam.sonar_inertial import optimize_window
@@ -7,6 +8,44 @@ import test_sonar_inertial as sonar_tests
 
 
 class MarginalTests(unittest.TestCase):
+    def sequential_fixture(self):
+        full=sonar_tests.SonarInertialTests().delayed_ping_fixture()
+        first=copy.copy(full);first.update(states=copy.deepcopy(full['states'][:2]),ping_patches=[])
+        result=optimize_window(**first,retain_state_stamps_ns=[1_000_000_000])
+        second=copy.deepcopy(full)
+        second.update(states=[copy.deepcopy(result['states'][1]),copy.deepcopy(full['states'][2])],
+            initial_state=None,initial_covariance=None,linearized_prior=result['linearized_prior'],
+            independent_new_measurements=True)
+        for track,point in zip(second['tracks'],result['landmarks']):
+            track['observations']=[];track['measurement_covariance']=np.empty((0,0));track['landmark']=point.copy()
+        return full,second
+
+    def test_next_window_uses_historical_points_for_first_delayed_ping(self):
+        full,second=self.sequential_fixture()
+        second['states'][1]['position']+=np.array([.015,-.01,.02])
+        second['ping_patches'][0]['plane_distance']-=.025
+        result=optimize_window(**second,retain_state_stamps_ns=[3_000_000_000])
+        expected=optimize_window(**full)
+        self.assertLess(result['final_cost'],result['initial_cost']*1e-6)
+        np.testing.assert_allclose(result['states'][-1]['position'],expected['states'][-1]['position'],atol=1e-4)
+        self.assertAlmostEqual(result['planes'][0]['distance'],-.8,places=4)
+        self.assertEqual(result['linearized_prior']['absorbed_measurements']['imu_intervals_ns'],
+                         [(0,1_000_000_000),(1_000_000_000,3_000_000_000)])
+
+    def test_reused_measurements_model_changes_and_extra_prior_rejected(self):
+        full,second=self.sequential_fixture()
+        for kind in ('sonar','imu','prior','noise','independence'):
+            args=copy.deepcopy(second)
+            if kind=='sonar':args['tracks'][0]['observations']=[full['tracks'][0]['observations'][1]]
+            if kind=='imu':args['states']=copy.deepcopy(full['states'])
+            if kind=='prior':args['initial_state']=copy.deepcopy(full['initial_state'])
+            if kind=='noise':args['noise_density'][0]*=2
+            if kind=='independence':args['independent_new_measurements']=False
+            reason=dict(sonar='sonar_observation_already_absorbed',imu='imu_interval_already_absorbed',
+                prior='initial_and_marginal_prior_are_exclusive',noise='marginal_prior_model_changed',
+                independence='cross_window_measurement_independence_required')[kind]
+            with self.subTest(kind=kind),self.assertRaisesRegex(ValueError,reason):optimize_window(**args)
+
     def args(self):
         return dict(states=fixture()['states'],landmarks=[np.array([4.,0.,1.])],
                     planes=[],track_ids=[7],retain_state_stamps_ns=[1_000_000_000])

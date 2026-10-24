@@ -62,9 +62,15 @@ which is not implemented by this function.
 the other states from the final joint linearization. The rectangular square
 root retains correlations between the remaining states, landmarks and planes,
 including unobservable directions. Frozen anchors, plane tangent bases and
-absorbed measurement IDs accompany it. A streaming consumer must use those
-anchors and prevent reuse of absorbed observations. Prior consumption and
-persistent patch association are not yet connected to the live estimator.
+absorbed measurement IDs accompany it. `linearized_prior` consumes sonar/IMU
+history instead of a new initial-state prior. Retained landmarks may have no new
+sonar observation, allowing a later first Ping constraint to use their joint
+history. Duplicate sonar observations, overlapping IMU intervals and changed
+sensor/noise models are rejected. New observations must be explicitly declared
+independent of absorbed measurements using `independent_new_measurements=True`;
+cross-window correlated measurement noise is unsupported. The prior is frozen
+at its stored anchors. Priors already containing Ping planes cannot yet be
+consumed. Persistent patch association and live streaming remain unimplemented.
 
 `inertial_factor.pair_residual` uses measured `ImuWindow` preintegration to
 constrain endpoint position, velocity, rotation and biases with their full

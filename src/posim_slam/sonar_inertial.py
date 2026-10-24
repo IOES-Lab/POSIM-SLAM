@@ -18,8 +18,9 @@ from .dvl_scale import rotation,vector
 
 
 def optimize_window(*,states,tracks,imu_window,noise_density,gravity,
-                    initial_state,initial_covariance,geometry,max_iterations=12,
-                    ping_patches=(),retain_state_stamps_ns=None):
+                    initial_state=None,initial_covariance=None,geometry,max_iterations=12,
+                    ping_patches=(),retain_state_stamps_ns=None,linearized_prior=None,
+                    independent_new_measurements=False):
     """Optimize 2..4 poses and at most 16 point hypotheses using NumPy.
 
     State order is position, velocity, right attitude, gyro and accel bias (15).
@@ -34,7 +35,9 @@ def optimize_window(*,states,tracks,imu_window,noise_density,gravity,
     timestamps. Patch membership and reflection association are caller inputs.
     Optional retain_state_stamps_ns exports a frozen joint square-root prior
     after eliminating other states. It retains all point/plane correlations
-    and records absorbed measurements; no streaming prior consumer is implied.
+    and records absorbed measurements. linearized_prior can consume sonar/IMU
+    history instead of an initial state prior; new observations must be declared
+    independent of absorbed ones. Existing Ping-plane priors are not consumed.
     """
     if not 2<=len(states)<=4 or not 1<=len(tracks)<=16:
         raise ValueError('bounded_sonar_inertial_window_required')
@@ -45,14 +48,38 @@ def optimize_window(*,states,tracks,imu_window,noise_density,gravity,
         if not math.isfinite(s['stamp']) or s['stamp']<0:raise ValueError('invalid_state_time')
         return dict(stamp=float(s['stamp']),attitude=rotation(s['attitude']).copy(),
             **{key:vector(s[key]).copy() for key in ('position','velocity','gyro_bias','accel_bias')})
-    current=[checked(s) for s in states];prior=checked(initial_state);g=vector(gravity)
+    if linearized_prior is not None:
+        if initial_state is not None or initial_covariance is not None:
+            raise ValueError('initial_and_marginal_prior_are_exclusive')
+        if independent_new_measurements is not True:
+            raise ValueError('cross_window_measurement_independence_required')
+        if linearized_prior.get('schema')!='posim-slam-sonar-frozen-prior-1':raise ValueError('invalid_prior_schema')
+        if linearized_prior['planes']:raise ValueError('persistent_ping_plane_consumer_not_implemented')
+        context=linearized_prior.get('model',{})
+        if (set(context.get('geometry',{}))!=set(geometry)
+                or any(not np.array_equal(context['geometry'][k],v) for k,v in geometry.items())
+                or not np.array_equal(context.get('gravity'),gravity)
+                or not np.array_equal(context.get('noise_density'),noise_density)):
+            raise ValueError('marginal_prior_model_changed')
+    current=[checked(s) for s in states];prior=checked(initial_state) if linearized_prior is None else None;g=vector(gravity)
     stamps=[int(round(s['stamp']*1e9)) for s in current]
-    if (any(b<=a for a,b in zip(stamps,stamps[1:])) or prior['stamp']!=current[0]['stamp'] or
+    if (any(b<=a for a,b in zip(stamps,stamps[1:])) or (prior is not None and prior['stamp']!=current[0]['stamp']) or
             any(not 0<b['stamp']-a['stamp']<=3 for a,b in zip(current,current[1:]))):
         raise ValueError('invalid_sonar_inertial_times')
     ids=[t['track_id'] for t in tracks]
     if any(type(i) is not int or i<0 for i in ids) or len(set(ids))!=len(ids):raise ValueError('distinct_track_ids_required')
     points=[vector(t['landmark']).copy() for t in tracks]
+    if linearized_prior is not None:
+        from .sonar_marginal import prior_residual
+        prior_residual(linearized_prior,current,points,ids)
+        ownership=linearized_prior['absorbed_measurements']
+        previous_edges=[tuple(edge) for edge in ownership['imu_intervals_ns']]
+        # Overlap is a duplicate even if the caller subdivides an old interval.
+        if any(max(a,c)<min(b,d) for a,b in zip(stamps,stamps[1:]) for c,d in previous_edges):
+            raise ValueError('imu_interval_already_absorbed')
+        used={(t['track_id'],stamp) for t in ownership['sonar'] for stamp in t['stamps_ns']}
+        if any((t['track_id'],o['stamp_ns']) in used for t in tracks for o in t['observations']):
+            raise ValueError('sonar_observation_already_absorbed')
     if len(ping_patches)>4:raise ValueError('too_many_ping_patches')
     planes=[];support_indices=[];used_ids=set();used_times=set()
     for patch in ping_patches:
@@ -69,21 +96,28 @@ def optimize_window(*,states,tracks,imu_window,noise_density,gravity,
         normal=vector(patch['plane_normal']).copy();distance=float(patch['plane_distance'])
         if abs(normal@normal-1)>1e-8 or not math.isfinite(distance):raise ValueError('invalid_ping_plane_seed')
         planes.append(dict(normal=normal,distance=distance))
-    prior_l=np.linalg.cholesky(covariance(initial_covariance,15));count=len(current)
+    prior_l=np.linalg.cholesky(covariance(initial_covariance,15)) if prior is not None else None;count=len(current)
     plane_offset=15*count+3*len(points)
     dimension=plane_offset+3*len(planes)
     def integrate(s):
         return [imu_window.preintegrate(a['stamp'],b['stamp'],gyro_bias=a['gyro_bias'],
             accel_bias=a['accel_bias'],noise_density=noise_density) for a,b in zip(s,s[1:])]
     def residual(s,p,pl,pre):
-        first=s[0]
-        initial=np.r_[first['position']-prior['position'],first['velocity']-prior['velocity'],
-            log_so3(prior['attitude'].T@first['attitude']),first['gyro_bias']-prior['gyro_bias'],
-            first['accel_bias']-prior['accel_bias']]
-        rows=[np.linalg.solve(prior_l,initial)]
+        if prior is None:
+            rows=[prior_residual(linearized_prior,s,p,ids)]
+        else:
+            first=s[0]
+            initial=np.r_[first['position']-prior['position'],first['velocity']-prior['velocity'],
+                log_so3(prior['attitude'].T@first['attitude']),first['gyro_bias']-prior['gyro_bias'],
+                first['accel_bias']-prior['accel_bias']]
+            rows=[np.linalg.solve(prior_l,initial)]
         rows.extend(pair_residual(v,a,b,gravity=g) for v,a,b in zip(pre,s,s[1:]))
         state_map=dict(zip(stamps,s))
         for track,point in zip(tracks,p):
+            if not track['observations']:
+                if linearized_prior is None or track['track_id'] not in linearized_prior['track_ids']:
+                    raise ValueError('unobserved_landmark_without_prior')
+                continue
             rows.append(linearize_track(observations=track['observations'],states=state_map,
                 landmark=point,measurement_covariance=track['measurement_covariance'],**geometry)['residual'])
         for patch,plane,indices in zip(ping_patches,pl,support_indices):
@@ -142,9 +176,14 @@ def optimize_window(*,states,tracks,imu_window,noise_density,gravity,
         from .sonar_marginal import marginalize_window
         prior=marginalize_window(j,r,states=current,landmarks=points,planes=planes,
             track_ids=ids,retain_state_stamps_ns=retain_state_stamps_ns)
+        prior['model']=copy.deepcopy(dict(geometry=geometry,gravity=gravity,noise_density=noise_density))
         prior['absorbed_measurements']=dict(initial_prior_stamp_ns=stamps[0],
             imu_intervals_ns=list(zip(stamps,stamps[1:])),
             sonar=[dict(track_id=t['track_id'],stamps_ns=[o['stamp_ns'] for o in t['observations']]) for t in tracks],
             ping=[dict(track_ids=list(p['track_ids']),stamps_ns=[o['stamp_ns'] for o in p['observations']]) for p in ping_patches])
+        if linearized_prior is not None:
+            old=linearized_prior['absorbed_measurements'];new=prior['absorbed_measurements']
+            new['initial_prior_stamp_ns']=old['initial_prior_stamp_ns']
+            for key in ('imu_intervals_ns','sonar','ping'):new[key]=copy.deepcopy(old[key])+new[key]
         result['linearized_prior']=prior
     return result
