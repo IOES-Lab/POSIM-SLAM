@@ -28,6 +28,16 @@ Ping scale support requires every ray intersection inside the observed plane hul
 
 ## Joint fusion building blocks
 
+`sonar_inertial.optimize_window` jointly adjusts position, velocity, attitude,
+IMU biases and shared sonar points over 2–4 states. It requires an initial-state
+prior with covariance, calibrated gravity and sensor mounts, point seeds,
+associated range/azimuth observations and explicit sensor noise. Raw IMU
+preintegration is refreshed after nonlinear steps. Tracks may contain temporal
+noise correlations; noise between separate tracks is assumed independent.
+This bounded NumPy reference solver reports local rank and retains unobservable
+directions. Elevation branch ambiguity and point association require separate
+qualification. Streaming integration and navigation readiness remain unqualified.
+
 `inertial_factor.pair_residual` uses measured `ImuWindow` preintegration to
 constrain endpoint position, velocity, rotation and biases with their full
 15-state covariance. Gravity and endpoint states are explicit optimization
