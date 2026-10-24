@@ -8,7 +8,7 @@
 #include <iostream>
 
 int main(int argc,char** argv) {
-  if(argc!=2)return 2;
+  if(argc!=2 && !(argc==3 && std::string(argv[2])=="--expected-return"))return 2;
   try {
     using namespace posim_slam;
     auto calibration=input_calibration(argv[1]);auto& cal=calibration.cal;
@@ -60,8 +60,20 @@ int main(int argc,char** argv) {
     }
     Sophus::SE3d mount;mount.translation()<<.02,.03,.1;
     PingGroupObservation observation{1000000000,1000000000,12,poses[2],mount,rays,0.,.1,.02,.2,50.};
+    if(argc==3)observation.per_ray_sigma=.005;
     observation.measured=pingRange(observation.pose,mount,rays,normal,distance,.1).prediction+.04;
+    if(observation.per_ray_sigma)observation.measured=expectedPingRange(observation.pose,mount,rays,normal,distance,.1,.005,.2,50.).range.prediction+.04;
     auto inputs=landmarks();auto group=assemblePingGroup(18,normal,distance,inputs,{observation},.02,.23);
+    bool fixed_reference_passed=true;
+    if(observation.per_ray_sigma) {
+      auto fixed_inputs=inputs;
+      for(auto& l:fixed_inputs)l.reference_geometry=l.geometry;
+      auto shifted=observation;shifted.reference_pose=observation.pose;shifted.pose.translation().z()+=.002;
+      const auto reference_group=assemblePingGroup(18,normal,distance,fixed_inputs,{shifted},.02,.23,PingPlaneReference{normal,distance});
+      const double expected_residual=(expectedPingRange(shifted.pose,mount,rays,normal,distance,.1,.005,.2,50.).range.prediction-shifted.measured)/shifted.sigma;
+      fixed_reference_passed=(reference_group.jacobian-group.jacobian).norm()<1e-12 &&
+        std::abs(reference_group.residual.tail<1>()[0]-expected_residual)<1e-12;
+    }
     bool duplicate_rejected=false;
     try {assemblePingGroup(18,normal,distance,inputs,{observation,observation},.02,.23);}
     catch(const std::invalid_argument&){duplicate_rejected=true;}
@@ -130,8 +142,8 @@ int main(int argc,char** argv) {
     update_relative();observation.pose=poses[2];
     const auto updated=assemblePingGroup(18,normal,distance,landmarks(),{observation},.02,.23);
     const double after=updated.residual.squaredNorm()+25.*delta.squaredNorm();
-    bool passed=mixed_reference_rejected && marginal_passed && solve_error<1e-8 && after<before && duplicate_rejected && atomic_rejection && time_mismatch_rejected;
-    std::cout<<Json({{"passed",passed},{"landmarks",points.size()},{"host_frames",3},
+    bool passed=fixed_reference_passed && mixed_reference_rejected && marginal_passed && solve_error<1e-8 && after<before && duplicate_rejected && atomic_rejection && time_mismatch_rejected;
+    std::cout<<Json({{"fixed_reference_passed",fixed_reference_passed},{"expected_return",observation.per_ray_sigma.has_value()},{"passed",passed},{"landmarks",points.size()},{"host_frames",3},
       {"marginal_covariance_error",covariance_error},{"future_factor_step_error",future_error},
       {"basalt_prior_rebasing_error",rebasing_error},{"gauge_preserved",gauge_preserved},{"invalid_order_rejected",invalid_order},
       {"full_vs_reduced_step_error",solve_error},{"objective_before",before},{"objective_after",after},

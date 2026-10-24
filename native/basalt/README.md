@@ -364,6 +364,25 @@ calibration or a model of surface uncertainty.
 난수 실험 20만 회를 사용합니다. 아직 스트리밍 최적화기에 연결되지 않았으며,
 실제 소나 보정이나 표면 불확실성 모델을 대신하지 않습니다.
 
+`expectedPingRange` combines winning probabilities with mounted ray-plane
+Jacobians and returns the conditional noise variance. Equal noiseless ray
+ranges are supported. A `PingGroupObservation` may select this mean model with
+`per_ray_sigma`; its `sigma` remains a separately specified, fixed residual
+weight. This is a Gaussian moment approximation to the minimum-return
+distribution. The group does not recompute weights during a trial or implement
+an exact minimum-return likelihood. Reference-mode Jacobians evaluate all
+ray derivatives and winning probabilities at the same fixed pose/plane
+reference. Surface rows keep their separate explicit noise scale.
+
+`expectedPingRange`는 각 광선이 최솟값이 될 확률과 장착 위치를 반영한
+광선·평면 미분을 결합하고 조건부 잡음 분산을 반환합니다. 무잡음 거리가 같은
+광선도 처리합니다. `PingGroupObservation`의 `per_ray_sigma`를 지정하면
+이 기대값 모델을 사용하며, `sigma`는 별도로 지정한 고정 잔차 가중치입니다.
+이는 최솟값 분포의 평균·분산을 이용하는 가우스 근사입니다. 보정 시도 중에
+가중치를 다시 계산하지 않으며 정확한 최솟값 우도를 구현하지 않습니다.
+기준 상태 모드에서는 모든 광선 미분과 선택 확률을 동일한 기준 자세·평면에서
+계산합니다. 표면 잔차의 잡음 크기는 별도로 명시합니다.
+
 `ping_state.hpp` stores up to eight local planes in the actual Basalt estimator
 backup/restore lifecycle. `JointPingTrial` retains accepted finite cost decreases
 and restores poses, inertial states, landmarks and planes on rejection or

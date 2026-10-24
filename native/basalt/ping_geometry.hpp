@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 #pragma once
 #include <Eigen/Dense>
+#include "ping_return.hpp"
 #include <sophus/se3.hpp>
 #include <basalt/camera/stereographic_param.hpp>
 #include <cmath>
@@ -84,6 +85,38 @@ inline NativePingRange pingRange(const Sophus::SE3d& pose,const Sophus::SE3d& mo
   out.pose_jacobian.rightCols<3>()=(normal.transpose()*crossMatrix(lever)+t*normal.transpose()*crossMatrix(v))/b;
   out.plane_jacobian.head<2>()=(origin+t*v).transpose()*crossMatrix(normal)*basis/b;
   out.plane_jacobian[2]=1./b;
+  return out;
+}
+
+struct NativeExpectedPingRange {
+  NativePingRange range;
+  double variance;
+  std::vector<double> winner_probability;
+};
+
+// Smooth expected minimum of independently noisy rays. Geometric intersections
+// remain noiseless for coverage checks. The variance is conditional on geometry;
+// callers must define their weighting policy and surface uncertainty separately.
+inline NativeExpectedPingRange expectedPingRange(const Sophus::SE3d& pose,const Sophus::SE3d& mount,
+    const Eigen::MatrixXd& rays,const Vec3& normal,double distance,double bias,
+    double per_ray_sigma,double minimum,double maximum) {
+  if(rays.rows()<1 || rays.rows()>256 || rays.cols()!=3)
+    throw std::invalid_argument("invalid_ping_geometry");
+  std::vector<NativePingRange> individual;std::vector<double> ranges;
+  for(Eigen::Index i=0;i<rays.rows();++i) {
+    individual.push_back(pingRange(pose,mount,rays.row(i),normal,distance,0.));
+    ranges.push_back(individual.back().prediction);
+  }
+  const auto moments=pingReturnMoments(ranges,per_ray_sigma,bias,minimum,maximum);
+  NativeExpectedPingRange out;out.variance=moments.variance;out.winner_probability=moments.winner_probability;
+  out.range.prediction=moments.mean;out.range.active_ray=-1;
+  out.range.pose_jacobian.setZero();out.range.plane_jacobian.setZero();
+  out.range.intersections.resize(rays.rows(),3);
+  for(Eigen::Index i=0;i<rays.rows();++i) {
+    out.range.intersections.row(i)=individual[i].intersections.row(0);
+    out.range.pose_jacobian+=moments.winner_probability[i]*individual[i].pose_jacobian;
+    out.range.plane_jacobian+=moments.winner_probability[i]*individual[i].plane_jacobian;
+  }
   return out;
 }
 

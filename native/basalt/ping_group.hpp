@@ -23,6 +23,10 @@ struct PingGroupObservation {
   Eigen::MatrixXd rays;
   double measured,bias,sigma,minimum,maximum;
   std::optional<Sophus::SE3d> reference_pose;
+  // Optional expected-minimum model. sigma remains the fixed return residual
+  // weight, including any separately justified model uncertainty; it is not
+  // silently replaced by the geometry-dependent ray-selection variance.
+  std::optional<double> per_ray_sigma;
 };
 
 inline void requireNativeSurfaceSupport(const Eigen::MatrixXd& points,const Eigen::MatrixXd& queries,
@@ -128,12 +132,21 @@ inline NativePingGroup assemblePingGroup(Eigen::Index pose_columns,const Vec3& n
        !(observation.minimum>0 && observation.minimum<observation.maximum) ||
        !std::isfinite(observation.measured) || observation.measured<observation.minimum || observation.measured>observation.maximum)
       throw std::invalid_argument("invalid_or_duplicate_ping_observation");
-    auto row=pingRange(observation.pose,observation.mount,observation.rays,normal,distance,observation.bias);
+    auto predict=[&](const Sophus::SE3d& pose,const Vec3& n,double d) {
+      if(observation.per_ray_sigma)
+        return expectedPingRange(pose,observation.mount,observation.rays,n,d,observation.bias,
+          *observation.per_ray_sigma,observation.minimum,observation.maximum).range;
+      return pingRange(pose,observation.mount,observation.rays,n,d,observation.bias);
+    };
+    auto row=predict(observation.pose,normal,distance);
     if(reference) {
-      // Keep the current active beam association while evaluating derivatives
-      // at the same fixed pose/plane reference as the marginal prior.
-      const auto fixed=pingRange(*observation.reference_pose,observation.mount,
-          observation.rays.row(row.active_ray),reference->normal,reference->distance,observation.bias);
+      // Evaluate at the fixed pose/plane reference used by the marginal prior.
+      // The hard-minimum path retains its current active beam; expected
+      // return evaluates all ray probabilities at the reference.
+      const auto fixed=observation.per_ray_sigma ?
+          predict(*observation.reference_pose,reference->normal,reference->distance) :
+          pingRange(*observation.reference_pose,observation.mount,
+            observation.rays.row(row.active_ray),reference->normal,reference->distance,observation.bias);
       row.pose_jacobian=fixed.pose_jacobian;row.plane_jacobian=fixed.plane_jacobian;
     }
     if(row.prediction<observation.minimum || row.prediction>observation.maximum ||
