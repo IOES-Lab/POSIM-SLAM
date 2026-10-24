@@ -36,6 +36,9 @@ from associated range/azimuth tracks and fixed estimated poses, using multiple
 elevation seeds. It keeps alternative solutions and reports cost, local rank and
 termination reason. Pose uncertainty and physical return association are not
 resolved; the output is an initialization diagnostic, not an accepted map.
+Diagnostics include gradient, proposed step, range/FOV margins and invalid trial
+counts. `no_feasible_trial` means every tested step left the valid geometry;
+it does not prove that no constrained solution exists or that the track is wrong.
 
 `sonar_inertial.optimize_window` jointly adjusts position, velocity, attitude,
 IMU biases and shared sonar points over 2–4 states. It requires an initial-state
