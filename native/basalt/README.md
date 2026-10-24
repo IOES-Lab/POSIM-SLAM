@@ -343,6 +343,27 @@ candidate diagnostics; replay still reports `ping_fused: false`.
 앞쪽 물체의 관측점이 있으면 뒤쪽 평면을 거부합니다. 후보 진단 단계이므로
 재생 결과의 `ping_fused`는 계속 `false`입니다.
 
+`ping_return.hpp` computes the expected minimum and variance of 1–256 independent
+Gaussian ray ranges with a common positive standard deviation and fixed bias.
+It integrates each ray's winning density with 512 Simpson intervals over
+±10 standard deviations around the shortest noiseless range. Winning
+probabilities give derivatives of the expected return with respect to ray
+ranges. It rejects geometry within ten noise standard deviations of clipping
+limits. Missing returns, shared random bias and correlated noise require a
+different model. `basalt_ping_return_probe` checks analytic one/two-ray cases,
+finite-difference derivatives and a seeded 200,000-sample simulation. This
+helper is not yet used by the streaming optimizer; it is not real-sonar
+calibration or a model of surface uncertainty.
+
+`ping_return.hpp`는 동일한 양의 표준편차와 고정 바이어스를 갖는 독립 가우스
+잡음 광선 1~256개의 최솟값 평균·분산을 계산합니다. 가장 짧은 무잡음 거리의
+±10 표준편차 구간을 512개 Simpson 구간으로 적분합니다. 각 광선이 최솟값이
+될 확률은 광선 거리별 기대 반환값의 미분입니다. 거리 제한에서 잡음 표준편차의
+10배 이내인 형상은 거부합니다. 누락 반환, 공통 확률적 바이어스와 상관 잡음에는
+별도 모델이 필요합니다. 검증은 광선 1·2개의 해석적 정답, 수치 미분과 고정 시드
+난수 실험 20만 회를 사용합니다. 아직 스트리밍 최적화기에 연결되지 않았으며,
+실제 소나 보정이나 표면 불확실성 모델을 대신하지 않습니다.
+
 `ping_state.hpp` stores up to eight local planes in the actual Basalt estimator
 backup/restore lifecycle. `JointPingTrial` retains accepted finite cost decreases
 and restores poses, inertial states, landmarks and planes on rejection or
