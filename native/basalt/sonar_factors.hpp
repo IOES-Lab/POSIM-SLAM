@@ -71,13 +71,16 @@ class SonarFactorStore {
   // Validate a complete input batch on a private copy. Existing history and
   // calibration cannot change. New points start on the first measured fan ray;
   // that seed is not an elevation constraint or a qualified map point.
-  void applySnapshot(int64_t stamp,const std::vector<SonarTrackInput>& updates,
+  // Unsupported point geometry rejects only that update; malformed input
+  // still rolls back the entire batch. Return the rejected native track IDs.
+  std::vector<int64_t> applySnapshot(int64_t stamp,const std::vector<SonarTrackInput>& updates,
       const SonarCalibration& calibration,const SonarPoses& poses) {
     requireIdle();
     if(stamp<=last_snapshot_ || updates.empty() || updates.size()>16)
       throw std::invalid_argument("invalid_sonar_snapshot_order");
     SonarFactorStore staged;
     staged.tracks_=tracks_;staged.points_=points_;staged.last_id_=last_id_;staged.revision_=revision_;
+    std::vector<int64_t> rejected;
     int64_t previous=-1;
     for(const auto& update:updates) {
       if(update.id<=previous || update.observations.empty() || update.observations.back().stamp!=stamp)
@@ -95,17 +98,20 @@ class SonarFactorStore {
           if(a.stamp!=b.stamp || a.range!=b.range || a.azimuth!=b.azimuth)
             throw std::invalid_argument("changed_sonar_snapshot_history");
         }
-        staged.append(update.id,update.observations.back(),update.covariance,poses);
+        try {staged.append(update.id,update.observations.back(),update.covariance,poses);}
+        catch(const SonarPointOutsideSupport&) {rejected.push_back(update.id);}
       }else {
         if(update.observations.size()<3)throw std::invalid_argument("sonar_seed_requires_track_history");
         const auto& first=update.observations.front();const auto& pose=poses.at(first.stamp);
         const Eigen::Vector3d local(first.range*std::cos(first.azimuth),first.range*std::sin(first.azimuth),0.);
         const Eigen::Vector3d seed=pose.position+pose.attitude*(calibration.lever+calibration.sonar_to_imu*local);
-        staged.add(update.id,seed,calibration,update.observations,update.covariance,poses);
+        try {staged.add(update.id,seed,calibration,update.observations,update.covariance,poses);}
+        catch(const SonarPointOutsideSupport&) {rejected.push_back(update.id);}
       }
     }
     tracks_.swap(staged.tracks_);points_.swap(staged.points_);
     last_id_=staged.last_id_;revision_=staged.revision_;last_snapshot_=stamp;
+    return rejected;
   }
 
   Linearization linearize(const SonarPoses& poses,const SonarPoses* references=nullptr) const {
@@ -114,7 +120,11 @@ class SonarFactorStore {
     for(const auto& [id,track]:tracks_) {
       auto rows=build(track,points_.at(id),poses);
       if(references) {
-        auto fixed=build(track,track.reference_point,*references);
+        SonarTrackRows fixed;
+        try {fixed=build(track,track.reference_point,*references);}
+        catch(const SonarPointOutsideSupport& error) {
+          throw SonarPointOutsideSupport(std::string("sonar_reference_geometry:")+error.what());
+        }
         if(fixed.pose_jacobian.cols()!=rows.pose_jacobian.cols() || references->size()!=poses.size())
           throw std::invalid_argument("changed_sonar_reference_order");
         auto current=poses.begin();
@@ -211,15 +221,19 @@ class SonarFactorStore {
       if(stamp<=0)throw std::invalid_argument("invalid_sonar_pose_stamp");
       slots.emplace(stamp,slot++);
     }
+    sonarNoise(track.covariance,2*track.observations.size());
+    std::string unsupported;
     std::vector<SonarPointRows> rows;std::vector<int> indices;int64_t previous=0;
     const auto& c=track.calibration;
     for(const auto& observation:track.observations) {
       if(observation.stamp<=previous)throw std::invalid_argument("unordered_sonar_track");
       const auto& pose=poses.at(observation.stamp);
-      rows.push_back(sonarPointRows(pose.position,pose.attitude,c.lever,c.sonar_to_imu,point,
-        observation.range,observation.azimuth,c.minimum,c.maximum,c.horizontal_fov,c.vertical_fov));
+      try {rows.push_back(sonarPointRows(pose.position,pose.attitude,c.lever,c.sonar_to_imu,point,
+        observation.range,observation.azimuth,c.minimum,c.maximum,c.horizontal_fov,c.vertical_fov));}
+      catch(const SonarPointOutsideSupport& error) {unsupported=error.what();}
       indices.push_back(slots.at(observation.stamp));previous=observation.stamp;
     }
+    if(!unsupported.empty())throw SonarPointOutsideSupport(unsupported);
     return whitenSonarTrack(rows,indices,poses.size(),track.covariance);
   }
   std::map<int64_t,Track> tracks_;

@@ -112,5 +112,26 @@ int main() {
   batch.applySnapshot(4000,updates,c,poses);
   assert(batch.linearize(poses).rows.at(10).residual.size()==8 && batch.linearize(poses).rows.at(11).residual.size()==8);
   reject([&]{batch.applySnapshot(4000,updates,c,poses);});
+  // Geometrically unsupported associations are rejected without killing VIO.
+  // Malformed covariance/measurements still abort the atomic input batch.
+  SonarFactorStore admission;
+  std::vector<SonarTrackInput> candidates{{10,{observations[0],observations[1],observations[2]},covariance},
+                                        {11,{observations[0],observations[1],observations[2]},covariance}};
+  candidates[1].observations[0].range=.4;
+  auto invalid_candidates=candidates;invalid_candidates[1].covariance(0,0)=-1;
+  reject([&]{admission.applySnapshot(3000,invalid_candidates,c,poses);});
+  assert(admission.size()==0);
+  invalid_candidates=candidates;invalid_candidates[1].observations[2].range=-1;
+  reject([&]{admission.applySnapshot(3000,invalid_candidates,c,poses);});
+  assert(admission.size()==0);
+  const auto rejected=admission.applySnapshot(3000,candidates,c,poses);
+  assert(rejected==std::vector<int64_t>{11} && admission.activeIds()==std::vector<int64_t>{10});
+  const auto original_point=admission.point(10);const auto original_revision=admission.revision();
+  auto unsupported=poses;unsupported.at(4000).position.z()=4.;
+  SonarTrackInput extension{10,observations,extended};
+  const auto rejected_extension=admission.applySnapshot(4000,{extension},c,unsupported);
+  assert(rejected_extension==std::vector<int64_t>{10});
+  assert(admission.revision()==original_revision && (admission.point(10)-original_point).norm()==0);
+  assert(admission.linearize(poses).rows.at(10).residual.size()==6);
   std::cout<<"PASS native sonar point update, trial rollback, observation/covariance ownership and stale-row rejection\n";
 }

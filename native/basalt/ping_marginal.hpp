@@ -79,10 +79,24 @@ inline basalt::MargLinData<double> marginalizeJointSystem(
     const basalt::AbsOrderMap& source,const basalt::AbsOrderMap& retained,
     const Eigen::VectorXd& delta) {
   requireStateOrder(source);requireStateOrder(retained);
-  if(jacobian.rows()<1 || jacobian.rows()>4096 || jacobian.cols()>1024 ||
+  if(jacobian.rows()<1 || jacobian.cols()>1024 ||
+     residual.size()!=jacobian.rows() || !jacobian.allFinite() || !residual.allFinite() ||
      jacobian.cols()<Eigen::Index(source.total_size) ||
      delta.size()!=Eigen::Index(retained.total_size) || !delta.allFinite())
     throw std::invalid_argument("invalid_joint_marginal_layout:rows="+std::to_string(jacobian.rows())+",cols="+std::to_string(jacobian.cols())+",source="+std::to_string(source.total_size)+",retained="+std::to_string(retained.total_size)+",delta="+std::to_string(delta.size()));
+  // Collapse a tall observation stack before the full-U nuisance SVD.
+  // QR of [J r] preserves the complete least-squares norm, including the
+  // residual-only constant, in at most state/nuisance columns + one rows.
+  // The work of elimination then depends on variables, not feature count.
+  if(jacobian.rows()>jacobian.cols()+1) {
+    Eigen::MatrixXd augmented(jacobian.rows(),jacobian.cols()+1);
+    augmented<<jacobian,residual;
+    Eigen::HouseholderQR<Eigen::MatrixXd> qr(augmented);
+    const Eigen::MatrixXd compact=qr.matrixQR().topRows(augmented.cols())
+        .template triangularView<Eigen::Upper>();
+    return marginalizeJointSystem(compact.leftCols(jacobian.cols()),
+        compact.col(jacobian.cols()),source,retained,delta);
+  }
   std::vector<int> keep(retained.total_size);std::vector<bool> used(jacobian.cols(),false);
   for(const auto& [stamp,target]:retained.abs_order_map) {
     const auto found=source.abs_order_map.find(stamp);

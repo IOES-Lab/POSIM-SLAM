@@ -5,6 +5,9 @@
 #include <stdexcept>
 
 namespace posim_slam {
+class SonarPointOutsideSupport : public std::invalid_argument {
+ public: using std::invalid_argument::invalid_argument;
+};
 struct SonarPointRows {
   Eigen::Vector2d residual;
   Eigen::Matrix<double,2,6> pose_jacobian;
@@ -33,10 +36,10 @@ inline SonarPointRows sonarPointRows(const Eigen::Vector3d& position,
   const Eigen::Vector3d local=sonar_to_imu.transpose()*(attitude.transpose()*difference-lever);
   const double x=local.x(),y=local.y(),z=local.z(),rho2=x*x+y*y,range=local.norm();
   if(x<=0 || rho2<1e-12 || range<minimum || range>maximum)
-    throw std::invalid_argument("unsupported_native_sonar_point");
+    throw SonarPointOutsideSupport("unsupported_native_sonar_point");
   const double azimuth=std::atan2(y,x),elevation=std::atan2(z,std::sqrt(rho2));
   if(std::abs(azimuth)>horizontal_fov/2 || std::abs(elevation)>vertical_fov/2)
-    throw std::invalid_argument("native_sonar_point_outside_fov");
+    throw SonarPointOutsideSupport("native_sonar_point_outside_fov");
   Eigen::Matrix<double,2,3> projection;
   projection.row(0)=local.transpose()/range;projection.row(1)<<-y/rho2,x/rho2,0.;
   Eigen::Matrix3d cross;

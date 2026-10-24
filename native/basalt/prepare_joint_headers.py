@@ -135,6 +135,17 @@ def prepare(source,destination):
     text=replace_once(text,'      PoseStateWithLin<Scalar> pose(state);',
         '      PoseStateWithLin<Scalar> pose(state);\n'
         '      if (!pose.isLinearized()) pose.setLinTrue();')
+    # Keyframes can still own full velocity/bias states in a longer sensor
+    # window. Score their poses through the common accessor rather than assume
+    # every older keyframe has already become a pose-only state.
+    for old in ('frame_poses.at(*it1).getPose().translation()',
+                'frame_poses.at(*it2).getPose().translation()',
+                'frame_states.at(last_kf).getState().T_w_i.translation()'):
+        expected = 2 if '*it1' in old else 1
+        if text.count(old) != expected:
+            raise ValueError('pinned_basalt_keyframe_score_anchor_changed')
+        stamp = '*it1' if '*it1' in old else ('*it2' if '*it2' in old else 'last_kf')
+        text = text.replace(old, 'this->getPoseStateWithLin(' + stamp + ').getPose().translation()')
     text=replace_once(text,'    Timer t_actual_marg;', '''    if (posim_joint_started) {
       std::set<int64_t> removed = poses_to_marg;
       removed.insert(states_to_marg_all.begin(), states_to_marg_all.end());

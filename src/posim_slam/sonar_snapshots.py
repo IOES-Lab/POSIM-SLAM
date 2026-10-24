@@ -16,6 +16,7 @@ class SonarSnapshots:
         self.bindings = {}
         self.next_id = 0
         self.pending = None
+        self.blocked = set()
 
     def observe(self, state):
         """Consume each native state in order before preparing the next event."""
@@ -29,16 +30,33 @@ class SonarSnapshots:
                 any(type(i) is not int or i < 0 for i in active) or
                 active != sorted(set(active))):
             raise ValueError('invalid_sonar_state_report')
+        rejected = report.get('geometry_rejected_track_ids', [])
+        if (not isinstance(rejected, list) or any(type(i) is not int or i < 0 for i in rejected) or
+                rejected != sorted(set(rejected))):
+            raise ValueError('invalid_sonar_rejection_report')
+        blocked = self.blocked.copy()
         if self.pending is not None:
-            expected, bindings, next_id = self.pending
+            expected, bindings, next_id, submitted = self.pending
             if stamp != expected or not report.get('owner_received'):
                 raise ValueError('missing_sonar_snapshot_ack')
+            if not set(rejected) <= submitted:raise ValueError('unknown_rejected_sonar_track')
+            bindings = deepcopy(bindings)
+            for key, track in list(bindings.items()):
+                if track['id'] not in rejected:continue
+                old = self.bindings.get(key)
+                if old is not None and old['id'] == track['id']:
+                    bindings[key] = old
+                    blocked.add(key)  # Freeze this association until its owned factors retire.
+                else:
+                    del bindings[key]
         else:
+            if rejected:raise ValueError('unexpected_sonar_rejection_report')
             bindings, next_id = self.bindings, self.next_id
         known = {track['id'] for track in bindings.values()}
         if not set(active) <= known:
             raise ValueError('unknown_native_sonar_track')
         self.bindings = {key: value for key, value in bindings.items() if value['id'] in active}
+        self.blocked = blocked.intersection(self.bindings)
         self.next_id = next_id
         self.stamp, self.retained, self.active = stamp, set(retained), set(active)
         self.pending = None
@@ -66,14 +84,24 @@ class SonarSnapshots:
         for source in sorted(tracks, key=lambda track: track['id']):
             # Validate the complete supplied covariance before selecting a subset.
             encode_snapshot(stamp, [source])
+            if source['id'] in self.blocked:continue
             observations = source['observations']
             covariance = np.asarray(source['covariance'], dtype=float)
             old = bindings.get(source['id'])
             if old is not None:
                 history = old['observations']
-                indices = [i for i, obs in enumerate(observations) if obs['stamp_ns'] >= history[0]['stamp_ns']]
+                # Initial registration can retain noncontiguous keyframe poses.
+                # Keep exactly the native-owned timestamps, not every source
+                # observation after the first one (which reintroduces holes).
+                by_stamp = {obs['stamp_ns']: i for i, obs in enumerate(observations)}
+                owned = [obs['stamp_ns'] for obs in history]
+                additions = [obs['stamp_ns'] for obs in observations
+                             if obs['stamp_ns'] > owned[-1]]
+                if any(t not in by_stamp for t in owned) or additions != [stamp]:
+                    raise ValueError('changed_sonar_candidate_history')
+                indices = [by_stamp[t] for t in owned] + [by_stamp[stamp]]
                 selected = [observations[i] for i in indices]
-                if len(selected) != len(history)+1 or selected[:-1] != history:
+                if selected[:-1] != history:
                     raise ValueError('changed_sonar_candidate_history')
             else:
                 if len(bindings) >= 16:
@@ -96,5 +124,5 @@ class SonarSnapshots:
         updates.sort(key=lambda track: track['id'])
         if updates:
             encode_snapshot(stamp, updates)
-            self.pending = (stamp, bindings, next_id)
+            self.pending = (stamp, bindings, next_id, {track["id"] for track in updates})
         return deepcopy(updates)

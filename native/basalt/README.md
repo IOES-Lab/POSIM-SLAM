@@ -897,24 +897,30 @@ Call `LiveClient.sonar_snapshot(stamp_ns, tracks)` before sending the image at
 that exact timestamp. This sends binary packet type 7. A new track requires at
 least three observations. An existing track extends by one observation and
 preserves its old observations, covariance block and calibration. A snapshot is
-applied atomically. The initial point uses zero elevation only as a starting
+validated atomically for malformed inputs. Tracks whose point hypothesis falls
+outside sensor support are rejected individually; an existing track keeps its
+previous factors. The initial point uses zero elevation only as a starting
 estimate; elevation is not measured or constrained by this seed.
 
 준비 응답의 위 지원 문자열을 확인한 뒤, 같은 시각의 영상을 보내기 전에
 `LiveClient.sonar_snapshot(stamp_ns, tracks)`를 호출합니다. 바이너리 패킷 종류는
 7입니다. 새 트랙에는 관측이 3개 이상 필요하며, 기존 트랙은 관측 한 개씩 추가하고
-이전 관측·공분산 블록·보정을 유지합니다. 스냅샷 전체를 한 번에 적용합니다.
+이전 관측·공분산 블록·보정을 유지합니다. 입력 형식 오류는 스냅샷 전체를 거부합니다.
+점 가설이 센서 지원 범위를 벗어나면 해당 트랙의 추가만 거부하고, 기존 트랙의
+관측 요인은 유지합니다.
 초기 점의 고도각 0은 시작 추정값이며 높이 측정이나 제약으로 사용하지 않습니다.
 
 The state reply's `sonar` object reports `owner_received`, `submitted_tracks`
-and `accepted_steps` for received input, plus `active_track_ids` after
+and `accepted_steps` for received input, `geometry_rejected_track_ids` for
+unsupported additions, plus `active_track_ids` after
 marginalization. Wait for this reply before extending a track. Retired IDs cannot
 be reused; start a new track with a higher ID. `map_qualified` remains false:
 frontend association, noise calibration and actual scene reconstruction still
 require validation. PLY output contains the existing visual landmarks.
 
 상태 응답의 `sonar`에는 수신한 입력의 `owner_received`·`submitted_tracks`·
-`accepted_steps`와 주변화 이후의 `active_track_ids`가 담깁니다. 응답을 확인한 뒤
+`accepted_steps`, 지원 범위를 벗어난 추가의 `geometry_rejected_track_ids`,
+주변화 이후의 `active_track_ids`가 담깁니다. 응답을 확인한 뒤
 트랙을 연장합니다. 제거된 ID는 재사용할 수 없으며 새 트랙은 더 큰 ID로 시작합니다.
 대응점 추적·잡음 보정·실제 장면 복원 검증이 남아 있어 `map_qualified`는 false입니다.
 PLY 출력에는 기존 시각 랜드마크가 담깁니다.
@@ -1007,7 +1013,9 @@ segment. Feed ordered native state responses to `observe`, then call `prepare`
 with associated track histories and their full covariance. Source IDs must remain
 stable within the segment. The manager prunes expired candidate observations and
 selects the corresponding covariance rows and columns, preserving correlations.
-Existing native history is immutable. Retired tracks receive fresh native IDs
+Existing native history is immutable, including gaps left by marginalization.
+Rejected extensions freeze that source until its native track retires.
+Retired tracks receive fresh native IDs
 when they have enough retained observations to seed again. Wait for the snapshot
 acknowledgement before preparing another one. Create a new manager when the
 estimator or source-track segment resets.
@@ -1016,7 +1024,9 @@ estimator or source-track segment resets.
 순서대로 `observe`에 전달한 뒤, 대응 관계가 정해진 관측 이력과 전체 공분산을
 `prepare`에 전달합니다. 원본 트랙 ID는 구간 안에서 유지해야 합니다. 만료된
 후보 관측을 제외할 때 공분산의 해당 행·열을 선택해 상관관계를 보존합니다.
-등록된 이력은 변경할 수 없습니다. 제거된 트랙은 보관 관측이 충분해지면 새
+주변화로 생긴 관측 사이의 빈 구간도 등록된 이력에 포함되며 변경할 수 없습니다.
+연장이 거부된 원본 트랙은 네이티브 트랙이 제거될 때까지 더 연장하지 않습니다.
+제거된 트랙은 보관 관측이 충분해지면 새
 네이티브 ID로 등록합니다. 수신 확인 후 다음 스냅샷을 준비하며, 추정기나 원본
 트랙 구간을 초기화할 때 관리 객체도 새로 만듭니다.
 

@@ -31,6 +31,15 @@ int main() {
     estimator.frame_states.erase(100);
     Eigen::VectorXd delta;estimator.computeDelta(keep,delta);
     const auto prior=marginalizeJointSystem(j,r,source,keep,delta);
+    // Dense visual histories exceed the former 4096-row limit. Repeating
+    // independent identical systems must scale information and gradient only.
+    Eigen::MatrixXd tall_j(6000,36);Eigen::VectorXd tall_r(6000);
+    for(int k=0;k<100;++k){tall_j.middleRows(60*k,60)=j;tall_r.segment(60*k,60)=r;}
+    const auto tall=marginalizeJointSystem(tall_j,tall_r,source,keep,delta);
+    if((tall.H.transpose()*tall.H-100.*prior.H.transpose()*prior.H).norm()>1e-8 ||
+       (tall.H.transpose()*(tall.H*delta+tall.b)-100.*prior.H.transpose()*(prior.H*delta+prior.b)).norm()>1e-8 ||
+       tall.H.rows()>Eigen::Index(keep.total_size))
+      throw std::runtime_error("tall_marginal_information_changed");
     // The runtime linearization has already jointly eliminated each group's
     // landmarks and plane. Eliminating old states must retain the same system.
     const auto joint=eliminateJointPatch(j,r,source.total_size);
