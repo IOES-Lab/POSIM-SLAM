@@ -31,6 +31,12 @@ Ping scale support requires every ray intersection inside the observed plane hul
 See the [paired point-cloud/RGB comparison protocol](docs/comparison.md) for
 qualifying and documenting each completed sensor combination.
 
+`sonar_triangulation.point_hypotheses` initializes conditional point candidates
+from associated range/azimuth tracks and fixed estimated poses, using multiple
+elevation seeds. It keeps alternative solutions and reports cost, local rank and
+termination reason. Pose uncertainty and physical return association are not
+resolved; the output is an initialization diagnostic, not an accepted map.
+
 `sonar_inertial.optimize_window` jointly adjusts position, velocity, attitude,
 IMU biases and shared sonar points over 2–4 states. It requires an initial-state
 prior with covariance, calibrated gravity and sensor mounts, point seeds,
