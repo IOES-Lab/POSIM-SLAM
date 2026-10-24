@@ -283,44 +283,61 @@ ID를 채택합니다. 활성 ID는 최적화 좌표로 갱신하고 추정 창�
 
 ## Joint Ping adapter development / Ping 공동 최적화 어댑터
 
+The development worker accepts `enable_joint_ping: true` in its input calibration
+JSON (default false). It requires adjacent Ping calibration with fixed `range_bias`
+and positive `per_ray_noise_stddev`. The experimental schedule keeps active factors
+in every optimization, consumes them once into a bounded square-root prior, and
+maintains keyframe/optical-flow bookkeeping. It continues using that prior after
+all Ping groups retire. Registration uses 0.03 m surface and 0.02 m return residual
+weights; these are development model assumptions, not calibrated sensor accuracy.
+`ping_fused` is true only when the current observation was registered and a joint
+step was accepted. Installed application defaults are unchanged.
+
+개발용 워커의 입력 보정 JSON에서 `enable_joint_ping: true`로 실험적 공동
+최적화를 켭니다. 기본값은 false입니다. 같은 폴더의 Ping 보정에는 고정
+`range_bias`와 양수 `per_ray_noise_stddev`가 필요합니다. 활성 관측을 매번
+최적화에 포함하고, 한 번씩만 제한된 크기의 제곱근 사전정보로 넘기며,
+키프레임·영상 추적 이력을 정리합니다. 모든 Ping 그룹을 제거한 뒤에도
+그 사전정보를 계속 사용합니다. 표면 0.03 m, 반환 거리 0.02 m 잔차 가중치는
+개발용 모델 가정이며 보정된 센서 정확도가 아닙니다. 현재 관측 등록 후 공동
+보정이 수락된 경우에만 `ping_fused`가 true입니다. 설치형 앱의 기본값은
+변경하지 않습니다.
+
 `prepare_joint_headers.py` verifies the exact pinned Basalt landmark headers
 and creates a build-local include overlay. The original checkout and its
 BSD-3-Clause notices remain intact. The added interface exports unscaled visual
 rows before QR and applies validated landmark increments in Basalt's own
 stereographic-direction/inverse-distance coordinates. `basalt_joint_landmark_probe`
-compares raw-row reduction and back substitution against Basalt. The live
-optimizer does not yet select or consume Ping groups.
+compares raw-row reduction and back substitution against Basalt.
 
 `prepare_joint_headers.py`는 고정된 Basalt 특징점 헤더의 해시를 확인하고
 빌드 폴더 안에 확장 헤더를 생성합니다. 원본 체크아웃과 BSD-3-Clause 고지는
 유지됩니다. 추가 인터페이스는 QR 이전의 원본 시각 잔차를 내보내고 Basalt의
 방향·역거리 좌표에서 검증된 보정량을 적용합니다. `basalt_joint_landmark_probe`는
-변수 제거와 역대입을 기존 Basalt 계산과 비교합니다. 실행 중인 최적화기는
-아직 Ping 그룹을 선택하거나 사용하지 않습니다.
+변수 제거와 역대입을 기존 Basalt 계산과 비교합니다.
 
 `ping_geometry.hpp` expresses mounted range and surface residual derivatives in
 Basalt's map-frame left-rotation pose coordinates and stereographic landmark
 coordinates. `basalt_ping_geometry_probe` checks them against numerical
 derivatives using Basalt's actual pose update, including an inverted IMU pose.
-The helper is not yet assembled into the streaming optimizer.
+
 
 `ping_geometry.hpp`는 거리·표면 잔차 미분을 Basalt의 지도 기준 왼쪽 회전
 증분과 특징점 방향·역거리 좌표로 표현합니다. `basalt_ping_geometry_probe`는
 뒤집힌 IMU 자세를 포함해 실제 Basalt 자세 갱신의 수치 미분과 비교합니다.
-아직 스트리밍 최적화기에 이 관측을 조립하지는 않습니다.
+
 
 `ping_group.hpp` assembles raw Basalt visual rows and shared surface/range
 constraints with native host-pose and landmark columns. It checks footprint
 support, explicit noise, duplicate identity and exact-time pose association.
 Landmark trial updates are preflighted as a group. `basalt_ping_group_probe`
-checks a nonlinear trial with 25 landmarks and three host frames. Streaming
-group selection, trial acceptance and marginalization are not yet connected.
+checks a nonlinear trial with 25 landmarks and three host frames.
 
 `ping_group.hpp`는 원본 시각 잔차와 공유 표면·거리 제약을 호스트 자세 및
 특징점 변수에 함께 조립합니다. 관측 영역, 명시한 잡음, 중복 식별자와
 자세·측정 시각 일치를 검사하고 특징점 보정량을 모두 확인한 뒤 적용합니다.
 `basalt_ping_group_probe`는 특징점 25개와 호스트 프레임 3개로 비선형 보정
-단계를 검증합니다. 스트리밍 그룹 선택·보정 수락·주변화는 아직 연결되지 않았습니다.
+단계를 검증합니다.
 
 `ping_patch.hpp` selects candidate planes from active visual landmarks supported
 by at least three observations. Replay enables this with `--ping-patches` and
@@ -352,8 +369,7 @@ ranges. It rejects geometry within ten noise standard deviations of clipping
 limits. Missing returns, shared random bias and correlated noise require a
 different model. `basalt_ping_return_probe` checks analytic one/two-ray cases,
 finite-difference derivatives and a seeded 200,000-sample simulation. This
-helper is not yet used by the streaming optimizer; it is not real-sonar
-calibration or a model of surface uncertainty.
+helper is not real-sonar calibration or a model of surface uncertainty.
 
 `ping_return.hpp`는 동일한 양의 표준편차와 고정 바이어스를 갖는 독립 가우스
 잡음 광선 1~256개의 최솟값 평균·분산을 계산합니다. 가장 짧은 무잡음 거리의
@@ -361,8 +377,8 @@ calibration or a model of surface uncertainty.
 될 확률은 광선 거리별 기대 반환값의 미분입니다. 거리 제한에서 잡음 표준편차의
 10배 이내인 형상은 거부합니다. 누락 반환, 공통 확률적 바이어스와 상관 잡음에는
 별도 모델이 필요합니다. 검증은 광선 1·2개의 해석적 정답, 수치 미분과 고정 시드
-난수 실험 20만 회를 사용합니다. 아직 스트리밍 최적화기에 연결되지 않았으며,
-실제 소나 보정이나 표면 불확실성 모델을 대신하지 않습니다.
+난수 실험 20만 회를 사용합니다. 실제 소나 보정이나 표면 불확실성 모델을
+대신하지 않습니다.
 
 `expectedPingRange` combines winning probabilities with mounted ray-plane
 Jacobians and returns the conditional noise variance. Equal noiseless ray
@@ -440,8 +456,7 @@ linearized references are preserved. It installs the prior and invalidates
 cached Ping rows through the owner's revision. Call it on the owner thread
 after building the prior from those exact factors, with no intervening state
 edits and after releasing old linearizations. The caller separately maintains
-keyframe IDs, optical-flow history and queues. This API is not yet called by
-the streaming estimator's schedule.
+keyframe IDs, optical-flow history and queues.
 
 `installPingMarginalPrior`는 실제 컨테이너를 바꾸기 전에 제거 의존관계,
 상태 구성과 제곱근 사전정보를 검증합니다. 복사본에서 상태 전환·삭제,
@@ -450,23 +465,21 @@ the streaming estimator's schedule.
 개정 번호를 올려 캐시된 Ping 행렬을 무효화합니다. 정확히 해당 관측들로
 사전정보를 만든 뒤, 중간 상태 변경 없이 이전 선형화 객체를 해제하고 소유자
 스레드에서 호출해야 합니다. 키프레임 ID·영상 추적 이력·큐는 호출자가 별도로
-관리합니다. 아직 스트리밍 추정기의 실행 순서에는 연결되지 않았습니다.
+관리합니다.
 
 The build-local pinned `SqrtKeypointVioEstimator` has a pre-marginalization callback
 configured before input submission. The streaming worker uses it to deliver an
 exact image/Ping pair on the estimator thread after the current visual/IMU optimization and before
 marginalization. `ping_owner_received` reports this delivery in
-state output; it is false without a matching Ping. `ping_fused` remains false:
-the callback currently records delivery and the original optimization schedule
-still runs. Upstream headers/source are hash-checked and remain unmodified.
+state output; it is false without a matching Ping. The experimental joint schedule
+runs after registration when enabled. Upstream headers/source are hash-checked and remain unmodified.
 
 빌드용으로 복사한 고정 버전 `SqrtKeypointVioEstimator`에는 입력 제출 전에
 설정하는 주변화 직전 콜백이 있습니다. 스트리밍 워커는 현재 영상·IMU 최적화 후,
 주변화 전에 동일 시각 영상·Ping 쌍을 추정기 스레드에 전달합니다.
 상태 출력의 `ping_owner_received`가 이 전달 여부이며 대응 Ping이 없으면
-거짓입니다. 현재 콜백은 전달만 기록하고 기존 최적화 순서를 실행하므로
-`ping_fused`는 계속 거짓입니다. 원본 헤더·소스는 해시로 확인하며 수정하지
-않습니다.
+거짓입니다. 실험적 공동 최적화를 켜면 관측 등록 후 공동 최적화를 실행합니다.
+원본 헤더·소스는 해시로 확인하며 수정하지 않습니다.
 
 When `ping-calibration.json` is present beside the worker calibration, the
 owner callback selects candidate patches from current raw landmarks. A point
@@ -509,8 +522,7 @@ cost decrease with positive predicted decrease. Unsupported trial geometry
 restores the complete state before increasing damping. Defaults are six outer
 iterations and six attempts per iteration. The report gives accepted/rejected
 counts, costs and termination reason; reaching the iteration limit is not a
-convergence claim. This routine still needs activation in the streaming group
-schedule.
+convergence claim.
 
 `optimizePingGroups`는 시각·IMU·사전정보·Ping 비용을 함께 사용하는 제한된
 감쇠 공동 보정을 실행합니다. 거부된 시도 뒤에는 행렬을 다시 만들고, 상태와
@@ -518,8 +530,7 @@ schedule.
 감소와 양의 예측 감소가 있을 때만 수락합니다. 보정한 형상이 관측 영역을
 벗어나면 전체 상태를 복원한 뒤 감쇠를 높입니다. 기본값은 외부 반복 6회와
 반복당 시도 6회입니다. 수락·거부 횟수, 비용과 종료 사유를 반환하며 반복
-한도 도달은 수렴을 의미하지 않습니다. 스트리밍 그룹 실행 순서에서 이
-루틴을 활성화하는 연결은 아직 필요합니다.
+한도 도달은 수렴을 의미하지 않습니다.
 
 `ping_state.hpp` stores up to eight local planes in the actual Basalt estimator
 backup/restore lifecycle. `JointPingTrial` retains accepted finite cost decreases
@@ -543,8 +554,8 @@ worker advertises `image_ping_transport: exact_stamp_range_v1`; unsupported work
 are rejected before sending. Packet type 5 carries the image header, Ping timestamp
 and float64 range, then grayscale pixels. State output echoes `ping_observation`
 only at that exact timestamp. Pending observations are bounded to 64 per process.
-`ping_fused: false` identifies this transport stage; the live optimizer does not
-consume these observations yet. Sensor-specific bounds and calibration belong to
+`ping_fused` reports accepted joint optimization for that observation when enabled.
+Sensor-specific bounds and calibration belong to
 the caller; the wire format accepts finite positive ranges up to 1000 m.
 
 `LiveClient.image(..., ping=(stamp_ns, range_m))`은 영상과 단일 거리 관측을
@@ -552,8 +563,8 @@ the caller; the wire format accepts finite positive ranges up to 1000 m.
 `image_ping_transport: exact_stamp_range_v1` 지원 여부를 알리며, 지원하지 않으면
 전송 전에 거부합니다. 패킷 유형 5에는 영상 헤더, Ping 시각과 float64 거리,
 흑백 픽셀이 들어갑니다. 자세 출력의 `ping_observation`에는 동일 시각의 관측만
-포함됩니다. 대기 관측은 프로세스당 64개로 제한됩니다. `ping_fused: false`는
-입력 전달 단계임을 나타내며, 실시간 최적화기는 아직 이 관측을 사용하지 않습니다.
+포함됩니다. 대기 관측은 프로세스당 64개로 제한됩니다. `ping_fused`는 공동
+최적화를 켰을 때 해당 관측의 공동 보정 수락 여부를 나타냅니다.
 센서별 거리 범위와 보정은 호출자가 검증합니다. 전송 형식은 1000 m 이하의
 유한한 양수 거리를 허용합니다.
 
@@ -584,7 +595,9 @@ reject gaps, overlaps and unknown states. The residual is shifted to Basalt's
 existing linearization point using the supplied current state delta. No small
 artificial prior is added in unobservable directions. State-only rows from a
 previous joint group reduction are also accepted. If all state columns remain,
-the adapter preserves the rows and only reorders/rebases them.
+the adapter preserves their information while reordering/rebasing them. Tall
+priors are compressed by QR to at most the retained state dimension; discarded
+residual components contribute only a state-independent cost constant.
 
 The caller must include each raw factor once, retire its consumed observations,
 and supply consistent first-estimate Jacobians. This adapter does not choose
@@ -602,7 +615,9 @@ marginalization routine. Basalt omits a constant term from prior costs, so
 현재 상태 변화량을 사용해 잔차를 Basalt의 기존 선형화 기준점으로 옮깁니다.
 관측할 수 없는 방향에 임의의 작은 사전정보를 추가하지 않습니다.
 공동 그룹 제거 후 상태 열만 남은 행렬도 받습니다. 모든 상태 열을 유지하는
-경우에는 행을 보존하고 열 순서와 잔차 기준점만 조정합니다.
+경우에도 정보를 보존하면서 열 순서와 잔차 기준점을 조정합니다. QR 분해로
+사전정보의 행 수를 유지 상태 차원 이하로 줄입니다. 제거한 잔차 성분은 상태와
+무관한 비용 상수에만 기여합니다.
 
 호출자는 원본 관측을 한 번씩만 포함하고, 사전정보에 반영한 관측을 제거하며,
 일관된 최초 추정 기준 야코비안을 제공해야 합니다. 이 어댑터는 평면 연결을
@@ -691,8 +706,7 @@ states retain their delta; states newly frozen by installation use zero delta.
 The caller rebuilds group specifications for the current order and installs the
 result without intervening state changes using `installPingMarginalPrior`.
 The native probe exercises preparation and installation after nonlinear optimization
-with actual Basalt visual blocks and preintegrated IMU measurements. Streaming
-schedule integration remains pending.
+with actual Basalt visual blocks and preintegrated IMU measurements.
 
 `ping_prior.hpp::preparePingPrior`는 제거할 관측 선택, 전체 유지 상태 배치,
 공동 행렬 축약과 제곱근 사전정보 생성을 연결합니다. 끝점의 관성 좌표가
@@ -701,8 +715,7 @@ schedule integration remains pending.
 설치 시 새로 고정하는 상태의 변화량은 0으로 둡니다. 호출자는 현재 열 순서로
 그룹 명세를 다시 만들고, 상태 변경 없이 `installPingMarginalPrior`로 결과를
 설치합니다. 네이티브 검증은 실제 Basalt 영상 블록과 IMU 사전적분 관측으로
-비선형 최적화 후 생성·설치 과정을 확인합니다. 스트리밍 실행 순서 연결은
-아직 남아 있습니다.
+비선형 최적화 후 생성·설치 과정을 확인합니다.
 
 ### Persistent Ping factors / Ping 관측 유지
 
@@ -714,8 +727,7 @@ watermark survives retirement. Invalid registration restores the plane store.
 Marginalization installs the prior before erasing consumed factor definitions and
 returns the retirement plan for the estimator's optical-flow/keyframe bookkeeping.
 The native probe adds a fourth camera/IMU state and second Ping observation,
-optimizes both Ping observations together, then retires the group. Streaming
-activation still requires the native estimator's scheduling and history handling.
+optimizes both Ping observations together, then retires the group.
 
 `PingFactorStore`는 복사한 관측값, 고정한 특징점 연결과 평면 기준을 프레임
 사이에 유지하고, 매번 현재 상태 열 순서로 그룹 명세를 다시 만듭니다.
@@ -724,8 +736,7 @@ activation still requires the native estimator's scheduling and history handling
 등록 실패 시 평면 저장소를 복원합니다. 주변화는 사전정보 설치 후 소비한
 그룹을 지우고, 영상 추적·키프레임 정리에 쓸 제거 계획을 반환합니다.
 네이티브 검증은 네 번째 카메라·IMU 상태와 두 번째 Ping 관측을 추가해
-두 Ping 관측을 함께 최적화한 뒤 그룹을 제거합니다. 실시간 활성화에는
-추정기의 실행 순서와 영상 관측 이력 처리를 연결해야 합니다.
+두 Ping 관측을 함께 최적화한 뒤 그룹을 제거합니다.
 
 ### Consumed visual history / 소비한 영상 관측 이력
 

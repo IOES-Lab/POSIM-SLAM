@@ -82,7 +82,7 @@ inline basalt::MargLinData<double> marginalizeJointSystem(
   if(jacobian.rows()<1 || jacobian.rows()>4096 || jacobian.cols()>1024 ||
      jacobian.cols()<Eigen::Index(source.total_size) ||
      delta.size()!=Eigen::Index(retained.total_size) || !delta.allFinite())
-    throw std::invalid_argument("invalid_joint_marginal_layout");
+    throw std::invalid_argument("invalid_joint_marginal_layout:rows="+std::to_string(jacobian.rows())+",cols="+std::to_string(jacobian.cols())+",source="+std::to_string(source.total_size)+",retained="+std::to_string(retained.total_size)+",delta="+std::to_string(delta.size()));
   std::vector<int> keep(retained.total_size);std::vector<bool> used(jacobian.cols(),false);
   for(const auto& [stamp,target]:retained.abs_order_map) {
     const auto found=source.abs_order_map.find(stamp);
@@ -103,6 +103,16 @@ inline basalt::MargLinData<double> marginalizeJointSystem(
   prior.H=reduced.jacobian;
   // Basalt evaluates H*(delta + increment)+b, not H*increment+b.
   prior.b=reduced.residual-prior.H*delta;
+  // Retained priors must not accumulate residual-only rows across frames.
+  // QR preserves H^T H and H^T b in at most one row per retained coordinate;
+  // discarded residual components are a state-independent cost constant.
+  if(prior.H.rows()>prior.H.cols()) {
+    const Eigen::Index columns=prior.H.cols();
+    Eigen::HouseholderQR<Eigen::MatrixXd> qr(prior.H);
+    const Eigen::VectorXd transformed=qr.householderQ().adjoint()*prior.b;
+    prior.H=qr.matrixQR().topRows(columns).template triangularView<Eigen::Upper>();
+    prior.b=transformed.head(columns);
+  }
   if(!prior.H.allFinite() || !prior.b.allFinite())throw std::runtime_error("nonfinite_joint_marginal_prior");
   return prior;
 }

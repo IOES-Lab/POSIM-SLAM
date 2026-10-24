@@ -39,8 +39,19 @@ int main() {
     const double staged_gradient_error=(prior.H.transpose()*(prior.H*delta+prior.b)-staged.H.transpose()*(staged.H*delta+staged.b)).norm();
     // A retirement can consume factors without dropping any state columns.
     const auto unchanged=marginalizeJointSystem(joint.jacobian,joint.residual,source,source,Eigen::VectorXd::Zero(30));
-    const bool no_elimination_ok=(unchanged.H-joint.jacobian).norm()==0 &&
-      (unchanged.b-joint.residual).norm()==0;
+    const bool no_elimination_ok=unchanged.H.rows()<=30 &&
+      (unchanged.H.transpose()*unchanged.H-joint.jacobian.transpose()*joint.jacobian).norm()<1e-9 &&
+      (unchanged.H.transpose()*unchanged.b-joint.jacobian.transpose()*joint.residual).norm()<1e-9;
+    auto repeated=unchanged;
+    for(int repeat=0;repeat<20;++repeat) {
+      Eigen::MatrixXd stacked(repeated.H.rows()+joint.jacobian.rows(),30);
+      Eigen::VectorXd stacked_r(repeated.b.size()+joint.residual.size());
+      stacked<<repeated.H,joint.jacobian;stacked_r<<repeated.b,joint.residual;
+      repeated=marginalizeJointSystem(stacked,stacked_r,source,source,Eigen::VectorXd::Zero(30));
+    }
+    const bool repeated_prior_bounded=repeated.H.rows()<=30 &&
+      (repeated.H.transpose()*repeated.H-21.*joint.jacobian.transpose()*joint.jacobian).norm()<1e-8 &&
+      (repeated.H.transpose()*repeated.b-21.*joint.jacobian.transpose()*joint.residual).norm()<1e-8;
     // No artificial information may appear in an unobservable retained column.
     Eigen::MatrixXd gauge_j=j;gauge_j.col(15).setZero();
     const auto gauge_group=eliminateJointPatch(gauge_j,r,source.total_size);
@@ -134,8 +145,8 @@ int main() {
       (live.frame_states.at(400).getState().T_w_i.matrix()-newly_fixed_pose.matrix()).norm()==0 &&
       (installed.H-commit_prior.H).norm()==0 &&
       (installed.b-commit_prior.b).norm()==0 && installed.order.abs_order_map==layout.retained.abs_order_map;
-    bool passed=gauge_preserved && staged_information_error<1e-9 && staged_gradient_error<1e-9 && no_elimination_ok && malformed_rejected && commit_ok && layout_ok && dependency_rejected && expanded_error<1e-9 && information_error<1e-9 && gradient_error<1e-9 && change_error<1e-10 && invalid_state;
-    std::cout<<Json({{"gauge_preserved",gauge_preserved},{"staged_information_error",staged_information_error},{"staged_gradient_error",staged_gradient_error},{"no_elimination_preserved",no_elimination_ok},{"malformed_rejected",malformed_rejected},{"prior_installation_passed",commit_ok},{"invalid_prior_left_state_unchanged",commit_failure_atomic},{"repeated_installation_rejected",repeat_rejected},{"expanded_layout_passed",layout_ok},{"expanded_covariance_error",expanded_error},{"missing_dependency_rejected",dependency_rejected},{"passed",passed},{"imu_states",2},{"retained_columns",21},
+    bool passed=repeated_prior_bounded && gauge_preserved && staged_information_error<1e-9 && staged_gradient_error<1e-9 && no_elimination_ok && malformed_rejected && commit_ok && layout_ok && dependency_rejected && expanded_error<1e-9 && information_error<1e-9 && gradient_error<1e-9 && change_error<1e-10 && invalid_state;
+    std::cout<<Json({{"repeated_prior_bounded",repeated_prior_bounded},{"gauge_preserved",gauge_preserved},{"staged_information_error",staged_information_error},{"staged_gradient_error",staged_gradient_error},{"no_elimination_preserved",no_elimination_ok},{"malformed_rejected",malformed_rejected},{"prior_installation_passed",commit_ok},{"invalid_prior_left_state_unchanged",commit_failure_atomic},{"repeated_installation_rejected",repeat_rejected},{"expanded_layout_passed",layout_ok},{"expanded_covariance_error",expanded_error},{"missing_dependency_rejected",dependency_rejected},{"passed",passed},{"imu_states",2},{"retained_columns",21},
       {"basalt_information_error",information_error},{"basalt_gradient_error",gradient_error},
       {"rebased_trial_cost_change_error",change_error},{"invalid_state_order_rejected",invalid_state}}).dump()<<'\n';
     return passed?0:1;

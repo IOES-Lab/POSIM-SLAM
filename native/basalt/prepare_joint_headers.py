@@ -56,10 +56,15 @@ def prepare(source,destination):
         if hashlib.sha256(raw).hexdigest()!=checksum:raise ValueError('pinned_basalt_joint_header_changed:'+name)
         text=raw.decode()
         if name.endswith('/sqrt_keypoint_vio.h'):
-            text=replace_once(text,'#pragma once','#pragma once\n#include <functional>')
+            text=replace_once(text,'#pragma once','#pragma once\n#include <functional>\nnamespace posim_slam { class PingFactorStore; }')
             text=replace_once(text,'  using Scalar = Scalar_;','''  using Scalar = Scalar_;
   // Configured before input is submitted; called only by the estimator thread.
-  std::function<void(SqrtKeypointVioEstimator&, int64_t)> posim_before_marginalization;''')
+  std::function<void(SqrtKeypointVioEstimator&, int64_t)> posim_before_marginalization;
+  std::function<void(SqrtKeypointVioEstimator&, int64_t)> posim_after_joint;
+  std::shared_ptr<posim_slam::PingFactorStore> posim_ping_factors;
+  bool posim_joint_started = false;
+  int posim_joint_last_accepted = 0;
+  void posim_optimize_joint();''')
         elif name.endswith('/ba_base.h'):
             text=replace_once(text,'#pragma once','#pragma once\n#include "ping_state.hpp"\n#include "consumed_visual.hpp"')
             text=replace_once(text,'  inline void backup() {','''  posim_slam::PingPlaneStore posim_ping_planes;
@@ -93,9 +98,50 @@ def prepare(source,destination):
     if hashlib.sha256(raw).hexdigest()!='141dc9747dfb60e19e8ab93eab3b5600a6bb95fc249afdd5e15f4d844276c5c9':
         raise ValueError('pinned_basalt_owner_source_changed')
     text=replace_once(raw.decode(),'  optimize();\n  marginalize(num_points_connected, lost_landmaks);',
-        '  optimize();\n'
+        '  if (posim_joint_started) posim_optimize_joint(); else optimize();\n'
         '  if (posim_before_marginalization) posim_before_marginalization(*this, last_state_t_ns);\n'
+        '  if (posim_ping_factors && posim_ping_factors->lastObservation() == last_state_t_ns) {\n'
+        '    posim_joint_started = true; opt_started = true; posim_optimize_joint();\n'
+        '  }\n'
+        '  if (posim_after_joint) posim_after_joint(*this, last_state_t_ns);\n'
         '  marginalize(num_points_connected, lost_landmaks);')
+    text='#include "ping_factors.hpp"\n#include "ping_optimizer.hpp"\n'+text
+    text=replace_once(text,'      if (kv.first > last_state_to_marg) break;',
+        '      if (!posim_joint_started && kv.first > last_state_to_marg) break;')
+    text=replace_once(text,'      if (kv.first != last_state_to_marg) {',
+        '      if (kv.first < last_state_to_marg) {')
+    text=replace_once(text,'    Timer t_actual_marg;', '''    if (posim_joint_started) {
+      std::set<int64_t> removed = poses_to_marg;
+      removed.insert(states_to_marg_all.begin(), states_to_marg_all.end());
+      for (int64_t stamp : removed) states_to_marg_vel_bias.erase(stamp);
+      ImuLinData<double> imu = {g, gyro_bias_sqrt_weight, accel_bias_sqrt_weight, {}};
+      for (const auto& [stamp, measurement] : imu_meas) imu.imu_meas[stamp] = &measurement;
+      posim_ping_factors->marginalize(aom, marg_data, imu_meas, imu, removed,
+                                    states_to_marg_vel_bias, lost_landmaks);
+      for (int64_t stamp : removed) {
+        kf_ids.erase(stamp); num_points_kf.erase(stamp); prev_opt_flow_res.erase(stamp);
+      }
+      for (auto& [stamp, count] : num_points_kf) count = 0;
+      for (const auto& [id, point] : lmdb.getLandmarks())
+        if (num_points_kf.count(point.host_kf_id.frame_id)) ++num_points_kf.at(point.host_kf_id.frame_id);
+      this->posim_consumed_visual.prune(prev_opt_flow_res);
+      return;
+    }
+    Timer t_actual_marg;''')
+    text=replace_once(text,'template <class Scalar_>\nvoid SqrtKeypointVioEstimator<Scalar_>::debug_finalize()', '''template <class Scalar_>
+void SqrtKeypointVioEstimator<Scalar_>::posim_optimize_joint() {
+  if (!posim_ping_factors) throw std::logic_error("missing_ping_factor_store");
+  auto& base = static_cast<BundleAdjustmentBase<double>&>(*this);
+  const auto order = posim_slam::planPingMarginalLayout(base, {}, {}, {}, {}).source;
+  ImuLinData<double> imu = {g, gyro_bias_sqrt_weight, accel_bias_sqrt_weight, {}};
+  for (const auto& [stamp, measurement] : imu_meas) imu.imu_meas[stamp] = &measurement;
+  const auto report = posim_slam::optimizePingGroups(base, order,
+      posim_ping_factors->specs(order), marg_data, imu);
+  posim_joint_last_accepted = report.accepted;
+}
+
+template <class Scalar_>
+void SqrtKeypointVioEstimator<Scalar_>::debug_finalize()''')
     text=replace_once(text,'  prev_opt_flow_res[opt_flow_meas->t_ns] = opt_flow_meas;',
         '  prev_opt_flow_res[opt_flow_meas->t_ns] = opt_flow_meas;\n'
         '  this->posim_consumed_visual.prune(prev_opt_flow_res);')
