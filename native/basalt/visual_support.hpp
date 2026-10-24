@@ -40,3 +40,30 @@ inline std::set<int> mapping_inliers(const basalt::VioVisualizationData& data,in
   for(const auto& item:reprojection_residuals(data,width,height))if(item.second<=huber_px)result.insert(item.first);
   return result;
 }
+
+// Optional diagnostic output uses actual frontend IDs and optimized points.
+// It never changes feature selection, weights, triangulation or map admission.
+inline Json visual_track_trace(const basalt::VioVisualizationData& data,int width,int height,double huber_px,
+                               const std::set<int>& archived) {
+  Json rows=Json::array();
+  if(!data.opt_flow_res || data.opt_flow_res->observations.empty())return rows;
+  std::map<int,double> residuals;
+  for(const auto& item:reprojection_residuals(data,width,height))residuals[item.first]=item.second;
+  std::map<int,Json> points;
+  if(data.points.size()!=data.point_ids.size())throw std::runtime_error("trace_point_identity_mismatch");
+  for(size_t i=0;i<data.points.size();++i) {
+    const auto& p=data.points[i];
+    if(p.allFinite())points[data.point_ids[i]]={p.x(),p.y(),p.z()};
+  }
+  for(const auto& [id,observation]:data.opt_flow_res->observations[0]) {
+    const auto pixel=observation.translation();
+    if(!pixel.allFinite())continue;
+    const auto residual=residuals.find(id);const auto point=points.find(id);
+    rows.push_back({{"id",id},{"pixel",{pixel.x(),pixel.y()}},
+      {"point",point==points.end()?Json(nullptr):point->second},
+      {"reprojection_error_px",residual==residuals.end()?Json(nullptr):Json(residual->second)},
+      {"full_weight",residual!=residuals.end() && residual->second<=huber_px},
+      {"archived",archived.count(id)>0}});
+  }
+  return rows;
+}

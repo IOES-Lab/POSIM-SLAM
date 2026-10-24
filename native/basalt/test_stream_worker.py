@@ -37,12 +37,13 @@ class StreamWorkerTests(unittest.TestCase):
                 finally:client.close()
                 self.assertFalse(client.writer.is_alive());self.assertFalse(client.reader.is_alive())
                 self.assertIsNotNone(client.process.poll())
+                self.assertFalse(config.with_suffix('.visual-tracks.jsonl').exists())
 
     def test_featureless_start_preserves_initial_velocity_state(self):
         with tempfile.TemporaryDirectory() as folder:
             root=Path(folder);config=root/'calibration.json'
             config.write_text(json.dumps(dict(schema='posim-slam-vio-recording-1',orientation_used=False,
-                width=320,height=240,fx=250,fy=250,cx=160,cy=120,T_i_c_q_xyzw=[0,0,0,1],T_i_c_translation_m=[0,0,0],
+                record_visual_tracks=True,width=320,height=240,fx=250,fy=250,cx=160,cy=120,T_i_c_q_xyzw=[0,0,0,1],T_i_c_translation_m=[0,0,0],
                 imu_rate_hz=100,gyro_noise_density=.001,accel_noise_density=.02,
                 gyro_bias_random_walk=.0001,accel_bias_random_walk=.001,gravity_m_s2=9.80665,max_imu_gap_s=.02)))
             with (root/'worker.log').open('w') as log:
@@ -70,6 +71,10 @@ class StreamWorkerTests(unittest.TestCase):
                         self.assertEqual(state['initialization_window']['states'],index+1)
                 finally:client.close()
                 self.assertFalse(client.writer.is_alive() or client.reader.is_alive())
+                trace=[json.loads(line) for line in config.with_suffix('.visual-tracks.jsonl').read_text().splitlines()]
+                self.assertEqual(len(trace),8)
+                self.assertTrue(all(row['tracks']==[] for row in trace))
+                self.assertTrue(all(row['width']==320 and row['height']==240 for row in trace))
 
     def test_ping_timestamp_mismatch(self):self.check_fault('ping_stamp','invalid_exact_image_ping')
     def test_ping_nonfinite(self):self.check_fault('ping_nan','invalid_exact_image_ping')

@@ -72,6 +72,13 @@ int main(int argc,char** argv) {
     auto owner=std::dynamic_pointer_cast<basalt::SqrtKeypointVioEstimator<double>>(vio);
     if(!owner)throw std::runtime_error("unsupported_ping_estimator_owner");
     const auto input_settings=read_json(argv[1]);
+    const bool record_visual_tracks=input_settings.value("record_visual_tracks",false);
+    std::ofstream visual_trace;
+    if(record_visual_tracks) {
+      auto path=fs::path(argv[1]);path.replace_extension("visual-tracks.jsonl");
+      visual_trace.open(path);
+      if(!visual_trace)throw std::runtime_error("visual_trace_open_failed");
+    }
     const bool joint_enabled=input_settings.value("enable_joint_ping",false);
     const auto loss_name=input_settings.value("ping_range_loss",std::string("cauchy"));
     if(loss_name!="cauchy" && loss_name!="huber")throw std::runtime_error("invalid_ping_range_loss");
@@ -189,6 +196,7 @@ int main(int argc,char** argv) {
     });
     std::thread map_reader([&] {
       LandmarkArchive archive;
+      size_t traced_frames=0;
       for(;;) {
         basalt::VioVisualizationData::Ptr data;maps.pop(data);
         if(!data)fail("estimator_finished");
@@ -200,6 +208,17 @@ int main(int argc,char** argv) {
               mapping_inliers(*data,c.processed_width,c.processed_height,config.vio_obs_huber_thresh));
         } catch(const std::exception& error) {fail(error.what());}
         full->points=archive.points();
+        if(record_visual_tracks && traced_frames<=1800) {
+          Json trace={{"stamp_ns",data->t_ns},{"width",c.processed_width},{"height",c.processed_height}};
+          if(traced_frames==1800)trace["truncated"]=true;
+          else {
+            std::set<int> mature;
+            for(const auto& item:archive.active_mature(std::set<int>(data->point_ids.begin(),data->point_ids.end())))mature.insert(item.first);
+            trace["tracks"]=visual_track_trace(*data,c.processed_width,c.processed_height,config.vio_obs_huber_thresh,mature);
+          }
+          visual_trace<<trace.dump()<<'\n';visual_trace.flush();++traced_frames;
+          if(!visual_trace)fail("visual_trace_write_failed");
+        }
         {std::lock_guard<std::mutex> lock(snapshot_mutex);snapshot=full;}
         Json points=Json::array();
         const size_t count=full->points.size();

@@ -312,6 +312,15 @@ Add `--joint-ping` to fuse recorded ranges with exactly matching image timestamp
 
 Native stream states include `initialization_window`: the oldest retained optimizer state after optimization and before marginalization. Its timestamp, pose, velocity and biases allow recorded startup diagnostics to distinguish the emitted prediction from subsequent window corrections. This field does not certify initialization or change estimator inputs.
 
+Optional native input setting `record_visual_tracks: true` writes a sibling
+`*.visual-tracks.jsonl` file for up to 1,800 map frames, followed by an explicit
+truncation marker. Each row preserves actual frontend IDs/pixels, available
+optimized 3D coordinates, reprojection error, full-weight status and current
+mature archive membership. Pixel coordinates use the recorded processed image
+width/height. The default is off. These records diagnose where geometry is lost;
+they do not alter feature selection, triangulation or map admission. The native
+`basalt_visual_trace_probe` checks identity and stage distinctions.
+
 The native worker retains startup velocity/bias states until visual landmarks exist. The stream rejects a retained state window exceeding 128 states or 30 seconds of sensor time. This preserves variables for subsequent visual correction; it does not estimate initial velocity from IMU alone or qualify initialization.
 
 Use `--first-image-stamp-ns` with `--gravity-seed` to reproduce a recorded live startup timestamp. The requested image must exist exactly and have covered IMU history. Delayed marginalization establishes a linearization reference for every newly retained pose before constructing its prior; existing references remain unchanged.
