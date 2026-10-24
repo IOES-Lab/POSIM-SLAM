@@ -6,6 +6,7 @@
 #include "ping_optimizer.hpp"
 #include "ping_prior.hpp"
 #include "ping_commit.hpp"
+#include "ping_factors.hpp"
 #include <basalt/imu/preintegration.h>
 #include <iostream>
 
@@ -101,7 +102,17 @@ int main(int argc,char** argv) {
     auto reference_builder=spec.build;
     OwnedPingObservation owned_observation{times[2],measured,{mount,rays,.2,50.},.1,.02,std::nullopt};
     if(argc==3)owned_observation.per_ray_sigma=.005;
-    const auto owned_spec=makeOwnedPingGroup(owner,order,1,ids,{owned_observation},.02,.23);
+    owner.posim_ping_planes.erase(1);
+    PingFactorStore factors(owner);
+    auto invalid_registration=owned_observation;invalid_registration.return_sigma=0.;
+    bool registration_atomic=false;
+    try{factors.add(order,1,normal,distance,ids,invalid_registration,.02,.23);}
+    catch(const std::invalid_argument&){registration_atomic=factors.size()==0 && factors.lastObservation()==0 && owner.posim_ping_planes.size()==0;}
+    factors.add(order,1,normal,distance,ids,owned_observation,.02,.23);
+    const auto owned_spec=factors.specs(order).front();
+    bool replay_rejected=false;
+    try{factors.append(order,1,owned_observation);}catch(const std::invalid_argument&){replay_rejected=true;}
+
     // All valid-path optimization now uses the production owner-backed builder.
     // Retain the deliberately inconsistent builder only as the negative control.
     spec=owned_spec;
@@ -249,20 +260,56 @@ int main(int argc,char** argv) {
     restored_run=restored_run && (owner.posim_ping_planes.at(1).delta-saved_plane.delta).norm()==0;
     const auto optimized=optimizePingGroups(owner,order,{owned_spec},prior,imu);
     const bool optimizer_passed=restored_run && optimized.accepted>0 && optimized.final_cost<optimized.initial_cost && !owner.posim_ping_trial_active;
-    // Exercise the complete preparation/installation path with actual visual,
-    // Ping, prior and preintegrated IMU rows after nonlinear optimization.
-    const auto outgoing=preparePingPrior(owner,order,{owned_spec},prior,imu,{times[0]},{},{});
+    // A new frame extends the state order and visual target set. Persistent
+    // factors must rebuild their columns, retain the old Ping and add the new one.
+    const int64_t next_stamp=1300000000;
+    const auto latest=owner.frame_states.at(times[2]).getState();
+    auto next_pose=latest.T_w_i;next_pose.translation()+=latest.vel_w_i*.1;
+    owner.frame_states.emplace(next_stamp,basalt::PoseVelBiasStateWithLin<double>(
+      next_stamp,next_pose,latest.vel_w_i,latest.bias_gyro,latest.bias_accel,false));
+    auto next_order=order;next_order.abs_order_map[next_stamp]={45,15};next_order.total_size=60;++next_order.items;
+    for(int id=0;id<26;++id) {
+      const auto& point=owner.lmdb.getLandmark(id);
+      const auto host=owner.getPoseStateWithLin(point.host_kf_id.frame_id).getPose();
+      const auto world=worldLandmark(host,owner.calib.T_i_c[0],point.direction,point.inv_dist);
+      Eigen::Vector2d pixel;owner.calib.intrinsics[0].project(next_pose.inverse()*world.point,pixel);
+      owner.lmdb.addObservation({next_stamp,0},basalt::KeypointObservation<double>{id,pixel});
+    }
+    auto next_observation=owned_observation;next_observation.stamp=next_stamp;
+    const auto& current_plane=owner.posim_ping_planes.at(1);
+    next_observation.measured=(argc==3 ? expectedPingRange(next_pose,mount,rays,current_plane.normal,current_plane.distance,.1,.005,.2,50.).range.prediction :
+      pingRange(next_pose,mount,rays,current_plane.normal,current_plane.distance,.1).prediction);
+    auto unsupported=next_observation;unsupported.calibration.mount.translation().x()+=10.;
+    bool unsupported_atomic=false;
+    try{factors.append(next_order,1,unsupported);}
+    catch(const std::invalid_argument&){unsupported_atomic=factors.lastObservation()==times[2] && factors.specs(next_order).front().observation_pose_stamps.size()==1;}
+    factors.append(next_order,1,next_observation);
+    const auto next_specs=factors.specs(next_order);
+    const bool retained_observations=next_specs.front().observation_pose_stamps==std::set<int64_t>{times[2],next_stamp};
     std::map<int64_t,basalt::IntegratedImuMeasurement<double>> remaining_imu;
     for(int i=0;i<2;++i)remaining_imu.emplace(times[i],preintegrations[i]);
-    std::vector<JointPingGroupSpec> remaining_groups={owned_spec};auto installed_prior=prior;
-    installPingMarginalPrior(owner,installed_prior,remaining_groups,remaining_imu,
-      outgoing.retirement,outgoing.layout,{times[0]},{},outgoing.prior);
-    const bool prepared_install_passed=outgoing.layout.consumed_imu_starts==std::set<int64_t>{times[0]} &&
-      installed_prior.H.cols()==30 && installed_prior.H.allFinite() && owner.frame_states.size()==2 &&
+    auto [new_imu,inserted]=remaining_imu.emplace(times[2],basalt::IntegratedImuMeasurement<double>(times[2],Vec3::Zero(),Vec3::Zero()));
+    for(int k=1;k<=20;++k) {
+      basalt::ImuData<double> data;data.t_ns=times[2]+k*5000000LL;data.gyro.setZero();data.accel=Vec3(0,0,9.80665);
+      new_imu->second.integrate(data,Vec3::Constant(.0004),Vec3::Constant(.000001));
+    }
+    auto next_imu=imu;next_imu.imu_meas.clear();
+    for(const auto& [stamp,measurement]:remaining_imu)next_imu.imu_meas[stamp]=&measurement;
+    const auto next_optimization=optimizePingGroups(owner,next_order,next_specs,prior,next_imu);
+    auto installed_prior=prior;
+    bool mismatched_imu_rejected=false;
+    try{factors.marginalize(next_order,installed_prior,remaining_imu,imu,{times[0]},{},{});}
+    catch(const std::invalid_argument&){mismatched_imu_rejected=factors.size()==1 && owner.frame_states.size()==4 && remaining_imu.size()==3;}
+    const auto retired_factors=factors.marginalize(next_order,installed_prior,remaining_imu,next_imu,{times[0]},{},{});
+    bool retired_replay_rejected=false;
+    try{factors.add(next_order,2,normal,distance,ids,next_observation,.02,.23);}
+    catch(const std::invalid_argument&){retired_replay_rejected=factors.size()==0 && owner.posim_ping_planes.size()==0 && factors.lastObservation()==next_stamp;}
+    const bool prepared_install_passed=retired_factors.landmarks.size()==25 && retired_factors.observations==std::set<int64_t>{times[2],next_stamp} && retained_observations && next_optimization.accepted>0 && retired_replay_rejected &&
+      installed_prior.H.cols()==45 && installed_prior.H.allFinite() && owner.frame_states.size()==3 &&
       owner.lmdb.numLandmarks()==1 && owner.lmdb.landmarkExists(25) && owner.posim_ping_planes.size()==0 &&
-      remaining_groups.empty() && remaining_imu.size()==1 && remaining_imu.count(times[1]);
-    bool passed=prepared_install_passed && prepared_passed && optimizer_passed && invalid_owned_measurement && owner_support_passed && changed_dependencies_rejected && retirement_passed && incomplete_rejected && selection_error/normal_scale<1e-12 && reference_gauge_error<1e-8 && inconsistent_gauge_error>1e-7 && plane_reference_preserved && missing_reference && std::abs(before-3.5)<1e-9 && valid && duplicate && transaction_required && square_root_error/normal_scale<1e-12 && information_error/normal_scale<1e-12 && prediction_error<1e-7 && step_error<1e-7 && stale && rollback_stale && restored_cost && accepted;
-    std::cout<<Json({{"prepared_install_passed",prepared_install_passed},{"prepared_prior_passed",prepared_passed},{"prepared_prior_error",prepared_error},{"optimizer_passed",optimizer_passed},{"optimizer_rejection_restored",restored_run},{"optimizer_accepted",optimized.accepted},{"optimizer_initial_cost",optimized.initial_cost},{"optimizer_final_cost",optimized.final_cost},{"expected_return",argc==3},{"invalid_owned_measurement_rejected",invalid_owned_measurement},{"owner_visual_support_passed",owner_support_passed},{"changed_observation_dependencies_rejected",changed_dependencies_rejected},{"retirement_dependency_closure_passed",retirement_passed},{"marginal_selection_error",selection_error},{"incomplete_group_rejected",incomplete_rejected},{"passed",passed},{"joint_landmarks",25},{"independent_landmarks",1},{"imu_intervals",2},
+      factors.size()==0 && remaining_imu.size()==2 && remaining_imu.count(times[1]) && remaining_imu.count(times[2]);
+    bool passed=mismatched_imu_rejected && unsupported_atomic && registration_atomic && replay_rejected && prepared_install_passed && prepared_passed && optimizer_passed && invalid_owned_measurement && owner_support_passed && changed_dependencies_rejected && retirement_passed && incomplete_rejected && selection_error/normal_scale<1e-12 && reference_gauge_error<1e-8 && inconsistent_gauge_error>1e-7 && plane_reference_preserved && missing_reference && std::abs(before-3.5)<1e-9 && valid && duplicate && transaction_required && square_root_error/normal_scale<1e-12 && information_error/normal_scale<1e-12 && prediction_error<1e-7 && step_error<1e-7 && stale && rollback_stale && restored_cost && accepted;
+    std::cout<<Json({{"mismatched_imu_rejected",mismatched_imu_rejected},{"unsupported_append_atomic",unsupported_atomic},{"next_frame_accepted_steps",next_optimization.accepted},{"retained_observations",retained_observations},{"retired_replay_rejected",retired_replay_rejected},{"registration_atomic",registration_atomic},{"replayed_observation_rejected",replay_rejected},{"prepared_install_passed",prepared_install_passed},{"prepared_prior_passed",prepared_passed},{"prepared_prior_error",prepared_error},{"optimizer_passed",optimizer_passed},{"optimizer_rejection_restored",restored_run},{"optimizer_accepted",optimized.accepted},{"optimizer_initial_cost",optimized.initial_cost},{"optimizer_final_cost",optimized.final_cost},{"expected_return",argc==3},{"invalid_owned_measurement_rejected",invalid_owned_measurement},{"owner_visual_support_passed",owner_support_passed},{"changed_observation_dependencies_rejected",changed_dependencies_rejected},{"retirement_dependency_closure_passed",retirement_passed},{"marginal_selection_error",selection_error},{"incomplete_group_rejected",incomplete_rejected},{"passed",passed},{"joint_landmarks",25},{"independent_landmarks",1},{"imu_intervals",2},
       {"square_root_normal_error",square_root_error},{"single_ownership_information_error",information_error},
       {"normal_system_scale",normal_scale},{"relative_square_root_error",square_root_error/normal_scale},
       {"relative_information_error",information_error/normal_scale},{"model_decrease_error",prediction_error},{"reference_decrease",reference_decrease},{"first_prediction",first_prediction},{"reference_initial_cost",.5*full_r.squaredNorm()},{"independent_eliminated_visual_cost",eliminated_visual_constant},

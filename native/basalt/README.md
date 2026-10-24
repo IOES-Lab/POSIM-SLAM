@@ -703,3 +703,26 @@ schedule integration remains pending.
 설치합니다. 네이티브 검증은 실제 Basalt 영상 블록과 IMU 사전적분 관측으로
 비선형 최적화 후 생성·설치 과정을 확인합니다. 스트리밍 실행 순서 연결은
 아직 남아 있습니다.
+
+### Persistent Ping factors / Ping 관측 유지
+
+`PingFactorStore` keeps copied measurements, fixed landmark membership and plane
+references across frames. It rebuilds group specifications for each current state
+order. Up to eight groups and 64 observations per group are supported. Accepted
+observations have strictly increasing timestamps across the stream; the timestamp
+watermark survives retirement. Invalid registration restores the plane store.
+Marginalization installs the prior before erasing consumed factor definitions and
+returns the retirement plan for the estimator's optical-flow/keyframe bookkeeping.
+The native probe adds a fourth camera/IMU state and second Ping observation,
+optimizes both Ping observations together, then retires the group. Streaming
+activation still requires the native estimator's scheduling and history handling.
+
+`PingFactorStore`는 복사한 관측값, 고정한 특징점 연결과 평면 기준을 프레임
+사이에 유지하고, 매번 현재 상태 열 순서로 그룹 명세를 다시 만듭니다.
+최대 8개 그룹과 그룹당 64개 관측을 지원합니다. 수락하는 관측 시각은 스트림
+전체에서 증가해야 하며, 제거 후에도 마지막 수락 시각을 유지합니다.
+등록 실패 시 평면 저장소를 복원합니다. 주변화는 사전정보 설치 후 소비한
+그룹을 지우고, 영상 추적·키프레임 정리에 쓸 제거 계획을 반환합니다.
+네이티브 검증은 네 번째 카메라·IMU 상태와 두 번째 Ping 관측을 추가해
+두 Ping 관측을 함께 최적화한 뒤 그룹을 제거합니다. 실시간 활성화에는
+추정기의 실행 순서와 영상 관측 이력 처리를 연결해야 합니다.
