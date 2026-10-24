@@ -5,11 +5,7 @@
 
 namespace posim_slam {
 constexpr size_t sonarSnapshotLimit=16+16*(16+64*24+128*128*8);
-struct SonarSnapshotTrack {
-  int64_t id;
-  std::vector<SonarObservation> observations;
-  Eigen::MatrixXd covariance;
-};
+using SonarSnapshotTrack=SonarTrackInput;
 struct SonarSnapshot {int64_t stamp;std::vector<SonarSnapshotTrack> tracks;};
 inline SonarSnapshot decodeSonarSnapshot(const std::vector<char>& bytes) {
   if(bytes.size()<16 || bytes.size()>sonarSnapshotLimit)throw std::invalid_argument("sonar_snapshot_size");

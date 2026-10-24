@@ -95,5 +95,22 @@ int main() {
   assert(store.size()==0);
   reject([&]{store.retireWith(retirement,[]{});});
   reject([&]{store.add(7,seed,c,{observations[0]},Eigen::MatrixXd::Identity(2,2),poses);});
+  SonarFactorStore batch;
+  std::vector<SonarTrackInput> updates{{10,{observations[0],observations[1],observations[2]},covariance},
+                                     {11,{observations[0],observations[1],observations[2]},covariance}};
+  batch.applySnapshot(3000,updates,c,poses);
+  const auto batch_revision=batch.revision();const auto batch_point=batch.point(10);
+  for(auto& update:updates){update.observations.push_back(observations[3]);update.covariance=extended;}
+  updates[1].observations[0].range+=.1;
+  reject([&]{batch.applySnapshot(4000,updates,c,poses);});
+  assert(batch.revision()==batch_revision && (batch.point(10)-batch_point).norm()==0);
+  updates[1].observations[0].range-=.1;
+  // Restore the exact original binary value rather than floating roundoff.
+  updates[1].observations[0]=observations[0];
+  auto changed_calibration=c;changed_calibration.lever.x()=.01;
+  reject([&]{batch.applySnapshot(4000,updates,changed_calibration,poses);});
+  batch.applySnapshot(4000,updates,c,poses);
+  assert(batch.linearize(poses).rows.at(10).residual.size()==8 && batch.linearize(poses).rows.at(11).residual.size()==8);
+  reject([&]{batch.applySnapshot(4000,updates,c,poses);});
   std::cout<<"PASS native sonar point update, trial rollback, observation/covariance ownership and stale-row rejection\n";
 }

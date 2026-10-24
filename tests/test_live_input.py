@@ -13,6 +13,17 @@ class LiveInputTests(unittest.TestCase):
         c.ready=threading.Event();c.ready.set()
         return c
 
+    def test_sonar_transport_requires_capability_and_preserves_payload(self):
+        from posim_slam.sonar_packet import encode_snapshot
+        c=self.client()
+        tracks=[dict(id=1,observations=[dict(stamp_ns=100,range_m=4.,azimuth_rad=.1)],covariance=[[.01,0],[0,.001]])]
+        with self.assertRaisesRegex(ValueError,'unsupported'):c.sonar_snapshot(100,tracks)
+        self.assertEqual(c.pending_bytes,0)
+        c.sonar_transport=True;c.sonar_snapshot(100,tracks)
+        packet=c.input.get_nowait();kind,size=struct.unpack('<II',packet[:8])
+        self.assertEqual(kind,7);self.assertEqual(size,len(packet)-8)
+        self.assertEqual(packet[8:],encode_snapshot(100,tracks))
+
     def test_dead_worker_cleanup_closes_both_pipes_even_with_buffered_input(self):
         class BrokenInput(io.BytesIO):
             def close(self):

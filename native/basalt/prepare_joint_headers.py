@@ -61,6 +61,7 @@ def prepare(source,destination):
   // Configured before input is submitted; called only by the estimator thread.
   std::function<void(SqrtKeypointVioEstimator&, int64_t)> posim_before_marginalization;
   std::function<void(SqrtKeypointVioEstimator&, int64_t)> posim_after_joint;
+  std::function<void(SqrtKeypointVioEstimator&, int64_t)> posim_after_marginalization;
   std::shared_ptr<posim_slam::PingFactorStore> posim_ping_factors;
   std::shared_ptr<posim_slam::SonarFactorStore> posim_sonar_factors;
   bool posim_joint_started = false;
@@ -109,7 +110,8 @@ def prepare(source,destination):
         '  }\n'
         '  if (posim_after_joint) posim_after_joint(*this, last_state_t_ns);\n'
         '  // Keep unobserved startup velocity/bias states until visual constraints exist.\n'
-        '  if (lmdb.numLandmarks() > 0) marginalize(num_points_connected, lost_landmaks);')
+        '  if (lmdb.numLandmarks() > 0) marginalize(num_points_connected, lost_landmaks);\n'
+        '  if (posim_after_marginalization) posim_after_marginalization(*this, last_state_t_ns);')
     text='#include "ping_factors.hpp"\n#include "ping_optimizer.hpp"\n'+text
     text=replace_once(text,'      if (kv.first > last_state_to_marg) break;',
         '      if (!posim_joint_started && kv.first > last_state_to_marg) break;')

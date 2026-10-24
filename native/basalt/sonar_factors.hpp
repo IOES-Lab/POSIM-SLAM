@@ -13,6 +13,11 @@ struct SonarCalibration {
   Eigen::Matrix3d sonar_to_imu;
   double minimum,maximum,horizontal_fov,vertical_fov;
 };
+struct SonarTrackInput {
+  int64_t id;
+  std::vector<SonarObservation> observations;
+  Eigen::MatrixXd covariance;
+};
 using SonarPoses=std::map<int64_t,SonarPose>;
 
 // Owner-thread storage for independently associated acoustic points. Optical
@@ -63,6 +68,46 @@ class SonarFactorStore {
     build(track,points_.at(id),poses);
     std::swap(tracks_.at(id),track);++revision_;
   }
+  // Validate a complete input batch on a private copy. Existing history and
+  // calibration cannot change. New points start on the first measured fan ray;
+  // that seed is not an elevation constraint or a qualified map point.
+  void applySnapshot(int64_t stamp,const std::vector<SonarTrackInput>& updates,
+      const SonarCalibration& calibration,const SonarPoses& poses) {
+    requireIdle();
+    if(stamp<=last_snapshot_ || updates.empty() || updates.size()>16)
+      throw std::invalid_argument("invalid_sonar_snapshot_order");
+    SonarFactorStore staged;
+    staged.tracks_=tracks_;staged.points_=points_;staged.last_id_=last_id_;staged.revision_=revision_;
+    int64_t previous=-1;
+    for(const auto& update:updates) {
+      if(update.id<=previous || update.observations.empty() || update.observations.back().stamp!=stamp)
+        throw std::invalid_argument("invalid_sonar_snapshot_membership");
+      previous=update.id;
+      if(staged.contains(update.id)) {
+        const auto& old=staged.tracks_.at(update.id);const auto& c=old.calibration;
+        if(update.observations.size()!=old.observations.size()+1 ||
+            (c.lever-calibration.lever).norm()!=0 || (c.sonar_to_imu-calibration.sonar_to_imu).norm()!=0 ||
+            c.minimum!=calibration.minimum || c.maximum!=calibration.maximum ||
+            c.horizontal_fov!=calibration.horizontal_fov || c.vertical_fov!=calibration.vertical_fov)
+          throw std::invalid_argument("changed_sonar_snapshot_contract");
+        for(size_t i=0;i<old.observations.size();++i) {
+          const auto& a=old.observations[i];const auto& b=update.observations[i];
+          if(a.stamp!=b.stamp || a.range!=b.range || a.azimuth!=b.azimuth)
+            throw std::invalid_argument("changed_sonar_snapshot_history");
+        }
+        staged.append(update.id,update.observations.back(),update.covariance,poses);
+      }else {
+        if(update.observations.size()<3)throw std::invalid_argument("sonar_seed_requires_track_history");
+        const auto& first=update.observations.front();const auto& pose=poses.at(first.stamp);
+        const Eigen::Vector3d local(first.range*std::cos(first.azimuth),first.range*std::sin(first.azimuth),0.);
+        const Eigen::Vector3d seed=pose.position+pose.attitude*(calibration.lever+calibration.sonar_to_imu*local);
+        staged.add(update.id,seed,calibration,update.observations,update.covariance,poses);
+      }
+    }
+    tracks_.swap(staged.tracks_);points_.swap(staged.points_);
+    last_id_=staged.last_id_;revision_=staged.revision_;last_snapshot_=stamp;
+  }
+
   Linearization linearize(const SonarPoses& poses,const SonarPoses* references=nullptr) const {
     requireIdle();Linearization result;result.owner=this;result.revision=revision_;
     for(const auto& [stamp,pose]:poses)result.pose_stamps.push_back(stamp);
@@ -91,6 +136,9 @@ class SonarFactorStore {
   const Eigen::Vector3d& point(int64_t id) const {return points_.at(id);}
   size_t size() const {return tracks_.size();}
   uint64_t revision() const {return revision_;}
+  std::vector<int64_t> activeIds() const {
+    std::vector<int64_t> result;for(const auto& item:tracks_)result.push_back(item.first);return result;
+  }
   bool contains(int64_t id) const {return tracks_.count(id)!=0;}
 
   struct Retirement {
@@ -176,6 +224,6 @@ class SonarFactorStore {
   }
   std::map<int64_t,Track> tracks_;
   std::map<int64_t,Eigen::Vector3d> points_;
-  uint64_t revision_=0;int64_t last_id_=-1;bool trial_=false;
+  uint64_t revision_=0;int64_t last_id_=-1,last_snapshot_=0;bool trial_=false;
 };
 }

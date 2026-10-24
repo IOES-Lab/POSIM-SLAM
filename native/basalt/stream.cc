@@ -6,6 +6,8 @@
 #include "landmark_archive.hpp"
 #include "ping_input.hpp"
 #include "ping_factors.hpp"
+#include "sonar_packet.hpp"
+#include "sonar_input.hpp"
 #include <basalt/vi_estimator/sqrt_keypoint_vio.h>
 #include <tbb/global_control.h>
 #include <opencv2/core.hpp>
@@ -57,6 +59,8 @@ int main(int argc,char** argv) {
     std::mutex ping_mutex;
     struct PendingPing {double range;bool owner_received=false;Json candidate=nullptr;bool fused=false;};
     std::map<int64_t,PendingPing> image_pings;
+    std::map<int64_t,posim_slam::SonarSnapshot> image_sonar;
+    std::map<int64_t,Json> sonar_reports;
     std::map<int64_t,Json> initialization_windows;
     std::mutex snapshot_mutex;
     std::shared_ptr<const Snapshot> snapshot;
@@ -78,6 +82,12 @@ int main(int argc,char** argv) {
       auto path=fs::path(argv[1]);path.replace_extension("visual-tracks.jsonl");
       visual_trace.open(path);
       if(!visual_trace)throw std::runtime_error("visual_trace_open_failed");
+    }
+    const bool sonar_enabled=input_settings.value("enable_joint_sonar",false);
+    std::optional<posim_slam::SonarCalibration> sonar_calibration;
+    if(sonar_enabled) {
+      sonar_calibration=posim_slam::sonarInputCalibration(read_json(fs::path(argv[1]).parent_path()/"sonar-calibration.json"));
+      owner->posim_sonar_factors=std::make_shared<posim_slam::SonarFactorStore>();
     }
     const bool joint_enabled=input_settings.value("enable_joint_ping",false);
     const auto loss_name=input_settings.value("ping_range_loss",std::string("cauchy"));
@@ -119,8 +129,36 @@ int main(int argc,char** argv) {
       if(found!=image_pings.end() && estimator.posim_ping_factors)
         found->second.fused=estimator.posim_ping_factors->lastObservation()==stamp && estimator.posim_joint_last_accepted>0;
     };
+    owner->posim_after_marginalization=[&](auto& estimator,int64_t stamp) {
+      if(!sonar_enabled)return;
+      std::lock_guard<std::mutex> lock(ping_mutex);
+      auto& report=sonar_reports[stamp];if(report.is_null())report=Json::object();
+      report["active_track_ids"]=estimator.posim_sonar_factors->activeIds();
+      if(report.value("owner_received",false))report["accepted_steps"]=estimator.posim_joint_last_accepted;
+      report["map_qualified"]=false;
+      if(sonar_reports.size()>16)fail("sonar_report_backlog");
+    };
     owner->posim_before_marginalization=[&](auto& estimator,int64_t stamp) {
       auto& base=static_cast<basalt::BundleAdjustmentBase<double>&>(estimator);
+      std::optional<posim_slam::SonarSnapshot> acoustic;
+      {
+        std::lock_guard<std::mutex> lock(ping_mutex);
+        auto found=image_sonar.find(stamp);
+        if(found!=image_sonar.end()){acoustic=std::move(found->second);image_sonar.erase(found);}
+      }
+      if(acoustic) {
+        posim_slam::SonarPoses poses;
+        for(const auto& [time,state]:base.frame_poses) {
+          const auto pose=state.getPose();poses.emplace(time,posim_slam::SonarPose{pose.translation(),pose.rotationMatrix()});
+        }
+        for(const auto& [time,state]:base.frame_states) {
+          const auto pose=state.getState().T_w_i;poses.emplace(time,posim_slam::SonarPose{pose.translation(),pose.rotationMatrix()});
+        }
+        try{estimator.posim_sonar_factors->applySnapshot(stamp,acoustic->tracks,*sonar_calibration,poses);}
+        catch(const std::exception& error){fail(error.what());}
+        std::lock_guard<std::mutex> lock(ping_mutex);
+        sonar_reports[stamp]={{"owner_received",true},{"submitted_tracks",acoustic->tracks.size()}};
+      }
       {
         std::lock_guard<std::mutex> lock(ping_mutex);
         const auto found=image_pings.find(stamp);
@@ -177,8 +215,11 @@ int main(int argc,char** argv) {
         if(!s)fail("estimator_finished");
         if(!s->T_w_i.matrix().allFinite() || !s->vel_w_i.allFinite() ||
            !s->bias_gyro.allFinite() || !s->bias_accel.allFinite())fail("invalid_estimate");
-        Json ping=nullptr,candidate=nullptr,initialization=nullptr;bool owner_received=false,fused=false;
+        Json ping=nullptr,candidate=nullptr,initialization=nullptr,acoustic=nullptr;bool owner_received=false,fused=false;
         {std::lock_guard<std::mutex> lock(ping_mutex);
+         auto sonar_report=sonar_reports.find(s->t_ns);
+         if(sonar_report!=sonar_reports.end())acoustic=sonar_report->second;
+         sonar_reports.erase(sonar_reports.begin(),sonar_reports.upper_bound(s->t_ns));
          auto diagnostic=initialization_windows.find(s->t_ns);
          if(diagnostic!=initialization_windows.end())initialization=diagnostic->second;
          initialization_windows.erase(initialization_windows.begin(),initialization_windows.upper_bound(s->t_ns));
@@ -189,7 +230,7 @@ int main(int argc,char** argv) {
         emit({{"type","state"},{"stamp_ns",s->t_ns},
               {"position",vector3(s->T_w_i.translation())},
               {"orientation_xyzw",{q.x(),q.y(),q.z(),q.w()}},
-              {"velocity",vector3(s->vel_w_i)},{"initialization_window",initialization},
+              {"velocity",vector3(s->vel_w_i)},{"initialization_window",initialization},{"sonar",acoustic},
               {"gyro_bias",vector3(s->bias_gyro)},
               {"accel_bias",vector3(s->bias_accel)},{"ping_observation",ping},{"ping_owner_received",owner_received},{"ping_candidate",candidate},{"ping_fused",fused}});
       }
@@ -234,6 +275,7 @@ int main(int argc,char** argv) {
     if(!require_gravity_seed)vio->initialize(Vec3::Zero(),Vec3::Zero());
     int64_t gravity_stamp=0;Vec3 gravity_direction=Vec3::Zero();
     emit({{"type","ready"},{"gravity_seed_transport","first_image_direction_v1"},{"gravity_seed_required",require_gravity_seed},{"protocol",1},{"inertial_fused",true},{"map_export","segment_landmark_archive_ply_1"},
+          {"sonar_snapshot_transport",sonar_enabled ? Json("exact_image_track_snapshot_v1") : Json(nullptr)},{"joint_sonar_enabled",sonar_enabled},
           {"image_ping_transport","exact_stamp_range_v1"},{"ping_fused",false},{"joint_ping_enabled",joint_enabled},
           {"opencv_threads",1},{"estimation_threads",2},
           {"keyframe_hold_frames",config.vio_min_frames_after_kf},
@@ -247,10 +289,18 @@ int main(int argc,char** argv) {
       if(!std::cin)std::_Exit(0);
       auto type=u32(header),size=u32(header+4);
       if(type==3 && size==0)std::_Exit(0);
-      if((type!=1 && type!=2 && type!=4 && type!=5 && type!=6) || size>uint32_t(c.width*c.height+32))fail("packet_size_or_type");
+      if((type!=1 && type!=2 && type!=4 && type!=5 && type!=6 && type!=7) ||
+          (type==7 && !sonar_enabled) || size>(type==7 ? posim_slam::sonarSnapshotLimit : uint32_t(c.width*c.height+32)))
+        fail("packet_size_or_type");
       std::vector<char> bytes(size);std::cin.read(bytes.data(),size);
       if(!std::cin)fail("incomplete_packet");
-      if(type==6) {
+      if(type==7) {
+        auto packet=posim_slam::decodeSonarSnapshot(bytes);
+        if(packet.stamp<=image_stamp)fail("sonar_snapshot_after_image");
+        std::lock_guard<std::mutex> lock(ping_mutex);
+        if(image_sonar.size()>=8 || !image_sonar.emplace(packet.stamp,std::move(packet)).second)
+          fail("duplicate_or_excess_sonar_snapshots");
+      } else if(type==6) {
         if(size!=32 || !require_gravity_seed || image_stamp || gravity_stamp)fail("gravity_seed_contract");
         gravity_stamp=int64_t(u64(bytes.data()));
         for(int k=0;k<3;++k)gravity_direction[k]=number(bytes.data()+8+k*8);
@@ -300,6 +350,10 @@ int main(int argc,char** argv) {
         int64_t stamp=int64_t(u64(bytes.data()));
         if(u32(bytes.data()+8)!=uint32_t(c.width) || u32(bytes.data()+12)!=uint32_t(c.height))fail("image_shape");
         if(stamp<=0 || !imu_stamp || (image_stamp && (stamp<=image_stamp || stamp-image_stamp>500000000)))fail("image_gap_or_reset");
+        {
+          std::lock_guard<std::mutex> lock(ping_mutex);
+          if(!image_sonar.empty() && image_sonar.begin()->first<stamp)fail("sonar_snapshot_missing_image");
+        }
         if(type==5) {
           const auto ping_stamp=int64_t(u64(bytes.data()+16));
           const auto range=number(bytes.data()+24);

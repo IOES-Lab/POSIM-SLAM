@@ -797,16 +797,14 @@ Basalt's additive world translation and left world rotation convention. Joint
 point elimination retains correlations between poses and the residual cost;
 rank-deficient tracks receive no artificial elevation constraint. Assemble all
 rows owned by a shared point before eliminating it, including prior and other
-sensor rows. The caller supplies association and calibrated covariance. These
-helpers are not yet registered in the streaming estimator.
+sensor rows. The caller supplies association and calibrated covariance. The native stream accepts these tracks when explicitly enabled with sonar calibration.
 
 `sonar_track.hpp`는 트랙 전체의 명시적 공분산으로 거리·방위각 관측을 가중하며
 시간 상관관계도 반영합니다. 자세 열은 Basalt의 월드 좌표 이동량과 좌측 회전
 규약을 따릅니다. 점의 공동 소거는 자세 사이 상관관계와 잔차 비용을 보존하며,
 정보가 부족한 트랙에 인위적인 높이 제약을 추가하지 않습니다. 공유 점을 소거하기
 전에 사전정보와 다른 센서 관측을 포함한 모든 관련 행을 모아야 합니다. 호출자가
-대응점과 보정된 공분산을 제공합니다. 이 함수들은 아직 스트리밍 추정기에
-등록되지 않았습니다.
+대응점과 보정된 공분산을 제공합니다. 소나 보정과 명시적 활성화 설정이 있으면 네이티브 스트림에서 이 트랙을 사용합니다.
 
 `sonar_factors.hpp` stores up to 16 independently associated acoustic points,
 with up to 64 observations per point. Appending an observation requires the full
@@ -814,28 +812,25 @@ extended covariance and preserves its existing block. Point updates use the
 same rank threshold as elimination and leave unobserved directions unchanged.
 A trial restores every point on rejection; topology changes and stale rows are
 rejected. The estimator must accept or restore its pose states in the same
-transaction. Shared optical/acoustic landmarks require a joint block. The common prior builder retires complete acoustic tracks. Streaming
-registration remains pending.
+transaction. Shared optical/acoustic landmarks require a joint block. The common prior builder retires complete acoustic tracks. Streaming input requires explicit calibration and activation.
 
 `sonar_factors.hpp`는 독립적으로 대응된 음향 점 최대 16개와 점마다 관측 최대
 64개를 보관합니다. 관측 추가 시 기존 공분산 블록을 유지한 전체 확장 공분산이
 필요합니다. 점 갱신은 소거와 같은 순위 기준을 사용하고 관측되지 않은 방향을
 유지합니다. 거절된 시도는 모든 점을 복원하며 관측 구성 변경과 오래된 선형화
 결과 사용을 차단합니다. 추정기의 자세도 같은 트랜잭션에서 승인하거나 복원해야
-합니다. 시각·음향 공유 랜드마크에는 공동 블록이 필요합니다. 공동 사전정보 생성기는 음향 트랙 전체를 이전합니다. 스트리밍 연결은 아직
-남아 있습니다.
+합니다. 시각·음향 공유 랜드마크에는 공동 블록이 필요합니다. 공동 사전정보 생성기는 음향 트랙 전체를 이전합니다. 스트리밍 입력에는 명시적인 보정과 활성화 설정이 필요합니다.
 
 The optional `SonarFactorStore` argument to `optimizePingGroups` adds independent
 acoustic tracks to the same normal system, nonlinear cost and trial decision as
 visual, IMU and Ping factors. Packed acoustic pose columns map to the pose part
 of each 6- or 15-state block. A zero pose step still permits an observable point
-update. Streaming registration remains disabled pending calibrated observations and transport.
+update. Streaming registration is disabled by default. The caller supplies associated observations and calibrated covariance.
 
 `optimizePingGroups`의 선택형 `SonarFactorStore` 인자는 독립 음향 트랙을
 시각·IMU·Ping과 같은 정규방정식, 비선형 비용과 승인 판단에 포함합니다. 음향
 자세 열은 6상태 또는 15상태 블록의 자세 부분에 대응합니다. 자세 변화가 0이어도
-관측 가능한 점 갱신은 수행합니다. 보정된 관측과 전송 연결이 준비될 때까지 스트리밍 등록은 비활성 상태로
-유지합니다.
+관측 가능한 점 갱신은 수행합니다. 스트리밍 등록은 기본적으로 비활성 상태입니다. 호출자가 대응된 관측과 보정된 공분산을 제공합니다.
 
 Acoustic retirement includes every observation of each track touching a removed
 pose in the common square-root prior. The point is eliminated once; live tracks
@@ -853,14 +848,12 @@ The native owner exposes `posim_sonar_factors` to its estimator-thread callback.
 New observations start joint optimization; subsequent frames retain the common
 prior and use joint marginalization. The `basalt_synthetic_probe OUTPUT.csv 5
 sonar` fixture exercises this lifecycle with generated visual tracks, raw IMU
-and acoustic observations. The stream's binary input does not yet expose sonar
-measurements, so this hook does not enable an application sensor mode.
+and acoustic observations. The binary stream accepts calibrated snapshots as an opt-in development interface. Application sensor modes require frontend and map qualification.
 
 네이티브 추정기의 작업 스레드 콜백은 `posim_sonar_factors`를 사용할 수 있습니다.
 새 관측은 공동 최적화를 시작하고, 이후 프레임도 공동 사전정보와 주변화를
 사용합니다. `basalt_synthetic_probe OUTPUT.csv 5 sonar`는 합성 시각 특징·원본
-IMU·음향 관측으로 이 수명주기를 검사합니다. 스트림의 바이너리 입력에는 아직
-소나 관측이 없으므로 이 연결부가 앱의 센서 모드를 활성화하지는 않습니다.
+IMU·음향 관측으로 이 수명주기를 검사합니다. 바이너리 스트림은 개발 설정에서 보정된 스냅샷을 받습니다. 앱 센서 모드에는 프런트엔드와 지도 품질 검증이 필요합니다.
 
 ### Acoustic snapshot payload
 
@@ -873,7 +866,7 @@ The latest observation matches the image timestamp. Limits are 16 tracks and
 64 observations per track. IDs increase within a snapshot. Covariance includes
 all temporal correlations in `[range, azimuth]` order. Invalid clocks, duplicate
 IDs, truncation, trailing bytes and nonpositive covariance fail validation.
-This codec is not yet advertised or consumed by the binary stream worker.
+The worker advertises this input only when joint sonar is enabled.
 
 `posim_slam.sonar_packet.encode_snapshot`과 `sonar_packet.hpp`는 크기를 제한한
 little-endian 형식을 공유합니다. 헤더는 영상 시각·트랙 수·예약값 0이며, 각 트랙은
@@ -881,5 +874,47 @@ ID·관측 수·예약값 0 다음에 시각·거리(m)·방위각(rad) 이력�
 공분산을 담습니다. 마지막 관측 시각은 영상과 같아야 합니다. 트랙은 최대 16개,
 각 관측은 최대 64개이며 ID는 스냅샷 안에서 증가합니다. 공분산은 거리·방위각
 순서의 시간 상관관계를 보존합니다. 잘못된 시각·중복 ID·잘린 데이터·추가 바이트·
-양의 정부호가 아닌 공분산은 거부합니다. 이 코덱은 아직 바이너리 스트림 작업자의
-지원 기능으로 광고하거나 소비하지 않습니다.
+양의 정부호가 아닌 공분산은 거부합니다. 작업자는 공동 소나 입력을 활성화한 경우에만 이 입력의 지원을 알립니다.
+
+
+### Enable native acoustic input / 네이티브 음향 입력 설정
+
+Set `enable_joint_sonar: true` in the camera calibration JSON and place
+`sonar-calibration.json` beside it. The sonar file requires schema
+`posim-slam-sonar-calibration-1`, `imu_to_sonar` (three-element lever arm in IMU
+coordinates, metres), `sonar_to_imu` (3 × 3 rotation), `range_min`, `range_max`
+(metres), and `horizontal_fov`, `vertical_fov` (radians). Sonar axes are X forward,
+Y left, Z up. Calibration must describe the mounted sensor.
+
+카메라 보정 JSON에 `enable_joint_sonar: true`를 설정하고 같은 폴더에
+`sonar-calibration.json`을 둡니다. 소나 파일에는 위 스키마, IMU 좌표의 장착 위치
+`imu_to_sonar`(3개 값, m), 소나에서 IMU로의 회전 `sonar_to_imu`(3 × 3),
+거리 범위 `range_min`·`range_max`(m), 시야각 `horizontal_fov`·`vertical_fov`(rad)가
+필요합니다. 소나 축은 X 전방·Y 좌측·Z 상방이며 실제 장착 상태에 맞춰 보정합니다.
+
+Wait for ready capability `sonar_snapshot_transport: exact_image_track_snapshot_v1`.
+Call `LiveClient.sonar_snapshot(stamp_ns, tracks)` before sending the image at
+that exact timestamp. This sends binary packet type 7. A new track requires at
+least three observations. An existing track extends by one observation and
+preserves its old observations, covariance block and calibration. A snapshot is
+applied atomically. The initial point uses zero elevation only as a starting
+estimate; elevation is not measured or constrained by this seed.
+
+준비 응답의 위 지원 문자열을 확인한 뒤, 같은 시각의 영상을 보내기 전에
+`LiveClient.sonar_snapshot(stamp_ns, tracks)`를 호출합니다. 바이너리 패킷 종류는
+7입니다. 새 트랙에는 관측이 3개 이상 필요하며, 기존 트랙은 관측 한 개씩 추가하고
+이전 관측·공분산 블록·보정을 유지합니다. 스냅샷 전체를 한 번에 적용합니다.
+초기 점의 고도각 0은 시작 추정값이며 높이 측정이나 제약으로 사용하지 않습니다.
+
+The state reply's `sonar` object reports `owner_received`, `submitted_tracks`
+and `accepted_steps` for received input, plus `active_track_ids` after
+marginalization. Wait for this reply before extending a track. Retired IDs cannot
+be reused; start a new track with a higher ID. `map_qualified` remains false:
+frontend association, noise calibration and actual scene reconstruction still
+require validation. PLY output contains the existing visual landmarks.
+
+상태 응답의 `sonar`에는 수신한 입력의 `owner_received`·`submitted_tracks`·
+`accepted_steps`와 주변화 이후의 `active_track_ids`가 담깁니다. 응답을 확인한 뒤
+트랙을 연장합니다. 제거된 ID는 재사용할 수 없으며 새 트랙은 더 큰 ID로 시작합니다.
+대응점 추적·잡음 보정·실제 장면 복원 검증이 남아 있어 `map_qualified`는 false입니다.
+PLY 출력에는 기존 시각 랜드마크가 담깁니다.

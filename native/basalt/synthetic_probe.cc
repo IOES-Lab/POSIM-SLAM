@@ -66,13 +66,9 @@ int main(int argc,char**argv){
      }
      Eigen::MatrixXd covariance=Eigen::MatrixXd::Zero(2*acoustic_track.size(),2*acoustic_track.size());
      for(size_t i=0;i<acoustic_track.size();++i) {covariance(2*i,2*i)=.02*.02;covariance(2*i+1,2*i+1)=.005*.005;}
-     if(active_track<0) {
-       const auto& first=acoustic_track.front();const auto& pose=poses.at(first.stamp);
-       // Elevation-zero is only a seed, never an observation or height prior.
-       const V seed=pose.position+pose.attitude*V(first.range*std::cos(first.azimuth),first.range*std::sin(first.azimuth),0.);
-       active_track=registered_tracks++;
-       store.add(active_track,seed,{V::Zero(),Eigen::Matrix3d::Identity(),.2,10.,2.1,1.0},acoustic_track,covariance,poses);
-     }else store.append(active_track,acoustic_track.back(),covariance,poses);
+     if(active_track<0)active_track=registered_tracks++;
+     store.applySnapshot(stamp,{{active_track,acoustic_track,covariance}},
+       {V::Zero(),Eigen::Matrix3d::Identity(),.2,10.,2.1,1.0},poses);
    };
    owner->posim_after_joint=[&](auto& estimator,int64_t) {
      if(estimator.posim_joint_started)accepted_acoustic_steps+=estimator.posim_joint_last_accepted;
