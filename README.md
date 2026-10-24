@@ -2,6 +2,8 @@
 
 [한국어](README.ko.md) · [Third-party notices](THIRD_PARTY.md)
 
+> This project is developed with assistance from large language models (LLMs).
+
 Independent sensor estimation components used by POSIM applications. Python
 algorithms accept measured sensor arrays and calibrated transforms. WWW-POSIM
 owns sessions, vehicle composition, runtime supervision, UI and map downloads.
