@@ -680,3 +680,26 @@ Ping 자세 기준점이 필요합니다. 잔차와 관측 영역 검사는 현�
 기존 기준점에 현재 상태의 보조 잔차 미분을 섞으면 같은 검증에서 약 0.89입니다.
 이는 그룹의 기준점 일관성 검사입니다. 중력을 사용하는 전체 VIO의 비관측 방향이
 6개라는 뜻이나, 실시간 궤적 공분산을 검증했다는 뜻은 아닙니다.
+
+### Prior preparation / 사전정보 생성
+
+`ping_prior.hpp::preparePingPrior` connects retirement selection, the full live
+state layout, joint row reduction and square-root prior construction. It consumes
+only IMU intervals whose endpoint loses inertial coordinates. Other IMU intervals
+and independent live landmarks remain outside the new prior. Existing reference
+states retain their delta; states newly frozen by installation use zero delta.
+The caller rebuilds group specifications for the current order and installs the
+result without intervening state changes using `installPingMarginalPrior`.
+The native probe exercises preparation and installation after nonlinear optimization
+with actual Basalt visual blocks and preintegrated IMU measurements. Streaming
+schedule integration remains pending.
+
+`ping_prior.hpp::preparePingPrior`는 제거할 관측 선택, 전체 유지 상태 배치,
+공동 행렬 축약과 제곱근 사전정보 생성을 연결합니다. 끝점의 관성 좌표가
+제거되는 IMU 구간만 소비합니다. 나머지 IMU 구간과 유지되는 독립 특징점은
+새 사전정보에 포함하지 않습니다. 기존 기준 상태의 변화량은 유지하며,
+설치 시 새로 고정하는 상태의 변화량은 0으로 둡니다. 호출자는 현재 열 순서로
+그룹 명세를 다시 만들고, 상태 변경 없이 `installPingMarginalPrior`로 결과를
+설치합니다. 네이티브 검증은 실제 Basalt 영상 블록과 IMU 사전적분 관측으로
+비선형 최적화 후 생성·설치 과정을 확인합니다. 스트리밍 실행 순서 연결은
+아직 남아 있습니다.

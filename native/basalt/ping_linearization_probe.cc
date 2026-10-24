@@ -4,6 +4,8 @@
 #include "ping_input.hpp"
 #include "ping_owned_group.hpp"
 #include "ping_optimizer.hpp"
+#include "ping_prior.hpp"
+#include "ping_commit.hpp"
 #include <basalt/imu/preintegration.h>
 #include <iostream>
 
@@ -137,6 +139,21 @@ int main(int argc,char** argv) {
     basalt::LinearizationBase<double,6>* api=&joint;bool valid=false;
     const double before=api->linearizeProblem(&valid);api->performQR();
     Eigen::MatrixXd h,j;Eigen::VectorXd b,r;api->get_dense_H_b(h,b);api->get_dense_Q2Jp_Q2r(j,r);
+    // Retire one group without dropping states: no IMU interval is consumed,
+    // and the independent live landmark must not enter the new prior.
+    const auto prepared=preparePingPrior(owner,order,{spec},prior,imu,{},{},{0});
+    std::set<basalt::FrameId> prior_no_hosts;std::unordered_set<basalt::KeypointId> no_landmarks;
+    IndependentReference prior_only(&owner,order,options,&prior,nullptr,&prior_no_hosts,&no_landmarks);
+    prior_only.linearizeProblem();prior_only.performQR();
+    Eigen::MatrixXd ph;Eigen::VectorXd pb;prior_only.get_dense_H_b(ph,pb);
+    const auto reduced_group=eliminateJointPatch(raw.jacobian,raw.residual,45);
+    ph+=reduced_group.jacobian.transpose()*reduced_group.jacobian;
+    pb+=reduced_group.jacobian.transpose()*reduced_group.residual;
+    const double prepared_error=(prepared.prior.H.transpose()*prepared.prior.H-ph).norm()+
+      (prepared.prior.H.transpose()*prepared.prior.b-pb).norm();
+    const bool prepared_passed=prepared_error/std::max(1.,ph.norm()+pb.norm())<1e-12 &&
+      prepared.retirement.landmarks.size()==25 && prepared.layout.consumed_imu_starts.empty() &&
+      owner.lmdb.numLandmarks()==26 && owner.posim_ping_planes.size()==1;
     const double normal_scale=std::max(1.,h.norm()+b.norm());
     const double square_root_error=(h-j.transpose()*j).norm()+(b-j.transpose()*r).norm();
     // Reference: the independent landmark, IMU and prior once, plus the raw
@@ -232,8 +249,20 @@ int main(int argc,char** argv) {
     restored_run=restored_run && (owner.posim_ping_planes.at(1).delta-saved_plane.delta).norm()==0;
     const auto optimized=optimizePingGroups(owner,order,{owned_spec},prior,imu);
     const bool optimizer_passed=restored_run && optimized.accepted>0 && optimized.final_cost<optimized.initial_cost && !owner.posim_ping_trial_active;
-    bool passed=optimizer_passed && invalid_owned_measurement && owner_support_passed && changed_dependencies_rejected && retirement_passed && incomplete_rejected && selection_error/normal_scale<1e-12 && reference_gauge_error<1e-8 && inconsistent_gauge_error>1e-7 && plane_reference_preserved && missing_reference && std::abs(before-3.5)<1e-9 && valid && duplicate && transaction_required && square_root_error/normal_scale<1e-12 && information_error/normal_scale<1e-12 && prediction_error<1e-7 && step_error<1e-7 && stale && rollback_stale && restored_cost && accepted;
-    std::cout<<Json({{"optimizer_passed",optimizer_passed},{"optimizer_rejection_restored",restored_run},{"optimizer_accepted",optimized.accepted},{"optimizer_initial_cost",optimized.initial_cost},{"optimizer_final_cost",optimized.final_cost},{"expected_return",argc==3},{"invalid_owned_measurement_rejected",invalid_owned_measurement},{"owner_visual_support_passed",owner_support_passed},{"changed_observation_dependencies_rejected",changed_dependencies_rejected},{"retirement_dependency_closure_passed",retirement_passed},{"marginal_selection_error",selection_error},{"incomplete_group_rejected",incomplete_rejected},{"passed",passed},{"joint_landmarks",25},{"independent_landmarks",1},{"imu_intervals",2},
+    // Exercise the complete preparation/installation path with actual visual,
+    // Ping, prior and preintegrated IMU rows after nonlinear optimization.
+    const auto outgoing=preparePingPrior(owner,order,{owned_spec},prior,imu,{times[0]},{},{});
+    std::map<int64_t,basalt::IntegratedImuMeasurement<double>> remaining_imu;
+    for(int i=0;i<2;++i)remaining_imu.emplace(times[i],preintegrations[i]);
+    std::vector<JointPingGroupSpec> remaining_groups={owned_spec};auto installed_prior=prior;
+    installPingMarginalPrior(owner,installed_prior,remaining_groups,remaining_imu,
+      outgoing.retirement,outgoing.layout,{times[0]},{},outgoing.prior);
+    const bool prepared_install_passed=outgoing.layout.consumed_imu_starts==std::set<int64_t>{times[0]} &&
+      installed_prior.H.cols()==30 && installed_prior.H.allFinite() && owner.frame_states.size()==2 &&
+      owner.lmdb.numLandmarks()==1 && owner.lmdb.landmarkExists(25) && owner.posim_ping_planes.size()==0 &&
+      remaining_groups.empty() && remaining_imu.size()==1 && remaining_imu.count(times[1]);
+    bool passed=prepared_install_passed && prepared_passed && optimizer_passed && invalid_owned_measurement && owner_support_passed && changed_dependencies_rejected && retirement_passed && incomplete_rejected && selection_error/normal_scale<1e-12 && reference_gauge_error<1e-8 && inconsistent_gauge_error>1e-7 && plane_reference_preserved && missing_reference && std::abs(before-3.5)<1e-9 && valid && duplicate && transaction_required && square_root_error/normal_scale<1e-12 && information_error/normal_scale<1e-12 && prediction_error<1e-7 && step_error<1e-7 && stale && rollback_stale && restored_cost && accepted;
+    std::cout<<Json({{"prepared_install_passed",prepared_install_passed},{"prepared_prior_passed",prepared_passed},{"prepared_prior_error",prepared_error},{"optimizer_passed",optimizer_passed},{"optimizer_rejection_restored",restored_run},{"optimizer_accepted",optimized.accepted},{"optimizer_initial_cost",optimized.initial_cost},{"optimizer_final_cost",optimized.final_cost},{"expected_return",argc==3},{"invalid_owned_measurement_rejected",invalid_owned_measurement},{"owner_visual_support_passed",owner_support_passed},{"changed_observation_dependencies_rejected",changed_dependencies_rejected},{"retirement_dependency_closure_passed",retirement_passed},{"marginal_selection_error",selection_error},{"incomplete_group_rejected",incomplete_rejected},{"passed",passed},{"joint_landmarks",25},{"independent_landmarks",1},{"imu_intervals",2},
       {"square_root_normal_error",square_root_error},{"single_ownership_information_error",information_error},
       {"normal_system_scale",normal_scale},{"relative_square_root_error",square_root_error/normal_scale},
       {"relative_information_error",information_error/normal_scale},{"model_decrease_error",prediction_error},{"reference_decrease",reference_decrease},{"first_prediction",first_prediction},{"reference_initial_cost",.5*full_r.squaredNorm()},{"independent_eliminated_visual_cost",eliminated_visual_constant},
