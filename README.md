@@ -38,6 +38,14 @@ This bounded NumPy reference solver reports local rank and retains unobservable
 directions. Elevation branch ambiguity and point association require separate
 qualification. Streaming integration and navigation readiness remain unqualified.
 
+Optional `ping_patches` add single Ping returns to the same solve. Each patch
+references shared sonar track IDs and estimates its normal and signed distance.
+Planarity residuals occur once per support point; each independent range return
+occurs once at its state timestamp. The predicted footprint must lie within the
+observed support. Patch association, local planarity and independent calibrated
+range noise are required assumptions. Overlapping patch support and duplicate
+return timestamps are rejected.
+
 `inertial_factor.pair_residual` uses measured `ImuWindow` preintegration to
 constrain endpoint position, velocity, rotation and biases with their full
 15-state covariance. Gravity and endpoint states are explicit optimization

@@ -29,6 +29,50 @@ def fixture(stationary=False):
 
 
 class SonarInertialTests(unittest.TestCase):
+    def ping_fixture(self):
+        args=fixture();tracks=[]
+        for i,p in enumerate(([3.,-1.,-.8],[6.,-1.,-.8],[3.,1.,-.8],[6.,1.,-.8])):
+            point=np.array(p);observations=[]
+            for state in args['states']:
+                q=point-state['position']
+                observations.append(dict(stamp_ns=round(state['stamp']*1e9),
+                    range_m=float(np.linalg.norm(q)),azimuth_rad=float(np.arctan2(q[1],q[0]))))
+            tracks.append(dict(track_id=i,landmark=point,observations=observations,
+                measurement_covariance=np.diag([.01**2,.002**2]*2)))
+        ray=np.array([1.,0.,-.2]);ray/=np.linalg.norm(ray)
+        patch=dict(track_ids=list(range(4)),plane_normal=np.array([0.,0.,1.]),plane_distance=-.8,
+            surface_sigma=.01,max_support_distance=2.,observations=[dict(
+                stamp_ns=round(s['stamp']*1e9),range_m=(-.8-s['position'][2])/ray[2],range_sigma=.01)
+                for s in args['states']],geometry=dict(imu_to_ping=np.zeros(3),ping_to_imu=np.eye(3),
+                    rays=np.array([ray]),range_bias=0.,range_min=.1,range_max=10.))
+        args.update(tracks=tracks,ping_patches=[patch]);return args
+
+    def test_ping_plane_and_sonar_points_are_joint_unknowns(self):
+        args=self.ping_fixture()
+        args['ping_patches'][0]['plane_distance']-=.03
+        for track in args['tracks']:track['landmark']+=np.array([.02,.01,-.03])
+        args['states'][1]['position']+=np.array([.01,-.01,.01])
+        result=optimize_window(**args)
+        self.assertLess(result['final_cost'],result['initial_cost']*1e-6)
+        self.assertAlmostEqual(result['planes'][0]['distance'],-.8,places=4)
+        np.testing.assert_allclose(result['planes'][0]['normal'],[0,0,1],atol=1e-4)
+        self.assertEqual(result['variables'],45)
+        # 15 prior + 15 IMU + 16 sonar + 2 Ping + 4 surface rows.
+        self.assertEqual(result['residual_dimension'],52)
+        self.assertFalse(result['navigation_ready'])
+
+    def test_ping_rejects_duplicate_returns_and_overlapping_support(self):
+        for duplicate in ('observations','patch'):
+            args=self.ping_fixture();patch=args['ping_patches'][0]
+            if duplicate=='observations':patch['observations']*=2
+            else:args['ping_patches'].append(copy.deepcopy(patch))
+            with self.subTest(duplicate=duplicate),self.assertRaises(ValueError):optimize_window(**args)
+
+    def test_ping_rejects_unobserved_footprint(self):
+        args=self.ping_fixture()
+        args['ping_patches'][0]['geometry']['imu_to_ping']=np.array([10.,0.,0.])
+        with self.assertRaisesRegex(ValueError,'surface_does_not_cover_ping'):optimize_window(**args)
+
     def test_joint_solve_reduces_pose_and_point_error(self):
         args=fixture();truth=copy.deepcopy(args['states']);points=[t['landmark'].copy() for t in args['tracks']]
         args['states'][1]['position']+=np.array([.03,-.02,.02])
