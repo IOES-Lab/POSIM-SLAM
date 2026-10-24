@@ -28,6 +28,14 @@ Ping scale support requires every ray intersection inside the observed plane hul
 
 ## Install and use
 
+`sonar_factor.point_return_factor` supplies range/azimuth residuals and analytic
+pose/landmark Jacobians for an associated 3D point return. It uses calibrated
+IMU-to-sonar mounts and checks the sensor's range and field of view. Its two
+measurement dimensions leave elevation unobserved. This original Apache-2.0
+geometry helper uses NumPy and is not yet wired into a live joint optimizer.
+The caller must establish point-return association, model uncertainty and retain
+cross-sensor correlations; a collapsed intensity bin is not a known seabed point.
+
 Python 3.10 or later and NumPy are required. The pure geometric components do
 not require ROS, Gazebo or WWW-POSIM.
 
