@@ -57,6 +57,50 @@ RMSE는 0.081 m입니다. 카메라 설정과 −5~0 m 색상 범위를 동일�
 넓어진 점군도 상자 형상을 복원하지 못했습니다. 관측 거리 확대만으로는
 충분하지 않으며, 희소 특징점 지도를 완전한 장애물 형상으로 제시할 수 없습니다.
 
+## Surface appearance control / 표면 재질 대조 시험
+
+[Plain-target diagnostic run / 무늬 없는 표적 진단 주행](images/camera-imu-ping-plain-trace-isometric.png)
+
+![Matte textured target control, cloud and actual RGB](images/camera-imu-ping-textured-trace-isometric.png)
+
+Two independent 7 m runs use the same diagnostic worker, camera/IMU/Ping inputs,
+target geometry, nominal path and environmental effects. The control changes
+only target appearance to matte surfaces using the existing Orca5 seabed texture.
+The textured run retains 2,737 points (2,341 in view) and has 0.015 m trajectory
+RMSE over 59.9 seconds. Colour/view settings match the preceding figures.
+
+| Target | Plain: unique archived candidate IDs | Matte textured: unique archived candidate IDs |
+|---|---:|---:|
+| 0 | 4 | 66 |
+| 1 | 22 | 72 |
+| 2 | 2 | 116 |
+
+These are actual native track IDs, attributed after estimation by intersecting
+pixel rays with known boxes using independent recorded poses. They are candidate
+labels, not verified physical correspondences. Plain-target observations are
+900 of 183,280 feature observations; the textured control has 10,359 of 188,879.
+Some plain-target points do reach the archive, so wholesale loss during export
+does not explain the sparse objects. Appearance strongly affects available
+geometry. Material brightness/roughness and texture change together, and the
+runs are not identical sensor replay. Sparse target points improve; complete
+surfaces and untextured obstacle coverage remain unqualified.
+
+같은 진단 워커와 카메라·IMU·Ping, 표적 형상, 명목 경로, 환경 효과로
+7 m 주행을 각각 수행했습니다. 대조 조건은 기존 Orca5 해저 텍스처를
+사용한 무광 표면으로 표적 외관만 바꿉니다. 텍스처 주행은 2,737점 중
+2,341점이 비교 시야 안에 있고, 59.9초 경로 RMSE는 0.015 m입니다.
+시점과 색상 범위는 앞선 그림과 같습니다.
+
+표의 숫자는 실제 네이티브 추적 ID 중 지도에 보존된 표적 후보입니다.
+추정 후 별도 정답 자세로 픽셀 광선을 상자와 대조했으며, 검증된 물리적
+대응 관계는 아닙니다. 무늬 없는 조건의 표적 후보 관측은 전체 183,280회
+중 900회, 텍스처 조건은 188,879회 중 10,359회입니다. 일부 표적 점은
+지도까지 보존되므로 내보내기 단계의 일괄 손실로 설명할 수 없습니다.
+표면 외관은 얻을 수 있는 형상 정보에 큰 영향을 줍니다. 밝기·거칠기와
+텍스처를 함께 바꿨고 동일 입력 재생도 아니므로 효과를 분리해 주장하지
+않습니다. 희소 표적 점은 개선됐지만 완전한 표면과 무늬 없는 장애물의
+관측 범위는 아직 검증되지 않았습니다.
+
 ## Protocol / 규약
 
 Each completed sensor combination requires a paired figure: its generated SLAM
