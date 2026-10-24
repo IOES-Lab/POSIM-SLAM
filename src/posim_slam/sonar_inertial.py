@@ -19,7 +19,7 @@ from .dvl_scale import rotation,vector
 
 def optimize_window(*,states,tracks,imu_window,noise_density,gravity,
                     initial_state,initial_covariance,geometry,max_iterations=12,
-                    ping_patches=()):
+                    ping_patches=(),retain_state_stamps_ns=None):
     """Optimize 2..4 poses and at most 16 point hypotheses using NumPy.
 
     State order is position, velocity, right attitude, gyro and accel bias (15).
@@ -32,6 +32,9 @@ def optimize_window(*,states,tracks,imu_window,noise_density,gravity,
     plane each. Physical planarity is counted once per point, not per return.
     Ping returns require independent calibrated range noise and exact state
     timestamps. Patch membership and reflection association are caller inputs.
+    Optional retain_state_stamps_ns exports a frozen joint square-root prior
+    after eliminating other states. It retains all point/plane correlations
+    and records absorbed measurements; no streaming prior consumer is implied.
     """
     if not 2<=len(states)<=4 or not 1<=len(tracks)<=16:
         raise ValueError('bounded_sonar_inertial_window_required')
@@ -131,7 +134,17 @@ def optimize_window(*,states,tracks,imu_window,noise_density,gravity,
         if not accepted:reason='line_search_failed';break
     r,j=linearize(current,points,planes,integrate(current));singular=np.linalg.svd(j,compute_uv=False)
     rank=int(np.sum(singular>singular[0]*1e-8)) if len(singular) and singular[0]>0 else 0
-    return dict(states=current,landmarks=points,planes=planes,track_ids=ids,initial_cost=initial_cost,
+    result=dict(states=current,landmarks=points,planes=planes,track_ids=ids,initial_cost=initial_cost,
         final_cost=float(r@r),costs=costs,iterations=iteration+1,converged=converged,reason=reason,
         local_rank=rank,variables=dimension,residual_dimension=len(r),nullity=dimension-rank,navigation_ready=False,
         covariance_qualified=False,elevation_branch_qualified=False)
+    if retain_state_stamps_ns is not None:
+        from .sonar_marginal import marginalize_window
+        prior=marginalize_window(j,r,states=current,landmarks=points,planes=planes,
+            track_ids=ids,retain_state_stamps_ns=retain_state_stamps_ns)
+        prior['absorbed_measurements']=dict(initial_prior_stamp_ns=stamps[0],
+            imu_intervals_ns=list(zip(stamps,stamps[1:])),
+            sonar=[dict(track_id=t['track_id'],stamps_ns=[o['stamp_ns'] for o in t['observations']]) for t in tracks],
+            ping=[dict(track_ids=list(p['track_ids']),stamps_ns=[o['stamp_ns'] for o in p['observations']]) for p in ping_patches])
+        result['linearized_prior']=prior
+    return result

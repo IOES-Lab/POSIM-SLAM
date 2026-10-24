@@ -58,6 +58,14 @@ shared surface support. The 2–4-state reference window allows at most 3 second
 between adjacent states; longer delays require persistent graph/patch handling,
 which is not implemented by this function.
 
+`retain_state_stamps_ns` optionally exports `linearized_prior` by eliminating
+the other states from the final joint linearization. The rectangular square
+root retains correlations between the remaining states, landmarks and planes,
+including unobservable directions. Frozen anchors, plane tangent bases and
+absorbed measurement IDs accompany it. A streaming consumer must use those
+anchors and prevent reuse of absorbed observations. Prior consumption and
+persistent patch association are not yet connected to the live estimator.
+
 `inertial_factor.pair_residual` uses measured `ImuWindow` preintegration to
 constrain endpoint position, velocity, rotation and biases with their full
 15-state covariance. Gravity and endpoint states are explicit optimization
