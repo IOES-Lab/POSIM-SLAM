@@ -980,3 +980,23 @@ increase optimizer work and require separate map-quality validation.
 이벤트를 위한 여유를 둡니다. 2Hz 소나 관측 3개는 1초에 걸치므로 카메라
 10Hz에서 상태 6개로는 부족합니다. 카메라 키프레임 보관은 보조 자세의 보관을
 보장하지 않습니다. 개수가 늘면 최적화 연산량이 증가하며 지도 품질은 별도로 검증합니다.
+
+
+Each sonar state report includes `retained_pose_stamps_ns`, a sorted list of
+keyframe and full-state timestamps retained after marginalization. Candidate
+tracks must discard expired observations before submission. Consume state
+responses in event order; the list describes that response, not future events.
+
+각 소나 상태 응답의 `retained_pose_stamps_ns`에는 주변화 후 남아 있는
+키프레임·전체 상태의 시각이 정렬되어 담깁니다. 후보 트랙은 전송 전에 만료된
+관측을 제외해야 합니다. 응답은 이벤트 순서대로 처리하며, 목록은 해당 응답
+시점의 보관 상태를 나타냅니다.
+
+Run `basalt_synthetic_probe OUTPUT.csv 10 sonar-2hz 16` for a 10 Hz camera
+and 2 Hz acoustic fixture with 10 ms offsets. Use budget `6` to exercise seed
+expiration (expected nonzero exit). Correspondences and measurement noise are
+fixture inputs; this check covers state retention and factor lifecycle.
+
+위 명령은 카메라 10Hz와 10ms 늦은 소나 2Hz 조건의 합성 검사입니다.
+보관 개수 `6`으로 실행하면 초기 관측 만료로 실패하도록 검사합니다. 대응점과
+측정 잡음은 검사 입력이며, 상태 보관과 관측 요인의 등록·제거를 확인합니다.

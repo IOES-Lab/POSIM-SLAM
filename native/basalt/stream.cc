@@ -136,6 +136,13 @@ int main(int argc,char** argv) {
       std::lock_guard<std::mutex> lock(ping_mutex);
       auto& report=sonar_reports[stamp];if(report.is_null())report=Json::object();
       report["active_track_ids"]=estimator.posim_sonar_factors->activeIds();
+      // Report after marginalization: frontend candidates may reference only
+      // poses still owned by this estimator, not an assumed frame-count window.
+      const auto& base=static_cast<const basalt::BundleAdjustmentBase<double>&>(estimator);
+      std::set<int64_t> retained;
+      for(const auto& entry:base.frame_poses)retained.insert(entry.first);
+      for(const auto& entry:base.frame_states)retained.insert(entry.first);
+      report["retained_pose_stamps_ns"]=retained;
       if(report.value("owner_received",false))report["accepted_steps"]=estimator.posim_joint_last_accepted;
       report["map_qualified"]=false;
       if(sonar_reports.size()>16)fail("sonar_report_backlog");

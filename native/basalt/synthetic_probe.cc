@@ -18,13 +18,21 @@ V acc(double t){if(t<=1)return V::Zero();t-=1;return V(.8*std::cos(t),.196*std::
 Eigen::Matrix3d rot(double t){t=std::max(0.,t-1.);return (Eigen::AngleAxisd(.2*(1-std::cos(.8*t)),V::UnitZ())*Eigen::AngleAxisd(.08*(1-std::cos(.9*t)),V::UnitY())*Eigen::AngleAxisd(.06*(1-std::cos(.6*t)),V::UnitX())).toRotationMatrix();}
 V omega(double t){if(t<=1)return V::Zero();t-=1.;double roll=.06*(1-std::cos(.6*t)),pitch=.08*(1-std::cos(.9*t));double dr=.036*std::sin(.6*t),dp=.072*std::sin(.9*t),dy=.16*std::sin(.8*t);return V(dr-dy*std::sin(pitch),dp*std::cos(roll)+dy*std::sin(roll)*std::cos(pitch),-dp*std::sin(roll)+dy*std::cos(roll)*std::cos(pitch));}
 int main(int argc,char**argv){
- if(argc<3||argc>4)return 2; const bool images=argc==4 && std::string(argv[3])=="images";
- const bool asynchronous=argc==4 && std::string(argv[3])=="sonar-async"; const bool acoustic=asynchronous || (argc==4 && std::string(argv[3])=="sonar"); const double camera_hz=std::stod(argv[2]);
- if(!std::isfinite(camera_hz)||camera_hz!=5||(argc==4 && !images && !acoustic))return 2;
+ if(argc<3||argc>5)return 2; const bool images=argc>=4 && std::string(argv[3])=="images";
+ const bool sparse_sonar=argc>=4 && std::string(argv[3])=="sonar-2hz";
+ const bool asynchronous=sparse_sonar || (argc>=4 && std::string(argv[3])=="sonar-async"); const bool acoustic=asynchronous || (argc>=4 && std::string(argv[3])=="sonar"); const double camera_hz=std::stod(argv[2]);
+ if(!std::isfinite(camera_hz)||camera_hz!=(sparse_sonar?10:5)||(argc>=4 && !images && !acoustic))return 2;
  tbb::global_control threads(tbb::global_control::max_allowed_parallelism,2);
  basalt::VioConfig cfg; cfg.vio_max_iterations=7;
  // Keep the same three-camera time horizon when each camera has an auxiliary state.
- if(asynchronous)cfg.vio_max_states=6;
+ if(asynchronous)cfg.vio_max_states=sparse_sonar?16:6;
+ if(argc==5) {
+   if(!sparse_sonar)return 2;
+   cfg.vio_max_states=std::stoi(argv[4]);
+   if(cfg.vio_max_states<3 || cfg.vio_max_states>64)return 2;
+ }
+ const int camera_frames=int(12*camera_hz);
+ const int sonar_stride=sparse_sonar?5:1;
  basalt::Calibration<double> cal;
  auto cam=basalt::GenericCamera<double>::fromString("pinhole");
  cam.setFromInit(Eigen::Vector4d(400,400,320,240)); cal.intrinsics.push_back(cam);cal.resolution.emplace_back(640,480);
@@ -37,13 +45,13 @@ int main(int argc,char**argv){
  // owner receives only range/azimuth, with known fixture correspondence.
  std::map<int64_t,posim_slam::SonarObservation> acoustic_measurements;
  std::mt19937 acoustic_rng(83);std::normal_distribution<double> acoustic_noise;
- for(int frame=0;frame<=60;++frame) {
+ for(int frame=0;frame<=camera_frames;frame+=sonar_stride) {
    const double t=frame/camera_hz+(asynchronous?.01:0.);const int64_t stamp=1000000000LL+int64_t(std::llround(t*1e9));
    const V local=rot(t).transpose()*(V(7.,.4,.2)-pos(t));
    acoustic_measurements.emplace(stamp,posim_slam::SonarObservation{stamp,
      local.norm()+.02*acoustic_noise(acoustic_rng),std::atan2(local.y(),local.x())+.005*acoustic_noise(acoustic_rng)});
  }
- int registered_tracks=0,retired_tracks=0,accepted_acoustic_steps=0;
+ int registered_tracks=0,retired_tracks=0,accepted_acoustic_steps=0,expired_seeds=0;
  std::vector<posim_slam::SonarObservation> acoustic_track;
  int64_t active_track=-1;
  auto owner=std::dynamic_pointer_cast<basalt::SqrtKeypointVioEstimator<double>>(vio);
@@ -66,6 +74,15 @@ int main(int argc,char**argv){
      for(const auto& [time,state]:base.frame_states) {
        const auto pose=state.getState().T_w_i;poses.emplace(time,posim_slam::SonarPose{pose.translation(),pose.rotationMatrix()});
      }
+     // A frontend must not submit observations whose estimator poses expired.
+     // Count and prune stale seed observations so a short horizon fails clearly.
+     if(active_track<0 && std::any_of(acoustic_track.begin(),acoustic_track.end(),
+         [&](const auto& observation){return !poses.count(observation.stamp);})) {
+       ++expired_seeds;
+       acoustic_track.erase(std::remove_if(acoustic_track.begin(),acoustic_track.end(),
+         [&](const auto& observation){return !poses.count(observation.stamp);}),acoustic_track.end());
+       return;
+     }
      Eigen::MatrixXd covariance=Eigen::MatrixXd::Zero(2*acoustic_track.size(),2*acoustic_track.size());
      for(size_t i=0;i<acoustic_track.size();++i) {covariance(2*i,2*i)=.02*.02;covariance(2*i+1,2*i+1)=.005*.005;}
      if(active_track<0)active_track=registered_tracks++;
@@ -87,7 +104,7 @@ int main(int argc,char**argv){
  std::mt19937 rng(4);std::uniform_real_distribution<double> x(3,10),y(-4,4),z(-3,3);std::normal_distribution<double> noise(0,.3);std::vector<V> pts;for(int k=0;k<400;k++)pts.emplace_back(x(rng),y(rng),z(rng));
  struct Tile{V center;cv::Mat texture;};std::vector<Tile> tiles;cv::RNG pixels(5432);for(int iy=-5;iy<=5;iy++)for(int iz=-4;iz<=4;iz++){cv::Mat texture(48,48,CV_8UC1);pixels.fill(texture,cv::RNG::UNIFORM,20,235);cv::GaussianBlur(texture,texture,cv::Size(3,3),.6);tiles.push_back({V(x(rng),iy*.65,iz*.65),texture});}std::sort(tiles.begin(),tiles.end(),[](auto&a,auto&b){return a.center.x()>b.center.x();});
  for(int frame=0;frame<=int(12*camera_hz);frame++){double t=frame/camera_hz;auto f=std::make_shared<basalt::OpticalFlowResult>();f->t_ns=1000000000LL+int64_t(std::llround(t*1e9));f->observations.resize(1);f->pyramid_levels.resize(1);auto T=Sophus::SE3d(rot(t),pos(t))*cal.T_i_c[0];for(size_t k=0;k<pts.size();k++){V pc=T.inverse()*pts[k];Eigen::Vector2d uv;if(!cam.project(pc,uv)||uv.x()<8||uv.x()>632||uv.y()<8||uv.y()>472)continue;Eigen::AffineCompact2f affine=Eigen::AffineCompact2f::Identity();affine.translation()=Eigen::Vector2f(uv.x()+noise(rng),uv.y()+noise(rng));f->observations[0].emplace(k,affine);f->pyramid_levels[0][k]=0;}if(!images){vio->vision_data_queue.push(f);
- if(asynchronous && frame<int(12*camera_hz)) {
+ if(asynchronous && frame<camera_frames && frame%sonar_stride==0) {
    auto tick=std::make_shared<basalt::OpticalFlowResult>();tick->t_ns=f->t_ns+10000000;
    vio->vision_data_queue.push(tick);
  }
@@ -98,12 +115,12 @@ int main(int argc,char**argv){
  if(images)flow->input_queue.push(nullptr);else vio->vision_data_queue.push(nullptr);vio->maybe_join();vio->drain_input_queues();inertial.join();reader.join();
  if(acoustic) {
    std::vector<int64_t> expected;
-   for(int frame=0;frame<=60;++frame) {
-     const int64_t stamp=1000000000LL+frame*200000000LL;expected.push_back(stamp);
-     if(asynchronous && frame<60)expected.push_back(stamp+10000000);
+   for(int frame=0;frame<=camera_frames;++frame) {
+     const int64_t stamp=1000000000LL+int64_t(std::llround(frame/camera_hz*1e9));expected.push_back(stamp);
+     if(asynchronous && frame<camera_frames && frame%sonar_stride==0)expected.push_back(stamp+10000000);
    }
    const bool passed=output_stamps==expected && registered_tracks>=2 && retired_tracks>=1 && accepted_acoustic_steps>0 && owner->posim_joint_started;
-   std::cout<<"sonar_lifecycle passed="<<passed<<" registered="<<registered_tracks<<" retired="<<retired_tracks<<" accepted_steps="<<accepted_acoustic_steps<<"\n";
+   std::cout<<"sonar_lifecycle camera_hz="<<camera_hz<<" sonar_hz="<<camera_hz/sonar_stride<<" max_recent_states="<<cfg.vio_max_states<<" states="<<output_stamps.size()<<" passed="<<passed<<" expired_seeds="<<expired_seeds<<" registered="<<registered_tracks<<" retired="<<retired_tracks<<" accepted_steps="<<accepted_acoustic_steps<<"\n";
    return passed?0:1;
  }
  return 0;
