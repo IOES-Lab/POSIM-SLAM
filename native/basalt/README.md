@@ -824,3 +824,16 @@ registration and retirement into the estimator's marginal prior remain pending.
 결과 사용을 차단합니다. 추정기의 자세도 같은 트랜잭션에서 승인하거나 복원해야
 합니다. 시각·음향 공유 랜드마크에는 공동 블록이 필요합니다. 스트리밍 연결과
 추정기의 주변화 사전정보로 이전하는 처리는 아직 남아 있습니다.
+
+The optional `SonarFactorStore` argument to `optimizePingGroups` adds independent
+acoustic tracks to the same normal system, nonlinear cost and trial decision as
+visual, IMU and Ping factors. Packed acoustic pose columns map to the pose part
+of each 6- or 15-state block. A zero pose step still permits an observable point
+update. Streaming registration remains disabled until acoustic marginalization
+and observation retirement preserve the same ownership across windows.
+
+`optimizePingGroups`의 선택형 `SonarFactorStore` 인자는 독립 음향 트랙을
+시각·IMU·Ping과 같은 정규방정식, 비선형 비용과 승인 판단에 포함합니다. 음향
+자세 열은 6상태 또는 15상태 블록의 자세 부분에 대응합니다. 자세 변화가 0이어도
+관측 가능한 점 갱신은 수행합니다. 창 사이에서 음향 주변화와 관측 이전이 같은
+소유 관계를 보존할 때까지 스트리밍 등록은 비활성 상태로 유지합니다.

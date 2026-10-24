@@ -247,7 +247,21 @@ int main(int argc,char** argv) {
       if(owner.posim_ping_trial_active)throw std::invalid_argument("fixture_trial_support_loss");
       return owned_spec.build(blocks);
     };
-    const auto rejected_run=optimizePingGroups(owner,order,{reject_spec},prior,imu,{2,3,.001});
+    SonarFactorStore acoustic;
+    SonarPoses acoustic_poses;std::vector<SonarObservation> acoustic_observations;
+    const Vec3 acoustic_truth(4.,.2,.3),acoustic_seed=acoustic_truth+Vec3(.02,.01,.01);
+    for(int64_t stamp:times) {
+      const auto pose=owner.getPoseStateWithLin(stamp).getPose();
+      acoustic_poses.emplace(stamp,SonarPose{pose.translation(),pose.rotationMatrix()});
+      const Vec3 local=pose.inverse()*acoustic_truth;
+      acoustic_observations.push_back({stamp,local.norm(),std::atan2(local.y(),local.x())});
+    }
+    Eigen::MatrixXd acoustic_covariance=Eigen::MatrixXd::Identity(6,6)*.0004;
+    acoustic_covariance(0,2)=acoustic_covariance(2,0)=.0001;
+    acoustic.add(1,acoustic_seed,{Vec3::Zero(),Eigen::Matrix3d::Identity(),.2,10.,2.1,.35},
+      acoustic_observations,acoustic_covariance,acoustic_poses);
+    const auto rejected_run=optimizePingGroups(owner,order,{reject_spec},prior,imu,{2,3,.001},&acoustic);
+    const bool acoustic_restored=(acoustic.point(1)-acoustic_seed).norm()==0;
     bool restored_run=rejected_run.accepted==0 && rejected_run.rejected==3 && !owner.posim_ping_trial_active;
     for(const auto& [stamp,state]:owner.frame_states) {
       const auto& original=saved_states.at(stamp).getState();const auto& current=state.getState();
@@ -258,7 +272,19 @@ int main(int argc,char** argv) {
     for(const auto& [id,point]:owner.lmdb.getLandmarks())restored_run=restored_run &&
       point.inv_dist==saved_landmarks.at(id).inv_dist && (point.direction-saved_landmarks.at(id).direction).norm()==0;
     restored_run=restored_run && (owner.posim_ping_planes.at(1).delta-saved_plane.delta).norm()==0;
-    const auto optimized=optimizePingGroups(owner,order,{owned_spec},prior,imu);
+    const auto optimized=optimizePingGroups(owner,order,{owned_spec},prior,imu,{},&acoustic);
+    const bool acoustic_optimized=acoustic_restored && (acoustic.point(1)-acoustic_seed).norm()>1e-8;
+    double checked_cost=0.;
+    {
+      PingLinearization verification(&owner,order,options,{owned_spec},&prior,&imu);
+      checked_cost=verification.linearizeProblem();
+      for(auto& [stamp,pose]:acoustic_poses) {
+        const auto state=owner.getPoseStateWithLin(stamp).getPose();
+        pose={state.translation(),state.rotationMatrix()};
+      }
+      checked_cost+=acoustic.cost(acoustic_poses);
+    }
+    const bool acoustic_cost_accounted=std::abs(checked_cost-optimized.final_cost)<1e-8;
     const bool optimizer_passed=restored_run && optimized.accepted>0 && optimized.final_cost<optimized.initial_cost && !owner.posim_ping_trial_active;
     // A new frame extends the state order and visual target set. Persistent
     // factors must rebuild their columns, retain the old Ping and add the new one.
@@ -324,8 +350,8 @@ int main(int argc,char** argv) {
       installed_prior.H.cols()==45 && installed_prior.H.allFinite() && owner.frame_states.size()==3 &&
       owner.lmdb.numLandmarks()==1 && owner.lmdb.landmarkExists(25) && owner.posim_ping_planes.size()==0 &&
       factors.size()==0 && remaining_imu.size()==2 && remaining_imu.count(times[1]) && remaining_imu.count(times[2]);
-    bool passed=history_pruning_passed && visual_history_recorded && mismatched_imu_rejected && unsupported_atomic && registration_atomic && replay_rejected && prepared_install_passed && prepared_passed && optimizer_passed && invalid_owned_measurement && owner_support_passed && changed_dependencies_rejected && retirement_passed && incomplete_rejected && selection_error/normal_scale<1e-12 && reference_gauge_error<1e-8 && inconsistent_gauge_error>1e-7 && plane_reference_preserved && missing_reference && std::abs(before-3.5)<1e-9 && valid && duplicate && transaction_required && square_root_error/normal_scale<1e-12 && information_error/normal_scale<1e-12 && prediction_error<1e-7 && step_error<1e-7 && stale && rollback_stale && restored_cost && accepted;
-    std::cout<<Json({{"history_pruning_passed",history_pruning_passed},{"visual_history_recorded",visual_history_recorded},{"mismatched_imu_rejected",mismatched_imu_rejected},{"unsupported_append_atomic",unsupported_atomic},{"next_frame_accepted_steps",next_optimization.accepted},{"retained_observations",retained_observations},{"retired_replay_rejected",retired_replay_rejected},{"registration_atomic",registration_atomic},{"replayed_observation_rejected",replay_rejected},{"prepared_install_passed",prepared_install_passed},{"prepared_prior_passed",prepared_passed},{"prepared_prior_error",prepared_error},{"optimizer_passed",optimizer_passed},{"optimizer_rejection_restored",restored_run},{"optimizer_accepted",optimized.accepted},{"optimizer_initial_cost",optimized.initial_cost},{"optimizer_final_cost",optimized.final_cost},{"expected_return",argc==3},{"invalid_owned_measurement_rejected",invalid_owned_measurement},{"owner_visual_support_passed",owner_support_passed},{"changed_observation_dependencies_rejected",changed_dependencies_rejected},{"retirement_dependency_closure_passed",retirement_passed},{"marginal_selection_error",selection_error},{"incomplete_group_rejected",incomplete_rejected},{"passed",passed},{"joint_landmarks",25},{"independent_landmarks",1},{"imu_intervals",2},
+    bool passed=acoustic_cost_accounted && acoustic_optimized && history_pruning_passed && visual_history_recorded && mismatched_imu_rejected && unsupported_atomic && registration_atomic && replay_rejected && prepared_install_passed && prepared_passed && optimizer_passed && invalid_owned_measurement && owner_support_passed && changed_dependencies_rejected && retirement_passed && incomplete_rejected && selection_error/normal_scale<1e-12 && reference_gauge_error<1e-8 && inconsistent_gauge_error>1e-7 && plane_reference_preserved && missing_reference && std::abs(before-3.5)<1e-9 && valid && duplicate && transaction_required && square_root_error/normal_scale<1e-12 && information_error/normal_scale<1e-12 && prediction_error<1e-7 && step_error<1e-7 && stale && rollback_stale && restored_cost && accepted;
+    std::cout<<Json({{"acoustic_cost_accounted",acoustic_cost_accounted},{"acoustic_optimized",acoustic_optimized},{"acoustic_rejection_restored",acoustic_restored},{"history_pruning_passed",history_pruning_passed},{"visual_history_recorded",visual_history_recorded},{"mismatched_imu_rejected",mismatched_imu_rejected},{"unsupported_append_atomic",unsupported_atomic},{"next_frame_accepted_steps",next_optimization.accepted},{"retained_observations",retained_observations},{"retired_replay_rejected",retired_replay_rejected},{"registration_atomic",registration_atomic},{"replayed_observation_rejected",replay_rejected},{"prepared_install_passed",prepared_install_passed},{"prepared_prior_passed",prepared_passed},{"prepared_prior_error",prepared_error},{"optimizer_passed",optimizer_passed},{"optimizer_rejection_restored",restored_run},{"optimizer_accepted",optimized.accepted},{"optimizer_initial_cost",optimized.initial_cost},{"optimizer_final_cost",optimized.final_cost},{"expected_return",argc==3},{"invalid_owned_measurement_rejected",invalid_owned_measurement},{"owner_visual_support_passed",owner_support_passed},{"changed_observation_dependencies_rejected",changed_dependencies_rejected},{"retirement_dependency_closure_passed",retirement_passed},{"marginal_selection_error",selection_error},{"incomplete_group_rejected",incomplete_rejected},{"passed",passed},{"joint_landmarks",25},{"independent_landmarks",1},{"imu_intervals",2},
       {"square_root_normal_error",square_root_error},{"single_ownership_information_error",information_error},
       {"normal_system_scale",normal_scale},{"relative_square_root_error",square_root_error/normal_scale},
       {"relative_information_error",information_error/normal_scale},{"model_decrease_error",prediction_error},{"reference_decrease",reference_decrease},{"first_prediction",first_prediction},{"reference_initial_cost",.5*full_r.squaredNorm()},{"independent_eliminated_visual_cost",eliminated_visual_constant},
