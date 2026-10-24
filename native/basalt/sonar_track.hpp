@@ -24,16 +24,10 @@ struct SonarReducedRows {
   }
 };
 
-// Covariance order is [range, azimuth] for each observation, including temporal
-// correlations. Each observation addresses one shared pose slot. Caller owns
-// association, timestamps and covariance calibration; no diagonal fallback.
-inline SonarTrackRows whitenSonarTrack(const std::vector<SonarPointRows>& rows,
-    const std::vector<int>& pose_slots,int pose_count,
-    const Eigen::MatrixXd& covariance) {
-  const Eigen::Index n=rows.size(),m=2*n;
-  if(n<1 || n>64 || pose_slots.size()!=rows.size() || pose_count<1 || pose_count>64 ||
-      covariance.rows()!=m || covariance.cols()!=m || !covariance.allFinite() ||
-      !(covariance.diagonal().array()>0).all())
+struct SonarNoise {Eigen::VectorXd inverse_scales;Eigen::MatrixXd lower;};
+inline SonarNoise sonarNoise(const Eigen::MatrixXd& covariance,Eigen::Index m) {
+  if(m<2 || m>128 || m%2 || covariance.rows()!=m || covariance.cols()!=m ||
+      !covariance.allFinite() || !(covariance.diagonal().array()>0).all())
     throw std::invalid_argument("invalid_sonar_track_covariance");
   // Normalize units before checking symmetry/positive definiteness: range and
   // azimuth variances may differ by many orders of magnitude.
@@ -46,6 +40,21 @@ inline SonarTrackRows whitenSonarTrack(const std::vector<SonarPointRows>& rows,
   Eigen::LLT<Eigen::MatrixXd> factor(correlation);
   if(factor.info()!=Eigen::Success)
     throw std::invalid_argument("nonpositive_sonar_track_covariance");
+  return {inverse,factor.matrixL()};
+}
+
+// Covariance order is [range, azimuth] for each observation, including temporal
+// correlations. Each observation addresses one shared pose slot. Caller owns
+// association, timestamps and covariance calibration; no diagonal fallback.
+inline SonarTrackRows whitenSonarTrack(const std::vector<SonarPointRows>& rows,
+    const std::vector<int>& pose_slots,int pose_count,
+    const Eigen::MatrixXd& covariance) {
+  const Eigen::Index n=rows.size(),m=2*n;
+  if(n<1 || n>64 || pose_slots.size()!=rows.size() || pose_count<1 || pose_count>64 ||
+      covariance.rows()!=m || covariance.cols()!=m || !covariance.allFinite() ||
+      !(covariance.diagonal().array()>0).all())
+    throw std::invalid_argument("invalid_sonar_track_covariance");
+  const auto noise=sonarNoise(covariance,m);
   Eigen::MatrixXd packed=Eigen::MatrixXd::Zero(m,6*pose_count+4);
   for(Eigen::Index i=0;i<n;++i) {
     const auto& row=rows[i];const int slot=pose_slots[i];
@@ -56,7 +65,7 @@ inline SonarTrackRows whitenSonarTrack(const std::vector<SonarPointRows>& rows,
     packed.block<2,3>(2*i,6*pose_count)=row.point_jacobian;
     packed.block<2,1>(2*i,6*pose_count+3)=row.residual;
   }
-  packed=factor.matrixL().solve((inverse.asDiagonal()*packed).eval()).eval();
+  packed=noise.lower.triangularView<Eigen::Lower>().solve((noise.inverse_scales.asDiagonal()*packed).eval()).eval();
   if(!packed.allFinite())throw std::invalid_argument("nonfinite_whitened_sonar_track");
   return {packed.leftCols(6*pose_count),packed.middleCols(6*pose_count,3),packed.rightCols(1)};
 }

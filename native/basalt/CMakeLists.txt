@@ -117,3 +117,7 @@ target_compile_options(basalt_sonar_track_probe PRIVATE -UNDEBUG)
 add_executable(basalt_sonar_factors_probe sonar_factors_probe.cc)
 target_link_libraries(basalt_sonar_factors_probe PRIVATE Eigen3::Eigen)
 target_compile_options(basalt_sonar_factors_probe PRIVATE -UNDEBUG)
+
+add_executable(basalt_sonar_packet_probe sonar_packet_probe.cc)
+target_link_libraries(basalt_sonar_packet_probe PRIVATE Eigen3::Eigen)
+target_include_directories(basalt_sonar_packet_probe PRIVATE ${SOURCE_ROOT}/json/single_include)

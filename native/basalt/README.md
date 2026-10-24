@@ -861,3 +861,25 @@ measurements, so this hook does not enable an application sensor mode.
 사용합니다. `basalt_synthetic_probe OUTPUT.csv 5 sonar`는 합성 시각 특징·원본
 IMU·음향 관측으로 이 수명주기를 검사합니다. 스트림의 바이너리 입력에는 아직
 소나 관측이 없으므로 이 연결부가 앱의 센서 모드를 활성화하지는 않습니다.
+
+### Acoustic snapshot payload
+
+`posim_slam.sonar_packet.encode_snapshot` and `sonar_packet.hpp` share a bounded
+little-endian payload. The header is `int64 image_stamp_ns, uint32 track_count,
+uint32 reserved=0`. Each track carries `int64 id, uint32 observation_count,
+uint32 reserved=0`, then ordered `(int64 stamp_ns, float64 range_m, float64
+azimuth_rad)` observations and a row-major float64 covariance of size `2N × 2N`.
+The latest observation matches the image timestamp. Limits are 16 tracks and
+64 observations per track. IDs increase within a snapshot. Covariance includes
+all temporal correlations in `[range, azimuth]` order. Invalid clocks, duplicate
+IDs, truncation, trailing bytes and nonpositive covariance fail validation.
+This codec is not yet advertised or consumed by the binary stream worker.
+
+`posim_slam.sonar_packet.encode_snapshot`과 `sonar_packet.hpp`는 크기를 제한한
+little-endian 형식을 공유합니다. 헤더는 영상 시각·트랙 수·예약값 0이며, 각 트랙은
+ID·관측 수·예약값 0 다음에 시각·거리(m)·방위각(rad) 이력과 `2N × 2N` 전체
+공분산을 담습니다. 마지막 관측 시각은 영상과 같아야 합니다. 트랙은 최대 16개,
+각 관측은 최대 64개이며 ID는 스냅샷 안에서 증가합니다. 공분산은 거리·방위각
+순서의 시간 상관관계를 보존합니다. 잘못된 시각·중복 ID·잘린 데이터·추가 바이트·
+양의 정부호가 아닌 공분산은 거부합니다. 이 코덱은 아직 바이너리 스트림 작업자의
+지원 기능으로 광고하거나 소비하지 않습니다.
