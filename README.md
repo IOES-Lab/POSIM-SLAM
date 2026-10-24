@@ -49,6 +49,15 @@ observed support. Patch association, local planarity and independent calibrated
 range noise are required assumptions. Overlapping patch support and duplicate
 return timestamps are rejected.
 
+Sonar and Ping observations may belong to different states: a later downward
+Ping can constrain the same landmarks observed earlier by the forward sonar.
+Every measurement uses its exact state timestamp; no sonar observation is
+required at a Ping-only state. The later footprint must still be covered by
+the associated landmarks. Timestamp coincidence alone does not establish
+shared surface support. The 2–4-state reference window allows at most 3 seconds
+between adjacent states; longer delays require persistent graph/patch handling,
+which is not implemented by this function.
+
 `inertial_factor.pair_residual` uses measured `ImuWindow` preintegration to
 constrain endpoint position, velocity, rotation and biases with their full
 15-state covariance. Gravity and endpoint states are explicit optimization

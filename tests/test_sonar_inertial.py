@@ -29,6 +29,50 @@ def fixture(stationary=False):
 
 
 class SonarInertialTests(unittest.TestCase):
+    def delayed_ping_fixture(self):
+        args=fixture();velocity=np.array([1.2,0.,0.])
+        args['states']=[dict(stamp=t,position=velocity*t,velocity=velocity.copy(),
+            attitude=np.eye(3),gyro_bias=np.zeros(3),accel_bias=np.zeros(3)) for t in (0.,1.,3.)]
+        args['initial_state']=copy.deepcopy(args['states'][0])
+        args['imu_window']=ImuWindow()
+        for i in range(601):args['imu_window'].add(i*.005,[0,0,0],[0,0,9.80665])
+        args['geometry']['vertical_fov']=1.1
+        args['tracks']=[]
+        for i,p in enumerate(([3.,-.4,-.8],[4.5,-.4,-.8],[3.,.4,-.8],[4.5,.4,-.8])):
+            point=np.array(p);observations=[]
+            # The sonar observes the patch before the downward Ping reaches it.
+            for state in args['states'][:2]:
+                q=point-state['position']
+                observations.append(dict(stamp_ns=round(state['stamp']*1e9),
+                    range_m=float(np.linalg.norm(q)),azimuth_rad=float(np.arctan2(q[1],q[0]))))
+            args['tracks'].append(dict(track_id=i,landmark=point,observations=observations,
+                measurement_covariance=np.diag([.01**2,.002**2]*2)))
+        args['ping_patches']=[dict(track_ids=list(range(4)),plane_normal=np.array([0.,0.,1.]),
+            plane_distance=-.8,surface_sigma=.01,max_support_distance=.9,
+            observations=[dict(stamp_ns=3_000_000_000,range_m=.8,range_sigma=.01)],
+            geometry=dict(imu_to_ping=np.zeros(3),ping_to_imu=np.eye(3),
+                rays=np.array([[0.,0.,-1.]]),range_bias=0.,range_min=.1,range_max=10.))]
+        return args
+
+    def test_delayed_downward_ping_shares_historical_sonar_points(self):
+        args=self.delayed_ping_fixture()
+        for track in args['tracks']:track['landmark']+=np.array([.01,0.,-.025])
+        args['ping_patches'][0]['plane_distance']-=.025
+        args['states'][2]['position']+=np.array([.01,0.,.015])
+        result=optimize_window(**args)
+        self.assertLess(result['final_cost'],result['initial_cost']*1e-6)
+        self.assertAlmostEqual(result['planes'][0]['distance'],-.8,places=4)
+        # No invented sonar measurement at the Ping-only state, and no duplicate
+        # surface rows: prior + two IMU edges + eight sonar returns + Ping + plane.
+        self.assertEqual(result['residual_dimension'],15+30+16+1+4)
+        self.assertFalse(result['navigation_ready'])
+
+    def test_delayed_ping_still_requires_spatial_support(self):
+        args=self.delayed_ping_fixture()
+        args['ping_patches'][0]['observations'][0]['stamp_ns']=0
+        with self.assertRaisesRegex(ValueError,'surface_does_not_cover_ping'):
+            optimize_window(**args)
+
     def ping_fixture(self):
         args=fixture();tracks=[]
         for i,p in enumerate(([3.,-1.,-.8],[6.,-1.,-.8],[3.,1.,-.8],[6.,1.,-.8])):
