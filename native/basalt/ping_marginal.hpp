@@ -2,6 +2,7 @@
 #pragma once
 #include "ping_joint.hpp"
 #include <basalt/utils/imu_types.h>
+#include <set>
 #include <vector>
 
 namespace posim_slam {
@@ -20,6 +21,50 @@ inline void requireStateOrder(const basalt::AbsOrderMap& order) {
   }
   if(std::find(occupied.begin(),occupied.end(),false)!=occupied.end())
     throw std::invalid_argument("incomplete_joint_state_order");
+}
+
+struct PingMarginalLayout {
+  basalt::AbsOrderMap source,retained;
+  std::set<int64_t> consumed_imu_starts;
+};
+
+// Keep all live pose columns, including recent group dependencies. Pose-only
+// states precede full inertial states, matching Basalt's optimizer ordering.
+// Consume an IMU interval only when one endpoint loses velocity/bias variables;
+// intervals between fully retained states remain live and must not enter prior.
+template<class Estimator> PingMarginalLayout planPingMarginalLayout(
+    const Estimator& owner,const std::set<int64_t>& removed,
+    const std::set<int64_t>& pose_only,const std::set<int64_t>& required,
+    const std::vector<std::pair<int64_t,int64_t>>& imu_intervals) {
+  if(owner.posim_ping_trial_active)throw std::logic_error("ping_layout_during_trial");
+  PingMarginalLayout out;
+  auto add=[](basalt::AbsOrderMap& order,int64_t t,int size) {
+    if(!order.abs_order_map.emplace(t,std::make_pair(order.total_size,size)).second)
+      throw std::invalid_argument("duplicate_ping_layout_state");
+    order.total_size+=size;++order.items;
+  };
+  for(const auto& [t,state]:owner.frame_poses)add(out.source,t,6);
+  for(const auto& [t,state]:owner.frame_states)add(out.source,t,15);
+  requireStateOrder(out.source);
+  for(int64_t t:required)if(!out.source.abs_order_map.count(t))throw std::invalid_argument("missing_ping_layout_dependency");
+  for(int64_t t:removed)if(!out.source.abs_order_map.count(t))throw std::invalid_argument("unknown_ping_removed_state");
+  for(int64_t t:pose_only)
+    if(removed.count(t) || !owner.frame_states.count(t))throw std::invalid_argument("invalid_ping_pose_only_state");
+  std::set<int64_t> retained_poses;
+  for(const auto& [t,state]:owner.frame_poses)if(!removed.count(t))retained_poses.insert(t);
+  retained_poses.insert(pose_only.begin(),pose_only.end());
+  for(int64_t t:retained_poses)add(out.retained,t,6);
+  for(const auto& [t,state]:owner.frame_states)
+    if(!removed.count(t) && !pose_only.count(t))add(out.retained,t,15);
+  requireStateOrder(out.retained);
+  std::set<int64_t> starts;
+  for(const auto& [start,end]:imu_intervals) {
+    if(start>=end || !starts.insert(start).second || !owner.frame_states.count(start) || !owner.frame_states.count(end))
+      throw std::invalid_argument("invalid_ping_imu_interval");
+    if(removed.count(start) || removed.count(end) || pose_only.count(start) || pose_only.count(end))
+      out.consumed_imu_starts.insert(start);
+  }
+  return out;
 }
 
 // Input columns: source pose/inertial states, then ALL shared plane/landmark

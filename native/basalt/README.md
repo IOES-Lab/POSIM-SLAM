@@ -415,6 +415,23 @@ set. The owner still installs the prior and retires exactly those factors.
 시각이 명시한 의존관계와 일치하는지 검사합니다. 사전정보 설치와 동일 관측의
 제거는 여전히 소유자의 책임입니다.
 
+`planPingMarginalLayout` builds source and retained orders from the actual
+estimator states, retaining recent required frames beyond the usual marginal
+boundary. Pose-only blocks precede full inertial blocks as in the optimizer.
+It supports removing a state and demoting a 15-variable inertial state to its
+six pose variables. The returned IMU selection consumes only intervals whose
+endpoint loses velocity/bias variables. Intervals between fully retained states
+remain live. Missing frame dependencies and invalid transitions are rejected;
+the function does not install a prior or mutate the estimator.
+
+`planPingMarginalLayout`은 실제 추정 상태에서 주변화 입력·유지 상태의 열
+순서를 구성하며, 기본 경계보다 최신인 필요 프레임도 유지합니다. 최적화기와
+같이 자세 전용 블록을 전체 IMU 상태 블록 앞에 배치합니다. 상태 삭제와
+15변수 IMU 상태에서 자세 6변수만 남기는 전환을 지원합니다. 반환하는 IMU
+선택에는 끝점의 속도·바이어스 변수가 제거되는 구간만 포함합니다. 전체 상태로
+남는 두 끝점 사이 구간은 실시간 관측으로 유지합니다. 누락 프레임과 잘못된
+전환은 거부하며, 사전정보 설치나 추정 상태 변경은 수행하지 않습니다.
+
 `ping_state.hpp` stores up to eight local planes in the actual Basalt estimator
 backup/restore lifecycle. `JointPingTrial` retains accepted finite cost decreases
 and restores poses, inertial states, landmarks and planes on rejection or

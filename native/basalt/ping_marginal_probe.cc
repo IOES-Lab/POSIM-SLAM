@@ -47,8 +47,32 @@ int main() {
     const double change_error=std::abs((after-before)-expected);
     bool invalid_state=false;auto bad=keep;bad.abs_order_map[100]={15,15};
     try {marginalizeJointSystem(j,r,source,bad,delta);}catch(const std::invalid_argument&){invalid_state=true;}
-    bool passed=information_error<1e-9 && gradient_error<1e-9 && change_error<1e-10 && invalid_state;
-    std::cout<<Json({{"passed",passed},{"imu_states",2},{"retained_columns",21},
+    basalt::BundleAdjustmentBase<double> live;
+    live.frame_poses.emplace(50,basalt::PoseStateWithLin<double>(50,Sophus::SE3d(),true));
+    for(int64_t t:{100,200,300,400})live.frame_states.emplace(t,basalt::PoseVelBiasStateWithLin<double>(
+      t,Sophus::SE3d(),Vec3::Zero(),Vec3::Zero(),Vec3::Zero(),true));
+    const auto layout=planPingMarginalLayout(live,{100},{200},{50,100,200,300,400},{{100,200},{200,300},{300,400}});
+    const bool layout_ok=layout.source.total_size==66 && layout.retained.total_size==42 &&
+      layout.retained.abs_order_map.at(200)==std::make_pair(size_t(6),size_t(6)) &&
+      layout.retained.abs_order_map.at(300)==std::make_pair(size_t(12),size_t(15)) &&
+      layout.retained.abs_order_map.at(400)==std::make_pair(size_t(27),size_t(15)) &&
+      layout.consumed_imu_starts==std::set<int64_t>({100,200}) && live.frame_states.size()==4;
+    bool dependency_rejected=false;
+    try{planPingMarginalLayout(live,{100},{200},{500},{});}catch(const std::invalid_argument&){dependency_rejected=true;}
+    Eigen::MatrixXd expanded_j(110,72);Eigen::VectorXd expanded_r(110);
+    for(int i=0;i<110;++i){expanded_r[i]=normal(generator);for(int k=0;k<72;++k)expanded_j(i,k)=normal(generator);}
+    const auto expanded_prior=marginalizeJointSystem(expanded_j,expanded_r,layout.source,layout.retained,Eigen::VectorXd::Zero(42));
+    const Eigen::MatrixXd covariance=(expanded_j.transpose()*expanded_j).ldlt().solve(Eigen::MatrixXd::Identity(72,72));
+    std::vector<int> columns;
+    // Retained order: old pose 50, demoted pose 200, full states 300 and 400.
+    for(int k=0;k<6;++k)columns.push_back(k);
+    for(int k=21;k<27;++k)columns.push_back(k);
+    for(int k=36;k<66;++k)columns.push_back(k);
+    Eigen::MatrixXd expected_covariance(42,42);
+    for(int i=0;i<42;++i)for(int k=0;k<42;++k)expected_covariance(i,k)=covariance(columns[i],columns[k]);
+    const double expanded_error=(expected_covariance-(expanded_prior.H.transpose()*expanded_prior.H).ldlt().solve(Eigen::MatrixXd::Identity(42,42))).norm();
+    bool passed=layout_ok && dependency_rejected && expanded_error<1e-9 && information_error<1e-9 && gradient_error<1e-9 && change_error<1e-10 && invalid_state;
+    std::cout<<Json({{"expanded_layout_passed",layout_ok},{"expanded_covariance_error",expanded_error},{"missing_dependency_rejected",dependency_rejected},{"passed",passed},{"imu_states",2},{"retained_columns",21},
       {"basalt_information_error",information_error},{"basalt_gradient_error",gradient_error},
       {"rebased_trial_cost_change_error",change_error},{"invalid_state_order_rejected",invalid_state}}).dump()<<'\n';
     return passed?0:1;
