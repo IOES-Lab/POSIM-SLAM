@@ -910,6 +910,19 @@ estimate; elevation is not measured or constrained by this seed.
 관측 요인은 유지합니다.
 초기 점의 고도각 0은 시작 추정값이며 높이 측정이나 제약으로 사용하지 않습니다.
 
+The native solver applies a Huber loss to each full covariance-whitened track.
+Its transition is three RMS standardized residual units. All rows in that track
+receive one common IRLS weight, including frozen-reference Jacobians; the trial
+acceptance cost uses the same Huber objective. This limits large residuals without
+changing covariance correlations. It does not validate physical associations or
+calibrate the supplied measurement uncertainty.
+
+네이티브 해석기는 전체 공분산으로 백색화한 트랙마다 Huber 손실을 적용합니다.
+전환점은 표준화 잔차의 RMS 3이며, 고정 기준 자코비안을 포함한 트랙 전체에
+같은 IRLS 가중치를 적용합니다. 갱신 수락 판단에도 같은 Huber 비용을 사용합니다.
+큰 잔차의 영향을 줄이면서 공분산 상관관계를 유지하지만, 물리적 대응점이나
+입력한 측정 불확실성이 올바르다는 것을 보장하지는 않습니다.
+
 The state reply's `sonar` object reports `owner_received`, `submitted_tracks`
 and `accepted_steps` for received input, `geometry_rejected_track_ids` for
 unsupported additions, plus `active_track_ids` after

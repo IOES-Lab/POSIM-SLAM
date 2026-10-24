@@ -20,6 +20,18 @@ struct SonarTrackInput {
 };
 using SonarPoses=std::map<int64_t,SonarPose>;
 
+// One Huber loss for the full whitened track preserves its covariance and is
+// invariant to an orthogonal change of whitening basis. The transition is
+// three RMS standardized residual units, not a calibrated acceptance gate.
+struct SonarTrackLoss {double cost,sqrt_weight;};
+inline SonarTrackLoss sonarTrackLoss(const Eigen::VectorXd& residual) {
+  if(residual.size()<2 || !residual.allFinite())throw std::invalid_argument("invalid_sonar_loss_residual");
+  const double norm=residual.norm(),threshold=3.*std::sqrt(double(residual.size()));
+  if(norm<=threshold)return {.5*norm*norm,1.};
+  return {threshold*(norm-.5*threshold),std::sqrt(threshold/norm)};
+}
+
+
 // Owner-thread storage for independently associated acoustic points. Optical
 // points shared with sonar need a joint visual/acoustic block, not this store.
 // Pose updates and this store's trial must share the estimator's transaction.
@@ -132,6 +144,8 @@ class SonarFactorStore {
           if(stamp!=(current++)->first)throw std::invalid_argument("changed_sonar_reference_order");
         fixed.residual=rows.residual;rows=std::move(fixed);
       }
+      const double weight=sonarTrackLoss(rows.residual).sqrt_weight;
+      rows.pose_jacobian*=weight;rows.point_jacobian*=weight;rows.residual*=weight;
       result.reduced.emplace(id,eliminateSonarPoint(rows));
       result.rows.emplace(id,std::move(rows));
     }
@@ -139,7 +153,7 @@ class SonarFactorStore {
   }
   double cost(const SonarPoses& poses) const {
     double total=0.;
-    for(const auto& [id,track]:tracks_)total+=.5*build(track,points_.at(id),poses).residual.squaredNorm();
+    for(const auto& [id,track]:tracks_)total+=sonarTrackLoss(build(track,points_.at(id),poses).residual).cost;
     if(!std::isfinite(total))throw std::invalid_argument("nonfinite_sonar_cost");
     return total;
   }

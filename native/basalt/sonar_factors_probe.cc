@@ -10,6 +10,23 @@ void reject(const std::function<void()>& operation) {
 }
 int main() {
   using namespace posim_slam;
+  {
+    const Eigen::VectorXd small=Eigen::VectorXd::Constant(6,.1);
+    assert(std::abs(sonarTrackLoss(small).cost-.5*small.squaredNorm())<1e-12);
+    assert(sonarTrackLoss(small).sqrt_weight==1.);
+    Eigen::VectorXd outlier(6);outlier<<12.,-8.,5.,3.,-2.,1.;
+    const auto robust=sonarTrackLoss(outlier);
+    assert(robust.sqrt_weight<1. && robust.cost<.5*outlier.squaredNorm());
+    // The IRLS gradient must be the derivative of the actual trial objective.
+    for(int i=0;i<6;++i) {
+      auto plus=outlier,minus=outlier;plus[i]+=1e-5;minus[i]-=1e-5;
+      const double numerical=(sonarTrackLoss(plus).cost-sonarTrackLoss(minus).cost)/2e-5;
+      assert(std::abs(numerical-robust.sqrt_weight*robust.sqrt_weight*outlier[i])<1e-7);
+    }
+    Eigen::MatrixXd rotation=Eigen::MatrixXd::Identity(6,6);
+    rotation(0,0)=rotation(1,1)=std::cos(.6);rotation(0,1)=-std::sin(.6);rotation(1,0)=std::sin(.6);
+    assert(std::abs(sonarTrackLoss(rotation*outlier).cost-robust.cost)<1e-12);
+  }
   const Eigen::Vector3d truth(4,.5,.3),seed(4.02,.51,.32);
   SonarCalibration c{Eigen::Vector3d::Zero(),Eigen::Matrix3d::Identity(),.2,10.,2.1,.35};
   SonarPoses poses;

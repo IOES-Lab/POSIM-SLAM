@@ -52,7 +52,7 @@ inline PingOptimizationReport optimizePingGroups(basalt::BundleAdjustmentBase<do
         sonar_to_state=Eigen::MatrixXd::Zero(6*sonar_rows->pose_stamps.size(),order.total_size);
         for(size_t i=0;i<sonar_rows->pose_stamps.size();++i)
           sonar_to_state.block<6,6>(6*i,order.abs_order_map.at(sonar_rows->pose_stamps[i]).first).setIdentity();
-        for(const auto& [id,rows]:sonar_rows->rows)before+=.5*rows.residual.squaredNorm();
+        before+=sonar->cost(sonar_poses());
       }
       if(!valid)throw std::runtime_error("invalid_ping_initial_linearization");
       if(iteration==0 && attempt==0)report.initial_cost=report.final_cost=before;
