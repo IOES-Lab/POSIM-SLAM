@@ -244,3 +244,9 @@ unchanged; velocity and bias seeds still require their own assumptions.
 `sonar_input.projected_frame` decodes bounded float32 multibeam messages with either byte order. It validates timestamps, range bins and unit beam directions, and preserves negative infinity as a missing return. The decoder has no ROS dependency.
 
 Acoustic/DVL intervals retain normal velocity and reject more than 5 cm excursion outside the sonar fan plane, including reversals with zero net displacement. This is an experimental model-validity gate, not elevation recovery or probabilistic confidence.
+
+## Recorded live-worker comparison
+
+`tools/stream_recording.py --gravity-seed` selects the first image with one second of measured IMU history and sends the rotation-compensated gravity seed plus a 200 ms IMU bootstrap buffer. Subsequent images remain in the evaluation sequence. The receipt records omitted initialization frames and the exact seed. Initial velocity and biases remain zero assumptions.
+
+Add `--joint-ping` to fuse recorded ranges with exactly matching image timestamps. Both Ping files must appear in the verified recording hash inventory. Invalid returns are omitted; nearby timestamps are not substituted. Repeat without this flag on the same recording to compare camera/IMU and camera/IMU/Ping. `states.json` retains native diagnostics alongside the pose CSV. This reproduces sensor-time inputs and numerical initialization, not ROS callback timing or an accuracy qualification.

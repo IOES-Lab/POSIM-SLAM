@@ -17,7 +17,8 @@ def verify(inputs, receipt):
     if receipt.get('passed') is not True:
         raise ValueError('recording_not_qualified')
     hashes=receipt.get('input_files',{})
-    if set(hashes)!={'calibration.json','frames.json','imu.csv'}:
+    base={'calibration.json','frames.json','imu.csv'}
+    if set(hashes) not in (base,base|{'ping-calibration.json','ping.csv'}):
         raise ValueError('recording_hash_inventory_missing')
     for name, expected in hashes.items():
         path=inputs/name

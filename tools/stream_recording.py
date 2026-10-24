@@ -3,11 +3,13 @@
 This tool paces packets by sensor time; the live ROS owner is tested separately.
 Only the recorder's lossless grayscale/filter-zero PNG encoding is supported.
 """
-import argparse,csv,hashlib,json,runpy,struct,sys,time,zlib
+import argparse,csv,hashlib,json,math,runpy,shutil,struct,sys,time,zlib
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'src'))
 from posim_slam.live_client import LiveClient
 from posim_slam.map_snapshot import annotate_snapshot
+from posim_slam.inertial import ImuWindow
+from posim_slam.gravity_seed import gravity_seed
 
 
 def pixels(path,width,height):
@@ -28,12 +30,48 @@ def pixels(path,width,height):
     return b''.join(raw[y*(width+1)+1:(y+1)*(width+1)] for y in range(height))
 
 
+def seeded_inputs(frames,imu):
+    """Select the first image with a measured one-second IMU history.
+
+    Matches the live numerical seed and 200 ms bootstrap buffer. This is not
+    dynamic initialization and does not estimate initial velocity or biases.
+    """
+    if not imu or not frames:raise ValueError('recording_seed_history_missing')
+    window=ImuWindow(max_samples=65536,max_gap=.020000001)
+    for row in imu:
+        window.add(int(row['stamp_ns'])/1e9,
+                   [float(row[k]) for k in ('gx','gy','gz')],
+                   [float(row[k]) for k in ('ax','ay','az')])
+    first=int(imu[0]['stamp_ns']);last=int(imu[-1]['stamp_ns'])
+    selected=next((f['stamp_ns'] for f in frames if first+1_000_000_000<=f['stamp_ns']<=last),None)
+    if selected is None:raise ValueError('recording_seed_history_missing')
+    seed=gravity_seed(window,selected/1e9-1.,selected/1e9,gyro_bias=[0,0,0],accel_bias=[0,0,0])
+    return ([f for f in frames if f['stamp_ns']>=selected],
+            [r for r in imu if int(r['stamp_ns'])>=selected-200_000_000],
+            (selected,seed['direction_imu'].tolist()))
+
+
+def exact_pings(rows):
+    result={};previous=-1
+    for row in rows:
+        stamp=int(row['stamp_ns']);valid=int(row['valid'])
+        if stamp<=previous or valid not in (0,1):raise ValueError('invalid_recorded_ping')
+        previous=stamp
+        if valid:
+            value=float(row['range_m'])
+            if not math.isfinite(value) or not 0<value<=1000:raise ValueError('invalid_recorded_ping')
+            result[stamp]=(stamp,value)
+    return result
+
+
 if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__)
     for name in ('binary','inputs','recording-receipt','output'):p.add_argument('--'+name,type=Path,required=True)
     p.add_argument('--speed',type=float,default=1)
     p.add_argument('--max-image-pixels',type=int)
     p.add_argument('--max-feature-cells',type=int)
+    p.add_argument('--gravity-seed',action='store_true',help='Use the live one-second numerical gravity seed')
+    p.add_argument('--joint-ping',action='store_true',help='Fuse hash-checked Ping observations at exact image timestamps')
     a=p.parse_args()
     if a.output.exists() or not .5<=a.speed<=2:p.error('Use a new output and speed 0.5–2')
     root=a.inputs.resolve();receipt=json.loads(a.recording_receipt.read_text())
@@ -41,8 +79,15 @@ if __name__=='__main__':
     config=json.loads((root/'calibration.json').read_text())
     frames=json.loads((root/'frames.json').read_text())
     with (root/'imu.csv').open() as f:imu=list(csv.DictReader(f))
+    original_frames=len(frames);seed=None;pings={}
+    if a.gravity_seed:frames,imu,seed=seeded_inputs(frames,imu)
+    if a.joint_ping:
+        if not {'ping.csv','ping-calibration.json'}<=set(receipt['input_files']):p.error('Joint Ping requires hash-checked recorded Ping inputs')
+        with (root/'ping.csv').open() as f:pings=exact_pings(csv.DictReader(f))
+    config['require_gravity_seed']=a.gravity_seed;config['enable_joint_ping']=a.joint_ping
     events=[(int(r['stamp_ns']),0,r) for r in imu]+[(r['stamp_ns'],1,r) for r in frames]
     events.sort(key=lambda r:(r[0],r[1]));a.output.mkdir(parents=True)
+    if a.joint_ping:shutil.copyfile(root/'ping-calibration.json',a.output/'ping-calibration.json')
     states=[];maps=[];ready=[];exports=[];requested=[];sent={};latencies=[]
     if a.max_image_pixels is not None:config['max_image_pixels']=a.max_image_pixels
     if a.max_feature_cells is not None:config['max_feature_cells']=a.max_feature_cells
@@ -69,6 +114,7 @@ if __name__=='__main__':
                 poll()
                 if time.monotonic()>=deadline:raise RuntimeError('worker_ready_timeout')
                 time.sleep(.005)
+            if seed:client.gravity_seed(*seed)
             begin=time.monotonic();first=events[0][0]
             for stamp,kind,row in events:
                 due=begin+(stamp-first)*1e-9/a.speed
@@ -79,12 +125,14 @@ if __name__=='__main__':
                 else:
                     image=pixels(root/row['file'],config['width'],config['height'])
                     sent[stamp]=time.monotonic()
-                    client.image(stamp,config['width'],config['height'],image)
+                    client.image(stamp,config['width'],config['height'],image,ping=pings.get(stamp))
             deadline=time.monotonic()+5
             while time.monotonic()<deadline and (len(states)<len(frames) or len(maps)<len(frames)):
                 poll();time.sleep(.005)
             assert len(states)==len(frames) and len(maps)==len(frames),(len(states),len(maps))
             assert ready and ready[0]['inertial_fused'] is True
+            assert ready[0].get('joint_ping_enabled',False)==a.joint_ping
+            assert ready[0].get('gravity_seed_required',False)==a.gravity_seed
             assert all(len(m['points'])<=1000 for m in maps)
             client.snapshot(2);requested.append(2);deadline=time.monotonic()+2
             while time.monotonic()<deadline and len(exports)<len(requested):poll();time.sleep(.005)
@@ -101,6 +149,10 @@ if __name__=='__main__':
                final_landmarks_accumulated=maps[-1].get('landmarks_accumulated'),archive_evicted=maps[-1].get('archive_evicted'),archive_rejected=maps[-1].get('archive_rejected'),worker_ready=ready,
                binary_sha256=hashlib.sha256(a.binary.read_bytes()).hexdigest(),
                worker_returncode=client.process.returncode,worker_threads_stopped=not(client.reader.is_alive() or client.writer.is_alive()))
+    proof.update(input_files=receipt['input_files'],gravity_seed=seed,joint_ping=a.joint_ping,
+                 initialization_frames_omitted=original_frames-len(frames),
+                 exact_ping_images=sum(f['stamp_ns'] in pings for f in frames))
+    (a.output/'states.json').write_text(json.dumps(states,indent=2)+'\n')
     proof['runtime_calibration_sha256']=hashlib.sha256(calibration.read_bytes()).hexdigest()
     if latencies:
         import numpy as np
