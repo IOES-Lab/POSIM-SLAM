@@ -502,6 +502,25 @@ itself activate the streaming coupled optimizer.
 거부합니다. 그룹 등록·제거는 호출자가 관리하며 이 생성 함수만으로 스트리밍
 공동 최적화가 활성화되는 것은 아닙니다.
 
+`optimizePingGroups` runs bounded damped joint updates using visual, IMU, prior
+and Ping costs. It rebuilds rows after every rejected trial, applies state and
+landmark/plane changes in one `JointPingTrial`, and accepts only a finite actual
+cost decrease with positive predicted decrease. Unsupported trial geometry
+restores the complete state before increasing damping. Defaults are six outer
+iterations and six attempts per iteration. The report gives accepted/rejected
+counts, costs and termination reason; reaching the iteration limit is not a
+convergence claim. This routine still needs activation in the streaming group
+schedule.
+
+`optimizePingGroups`는 시각·IMU·사전정보·Ping 비용을 함께 사용하는 제한된
+감쇠 공동 보정을 실행합니다. 거부된 시도 뒤에는 행렬을 다시 만들고, 상태와
+특징점·평면 변경을 하나의 `JointPingTrial`로 처리합니다. 유한한 실제 비용
+감소와 양의 예측 감소가 있을 때만 수락합니다. 보정한 형상이 관측 영역을
+벗어나면 전체 상태를 복원한 뒤 감쇠를 높입니다. 기본값은 외부 반복 6회와
+반복당 시도 6회입니다. 수락·거부 횟수, 비용과 종료 사유를 반환하며 반복
+한도 도달은 수렴을 의미하지 않습니다. 스트리밍 그룹 실행 순서에서 이
+루틴을 활성화하는 연결은 아직 필요합니다.
+
 `ping_state.hpp` stores up to eight local planes in the actual Basalt estimator
 backup/restore lifecycle. `JointPingTrial` retains accepted finite cost decreases
 and restores poses, inertial states, landmarks and planes on rejection or
