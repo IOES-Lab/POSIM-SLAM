@@ -814,26 +814,37 @@ extended covariance and preserves its existing block. Point updates use the
 same rank threshold as elimination and leave unobserved directions unchanged.
 A trial restores every point on rejection; topology changes and stale rows are
 rejected. The estimator must accept or restore its pose states in the same
-transaction. Shared optical/acoustic landmarks require a joint block. Streaming
-registration and retirement into the estimator's marginal prior remain pending.
+transaction. Shared optical/acoustic landmarks require a joint block. The common prior builder retires complete acoustic tracks. Streaming
+registration remains pending.
 
 `sonar_factors.hpp`는 독립적으로 대응된 음향 점 최대 16개와 점마다 관측 최대
 64개를 보관합니다. 관측 추가 시 기존 공분산 블록을 유지한 전체 확장 공분산이
 필요합니다. 점 갱신은 소거와 같은 순위 기준을 사용하고 관측되지 않은 방향을
 유지합니다. 거절된 시도는 모든 점을 복원하며 관측 구성 변경과 오래된 선형화
 결과 사용을 차단합니다. 추정기의 자세도 같은 트랜잭션에서 승인하거나 복원해야
-합니다. 시각·음향 공유 랜드마크에는 공동 블록이 필요합니다. 스트리밍 연결과
-추정기의 주변화 사전정보로 이전하는 처리는 아직 남아 있습니다.
+합니다. 시각·음향 공유 랜드마크에는 공동 블록이 필요합니다. 공동 사전정보 생성기는 음향 트랙 전체를 이전합니다. 스트리밍 연결은 아직
+남아 있습니다.
 
 The optional `SonarFactorStore` argument to `optimizePingGroups` adds independent
 acoustic tracks to the same normal system, nonlinear cost and trial decision as
 visual, IMU and Ping factors. Packed acoustic pose columns map to the pose part
 of each 6- or 15-state block. A zero pose step still permits an observable point
-update. Streaming registration remains disabled until acoustic marginalization
-and observation retirement preserve the same ownership across windows.
+update. Streaming registration remains disabled pending calibrated observations and transport.
 
 `optimizePingGroups`의 선택형 `SonarFactorStore` 인자는 독립 음향 트랙을
 시각·IMU·Ping과 같은 정규방정식, 비선형 비용과 승인 판단에 포함합니다. 음향
 자세 열은 6상태 또는 15상태 블록의 자세 부분에 대응합니다. 자세 변화가 0이어도
-관측 가능한 점 갱신은 수행합니다. 창 사이에서 음향 주변화와 관측 이전이 같은
-소유 관계를 보존할 때까지 스트리밍 등록은 비활성 상태로 유지합니다.
+관측 가능한 점 갱신은 수행합니다. 보정된 관측과 전송 연결이 준비될 때까지 스트리밍 등록은 비활성 상태로
+유지합니다.
+
+Acoustic retirement includes every observation of each track touching a removed
+pose in the common square-root prior. The point is eliminated once; live tracks
+are excluded. Installation failure preserves the store. Track IDs must increase
+within a session. Reference Jacobians use Basalt pose anchors and the point's
+initial anchor; nonlinear cost still uses the current geometry.
+
+음향 트랙이 제거할 자세와 연결되면 해당 트랙의 모든 관측을 공동 square-root
+사전정보에 포함하고 점을 한 번 소거합니다. 유지할 트랙은 포함하지 않습니다.
+사전정보 설치 실패 시 관측 저장소를 보존합니다. 트랙 ID는 세션 안에서 증가해야
+합니다. Jacobian은 Basalt 기준 자세와 점의 초기 기준값을 사용하고, 비선형 비용은
+현재 형상에서 계산합니다.

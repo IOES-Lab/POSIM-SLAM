@@ -3,6 +3,7 @@
 #include "sonar_track.hpp"
 #include <map>
 #include <cstdint>
+#include <set>
 
 namespace posim_slam {
 struct SonarPose {Eigen::Vector3d position;Eigen::Matrix3d attitude;};
@@ -22,6 +23,7 @@ class SonarFactorStore {
     std::vector<SonarObservation> observations;
     Eigen::MatrixXd covariance;
     SonarCalibration calibration;
+    Eigen::Vector3d reference_point;
   };
  public:
   SonarFactorStore()=default;
@@ -38,13 +40,13 @@ class SonarFactorStore {
       const std::vector<SonarObservation>& observations,const Eigen::MatrixXd& covariance,
       const SonarPoses& poses) {
     requireIdle();
-    if(id<0 || tracks_.count(id) || tracks_.size()>=16 || !point.allFinite())
+    if(id<=last_id_ || tracks_.count(id) || tracks_.size()>=16 || !point.allFinite())
       throw std::invalid_argument("invalid_sonar_track_id_or_point");
-    Track track{observations,covariance,calibration};
+    Track track{observations,covariance,calibration,point};
     build(track,point,poses);
     auto next_tracks=tracks_;auto next_points=points_;
     next_tracks.emplace(id,std::move(track));next_points.emplace(id,point);
-    tracks_.swap(next_tracks);points_.swap(next_points);++revision_;
+    tracks_.swap(next_tracks);points_.swap(next_points);last_id_=id;++revision_;
   }
   // Supply the complete extended covariance: old temporal correlations cannot
   // be discarded or silently reweighted when a new frame arrives.
@@ -61,11 +63,20 @@ class SonarFactorStore {
     build(track,points_.at(id),poses);
     std::swap(tracks_.at(id),track);++revision_;
   }
-  Linearization linearize(const SonarPoses& poses) const {
+  Linearization linearize(const SonarPoses& poses,const SonarPoses* references=nullptr) const {
     requireIdle();Linearization result;result.owner=this;result.revision=revision_;
     for(const auto& [stamp,pose]:poses)result.pose_stamps.push_back(stamp);
     for(const auto& [id,track]:tracks_) {
       auto rows=build(track,points_.at(id),poses);
+      if(references) {
+        auto fixed=build(track,track.reference_point,*references);
+        if(fixed.pose_jacobian.cols()!=rows.pose_jacobian.cols() || references->size()!=poses.size())
+          throw std::invalid_argument("changed_sonar_reference_order");
+        auto current=poses.begin();
+        for(const auto& [stamp,pose]:*references)
+          if(stamp!=(current++)->first)throw std::invalid_argument("changed_sonar_reference_order");
+        fixed.residual=rows.residual;rows=std::move(fixed);
+      }
       result.reduced.emplace(id,eliminateSonarPoint(rows));
       result.rows.emplace(id,std::move(rows));
     }
@@ -79,6 +90,35 @@ class SonarFactorStore {
   }
   const Eigen::Vector3d& point(int64_t id) const {return points_.at(id);}
   size_t size() const {return tracks_.size();}
+
+  struct Retirement {
+    const SonarFactorStore* owner;
+    uint64_t revision;
+    std::set<int64_t> ids,required_poses;
+  };
+  Retirement planRetirement(const std::set<int64_t>& removed) const {
+    requireIdle();Retirement plan{this,revision_,{}, {}};
+    for(const auto& [id,track]:tracks_) {
+      bool retire=false;
+      for(const auto& observation:track.observations)retire=retire || removed.count(observation.stamp);
+      if(retire) {
+        plan.ids.insert(id);
+        for(const auto& observation:track.observations)plan.required_poses.insert(observation.stamp);
+      }
+    }
+    return plan;
+  }
+  // The caller installs the prior and retires other factors atomically. Until
+  // it succeeds, this store is untouched. Erasure afterwards cannot allocate.
+  template<class Installer> void retireWith(const Retirement& plan,Installer install) {
+    requireIdle();
+    if(plan.owner!=this || plan.revision!=revision_)
+      throw std::invalid_argument("stale_sonar_retirement");
+    for(auto id:plan.ids)if(!tracks_.count(id))throw std::invalid_argument("missing_retired_sonar_track");
+    install();
+    for(auto id:plan.ids){tracks_.erase(id);points_.erase(id);}
+    ++revision_;
+  }
 
   class Trial {
    public:
@@ -134,6 +174,6 @@ class SonarFactorStore {
   }
   std::map<int64_t,Track> tracks_;
   std::map<int64_t,Eigen::Vector3d> points_;
-  uint64_t revision_=0;bool trial_=false;
+  uint64_t revision_=0;int64_t last_id_=-1;bool trial_=false;
 };
 }

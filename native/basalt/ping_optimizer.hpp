@@ -29,10 +29,11 @@ inline PingOptimizationReport optimizePingGroups(basalt::BundleAdjustmentBase<do
   std::unique_ptr<basalt::LinearizationBase<double,6>> linearization;
   if(groups.empty())linearization=std::make_unique<basalt::LinearizationAbsQR<double,6>>(&owner,order,settings,&prior,&imu);
   else linearization=std::make_unique<PingLinearization>(&owner,order,settings,groups,&prior,&imu);
-  auto sonar_poses=[&] {
+  auto sonar_poses=[&](bool reference=false) {
     SonarPoses result;
     for(const auto& [stamp,block]:order.abs_order_map) {
-      const auto pose=owner.getPoseStateWithLin(stamp).getPose();
+      const auto state=owner.getPoseStateWithLin(stamp);
+      const auto pose=reference ? state.getPoseLin() : state.getPose();
       result.emplace(stamp,SonarPose{pose.translation(),pose.rotationMatrix()});
     }
     return result;
@@ -46,7 +47,8 @@ inline PingOptimizationReport optimizePingGroups(basalt::BundleAdjustmentBase<do
       std::optional<SonarFactorStore::Linearization> sonar_rows;
       Eigen::MatrixXd sonar_to_state;
       if(sonar && sonar->size()) {
-        sonar_rows=sonar->linearize(sonar_poses());
+        const auto references=sonar_poses(true);
+        sonar_rows=sonar->linearize(sonar_poses(),&references);
         sonar_to_state=Eigen::MatrixXd::Zero(6*sonar_rows->pose_stamps.size(),order.total_size);
         for(size_t i=0;i<sonar_rows->pose_stamps.size();++i)
           sonar_to_state.block<6,6>(6*i,order.abs_order_map.at(sonar_rows->pose_stamps[i]).first).setIdentity();

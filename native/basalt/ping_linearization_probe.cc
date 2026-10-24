@@ -260,6 +260,14 @@ int main(int argc,char** argv) {
     acoustic_covariance(0,2)=acoustic_covariance(2,0)=.0001;
     acoustic.add(1,acoustic_seed,{Vec3::Zero(),Eigen::Matrix3d::Identity(),.2,10.,2.1,.35},
       acoustic_observations,acoustic_covariance,acoustic_poses);
+    // A second track depends only on retained poses and must remain live.
+    const Vec3 retained_truth(5.,-.3,.2);std::vector<SonarObservation> retained_acoustic_observations;
+    for(size_t i=1;i<times.size();++i) {
+      const auto pose=owner.getPoseStateWithLin(times[i]).getPose();const Vec3 local=pose.inverse()*retained_truth;
+      retained_acoustic_observations.push_back({times[i],local.norm(),std::atan2(local.y(),local.x())});
+    }
+    acoustic.add(2,retained_truth+Vec3(.01,.01,.01),{Vec3::Zero(),Eigen::Matrix3d::Identity(),.2,10.,2.1,.35},
+      retained_acoustic_observations,Eigen::MatrixXd::Identity(4,4)*.0004,acoustic_poses);
     const auto rejected_run=optimizePingGroups(owner,order,{reject_spec},prior,imu,{2,3,.001},&acoustic);
     const bool acoustic_restored=(acoustic.point(1)-acoustic_seed).norm()==0;
     bool restored_run=rejected_run.accepted==0 && rejected_run.rejected==3 && !owner.posim_ping_trial_active;
@@ -321,12 +329,18 @@ int main(int argc,char** argv) {
     }
     auto next_imu=imu;next_imu.imu_meas.clear();
     for(const auto& [stamp,measurement]:remaining_imu)next_imu.imu_meas[stamp]=&measurement;
-    const auto next_optimization=optimizePingGroups(owner,next_order,next_specs,prior,next_imu);
+    const auto next_optimization=optimizePingGroups(owner,next_order,next_specs,prior,next_imu,{},&acoustic);
+    const auto without_acoustic=preparePingPrior(owner,next_order,next_specs,prior,next_imu,{times[0]},{},{});
+    const auto with_acoustic=preparePingPrior(owner,next_order,next_specs,prior,next_imu,{times[0]},{},{},&acoustic);
+    const double acoustic_prior_information=(with_acoustic.prior.H.transpose()*with_acoustic.prior.H-
+      without_acoustic.prior.H.transpose()*without_acoustic.prior.H).norm();
+    const bool acoustic_prior_prepared=with_acoustic.acoustic->ids==std::set<int64_t>{1} &&
+      with_acoustic.acoustic->required_poses==std::set<int64_t>(times.begin(),times.end()) && acoustic_prior_information>1e-6;
     auto installed_prior=prior;
     bool mismatched_imu_rejected=false;
     try{factors.marginalize(next_order,installed_prior,remaining_imu,imu,{times[0]},{},{});}
     catch(const std::invalid_argument&){mismatched_imu_rejected=factors.size()==1 && owner.frame_states.size()==4 && remaining_imu.size()==3;}
-    const auto retired_factors=factors.marginalize(next_order,installed_prior,remaining_imu,next_imu,{times[0]},{},{});
+    const auto retired_factors=factors.marginalize(next_order,installed_prior,remaining_imu,next_imu,{times[0]},{},{},&acoustic);
     const bool visual_history_recorded=owner.posim_consumed_visual.size()==25 &&
       !owner.posim_consumed_visual.allows(0,next_stamp) && !owner.posim_consumed_visual.allows(0,times[0]) &&
       owner.posim_consumed_visual.allows(0,next_stamp+1) && owner.posim_consumed_visual.allows(25,times[0]);
@@ -350,8 +364,8 @@ int main(int argc,char** argv) {
       installed_prior.H.cols()==45 && installed_prior.H.allFinite() && owner.frame_states.size()==3 &&
       owner.lmdb.numLandmarks()==1 && owner.lmdb.landmarkExists(25) && owner.posim_ping_planes.size()==0 &&
       factors.size()==0 && remaining_imu.size()==2 && remaining_imu.count(times[1]) && remaining_imu.count(times[2]);
-    bool passed=acoustic_cost_accounted && acoustic_optimized && history_pruning_passed && visual_history_recorded && mismatched_imu_rejected && unsupported_atomic && registration_atomic && replay_rejected && prepared_install_passed && prepared_passed && optimizer_passed && invalid_owned_measurement && owner_support_passed && changed_dependencies_rejected && retirement_passed && incomplete_rejected && selection_error/normal_scale<1e-12 && reference_gauge_error<1e-8 && inconsistent_gauge_error>1e-7 && plane_reference_preserved && missing_reference && std::abs(before-3.5)<1e-9 && valid && duplicate && transaction_required && square_root_error/normal_scale<1e-12 && information_error/normal_scale<1e-12 && prediction_error<1e-7 && step_error<1e-7 && stale && rollback_stale && restored_cost && accepted;
-    std::cout<<Json({{"acoustic_cost_accounted",acoustic_cost_accounted},{"acoustic_optimized",acoustic_optimized},{"acoustic_rejection_restored",acoustic_restored},{"history_pruning_passed",history_pruning_passed},{"visual_history_recorded",visual_history_recorded},{"mismatched_imu_rejected",mismatched_imu_rejected},{"unsupported_append_atomic",unsupported_atomic},{"next_frame_accepted_steps",next_optimization.accepted},{"retained_observations",retained_observations},{"retired_replay_rejected",retired_replay_rejected},{"registration_atomic",registration_atomic},{"replayed_observation_rejected",replay_rejected},{"prepared_install_passed",prepared_install_passed},{"prepared_prior_passed",prepared_passed},{"prepared_prior_error",prepared_error},{"optimizer_passed",optimizer_passed},{"optimizer_rejection_restored",restored_run},{"optimizer_accepted",optimized.accepted},{"optimizer_initial_cost",optimized.initial_cost},{"optimizer_final_cost",optimized.final_cost},{"expected_return",argc==3},{"invalid_owned_measurement_rejected",invalid_owned_measurement},{"owner_visual_support_passed",owner_support_passed},{"changed_observation_dependencies_rejected",changed_dependencies_rejected},{"retirement_dependency_closure_passed",retirement_passed},{"marginal_selection_error",selection_error},{"incomplete_group_rejected",incomplete_rejected},{"passed",passed},{"joint_landmarks",25},{"independent_landmarks",1},{"imu_intervals",2},
+    bool passed=acoustic_prior_prepared && acoustic.size()==1 && acoustic_cost_accounted && acoustic_optimized && history_pruning_passed && visual_history_recorded && mismatched_imu_rejected && unsupported_atomic && registration_atomic && replay_rejected && prepared_install_passed && prepared_passed && optimizer_passed && invalid_owned_measurement && owner_support_passed && changed_dependencies_rejected && retirement_passed && incomplete_rejected && selection_error/normal_scale<1e-12 && reference_gauge_error<1e-8 && inconsistent_gauge_error>1e-7 && plane_reference_preserved && missing_reference && std::abs(before-3.5)<1e-9 && valid && duplicate && transaction_required && square_root_error/normal_scale<1e-12 && information_error/normal_scale<1e-12 && prediction_error<1e-7 && step_error<1e-7 && stale && rollback_stale && restored_cost && accepted;
+    std::cout<<Json({{"acoustic_prior_prepared",acoustic_prior_prepared},{"acoustic_prior_information",acoustic_prior_information},{"acoustic_retired",acoustic.size()==1},{"acoustic_cost_accounted",acoustic_cost_accounted},{"acoustic_optimized",acoustic_optimized},{"acoustic_rejection_restored",acoustic_restored},{"history_pruning_passed",history_pruning_passed},{"visual_history_recorded",visual_history_recorded},{"mismatched_imu_rejected",mismatched_imu_rejected},{"unsupported_append_atomic",unsupported_atomic},{"next_frame_accepted_steps",next_optimization.accepted},{"retained_observations",retained_observations},{"retired_replay_rejected",retired_replay_rejected},{"registration_atomic",registration_atomic},{"replayed_observation_rejected",replay_rejected},{"prepared_install_passed",prepared_install_passed},{"prepared_prior_passed",prepared_passed},{"prepared_prior_error",prepared_error},{"optimizer_passed",optimizer_passed},{"optimizer_rejection_restored",restored_run},{"optimizer_accepted",optimized.accepted},{"optimizer_initial_cost",optimized.initial_cost},{"optimizer_final_cost",optimized.final_cost},{"expected_return",argc==3},{"invalid_owned_measurement_rejected",invalid_owned_measurement},{"owner_visual_support_passed",owner_support_passed},{"changed_observation_dependencies_rejected",changed_dependencies_rejected},{"retirement_dependency_closure_passed",retirement_passed},{"marginal_selection_error",selection_error},{"incomplete_group_rejected",incomplete_rejected},{"passed",passed},{"joint_landmarks",25},{"independent_landmarks",1},{"imu_intervals",2},
       {"square_root_normal_error",square_root_error},{"single_ownership_information_error",information_error},
       {"normal_system_scale",normal_scale},{"relative_square_root_error",square_root_error/normal_scale},
       {"relative_information_error",information_error/normal_scale},{"model_decrease_error",prediction_error},{"reference_decrease",reference_decrease},{"first_prediction",first_prediction},{"reference_initial_cost",.5*full_r.squaredNorm()},{"independent_eliminated_visual_cost",eliminated_visual_constant},

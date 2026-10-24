@@ -2,12 +2,14 @@
 #pragma once
 #include "ping_linearization.hpp"
 #include "ping_marginal.hpp"
+#include "sonar_factors.hpp"
 #include <memory>
 #include <basalt/imu/preintegration.h>
 
 namespace posim_slam {
 struct PreparedPingPrior {
   PingRetirementPlan retirement;
+  std::optional<SonarFactorStore::Retirement> acoustic;
   PingMarginalLayout layout;
   basalt::MargLinData<double> prior;
 };
@@ -19,7 +21,7 @@ inline PreparedPingPrior preparePingPrior(basalt::BundleAdjustmentBase<double>& 
     const basalt::AbsOrderMap& group_order,const std::vector<JointPingGroupSpec>& groups,
     const basalt::MargLinData<double>& previous,const basalt::ImuLinData<double>& imu,
     const std::set<int64_t>& removed,const std::set<int64_t>& pose_only,
-    const std::unordered_set<basalt::KeypointId>& lost) {
+    const std::unordered_set<basalt::KeypointId>& lost,SonarFactorStore* sonar=nullptr) {
   PreparedPingPrior result;
   result.retirement=planPingRetirement(owner,groups,removed,removed,lost);
   std::vector<std::pair<int64_t,int64_t>> intervals;
@@ -28,7 +30,12 @@ inline PreparedPingPrior preparePingPrior(basalt::BundleAdjustmentBase<double>& 
       throw std::invalid_argument("invalid_ping_prior_imu");
     intervals.emplace_back(start,start+measurement->get_dt_ns());
   }
-  result.layout=planPingMarginalLayout(owner,removed,pose_only,result.retirement.required_frames,intervals);
+  auto required=result.retirement.required_frames;
+  if(sonar) {
+    result.acoustic=sonar->planRetirement(removed);
+    required.insert(result.acoustic->required_poses.begin(),result.acoustic->required_poses.end());
+  }
+  result.layout=planPingMarginalLayout(owner,removed,pose_only,required,intervals);
   requireStateOrder(group_order);
   if(group_order.abs_order_map!=result.layout.source.abs_order_map)
     throw std::invalid_argument("changed_ping_prior_group_order");
@@ -55,6 +62,24 @@ inline PreparedPingPrior preparePingPrior(basalt::BundleAdjustmentBase<double>& 
   if(!valid)throw std::runtime_error("invalid_ping_prior_linearization");
   rows->performQR();Eigen::MatrixXd j;Eigen::VectorXd r;
   rows->get_dense_Q2Jp_Q2r(j,r);
+  if(result.acoustic && !result.acoustic->ids.empty()) {
+    SonarPoses poses,references;
+    for(const auto& [stamp,block]:result.layout.source.abs_order_map) {
+      const auto state=owner.getPoseStateWithLin(stamp);
+      poses.emplace(stamp,SonarPose{state.getPose().translation(),state.getPose().rotationMatrix()});
+      references.emplace(stamp,SonarPose{state.getPoseLin().translation(),state.getPoseLin().rotationMatrix()});
+    }
+    const auto acoustic=sonar->linearize(poses,&references);
+    for(auto id:result.acoustic->ids) {
+      const auto& reduced=acoustic.reduced.at(id);
+      const auto start=j.rows(),count=reduced.residual.size();
+      j.conservativeResize(start+count,Eigen::NoChange);r.conservativeResize(start+count);
+      j.bottomRows(count).setZero();r.tail(count)=reduced.residual;
+      for(size_t i=0;i<acoustic.pose_stamps.size();++i)
+        j.block(start,result.layout.source.abs_order_map.at(acoustic.pose_stamps[i]).first,count,6)=
+          reduced.pose_jacobian.middleCols(6*i,6);
+    }
+  }
   // New references will be frozen at the current state by installation; their
   // displacement is zero. Existing FEJ references keep their current delta.
   Eigen::VectorXd delta=Eigen::VectorXd::Zero(result.layout.retained.total_size);
