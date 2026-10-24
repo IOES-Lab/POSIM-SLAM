@@ -10,9 +10,8 @@ from .ping_joint import eliminate_patch
 from .inertial_alignment import log_so3
 
 
-def prior_residual(prior,states,landmarks,track_ids):
+def prior_residual(prior,states,landmarks,track_ids,planes=()):
     """Evaluate frozen sonar/IMU history at its original tangent anchors."""
-    if prior['planes']:raise ValueError('persistent_ping_plane_consumer_not_implemented')
     state_map={int(round(s['stamp']*1e9)):s for s in states}
     point_map=dict(zip(track_ids,landmarks));delta=[]
     for stamp,anchor in zip(prior['state_stamps_ns'],prior['states']):
@@ -24,6 +23,13 @@ def prior_residual(prior,states,landmarks,track_ids):
     for ident,anchor in zip(prior['track_ids'],prior['landmarks']):
         if ident not in point_map:raise ValueError('prior_landmark_missing')
         delta.extend(point_map[ident]-anchor)
+    if len(planes)<len(prior['planes']):raise ValueError('prior_plane_missing')
+    for plane,anchor,basis in zip(planes,prior['planes'],prior['plane_rotation_bases']):
+        a=np.asarray(anchor['normal']);b=np.asarray(plane['normal'])
+        cross=np.cross(a,b);sine=float(np.linalg.norm(cross));cosine=float(a@b)
+        if cosine<-.999999:raise ValueError('prior_plane_antipodal')
+        tangent=cross*(np.arctan2(sine,cosine)/sine) if sine>1e-12 else cross
+        delta.extend(np.r_[np.asarray(basis).T@tangent,plane['distance']-anchor['distance']])
     j=np.asarray(prior['jacobian']);r=np.asarray(prior['residual'])
     if (j.ndim!=2 or j.shape[1]!=len(delta) or r.shape!=(j.shape[0],)
             or not np.isfinite(j).all() or not np.isfinite(r).all()):

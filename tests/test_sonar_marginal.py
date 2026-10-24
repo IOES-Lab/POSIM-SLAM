@@ -1,13 +1,63 @@
 import unittest
 import copy
 import numpy as np
-from posim_slam.sonar_marginal import marginalize_window
+from posim_slam.sonar_marginal import marginalize_window,prior_residual
+from posim_slam.inertial import exp_so3
 from posim_slam.sonar_inertial import optimize_window
 from test_sonar_inertial import fixture
 import test_sonar_inertial as sonar_tests
 
 
 class MarginalTests(unittest.TestCase):
+    def ping_history_fixture(self):
+        full,second=self.sequential_fixture()
+        result=optimize_window(**second,retain_state_stamps_ns=[3_000_000_000])
+        third=copy.deepcopy(second);third['linearized_prior']=result['linearized_prior']
+        end=copy.deepcopy(result['states'][-1]);end['stamp']=3.5;end['position']+=end['velocity']*.5
+        third['states']=[copy.deepcopy(result['states'][-1]),end]
+        for i in range(601,701):third['imu_window'].add(i*.005,[0,0,0],[0,0,9.80665])
+        for track,point in zip(third['tracks'],result['landmarks']):track['landmark']=point.copy()
+        patch=third['ping_patches'][0];patch['plane_normal']=result['planes'][0]['normal'].copy()
+        patch['plane_distance']=result['planes'][0]['distance']
+        patch['observations']=[dict(stamp_ns=3_500_000_000,range_m=.8,range_sigma=.01)]
+        return third
+
+    def test_ping_history_adds_only_new_range_not_repeated_planarity(self):
+        args=self.ping_history_fixture();prior=args['linearized_prior']
+        args['states'][-1]['position']+=np.array([.01,0.,.015])
+        args['ping_patches'][0]['plane_distance']-=.02
+        result=optimize_window(**args,retain_state_stamps_ns=[3_500_000_000])
+        self.assertLess(result['final_cost'],result['initial_cost']*1e-6)
+        self.assertEqual(result['residual_dimension'],len(prior['residual'])+15+1)
+        self.assertAlmostEqual(result['planes'][0]['distance'],-.8,places=4)
+        self.assertEqual(len(result['linearized_prior']['patch_models']),1)
+
+    def test_inherited_plane_can_propagate_without_new_return(self):
+        args=self.ping_history_fixture();args['ping_patches'][0]['observations']=[]
+        result=optimize_window(**args)
+        self.assertEqual(result['residual_dimension'],len(args['linearized_prior']['residual'])+15)
+
+    def test_plane_delta_uses_frozen_tangent_basis(self):
+        prior=self.ping_history_fixture()['linearized_prior'];planes=copy.deepcopy(prior['planes'])
+        d=np.array([.03,-.02]);planes[0]['normal']=exp_so3(prior['plane_rotation_bases'][0]@d)@planes[0]['normal']
+        planes[0]['distance']+=.04
+        r=prior_residual(prior,prior['states'],prior['landmarks'],prior['track_ids'],planes)
+        np.testing.assert_allclose(r-prior['residual'],prior['jacobian'][:,-3:]@np.r_[d,.04],atol=1e-12)
+        planes[0]['normal']=-prior['planes'][0]['normal']
+        with self.assertRaisesRegex(ValueError,'prior_plane_antipodal'):
+            prior_residual(prior,prior['states'],prior['landmarks'],prior['track_ids'],planes)
+
+    def test_ping_history_rejects_duplicate_return_and_changed_patch(self):
+        for kind in ('return','support','noise','mount','missing'):
+            args=self.ping_history_fixture();patch=args['ping_patches'][0]
+            if kind=='return':patch['observations'][0]['stamp_ns']=3_000_000_000
+            if kind=='support':patch['track_ids'].reverse()
+            if kind=='noise':patch['surface_sigma']*=2
+            if kind=='mount':patch['geometry']['imu_to_ping'][0]+=.1
+            if kind=='missing':args['ping_patches']=[]
+            reason='ping_return_already_absorbed' if kind=='return' else 'prior_plane_missing' if kind=='missing' else 'marginal_prior_patch_changed'
+            with self.subTest(kind=kind),self.assertRaisesRegex(ValueError,reason):optimize_window(**args)
+
     def sequential_fixture(self):
         full=sonar_tests.SonarInertialTests().delayed_ping_fixture()
         first=copy.copy(full);first.update(states=copy.deepcopy(full['states'][:2]),ping_patches=[])

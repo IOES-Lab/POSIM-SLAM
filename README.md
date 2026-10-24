@@ -69,8 +69,13 @@ history. Duplicate sonar observations, overlapping IMU intervals and changed
 sensor/noise models are rejected. New observations must be explicitly declared
 independent of absorbed measurements using `independent_new_measurements=True`;
 cross-window correlated measurement noise is unsupported. The prior is frozen
-at its stored anchors. Priors already containing Ping planes cannot yet be
-consumed. Persistent patch association and live streaming remain unimplemented.
+at its stored anchors. Ping planes can be retained with the same ordered support,
+sensor geometry and surface model. Subsequent windows add only new range rows;
+the previously absorbed planarity rows are not repeated. A retained patch may
+have no new return. Duplicate Ping timestamps and changed patch models are
+rejected. Plane deltas use the stored tangent basis; antipodal normals are
+rejected. Persistent physical patch association and live streaming remain
+unimplemented.
 
 `inertial_factor.pair_residual` uses measured `ImuWindow` preintegration to
 constrain endpoint position, velocity, rotation and biases with their full
