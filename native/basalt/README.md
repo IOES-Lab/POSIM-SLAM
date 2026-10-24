@@ -582,7 +582,9 @@ in square-root form. Retained blocks may contain a six-coordinate pose or a
 only its pose. Explicit block orders support reordered retained columns and
 reject gaps, overlaps and unknown states. The residual is shifted to Basalt's
 existing linearization point using the supplied current state delta. No small
-artificial prior is added in unobservable directions.
+artificial prior is added in unobservable directions. State-only rows from a
+previous joint group reduction are also accepted. If all state columns remain,
+the adapter preserves the rows and only reorders/rebases them.
 
 The caller must include each raw factor once, retire its consumed observations,
 and supply consistent first-estimate Jacobians. This adapter does not choose
@@ -599,6 +601,8 @@ marginalization routine. Basalt omits a constant term from prior costs, so
 유지할 열의 재배치를 지원하고, 빈 구간·중복·알 수 없는 상태를 거부합니다.
 현재 상태 변화량을 사용해 잔차를 Basalt의 기존 선형화 기준점으로 옮깁니다.
 관측할 수 없는 방향에 임의의 작은 사전정보를 추가하지 않습니다.
+공동 그룹 제거 후 상태 열만 남은 행렬도 받습니다. 모든 상태 열을 유지하는
+경우에는 행을 보존하고 열 순서와 잔차 기준점만 조정합니다.
 
 호출자는 원본 관측을 한 번씩만 포함하고, 사전정보에 반영한 관측을 제거하며,
 일관된 최초 추정 기준 야코비안을 제공해야 합니다. 이 어댑터는 평면 연결을

@@ -68,7 +68,8 @@ template<class Estimator> PingMarginalLayout planPingMarginalLayout(
 }
 
 // Input columns: source pose/inertial states, then ALL shared plane/landmark
-// coordinates being retired. Include each raw factor exactly once, including
+// coordinates being retired, or state-only rows after joint group reduction.
+// Include each raw factor exactly once, including
 // the existing prior and any relevant inertial rows. Do not append a second
 // independently eliminated copy of the same visual rows.
 // The caller owns factor retirement and FEJ Jacobians. delta is the retained
@@ -79,7 +80,7 @@ inline basalt::MargLinData<double> marginalizeJointSystem(
     const Eigen::VectorXd& delta) {
   requireStateOrder(source);requireStateOrder(retained);
   if(jacobian.rows()<1 || jacobian.rows()>4096 || jacobian.cols()>1024 ||
-     jacobian.cols()<=Eigen::Index(source.total_size) ||
+     jacobian.cols()<Eigen::Index(source.total_size) ||
      delta.size()!=Eigen::Index(retained.total_size) || !delta.allFinite())
     throw std::invalid_argument("invalid_joint_marginal_layout");
   std::vector<int> keep(retained.total_size);std::vector<bool> used(jacobian.cols(),false);
