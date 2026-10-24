@@ -46,6 +46,21 @@ class AcousticDvlTests(unittest.TestCase):
             self.assertFalse(w.samples)
         with self.assertRaisesRegex(ValueError,'tracking_lost'):w.add(4.,[0,0,0],COV,valid=False)
 
+    def test_rejects_out_of_plane_motion_and_zero_net_excursion(self):
+        w=self.window()
+        for t in (0.,1.,2.):w.add(t,[.1,0,.04],COV)
+        with self.assertRaisesRegex(ValueError,'outside_sonar_plane'):w.fuse(0.,2.,[.2,0],0.)
+        w=self.window();w.add(0.,[0,0,.4],COV);w.add(1.,[0,0,-.4],COV)
+        # The net normal displacement is zero, but the peak is 0.1 m.
+        with self.assertRaisesRegex(ValueError,'outside_sonar_plane'):w.fuse(0.,1.,[0,0],0.)
+
+    def test_small_normal_motion_is_reported(self):
+        w=self.window();w.add(0.,[.1,0,.01],COV);w.add(1.,[.1,0,.01],COV)
+        result=w.fuse(0.,1.,[.1,0],0.)
+        self.assertAlmostEqual(result['normal_displacement_m'],.01)
+        self.assertAlmostEqual(result['normal_excursion_m'],.01)
+        self.assertFalse(result['elevation_resolved'])
+
     def test_bounded_history_and_owned_samples(self):
         w=self.window();v=np.array([.1,0,0])
         for t in range(100):w.add(t,v,COV)

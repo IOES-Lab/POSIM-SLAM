@@ -79,6 +79,14 @@ class SessionTests(unittest.TestCase):
             self.assertEqual(updates[-1]['state'],'lost',which)
             self.assertFalse(s.feature_map.cells,which)
 
+    def test_normal_excursion_clears_existing_map_and_starts_new_segment(self):
+        s=self.tracking();old=s.segment
+        for t in (3,4):s.dvl(measurement(t,velocity_m_s=[.025,0,.1]),.4+t*.01)
+        update=s.acoustic(acoustic(2,4),.8)[-1]
+        self.assertEqual(update['reason'],'dvl_motion_outside_sonar_plane')
+        self.assertEqual(update['state'],'lost');self.assertGreater(s.segment,old)
+        self.assertFalse(s.feature_map.cells)
+
     def test_pending_timeout_and_capacity(self):
         s=self.session();s.set_enabled(True);s.dvl(measurement(0),0)
         s.acoustic(acoustic(0,2),.1)

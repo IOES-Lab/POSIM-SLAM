@@ -23,7 +23,10 @@ class AcousticDvlIntervals:
     Covariance is a quality gate, not an advertised fused pose covariance.
     Future adapters must call clear() on DVL lock loss/session replacement.
     """
-    def __init__(self,velocity_to_sonar,sonar_to_dvl):
+    def __init__(self,velocity_to_sonar,sonar_to_dvl,*,max_normal_excursion_m=.05):
+        if not math.isfinite(max_normal_excursion_m) or max_normal_excursion_m<=0:
+            raise ValueError('invalid_normal_excursion_limit')
+        self.max_normal_excursion_m=float(max_normal_excursion_m)
         self.rotation=rotation(velocity_to_sonar).copy()
         self.baseline=vector(sonar_to_dvl).copy()[:2]
         self.samples=deque(maxlen=32)
@@ -48,7 +51,7 @@ class AcousticDvlIntervals:
             if coverage_reset:
                 # Keep the new sample as the start of a fresh coverage window.
                 self.clear()
-            self.samples.append((float(stamp),(self.rotation@v)[:2].copy()))
+            self.samples.append((float(stamp),(self.rotation@v).copy()))
             return {'coverage_reset':coverage_reset}
         except (ValueError,TypeError):
             self.clear()
@@ -72,9 +75,21 @@ class AcousticDvlIntervals:
         velocities=np.array([s[1] for s in self.samples])
         # Insert both acoustic boundaries; np.interp cannot extrapolate here.
         knots=np.array([start]+[t for t in times if start<t<end]+[end])
-        values=np.column_stack([np.interp(knots,times,velocities[:,axis]) for axis in (0,1)])
+        values=np.column_stack([np.interp(knots,times,velocities[:,axis]) for axis in (0,1,2)])
+        # A planar yaw leaves the fan normal invariant. Keep the measured normal
+        # motion instead of silently dropping it during the 2-D projection.
+        normal=0.;excursion=0.
+        for dt,v0,v1 in zip(np.diff(knots),values[:-1,2],values[1:,2]):
+            if v0*v1<0:
+                # A reversal can leave zero net motion while leaving the plane.
+                tau=-v0*dt/(v1-v0)
+                excursion=max(excursion,abs(normal+v0*tau+.5*(v1-v0)/dt*tau*tau))
+            normal+=.5*(v0+v1)*dt
+            excursion=max(excursion,abs(normal))
+        if excursion>self.max_normal_excursion_m:
+            raise ValueError('dvl_motion_outside_sonar_plane')
         angles=yaw*(knots-start)/(end-start)
-        rotated=np.array([planar_rotation(a)@v for a,v in zip(angles,values)])
+        rotated=np.array([planar_rotation(a)@v[:2] for a,v in zip(angles,values)])
         dvl=np.sum((rotated[:-1]+rotated[1:])*.5*np.diff(knots)[:,None],axis=0)
         # DVL-origin translation = sonar translation + change of lever arm.
         dvl+=self.baseline-planar_rotation(yaw)@self.baseline
@@ -87,4 +102,6 @@ class AcousticDvlIntervals:
         return {'state':'tracking','anchor_stamp':start,'stamp':end,
                 'translation':dvl.tolist(),'yaw_rad':yaw,
                 'acoustic_translation_m':acoustic.tolist(),'dvl_translation_m':dvl.tolist(),
+                'normal_displacement_m':float(normal),'normal_excursion_m':float(excursion),
+                'max_normal_excursion_m':self.max_normal_excursion_m,
                 'residual_m':residual,'dvl_weight':1.,'translation_source':'bottom_locked_dvl','elevation_resolved':False}

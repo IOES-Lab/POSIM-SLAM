@@ -7,7 +7,7 @@ algorithms accept measured sensor arrays and calibrated transforms. WWW-POSIM
 owns sessions, vehicle composition, runtime supervision, UI and map downloads.
 
 Version **0.1.0** includes the following components. This version is a package
-version; acoustic/DVL fusion retains its algorithm version **0.2.0**.
+version; acoustic/DVL fusion retains its algorithm version **0.2.1**.
 
 | Component | Method and current scope |
 |---|---|
@@ -242,3 +242,5 @@ when its calibration requests `require_gravity_seed`. Raw IMU packets remain
 unchanged; velocity and bias seeds still require their own assumptions.
 
 `sonar_input.projected_frame` decodes bounded float32 multibeam messages with either byte order. It validates timestamps, range bins and unit beam directions, and preserves negative infinity as a missing return. The decoder has no ROS dependency.
+
+Acoustic/DVL intervals retain normal velocity and reject more than 5 cm excursion outside the sonar fan plane, including reversals with zero net displacement. This is an experimental model-validity gate, not elevation recovery or probabilistic confidence.
