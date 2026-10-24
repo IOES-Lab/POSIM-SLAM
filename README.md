@@ -48,6 +48,12 @@ refitting. It reports range/azimuth residuals in physical units and counts
 out-of-domain predictions. Fit timestamps cannot appear in the held-out set;
 these diagnostics do not define a calibrated acceptance threshold.
 
+`native/basalt/sonar_geometry.hpp` supplies unwhitened range/azimuth rows for a
+map point using Basalt's additive map translation and left map-frame rotation.
+It includes point and pose Jacobians and authored range/FOV checks. It is a
+native integration building block; sonar factor ownership, weighting and native
+optimizer registration are not connected yet.
+
 `sonar_inertial.optimize_window` jointly adjusts position, velocity, attitude,
 IMU biases and shared sonar points over 2–4 states. It requires an initial-state
 prior with covariance, calibrated gravity and sensor mounts, point seeds,
