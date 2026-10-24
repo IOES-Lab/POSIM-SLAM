@@ -8,6 +8,31 @@ import math
 import numpy as np
 from .sonar_joint import linearize_track
 from .constrained_step import feasible_step
+from .sonar_factor import point_return_factor
+
+
+def heldout_residuals(*,point,observations,states,geometry,fit_stamps_ns):
+    """Predict unused observations without refitting or declaring acceptance.
+
+    Residuals are in physical units. Pose uncertainty and physical association
+    remain caller responsibilities; unavailable geometry is counted, not omitted.
+    """
+    stamps=[o['stamp_ns'] for o in observations]
+    if set(stamps)&set(fit_stamps_ns) or len(set(stamps))!=len(stamps):
+        raise ValueError('distinct_heldout_observations_required')
+    rows=[]
+    for observation in observations:
+        pose=states[observation['stamp_ns']]
+        try:
+            factor=point_return_factor(position=pose['position'],attitude=pose['attitude'],landmark=point,
+                measured_range=observation['range_m'],measured_azimuth=observation['azimuth_rad'],**geometry)
+        except ValueError as error:
+            if str(error) not in ('unsupported_sonar_point','sonar_point_outside_fov'):raise
+            rows.append(dict(stamp_ns=observation['stamp_ns'],valid_geometry=False,reason=str(error)));continue
+        rows.append(dict(stamp_ns=observation['stamp_ns'],valid_geometry=True,
+            range_residual_m=float(factor['residual'][0]),azimuth_residual_rad=float(factor['residual'][1])))
+    return dict(observations=rows,valid_geometry=sum(r['valid_geometry'] for r in rows),
+        total=len(rows),scope='Fixed-pose unused observations; no refit, covariance or acceptance claim')
 
 
 def geometric_margins(point,observations,states,geometry):

@@ -43,6 +43,10 @@ Point updates use an active-set least-squares step with linearized authored FOV
 and range bounds, followed by a nonlinear feasibility check. Boundary convergence
 is reported as `constrained_stationary`; it does not certify an echo association
 or acceptable residual. No FOV expansion or artificial elevation prior is used.
+`heldout_residuals` predicts observations excluded from point fitting, without
+refitting. It reports range/azimuth residuals in physical units and counts
+out-of-domain predictions. Fit timestamps cannot appear in the held-out set;
+these diagnostics do not define a calibrated acceptance threshold.
 
 `sonar_inertial.optimize_window` jointly adjusts position, velocity, attitude,
 IMU biases and shared sonar points over 2–4 states. It requires an initial-state
