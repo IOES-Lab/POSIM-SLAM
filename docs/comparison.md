@@ -171,3 +171,7 @@ comparison can be presented as an operational method.
 게시합니다. 합성 단위 시험이나 짧은 구간의 최적화 예제만으로 실제 조합의
 완료를 인정하지 않습니다. 소나·IMU·Ping 참조 최적화는 실제 운용 방법으로
 비교하기 전에 라이브 스트림 연결이 필요합니다.
+
+[Survey depth diagnostic: exposure and failed position gate](diagnostics/depth-observability.md)
+
+[관측 깊이 진단: 표면 관측 범위와 위치 기준 실패](diagnostics/depth-observability.md)
