@@ -69,7 +69,7 @@ int main(int argc,char** argv) {
     if(fs::exists(ping_file))ping_calibration=posim_slam::pingInputCalibration(read_json(ping_file));
     auto owner=std::dynamic_pointer_cast<basalt::SqrtKeypointVioEstimator<double>>(vio);
     if(!owner)throw std::runtime_error("unsupported_ping_estimator_owner");
-    owner->posim_before_optimization=[&](auto& estimator,int64_t stamp) {
+    owner->posim_before_marginalization=[&](auto& estimator,int64_t stamp) {
       auto& base=static_cast<basalt::BundleAdjustmentBase<double>&>(estimator);
       {
         std::lock_guard<std::mutex> lock(ping_mutex);

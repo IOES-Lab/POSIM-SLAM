@@ -452,17 +452,17 @@ the streaming estimator's schedule.
 스레드에서 호출해야 합니다. 키프레임 ID·영상 추적 이력·큐는 호출자가 별도로
 관리합니다. 아직 스트리밍 추정기의 실행 순서에는 연결되지 않았습니다.
 
-The build-local pinned `SqrtKeypointVioEstimator` has a pre-optimization callback
+The build-local pinned `SqrtKeypointVioEstimator` has a pre-marginalization callback
 configured before input submission. The streaming worker uses it to deliver an
-exact image/Ping pair on the estimator thread after frame creation and before
-optimization/marginalization. `ping_owner_received` reports this delivery in
+exact image/Ping pair on the estimator thread after the current visual/IMU optimization and before
+marginalization. `ping_owner_received` reports this delivery in
 state output; it is false without a matching Ping. `ping_fused` remains false:
 the callback currently records delivery and the original optimization schedule
 still runs. Upstream headers/source are hash-checked and remain unmodified.
 
 빌드용으로 복사한 고정 버전 `SqrtKeypointVioEstimator`에는 입력 제출 전에
-설정하는 최적화 직전 콜백이 있습니다. 스트리밍 워커는 프레임 생성 후,
-최적화·주변화 전에 동일 시각 영상·Ping 쌍을 추정기 스레드에 전달합니다.
+설정하는 주변화 직전 콜백이 있습니다. 스트리밍 워커는 현재 영상·IMU 최적화 후,
+주변화 전에 동일 시각 영상·Ping 쌍을 추정기 스레드에 전달합니다.
 상태 출력의 `ping_owner_received`가 이 전달 여부이며 대응 Ping이 없으면
 거짓입니다. 현재 콜백은 전달만 기록하고 기존 최적화 순서를 실행하므로
 `ping_fused`는 계속 거짓입니다. 원본 헤더·소스는 해시로 확인하며 수정하지

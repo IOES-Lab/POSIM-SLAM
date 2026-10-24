@@ -59,7 +59,7 @@ def prepare(source,destination):
             text=replace_once(text,'#pragma once','#pragma once\n#include <functional>')
             text=replace_once(text,'  using Scalar = Scalar_;','''  using Scalar = Scalar_;
   // Configured before input is submitted; called only by the estimator thread.
-  std::function<void(SqrtKeypointVioEstimator&, int64_t)> posim_before_optimization;''')
+  std::function<void(SqrtKeypointVioEstimator&, int64_t)> posim_before_marginalization;''')
         elif name.endswith('/ba_base.h'):
             text=replace_once(text,'#pragma once','#pragma once\n#include "ping_state.hpp"')
             text=replace_once(text,'  inline void backup() {','''  posim_slam::PingPlaneStore posim_ping_planes;
@@ -91,9 +91,10 @@ def prepare(source,destination):
     raw=(Path(source)/'src/vi_estimator/sqrt_keypoint_vio.cpp').read_bytes()
     if hashlib.sha256(raw).hexdigest()!='141dc9747dfb60e19e8ab93eab3b5600a6bb95fc249afdd5e15f4d844276c5c9':
         raise ValueError('pinned_basalt_owner_source_changed')
-    text=replace_once(raw.decode(),'  optimize_and_marg(num_points_connected, lost_landmaks);',
-        '  if (posim_before_optimization) posim_before_optimization(*this, opt_flow_meas->t_ns);\n'
-        '  optimize_and_marg(num_points_connected, lost_landmaks);')
+    text=replace_once(raw.decode(),'  optimize();\n  marginalize(num_points_connected, lost_landmaks);',
+        '  optimize();\n'
+        '  if (posim_before_marginalization) posim_before_marginalization(*this, last_state_t_ns);\n'
+        '  marginalize(num_points_connected, lost_landmaks);')
     target=Path(destination)/'sqrt_keypoint_vio.cpp'
     if not target.exists() or target.read_text()!=text:target.write_text(text)
 
