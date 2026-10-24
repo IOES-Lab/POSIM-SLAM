@@ -918,3 +918,30 @@ require validation. PLY output contains the existing visual landmarks.
 트랙을 연장합니다. 제거된 ID는 재사용할 수 없으며 새 트랙은 더 큰 ID로 시작합니다.
 대응점 추적·잡음 보정·실제 장면 복원 검증이 남아 있어 `map_qualified`는 false입니다.
 PLY 출력에는 기존 시각 랜드마크가 담깁니다.
+
+
+### Auxiliary estimator states / 보조 추정 상태
+
+The native estimator can advance raw IMU integration to an acoustic timestamp
+between camera frames. An `OpticalFlowResult` with an empty camera list denotes
+this internal event; a camera frame with zero tracked features still has a camera
+entry. Auxiliary events do not create camera keyframes or mark visual tracks lost.
+When sonar storage is configured, visual landmarks start the common optimizer and
+marginalization path even before the first acoustic track is ready.
+
+네이티브 추정기는 카메라 프레임 사이의 음향 관측 시각까지 원본 IMU를 적분해
+상태를 생성할 수 있습니다. 카메라 목록이 빈 `OpticalFlowResult`는 이 내부 이벤트를
+뜻합니다. 특징점이 없는 실제 영상은 카메라 항목을 유지합니다. 보조 이벤트는
+카메라 키프레임을 만들거나 기존 시각 트랙을 소실로 처리하지 않습니다. 소나 저장소를
+설정하면 첫 음향 트랙이 준비되기 전에도 시각 랜드마크가 생기는 시점부터 공동
+최적화·주변화 경로를 사용합니다.
+
+`basalt_synthetic_probe OUTPUT.csv 5 sonar-async` exercises 61 camera states and
+60 acoustic states offset by 10 ms. It retains six recent states to cover the same
+three-camera interval. The binary stream still requires exact image snapshots;
+ordered transport of auxiliary events is not connected yet.
+
+위 검사는 카메라 상태 61개와 10ms 늦은 음향 상태 60개를 생성합니다. 카메라
+3프레임에 해당하는 구간을 유지하도록 최근 상태 6개를 보관합니다. 바이너리
+스트림은 아직 영상과 시각이 같은 스냅샷만 받으며, 보조 이벤트의 순서 보장 전송은
+연결되지 않았습니다.

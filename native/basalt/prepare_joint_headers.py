@@ -100,6 +100,9 @@ def prepare(source,destination):
     if hashlib.sha256(raw).hexdigest()!='141dc9747dfb60e19e8ab93eab3b5600a6bb95fc249afdd5e15f4d844276c5c9':
         raise ValueError('pinned_basalt_owner_source_changed')
     text=replace_once(raw.decode(),'  optimize();\n  marginalize(num_points_connected, lost_landmaks);',
+        '  if (!posim_joint_started && posim_sonar_factors && lmdb.numLandmarks() > 0) {\n'
+        '    posim_joint_started = true; opt_started = true;\n'
+        '  }\n'
         '  if (posim_joint_started) posim_optimize_joint(); else optimize();\n'
         '  const auto acoustic_revision = posim_sonar_factors ? posim_sonar_factors->revision() : 0;\n'
         '  if (posim_before_marginalization) posim_before_marginalization(*this, last_state_t_ns);\n'
@@ -112,6 +115,15 @@ def prepare(source,destination):
         '  // Keep unobserved startup velocity/bias states until visual constraints exist.\n'
         '  if (lmdb.numLandmarks() > 0) marginalize(num_points_connected, lost_landmaks);\n'
         '  if (posim_after_marginalization) posim_after_marginalization(*this, last_state_t_ns);')
+    # An empty camera list explicitly denotes a non-camera sensor event. It
+    # advances the inertial state without declaring every visual track lost.
+    text=replace_once(text,'  // Make new residual for existing keypoints',
+        '  const bool posim_auxiliary = opt_flow_meas->observations.empty();\n'
+        '  // Make new residual for existing keypoints')
+    text=replace_once(text,'  if (take_kf) {', '  if (!posim_auxiliary && take_kf) {')
+    text=replace_once(text,'    frames_after_kf++;', '    if (!posim_auxiliary) frames_after_kf++;')
+    text=replace_once(text,'  std::unordered_set<KeypointId> lost_landmaks;\n  if (config.vio_marg_lost_landmarks) {',
+        '  std::unordered_set<KeypointId> lost_landmaks;\n  if (!posim_auxiliary && config.vio_marg_lost_landmarks) {')
     text='#include "ping_factors.hpp"\n#include "ping_optimizer.hpp"\n'+text
     text=replace_once(text,'      if (kv.first > last_state_to_marg) break;',
         '      if (!posim_joint_started && kv.first > last_state_to_marg) break;')
