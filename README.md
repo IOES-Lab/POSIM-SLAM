@@ -20,11 +20,11 @@ version; acoustic/DVL fusion retains its algorithm version **0.2.0**.
 | Inertial core | Raw gyro/accelerometer midpoint SO(3) preintegration, bias Jacobian and 15-state error covariance; preparation code, not a complete fused estimator |
 | Experimental inertial filter | Algorithm 0.1.0: 15-state right-error EKF, raw-IMU prediction, mounted DVL velocity, calibrated pressure height and correlated cloned planar relative-pose updates; explicit initialization/calibration; streaming IMU/DVL session owner |
 
-Running visual/acoustic modes do not yet use the inertial preintegration core.
+The native Basalt camera path jointly fuses raw IMU and visual observations; optional single-Ping factors participate in the same optimization and marginalization. Stella-only visual and planar acoustic/DVL paths remain separate from this VIO path.
 No estimator accepts simulator pose or ideal orientation as a localization
 measurement. Sonar intensity features are not classified 3D obstacles.
 
-Ping scale support requires every ray intersection inside the observed plane hull and within 5% of plane distance of a landmark. The `ping_factor` module supplies pose/plane range Jacobians and a supported-patch wrapper for joint optimization; it is not yet connected to the native VIO worker. `ping_joint` provides a bounded reference linearization and correlated plane/landmark elimination, with explicit range and surface noise.
+Ping scale support requires every ray intersection inside the observed plane hull and within 5% of plane distance of a landmark. The `ping_factor` module supplies pose/plane range Jacobians and a supported-patch wrapper for joint optimization; the native worker implements the corresponding joint factors in `native/basalt/ping_factors.hpp` and `ping_linearization.hpp`. `ping_joint` provides a bounded reference linearization and correlated plane/landmark elimination, with explicit range and surface noise.
 
 ## Install and use
 
@@ -100,14 +100,14 @@ use the same source ownership.
 
 Original code: [Apache-2.0](LICENSE). See [NOTICE.md](NOTICE.md). Third-party
 licenses remain applicable. No ORB-SLAM3 code, vocabulary or model weights are
-included. Basalt and Kimera are not active backends in this package.
+included. Basalt is the optional native VIO backend; Kimera is not used.
 
 ## Experimental visual-inertial research
 
 The [headless Basalt target](native/basalt/README.md) builds a pinned square-root
 VIO core and runs noisy 6DoF track/image plus raw-IMU regressions. It jointly
-updates pose, velocity and biases in that standalone executable. It is not
-selected by default in WWW-POSIM or included in the default Python/native provider build.
+updates pose, velocity and biases in that standalone executable. The Python package does not bundle the executable. The host application registers
+and supervises the worker and chooses its startup/default-mode policy.
 Native-world timing, calibration, recovery and package acceptance remain separate.
 
 ## Experimental inertial observation filter

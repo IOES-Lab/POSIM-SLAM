@@ -4,15 +4,16 @@
 
 This research target runs Basalt's square-root visual-inertial estimator with
 raw gyro/accelerometer measurements. It jointly updates pose, velocity and IMU
-biases. It is separate from the application's selected Stella provider and is
-not a ROS node, installable engine provider or loop-closing SLAM system.
+biases. `basalt_stream` and `LiveClient` provide the live worker interface; the
+host application supplies ROS transport, registration and session supervision.
+The worker maintains a sparse segment map without loop closure.
 
 The recipe compiles only estimation, optical flow and supporting core sources.
 It does not link Basalt's GUI, dataset loaders, AprilTag calibration, mapping
 applications or camera drivers. Exact Basalt, basalt-headers, Sophus, cereal,
 magic_enum, OpenGV and JSON revisions are verified before building. Eigen
 5.0.1, TBB, fmt and OpenCV come from the selected development SDK. This differs
-from the selected Stella provider's Eigen 3.4.0 dependency.
+from the separate Stella provider's Eigen 3.4.0 dependency.
 
 ```sh
 python tools/build_basalt.py --engine /absolute/sdk \
@@ -127,14 +128,15 @@ POSIM_SLAM_STREAM_BINARY=/absolute/new-build/build/basalt_stream \
 The paced-packet test includes native state/map outputs and thread/process
 shutdown. Native clock/saturation/protocol tests require the explicit binary;
 they are skipped in Python-only CI. ROS transport, live sensor timing, local-map
-display and failure recovery need their own application acceptance. This target
-is not selected by WWW-POSIM's default SLAM panel.
+display and failure recovery need their own application acceptance. The host application
+chooses provider startup and default panel selection.
 
 ## 한국어
 
 이 연구용 실행 파일은 Basalt의 square-root 시각·관성 추정기로 위치·속도·자세와
-IMU 바이어스를 함께 갱신합니다. 앱에서 선택하는 Stella 공급자와 별개이며 ROS
-노드·엔진 배포 공급자·루프 폐쇄 SLAM은 아닙니다.
+IMU 바이어스를 함께 갱신합니다. `basalt_stream`과 `LiveClient`가 실시간 워커
+인터페이스를 제공하며, 호스트 앱이 ROS 전송·등록·세션 실행 관리를 담당합니다.
+워커는 루프 폐쇄 없이 구간별 희소 지도를 유지합니다.
 
 버전 파일의 일곱 저장소를 고정하고 추정·광류 코어만 빌드합니다. GUI·데이터셋
 로더·AprilTag 보정·지도 앱·카메라 드라이버는 연결하지 않습니다. SDK의 Eigen
@@ -169,7 +171,7 @@ ATE·1초 RPE·이동 거리와 평가 비율을 기록합니다. 기본값은 �
 프로토콜 준비는 항법 준비 판정이 아닙니다. 오류가 나면 앱 소유자가 구간 전체를
 무효화하고 새 프레임으로 워커를 다시 만들어야 합니다. Python 전용 CI는 네이티브
 실행 파일이 필요한 시험을 명시적으로 건너뜁니다. ROS 연결·실시간 센서·점군 표시·
-복구는 앱에서 별도로 검증해야 하며 기본 SLAM 패널의 공급자는 바뀌지 않습니다.
+복구는 앱에서 별도로 검증해야 합니다. 공급자 실행과 패널 기본 선택은 호스트 앱이 결정합니다.
 
 The development owner accepts `--max-image-pixels` (default 120,000) and
 `--max-image-rate` (default 10 Hz). It sends the original grayscale image and
@@ -547,13 +549,13 @@ backup/restore lifecycle. `JointPingTrial` retains accepted finite cost decrease
 and restores poses, inertial states, landmarks and planes on rejection or
 exception. Associations stay fixed during a trial; rebuild linearization rows
 after completion. `basalt_ping_state_probe` tests these transitions on the native
-estimator. Live grouped-Ping optimization remains unconnected.
+estimator. The live worker uses this lifecycle during joint Ping optimization.
 
 `ping_state.hpp`는 최대 8개 국소 평면을 실제 Basalt 추정기의 백업·복원에
 포함합니다. `JointPingTrial`은 수락한 비용 감소만 유지하고 거부·예외 시
 자세, 관성 상태, 특징점과 평면을 복원합니다. 보정 중 관측 연결을 고정하고
 종료 후 선형화 행렬을 다시 구성해야 합니다. `basalt_ping_state_probe`가
-실제 추정기로 이를 검증하며, 실시간 Ping 공동 최적화 연결은 남아 있습니다.
+실제 추정기로 이를 검증하며, 실시간 워커도 Ping 공동 최적화에서 이 수명 주기를 사용합니다.
 
 
 ### Exact image/Ping transport / 영상·Ping 시각 정합 전송
