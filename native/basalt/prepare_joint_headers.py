@@ -67,6 +67,7 @@ def prepare(source,destination):
   bool posim_joint_started = false;
   bool posim_had_visual_landmarks = false;
   int posim_joint_last_accepted = 0;
+  uint64_t posim_projection_rejections = 0;
   void posim_optimize_joint();''')
         elif name.endswith('/ba_base.h'):
             text=replace_once(text,'#pragma once','#pragma once\n#include "ping_state.hpp"\n#include "consumed_visual.hpp"')
@@ -180,6 +181,7 @@ void SqrtKeypointVioEstimator<Scalar_>::posim_optimize_joint() {
   const auto report = posim_slam::optimizePingGroups(base, order,
       posim_ping_factors->specs(order), marg_data, imu, {}, posim_sonar_factors.get());
   posim_joint_last_accepted = report.accepted;
+  posim_projection_rejections += report.projection_rejections;
 }
 
 template <class Scalar_>

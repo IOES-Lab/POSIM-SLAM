@@ -59,3 +59,34 @@ its −15 exit code is expected teardown, not a claim of graceful worker shutdow
 남습니다. 이는 정상적인 프로세스 내부 종료를 검증한 결과는 아닙니다.
 
 ![Measured sonar with robust track loss / 트랙 강건 손실 적용](measured-sonar-huber.png)
+
+## Reference-track failure / 기준 영상 추적 실패
+
+Adding image-reference consistency to acoustic tracking does not establish
+physical correspondence. With that optional trace, the 63.2-second replay
+diverges: position RMSE 1,302.526 m, 1,430 retained visual points, only 278 in the
+comparison view. No Ping constraints are fused. At 24.51 s the estimated
+accelerometer bias changes abruptly by 1.5553 m/s², immediately after all 16
+active acoustic tracks retire. The cause within optimization and marginalization
+is unresolved; this trace is not the default.
+
+음향 추적에 기준 영상 일관성 검사를 추가해도 물리적 대응 관계는 입증되지
+않습니다. 이 선택형 추적 기록의 63.2초 재생은 위치 RMSE 1,302.526 m로
+발산합니다. 보존된 시각 점 1,430개 중 비교 시야 안에는 278개만 있으며
+Ping 제약은 반영되지 않았습니다. 활성 음향 트랙 16개가 모두 제거된 직후인
+24.51초에 가속도계 바이어스 추정이 1.5553 m/s² 급변합니다. 최적화·주변화
+안에서의 원인은 아직 해결되지 않았으며 이 추적 설정은 기본값이 아닙니다.
+
+Joint trials reject loss of previously valid visual projections, so dropping a
+residual cannot count as cost improvement. The rejection count is zero in this
+failed replay; that separate defect does not explain this divergence. The same
+worker without acoustic factors retains position RMSE 0.025 m and maximum error
+0.102 m. Sparse map geometry remains unqualified.
+
+공동 최적화는 유효했던 시각 투영을 잃는 단계를 거부하여 잔차 누락을 비용
+개선으로 판단하지 않습니다. 이 실패 재생에서는 해당 거부가 0회이므로 별도로
+확인한 이 결함이 발산을 설명하지는 않습니다. 같은 작업자에서 음향 관측을
+제외한 대조군은 위치 RMSE 0.025 m, 최대 오차 0.102 m를 유지합니다.
+희소 지도의 형상은 여전히 검증되지 않았습니다.
+
+![Reference-consistency trace failure / 기준 영상 일관성 추적 실패](measured-sonar-reference-failure.png)

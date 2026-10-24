@@ -143,6 +143,7 @@ int main(int argc,char** argv) {
       for(const auto& entry:base.frame_poses)retained.insert(entry.first);
       for(const auto& entry:base.frame_states)retained.insert(entry.first);
       report["retained_pose_stamps_ns"]=retained;
+      report["visual_projection_rejections_total"]=estimator.posim_projection_rejections;
       if(report.value("owner_received",false))report["accepted_steps"]=estimator.posim_joint_last_accepted;
       report["map_qualified"]=false;
       if(sonar_reports.size()>16)fail("sonar_report_backlog");

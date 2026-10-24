@@ -641,6 +641,20 @@ Basalt는 사전정보 비용에서 상수항을 생략하므로 `JointPingTrial
 
 ### Coupled linearization / 공동 선형화
 
+Joint optimization compares costs while preserving the visual projections that
+were valid at the start of each trial. A step that makes any of those projections
+invalid is rejected and rolled back, even if dropping its residual lowers the
+reported cost. Existing invalid projections may remain excluded. The native
+sonar diagnostic `visual_projection_rejections_total` counts these rejected
+trials within the estimator segment; it does not measure acoustic association
+quality.
+
+공동 최적화는 각 시도 직전에 유효했던 시각 투영을 유지하며 비용을 비교합니다.
+그중 하나라도 투영 불가능해지면, 잔차가 빠져 보고 비용이 감소하더라도 해당
+단계를 거부하고 상태를 복원합니다. 처음부터 유효하지 않은 투영은 계속 제외할
+수 있습니다. 네이티브 소나 진단의 `visual_projection_rejections_total`은
+추정기 구간 안에서 이 이유로 거부한 시도 수이며, 음향 대응점 품질 지표는 아닙니다.
+
 `ping_linearization.hpp::PingLinearization` implements Basalt's
 `LinearizationBase<double,6>` interface for fixed Ping groups. It moves selected
 landmark blocks out of independent QR and reduces their raw visual, shared

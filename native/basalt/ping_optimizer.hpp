@@ -3,12 +3,46 @@
 #include "ping_linearization.hpp"
 #include "ping_marginal.hpp"
 #include "sonar_factors.hpp"
+#include <basalt/utils/ba_utils.h>
+#include <algorithm>
 #include <memory>
 
 namespace posim_slam {
+using VisualProjectionSupport=std::set<std::pair<basalt::KeypointId,basalt::TimeCamId>>;
+
+// A trial must retain every visual residual that contributed to its baseline
+// cost. Basalt otherwise ignores invalid projections without a numerical error.
+inline VisualProjectionSupport visualProjectionSupport(
+    const basalt::BundleAdjustmentBase<double>& owner,const basalt::AbsOrderMap& order) {
+  VisualProjectionSupport support;
+  for(const auto& [host,targets]:owner.lmdb.getObservations()) {
+    if(!order.abs_order_map.count(host.frame_id))continue;
+    for(const auto& [target,ids]:targets) {
+      if(!order.abs_order_map.count(target.frame_id))continue;
+      const Eigen::Matrix4d transform=basalt::computeRelPose(
+        owner.getPoseStateWithLin(host.frame_id).getPose(),owner.calib.T_i_c.at(host.cam_id),
+        owner.getPoseStateWithLin(target.frame_id).getPose(),owner.calib.T_i_c.at(target.cam_id)).matrix();
+      std::visit([&,observation_ids=ids,observation_target=target](const auto& camera) {
+        for(const auto id:observation_ids) {
+          const auto& point=owner.lmdb.getLandmark(id);Eigen::Vector2d residual;
+          if(basalt::linearizePoint(point.obs.at(observation_target),point,transform,camera,residual))
+            support.emplace(id,observation_target);
+        }
+      },owner.calib.intrinsics.at(target.cam_id).variant);
+    }
+  }
+  return support;
+}
+
+inline bool preservesVisualProjectionSupport(const VisualProjectionSupport& before,
+                                             const VisualProjectionSupport& after) {
+  return std::includes(after.begin(),after.end(),before.begin(),before.end());
+}
+
 struct PingOptimizationOptions {int iterations=6,trials=6;double initial_damping=1e-3;};
 struct PingOptimizationReport {
   int accepted=0,rejected=0;double initial_cost=0,final_cost=0;
+  int projection_rejections=0;
   std::string termination="iteration_limit";
 };
 
@@ -55,6 +89,7 @@ inline PingOptimizationReport optimizePingGroups(basalt::BundleAdjustmentBase<do
         before+=sonar->cost(sonar_poses());
       }
       if(!valid)throw std::runtime_error("invalid_ping_initial_linearization");
+      const auto visual_support=visualProjectionSupport(owner,order);
       if(iteration==0 && attempt==0)report.initial_cost=report.final_cost=before;
       linearization->performQR();Eigen::MatrixXd h;Eigen::VectorXd b;
       linearization->get_dense_H_b(h,b);
@@ -97,6 +132,9 @@ inline PingOptimizationReport optimizePingGroups(basalt::BundleAdjustmentBase<do
           }
           after=linearization->linearizeProblem(&valid);
           if(sonar_rows)after+=sonar->cost(sonar_poses());
+          if(!preservesVisualProjectionSupport(visual_support,visualProjectionSupport(owner,order))) {
+            valid=false;++report.projection_rejections;
+          }
           accepted=trial.accept(before,valid ? after : std::numeric_limits<double>::infinity(),predicted);
           if(sonar_trial)sonar_trial->finish(accepted);
         }catch(const std::invalid_argument&) {

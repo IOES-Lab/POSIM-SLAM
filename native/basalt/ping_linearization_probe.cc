@@ -56,6 +56,29 @@ int main(int argc,char** argv) {
       }
       if(id<25)ids.insert(id);
     }
+    // Moving a nonzero visual residual behind the camera must not masquerade
+    // as cost improvement. Upstream reports this dropped residual as finite.
+    const auto initial_support=visualProjectionSupport(owner,order);
+    basalt::LinearizationBase<double,6>::Options visual_settings;
+    visual_settings.lb_options.huber_parameter=owner.huber_thresh;
+    visual_settings.lb_options.obs_std_dev=owner.obs_std_dev;
+    IndependentReference visual_only(&owner,order,visual_settings);
+    bool baseline_valid=false,hidden_valid=false;
+    const double visible_cost=visual_only.linearizeProblem(&baseline_valid);
+    double hidden_cost=0.;bool dropped_projection_rejected=false;
+    {
+      JointPingTrial trial(owner);
+      owner.lmdb.getLandmark(25).direction=Eigen::Vector2d(3.,0.);
+      hidden_cost=visual_only.linearizeProblem(&hidden_valid);
+      dropped_projection_rejected=!preservesVisualProjectionSupport(
+        initial_support,visualProjectionSupport(owner,order));
+    }
+    const bool projection_guard_passed=baseline_valid && hidden_valid &&
+      hidden_cost<visible_cost && dropped_projection_rejected &&
+      visualProjectionSupport(owner,order)==initial_support;
+    if(!projection_guard_passed)throw std::runtime_error("visual_projection_support_regression");
+    std::cout<<"projection_support passed="<<projection_guard_passed
+      <<" visible_cost="<<visible_cost<<" dropped_cost="<<hidden_cost<<"\n";
     const auto eligible=activePingPoints(owner,times[2],c.processed_width,c.processed_height);
     const auto saved_observation=owner.lmdb.getLandmark(0).obs.at({times[0],0});
     owner.lmdb.removeObservations(0,{{times[0],0}});
