@@ -95,6 +95,7 @@ def evaluate(states, truth, mount):
                                 (aligned_r[i].T @ aligned_r[j])))
     result = dict(evaluated=True, states=len(states), duration_s=float(
         (states['stamp_ns'][-1]-states['stamp_ns'][0])*1e-9),
+        evaluation_alignment=dict(rotation=align_r.tolist(),translation=align_p.tolist(),scale=1.),
         gauge='initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit',
         position_rmse_m=float(np.sqrt(np.mean(errors**2))), position_max_m=float(max(errors)),
         rotation_rmse_rad=float(np.sqrt(np.mean(angles**2))),
