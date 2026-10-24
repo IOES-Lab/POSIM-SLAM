@@ -34,6 +34,29 @@ Basalt 리비전 `0f3b2b52c807f70ff4e2973ce253c73329eea7bc`와 POSIM-SLAM VIO 0.
 완성된 장면 복원이 아닌 관측 범위 실패 사례입니다. 다른 센서 조합을 비교하기
 전에 차량 카메라의 관측 범위와 시험 경로를 추가 점검해야 합니다.
 
+## Longer survey / 긴 조사 경로
+
+![Seven-metre survey cloud and same-view RGB](images/camera-imu-ping-survey-isometric.png)
+
+An independent 7 m outbound survey of the same unchanged scene, using the same
+library and effects, retains 2,540 points; 2,105 are in the comparison view.
+Over 59.9 seconds the trajectory RMSE is 0.081 m. The same −5 to 0 m colour
+range and camera parameters are used. Frustum/front-face checks on recorded
+poses find potential exposure of all three targets, whereas the 3 m survey
+never includes the third target. These checks do not establish visibility
+through occlusion or feature trackability. The expanded cloud still fails to
+recover the boxes. Longer coverage alone is insufficient; sparse feature maps
+must not be presented as complete obstacle geometry.
+
+같은 장면·라이브러리·환경 효과로 별도 수행한 7 m 전진 조사에서는
+2,540점을 유지했고, 비교 시야 안에는 2,105점이 있습니다. 59.9초 경로
+RMSE는 0.081 m입니다. 카메라 설정과 −5~0 m 색상 범위를 동일하게
+유지했습니다. 기록된 자세의 시야·앞면 계산에서는 세 표적 모두 관측 가능
+구간이 생겼습니다. 3 m 조사에서는 세 번째 표적이 시야 밖이었습니다.
+이 계산만으로 가림 여부나 특징점 추적 가능성을 입증하지는 않습니다.
+넓어진 점군도 상자 형상을 복원하지 못했습니다. 관측 거리 확대만으로는
+충분하지 않으며, 희소 특징점 지도를 완전한 장애물 형상으로 제시할 수 없습니다.
+
 ## Protocol / 규약
 
 Each completed sensor combination requires a paired figure: its generated SLAM
