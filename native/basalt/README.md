@@ -788,3 +788,22 @@ float64 성분 세 개로 구성되며 첫 영상 전에 한 번만 보내고 �
 유지하며 속도와 바이어스는 0으로 시작합니다. 누락·중복·비단위 방향·시각 불일치는
 구간 오류입니다. 호출자가 구간 데이터와 첫 영상 시각의 물리 IMU 좌표계를 보장해야
 합니다. 이 규약은 동적 관측 가능성이나 항법 준비를 입증하지 않습니다.
+
+### Sonar track linearization
+
+`sonar_track.hpp` weights associated range/azimuth observations using an explicit
+full track covariance, including temporal correlations. Pose columns follow
+Basalt's additive world translation and left world rotation convention. Joint
+point elimination retains correlations between poses and the residual cost;
+rank-deficient tracks receive no artificial elevation constraint. Assemble all
+rows owned by a shared point before eliminating it, including prior and other
+sensor rows. The caller supplies association and calibrated covariance. These
+helpers are not yet registered in the streaming estimator.
+
+`sonar_track.hpp`는 트랙 전체의 명시적 공분산으로 거리·방위각 관측을 가중하며
+시간 상관관계도 반영합니다. 자세 열은 Basalt의 월드 좌표 이동량과 좌측 회전
+규약을 따릅니다. 점의 공동 소거는 자세 사이 상관관계와 잔차 비용을 보존하며,
+정보가 부족한 트랙에 인위적인 높이 제약을 추가하지 않습니다. 공유 점을 소거하기
+전에 사전정보와 다른 센서 관측을 포함한 모든 관련 행을 모아야 합니다. 호출자가
+대응점과 보정된 공분산을 제공합니다. 이 함수들은 아직 스트리밍 추정기에
+등록되지 않았습니다.
