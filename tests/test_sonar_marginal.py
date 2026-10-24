@@ -1,7 +1,7 @@
 import unittest
 import copy
 import numpy as np
-from posim_slam.sonar_marginal import marginalize_window,prior_residual
+from posim_slam.sonar_marginal import marginalize_window,prior_residual,compact_square_root
 from posim_slam.inertial import exp_so3
 from posim_slam.sonar_inertial import optimize_window
 from test_sonar_inertial import fixture
@@ -9,6 +9,36 @@ import test_sonar_inertial as sonar_tests
 
 
 class MarginalTests(unittest.TestCase):
+    def test_compaction_preserves_nonzero_cost_and_nullspace(self):
+        rng=np.random.default_rng(71);j=rng.normal(size=(150,18));j[:,-1]=0
+        r=rng.normal(size=150);a,b=compact_square_root(j,r)
+        self.assertEqual(a.shape,(19,18));self.assertGreater(b[-1],0)
+        for _ in range(5):
+            d=rng.normal(size=18)
+            self.assertAlmostEqual(np.linalg.norm(j@d+r)**2,np.linalg.norm(a@d+b)**2,places=9)
+        np.testing.assert_allclose(a.T@a,j.T@j,atol=1e-12)
+        np.testing.assert_array_equal(a[:,-1],0)
+
+    def test_repeated_solver_windows_keep_prior_matrix_bounded(self):
+        args=fixture(stationary=True)
+        for i in range(201,3201):args['imu_window'].add(i*.005,[0,0,0],[0,0,9.80665])
+        result=optimize_window(**args,retain_state_stamps_ns=[1_000_000_000])
+        for end in range(2,17):
+            prior=result['linearized_prior'];start=copy.deepcopy(result['states'][-1])
+            finish=copy.deepcopy(start);finish['stamp']=float(end)
+            args.update(states=[start,finish],initial_state=None,initial_covariance=None,
+                linearized_prior=prior,independent_new_measurements=True)
+            for track,point in zip(args['tracks'],result['landmarks']):
+                track['landmark']=point.copy();q=point-finish['position']
+                track['observations']=[dict(stamp_ns=end*1_000_000_000,range_m=float(np.linalg.norm(q)),
+                    azimuth_rad=float(np.arctan2(q[1],q[0])))]
+                track['measurement_covariance']=np.diag([.01**2,.002**2])
+            result=optimize_window(**args,retain_state_stamps_ns=[end*1_000_000_000])
+            root=result['linearized_prior']['jacobian']
+            self.assertLessEqual(root.shape[0],root.shape[1]+1)
+            self.assertGreaterEqual(result['nullity'],2)
+            self.assertLess(result['final_cost'],1e-12)
+
     def ping_history_fixture(self):
         full,second=self.sequential_fixture()
         result=optimize_window(**second,retain_state_stamps_ns=[3_000_000_000])

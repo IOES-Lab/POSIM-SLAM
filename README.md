@@ -77,6 +77,12 @@ rejected. Plane deltas use the stored tangent basis; antipodal normals are
 rejected. Persistent physical patch association and live streaming remain
 unimplemented.
 
+Exported priors use QR compression to keep at most one more row than retained
+variables. A zero-Jacobian row preserves the residual cost orthogonal to those
+variables. Rank-deficient directions remain unregularized. Measurement ownership
+records still grow with history; this matrix bound is not a whole-stream memory
+bound.
+
 `inertial_factor.pair_residual` uses measured `ImuWindow` preintegration to
 constrain endpoint position, velocity, rotation and biases with their full
 15-state covariance. Gravity and endpoint states are explicit optimization

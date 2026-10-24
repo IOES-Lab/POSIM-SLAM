@@ -10,6 +10,22 @@ from .ping_joint import eliminate_patch
 from .inertial_alignment import log_so3
 
 
+def compact_square_root(jacobian,residual):
+    """Bound rows by columns + 1 while preserving the entire quadratic cost.
+
+    The final zero-Jacobian row carries cost orthogonal to the column space.
+    Dropping that constant would make residual costs incomparable across windows.
+    QR does not invert the information matrix or fill rank-deficient directions.
+    """
+    j=np.asarray(jacobian,dtype=float);r=np.asarray(residual,dtype=float)
+    if (j.ndim!=2 or r.shape!=(j.shape[0],) or not np.isfinite(j).all()
+            or not np.isfinite(r).all()):raise ValueError('invalid_square_root')
+    if j.shape[0]<=j.shape[1]:return j.copy(),r.copy()
+    q,root=np.linalg.qr(j,mode='reduced');projected=q.T@r
+    remainder=float(np.linalg.norm(r-q@projected))
+    return np.vstack([root,np.zeros((1,j.shape[1]))]),np.r_[projected,remainder]
+
+
 def prior_residual(prior,states,landmarks,track_ids,planes=()):
     """Evaluate frozen sonar/IMU history at its original tangent anchors."""
     state_map={int(round(s['stamp']*1e9)):s for s in states}
@@ -56,14 +72,15 @@ def marginalize_window(jacobian,residual,*,states,landmarks,planes,track_ids,
     retained=len(columns)
     columns+=[k for i in removed for k in range(15*i,15*i+15)]
     reduced=eliminate_patch(j[:,columns],r,retained_columns=retained)
+    compact_j,compact_r=compact_square_root(reduced['jacobian'],reduced['residual'])
     plane_bases=[]
     for plane in planes:
         normal=np.asarray(plane['normal']);u=np.cross(normal,np.eye(3)[np.argmin(abs(normal))])
         u/=np.linalg.norm(u);plane_bases.append(np.column_stack([u,np.cross(normal,u)]))
-    # Keep the full rectangular square root. Inverting J'J or adding diagonal
+    # Keep a compact rectangular square root. Inverting J'J or adding diagonal
     # regularization here would fill unobservable directions with false certainty.
     return dict(schema='posim-slam-sonar-frozen-prior-1',
-        jacobian=reduced['jacobian'],residual=reduced['residual'],
+        jacobian=compact_j,residual=compact_r,
         state_stamps_ns=keep,states=copy.deepcopy([states[i] for i in kept]),
         landmarks=copy.deepcopy(landmarks),planes=copy.deepcopy(planes),track_ids=list(track_ids),
         plane_rotation_bases=plane_bases,
