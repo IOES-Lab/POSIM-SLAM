@@ -485,6 +485,23 @@ a geometrically coherent candidate inconsistent with the measured range.
 후보 적합은 표시·보관 점군의 점 개수 제한과 독립적입니다. 초기 깊이·축척
 오차가 있으면 형상상 일관된 후보도 실제 거리와 다를 수 있습니다.
 
+`makeOwnedPingGroup` builds the native group callback from an already owned
+plane, raw landmark IDs and exact-time Ping observations. It copies measurement
+values, calibration, weights and membership, then reads current geometry on each
+linearization. Pose/plane references stay consistent with the existing prior.
+It supports deterministic-minimum and expected-noisy-minimum means. Missing
+hosts/landmarks, duplicate observation stamps and invalid weights are rejected.
+The caller owns group registration and retirement; this builder does not by
+itself activate the streaming coupled optimizer.
+
+`makeOwnedPingGroup`은 소유 중인 평면, 원본 특징점 ID와 동일 시각 Ping
+관측에서 네이티브 그룹 콜백을 만듭니다. 측정값·보정값·가중치·구성 목록을
+복사한 뒤 선형화할 때마다 현재 기하를 읽습니다. 자세·평면 기준은 기존
+사전정보와 일치하게 유지합니다. 무잡음 최솟값과 잡음을 반영한 기대 최솟값
+모델을 지원합니다. 누락 호스트·특징점, 중복 관측 시각과 잘못된 가중치는
+거부합니다. 그룹 등록·제거는 호출자가 관리하며 이 생성 함수만으로 스트리밍
+공동 최적화가 활성화되는 것은 아닙니다.
+
 `ping_state.hpp` stores up to eight local planes in the actual Basalt estimator
 backup/restore lifecycle. `JointPingTrial` retains accepted finite cost decreases
 and restores poses, inertial states, landmarks and planes on rejection or

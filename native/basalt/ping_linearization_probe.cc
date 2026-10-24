@@ -2,6 +2,7 @@
 #include "calibration.hpp"
 #include "ping_linearization.hpp"
 #include "ping_input.hpp"
+#include "ping_owned_group.hpp"
 #include <basalt/imu/preintegration.h>
 #include <iostream>
 
@@ -21,7 +22,7 @@ class IndependentReference : public basalt::LinearizationAbsQR<double,6> {
 };
 
 int main(int argc,char** argv) {
-  if(argc!=2)return 2;
+  if(argc!=2 && !(argc==3 && std::string(argv[2])=="--expected-return"))return 2;
   try {
     using namespace posim_slam;
     auto c=input_calibration(argv[1]);c.cal.T_i_c[0]=Sophus::SE3d();
@@ -77,7 +78,8 @@ int main(int argc,char** argv) {
       double h=x*.074175,v=y*.074175;rays.row(ri++)=Vec3(-std::cos(v)*std::sin(h),std::sin(v),std::cos(v)*std::cos(h)).transpose();
     }
     Sophus::SE3d mount;mount.translation()<<.02,.03,.1;
-    const double measured=pingRange(owner.getPoseStateWithLin(times[2]).getPose(),mount,rays,normal,distance,.1).prediction+.04;
+    const double measured=(argc==3 ? expectedPingRange(owner.getPoseStateWithLin(times[2]).getPose(),mount,rays,normal,distance,.1,.005,.2,50.).range.prediction :
+      pingRange(owner.getPoseStateWithLin(times[2]).getPose(),mount,rays,normal,distance,.1).prediction)+.04;
     NativePingGroup raw;bool use_reference=true;
     std::map<basalt::KeypointId,basalt::LandmarkBlock<double>*> latest_blocks;
     JointPingGroupSpec spec{1,ids,[&](const auto& blocks) {
@@ -90,8 +92,25 @@ int main(int argc,char** argv) {
       }
       const auto& plane=owner.posim_ping_planes.at(1);
       PingGroupObservation observation{times[2],times[2],30,owner.getPoseStateWithLin(times[2]).getPose(),mount,rays,measured,.1,.02,.2,50.,use_reference ? std::optional<Sophus::SE3d>(owner.getPoseStateWithLin(times[2]).getPoseLin()) : std::nullopt};
+      if(argc==3)observation.per_ray_sigma=.005;
       raw=assemblePingGroup(45,plane.normal,plane.distance,landmarks,{observation},.02,.23,use_reference ? std::optional<PingPlaneReference>(plane.reference) : std::nullopt);return raw;
     }};
+    auto reference_builder=spec.build;
+    OwnedPingObservation owned_observation{times[2],measured,{mount,rays,.2,50.},.1,.02,std::nullopt};
+    if(argc==3)owned_observation.per_ray_sigma=.005;
+    const auto owned_spec=makeOwnedPingGroup(owner,order,1,ids,{owned_observation},.02,.23);
+    // All valid-path optimization now uses the production owner-backed builder.
+    // Retain the deliberately inconsistent builder only as the negative control.
+    spec=owned_spec;
+    spec.build=[&](const auto& blocks) {
+      latest_blocks=blocks;
+      raw=use_reference ? owned_spec.build(blocks) : reference_builder(blocks);
+      return raw;
+    };
+    bool invalid_owned_measurement=false;auto bad_owned=owned_observation;bad_owned.return_sigma=0.;
+    try{makeOwnedPingGroup(owner,order,1,ids,{bad_owned},.02,.23);}catch(const std::invalid_argument&){invalid_owned_measurement=true;}
+    // Mutation of the caller's observation cannot change the copied factor.
+    owned_observation.measured+=100.;
     spec.observation_pose_stamps={times[2]};
     const auto untouched=planPingRetirement(owner,{spec},{},{},{});
     const auto lost_plan=planPingRetirement(owner,{spec},{},{},{*ids.begin()});
@@ -191,8 +210,8 @@ int main(int argc,char** argv) {
     bool missing_reference=false;
     try {api->linearizeProblem();}catch(const std::invalid_argument&){missing_reference=true;}
     const double prediction_error=std::abs(predicted-reference_decrease);
-    bool passed=owner_support_passed && changed_dependencies_rejected && retirement_passed && incomplete_rejected && selection_error/normal_scale<1e-12 && reference_gauge_error<1e-8 && inconsistent_gauge_error>1e-7 && plane_reference_preserved && missing_reference && std::abs(before-3.5)<1e-9 && valid && duplicate && transaction_required && square_root_error/normal_scale<1e-12 && information_error/normal_scale<1e-12 && prediction_error<1e-7 && step_error<1e-7 && stale && rollback_stale && restored_cost && accepted;
-    std::cout<<Json({{"owner_visual_support_passed",owner_support_passed},{"changed_observation_dependencies_rejected",changed_dependencies_rejected},{"retirement_dependency_closure_passed",retirement_passed},{"marginal_selection_error",selection_error},{"incomplete_group_rejected",incomplete_rejected},{"passed",passed},{"joint_landmarks",25},{"independent_landmarks",1},{"imu_intervals",2},
+    bool passed=invalid_owned_measurement && owner_support_passed && changed_dependencies_rejected && retirement_passed && incomplete_rejected && selection_error/normal_scale<1e-12 && reference_gauge_error<1e-8 && inconsistent_gauge_error>1e-7 && plane_reference_preserved && missing_reference && std::abs(before-3.5)<1e-9 && valid && duplicate && transaction_required && square_root_error/normal_scale<1e-12 && information_error/normal_scale<1e-12 && prediction_error<1e-7 && step_error<1e-7 && stale && rollback_stale && restored_cost && accepted;
+    std::cout<<Json({{"expected_return",argc==3},{"invalid_owned_measurement_rejected",invalid_owned_measurement},{"owner_visual_support_passed",owner_support_passed},{"changed_observation_dependencies_rejected",changed_dependencies_rejected},{"retirement_dependency_closure_passed",retirement_passed},{"marginal_selection_error",selection_error},{"incomplete_group_rejected",incomplete_rejected},{"passed",passed},{"joint_landmarks",25},{"independent_landmarks",1},{"imu_intervals",2},
       {"square_root_normal_error",square_root_error},{"single_ownership_information_error",information_error},
       {"normal_system_scale",normal_scale},{"relative_square_root_error",square_root_error/normal_scale},
       {"relative_information_error",information_error/normal_scale},{"model_decrease_error",prediction_error},{"reference_decrease",reference_decrease},{"first_prediction",first_prediction},{"reference_initial_cost",.5*full_r.squaredNorm()},{"independent_eliminated_visual_cost",eliminated_visual_constant},
