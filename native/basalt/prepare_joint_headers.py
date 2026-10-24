@@ -56,12 +56,13 @@ def prepare(source,destination):
         if hashlib.sha256(raw).hexdigest()!=checksum:raise ValueError('pinned_basalt_joint_header_changed:'+name)
         text=raw.decode()
         if name.endswith('/sqrt_keypoint_vio.h'):
-            text=replace_once(text,'#pragma once','#pragma once\n#include <functional>\nnamespace posim_slam { class PingFactorStore; }')
+            text=replace_once(text,'#pragma once','#pragma once\n#include <functional>\nnamespace posim_slam { class PingFactorStore; class SonarFactorStore; }')
             text=replace_once(text,'  using Scalar = Scalar_;','''  using Scalar = Scalar_;
   // Configured before input is submitted; called only by the estimator thread.
   std::function<void(SqrtKeypointVioEstimator&, int64_t)> posim_before_marginalization;
   std::function<void(SqrtKeypointVioEstimator&, int64_t)> posim_after_joint;
   std::shared_ptr<posim_slam::PingFactorStore> posim_ping_factors;
+  std::shared_ptr<posim_slam::SonarFactorStore> posim_sonar_factors;
   bool posim_joint_started = false;
   int posim_joint_last_accepted = 0;
   void posim_optimize_joint();''')
@@ -99,8 +100,11 @@ def prepare(source,destination):
         raise ValueError('pinned_basalt_owner_source_changed')
     text=replace_once(raw.decode(),'  optimize();\n  marginalize(num_points_connected, lost_landmaks);',
         '  if (posim_joint_started) posim_optimize_joint(); else optimize();\n'
+        '  const auto acoustic_revision = posim_sonar_factors ? posim_sonar_factors->revision() : 0;\n'
         '  if (posim_before_marginalization) posim_before_marginalization(*this, last_state_t_ns);\n'
-        '  if (posim_ping_factors && posim_ping_factors->lastObservation() == last_state_t_ns) {\n'
+        '  const bool new_acoustic = posim_sonar_factors && posim_sonar_factors->size() &&\n'
+        '    (!posim_joint_started || posim_sonar_factors->revision() != acoustic_revision);\n'
+        '  if ((posim_ping_factors && posim_ping_factors->lastObservation() == last_state_t_ns) || new_acoustic) {\n'
         '    posim_joint_started = true; opt_started = true; posim_optimize_joint();\n'
         '  }\n'
         '  if (posim_after_joint) posim_after_joint(*this, last_state_t_ns);\n'
@@ -124,7 +128,7 @@ def prepare(source,destination):
       ImuLinData<double> imu = {g, gyro_bias_sqrt_weight, accel_bias_sqrt_weight, {}};
       for (const auto& [stamp, measurement] : imu_meas) imu.imu_meas[stamp] = &measurement;
       posim_ping_factors->marginalize(aom, marg_data, imu_meas, imu, removed,
-                                    states_to_marg_vel_bias, lost_landmaks);
+                                    states_to_marg_vel_bias, lost_landmaks, posim_sonar_factors.get());
       for (int64_t stamp : removed) {
         kf_ids.erase(stamp); num_points_kf.erase(stamp); prev_opt_flow_res.erase(stamp);
       }
@@ -137,13 +141,17 @@ def prepare(source,destination):
     Timer t_actual_marg;''')
     text=replace_once(text,'template <class Scalar_>\nvoid SqrtKeypointVioEstimator<Scalar_>::debug_finalize()', '''template <class Scalar_>
 void SqrtKeypointVioEstimator<Scalar_>::posim_optimize_joint() {
-  if (!posim_ping_factors) throw std::logic_error("missing_ping_factor_store");
+  if (!posim_ping_factors) {
+    if (!posim_sonar_factors) throw std::logic_error("missing_joint_factor_store");
+    posim_ping_factors = std::make_shared<posim_slam::PingFactorStore>(
+        static_cast<BundleAdjustmentBase<double>&>(*this));
+  }
   auto& base = static_cast<BundleAdjustmentBase<double>&>(*this);
   const auto order = posim_slam::planPingMarginalLayout(base, {}, {}, {}, {}).source;
   ImuLinData<double> imu = {g, gyro_bias_sqrt_weight, accel_bias_sqrt_weight, {}};
   for (const auto& [stamp, measurement] : imu_meas) imu.imu_meas[stamp] = &measurement;
   const auto report = posim_slam::optimizePingGroups(base, order,
-      posim_ping_factors->specs(order), marg_data, imu);
+      posim_ping_factors->specs(order), marg_data, imu, {}, posim_sonar_factors.get());
   posim_joint_last_accepted = report.accepted;
 }
 

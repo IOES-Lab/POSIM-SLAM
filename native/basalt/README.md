@@ -848,3 +848,16 @@ initial anchor; nonlinear cost still uses the current geometry.
 사전정보 설치 실패 시 관측 저장소를 보존합니다. 트랙 ID는 세션 안에서 증가해야
 합니다. Jacobian은 Basalt 기준 자세와 점의 초기 기준값을 사용하고, 비선형 비용은
 현재 형상에서 계산합니다.
+
+The native owner exposes `posim_sonar_factors` to its estimator-thread callback.
+New observations start joint optimization; subsequent frames retain the common
+prior and use joint marginalization. The `basalt_synthetic_probe OUTPUT.csv 5
+sonar` fixture exercises this lifecycle with generated visual tracks, raw IMU
+and acoustic observations. The stream's binary input does not yet expose sonar
+measurements, so this hook does not enable an application sensor mode.
+
+네이티브 추정기의 작업 스레드 콜백은 `posim_sonar_factors`를 사용할 수 있습니다.
+새 관측은 공동 최적화를 시작하고, 이후 프레임도 공동 사전정보와 주변화를
+사용합니다. `basalt_synthetic_probe OUTPUT.csv 5 sonar`는 합성 시각 특징·원본
+IMU·음향 관측으로 이 수명주기를 검사합니다. 스트림의 바이너리 입력에는 아직
+소나 관측이 없으므로 이 연결부가 앱의 센서 모드를 활성화하지는 않습니다.

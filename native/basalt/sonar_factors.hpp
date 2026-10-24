@@ -90,6 +90,8 @@ class SonarFactorStore {
   }
   const Eigen::Vector3d& point(int64_t id) const {return points_.at(id);}
   size_t size() const {return tracks_.size();}
+  uint64_t revision() const {return revision_;}
+  bool contains(int64_t id) const {return tracks_.count(id)!=0;}
 
   struct Retirement {
     const SonarFactorStore* owner;
