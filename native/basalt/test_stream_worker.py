@@ -38,6 +38,39 @@ class StreamWorkerTests(unittest.TestCase):
                 self.assertFalse(client.writer.is_alive());self.assertFalse(client.reader.is_alive())
                 self.assertIsNotNone(client.process.poll())
 
+    def test_featureless_start_preserves_initial_velocity_state(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root=Path(folder);config=root/'calibration.json'
+            config.write_text(json.dumps(dict(schema='posim-slam-vio-recording-1',orientation_used=False,
+                width=320,height=240,fx=250,fy=250,cx=160,cy=120,T_i_c_q_xyzw=[0,0,0,1],T_i_c_translation_m=[0,0,0],
+                imu_rate_hz=100,gyro_noise_density=.001,accel_noise_density=.02,
+                gyro_bias_random_walk=.0001,accel_bias_random_walk=.001,gravity_m_s2=9.80665,max_imu_gap_s=.02)))
+            with (root/'worker.log').open('w') as log:
+                client=LiveClient(os.environ['POSIM_SLAM_STREAM_BINARY'],config,log)
+                try:
+                    deadline=time.monotonic()+3
+                    while not client.ready.is_set() and time.monotonic()<deadline:
+                        client.poll();time.sleep(.005)
+                    self.assertTrue(client.ready.is_set());client.poll()
+                    next_imu=1_000_000_000
+                    for index in range(8):
+                        stamp=1_000_000_000+index*200_000_000
+                        while next_imu<=stamp+10_000_000:
+                            client.imu(next_imu,[0,0,0],[0,0,9.80665]);next_imu+=10_000_000
+                        client.image(stamp,320,240,bytes(320*240))
+                        received=[];deadline=time.monotonic()+5
+                        while time.monotonic()<deadline:
+                            received.extend(client.poll())
+                            if any(v['type']=='state' for v in received) and any(v['type']=='map' for v in received):break
+                            time.sleep(.005)
+                        state=next(v for v in received if v['type']=='state')
+                        cloud=next(v for v in received if v['type']=='map')
+                        self.assertEqual(cloud['landmarks_window'],0)
+                        self.assertEqual(state['initialization_window']['oldest_stamp_ns'],1_000_000_000)
+                        self.assertEqual(state['initialization_window']['states'],index+1)
+                finally:client.close()
+                self.assertFalse(client.writer.is_alive() or client.reader.is_alive())
+
     def test_ping_timestamp_mismatch(self):self.check_fault('ping_stamp','invalid_exact_image_ping')
     def test_ping_nonfinite(self):self.check_fault('ping_nan','invalid_exact_image_ping')
     def test_ping_negative(self):self.check_fault('ping_negative','invalid_exact_image_ping')

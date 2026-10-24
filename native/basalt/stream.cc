@@ -57,6 +57,7 @@ int main(int argc,char** argv) {
     std::mutex ping_mutex;
     struct PendingPing {double range;bool owner_received=false;Json candidate=nullptr;bool fused=false;};
     std::map<int64_t,PendingPing> image_pings;
+    std::map<int64_t,Json> initialization_windows;
     std::mutex snapshot_mutex;
     std::shared_ptr<const Snapshot> snapshot;
     const fs::path export_file=fs::absolute(argv[1]).parent_path()/"worker-map.ply";
@@ -92,6 +93,21 @@ int main(int argc,char** argv) {
     }
     owner->posim_after_joint=[&](auto& estimator,int64_t stamp) {
       std::lock_guard<std::mutex> lock(ping_mutex);
+      // Copy on the estimator thread before marginalization. Output threads
+      // never inspect mutable optimizer state. This remains diagnostic only.
+      const auto& window=static_cast<basalt::BundleAdjustmentBase<double>&>(estimator).frame_states;
+      if(window.size()>128 || (!window.empty() && stamp-window.begin()->first>30'000'000'000LL))
+        fail("visual_initialization_window_exhausted");
+      if(!window.empty()) {
+        const auto& oldest=window.begin()->second.getState();
+        auto q=oldest.T_w_i.unit_quaternion();
+        initialization_windows[stamp]={{"oldest_stamp_ns",oldest.t_ns},
+          {"states",window.size()},{"position",vector3(oldest.T_w_i.translation())},
+          {"orientation_xyzw",{q.x(),q.y(),q.z(),q.w()}},
+          {"velocity",vector3(oldest.vel_w_i)},
+          {"gyro_bias",vector3(oldest.bias_gyro)},{"accel_bias",vector3(oldest.bias_accel)}};
+        if(initialization_windows.size()>16)fail("initialization_diagnostic_backlog");
+      }
       auto found=image_pings.find(stamp);
       if(found!=image_pings.end() && estimator.posim_ping_factors)
         found->second.fused=estimator.posim_ping_factors->lastObservation()==stamp && estimator.posim_joint_last_accepted>0;
@@ -154,8 +170,11 @@ int main(int argc,char** argv) {
         if(!s)fail("estimator_finished");
         if(!s->T_w_i.matrix().allFinite() || !s->vel_w_i.allFinite() ||
            !s->bias_gyro.allFinite() || !s->bias_accel.allFinite())fail("invalid_estimate");
-        Json ping=nullptr,candidate=nullptr;bool owner_received=false,fused=false;
+        Json ping=nullptr,candidate=nullptr,initialization=nullptr;bool owner_received=false,fused=false;
         {std::lock_guard<std::mutex> lock(ping_mutex);
+         auto diagnostic=initialization_windows.find(s->t_ns);
+         if(diagnostic!=initialization_windows.end())initialization=diagnostic->second;
+         initialization_windows.erase(initialization_windows.begin(),initialization_windows.upper_bound(s->t_ns));
          auto found=image_pings.find(s->t_ns);
          if(found!=image_pings.end()) {ping={{"stamp_ns",found->first},{"range_m",found->second.range}};owner_received=found->second.owner_received;candidate=found->second.candidate;fused=found->second.fused;}
          image_pings.erase(image_pings.begin(),image_pings.upper_bound(s->t_ns));}
@@ -163,7 +182,7 @@ int main(int argc,char** argv) {
         emit({{"type","state"},{"stamp_ns",s->t_ns},
               {"position",vector3(s->T_w_i.translation())},
               {"orientation_xyzw",{q.x(),q.y(),q.z(),q.w()}},
-              {"velocity",vector3(s->vel_w_i)},
+              {"velocity",vector3(s->vel_w_i)},{"initialization_window",initialization},
               {"gyro_bias",vector3(s->bias_gyro)},
               {"accel_bias",vector3(s->bias_accel)},{"ping_observation",ping},{"ping_owner_received",owner_received},{"ping_candidate",candidate},{"ping_fused",fused}});
       }
