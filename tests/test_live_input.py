@@ -24,6 +24,16 @@ class LiveInputTests(unittest.TestCase):
         self.assertEqual(kind,7);self.assertEqual(size,len(packet)-8)
         self.assertEqual(packet[8:],encode_snapshot(100,tracks))
 
+    def test_auxiliary_sonar_capability_and_timestamp(self):
+        c=self.client()
+        with self.assertRaisesRegex(ValueError,'unsupported'):c.sonar_tick(100)
+        c.sonar_auxiliary_transport=True
+        for bad in (0,-1,True,2**63,1.5):
+            with self.assertRaisesRegex(ValueError,'invalid_sonar_auxiliary_stamp'):c.sonar_tick(bad)
+        self.assertEqual(c.pending_bytes,0)
+        c.sonar_tick(110000000)
+        self.assertEqual(c.input.get_nowait(),struct.pack('<IIq',8,8,110000000))
+
     def test_dead_worker_cleanup_closes_both_pipes_even_with_buffered_input(self):
         class BrokenInput(io.BytesIO):
             def close(self):

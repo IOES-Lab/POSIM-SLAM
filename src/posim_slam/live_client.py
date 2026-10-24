@@ -31,7 +31,7 @@ class LiveClient:
         self.budget_lock=threading.Lock();self.pending_bytes=0
         self.closed=threading.Event()
         self.ready=threading.Event()
-        self.ping_transport=False;self.gravity_seed_transport=False;self.sonar_transport=False
+        self.ping_transport=False;self.gravity_seed_transport=False;self.sonar_transport=False;self.sonar_auxiliary_transport=False
         self.process=subprocess.Popen([str(Path(binary).resolve()),str(Path(calibration).resolve())],
             stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=log,bufsize=65536)
         self.writer=threading.Thread(target=self._write,daemon=True)
@@ -73,6 +73,7 @@ class LiveClient:
                         not self.gravity_seed_transport or value.get('gravity_seed_required') is not True):
                         raise ValueError('worker_gravity_seed_unsupported')
                     self.ping_transport=value.get("image_ping_transport")=="exact_stamp_range_v1"
+                    self.sonar_auxiliary_transport=value.get("sonar_auxiliary_transport")=="ordered_imu_state_v1"
                     self.sonar_transport=value.get("sonar_snapshot_transport")=="exact_image_track_snapshot_v1"
                 elif not self.ready.is_set():
                     raise ValueError('worker_output_before_ready')
@@ -140,6 +141,17 @@ class LiveClient:
             raise ValueError('worker_sonar_snapshot_unsupported')
         from .sonar_packet import encode_snapshot
         self.send(7,encode_snapshot(stamp_ns,tracks))
+
+    def sonar_tick(self,stamp_ns):
+        """Advance at the original sonar time, after its optional snapshot.
+
+        At most one auxiliary state between consecutive camera frames.
+        """
+        if not getattr(self,'sonar_auxiliary_transport',False):
+            raise ValueError('worker_sonar_auxiliary_unsupported')
+        if type(stamp_ns) is not int or not 0<stamp_ns<2**63:
+            raise ValueError('invalid_sonar_auxiliary_stamp')
+        self.send(8,struct.pack('<q',stamp_ns))
 
     def gravity_seed(self,stamp_ns,direction):
         values=list(direction)

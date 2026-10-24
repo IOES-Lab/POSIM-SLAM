@@ -938,10 +938,30 @@ marginalization path even before the first acoustic track is ready.
 
 `basalt_synthetic_probe OUTPUT.csv 5 sonar-async` exercises 61 camera states and
 60 acoustic states offset by 10 ms. It retains six recent states to cover the same
-three-camera interval. The binary stream still requires exact image snapshots;
-ordered transport of auxiliary events is not connected yet.
+three-camera interval. Enable `enable_auxiliary_sonar: true` alongside `enable_joint_sonar` to accept
+ordered auxiliary events in the binary stream. This doubles the recent-state
+capacity and permits one auxiliary event between consecutive camera frames.
 
 위 검사는 카메라 상태 61개와 10ms 늦은 음향 상태 60개를 생성합니다. 카메라
-3프레임에 해당하는 구간을 유지하도록 최근 상태 6개를 보관합니다. 바이너리
-스트림은 아직 영상과 시각이 같은 스냅샷만 받으며, 보조 이벤트의 순서 보장 전송은
-연결되지 않았습니다.
+3프레임에 해당하는 구간을 유지하도록 최근 상태 6개를 보관합니다. `enable_joint_sonar`와 함께 `enable_auxiliary_sonar: true`를 설정하면
+바이너리 스트림에서 보조 이벤트를 입력 순서대로 처리합니다. 최근 상태 용량은
+두 배가 되며, 연속 카메라 프레임 사이에 보조 이벤트 하나를 허용합니다.
+
+
+Wait for ready capability `sonar_auxiliary_transport: ordered_imu_state_v1`.
+Send raw IMU data covering the observation time, then an optional track snapshot
+at that time, followed by `LiveClient.sonar_tick(stamp_ns)` (packet 8, int64
+nanoseconds). Send ticks even while gathering the first three track observations.
+The first event must be a camera image. All camera and auxiliary events must
+increase in timestamp; an auxiliary event must fall within 500 ms of its preceding
+image. A bounded dispatcher waits for each camera's optical-flow result before
+forwarding the next event. Auxiliary events do not age the visual map archive.
+
+준비 응답에서 위 보조 전송 지원 문자열을 확인합니다. 관측 시각을 포함하는 원본
+IMU, 해당 시각의 트랙 스냅샷(있을 때), `LiveClient.sonar_tick(stamp_ns)` 순서로
+보냅니다. tick은 종류 8 패킷에 int64 나노초 시각을 담습니다. 트랙의 첫 관측
+3개를 모으는 동안에도 tick을 보냅니다. 첫 이벤트는 카메라 영상이어야 하며,
+이후 영상·보조 이벤트의 시각은 증가해야 합니다. 보조 이벤트는 직전 영상으로부터
+500ms 이내여야 합니다. 크기를 제한한 전달 큐가 각 영상의 특징 추적 결과를
+기다린 뒤 다음 이벤트를 전달합니다. 보조 이벤트는 시각 지도 보관 이력을
+진행시키지 않습니다.
