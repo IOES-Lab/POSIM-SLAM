@@ -101,6 +101,30 @@ surfaces and untextured obstacle coverage remain unqualified.
 않습니다. 희소 표적 점은 개선됐지만 완전한 표면과 무늬 없는 장애물의
 관측 범위는 아직 검증되지 않았습니다.
 
+
+[![Managed camera, IMU and Ping comparison](images/camera-imu-ping-managed-isometric.png)](images/camera-imu-ping-managed-isometric.png)
+
+The managed-provider example uses Basalt `0f3b2b52c807f70ff4e2973ce253c73329eea7bc`,
+a downward camera with a 100 m far clip, raw IMU and single Ping. It retains
+2,791 points (2,358 in view); trajectory RMSE over 59.9 seconds is 0.095 m.
+The Orca5 textured targets, underwater lighting, suspended particles and waves
+appear in the actual RGB reference. Both panels use the same isometric viewing
+direction and perspective; evaluation aligns initial yaw and translation with
+scale fixed at one. Recovery and export pass, but the sparse cloud does not
+recover complete box surfaces. This native session is not installed-GUI acceptance.
+
+
+[![관리형 카메라·IMU·Ping 점군과 RGB 비교](images/camera-imu-ping-managed-isometric.png)](images/camera-imu-ping-managed-isometric.png)
+
+관리형 공급자 예시는 Basalt `0f3b2b52c807f70ff4e2973ce253c73329eea7bc`,
+원거리 클리핑 100 m인 하향 카메라, 원본 IMU와 단일 Ping을 사용합니다.
+2,791점 중 2,358점이 시야 안에 있고, 59.9초 경로 RMSE는 0.095 m입니다.
+실제 RGB에는 Orca5 질감 표적과 수중 조명·부유 입자·파도 효과가 적용됩니다.
+두 영상은 같은 등각 방향과 원근 투영을 사용하며, 평가는 초기 방위각과
+이동만 정렬하고 축척을 1로 유지합니다. 복구·내보내기는 통과했지만 점군은
+완전한 상자 표면을 복원하지 못합니다. 이 네이티브 세션 결과는 설치형 GUI의
+검증 완료를 의미하지 않습니다.
+
 ## Protocol / 규약
 
 Each completed sensor combination requires a paired figure: its generated SLAM
