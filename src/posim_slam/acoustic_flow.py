@@ -70,7 +70,17 @@ def fit(source, target):
     return rotation, b - rotation @ a
 
 
-def correspondences(previous, current, variant='raw'):
+def corner_pixels(frame,variant='raw'):
+    return _corner_pixels(image(frame,variant),frame['ranges'])
+
+
+def _corner_pixels(a,ranges):
+    mask=np.uint8(ranges[:,None]>.4)*np.ones_like(a)
+    pixels=cv2.goodFeaturesToTrack(a,300,.04,5,mask=mask,blockSize=7)
+    return np.empty((0,2),dtype=np.float32) if pixels is None else pixels.reshape(-1,2)
+
+
+def correspondences(previous, current, variant='raw', *, seed_pixels=None):
     """Return bounded two-frame intensity tracks before any planar fit.
 
     Range/azimuth observations retain unresolved elevation. A forward/backward
@@ -86,12 +96,15 @@ def correspondences(previous, current, variant='raw'):
         raise ValueError('acoustic_pair_calibration_changed')
     result=dict(previous_stamp_ns=stamps[0],current_stamp_ns=stamps[1],corners=0,matched=0,
                 previous_pixels=[],current_pixels=[],previous_range_azimuth=[],current_range_azimuth=[],
-                forward_backward_error_pixels=[])
+                forward_backward_error_pixels=[],previous_indices=[])
     a, b = image(previous, variant), image(current, variant)
-    mask = np.uint8(previous['ranges'][:, None] > .4) * np.ones_like(a)
-    pixels = cv2.goodFeaturesToTrack(a, 300, .04, 5, mask=mask, blockSize=7)
-    if pixels is None:
+    seeds=_corner_pixels(a,previous['ranges']) if seed_pixels is None else np.asarray(seed_pixels,dtype=np.float32)
+    if seeds.ndim!=2 or seeds.shape[1]!=2 or len(seeds)>300:
+        raise ValueError('invalid_acoustic_seeds')
+    if seed_pixels is not None:polar_observations(seeds,previous)
+    if not len(seeds):
         return dict(result,reason='no_acoustic_corners')
+    pixels=np.ascontiguousarray(seeds.reshape(-1,1,2))
     result['corners']=len(pixels)
     moved, forward, _ = cv2.calcOpticalFlowPyrLK(a, b, pixels, None, winSize=(21, 21), maxLevel=2)
     if moved is None or forward is None:
@@ -105,7 +118,7 @@ def correspondences(previous, current, variant='raw'):
     good = (forward.ravel().astype(bool) & backward.ravel().astype(bool)
             & inside(pixels) & inside(moved) & inside(back)
             & (np.linalg.norm(back - pixels, axis=2).ravel() < .5))
-    return dict(result,matched=int(good.sum()),
+    return dict(result,matched=int(good.sum()),previous_indices=np.flatnonzero(good).tolist(),
         previous_pixels=pixels[good].reshape(-1,2).tolist(),current_pixels=moved[good].reshape(-1,2).tolist(),
         previous_range_azimuth=polar_observations(pixels[good],previous).tolist(),
         current_range_azimuth=polar_observations(moved[good],current).tolist(),

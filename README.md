@@ -28,6 +28,13 @@ Ping scale support requires every ray intersection inside the observed plane hul
 
 ## Install and use
 
+`acoustic_tracks.AcousticTracks` retains up to 300 intensity-flow chains across
+frames. Surviving pixels seed the next flow pass; fresh corners receive fresh
+segment-local IDs. Time gaps, invalid calibration and complete loss break the
+segment. Colliding one-pixel footprints are rejected. This bounded frontend
+retains unresolved elevation and does not prove physical scatterer identity;
+it is not yet connected to the live joint optimizer.
+
 `acoustic_flow.correspondences` exposes at most 300 two-frame intensity track
 candidates with integer nanosecond timestamps, paired pixels, calibrated
 range/azimuth and forward/backward pixel error. It runs before planar consensus
