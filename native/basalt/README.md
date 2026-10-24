@@ -1000,3 +1000,28 @@ fixture inputs; this check covers state retention and factor lifecycle.
 위 명령은 카메라 10Hz와 10ms 늦은 소나 2Hz 조건의 합성 검사입니다.
 보관 개수 `6`으로 실행하면 초기 관측 만료로 실패하도록 검사합니다. 대응점과
 측정 잡음은 검사 입력이며, 상태 보관과 관측 요인의 등록·제거를 확인합니다.
+
+
+`posim_slam.sonar_snapshots.SonarSnapshots` manages snapshots for one estimator
+segment. Feed ordered native state responses to `observe`, then call `prepare`
+with associated track histories and their full covariance. Source IDs must remain
+stable within the segment. The manager prunes expired candidate observations and
+selects the corresponding covariance rows and columns, preserving correlations.
+Existing native history is immutable. Retired tracks receive fresh native IDs
+when they have enough retained observations to seed again. Wait for the snapshot
+acknowledgement before preparing another one. Create a new manager when the
+estimator or source-track segment resets.
+
+`SonarSnapshots`는 추정기 구간 하나의 스냅샷을 관리합니다. 네이티브 상태 응답을
+순서대로 `observe`에 전달한 뒤, 대응 관계가 정해진 관측 이력과 전체 공분산을
+`prepare`에 전달합니다. 원본 트랙 ID는 구간 안에서 유지해야 합니다. 만료된
+후보 관측을 제외할 때 공분산의 해당 행·열을 선택해 상관관계를 보존합니다.
+등록된 이력은 변경할 수 없습니다. 제거된 트랙은 보관 관측이 충분해지면 새
+네이티브 ID로 등록합니다. 수신 확인 후 다음 스냅샷을 준비하며, 추정기나 원본
+트랙 구간을 초기화할 때 관리 객체도 새로 만듭니다.
+
+This manager requires supplied associations and uncertainty. It does not turn
+raw intensity tracks into calibrated acoustic measurements.
+
+이 관리 객체에는 대응 관계와 측정 불확실성을 별도로 제공해야 합니다. 원시
+강도 영상의 트랙을 보정된 음향 관측으로 바꾸는 기능은 포함하지 않습니다.
