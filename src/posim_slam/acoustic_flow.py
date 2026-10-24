@@ -44,7 +44,7 @@ def image(frame, variant):
     return np.uint8(np.clip(power, 0, 255))
 
 
-def fan_points(pixels, frame):
+def polar_observations(pixels, frame):
     pixels = pixels.reshape(-1, 2)
     height, width = frame['intensity_db'].shape
     if not np.isfinite(pixels).all() or np.any(pixels < 0) or np.any(pixels >= [width - 1, height - 1]):
@@ -52,7 +52,12 @@ def fan_points(pixels, frame):
     ranges = np.interp(pixels[:, 1], np.arange(height), frame['ranges'])
     angles = np.interp(pixels[:, 0], np.arange(width),
                        np.arctan2(frame['beam_directions'][:, 1], frame['beam_directions'][:, 0]))
-    return np.column_stack((ranges * np.cos(angles), ranges * np.sin(angles)))
+    return np.column_stack((ranges, angles))
+
+
+def fan_points(pixels, frame):
+    polar=polar_observations(pixels,frame)
+    return np.column_stack((polar[:,0]*np.cos(polar[:,1]),polar[:,0]*np.sin(polar[:,1])))
 
 
 def fit(source, target):
@@ -65,27 +70,56 @@ def fit(source, target):
     return rotation, b - rotation @ a
 
 
-def estimate(previous, current, variant):
-    """Fit current-to-previous planar motion using acoustic frames alone."""
+def correspondences(previous, current, variant='raw'):
+    """Return bounded two-frame intensity tracks before any planar fit.
+
+    Range/azimuth observations retain unresolved elevation. A forward/backward
+    pixel test is only an association candidate gate, not calibrated covariance
+    or proof of a persistent physical scatterer. Indices belong to this pair;
+    they are not persistent landmark IDs across subsequent calls.
+    """
+    validate_frame(previous);validate_frame(current)
+    stamps=[int(f['stamp'][0])*1_000_000_000+int(f['stamp'][1]) for f in (previous,current)]
+    if stamps[1]<=stamps[0]:raise ValueError('nonincreasing_acoustic_pair')
+    if (not np.array_equal(previous['ranges'],current['ranges']) or
+            not np.array_equal(previous['beam_directions'],current['beam_directions'])):
+        raise ValueError('acoustic_pair_calibration_changed')
+    result=dict(previous_stamp_ns=stamps[0],current_stamp_ns=stamps[1],corners=0,matched=0,
+                previous_pixels=[],current_pixels=[],previous_range_azimuth=[],current_range_azimuth=[],
+                forward_backward_error_pixels=[])
     a, b = image(previous, variant), image(current, variant)
     mask = np.uint8(previous['ranges'][:, None] > .4) * np.ones_like(a)
     pixels = cv2.goodFeaturesToTrack(a, 300, .04, 5, mask=mask, blockSize=7)
     if pixels is None:
-        return {'fitted': False, 'reason': 'no_acoustic_corners'}
+        return dict(result,reason='no_acoustic_corners')
+    result['corners']=len(pixels)
     moved, forward, _ = cv2.calcOpticalFlowPyrLK(a, b, pixels, None, winSize=(21, 21), maxLevel=2)
     if moved is None or forward is None:
-        return {'fitted': False, 'reason': 'optical_flow_unavailable'}
+        return dict(result,reason='optical_flow_unavailable')
     back, backward, _ = cv2.calcOpticalFlowPyrLK(b, a, moved, None, winSize=(21, 21), maxLevel=2)
     if back is None or backward is None:
-        return {'fitted': False, 'reason': 'reverse_flow_unavailable'}
+        return dict(result,reason='reverse_flow_unavailable')
     height, width = a.shape
     inside = lambda p: (np.isfinite(p).all(axis=(1, 2)) & (p >= 0).all(axis=(1, 2))
                         & (p < [width - 1, height - 1]).all(axis=(1, 2)))
     good = (forward.ravel().astype(bool) & backward.ravel().astype(bool)
             & inside(pixels) & inside(moved) & inside(back)
             & (np.linalg.norm(back - pixels, axis=2).ravel() < .5))
-    target, source = fan_points(pixels[good], previous), fan_points(moved[good], current)
-    result = {'fitted': False, 'corners': len(pixels), 'matched': len(source)}
+    return dict(result,matched=int(good.sum()),
+        previous_pixels=pixels[good].reshape(-1,2).tolist(),current_pixels=moved[good].reshape(-1,2).tolist(),
+        previous_range_azimuth=polar_observations(pixels[good],previous).tolist(),
+        current_range_azimuth=polar_observations(moved[good],current).tolist(),
+        forward_backward_error_pixels=np.linalg.norm(back-pixels,axis=2).ravel()[good].tolist())
+
+
+def estimate(previous, current, variant, *, include_correspondences=False):
+    """Fit current-to-previous planar motion using acoustic frames alone."""
+    tracks=correspondences(previous,current,variant)
+    result=dict(fitted=False,corners=tracks['corners'],matched=tracks['matched'])
+    if include_correspondences:result['correspondences']=tracks
+    if tracks.get('reason'):return dict(result,reason=tracks['reason'])
+    target=fan_points(np.asarray(tracks['previous_pixels']),previous)
+    source=fan_points(np.asarray(tracks['current_pixels']),current)
     if len(source) < 10:
         return dict(result, reason='insufficient_acoustic_tracks')
     rng, best = np.random.default_rng(0), np.zeros(len(source), dtype=bool)

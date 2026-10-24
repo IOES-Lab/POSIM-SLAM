@@ -28,6 +28,14 @@ Ping scale support requires every ray intersection inside the observed plane hul
 
 ## Install and use
 
+`acoustic_flow.correspondences` exposes at most 300 two-frame intensity track
+candidates with integer nanosecond timestamps, paired pixels, calibrated
+range/azimuth and forward/backward pixel error. It runs before planar consensus
+and can retain candidates when the planar fit fails. Pair indices are not global
+landmark IDs; pixel consistency does not establish a persistent point scatterer
+or calibrated covariance. `estimate(..., include_correspondences=True)` includes
+the candidate payload explicitly; default streaming status stays compact.
+
 `sonar_factor.point_return_factor` supplies range/azimuth residuals and analytic
 pose/landmark Jacobians for an associated 3D point return. It uses calibrated
 IMU-to-sonar mounts and checks the sensor's range and field of view. Its two
