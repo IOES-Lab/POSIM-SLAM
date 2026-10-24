@@ -228,3 +228,13 @@ in the initial local position/yaw gauge, without trajectory or scale fitting.
 
 Pressure observations must use the initialized local vertical reference; an
 absolute sea-level height cannot be mixed with a zero local origin.
+
+## Multi-sample gravity seed
+
+`posim_slam.gravity_seed.gravity_seed` averages calibrated specific force over a
+covered 0.2–3 second `ImuWindow`. Midpoint gyro integration transports every
+sample into the final IMU frame before trapezoidal averaging. Supply explicit
+gyro and accelerometer bias estimates. The returned direction is a numerical
+seed, not a velocity, bias or observability estimate. Constant translational
+acceleration can bias it even with noise-free measurements. The native Basalt
+worker does not yet consume this optional utility.
