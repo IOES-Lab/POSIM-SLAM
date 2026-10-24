@@ -8,6 +8,7 @@ from pathlib import Path
 import sys
 
 HASHES={
+    'vi_estimator/sqrt_keypoint_vio.h':'1c98d1cb3efeab33d6df6371f4294880678ae854c18a8cd496abf0d0e14522b3',
     'linearization/landmark_block.hpp':'491cbd5cb633f13923b8c440364e2b72db1ea8abf5b88c604a348367fa57115e',
     'linearization/landmark_block_abs_dynamic.hpp':'5ed3a2082aa09ad41c22dd7ce36e4e904329b3d9ed446c84b106e57dc88e8927',
     'vi_estimator/ba_base.h':'4cab57e494fdb04d8a6c72bfc0e2046d5cfc11a2a02895cbaafbafd16a37add2',
@@ -54,7 +55,12 @@ def prepare(source,destination):
         raw=(Path(source)/'include/basalt'/name).read_bytes()
         if hashlib.sha256(raw).hexdigest()!=checksum:raise ValueError('pinned_basalt_joint_header_changed:'+name)
         text=raw.decode()
-        if name.endswith('/ba_base.h'):
+        if name.endswith('/sqrt_keypoint_vio.h'):
+            text=replace_once(text,'#pragma once','#pragma once\n#include <functional>')
+            text=replace_once(text,'  using Scalar = Scalar_;','''  using Scalar = Scalar_;
+  // Configured before input is submitted; called only by the estimator thread.
+  std::function<void(SqrtKeypointVioEstimator&, int64_t)> posim_before_optimization;''')
+        elif name.endswith('/ba_base.h'):
             text=replace_once(text,'#pragma once','#pragma once\n#include "ping_state.hpp"')
             text=replace_once(text,'  inline void backup() {','''  posim_slam::PingPlaneStore posim_ping_planes;
   bool posim_ping_trial_active = false;
@@ -80,6 +86,16 @@ def prepare(source,destination):
         target.parent.mkdir(parents=True,exist_ok=True)
         rendered='// Build-local POSIM joint-landmark interface; see prepare_joint_headers.py.\n'+text
         if not target.exists() or target.read_text()!=rendered:target.write_text(rendered)
+
+
+    raw=(Path(source)/'src/vi_estimator/sqrt_keypoint_vio.cpp').read_bytes()
+    if hashlib.sha256(raw).hexdigest()!='141dc9747dfb60e19e8ab93eab3b5600a6bb95fc249afdd5e15f4d844276c5c9':
+        raise ValueError('pinned_basalt_owner_source_changed')
+    text=replace_once(raw.decode(),'  optimize_and_marg(num_points_connected, lost_landmaks);',
+        '  if (posim_before_optimization) posim_before_optimization(*this, opt_flow_meas->t_ns);\n'
+        '  optimize_and_marg(num_points_connected, lost_landmaks);')
+    target=Path(destination)/'sqrt_keypoint_vio.cpp'
+    if not target.exists() or target.read_text()!=text:target.write_text(text)
 
 
 if __name__=='__main__':prepare(sys.argv[1],sys.argv[2])

@@ -23,7 +23,9 @@ set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS
  ${CMAKE_CURRENT_SOURCE_DIR}/prepare_joint_headers.py
  ${B}/include/basalt/linearization/landmark_block.hpp
  ${B}/include/basalt/linearization/landmark_block_abs_dynamic.hpp
- ${B}/include/basalt/vi_estimator/ba_base.h)
+ ${B}/include/basalt/vi_estimator/ba_base.h
+ ${B}/include/basalt/vi_estimator/sqrt_keypoint_vio.h
+ ${B}/src/vi_estimator/sqrt_keypoint_vio.cpp)
 execute_process(COMMAND ${Python3_EXECUTABLE}
  ${CMAKE_CURRENT_SOURCE_DIR}/prepare_joint_headers.py ${B} ${JOINT_HEADERS}
  RESULT_VARIABLE JOINT_HEADERS_STATUS)
@@ -63,7 +65,7 @@ add_library(basalt_core STATIC
  ${B}/src/vi_estimator/marg_helper.cpp
  ${B}/src/vi_estimator/sc_ba_base.cpp
  ${B}/src/vi_estimator/sqrt_ba_base.cpp
- ${B}/src/vi_estimator/sqrt_keypoint_vio.cpp
+ ${JOINT_HEADERS}/sqrt_keypoint_vio.cpp
  ${B}/src/vi_estimator/sqrt_keypoint_vo.cpp
  ${B}/src/vi_estimator/vio_estimator.cpp)
 target_include_directories(basalt_core PUBLIC
