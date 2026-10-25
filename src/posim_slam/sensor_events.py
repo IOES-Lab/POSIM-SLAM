@@ -8,16 +8,23 @@ or reused. The caller separately enforces wall-clock liveness and IMU coverage.
 
 
 class SensorEvents:
-    def __init__(self, *, capacity=16, state_clock='camera'):
+    def __init__(self, *, capacity=16, state_clock='camera', dvl=False):
         if type(capacity) is not int or not 2 <= capacity <= 256:
             raise ValueError('sensor_events_capacity')
         self.capacity = capacity
         if state_clock not in ('camera', 'sonar'):
             raise ValueError('sensor_events_state_clock')
         self.state_clock = state_clock
+        if type(dvl) is not bool:
+            raise ValueError('sensor_events_dvl_selection')
+        self.dvl_enabled = dvl
         self.streams = ('sonar',) if state_clock == 'sonar' else ('camera', 'sonar')
+        if dvl:
+            self.streams += ('dvl',)
         self.pending = {'camera': {}, 'sonar': {}}
-        self.latest = {'camera': 0, 'sonar': 0, 'imu': 0}
+        if dvl:
+            self.pending['dvl'] = {}
+        self.latest = {**dict.fromkeys(self.pending, 0), 'imu': 0}
         self.closed = set()
         self.awaiting = None
         self.last = 0
@@ -41,10 +48,12 @@ class SensorEvents:
         raise ValueError(reason)
 
     def push(self, kind, stamp_ns, payload=None):
-        """Supply one camera/Ping payload, raw sonar payload, or IMU clock.
+        """Supply one selected sensor payload or IMU clock.
 
         IMU samples stay in the caller's bounded integration buffer. Payloads
         must be validated, size-bounded and immutable while queued by callers.
+        A DVL loss-status payload advances its stream clock but must not be
+        submitted as a native velocity factor. Silence is not a loss status.
         """
         self._healthy()
         if kind not in (*self.streams, 'imu') or kind in self.closed:
@@ -77,6 +86,8 @@ class SensorEvents:
         and omitted, never shifted onto a camera timestamp.
         Sonar clock requires only sonar and future IMU; no camera heartbeat or
         auxiliary decimation is applied. Clock selection is fixed per segment.
+        Selecting DVL adds its watermark and exact-time payload, and disables
+        auxiliary decimation. The native DVL state-clock capability is required.
         """
         self._healthy()
         if self.awaiting is not None:
@@ -89,16 +100,19 @@ class SensorEvents:
                 return None
             camera = self.pending['camera'].pop(stamp, None)
             sonar = self.pending['sonar'].pop(stamp, None)
+            dvl = self.pending['dvl'].pop(stamp, None) if self.dvl_enabled else None
             if camera is None and self.state_clock == 'camera':
                 if not self.started:
                     self.before_camera += 1
                     continue
-                if self.auxiliary_used:
+                if self.auxiliary_used and not self.dvl_enabled:
                     self.auxiliary_skipped += 1
                     continue
             if stamp <= self.last:
                 self._fail('sensor_events_output_clock')
             self.awaiting = dict(stamp_ns=stamp, camera=camera, sonar=sonar)
+            if self.dvl_enabled:
+                self.awaiting['dvl'] = dvl
             return dict(self.awaiting)
         return None
 

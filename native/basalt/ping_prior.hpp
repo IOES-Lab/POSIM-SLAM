@@ -3,6 +3,7 @@
 #include "ping_linearization.hpp"
 #include "ping_marginal.hpp"
 #include "sonar_factors.hpp"
+#include "dvl_factors.hpp"
 #include <memory>
 #include <basalt/imu/preintegration.h>
 
@@ -10,6 +11,7 @@ namespace posim_slam {
 struct PreparedPingPrior {
   PingRetirementPlan retirement;
   std::optional<SonarFactorStore::Retirement> acoustic;
+  std::optional<DvlFactorStore::Retirement> dvl;
   PingMarginalLayout layout;
   basalt::MargLinData<double> prior;
 };
@@ -21,7 +23,7 @@ inline PreparedPingPrior preparePingPrior(basalt::BundleAdjustmentBase<double>& 
     const basalt::AbsOrderMap& group_order,const std::vector<JointPingGroupSpec>& groups,
     const basalt::MargLinData<double>& previous,const basalt::ImuLinData<double>& imu,
     const std::set<int64_t>& removed,const std::set<int64_t>& pose_only,
-    const std::unordered_set<basalt::KeypointId>& lost,SonarFactorStore* sonar=nullptr) {
+    const std::unordered_set<basalt::KeypointId>& lost,SonarFactorStore* sonar=nullptr,DvlFactorStore* dvl=nullptr) {
   PreparedPingPrior result;
   result.retirement=planPingRetirement(owner,groups,removed,removed,lost);
   std::vector<std::pair<int64_t,int64_t>> intervals;
@@ -62,6 +64,13 @@ inline PreparedPingPrior preparePingPrior(basalt::BundleAdjustmentBase<double>& 
   if(!valid)throw std::runtime_error("invalid_ping_prior_linearization");
   rows->performQR();Eigen::MatrixXd j;Eigen::VectorXd r;
   rows->get_dense_Q2Jp_Q2r(j,r);
+  if(dvl) {
+    result.dvl=dvl->planRetirement(removed,pose_only);
+    const auto velocity=dvl->linearize(owner,result.layout.source,&result.dvl->stamps);
+    const auto start=j.rows(),count=velocity.residual.size();
+    j.conservativeResize(start+count,Eigen::NoChange);r.conservativeResize(start+count);
+    j.bottomRows(count)=velocity.jacobian;r.tail(count)=velocity.residual;
+  }
   if(result.acoustic && !result.acoustic->ids.empty()) {
     SonarPoses poses,references;
     for(const auto& [stamp,block]:result.layout.source.abs_order_map) {

@@ -111,6 +111,9 @@ inline basalt::VioConfig processing_config(const InputCalibration& c) {
   config.vio_max_states=c.max_recent_states;
   config.vio_max_kfs=posim_slam::kMaxKeyframes;
   if(c.feature_grid)config.optical_flow_detection_grid_size=c.feature_grid;
+  else if(c.processed_width>0 && c.processed_height>0)
+    config.optical_flow_detection_grid_size=std::min(config.optical_flow_detection_grid_size,
+        std::min(c.processed_width,c.processed_height)/2);
   return config;
 }
 

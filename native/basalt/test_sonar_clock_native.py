@@ -18,14 +18,16 @@ from posim_slam.live_client import LiveClient
 
 @unittest.skipUnless(os.environ.get('POSIM_SLAM_STREAM_BINARY'), 'Native worker binary required')
 class SonarClockTests(unittest.TestCase):
-    def worker(self, root):
+    def worker(self, root, **settings):
         config = root / 'calibration.json'
-        config.write_text(json.dumps(dict(
+        values = dict(
             schema='posim-slam-sonar-inertial-recording-1', state_clock='sonar',
             orientation_used=False, enable_joint_sonar=True, require_gravity_seed=True,
             max_recent_states=16, max_sonar_gap_s=.5, imu_rate_hz=100, gyro_noise_density=.001,
             accel_noise_density=.02, gyro_bias_random_walk=.0001,
-            accel_bias_random_walk=.001, gravity_m_s2=9.80665, max_imu_gap_s=.02)))
+            accel_bias_random_walk=.001, gravity_m_s2=9.80665, max_imu_gap_s=.02)
+        values.update(settings)
+        config.write_text(json.dumps(values))
         (root / 'sonar-calibration.json').write_text(json.dumps(dict(
             schema='posim-slam-sonar-calibration-1', imu_to_sonar=[0, 0, 0],
             sonar_to_imu=np.eye(3).tolist(), range_min=.2, range_max=10.,
@@ -51,7 +53,7 @@ class SonarClockTests(unittest.TestCase):
             time.sleep(.002)
         self.fail('worker reply timeout: ' + kind)
 
-    def test_acoustic_states_marginalize_without_any_camera(self):
+    def test_acoustic_states_marginalize_without_any_camera(self, with_dvl=False):
         with tempfile.TemporaryDirectory() as folder:
             client = self.worker(Path(folder))
             initial = 1_000_000_000
@@ -94,11 +96,16 @@ class SonarClockTests(unittest.TestCase):
                     submitted[k] = dict(id=ident, observations=history, covariance=noise)
                 if submitted:
                     client.sonar_snapshot(stamp, sorted(submitted.values(), key=lambda row: row['id']))
+                if with_dvl:
+                    client.dvl(stamp,[.024*t,.14*math.sin(.7*t),.135*math.sin(.9*t)],np.eye(3)*.0001,
+                               gyro=[0,0,0],gyro_stamp_ns=stamp,gyro_covariance=np.eye(3)*.000001,
+                               bottom_locked=True,locked_beams=4)
                 client.sonar_tick(stamp)
                 state = self.receive(client, 'state')
                 self.assertEqual(state['stamp_ns'], stamp)
                 self.assertEqual(state['state_clock'], 'sonar')
                 self.assertFalse(state['map_qualified'])
+                if with_dvl:self.assertTrue(state['dvl']['optimization_included'])
                 report = state['sonar']
                 retained = set(report['retained_pose_stamps_ns'])
                 live = set(report['active_track_ids'])
@@ -123,7 +130,7 @@ class SonarClockTests(unittest.TestCase):
             self.assertEqual(self.receive(client, 'export')['reason'], 'map_unavailable')
             self.assertEqual(client.close(), client.process.returncode)
             self.assertFalse(client.writer.is_alive() or client.reader.is_alive())
-            print(json.dumps(dict(camera_packets=0, states=len(states), acoustic_states=acoustic_states,
+            print(json.dumps(dict(camera_packets=0, dvl_enabled=with_dvl, states=len(states), acoustic_states=acoustic_states,
                                   max_retained_states=max_after_bootstrap, max_position_error_m=max(errors),
                                   scope='analytic sensor/ownership fixture; no image or terrain acceptance')))
 

@@ -32,7 +32,7 @@ class LiveClient:
         self.closed=threading.Event()
         self.ready=threading.Event()
         self.ping_transport=False;self.gravity_seed_transport=False;self.sonar_transport=False;self.sonar_auxiliary_transport=False
-        self.sonar_clock_transport=False
+        self.sonar_clock_transport=False;self.dvl_transport=False;self.sensor_state_transport=False
         self.process=subprocess.Popen([str(Path(binary).resolve()),str(Path(calibration).resolve())],
             stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=log,bufsize=65536)
         self.writer=threading.Thread(target=self._write,daemon=True)
@@ -81,6 +81,12 @@ class LiveClient:
                     self.ping_transport=value.get("image_ping_transport")=="exact_stamp_range_v1"
                     self.sonar_auxiliary_transport=value.get("sonar_auxiliary_transport")=="ordered_imu_state_v1"
                     self.sonar_transport=value.get("sonar_snapshot_transport")=="exact_image_track_snapshot_v1"
+                    self.dvl_transport=value.get('dvl_measurement_transport')=='body_velocity_gyro_covariance_v1'
+                    self.sensor_state_transport=value.get('sensor_state_transport')=='ordered_camera_auxiliary_states_v1'
+                    if self.processing_request.get('enable_joint_dvl',False) and not self.dvl_transport:
+                        raise ValueError('worker_dvl_unsupported')
+                    if self.processing_request.get('enable_joint_dvl',False) and not self.sensor_state_transport:
+                        raise ValueError('worker_dvl_state_clock_unsupported')
                 elif not self.ready.is_set():
                     raise ValueError('worker_output_before_ready')
                 # Never silently drop poses/maps while calling the segment live.
@@ -150,13 +156,25 @@ class LiveClient:
         from .sonar_packet import encode_snapshot
         self.send(7,encode_snapshot(stamp_ns,tracks))
 
+    def dvl(self,stamp_ns,velocity,covariance,*,gyro,gyro_stamp_ns,
+            gyro_covariance,bottom_locked,locked_beams):
+        """Submit before the exact state event; requires negotiated raw DVL support."""
+        if not getattr(self,'dvl_transport',False):raise ValueError('worker_dvl_unsupported')
+        from .dvl_packet import encode_dvl
+        self.send(9,encode_dvl(stamp_ns,velocity,covariance,gyro=gyro,
+            gyro_stamp_ns=gyro_stamp_ns,gyro_covariance=gyro_covariance,
+            bottom_locked=bottom_locked,locked_beams=locked_beams))
+
     def sonar_tick(self,stamp_ns):
         """Advance at the original sonar time, after its optional snapshot.
 
-        Camera clock allows one auxiliary state between consecutive images.
-        Explicit sonar clock permits camera-free startup and consecutive ticks.
+        Camera clock allows one auxiliary state between consecutive images;
+        negotiated DVL support permits consecutive auxiliary states too.
+        Explicit sonar clock permits camera-free startup and consecutive ticks,
+        including original DVL observation times when that transport is enabled.
         """
-        if not (getattr(self,'sonar_auxiliary_transport',False) or getattr(self,'sonar_clock_transport',False)):
+        if not (getattr(self,'sonar_auxiliary_transport',False) or getattr(self,'sonar_clock_transport',False)
+                or getattr(self,'sensor_state_transport',False)):
             raise ValueError('worker_sonar_auxiliary_unsupported')
         if type(stamp_ns) is not int or not 0<stamp_ns<2**63:
             raise ValueError('invalid_sonar_auxiliary_stamp')

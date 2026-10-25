@@ -8,6 +8,7 @@
 #include "ping_factors.hpp"
 #include "sonar_packet.hpp"
 #include "sonar_input.hpp"
+#include "dvl_input.hpp"
 #include <basalt/vi_estimator/sqrt_keypoint_vio.h>
 #include <tbb/global_control.h>
 #include <opencv2/core.hpp>
@@ -62,6 +63,8 @@ int main(int argc,char** argv) {
     std::map<int64_t,posim_slam::SonarSnapshot> image_sonar;
     std::map<int64_t,Json> sonar_reports;
     std::map<int64_t,Json> initialization_windows;
+    std::map<int64_t,posim_slam::DvlObservation> pending_dvl;
+    std::map<int64_t,Json> dvl_reports;
     std::mutex snapshot_mutex;
     std::shared_ptr<const Snapshot> snapshot;
     const fs::path export_file=fs::absolute(argv[1]).parent_path()/"worker-map.ply";
@@ -87,6 +90,12 @@ int main(int argc,char** argv) {
     if(fs::exists(ping_file))ping_calibration=posim_slam::pingInputCalibration(read_json(ping_file));
     auto owner=std::dynamic_pointer_cast<basalt::SqrtKeypointVioEstimator<double>>(vio);
     if(!owner)throw std::runtime_error("unsupported_ping_estimator_owner");
+    const bool dvl_enabled=input_settings.value("enable_joint_dvl",false);
+    std::optional<posim_slam::DvlCalibration> dvl_calibration;
+    if(dvl_enabled) {
+      dvl_calibration=posim_slam::dvlInputCalibration(read_json(fs::path(argv[1]).parent_path()/"dvl-calibration.json"));
+      owner->posim_dvl_factors=std::make_shared<posim_slam::DvlFactorStore>(*dvl_calibration);
+    }
     const bool record_visual_tracks=input_settings.value("record_visual_tracks",false);
     std::ofstream visual_trace;
     if(record_visual_tracks) {
@@ -145,6 +154,11 @@ int main(int argc,char** argv) {
         report["point_estimates"]=std::move(points);
         report["point_update_accepted"]=estimator.posim_joint_last_accepted>0;
       }
+      if(dvl_reports.count(stamp)) {
+        auto& report=dvl_reports.at(stamp);
+        report["optimization_included"]=estimator.posim_joint_started;
+        report["accepted_steps"]=estimator.posim_joint_last_accepted;
+      }
       auto found=image_pings.find(stamp);
       if(found!=image_pings.end() && estimator.posim_ping_factors)
         found->second.fused=estimator.posim_ping_factors->lastObservation()==stamp && estimator.posim_joint_last_accepted>0;
@@ -168,6 +182,14 @@ int main(int argc,char** argv) {
     };
     owner->posim_before_marginalization=[&](auto& estimator,int64_t stamp) {
       auto& base=static_cast<basalt::BundleAdjustmentBase<double>&>(estimator);
+      {
+        std::lock_guard<std::mutex> lock(ping_mutex);
+        auto found=pending_dvl.find(stamp);
+        if(found!=pending_dvl.end()) {
+          estimator.posim_dvl_factors->add(found->second);
+          pending_dvl.erase(found);dvl_reports[stamp]={{"owner_received",true}};
+        }
+      }
       std::optional<posim_slam::SonarSnapshot> acoustic;
       {
         std::lock_guard<std::mutex> lock(ping_mutex);
@@ -267,8 +289,10 @@ int main(int argc,char** argv) {
         if(!s)fail("estimator_finished");
         if(!s->T_w_i.matrix().allFinite() || !s->vel_w_i.allFinite() ||
            !s->bias_gyro.allFinite() || !s->bias_accel.allFinite())fail("invalid_estimate");
-        Json ping=nullptr,candidate=nullptr,initialization=nullptr,acoustic=nullptr;bool owner_received=false,fused=false;
+        Json ping=nullptr,candidate=nullptr,initialization=nullptr,acoustic=nullptr,dvl=nullptr;bool owner_received=false,fused=false;
         {std::lock_guard<std::mutex> lock(ping_mutex);
+         auto found_dvl=dvl_reports.find(s->t_ns);if(found_dvl!=dvl_reports.end())dvl=found_dvl->second;
+         dvl_reports.erase(dvl_reports.begin(),dvl_reports.upper_bound(s->t_ns));
          auto sonar_report=sonar_reports.find(s->t_ns);
          if(sonar_report!=sonar_reports.end())acoustic=sonar_report->second;
          sonar_reports.erase(sonar_reports.begin(),sonar_reports.upper_bound(s->t_ns));
@@ -280,7 +304,7 @@ int main(int argc,char** argv) {
          image_pings.erase(image_pings.begin(),image_pings.upper_bound(s->t_ns));}
         auto q=s->T_w_i.unit_quaternion();
         emit({{"type","state"},{"stamp_ns",s->t_ns},
-              {"state_clock",state_clock},{"map_qualified",false},
+              {"state_clock",state_clock},{"map_qualified",false},{"dvl",dvl},
               {"position",vector3(s->T_w_i.translation())},
               {"orientation_xyzw",{q.x(),q.y(),q.z(),q.w()}},
               {"velocity",vector3(s->vel_w_i)},{"initialization_window",initialization},{"sonar",acoustic},
@@ -330,6 +354,8 @@ int main(int argc,char** argv) {
     int64_t gravity_stamp=0;Vec3 gravity_direction=Vec3::Zero();
     emit({{"type","ready"},{"state_clock",state_clock},{"gravity_seed_transport",sonar_clock ? "first_sensor_direction_v1" : "first_image_direction_v1"},{"gravity_seed_required",require_gravity_seed},{"protocol",1},{"inertial_fused",true},{"map_export",sonar_clock ? Json(nullptr) : Json("segment_landmark_archive_ply_1")},
           {"sonar_clock_transport",sonar_clock ? Json("ordered_sonar_state_v1") : Json(nullptr)},
+          {"dvl_measurement_transport",dvl_enabled ? Json("body_velocity_gyro_covariance_v1") : Json(nullptr)},
+          {"sensor_state_transport",dvl_enabled ? Json("ordered_camera_auxiliary_states_v1") : Json(nullptr)},
           {"sonar_snapshot_transport",sonar_enabled ? Json("exact_image_track_snapshot_v1") : Json(nullptr)},{"joint_sonar_enabled",sonar_enabled},{"sonar_auxiliary_transport",auxiliary_enabled ? Json("ordered_imu_state_v1") : Json(nullptr)},
           {"image_ping_transport","exact_stamp_range_v1"},{"ping_fused",false},{"joint_ping_enabled",joint_enabled},
           {"opencv_threads",1},{"estimation_threads",2},
@@ -338,20 +364,29 @@ int main(int argc,char** argv) {
           {"raw_resolution",{c.width,c.height}},
           {"processed_resolution",{c.processed_width,c.processed_height}},
           {"scope",sonar_clock ? "experimental sonar-inertial state estimation; no terrain, depth or camera frontend" : "experimental local visual-inertial odometry with sparse landmark archive"}});
-    int64_t imu_stamp=0,image_stamp=0,event_stamp=0;bool auxiliary_since_image=false;
-    for(;;) {
+    int64_t imu_stamp=0,image_stamp=0,event_stamp=0,dvl_stamp=0;bool auxiliary_since_image=false;
+    // Decode failures must be reported before unwinding joinable reader
+    // threads. Otherwise std::thread destruction terminates the process and
+    // hides the actual invalid-input reason from the owning segment.
+    try { for(;;) {
       char header[8];std::cin.read(header,8);
       if(!std::cin)std::_Exit(0);
       auto type=u32(header),size=u32(header+4);
       if(type==3 && size==0)std::_Exit(0);
-      if((type!=1 && type!=2 && type!=4 && type!=5 && type!=6 && type!=7 && type!=8) ||
-          (type==7 && !sonar_enabled) || (type==8 && !auxiliary_enabled && !sonar_clock) ||
-          size>(type==7 ? posim_slam::sonarSnapshotLimit : std::max(uint32_t(56),uint32_t(c.width*c.height+32))))
+      if((type!=1 && type!=2 && type!=4 && type!=5 && type!=6 && type!=7 && type!=8 && type!=9) ||
+          (type==7 && !sonar_enabled) || (type==8 && !auxiliary_enabled && !sonar_clock && !dvl_enabled) ||
+          (type==9 && !dvl_enabled) || size>(type==7 ? posim_slam::sonarSnapshotLimit : type==9 ? 216 : std::max(uint32_t(56),uint32_t(c.width*c.height+32))))
         fail("packet_size_or_type");
       if(sonar_clock && (type==2 || type==5))fail("camera_packet_in_sonar_clock");
       std::vector<char> bytes(size);std::cin.read(bytes.data(),size);
       if(!std::cin)fail("incomplete_packet");
-      if(type==7) {
+      if(type==9) {
+        auto observation=posim_slam::decodeDvlObservation(bytes,*dvl_calibration);
+        if(observation.stamp<=event_stamp || observation.stamp<=dvl_stamp)fail("reordered_dvl_observation");
+        std::lock_guard<std::mutex> lock(ping_mutex);
+        if(pending_dvl.size()>=8)fail("pending_dvl_backlog");
+        dvl_stamp=observation.stamp;pending_dvl.emplace(observation.stamp,std::move(observation));
+      } else if(type==7) {
         auto packet=posim_slam::decodeSonarSnapshot(bytes);
         if(packet.stamp<=event_stamp)fail("sonar_snapshot_after_image");
         std::lock_guard<std::mutex> lock(ping_mutex);
@@ -361,10 +396,12 @@ int main(int argc,char** argv) {
         if(size!=8)fail("auxiliary_sonar_packet_size");
         const int64_t stamp=int64_t(u64(bytes.data()));
         if(sonar_clock ? (stamp<=0 || !imu_stamp || stamp<=event_stamp || (event_stamp && stamp-event_stamp>sonar_gap)) :
-            (!image_stamp || stamp<=event_stamp || stamp-image_stamp>500000000 || auxiliary_since_image))
+            (!image_stamp || stamp<=event_stamp || stamp-image_stamp>500000000 || (auxiliary_since_image && !dvl_enabled)))
           fail("auxiliary_sonar_clock_or_capacity");
         {
           std::lock_guard<std::mutex> lock(ping_mutex);
+          const auto next_dvl=pending_dvl.upper_bound(event_stamp);
+          if(next_dvl!=pending_dvl.end() && next_dvl->first<stamp)fail("dvl_observation_missing_state");
           const auto next=image_sonar.upper_bound(event_stamp);
           if(next!=image_sonar.end() && next->first<stamp)fail("sonar_snapshot_missing_state");
         }
@@ -427,6 +464,8 @@ int main(int argc,char** argv) {
         if(stamp<=0 || !imu_stamp || (image_stamp && (stamp<=event_stamp || stamp-image_stamp>500000000)))fail("image_gap_or_reset");
         {
           std::lock_guard<std::mutex> lock(ping_mutex);
+          const auto next_dvl=pending_dvl.upper_bound(event_stamp);
+          if(next_dvl!=pending_dvl.end() && next_dvl->first<stamp)fail("dvl_observation_missing_state");
           const auto next=image_sonar.upper_bound(event_stamp);
           if(next!=image_sonar.end() && next->first<stamp)fail("sonar_snapshot_missing_image");
         }
@@ -452,6 +491,6 @@ int main(int argc,char** argv) {
         if(!flow->input_queue.try_push(data))fail("image_backlog");
         if(!events.try_push({stamp,true}))fail("sensor_event_backlog");
       }
-    }
+    }} catch(const std::exception& error) {fail(error.what());}
   } catch(const std::exception& error) {fail(error.what());}
 }

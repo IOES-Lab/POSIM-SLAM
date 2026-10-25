@@ -3,6 +3,7 @@
 #include "ping_linearization.hpp"
 #include "ping_marginal.hpp"
 #include "sonar_factors.hpp"
+#include "dvl_factors.hpp"
 #include <basalt/utils/ba_utils.h>
 #include <algorithm>
 #include <memory>
@@ -51,7 +52,7 @@ struct PingOptimizationReport {
 inline PingOptimizationReport optimizePingGroups(basalt::BundleAdjustmentBase<double>& owner,
     const basalt::AbsOrderMap& order,const std::vector<JointPingGroupSpec>& groups,
     const basalt::MargLinData<double>& prior,const basalt::ImuLinData<double>& imu,
-    const PingOptimizationOptions& options={},SonarFactorStore* sonar=nullptr) {
+    const PingOptimizationOptions& options={},SonarFactorStore* sonar=nullptr,DvlFactorStore* dvl=nullptr) {
   requireStateOrder(order);
   if(owner.posim_ping_trial_active || options.iterations<1 || options.iterations>20 ||
      options.trials<1 || options.trials>10 || !std::isfinite(options.initial_damping) ||
@@ -93,10 +94,20 @@ inline PingOptimizationReport optimizePingGroups(basalt::BundleAdjustmentBase<do
         before+=sonar->cost(sonar_poses());
       }
       if(!valid)throw std::runtime_error("invalid_ping_initial_linearization");
+      std::optional<DvlFactorStore::Rows> dvl_rows;
+      if(dvl) {dvl_rows=dvl->linearize(owner,order);before+=dvl_rows->cost;}
       const auto visual_support=visualProjectionSupport(owner,order);
       if(iteration==0 && attempt==0)report.initial_cost=report.final_cost=before;
       linearization->performQR();Eigen::MatrixXd h;Eigen::VectorXd b;
       linearization->get_dense_H_b(h,b);
+      if(dvl_rows) {
+        for(size_t i=0;i<dvl_rows->offsets.size();++i) {
+          const int offset=dvl_rows->offsets[i];
+          const auto j=dvl_rows->jacobian.block<3,15>(3*i,offset);
+          h.block<15,15>(offset,offset).noalias()+=j.transpose()*j;
+          b.segment<15>(offset).noalias()+=j.transpose()*dvl_rows->residual.segment<3>(3*i);
+        }
+      }
       if(sonar_rows)for(const auto& [id,rows]:sonar_rows->reduced) {
         const Eigen::MatrixXd jacobian=rows.pose_jacobian*sonar_to_state;
         h.noalias()+=jacobian.transpose()*jacobian;
@@ -122,6 +133,8 @@ inline PingOptimizationReport optimizePingGroups(basalt::BundleAdjustmentBase<do
         if(sonar_rows)sonar_trial=std::make_unique<SonarFactorStore::Trial>(*sonar);
         try {
           double predicted=linearization->backSubstitute(increment);
+          if(dvl_rows)predicted+=.5*(dvl_rows->residual.squaredNorm()-
+              (dvl_rows->residual+dvl_rows->jacobian*increment).squaredNorm());
           if(sonar_rows) {
             for(const auto& [id,rows]:sonar_rows->rows) {
               const Eigen::Vector3d point_delta=sonar_rows->reduced.at(id).backSubstitute(sonar_increment);
@@ -136,6 +149,7 @@ inline PingOptimizationReport optimizePingGroups(basalt::BundleAdjustmentBase<do
           }
           after=linearization->linearizeProblem(&valid);
           if(sonar_rows)after+=sonar->cost(sonar_poses());
+          if(dvl)after+=dvl->linearize(owner,order).cost;
           if(!preservesVisualProjectionSupport(visual_support,visualProjectionSupport(owner,order))) {
             valid=false;++report.projection_rejections;
           }

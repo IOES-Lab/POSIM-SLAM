@@ -5,6 +5,34 @@ from posim_slam.sensor_events import SensorEvents
 
 
 class SensorEventsTests(unittest.TestCase):
+    def test_dvl_and_sonar_keep_original_times_under_all_arrival_orders(self):
+        for order in set(itertools.permutations('ssddii')):
+            q=SensorEvents(state_clock='sonar',dvl=True)
+            times={'sonar':iter([10,30]),'dvl':iter([20,30]),'imu':iter([21,31])}
+            events=[]
+            for letter in order:
+                kind={'s':'sonar','d':'dvl','i':'imu'}[letter];stamp=next(times[kind])
+                q.push(kind,stamp,(kind,stamp));events.extend(self.drain(q))
+            self.assertEqual([e['stamp_ns'] for e in events],[10,20,30])
+            self.assertEqual([e['dvl'] for e in events],[None,('dvl',20),('dvl',30)])
+            self.assertEqual(events[-1]['sonar'],('sonar',30))
+            self.assertTrue(all(e['camera'] is None for e in events))
+
+    def test_dvl_status_loss_preserves_clock_and_camera_auxiliary_states(self):
+        q=SensorEvents(dvl=True);q.push('imu',51)
+        for stamp in (10,50):q.push('camera',stamp,'image')
+        for stamp in (10,50):q.push('sonar',stamp,'echo')
+        for stamp in (10,20,30,40,50):q.push('dvl',stamp,{'valid':stamp!=30})
+        events=self.drain(q)
+        self.assertEqual([e['stamp_ns'] for e in events],[10,20,30,40,50])
+        self.assertEqual(events[2]['dvl'],{'valid':False})
+        self.assertEqual(q.auxiliary_skipped,0)
+        q=SensorEvents(state_clock='sonar',dvl=True)
+        q.push('sonar',10,'echo');q.push('imu',11)
+        self.assertIsNone(q.next_event())
+        q.push('dvl',10,{'valid':False})
+        self.assertIsNotNone(q.next_event())
+
     def test_sonar_clock_needs_no_camera_and_never_decimates_ticks(self):
         for order in set(itertools.permutations('sssiii')):
             q = SensorEvents(state_clock='sonar')

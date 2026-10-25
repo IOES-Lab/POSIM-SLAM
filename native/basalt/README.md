@@ -1,4 +1,4 @@
-# Experimental headless visual-inertial target
+# Experimental headless sensor-fusion target
 
 [한국어](#한국어) · [Source pins](sources.json)
 
@@ -34,6 +34,70 @@ bounded, one-state-at-a-time acknowledgement contract.
 보고합니다. 지형·수압 제약, 소나 영상 대응점 추적, 앱 모드 검증은 별도입니다.
 `SensorEvents(state_clock="sonar")`는 소나와 이후 IMU를 정렬하고, 한 상태의
 응답을 확인한 뒤 다음 상태를 전달합니다.
+
+## Raw DVL velocity factors / 원본 DVL 속도 제약
+
+`enable_joint_dvl: true` adds bottom-locked velocity factors to the same native
+pose/velocity/bias optimization and marginal prior. `dvl-calibration.json` uses
+schema `posim-slam-dvl-calibration-1`: `dvl_to_imu` is a proper 3×3 rotation and
+`imu_to_dvl` is the IMU-to-DVL lever arm expressed in IMU coordinates, in metres.
+Each observation carries its original timestamp, DVL-frame velocity and full
+3×3 covariance, synchronous IMU-frame gyro and covariance, and three or four
+locked beams. Gyro synchronization and its interpolation uncertainty belong to
+the caller. Raw DVL velocity is used directly; a separately fused IMU/DVL pose
+is not an independent input to this optimizer.
+
+The prediction includes body rotation at the sensor offset. Residuals use the
+full covariance, with gyro lever-arm variance added, and a Huber loss. Frozen
+state references supply Jacobians during marginalization. The gyro noise's
+correlation with reused IMU-preintegration noise is not represented; this is a
+conditional approximation, not a fully correlated measurement model. Removing
+a state, or retaining only its pose, consumes its DVL factor into the prior.
+Other DVL factors remain active once and replayed timestamps are rejected.
+
+`LiveClient.dvl` requires the negotiated `body_velocity_gyro_covariance_v1`
+transport. Submit the observation before its exact image or `sonar_tick` state
+event. DVL-enabled camera segments permit multiple auxiliary states between
+images; the existing 500 ms camera-gap limit still applies. Sonar-clock segments
+can advance on original DVL timestamps without a camera. `SensorEvents(dvl=True)`
+adds DVL to the ordering watermark without retiming or decimating its events.
+A measured bottom-lock-loss status may advance that watermark, but must not be
+submitted as a velocity factor; a silent stream requires a caller liveness fault.
+
+This is a native research interface. Its synthetic moving-start, loss/recovery,
+Jacobian and marginalization checks do not qualify field initialization, map
+geometry or a selectable application mode. High-rate DVL states shorten a
+fixed-count temporal window; acoustic track support and real-time throughput
+must be evaluated at the actual sensor rates. Pressure and terrain factors are
+separate work. Source and dependency notices remain required.
+
+`enable_joint_dvl: true`는 바닥 잠금 DVL 속도를 네이티브 자세·속도·바이어스
+공동 최적화와 주변화 사전정보에 연결합니다. `dvl-calibration.json`의 스키마는
+`posim-slam-dvl-calibration-1`입니다. `dvl_to_imu`는 DVL에서 IMU로의 3×3 회전,
+`imu_to_dvl`은 IMU 좌표계로 표현한 IMU에서 DVL까지의 장착 위치(m)입니다.
+관측은 원래 시각, DVL 좌표계 속도와 전체 3×3 공분산, 같은 시각의 IMU 좌표계
+자이로와 공분산, 잠금 빔 수(3 또는 4)를 포함합니다. 호출자가 자이로 시각과
+보간 불확실성을 처리합니다. 별도 IMU/DVL 필터의 자세를 다시 입력하지 않습니다.
+
+예측에는 장착 위치에서의 회전 속도가 포함됩니다. 전체 공분산과 자이로의
+장착 위치 보정 분산, Huber 손실을 사용합니다. 주변화 Jacobian은 고정된 상태
+기준점을 사용합니다. 같은 IMU 사전적분과 자이로 잡음 사이의 상관은 표현하지
+않는 조건부 근사입니다. 상태를 제거하거나 자세만 남길 때 해당 DVL 정보를
+사전정보로 옮기고, 나머지는 한 번만 유지합니다. 지난 시각의 재입력은 거부합니다.
+
+`LiveClient.dvl`은 `body_velocity_gyro_covariance_v1` 전송 협약을 확인합니다.
+관측은 같은 시각의 영상 또는 `sonar_tick` 상태 이벤트보다 먼저 보냅니다.
+DVL을 켠 카메라 구간은 영상 사이 여러 보조 상태를 허용하며, 영상 간격 상한
+500 ms는 유지합니다. 소나 시계 구간은 카메라 없이 DVL 원래 시각으로 진행합니다.
+`SensorEvents(dvl=True)`는 DVL 순서 확인을 추가하고 시각 이동이나 간추리기를
+하지 않습니다. 측정된 바닥 잠금 손실 상태는 시계를 진행시킬 수 있지만 속도
+제약으로 넣지 않습니다. 발행 자체가 멈추면 호출자가 입력 지연 실패를 처리합니다.
+
+네이티브 연구용 인터페이스입니다. 합성 이동 시작·손실·복구, Jacobian, 주변화
+시험은 실제 초기화·지도 기하·앱 선택 모드의 검증이 아닙니다. DVL 상태 빈도가
+높으면 고정 개수 상태 창의 시간 길이가 줄어듭니다. 실제 센서 빈도에서 음향
+트랙 유지와 실시간 처리량을 검증해야 합니다. 수압·지형 제약은 별도 작업이며
+소스와 의존성 라이선스 고지 의무는 유지됩니다.
 
 Visual normal-equation assembly uses only the pose blocks observed by each
 landmark. It scatters their matrix and gradient into the complete state system,
