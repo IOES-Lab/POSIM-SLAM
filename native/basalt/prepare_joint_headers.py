@@ -51,6 +51,15 @@ def replace_once(text,old,new):
 
 def prepare(source,destination):
     output=Path(destination)/'basalt';output.mkdir(parents=True,exist_ok=True)
+    raw=(Path(source).parent/'headers/include/basalt/imu/preintegration.h').read_bytes()
+    if hashlib.sha256(raw).hexdigest()!='08e2fe5272b3dc81e7b019861d4d8e3613d5cc5f62f81ebee9d3ae0c3399fcbd':
+        raise ValueError('pinned_basalt_preintegration_header_changed')
+    header=replace_once(raw.decode(),'#pragma once','#pragma once\n#include <stdexcept>\n#include <cmath>')
+    extension=Path(__file__).with_name('imu_continuous.inc').read_text()
+    header=replace_once(header,'  /// @brief Predict state given this pseudo-measurement',
+                        extension+'  /// @brief Predict state given this pseudo-measurement')
+    target=output/'imu/preintegration.h';target.parent.mkdir(parents=True,exist_ok=True)
+    if not target.exists() or target.read_text()!=header:target.write_text(header)
     for name,checksum in HASHES.items():
         raw=(Path(source)/'include/basalt'/name).read_bytes()
         if hashlib.sha256(raw).hexdigest()!=checksum:raise ValueError('pinned_basalt_joint_header_changed:'+name)
@@ -130,6 +139,14 @@ def prepare(source,destination):
     text=replace_once(raw.decode(),'''  imu_meas[t_ns] = IntegratedImuMeasurement<Scalar>(t_ns, bg.cast<Scalar>(),
                                                     ba.cast<Scalar>());''',
         '  // No completed IMU interval at the initial state.')
+    text=replace_once(text,'calib.dicrete_time_accel_noise_std().array().square()',
+                      'calib.accel_noise_std.array().square()')
+    text=replace_once(text,'calib.dicrete_time_gyro_noise_std().array().square()',
+                      'calib.gyro_noise_std.array().square()')
+    if text.count('meas->integrate(*data, accel_cov, gyro_cov);')!=2:
+        raise ValueError('pinned_basalt_preintegration_calls_changed')
+    text=text.replace('meas->integrate(*data, accel_cov, gyro_cov);',
+                      'meas->integrateContinuous(*data, accel_cov, gyro_cov);')
     text=replace_once(text,'''        imu_meas[last_state_t_ns] =
             IntegratedImuMeasurement<Scalar>(last_state_t_ns, bg, ba);''',
         '        // No completed IMU interval at the initial state.')

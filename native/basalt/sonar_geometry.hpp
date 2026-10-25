@@ -3,8 +3,16 @@
 #include <Eigen/Dense>
 #include <cmath>
 #include <stdexcept>
+#include <limits>
 
 namespace posim_slam {
+// Raw sonar unit directions are float32. atan2 of their quantized components
+// can lie just outside an authored double-precision FOV endpoint. Bound that
+// representation error (including angular conversion); never clamp the angle.
+inline bool sonarWithinFov(double angle,double fov) {
+  return std::isfinite(angle) && std::isfinite(fov) && fov>0 &&
+    std::abs(angle)<=fov/2+4.*std::numeric_limits<float>::epsilon();
+}
 class SonarPointOutsideSupport : public std::invalid_argument {
  public: using std::invalid_argument::invalid_argument;
 };
@@ -30,7 +38,7 @@ inline SonarPointRows sonarPointRows(const Eigen::Vector3d& position,
       !std::isfinite(measured_range) || !std::isfinite(measured_azimuth) || !std::isfinite(minimum) || !std::isfinite(maximum) ||
       !std::isfinite(horizontal_fov) || !std::isfinite(vertical_fov) || !(0<minimum && minimum<maximum) ||
       measured_range<minimum || measured_range>maximum || !(0<horizontal_fov && horizontal_fov<=pi) ||
-      !(0<vertical_fov && vertical_fov<pi) || std::abs(measured_azimuth)>horizontal_fov/2)
+      !(0<vertical_fov && vertical_fov<pi) || !sonarWithinFov(measured_azimuth,horizontal_fov))
     throw std::invalid_argument("invalid_native_sonar_geometry");
   const Eigen::Vector3d difference=point-position;
   const Eigen::Vector3d local=sonar_to_imu.transpose()*(attitude.transpose()*difference-lever);
@@ -39,7 +47,7 @@ inline SonarPointRows sonarPointRows(const Eigen::Vector3d& position,
       (require_sensor_support && (x<=0 || range<minimum || range>maximum)))
     throw SonarPointOutsideSupport("unsupported_native_sonar_point");
   const double azimuth=std::atan2(y,x),elevation=std::atan2(z,std::sqrt(rho2));
-  if(require_sensor_support && (std::abs(azimuth)>horizontal_fov/2 || std::abs(elevation)>vertical_fov/2))
+  if(require_sensor_support && (!sonarWithinFov(azimuth,horizontal_fov) || !sonarWithinFov(elevation,vertical_fov)))
     throw SonarPointOutsideSupport("native_sonar_point_outside_fov");
   Eigen::Matrix<double,2,3> projection;
   projection.row(0)=local.transpose()/range;projection.row(1)<<-y/rho2,x/rho2,0.;

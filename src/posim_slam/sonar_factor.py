@@ -10,6 +10,12 @@ from .dvl_scale import rotation, vector
 from .inertial import skew
 
 
+def within_fov(angle, fov):
+    """Accept float32 unit-direction endpoint roundoff without clamping data."""
+    return (math.isfinite(angle) and math.isfinite(fov) and fov>0
+            and abs(angle)<=fov/2+4*float(np.finfo(np.float32).eps))
+
+
 def point_return_factor(*, position, attitude, imu_to_sonar, sonar_to_imu,
                         landmark, measured_range, measured_azimuth,
                         range_min, range_max, horizontal_fov, vertical_fov):
@@ -31,7 +37,7 @@ def point_return_factor(*, position, attitude, imu_to_sonar, sonar_to_imu,
     if (not all(math.isfinite(v) for v in scalars) or
             not 0<range_min<range_max or not range_min<=measured_range<=range_max or
             not 0<horizontal_fov<=math.pi or not 0<vertical_fov<math.pi or
-            abs(measured_azimuth)>horizontal_fov/2):
+            not within_fov(measured_azimuth,horizontal_fov)):
         raise ValueError('invalid_sonar_measurement')
     relative=r.T@(point-p)
     local=mount.T@(relative-lever)
@@ -40,7 +46,7 @@ def point_return_factor(*, position, attitude, imu_to_sonar, sonar_to_imu,
     if x<=0 or horizontal2<1e-12 or not range_min<=distance<=range_max:
         raise ValueError('unsupported_sonar_point')
     azimuth=math.atan2(y,x);elevation=math.atan2(z,math.sqrt(horizontal2))
-    if abs(azimuth)>horizontal_fov/2 or abs(elevation)>vertical_fov/2:
+    if not within_fov(azimuth,horizontal_fov) or not within_fov(elevation,vertical_fov):
         raise ValueError('sonar_point_outside_fov')
     projection=np.array([local/distance,[-y/horizontal2,x/horizontal2,0.]])
     landmark_jacobian=projection@mount.T@r.T

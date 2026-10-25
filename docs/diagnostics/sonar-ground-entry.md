@@ -1,16 +1,20 @@
 # Ground-entry surfaces / 해저 반사 시작점 표면
 
+[Native protocol and paired replay](sonar-ground-live.md) / [네이티브 전송과 동일 입력 비교](sonar-ground-live.md)
+
 `posim_slam.sonar_ground` is an experimental NumPy mapping frontend. It uses
 raw FLS intensity, authored elevation aperture and estimated gravity. It fits
 the changing first-return curve as a local surface instead of tracking that
 curve as a set of fixed scatterers. No camera, prior terrain or simulator
-geometry enters the fit. This is **not yet terrain-aided pose optimization**.
+geometry enters the fit. A separate experimental native transport couples these
+raw ranges with poses and unknown planes; recorded accuracy is not qualified.
 
 `posim_slam.sonar_ground`는 NumPy 기반 실험용 지도 추출기입니다. 원본 전방
 소나 강도·설정된 수직 개구각·추정 중력 방향을 사용합니다. 관측 위치에 따라
 변하는 반사 시작 곡선을 고정 반사점으로 추적하지 않고 국소 표면으로 맞춥니다.
 카메라·사전 지형·시뮬레이터 형상은 적합에 입력하지 않습니다.
-**아직 지형 관측으로 자세를 공동 보정하지 않습니다.**
+별도 실험용 네이티브 전송은 원래 거리를 자세·미지 평면과 공동 최적화하지만,
+기록 기반 정확도는 아직 검증 기준을 통과하지 못했습니다.
 
 ## Observation model / 관측 모델
 
@@ -106,16 +110,18 @@ range rows. Native and NumPy reduced information matrices differ by at most
 `3.5e-9`; all have pose rank six. These checks use explicit **uncalibrated**
 individual/frame-common/time-common noise assumptions of 3/2/1 cm. Same-surface
 association is also an assumption. They do not optimize those recorded poses
-or improve the map scores below. Live transport, online patch association,
-calibrated acoustic uncertainty and joint raw-IMU/DVL/pressure replay remain
-required before enabling this factor in an application mode.
+or improve the fixed-pose map scores below. The experimental native stream has
+raw-IMU/DVL/pressure replay and bounded local patch association. Calibrated
+acoustic uncertainty, reliable association and recorded accuracy remain required
+before enabling this factor in an application mode.
 
 A·B·C·D의 첫 적격 3프레임 구간은 각각 원래 거리 관측 138·150·136·140개입니다.
 네이티브와 NumPy의 축소 정보행렬 차이는 최대 `3.5e-9`이고 자세 랭크는 모두
 6입니다. 개별·프레임 공통·시간 공통 잡음을 각각 3·2·1 cm로 둔 **미보정 가정**과
 동일 표면 가정을 사용합니다. 이 검사는 기록 자세를 최적화하거나 아래 지도
-오차를 개선하지 않습니다. 앱 모드에 연결하려면 실시간 전송·온라인 표면 연결·
-음향 불확실성 보정·원본 IMU/DVL/수압과의 공동 재생 검증이 필요합니다.
+오차를 개선하지 않습니다. 실험용 네이티브 스트림은 원본 IMU·DVL·수압 공동
+재생과 제한된 국소 표면 연결을 지원합니다. 앱 모드에는 음향 불확실성 보정·
+신뢰할 수 있는 표면 연결·기록 기반 정확도 검증이 필요합니다.
 
 ## Recorded results / 기록 결과
 
@@ -174,12 +180,12 @@ Each triplet shows the existing acoustic hypotheses, the new conditional
 seabed samples, and actual RGB with the identical isometric camera projection.
 Turbo spans −5 to 0 m and marker area is 64 pt². RGB includes attenuation,
 particles, caustics and sea surface. It is captured after the mission; 2 m
-visibility and live streaming of this surface method remain untested.
+visibility and application-level live use of this surface method remain untested.
 
 각 그림은 기존 음향 가설·조건부 해저 관측·실제 RGB를 같은 등각 방향 원근
 투영으로 비교합니다. Turbo −5~0 m와 점 면적 64 pt²를 사용합니다. RGB에는
 감쇠·입자·집광무늬·수면이 있으며 임무 뒤 촬영했습니다. 가시거리 2 m와 이
-표면 방법의 실시간 전송은 아직 검증하지 않았습니다.
+표면 방법의 앱 실시간 사용은 아직 검증하지 않았습니다.
 
 ![A — retained failure](../images/sonar-ground-a.png)
 ![B](../images/sonar-ground-b.png)

@@ -105,8 +105,16 @@ notices do not substitute for the experimental SDK's Eigen 5.0.1 notices.
 No GUI/AprilTag/camera-driver target is linked. This research recipe does not
 qualify another dependency closure for application redistribution.
 
+The build-local IMU interval extension preserves the pinned Basalt header's
+BSD-3-Clause notice. Its source and preparation script are included under
+`native/basalt/imu_continuous.inc` and `prepare_joint_headers.py`; it introduces
+no additional dependency.
+
 선택형 연구 대상의 고정 버전과 고지는 위 파일에서 관리합니다. 외부 소스는 Python
 wheel에 포함하지 않으며 빌더가 정확한 원본 체크아웃을 검사하고 고지를 보존합니다.
 SDK의 Eigen 5.0.1·OpenCV·TBB·fmt 고지와 해당 소스 의무는 별도로 적용됩니다.
 Stella용 Eigen 3.4.0 고지를 이 연구 대상에 대신 적용하지 않습니다. GUI·AprilTag·
 카메라 드라이버 대상은 연결하지 않습니다. 앱의 기본 실행 백엔드는 바뀌지 않습니다.
+
+빌드 사본의 IMU 구간 확장은 고정 Basalt 헤더의 BSD-3-Clause 고지를 보존합니다.
+확장 소스와 생성 스크립트를 위 경로로 제공하며 추가 의존성은 없습니다.

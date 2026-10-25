@@ -10,6 +10,7 @@
 #include "sonar_input.hpp"
 #include "dvl_input.hpp"
 #include "pressure_input.hpp"
+#include "sonar_ground_packet.hpp"
 #include <basalt/vi_estimator/sqrt_keypoint_vio.h>
 #include <tbb/global_control.h>
 #include <opencv2/core.hpp>
@@ -68,6 +69,8 @@ int main(int argc,char** argv) {
     std::map<int64_t,Json> dvl_reports;
     std::map<int64_t,posim_slam::PressureObservation> pending_pressure;
     std::map<int64_t,Json> pressure_reports;
+    std::map<int64_t,posim_slam::GroundPacket> pending_ground;
+    std::map<int64_t,Json> ground_reports;
     std::mutex snapshot_mutex;
     std::shared_ptr<const Snapshot> snapshot;
     const fs::path export_file=fs::absolute(argv[1]).parent_path()/"worker-map.ply";
@@ -96,8 +99,19 @@ int main(int argc,char** argv) {
     const bool dvl_enabled=input_settings.value("enable_joint_dvl",false);
     const bool pressure_enabled=input_settings.value("enable_joint_pressure",false);
     const bool terrain_enabled=input_settings.value("enable_terrain_ping",false);
+    const bool ground_enabled=input_settings.value("enable_sonar_ground",false);
+    if(ground_enabled && (!sonar_clock || terrain_enabled || input_settings.value("enable_joint_ping",false)))
+      fail("ground_requires_exclusive_sonar_clock");
     if(terrain_enabled && input_settings.value("enable_joint_ping",false))fail("conflicting_ping_surface_modes");
-    const bool ordered_auxiliary=dvl_enabled || pressure_enabled || terrain_enabled;
+    const bool ordered_auxiliary=dvl_enabled || pressure_enabled || terrain_enabled || ground_enabled;
+    posim_slam::GroundNoise ground_noise{};double ground_radius=0.,ground_age=0.,ground_gap=0.,ground_gate=0.;
+    if(ground_enabled) {
+      ground_noise={positive(input_settings,"ground_individual_sigma_m"),positive(input_settings,"ground_frame_common_sigma_m"),positive(input_settings,"ground_time_common_sigma_m")};
+      ground_radius=positive(input_settings,"ground_support_radius_m");ground_age=positive(input_settings,"ground_max_age_s");
+      ground_gap=positive(input_settings,"ground_max_gap_s");ground_gate=positive(input_settings,"ground_innovation_sigma");
+      if(ground_noise.individual>1 || ground_noise.frame_common>1 || ground_noise.time_common>1 ||
+         ground_radius>2 || ground_age>5 || ground_gap>ground_age || ground_gate>10)fail("ground_model_bounds");
+    }
     double terrain_sigma=0.,terrain_radius=0.,terrain_age=0.,terrain_gate=0.;
     if(terrain_enabled) {
       terrain_sigma=positive(input_settings,"terrain_return_sigma_m");
@@ -129,6 +143,10 @@ int main(int argc,char** argv) {
       owner->posim_sonar_factors=std::make_shared<posim_slam::SonarFactorStore>();
     }
     const bool joint_enabled=input_settings.value("enable_joint_ping",false);
+    std::optional<posim_slam::GroundEntryCalibration> ground_calibration;
+    if(ground_enabled)ground_calibration=posim_slam::GroundEntryCalibration{
+      Sophus::SE3d(sonar_calibration->sonar_to_imu,sonar_calibration->lever),
+      sonar_calibration->vertical_fov,sonar_calibration->minimum,sonar_calibration->maximum};
     const auto loss_name=input_settings.value("ping_range_loss",std::string("cauchy"));
     if(loss_name!="cauchy" && loss_name!="huber")throw std::runtime_error("invalid_ping_range_loss");
     const auto range_loss=loss_name=="cauchy"?posim_slam::PingRangeLoss::Cauchy:posim_slam::PingRangeLoss::Huber;
@@ -144,9 +162,9 @@ int main(int argc,char** argv) {
       ping_bias=settings.at("range_bias").get<double>();
       ping_ray_sigma=positive(settings,"per_ray_noise_stddev");
       if(!std::isfinite(ping_bias))throw std::runtime_error("invalid_ping_bias");
-      owner->posim_ping_factors=std::make_shared<posim_slam::PingFactorStore>(
-        static_cast<basalt::BundleAdjustmentBase<double>&>(*owner));
     }
+    if(joint_enabled || terrain_enabled || ground_enabled)
+      owner->posim_ping_factors=std::make_shared<posim_slam::PingFactorStore>(static_cast<basalt::BundleAdjustmentBase<double>&>(*owner));
     owner->posim_after_joint=[&](auto& estimator,int64_t stamp) {
       std::lock_guard<std::mutex> lock(ping_mutex);
       // Copy on the estimator thread before marginalization. Output threads
@@ -202,6 +220,34 @@ int main(int argc,char** argv) {
           }
         }
       }
+      if(ground_enabled) {
+        auto& report=ground_reports[stamp];if(report.is_null())report={{"owner_received",false},{"factor_registered",false},{"map_qualified",false}};
+        report["optimization_included"]=estimator.posim_joint_started;
+        report["accepted_steps"]=estimator.posim_joint_last_accepted;
+        report["active_groups"]=estimator.posim_ping_factors->ground().size();
+        report["point_estimates"]=Json::array();
+        for(const auto& p:estimator.posim_ping_factors->ground().points())
+          report["point_estimates"].push_back({{"stamp_ns",p.stamp},{"beam_id",p.beam},{"point",vector3(p.point)}});
+        report["pose_estimates"]=Json::array();
+        const auto& base=static_cast<basalt::BundleAdjustmentBase<double>&>(estimator);
+        auto append_pose=[&](int64_t time,const Sophus::SE3d& pose) {
+          const auto q=pose.unit_quaternion();
+          report["pose_estimates"].push_back({{"stamp_ns",time},{"position",vector3(pose.translation())},
+            {"orientation_xyzw",{q.x(),q.y(),q.z(),q.w()}}});
+        };
+        for(const auto& [time,state]:base.frame_poses)append_pose(time,state.getPose());
+        for(const auto& [time,state]:base.frame_states)append_pose(time,state.getState().T_w_i);
+        if(ground_reports.size()>16)fail("ground_report_backlog");
+        if(report.contains("plane_id")) {
+          const auto order=posim_slam::planPingMarginalLayout(static_cast<basalt::BundleAdjustmentBase<double>&>(estimator),{},{},{},{}).source;
+          for(const auto& group:estimator.posim_ping_factors->ground().specs(order))if(group.plane_id==report.at("plane_id").get<int>()) {
+            const auto raw=group.build({});const auto& plane=estimator.posim_ping_planes.at(group.plane_id);
+            report["group_frames"]=raw.observation_stamps.size();report["range_rows"]=raw.residual.size();
+            report["normal"]=vector3(plane.normal);report["distance_m"]=plane.distance;
+            report["conditional_plane_rank"]=posim_slam::eliminateJointPatch(raw.jacobian,raw.residual,order.total_size).nuisance_rank;
+          }
+        }
+      }
       auto found=image_pings.find(stamp);
       if(found!=image_pings.end() && estimator.posim_ping_factors)
         found->second.fused=estimator.posim_ping_factors->lastObservation()==stamp && estimator.posim_joint_last_accepted>0;
@@ -239,10 +285,32 @@ int main(int argc,char** argv) {
         }
       }
       std::optional<posim_slam::SonarSnapshot> acoustic;
+      std::optional<posim_slam::GroundPacket> ground;
       {
         std::lock_guard<std::mutex> lock(ping_mutex);
         auto found=image_sonar.find(stamp);
         if(found!=image_sonar.end()){acoustic=std::move(found->second);image_sonar.erase(found);}
+        auto surface=pending_ground.find(stamp);
+        if(surface!=pending_ground.end()){ground=std::move(surface->second);pending_ground.erase(surface);}
+      }
+      if(ground) {
+        const auto order=posim_slam::planPingMarginalLayout(base,{},{},{},{}).source;
+        auto& store=estimator.posim_ping_factors->ground();
+        Json report={{"owner_received",true},{"factor_registered",false},{"map_qualified",false}};
+        int selected=-1;
+        for(int id:store.ids())try {
+          if(store.appendPatch(order,id,ground->observation,ground_radius,ground_age,ground_gap,ground_gate)){selected=id;break;}
+        }catch(const std::invalid_argument& error){report["association_rejection"]=error.what();}
+        if(selected<0)try {
+          const auto sensor=base.getPoseStateWithLin(stamp).getPose()*ground_calibration->mount;
+          const Vec3 normal=sensor.rotationMatrix()*ground->normal;
+          const double distance=ground->distance+normal.dot(sensor.translation());
+          store.add(order,next_plane_id,*ground_calibration,ground->observation,normal,distance,ground_noise);
+          selected=next_plane_id++;
+        }catch(const std::invalid_argument& error){report["registration_rejection"]=error.what();}
+        if(selected>=0){report["plane_id"]=selected;report["factor_registered"]=true;}
+        std::lock_guard<std::mutex> lock(ping_mutex);ground_reports[stamp]=std::move(report);
+        if(ground_reports.size()>16)fail("ground_report_backlog");
       }
       if(acoustic) {
         posim_slam::SonarPoses poses;
@@ -377,8 +445,10 @@ int main(int argc,char** argv) {
         if(!s)fail("estimator_finished");
         if(!s->T_w_i.matrix().allFinite() || !s->vel_w_i.allFinite() ||
            !s->bias_gyro.allFinite() || !s->bias_accel.allFinite())fail("invalid_estimate");
-        Json ping=nullptr,candidate=nullptr,initialization=nullptr,acoustic=nullptr,dvl=nullptr,pressure=nullptr;bool owner_received=false,fused=false;
+        Json ping=nullptr,candidate=nullptr,initialization=nullptr,acoustic=nullptr,dvl=nullptr,pressure=nullptr,ground=nullptr;bool owner_received=false,fused=false;
         {std::lock_guard<std::mutex> lock(ping_mutex);
+         auto surface=ground_reports.find(s->t_ns);if(surface!=ground_reports.end())ground=surface->second;
+         ground_reports.erase(ground_reports.begin(),ground_reports.upper_bound(s->t_ns));
          auto found_dvl=dvl_reports.find(s->t_ns);if(found_dvl!=dvl_reports.end())dvl=found_dvl->second;
          dvl_reports.erase(dvl_reports.begin(),dvl_reports.upper_bound(s->t_ns));
          auto depth=pressure_reports.find(s->t_ns);if(depth!=pressure_reports.end())pressure=depth->second;
@@ -394,7 +464,7 @@ int main(int argc,char** argv) {
          image_pings.erase(image_pings.begin(),image_pings.upper_bound(s->t_ns));}
         auto q=s->T_w_i.unit_quaternion();
         emit({{"type","state"},{"stamp_ns",s->t_ns},
-              {"state_clock",state_clock},{"map_qualified",false},{"dvl",dvl},{"pressure",pressure},
+              {"state_clock",state_clock},{"map_qualified",false},{"dvl",dvl},{"pressure",pressure},{"ground",ground},
               {"position",vector3(s->T_w_i.translation())},
               {"orientation_xyzw",{q.x(),q.y(),q.z(),q.w()}},
               {"velocity",vector3(s->vel_w_i)},{"initialization_window",initialization},{"sonar",acoustic},
@@ -444,19 +514,21 @@ int main(int argc,char** argv) {
     int64_t gravity_stamp=0;Vec3 gravity_direction=Vec3::Zero();
     emit({{"type","ready"},{"state_clock",state_clock},{"gravity_seed_transport",sonar_clock ? "first_sensor_direction_v1" : "first_image_direction_v1"},{"gravity_seed_required",require_gravity_seed},{"protocol",1},{"inertial_fused",true},{"map_export",sonar_clock ? Json(nullptr) : Json("segment_landmark_archive_ply_1")},
           {"sonar_clock_transport",sonar_clock ? Json("ordered_sonar_state_v1") : Json(nullptr)},
+          {"imu_noise_model","continuous_white_midpoint_acceleration_bridge_v1"},
           {"dvl_measurement_transport",dvl_enabled ? Json("body_velocity_gyro_covariance_v1") : Json(nullptr)},
           {"pressure_measurement_transport",pressure_enabled ? Json("height_unknown_datum_v1") : Json(nullptr)},
           {"sensor_state_transport",ordered_auxiliary ? Json("ordered_camera_auxiliary_states_v1") : Json(nullptr)},
-          {"sonar_snapshot_transport",sonar_enabled ? Json("exact_image_track_snapshot_v1") : Json(nullptr)},{"joint_sonar_enabled",sonar_enabled},{"sonar_auxiliary_transport",auxiliary_enabled ? Json("ordered_imu_state_v1") : Json(nullptr)},
+          {"sonar_snapshot_transport",sonar_enabled && !ground_enabled ? Json("exact_image_track_snapshot_v1") : Json(nullptr)},{"joint_sonar_enabled",sonar_enabled && !ground_enabled},{"sonar_auxiliary_transport",auxiliary_enabled ? Json("ordered_imu_state_v1") : Json(nullptr)},
           {"terrain_ping_transport",terrain_enabled ? Json("exact_sensor_range_v1") : Json(nullptr)},
+          {"ground_transport",ground_enabled ? Json("exact_beam_entries_v1") : Json(nullptr)},
           {"image_ping_transport","exact_stamp_range_v1"},{"ping_fused",false},{"joint_ping_enabled",joint_enabled},
           {"opencv_threads",1},{"estimation_threads",2},
           {"keyframe_hold_frames",config.vio_min_frames_after_kf},
           {"feature_grid",config.optical_flow_detection_grid_size},{"max_recent_states",config.vio_max_states},
           {"raw_resolution",{c.width,c.height}},
           {"processed_resolution",{c.processed_width,c.processed_height}},
-          {"scope",sonar_clock ? (terrain_enabled ? "experimental sonar-inertial with local planar range hypotheses; no camera frontend" : "experimental sonar-inertial state estimation; no terrain or camera frontend") : "experimental local visual-inertial odometry with sparse landmark archive"}});
-    int64_t imu_stamp=0,image_stamp=0,event_stamp=0,dvl_stamp=0,pressure_stamp=0,range_stamp=0;bool auxiliary_since_image=false;
+          {"scope",sonar_clock ? (ground_enabled ? "experimental raw sonar ground-plane and inertial estimation; no camera frontend" : terrain_enabled ? "experimental sonar-inertial with local planar range hypotheses; no camera frontend" : "experimental sonar-inertial state estimation; no terrain or camera frontend") : "experimental local visual-inertial odometry with sparse landmark archive"}});
+    int64_t imu_stamp=0,image_stamp=0,event_stamp=0,dvl_stamp=0,pressure_stamp=0,range_stamp=0,ground_stamp=0;bool auxiliary_since_image=false;
     // Decode failures must be reported before unwinding joinable reader
     // threads. Otherwise std::thread destruction terminates the process and
     // hides the actual invalid-input reason from the owning segment.
@@ -465,15 +537,23 @@ int main(int argc,char** argv) {
       if(!std::cin)std::_Exit(0);
       auto type=u32(header),size=u32(header+4);
       if(type==3 && size==0)std::_Exit(0);
-      if((type!=1 && type!=2 && type!=4 && type!=5 && type!=6 && type!=7 && type!=8 && type!=9 && type!=10 && type!=11) ||
+      if((type!=1 && type!=2 && type!=4 && type!=5 && type!=6 && type!=7 && type!=8 && type!=9 && type!=10 && type!=11 && type!=12) ||
           (type==7 && !sonar_enabled) || (type==8 && !auxiliary_enabled && !sonar_clock && !ordered_auxiliary) ||
-          (type==9 && !dvl_enabled) || (type==10 && !pressure_enabled) || (type==11 && !terrain_enabled) || size>(type==7 ? posim_slam::sonarSnapshotLimit : type==9 ? 216 : std::max(uint32_t(56),uint32_t(c.width*c.height+32))))
+          (type==9 && !dvl_enabled) || (type==10 && !pressure_enabled) || (type==11 && !terrain_enabled) || (type==12 && !ground_enabled) || size>(type==12 ? 2608 : type==7 ? posim_slam::sonarSnapshotLimit : type==9 ? 216 : std::max(uint32_t(56),uint32_t(c.width*c.height+32))))
         fail("packet_size_or_type");
       if(terrain_enabled && type==5)fail("conflicting_ping_transport");
       if(sonar_clock && (type==2 || type==5))fail("camera_packet_in_sonar_clock");
+      if(ground_enabled && type==7)fail("ground_and_point_factors_are_exclusive");
       std::vector<char> bytes(size);std::cin.read(bytes.data(),size);
       if(!std::cin)fail("incomplete_packet");
-      if(type==11) {
+      if(type==12) {
+        auto packet=posim_slam::decodeGroundPacket(bytes,*ground_calibration,sonar_calibration->horizontal_fov);
+        const auto stamp=packet.observation.stamp;
+        if(stamp<=event_stamp || stamp<=ground_stamp)fail("reordered_ground_observation");
+        std::lock_guard<std::mutex> lock(ping_mutex);
+        if(pending_ground.size()>=8)fail("pending_ground_backlog");
+        ground_stamp=stamp;pending_ground.emplace(stamp,std::move(packet));
+      } else if(type==11) {
         if(size!=16)fail("terrain_ping_packet_size");
         const int64_t stamp=int64_t(u64(bytes.data()));const double range=number(bytes.data()+8);
         if(stamp<=0 || stamp<=event_stamp || stamp<=range_stamp || !std::isfinite(range) ||
@@ -507,6 +587,8 @@ int main(int argc,char** argv) {
           fail("auxiliary_sonar_clock_or_capacity");
         {
           std::lock_guard<std::mutex> lock(ping_mutex);
+          const auto ground=pending_ground.upper_bound(event_stamp);
+          if(ground!=pending_ground.end() && ground->first<stamp)fail("ground_observation_missing_state");
           if(terrain_enabled) {
             const auto range=image_pings.upper_bound(event_stamp);
             if(range!=image_pings.end() && range->first<stamp)fail("terrain_ping_missing_state");

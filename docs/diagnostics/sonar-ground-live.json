@@ -1,0 +1,183 @@
+{
+  "scope": "Experimental camera-free raw-ground versus no-ground comparison; same simulated terrain family",
+  "map_qualified": false,
+  "imu_noise_model": "continuous_white_midpoint_acceleration_bridge_v1",
+  "runs": {
+    "a": {
+      "control": {
+        "online_position_rmse_m": 0.05515040860295058,
+        "final_position_rmse_m": 0.05545025615078594,
+        "surface": {
+          "points": 795,
+          "within_10cm": 795,
+          "median": 0.011976740992975667,
+          "p90": 0.027912321766730145,
+          "maximum": 0.0786969170768639
+        },
+        "common_surface": {
+          "points": 920,
+          "within_10cm": 920,
+          "median": 0.011360195755477566,
+          "p90": 0.027058777983095843,
+          "maximum": 0.0786969170768639
+        },
+        "multi_frame_states": 0,
+        "input_manifest_sha256": "691b4bae3200200ecd18508fbe1b4150c8d7b8d8b4b121eaadda35bcf3699f07",
+        "worker_sha256": "3e4818299767810eac217dce74cf8b577e709e70763b84593de5a7ab92fd3d54"
+      },
+      "ground": {
+        "online_position_rmse_m": 1.0148816320615408,
+        "final_position_rmse_m": 1.0146089850926154,
+        "surface": {
+          "points": 774,
+          "within_10cm": 715,
+          "median": 0.024449706821831542,
+          "p90": 0.09560232673802176,
+          "maximum": 0.14827615012224352
+        },
+        "common_surface": {
+          "points": 920,
+          "within_10cm": 861,
+          "median": 0.02464664714851969,
+          "p90": 0.09117733800315672,
+          "maximum": 0.14827615012224352
+        },
+        "multi_frame_states": 11,
+        "input_manifest_sha256": "691b4bae3200200ecd18508fbe1b4150c8d7b8d8b4b121eaadda35bcf3699f07",
+        "worker_sha256": "3e4818299767810eac217dce74cf8b577e709e70763b84593de5a7ab92fd3d54"
+      }
+    },
+    "b": {
+      "control": {
+        "online_position_rmse_m": 0.019300058413434545,
+        "final_position_rmse_m": 0.018791589279971863,
+        "surface": {
+          "points": 994,
+          "within_10cm": 994,
+          "median": 0.009787673905662451,
+          "p90": 0.0240591101242699,
+          "maximum": 0.05751670389522864
+        },
+        "common_surface": {
+          "points": 1221,
+          "within_10cm": 1221,
+          "median": 0.00955815970421872,
+          "p90": 0.02332607576880509,
+          "maximum": 0.05751670389522864
+        },
+        "multi_frame_states": 0,
+        "input_manifest_sha256": "3d949db6e09eb1a85d65c41af1ed5153853a8454c970af3fa3ede26bd6586450",
+        "worker_sha256": "3e4818299767810eac217dce74cf8b577e709e70763b84593de5a7ab92fd3d54"
+      },
+      "ground": {
+        "online_position_rmse_m": 0.39094127334122747,
+        "final_position_rmse_m": 0.38957251154979017,
+        "surface": {
+          "points": 997,
+          "within_10cm": 997,
+          "median": 0.018674680711883603,
+          "p90": 0.043149329619322906,
+          "maximum": 0.06842423086836646
+        },
+        "common_surface": {
+          "points": 1221,
+          "within_10cm": 1221,
+          "median": 0.015856513093338055,
+          "p90": 0.0411208581274967,
+          "maximum": 0.06842423086836646
+        },
+        "multi_frame_states": 19,
+        "input_manifest_sha256": "3d949db6e09eb1a85d65c41af1ed5153853a8454c970af3fa3ede26bd6586450",
+        "worker_sha256": "3e4818299767810eac217dce74cf8b577e709e70763b84593de5a7ab92fd3d54"
+      }
+    },
+    "c": {
+      "control": {
+        "online_position_rmse_m": 0.016077269676928966,
+        "final_position_rmse_m": 0.015939042440711215,
+        "surface": {
+          "points": 673,
+          "within_10cm": 673,
+          "median": 0.009170980996095262,
+          "p90": 0.02155460855970554,
+          "maximum": 0.06309574908581805
+        },
+        "common_surface": {
+          "points": 840,
+          "within_10cm": 840,
+          "median": 0.008602645343001685,
+          "p90": 0.020569371570388895,
+          "maximum": 0.06309574908581805
+        },
+        "multi_frame_states": 0,
+        "input_manifest_sha256": "56f77d5f45ff99534e9fd761bb46196b2c50b4a5af3ef11cd54d48ba6c0b9357",
+        "worker_sha256": "3e4818299767810eac217dce74cf8b577e709e70763b84593de5a7ab92fd3d54"
+      },
+      "ground": {
+        "online_position_rmse_m": 1.3513040571163077,
+        "final_position_rmse_m": 1.3524342240921658,
+        "surface": {
+          "points": 680,
+          "within_10cm": 618,
+          "median": 0.039922076794651484,
+          "p90": 0.09728153205126477,
+          "maximum": 0.19037575064070697
+        },
+        "common_surface": {
+          "points": 840,
+          "within_10cm": 778,
+          "median": 0.040632980861107684,
+          "p90": 0.08194965384348722,
+          "maximum": 0.19037575064070697
+        },
+        "multi_frame_states": 10,
+        "input_manifest_sha256": "56f77d5f45ff99534e9fd761bb46196b2c50b4a5af3ef11cd54d48ba6c0b9357",
+        "worker_sha256": "3e4818299767810eac217dce74cf8b577e709e70763b84593de5a7ab92fd3d54"
+      }
+    },
+    "d": {
+      "control": {
+        "online_position_rmse_m": 0.0434851307791505,
+        "final_position_rmse_m": 0.044757893553576455,
+        "surface": {
+          "points": 658,
+          "within_10cm": 658,
+          "median": 0.00924349526519665,
+          "p90": 0.02164479519518145,
+          "maximum": 0.0489406167353588
+        },
+        "common_surface": {
+          "points": 846,
+          "within_10cm": 846,
+          "median": 0.008318110040148007,
+          "p90": 0.02119254480163558,
+          "maximum": 0.0489406167353588
+        },
+        "multi_frame_states": 0,
+        "input_manifest_sha256": "b88ac1119ebd5281f32100ac8731f4352a86bcc3bfe1ef4761c8d7e50eac1995",
+        "worker_sha256": "3e4818299767810eac217dce74cf8b577e709e70763b84593de5a7ab92fd3d54"
+      },
+      "ground": {
+        "online_position_rmse_m": 0.2166773275027106,
+        "final_position_rmse_m": 0.21634517200766262,
+        "surface": {
+          "points": 653,
+          "within_10cm": 653,
+          "median": 0.01267657527847906,
+          "p90": 0.03346766740350387,
+          "maximum": 0.05651875971071159
+        },
+        "common_surface": {
+          "points": 846,
+          "within_10cm": 846,
+          "median": 0.010720505631502508,
+          "p90": 0.03142233595253725,
+          "maximum": 0.05651875971071159
+        },
+        "multi_frame_states": 12,
+        "input_manifest_sha256": "b88ac1119ebd5281f32100ac8731f4352a86bcc3bfe1ef4761c8d7e50eac1995",
+        "worker_sha256": "3e4818299767810eac217dce74cf8b577e709e70763b84593de5a7ab92fd3d54"
+      }
+    }
+  }
+}

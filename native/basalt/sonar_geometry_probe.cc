@@ -27,6 +27,15 @@ int main() {
   assert((numeric-analytic).cwiseAbs().maxCoeff()<1e-8);
   auto exact=posim_slam::sonarPointRows(position,r,lever,mount,point,local.norm(),std::atan2(local.y(),local.x()),.2,10.,2.1,.35);
   assert(exact.residual.norm()<1e-12);
+  const double fov=2.0943951023931953;
+  const float endpoint=float(fov/2);
+  const float dx=std::cos(endpoint),dy=std::sin(endpoint);
+  const double measured=std::atan2(double(dy),double(dx));
+  assert(measured>fov/2 && posim_slam::sonarWithinFov(measured,fov));
+  assert(!posim_slam::sonarWithinFov(fov/2+1e-5,fov));
+  const auto boundary=posim_slam::sonarPointRows(V::Zero(),M::Identity(),V::Zero(),M::Identity(),
+    V(4*std::cos(measured),4*std::sin(measured),0),4.,measured,.2,10.,fov,.35);
+  assert(boundary.residual.norm()<1e-12);
   bool rejected=false;try{evaluate(position,r,position+r*(lever+mount*V(4,0,3)));}
   catch(const std::invalid_argument&){rejected=true;}assert(rejected);
   std::cout<<"PASS native sonar pose/point derivatives, exact residual and FOV rejection\n";

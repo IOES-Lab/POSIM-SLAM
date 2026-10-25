@@ -206,6 +206,11 @@ does not establish complete licensing compliance for a different SDK or build.
 
 ## Recorded pixel/IMU replay
 
+Experimental raw ground-entry transport and its recorded failure limits are
+described in [native ground fusion](../../docs/diagnostics/sonar-ground-live.md).
+실험용 원본 해저 진입 거리 전송과 기록 검증의 실패 한계는
+[네이티브 해저 융합](../../docs/diagnostics/sonar-ground-live.md)을 참고하세요.
+
 The same recipe builds `basalt_replay`. It accepts a recording directory with
 `calibration.json`, `imu.csv`, `frames.json` and grayscale PNG images. Camera
 intrinsics describe undistorted pinhole images. `T_i_c` transforms optical RDF
@@ -214,6 +219,13 @@ Gyro is rad/s, specific force is m/s², and all timestamps are integer nanosecon
 from one sensor clock. The calibration requires explicit continuous noise
 densities and bias random walks; a zero sensor covariance is not calibration.
 No pose/orientation truth channel is accepted.
+
+The research worker integrates continuous noise over each actual IMU interval,
+including the position/velocity correlation within a single sample interval.
+See [interval model and regression checks](../../docs/diagnostics/imu-interval-noise.md).
+
+연구용 작업자는 실제 IMU 구간마다 연속 잡음을 적분하며, 한 샘플 구간 내부의
+위치·속도 상관을 포함합니다. [구간 모델과 회귀 검사](../../docs/diagnostics/imu-interval-noise.md)를 참고하세요.
 
 ```sh
 python tools/replay_vio.py --binary /absolute/new-build/build/basalt_replay \

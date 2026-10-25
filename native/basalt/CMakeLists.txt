@@ -21,6 +21,8 @@ find_package(Python3 COMPONENTS Interpreter REQUIRED)
 set(JOINT_HEADERS ${CMAKE_CURRENT_BINARY_DIR}/joint_include)
 set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS
  ${CMAKE_CURRENT_SOURCE_DIR}/prepare_joint_headers.py
+ ${CMAKE_CURRENT_SOURCE_DIR}/imu_continuous.inc
+ ${SOURCE_ROOT}/headers/include/basalt/imu/preintegration.h
  ${B}/include/basalt/linearization/landmark_block.hpp
  ${B}/include/basalt/linearization/landmark_block_abs_dynamic.hpp
  ${B}/include/basalt/vi_estimator/ba_base.h
@@ -76,6 +78,9 @@ target_compile_options(basalt_core PRIVATE -Wno-error=missing-template-arg-list-
 target_link_libraries(basalt_core PUBLIC Eigen3::Eigen TBB::tbb fmt::fmt opengv ${OpenCV_LIBS})
 add_executable(basalt_synthetic_probe synthetic_probe.cc)
 target_link_libraries(basalt_synthetic_probe PRIVATE basalt_core)
+add_executable(basalt_imu_interval_probe imu_interval_probe.cc)
+target_link_libraries(basalt_imu_interval_probe PRIVATE basalt_core)
+target_compile_options(basalt_imu_interval_probe PRIVATE -UNDEBUG)
 add_executable(basalt_replay replay.cc)
 target_link_libraries(basalt_replay PRIVATE basalt_core)
 add_executable(basalt_stream stream.cc)

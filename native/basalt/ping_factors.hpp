@@ -3,6 +3,7 @@
 #include "ping_owned_group.hpp"
 #include "ping_prior.hpp"
 #include "ping_commit.hpp"
+#include "sonar_ground_store.hpp"
 
 namespace posim_slam {
 // One store per estimator stream, used exclusively by its owner thread. Keep
@@ -16,11 +17,12 @@ class PingFactorStore {
     bool range_only=false;
   };
  public:
-  explicit PingFactorStore(basalt::BundleAdjustmentBase<double>& owner):owner_(owner) {}
+  explicit PingFactorStore(basalt::BundleAdjustmentBase<double>& owner):owner_(owner),ground_(owner) {}
   PingFactorStore(const PingFactorStore&)=delete;
   PingFactorStore& operator=(const PingFactorStore&)=delete;
-  size_t size() const {return definitions_.size();}
-  int64_t lastObservation() const {return last_observation_;}
+  size_t size() const {return definitions_.size()+ground_.size();}
+  GroundFactorStore& ground() {return ground_;}
+  int64_t lastObservation() const {return std::max(last_observation_,ground_.lastObservation());}
 
   void add(const basalt::AbsOrderMap& order,int plane_id,const Vec3& normal,double distance,
       const std::set<basalt::KeypointId>& ids,const OwnedPingObservation& observation,
@@ -76,6 +78,7 @@ class PingFactorStore {
     if(owner_.posim_ping_trial_active)throw std::logic_error("ping_factors_during_trial");
     std::vector<JointPingGroupSpec> result;
     for(const auto& [id,definition]:definitions_)result.push_back(build(order,id,definition));
+    const auto ground=ground_.specs(order);result.insert(result.end(),ground.begin(),ground.end());
     return result;
   }
 
@@ -100,7 +103,7 @@ class PingFactorStore {
     auto with_acoustic=[&] {if(sonar)sonar->retireWith(*prepared.acoustic,install);else install();};
     auto with_velocity=[&] {if(dvl)dvl->retireWith(*prepared.dvl,with_acoustic);else with_acoustic();};
     if(pressure)pressure->retireWith(*prepared.pressure,prepared.pressure_prior,with_velocity);else with_velocity();
-    for(int id:prepared.retirement.planes)definitions_.erase(id);
+    for(int id:prepared.retirement.planes){definitions_.erase(id);ground_.erase(id);}
     return std::move(prepared.retirement);
   }
  private:
@@ -125,5 +128,6 @@ class PingFactorStore {
   basalt::BundleAdjustmentBase<double>& owner_;
   std::map<int,Definition> definitions_;
   int64_t last_observation_=0;
+  GroundFactorStore ground_;
 };
 }
