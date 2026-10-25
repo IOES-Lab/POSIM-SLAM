@@ -6,6 +6,7 @@ import subprocess
 import unittest
 import numpy as np
 from posim_slam.inertial import exp_so3
+from posim_slam.inertial_alignment import log_so3
 from posim_slam.ping_joint import eliminate_patch
 from posim_slam.sonar_ground_joint import linearize_ground_patch
 
@@ -99,6 +100,45 @@ class NativeGroundTests(unittest.TestCase):
         if result.returncode:raise RuntimeError(result.stderr)
         return json.loads(result.stdout)
 
+    def test_updated_plane_keeps_flat_yaw_unobservable(self):
+        a=fixture(flat=True)
+        turn=np.array([.02,-.03,0.]);a['plane_normal']=exp_so3(turn)@a['plane_normal']
+        delta=np.r_[linearize_ground_patch(**a)['normal_basis'].T@(-turn),0.]
+        native=self.native(a,plane_delta=delta,check_derivatives=True)
+        h=np.asarray(native['reduced_H'])
+        numerical=np.asarray(native['numerical_jacobian'])
+        for i in range(4):
+            np.testing.assert_allclose(numerical[:,[6*i,6*i+1,6*i+5]],0.,atol=2e-7)
+            np.testing.assert_allclose(h[:,[6*i,6*i+1,6*i+5]],0.,atol=1e-8)
+        self.assertLess(native['maximum_derivative_error'],2e-6)
+
+    def test_derivatives_follow_accumulated_pose_and_plane_coordinates(self):
+        a=fixture()
+        for i,state in a['states'].items():state['delta']=np.array([.01,-.02,.015,.02*i,-.015*i,.01*i])
+        native=self.native(a,plane_delta=[.025,-.015,.03],check_derivatives=True,prior_sqrt=np.eye(24)*2)
+        self.assertLess(native['maximum_derivative_error'],2e-6)
+        h=np.asarray(native['reduced_H']);epsilon=1e-6
+        # Independently express a rigid world transform in the retained
+        # additive rotation coordinates. Eliminating an unknown plane must
+        # preserve all six global geometric gauges at the updated state.
+        for axis in np.eye(3):
+            turn=[]
+            for state in a['states'].values():
+                delta=state['delta'];rotation=exp_so3(delta[3:])
+                coordinate=(log_so3(exp_so3(epsilon*axis)@rotation)-
+                    log_so3(exp_so3(-epsilon*axis)@rotation))/(2*epsilon)
+                turn.extend(np.r_[np.cross(axis,state['position']+delta[:3]),coordinate])
+            for gauge in (np.tile(np.r_[axis,np.zeros(3)],4),np.asarray(turn)):
+                self.assertLess(np.linalg.norm(h@gauge)/np.linalg.norm(h),1e-9)
+        delta=np.concatenate([s['delta'] for s in a['states'].values()])
+        j=np.asarray(native['jacobian']);r=np.asarray(native['residual']).ravel()
+        whole=np.vstack([np.c_[2*np.eye(24),np.zeros((24,3))],j]);res=np.r_[2*delta,r]
+        permutation=list(range(6,24))+list(range(6))+list(range(24,27))
+        marginal=eliminate_patch(whole[:,permutation],res,retained_columns=18)
+        expected_b=marginal['residual']-marginal['jacobian']@delta[6:]
+        np.testing.assert_allclose(native['marginal_H'],marginal['jacobian'].T@marginal['jacobian'],atol=2e-8)
+        np.testing.assert_allclose(np.asarray(native['marginal_g']).ravel(),marginal['jacobian'].T@expected_b,atol=2e-8)
+
     def test_native_matches_reference_and_retirement(self):
         a=fixture();a['observations'][1]['range_m']+=.01
         py=linearize_ground_patch(**a);change=np.eye(27)
@@ -140,7 +180,10 @@ class NativeGroundTests(unittest.TestCase):
             before.append(abs(a['states'][i]['position'][2]-truth[i]['position'][2]))
             p=np.array(result['states'][str(i)]['position']).ravel()
             after.append(abs(p[2]-truth[i]['position'][2]))
-            np.testing.assert_allclose(p[:2],truth[i]['position'][:2],atol=1e-10)
+            # The fitted plane can tilt during joint estimation. Its current
+            # tangent, not the initially horizontal reference, determines the
+            # unobservable directions (checked separately above).
+            self.assertLess(np.linalg.norm(p-truth[i]['position']),before[-1])
             self.assertLess(np.linalg.norm(np.array(result['states'][str(i)]['attitude'])-np.eye(3)),
                             .75*np.linalg.norm(a['states'][i]['attitude']-np.eye(3)))
         # Finite range noise and the explicit pose prior trade height against

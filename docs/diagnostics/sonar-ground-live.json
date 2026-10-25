@@ -2,6 +2,7 @@
   "scope": "Experimental camera-free raw-ground versus no-ground comparison; same simulated terrain family",
   "map_qualified": false,
   "imu_noise_model": "continuous_white_midpoint_acceleration_bridge_v1",
+  "ground_linearization": "current_geometry_additive_rotation_coordinates",
   "runs": {
     "a": {
       "control": {
@@ -23,28 +24,28 @@
         },
         "multi_frame_states": 0,
         "input_manifest_sha256": "691b4bae3200200ecd18508fbe1b4150c8d7b8d8b4b121eaadda35bcf3699f07",
-        "worker_sha256": "3e4818299767810eac217dce74cf8b577e709e70763b84593de5a7ab92fd3d54"
+        "worker_sha256": "f65661736462b619e2194c3c16c7433b378e7b508d9744ff89442be874d644d6"
       },
       "ground": {
-        "online_position_rmse_m": 1.0148816320615408,
-        "final_position_rmse_m": 1.0146089850926154,
+        "online_position_rmse_m": 1.0849266053105775,
+        "final_position_rmse_m": 1.0847402348474116,
         "surface": {
-          "points": 774,
-          "within_10cm": 715,
-          "median": 0.024449706821831542,
-          "p90": 0.09560232673802176,
-          "maximum": 0.14827615012224352
+          "points": 763,
+          "within_10cm": 688,
+          "median": 0.02534355369878568,
+          "p90": 0.09916320885187188,
+          "maximum": 0.14830861775043794
         },
         "common_surface": {
           "points": 920,
-          "within_10cm": 861,
-          "median": 0.02464664714851969,
-          "p90": 0.09117733800315672,
-          "maximum": 0.14827615012224352
+          "within_10cm": 843,
+          "median": 0.024443642831276896,
+          "p90": 0.09571052397039255,
+          "maximum": 0.14830861775043794
         },
         "multi_frame_states": 11,
         "input_manifest_sha256": "691b4bae3200200ecd18508fbe1b4150c8d7b8d8b4b121eaadda35bcf3699f07",
-        "worker_sha256": "3e4818299767810eac217dce74cf8b577e709e70763b84593de5a7ab92fd3d54"
+        "worker_sha256": "f65661736462b619e2194c3c16c7433b378e7b508d9744ff89442be874d644d6"
       }
     },
     "b": {
@@ -67,28 +68,28 @@
         },
         "multi_frame_states": 0,
         "input_manifest_sha256": "3d949db6e09eb1a85d65c41af1ed5153853a8454c970af3fa3ede26bd6586450",
-        "worker_sha256": "3e4818299767810eac217dce74cf8b577e709e70763b84593de5a7ab92fd3d54"
+        "worker_sha256": "f65661736462b619e2194c3c16c7433b378e7b508d9744ff89442be874d644d6"
       },
       "ground": {
-        "online_position_rmse_m": 0.39094127334122747,
-        "final_position_rmse_m": 0.38957251154979017,
+        "online_position_rmse_m": 0.35550888252364204,
+        "final_position_rmse_m": 0.3544424948467786,
         "surface": {
-          "points": 997,
-          "within_10cm": 997,
-          "median": 0.018674680711883603,
-          "p90": 0.043149329619322906,
-          "maximum": 0.06842423086836646
+          "points": 993,
+          "within_10cm": 993,
+          "median": 0.018324261015493053,
+          "p90": 0.040805807351796244,
+          "maximum": 0.06826529255676528
         },
         "common_surface": {
           "points": 1221,
           "within_10cm": 1221,
-          "median": 0.015856513093338055,
-          "p90": 0.0411208581274967,
-          "maximum": 0.06842423086836646
+          "median": 0.014980927952612522,
+          "p90": 0.0393948575808978,
+          "maximum": 0.06826529255676528
         },
         "multi_frame_states": 19,
         "input_manifest_sha256": "3d949db6e09eb1a85d65c41af1ed5153853a8454c970af3fa3ede26bd6586450",
-        "worker_sha256": "3e4818299767810eac217dce74cf8b577e709e70763b84593de5a7ab92fd3d54"
+        "worker_sha256": "f65661736462b619e2194c3c16c7433b378e7b508d9744ff89442be874d644d6"
       }
     },
     "c": {
@@ -111,28 +112,28 @@
         },
         "multi_frame_states": 0,
         "input_manifest_sha256": "56f77d5f45ff99534e9fd761bb46196b2c50b4a5af3ef11cd54d48ba6c0b9357",
-        "worker_sha256": "3e4818299767810eac217dce74cf8b577e709e70763b84593de5a7ab92fd3d54"
+        "worker_sha256": "f65661736462b619e2194c3c16c7433b378e7b508d9744ff89442be874d644d6"
       },
       "ground": {
-        "online_position_rmse_m": 1.3513040571163077,
-        "final_position_rmse_m": 1.3524342240921658,
+        "online_position_rmse_m": 1.3891096905100573,
+        "final_position_rmse_m": 1.3900869895274182,
         "surface": {
-          "points": 680,
-          "within_10cm": 618,
-          "median": 0.039922076794651484,
-          "p90": 0.09728153205126477,
-          "maximum": 0.19037575064070697
+          "points": 684,
+          "within_10cm": 619,
+          "median": 0.035260375168344876,
+          "p90": 0.09816128957417199,
+          "maximum": 0.1953113076981821
         },
         "common_surface": {
           "points": 840,
-          "within_10cm": 778,
-          "median": 0.040632980861107684,
-          "p90": 0.08194965384348722,
-          "maximum": 0.19037575064070697
+          "within_10cm": 775,
+          "median": 0.03652224654663251,
+          "p90": 0.08170479506902854,
+          "maximum": 0.1953113076981821
         },
         "multi_frame_states": 10,
         "input_manifest_sha256": "56f77d5f45ff99534e9fd761bb46196b2c50b4a5af3ef11cd54d48ba6c0b9357",
-        "worker_sha256": "3e4818299767810eac217dce74cf8b577e709e70763b84593de5a7ab92fd3d54"
+        "worker_sha256": "f65661736462b619e2194c3c16c7433b378e7b508d9744ff89442be874d644d6"
       }
     },
     "d": {
@@ -155,28 +156,28 @@
         },
         "multi_frame_states": 0,
         "input_manifest_sha256": "b88ac1119ebd5281f32100ac8731f4352a86bcc3bfe1ef4761c8d7e50eac1995",
-        "worker_sha256": "3e4818299767810eac217dce74cf8b577e709e70763b84593de5a7ab92fd3d54"
+        "worker_sha256": "f65661736462b619e2194c3c16c7433b378e7b508d9744ff89442be874d644d6"
       },
       "ground": {
-        "online_position_rmse_m": 0.2166773275027106,
-        "final_position_rmse_m": 0.21634517200766262,
+        "online_position_rmse_m": 0.19692919082250765,
+        "final_position_rmse_m": 0.19678171646313056,
         "surface": {
-          "points": 653,
-          "within_10cm": 653,
-          "median": 0.01267657527847906,
-          "p90": 0.03346766740350387,
-          "maximum": 0.05651875971071159
+          "points": 656,
+          "within_10cm": 656,
+          "median": 0.012724017597845205,
+          "p90": 0.0316001592432047,
+          "maximum": 0.05487552516201322
         },
         "common_surface": {
           "points": 846,
           "within_10cm": 846,
-          "median": 0.010720505631502508,
-          "p90": 0.03142233595253725,
-          "maximum": 0.05651875971071159
+          "median": 0.010470907849799038,
+          "p90": 0.030125276108543625,
+          "maximum": 0.05487552516201322
         },
         "multi_frame_states": 12,
         "input_manifest_sha256": "b88ac1119ebd5281f32100ac8731f4352a86bcc3bfe1ef4761c8d7e50eac1995",
-        "worker_sha256": "3e4818299767810eac217dce74cf8b577e709e70763b84593de5a7ab92fd3d54"
+        "worker_sha256": "f65661736462b619e2194c3c16c7433b378e7b508d9744ff89442be874d644d6"
       }
     }
   }

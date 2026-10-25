@@ -2,6 +2,7 @@
 #pragma once
 #include "ping_linearization.hpp"
 #include "ping_marginal.hpp"
+#include <basalt/utils/sophus_utils.hpp>
 
 namespace posim_slam {
 struct GroundEntryObservation {
@@ -60,8 +61,16 @@ inline JointPingGroupSpec makeOwnedGroundGroup(basalt::BundleAdjustmentBase<doub
     NativePingGroup out;out.reference=reference;
     out.jacobian=Eigen::MatrixXd::Zero(count,order.total_size+3);
     out.residual=Eigen::VectorXd::Zero(count);Eigen::Index row=0;
+    // The plane has no retained prior: it is eliminated when its group retires.
+    // Its fixed reference defines additive coordinates, not frozen geometry.
+    // Differentiate Exp(B_ref * delta) n_ref at the current accumulated delta.
+    const auto reference_basis=planeBasis(reference.normal);
+    Mat3 plane_left;Sophus::leftJacobianSO3(reference_basis*plane.delta.head<2>(),plane_left);
+    const Eigen::Matrix2d plane_coordinates=planeBasis(plane.normal).transpose()*plane_left*reference_basis;
     for(const auto& o:observations) {
       const auto state=owner.getPoseStateWithLin(o.stamp);const auto pose=state.getPose();
+      Mat3 pose_coordinates=Mat3::Identity();
+      if(state.isLinearized())Sophus::leftJacobianSO3(state.getDelta().tail<3>(),pose_coordinates);
       const auto sensor=pose*calibration.mount;
       const Vec3 local_normal=sensor.rotationMatrix().transpose()*plane.normal;
       const double a=plane.distance-plane.normal.dot(sensor.translation());
@@ -84,12 +93,16 @@ inline JointPingGroupSpec makeOwnedGroundGroup(basalt::BundleAdjustmentBase<doub
           throw std::invalid_argument("ground_first_return_branch_changed");
         if(current.prediction<calibration.minimum || current.prediction>calibration.maximum)
           throw std::invalid_argument("predicted_ground_out_of_range");
-        // Current residual and fixed-reference geometric derivatives match the
-        // surrounding Basalt marginal-prior convention (map-frame LEFT turns).
-        const auto fixed=pingRange(state.getPoseLin(),calibration.mount,ray,reference.normal,reference.distance,0.);
+        // Active nonlinear measurements use current geometry. Retained pose
+        // states add increments to an accumulated rotation vector, so apply
+        // its left Jacobian rather than assuming a fresh zero increment.
+        // Marginalization separately rebases the resulting linear prior.
         out.residual[row]=current.prediction-o.ranges[k];
-        out.jacobian.block<1,6>(row,order.abs_order_map.at(o.stamp).first)=fixed.pose_jacobian;
-        out.jacobian.block<1,3>(row,order.total_size)=fixed.plane_jacobian;
+        const auto column=order.abs_order_map.at(o.stamp).first;
+        out.jacobian.block<1,3>(row,column)=current.pose_jacobian.head<3>();
+        out.jacobian.block<1,3>(row,column+3)=current.pose_jacobian.tail<3>()*pose_coordinates;
+        out.jacobian.block<1,2>(row,order.total_size)=current.plane_jacobian.head<2>()*plane_coordinates;
+        out.jacobian(row,order.total_size+2)=current.plane_jacobian[2];
       }
     }
     out.residual=lower.triangularView<Eigen::Lower>().solve(out.residual).eval();

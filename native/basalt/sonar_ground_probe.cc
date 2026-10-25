@@ -41,6 +41,11 @@ int main() {try {
     const Sophus::SE3d pose(rotation,vector3(state.at("position")));
     if(!owner.frame_poses.emplace(stamp,basalt::PoseStateWithLin<double>(stamp,pose,true)).second)
       throw std::invalid_argument("probe_duplicate_state");
+    if(state.contains("delta")) {
+      const auto values=state.at("delta").get<std::vector<double>>();
+      if(values.size()!=6)throw std::invalid_argument("probe_pose_delta");
+      owner.frame_poses.at(stamp).applyInc(Eigen::Map<const Eigen::Matrix<double,6,1>>(values.data()));
+    }
     order.abs_order_map[stamp]={order.total_size,6};order.total_size+=6;++order.items;
     const auto ranges=item.at("range_m").get<std::vector<double>>(),az=item.at("azimuth_rad").get<std::vector<double>>();
     observations.push_back({stamp,item.at("beam_ids").get<std::vector<int>>(),
@@ -49,12 +54,33 @@ int main() {try {
   GroundEntryCalibration c{Sophus::SE3d(Mat3(matrix(input.at("sonar_to_imu"))),vector3(input.at("imu_to_sonar"))),
     input.at("vertical_fov"),input.at("range_min"),input.at("range_max")};
   owner.posim_ping_planes.set(0,vector3(input.at("plane_normal")),input.at("plane_distance"));
+  if(input.contains("plane_delta"))owner.posim_ping_planes.apply(0,vector3(input.at("plane_delta")));
   const auto group=makeOwnedGroundGroup(owner,order,0,c,observations,matrix(input.at("measurement_covariance")));
   const auto raw=group.build({});const auto reduced=eliminateJointPatch(raw.jacobian,raw.residual,order.total_size);
   Json output={{"jacobian",jsonMatrix(raw.jacobian)},{"residual",jsonMatrix(raw.residual)},
     {"reduced_H",jsonMatrix(reduced.jacobian.transpose()*reduced.jacobian)},
     {"reduced_g",jsonMatrix(reduced.jacobian.transpose()*reduced.residual)},
     {"nuisance_rank",reduced.nuisance_rank}};
+  if(input.value("check_derivatives",false)) {
+    constexpr double epsilon=1e-6;
+    Eigen::MatrixXd numerical(raw.jacobian.rows(),raw.jacobian.cols());
+    for(Eigen::Index k=0;k<numerical.cols();++k) {
+      Eigen::VectorXd values[2];
+      for(int sign=0;sign<2;++sign) {
+        owner.backup();const double step=(sign?1.:-1.)*epsilon;
+        if(k<Eigen::Index(order.total_size)) {
+          Eigen::Matrix<double,6,1> delta=Eigen::Matrix<double,6,1>::Zero();delta[k%6]=step;
+          owner.frame_poses.at(observations[k/6].stamp).applyInc(delta);
+        } else {
+          Vec3 delta=Vec3::Zero();delta[k-order.total_size]=step;owner.posim_ping_planes.apply(0,delta);
+        }
+        values[sign]=group.build({}).residual;owner.restore();
+      }
+      numerical.col(k)=(values[1]-values[0])/(2*epsilon);
+    }
+    output["numerical_jacobian"]=jsonMatrix(numerical);
+    output["maximum_derivative_error"]=(numerical-raw.jacobian).cwiseAbs().maxCoeff();
+  }
   if(input.contains("prior_sqrt")) {
     basalt::MargLinData<double> prior;prior.is_sqrt=true;prior.order=order;
     prior.H=matrix(input.at("prior_sqrt"));prior.b=Eigen::VectorXd::Zero(prior.H.rows());

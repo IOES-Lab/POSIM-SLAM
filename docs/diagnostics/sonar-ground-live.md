@@ -9,6 +9,12 @@ are added. This mode is not qualified for application use.**
 자세와 미지 국소 평면을 공동 최적화합니다. **네 기록 모두 해저 제약을 추가하면
 위치 오차가 커집니다. 앱 사용을 위한 검증 기준을 통과하지 못했습니다.**
 
+Active ground rows use current geometry and the accumulated rotation-coordinate
+Jacobians. [Linearization and numerical checks](sonar-ground-linearization.md).
+
+활성 해저 제약은 현재 형상과 누적 회전 좌표의 야코비안을 사용합니다.
+[선형화와 수치 검사](sonar-ground-linearization.md).
+
 ## Inputs and ownership / 입력과 관측 관리
 
 `LiveClient.ground` negotiates `exact_beam_entries_v1` and submits a bounded
@@ -60,10 +66,10 @@ surface error is p90 distance to the seabed, not obstacle accuracy or coverage.
 
 | Record / 기록 | Position / 위치 (m) | Surface / 표면 (cm) |
 | --- | ---: | ---: |
-| A | 0.055 / 1.015 | 2.71 / 9.12 |
-| B | 0.019 / 0.391 | 2.33 / 4.11 |
-| C | 0.016 / 1.351 | 2.06 / 8.19 |
-| D | 0.043 / 0.217 | 2.12 / 3.14 |
+| A | 0.055 / 1.085 | 2.71 / 9.57 |
+| B | 0.019 / 0.356 | 2.33 / 3.94 |
+| C | 0.016 / 1.389 | 2.06 / 8.17 |
+| D | 0.043 / 0.197 | 2.12 / 3.01 |
 
 The control demonstrates useful conditional seabed samples from IMU/DVL/pressure
 poses. It does not demonstrate terrain-aided localization, obstacle mapping or
