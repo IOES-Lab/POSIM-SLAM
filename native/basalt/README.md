@@ -8,6 +8,14 @@ biases. `basalt_stream` and `LiveClient` provide the live worker interface; the
 host application supplies ROS transport, registration and session supervision.
 The worker maintains a sparse segment map without loop closure.
 
+The build-local adapter maps initial gyro/accelerometer information weights
+to their physical state coordinates. Fresh builds check the actual constructor
+before visual-inertial qualification. [Initial bias prior and recorded limits](../../docs/diagnostics/imu-initial-prior.md).
+
+빌드 전용 어댑터는 초기 자이로·가속도계 정보 가중치를 해당 물리 상태 좌표에
+연결합니다. 새 빌드는 시각·관성 검사 전에 실제 생성자를 검사합니다.
+[초기 바이어스 사전정보와 기록 검증 한계](../../docs/diagnostics/imu-initial-prior.md).
+
 The experimental `state_clock: "sonar"` worker accepts raw IMU and ordered
 range/bearing track snapshots without camera calibration, pixels or an optical
 frontend. Its calibration schema is `posim-slam-sonar-inertial-recording-1`;

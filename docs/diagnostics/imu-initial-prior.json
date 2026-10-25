@@ -1,0 +1,2497 @@
+{
+  "scope": "Initial bias weight mapping correction; recorded SLAM remains unqualified",
+  "map_qualified": false,
+  "initial_weights": {
+    "gyro": 100,
+    "accel": 10,
+    "values_changed": false
+  },
+  "runs": {
+    "a": {
+      "plain": {
+        "scope": "Native joint-ground versus no-ground control; unqualified recorded-terrain experiment",
+        "map_qualified": false,
+        "voxel_m": 0.1,
+        "common_raw_entries": 920,
+        "runs": [
+          {
+            "name": "control",
+            "final_pose_metrics": {
+              "evaluated": true,
+              "states": 227,
+              "duration_s": 69.0,
+              "evaluation_alignment": {
+                "rotation": [
+                  [
+                    -0.9480468014495969,
+                    -0.3181308885681939,
+                    0.0
+                  ],
+                  [
+                    0.3181308885681939,
+                    -0.9480468014495969,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    0.0,
+                    1.0
+                  ]
+                ],
+                "translation": [
+                  -0.04553196378195211,
+                  0.014469575297186543,
+                  -0.1934076270728207
+                ],
+                "scale": 1.0
+              },
+              "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+              "position_rmse_m": 0.05447022360957584,
+              "position_max_m": 0.123836322428419,
+              "rotation_rmse_rad": 0.03913126528647011,
+              "rotation_max_rad": 0.07315671813023034,
+              "truth_distance_m": 16.560935542014835,
+              "estimated_distance_m": 16.580079283548326,
+              "rpe_1s_pairs": 212,
+              "rpe_1s_position_rmse_m": 0.0037196906914829407,
+              "rpe_1s_rotation_rmse_rad": 0.0024726692300921856,
+              "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+            },
+            "online_pose_metrics": {
+              "evaluated": true,
+              "states": 227,
+              "duration_s": 69.0,
+              "evaluation_alignment": {
+                "rotation": [
+                  [
+                    -0.9480495662959296,
+                    -0.31812264906180404,
+                    0.0
+                  ],
+                  [
+                    0.31812264906180404,
+                    -0.9480495662959296,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    0.0,
+                    1.0
+                  ]
+                ],
+                "translation": [
+                  -0.04553197918473933,
+                  0.014469693841718102,
+                  -0.19340769383233386
+                ],
+                "scale": 1.0
+              },
+              "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+              "position_rmse_m": 0.054181237246910624,
+              "position_max_m": 0.12426974177483581,
+              "rotation_rmse_rad": 0.03818569061597501,
+              "rotation_max_rad": 0.07316540907195863,
+              "truth_distance_m": 16.560935542014835,
+              "estimated_distance_m": 16.600737544808304,
+              "rpe_1s_pairs": 212,
+              "rpe_1s_position_rmse_m": 0.00482080774395323,
+              "rpe_1s_rotation_rmse_rad": 0.0026690138857907485,
+              "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+            },
+            "surface_distance_m": {
+              "points": 795,
+              "within_10cm": 795,
+              "median": 0.013305900647061086,
+              "p90": 0.02844614720638454,
+              "maximum": 0.08333459323222102
+            },
+            "common_raw_surface_distance_m": {
+              "points": 920,
+              "within_10cm": 920,
+              "median": 0.0126528268296246,
+              "p90": 0.027785288796083638,
+              "maximum": 0.08333459323222102
+            },
+            "raw_entries": 920,
+            "ground_registered": 0,
+            "multi_frame_states": 0
+          },
+          {
+            "name": "ground",
+            "final_pose_metrics": {
+              "evaluated": true,
+              "states": 227,
+              "duration_s": 69.0,
+              "evaluation_alignment": {
+                "rotation": [
+                  [
+                    -0.9480468014495969,
+                    -0.3181308885681939,
+                    0.0
+                  ],
+                  [
+                    0.3181308885681939,
+                    -0.9480468014495969,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    0.0,
+                    1.0
+                  ]
+                ],
+                "translation": [
+                  -0.04553196378195211,
+                  0.014469575297186543,
+                  -0.1934076270728207
+                ],
+                "scale": 1.0
+              },
+              "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+              "position_rmse_m": 0.9545377327783267,
+              "position_max_m": 2.068738532033672,
+              "rotation_rmse_rad": 0.6682156777291737,
+              "rotation_max_rad": 1.1597202005379206,
+              "truth_distance_m": 16.560935542014835,
+              "estimated_distance_m": 16.60688935827553,
+              "rpe_1s_pairs": 212,
+              "rpe_1s_position_rmse_m": 0.005480278170781303,
+              "rpe_1s_rotation_rmse_rad": 0.02012513583197017,
+              "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+            },
+            "online_pose_metrics": {
+              "evaluated": true,
+              "states": 227,
+              "duration_s": 69.0,
+              "evaluation_alignment": {
+                "rotation": [
+                  [
+                    -0.9480495662959296,
+                    -0.31812264906180404,
+                    0.0
+                  ],
+                  [
+                    0.31812264906180404,
+                    -0.9480495662959296,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    0.0,
+                    1.0
+                  ]
+                ],
+                "translation": [
+                  -0.04553197918473933,
+                  0.014469693841718102,
+                  -0.19340769383233386
+                ],
+                "scale": 1.0
+              },
+              "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+              "position_rmse_m": 0.9547988123347645,
+              "position_max_m": 2.0632660365505586,
+              "rotation_rmse_rad": 0.6674316427701165,
+              "rotation_max_rad": 1.1597288915580255,
+              "truth_distance_m": 16.560935542014835,
+              "estimated_distance_m": 16.601241344406887,
+              "rpe_1s_pairs": 212,
+              "rpe_1s_position_rmse_m": 0.00719660259324348,
+              "rpe_1s_rotation_rmse_rad": 0.021000514482020068,
+              "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+            },
+            "surface_distance_m": {
+              "points": 788,
+              "within_10cm": 741,
+              "median": 0.029488266374311182,
+              "p90": 0.08890423393334337,
+              "maximum": 0.14682338590637956
+            },
+            "common_raw_surface_distance_m": {
+              "points": 920,
+              "within_10cm": 872,
+              "median": 0.03080252221623026,
+              "p90": 0.0866607008273656,
+              "maximum": 0.14682338590637956
+            },
+            "raw_entries": 920,
+            "ground_registered": 20,
+            "multi_frame_states": 11
+          }
+        ],
+        "figure": {
+          "camera": {
+            "eye": [
+              0.0,
+              -4.0,
+              -0.15
+            ],
+            "camera_to_world": [
+              [
+                0.5773502691896258,
+                -0.7071067811865475,
+                0.408248290463863
+              ],
+              [
+                0.5773502691896257,
+                0.7071067811865476,
+                0.40824829046386296
+              ],
+              [
+                -0.5773502691896257,
+                0,
+                0.816496580927726
+              ]
+            ],
+            "horizontal_fov": 1.35,
+            "width": 1000,
+            "height": 800,
+            "stamp_ns": 82000000000,
+            "projection": "perspective",
+            "viewpoint": "isometric direction; positive X forward, Y left, Z up",
+            "partition": "inertial-init-60ad55d8655f4a6280e43f3b4a44c812",
+            "topic": "/validation/slam/isometric_rgb"
+          },
+          "marker_area_pt2": 64,
+          "height_limits_m": [
+            -3.8067570025157345,
+            -3.5088699548229085
+          ],
+          "colormap": "turbo"
+        },
+        "sha256": {
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/scripts/evaluate_sonar_ground_live.py": "3896f334efdca9e040a81c94049d16fe3ff2525464fc35021458cb3dfe0eaf13",
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/joint-sonar-normal-capture-20261026-a2/demo-runtime/4383e11f488b427b9cf1d95202849d37/orca5-seafloor.dae": "277c49dd9c3b2ec1c9d3c3754be9d076c7b0438ccd29e9ae11355869849fbeb2",
+          ".local/joint-sonar-normal-capture-20261026-a2/live-vio-probe/evaluation-inputs/truth.csv": "c59437efeffd3269a2f5c202ec1921367c4f2371c87061ae2b1be3ed4e7311f3",
+          ".local/joint-sonar-normal-capture-20261026-a2/live-vio-probe/evaluation-inputs/receipt.json": "815c48e245e2b31b69705cdab271c67da302298f6b423baa7dab02859ce215c9",
+          ".local/joint-sonar-normal-capture-20261026-a2/isometric-rgb.png": "7dbda63dccac3bbc383a799833ce8e12b58b30ea6245b001bf777161b439a4a4",
+          ".local/joint-sonar-normal-capture-20261026-a2/isometric-camera.json": "a91e5598dd456f99a08e08705eb3d97a9b21d33a48cdc9e8737f4ee15facbe63",
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/sonar-ground-live-20261026/a-control-plain-v9/receipt.json": "2da663b1d757dc53d11436b7f9f0d04074c63ef0bbd1d00e0d59e402fd47eaf9",
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/sonar-ground-live-20261026/a-control-plain-v9/ground-observations.json": "ce1cd36c5e2c844535019b5722cadc860d9fa37562d4d230d7a34f2f80521881",
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/sonar-ground-live-20261026/a-control-plain-v9/ground-map.json": "904e615ebc37ce7845472136a63d6cfbb544b07a56a402018e362ace0bf5d60d",
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/sonar-ground-live-20261026/a-control-plain-v9/states.csv": "611d0afa357a59b482900f0c7f6290e0b1f2e2304d20995c38977482212753f1",
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/sonar-ground-live-20261026/a-ground-plain-v9/receipt.json": "dc7c4ae4c011b415b3e9f08d39811d5e4a381de7d6f889dad428cfa03ec81b30",
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/sonar-ground-live-20261026/a-ground-plain-v9/ground-observations.json": "32ed1ae6d88730ea74176a9a59315e466b195a8351a82ea2cd96429cc8784c04",
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/sonar-ground-live-20261026/a-ground-plain-v9/ground-map.json": "9282d4e04ce03e2bc0050e67cb492d38a35d6dcd3ea8b30f549f0b59d6fa5bec",
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/sonar-ground-live-20261026/a-ground-plain-v9/states.csv": "333c6f3429a5c94192147fb862f5ab176f7c1a2d13a899d30c03d166ee957dbd"
+        }
+      },
+      "spatial": {
+        "scope": "Native joint-ground versus no-ground control; unqualified recorded-terrain experiment",
+        "map_qualified": false,
+        "voxel_m": 0.1,
+        "common_raw_entries": 920,
+        "runs": [
+          {
+            "name": "control",
+            "final_pose_metrics": {
+              "evaluated": true,
+              "states": 227,
+              "duration_s": 69.0,
+              "evaluation_alignment": {
+                "rotation": [
+                  [
+                    -0.9480468014495969,
+                    -0.3181308885681939,
+                    0.0
+                  ],
+                  [
+                    0.3181308885681939,
+                    -0.9480468014495969,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    0.0,
+                    1.0
+                  ]
+                ],
+                "translation": [
+                  -0.04553196378195211,
+                  0.014469575297186543,
+                  -0.1934076270728207
+                ],
+                "scale": 1.0
+              },
+              "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+              "position_rmse_m": 0.05447022360957584,
+              "position_max_m": 0.123836322428419,
+              "rotation_rmse_rad": 0.03913126528647011,
+              "rotation_max_rad": 0.07315671813023034,
+              "truth_distance_m": 16.560935542014835,
+              "estimated_distance_m": 16.580079283548326,
+              "rpe_1s_pairs": 212,
+              "rpe_1s_position_rmse_m": 0.0037196906914829407,
+              "rpe_1s_rotation_rmse_rad": 0.0024726692300921856,
+              "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+            },
+            "online_pose_metrics": {
+              "evaluated": true,
+              "states": 227,
+              "duration_s": 69.0,
+              "evaluation_alignment": {
+                "rotation": [
+                  [
+                    -0.9480495662959296,
+                    -0.31812264906180404,
+                    0.0
+                  ],
+                  [
+                    0.31812264906180404,
+                    -0.9480495662959296,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    0.0,
+                    1.0
+                  ]
+                ],
+                "translation": [
+                  -0.04553197918473933,
+                  0.014469693841718102,
+                  -0.19340769383233386
+                ],
+                "scale": 1.0
+              },
+              "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+              "position_rmse_m": 0.054181237246910624,
+              "position_max_m": 0.12426974177483581,
+              "rotation_rmse_rad": 0.03818569061597501,
+              "rotation_max_rad": 0.07316540907195863,
+              "truth_distance_m": 16.560935542014835,
+              "estimated_distance_m": 16.600737544808304,
+              "rpe_1s_pairs": 212,
+              "rpe_1s_position_rmse_m": 0.00482080774395323,
+              "rpe_1s_rotation_rmse_rad": 0.0026690138857907485,
+              "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+            },
+            "surface_distance_m": {
+              "points": 795,
+              "within_10cm": 795,
+              "median": 0.013305900647061086,
+              "p90": 0.02844614720638454,
+              "maximum": 0.08333459323222102
+            },
+            "common_raw_surface_distance_m": {
+              "points": 920,
+              "within_10cm": 920,
+              "median": 0.0126528268296246,
+              "p90": 0.027785288796083638,
+              "maximum": 0.08333459323222102
+            },
+            "raw_entries": 920,
+            "ground_registered": 0,
+            "multi_frame_states": 0
+          },
+          {
+            "name": "ground",
+            "final_pose_metrics": {
+              "evaluated": true,
+              "states": 227,
+              "duration_s": 69.0,
+              "evaluation_alignment": {
+                "rotation": [
+                  [
+                    -0.9480468014495969,
+                    -0.3181308885681939,
+                    0.0
+                  ],
+                  [
+                    0.3181308885681939,
+                    -0.9480468014495969,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    0.0,
+                    1.0
+                  ]
+                ],
+                "translation": [
+                  -0.04553196378195211,
+                  0.014469575297186543,
+                  -0.1934076270728207
+                ],
+                "scale": 1.0
+              },
+              "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+              "position_rmse_m": 0.6846793616802573,
+              "position_max_m": 1.414092094075534,
+              "rotation_rmse_rad": 0.48822799385065113,
+              "rotation_max_rad": 0.8513507141819555,
+              "truth_distance_m": 16.560935542014835,
+              "estimated_distance_m": 16.57831806006365,
+              "rpe_1s_pairs": 212,
+              "rpe_1s_position_rmse_m": 0.004363869144025997,
+              "rpe_1s_rotation_rmse_rad": 0.015314255398977994,
+              "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+            },
+            "online_pose_metrics": {
+              "evaluated": true,
+              "states": 227,
+              "duration_s": 69.0,
+              "evaluation_alignment": {
+                "rotation": [
+                  [
+                    -0.9480495662959296,
+                    -0.31812264906180404,
+                    0.0
+                  ],
+                  [
+                    0.31812264906180404,
+                    -0.9480495662959296,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    0.0,
+                    1.0
+                  ]
+                ],
+                "translation": [
+                  -0.04553197918473933,
+                  0.014469693841718102,
+                  -0.19340769383233386
+                ],
+                "scale": 1.0
+              },
+              "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+              "position_rmse_m": 0.6848052828389188,
+              "position_max_m": 1.4128784410373003,
+              "rotation_rmse_rad": 0.486126432630757,
+              "rotation_max_rad": 0.8513420231624628,
+              "truth_distance_m": 16.560935542014835,
+              "estimated_distance_m": 16.602364773225684,
+              "rpe_1s_pairs": 212,
+              "rpe_1s_position_rmse_m": 0.00623170170283519,
+              "rpe_1s_rotation_rmse_rad": 0.016293486488530767,
+              "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+            },
+            "surface_distance_m": {
+              "points": 789,
+              "within_10cm": 783,
+              "median": 0.023967994296625966,
+              "p90": 0.05814762385849299,
+              "maximum": 0.11580836032110925
+            },
+            "common_raw_surface_distance_m": {
+              "points": 920,
+              "within_10cm": 914,
+              "median": 0.02406704493093355,
+              "p90": 0.05602115365442611,
+              "maximum": 0.11580836032110925
+            },
+            "raw_entries": 920,
+            "ground_registered": 20,
+            "multi_frame_states": 11
+          }
+        ],
+        "figure": {
+          "camera": {
+            "eye": [
+              0.0,
+              -4.0,
+              -0.15
+            ],
+            "camera_to_world": [
+              [
+                0.5773502691896258,
+                -0.7071067811865475,
+                0.408248290463863
+              ],
+              [
+                0.5773502691896257,
+                0.7071067811865476,
+                0.40824829046386296
+              ],
+              [
+                -0.5773502691896257,
+                0,
+                0.816496580927726
+              ]
+            ],
+            "horizontal_fov": 1.35,
+            "width": 1000,
+            "height": 800,
+            "stamp_ns": 82000000000,
+            "projection": "perspective",
+            "viewpoint": "isometric direction; positive X forward, Y left, Z up",
+            "partition": "inertial-init-60ad55d8655f4a6280e43f3b4a44c812",
+            "topic": "/validation/slam/isometric_rgb"
+          },
+          "marker_area_pt2": 64,
+          "height_limits_m": [
+            -3.8023630418833214,
+            -3.5088699548229085
+          ],
+          "colormap": "turbo"
+        },
+        "sha256": {
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/scripts/evaluate_sonar_ground_live.py": "3896f334efdca9e040a81c94049d16fe3ff2525464fc35021458cb3dfe0eaf13",
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/joint-sonar-normal-capture-20261026-a2/demo-runtime/4383e11f488b427b9cf1d95202849d37/orca5-seafloor.dae": "277c49dd9c3b2ec1c9d3c3754be9d076c7b0438ccd29e9ae11355869849fbeb2",
+          ".local/joint-sonar-normal-capture-20261026-a2/live-vio-probe/evaluation-inputs/truth.csv": "c59437efeffd3269a2f5c202ec1921367c4f2371c87061ae2b1be3ed4e7311f3",
+          ".local/joint-sonar-normal-capture-20261026-a2/live-vio-probe/evaluation-inputs/receipt.json": "815c48e245e2b31b69705cdab271c67da302298f6b423baa7dab02859ce215c9",
+          ".local/joint-sonar-normal-capture-20261026-a2/isometric-rgb.png": "7dbda63dccac3bbc383a799833ce8e12b58b30ea6245b001bf777161b439a4a4",
+          ".local/joint-sonar-normal-capture-20261026-a2/isometric-camera.json": "a91e5598dd456f99a08e08705eb3d97a9b21d33a48cdc9e8737f4ee15facbe63",
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/sonar-ground-live-20261026/a-control-v9/receipt.json": "260d171c3b811a44742b5dcefb8f5af5d8d5384947a8c6b3db79185a9f6c8b18",
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/sonar-ground-live-20261026/a-control-v9/ground-observations.json": "ce1cd36c5e2c844535019b5722cadc860d9fa37562d4d230d7a34f2f80521881",
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/sonar-ground-live-20261026/a-control-v9/ground-map.json": "904e615ebc37ce7845472136a63d6cfbb544b07a56a402018e362ace0bf5d60d",
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/sonar-ground-live-20261026/a-control-v9/states.csv": "611d0afa357a59b482900f0c7f6290e0b1f2e2304d20995c38977482212753f1",
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/sonar-ground-live-20261026/a-ground-v9/receipt.json": "e17a56e083abb99f1110a5993ef979c0e043cfcc8d2650125ea116be3c3fa95e",
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/sonar-ground-live-20261026/a-ground-v9/ground-observations.json": "32ed1ae6d88730ea74176a9a59315e466b195a8351a82ea2cd96429cc8784c04",
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/sonar-ground-live-20261026/a-ground-v9/ground-map.json": "0da3e73ddf4e20c02c56ae688e686fac308066d83a65a5a93c6459eb9d7da766",
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/sonar-ground-live-20261026/a-ground-v9/states.csv": "9a7e1ec87f442374676c127dcd7232d114f661bc1f723f69c157cc3eed5aff32"
+        }
+      }
+    },
+    "b": {
+      "plain": {
+        "scope": "Native joint-ground versus no-ground control; unqualified recorded-terrain experiment",
+        "map_qualified": false,
+        "voxel_m": 0.1,
+        "common_raw_entries": 1221,
+        "runs": [
+          {
+            "name": "control",
+            "final_pose_metrics": {
+              "evaluated": true,
+              "states": 224,
+              "duration_s": 69.5,
+              "evaluation_alignment": {
+                "rotation": [
+                  [
+                    -0.993944320914984,
+                    0.10988488031049284,
+                    0.0
+                  ],
+                  [
+                    -0.10988488031049284,
+                    -0.993944320914984,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    0.0,
+                    1.0
+                  ]
+                ],
+                "translation": [
+                  -0.053470047346111826,
+                  0.01932749931755604,
+                  -0.2254442039109728
+                ],
+                "scale": 1.0
+              },
+              "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+              "position_rmse_m": 0.01739942109851156,
+              "position_max_m": 0.033573008534820196,
+              "rotation_rmse_rad": 0.018983903627308254,
+              "rotation_max_rad": 0.0335391123246967,
+              "truth_distance_m": 14.74790054369587,
+              "estimated_distance_m": 14.778521471707602,
+              "rpe_1s_pairs": 205,
+              "rpe_1s_position_rmse_m": 0.004069391202422598,
+              "rpe_1s_rotation_rmse_rad": 0.002663209334908232,
+              "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+            },
+            "online_pose_metrics": {
+              "evaluated": true,
+              "states": 224,
+              "duration_s": 69.5,
+              "evaluation_alignment": {
+                "rotation": [
+                  [
+                    -0.993943681642019,
+                    0.10989066258745048,
+                    0.0
+                  ],
+                  [
+                    -0.10989066258745048,
+                    -0.993943681642019,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    0.0,
+                    1.0
+                  ]
+                ],
+                "translation": [
+                  -0.05346994064181427,
+                  0.019327721437459023,
+                  -0.22544418823277673
+                ],
+                "scale": 1.0
+              },
+              "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+              "position_rmse_m": 0.017949924033307193,
+              "position_max_m": 0.03425691977300256,
+              "rotation_rmse_rad": 0.018828867467409756,
+              "rotation_max_rad": 0.033533294847739314,
+              "truth_distance_m": 14.74790054369587,
+              "estimated_distance_m": 14.833088856909432,
+              "rpe_1s_pairs": 205,
+              "rpe_1s_position_rmse_m": 0.006226652127748046,
+              "rpe_1s_rotation_rmse_rad": 0.0028929345225808057,
+              "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+            },
+            "surface_distance_m": {
+              "points": 1000,
+              "within_10cm": 1000,
+              "median": 0.009569671235180922,
+              "p90": 0.024703474972122996,
+              "maximum": 0.059214772517936706
+            },
+            "common_raw_surface_distance_m": {
+              "points": 1221,
+              "within_10cm": 1221,
+              "median": 0.008962475734351416,
+              "p90": 0.024096477313612478,
+              "maximum": 0.059214772517936706
+            },
+            "raw_entries": 1221,
+            "ground_registered": 0,
+            "multi_frame_states": 0
+          },
+          {
+            "name": "ground",
+            "final_pose_metrics": {
+              "evaluated": true,
+              "states": 224,
+              "duration_s": 69.5,
+              "evaluation_alignment": {
+                "rotation": [
+                  [
+                    -0.993944320914984,
+                    0.10988488031049284,
+                    0.0
+                  ],
+                  [
+                    -0.10988488031049284,
+                    -0.993944320914984,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    0.0,
+                    1.0
+                  ]
+                ],
+                "translation": [
+                  -0.053470047346111826,
+                  0.01932749931755604,
+                  -0.2254442039109728
+                ],
+                "scale": 1.0
+              },
+              "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+              "position_rmse_m": 0.3560676850151445,
+              "position_max_m": 0.7693126106435111,
+              "rotation_rmse_rad": 0.3005248825551023,
+              "rotation_max_rad": 0.5033781970813803,
+              "truth_distance_m": 14.74790054369587,
+              "estimated_distance_m": 14.79715819790042,
+              "rpe_1s_pairs": 205,
+              "rpe_1s_position_rmse_m": 0.005104535057409263,
+              "rpe_1s_rotation_rmse_rad": 0.009184950563971252,
+              "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+            },
+            "online_pose_metrics": {
+              "evaluated": true,
+              "states": 224,
+              "duration_s": 69.5,
+              "evaluation_alignment": {
+                "rotation": [
+                  [
+                    -0.993943681642019,
+                    0.10989066258745048,
+                    0.0
+                  ],
+                  [
+                    -0.10989066258745048,
+                    -0.993943681642019,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    0.0,
+                    1.0
+                  ]
+                ],
+                "translation": [
+                  -0.05346994064181427,
+                  0.019327721437459023,
+                  -0.22544418823277673
+                ],
+                "scale": 1.0
+              },
+              "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+              "position_rmse_m": 0.3570270162897802,
+              "position_max_m": 0.7614694185076265,
+              "rotation_rmse_rad": 0.3026580675540797,
+              "rotation_max_rad": 0.5033840145752382,
+              "truth_distance_m": 14.74790054369587,
+              "estimated_distance_m": 14.8501152156331,
+              "rpe_1s_pairs": 205,
+              "rpe_1s_position_rmse_m": 0.007324638121878879,
+              "rpe_1s_rotation_rmse_rad": 0.0107755830646799,
+              "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+            },
+            "surface_distance_m": {
+              "points": 998,
+              "within_10cm": 998,
+              "median": 0.018772606192567036,
+              "p90": 0.041047343166053435,
+              "maximum": 0.0683052453147388
+            },
+            "common_raw_surface_distance_m": {
+              "points": 1221,
+              "within_10cm": 1221,
+              "median": 0.01568252990881026,
+              "p90": 0.03959041672277031,
+              "maximum": 0.0683052453147388
+            },
+            "raw_entries": 1221,
+            "ground_registered": 26,
+            "multi_frame_states": 19
+          }
+        ],
+        "figure": {
+          "camera": {
+            "eye": [
+              0.0,
+              -4.0,
+              -0.15
+            ],
+            "camera_to_world": [
+              [
+                0.5773502691896258,
+                -0.7071067811865475,
+                0.408248290463863
+              ],
+              [
+                0.5773502691896257,
+                0.7071067811865476,
+                0.40824829046386296
+              ],
+              [
+                -0.5773502691896257,
+                0,
+                0.816496580927726
+              ]
+            ],
+            "horizontal_fov": 1.35,
+            "width": 1000,
+            "height": 800,
+            "stamp_ns": 82200000000,
+            "projection": "perspective",
+            "viewpoint": "isometric direction; positive X forward, Y left, Z up",
+            "partition": "inertial-init-290225c7062041c49fa42347d72402d4",
+            "topic": "/validation/slam/isometric_rgb"
+          },
+          "marker_area_pt2": 64,
+          "height_limits_m": [
+            -3.777714702983994,
+            -3.5060415818375277
+          ],
+          "colormap": "turbo"
+        },
+        "sha256": {
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/scripts/evaluate_sonar_ground_live.py": "3896f334efdca9e040a81c94049d16fe3ff2525464fc35021458cb3dfe0eaf13",
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/joint-sonar-normal-capture-20261026-b/demo-runtime/58289cae67d944158ca3100c64db628d/orca5-seafloor.dae": "277c49dd9c3b2ec1c9d3c3754be9d076c7b0438ccd29e9ae11355869849fbeb2",
+          ".local/joint-sonar-normal-capture-20261026-b/live-vio-probe/evaluation-inputs/truth.csv": "b7101eed09e8c8a124ccf2d6815e219988cda368c0763cc9a37b5e4b23896c24",
+          ".local/joint-sonar-normal-capture-20261026-b/live-vio-probe/evaluation-inputs/receipt.json": "ab9a20a68d6b40a49dc4170d832cfafd5770edf5f8e54a47c2ef006fcd8bbabc",
+          ".local/joint-sonar-normal-capture-20261026-b/isometric-rgb.png": "cbf5b99b498e7e61251cb1249d8a0792ae9eb0153262cfe57b7e16dd4f13e504",
+          ".local/joint-sonar-normal-capture-20261026-b/isometric-camera.json": "a110a9701f2a8c82c251f6c59a355f73a22851721b8e6e06e9f935b834fb32f1",
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/sonar-ground-live-20261026/b-control-plain-v9/receipt.json": "9bb9d1df6be6be3f0e7e5d81fb807ef96ef3f6bd0ce24b462d61ab511f44af81",
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/sonar-ground-live-20261026/b-control-plain-v9/ground-observations.json": "56fccc2f8512de120c51c71cce3dc7dcd39396765792839c6cb6daef81edf1c2",
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/sonar-ground-live-20261026/b-control-plain-v9/ground-map.json": "467c4457b77807a6c5e3514bf5e00400ec9d6a491d37e5fb00bd0f0a8c3e0b8e",
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/sonar-ground-live-20261026/b-control-plain-v9/states.csv": "448f02ee6859740be07dccaf7d28dd2a0b6656e0ed8d9fb4a0344bdfe1beacaf",
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/sonar-ground-live-20261026/b-ground-plain-v9/receipt.json": "e60c59a5fdf5135272c2d217b0569b21eab468e1a7cc1f443ff979783a700298",
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/sonar-ground-live-20261026/b-ground-plain-v9/ground-observations.json": "c4773cef20af3db9cbc0c8b0d09c01961bef7411d7f309a20c9fa25dccc86a5f",
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/sonar-ground-live-20261026/b-ground-plain-v9/ground-map.json": "c20a94f97f9d4e88c73cac92b43ec22d725ccbd59408cb143808ada3899ddd2e",
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/sonar-ground-live-20261026/b-ground-plain-v9/states.csv": "7b09adb605d7b8636e19d4efbf6d58b34c52935501edeb1e4375c82d0254af58"
+        }
+      },
+      "spatial": {
+        "scope": "Native joint-ground versus no-ground control; unqualified recorded-terrain experiment",
+        "map_qualified": false,
+        "voxel_m": 0.1,
+        "common_raw_entries": 1221,
+        "runs": [
+          {
+            "name": "control",
+            "final_pose_metrics": {
+              "evaluated": true,
+              "states": 224,
+              "duration_s": 69.5,
+              "evaluation_alignment": {
+                "rotation": [
+                  [
+                    -0.993944320914984,
+                    0.10988488031049284,
+                    0.0
+                  ],
+                  [
+                    -0.10988488031049284,
+                    -0.993944320914984,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    0.0,
+                    1.0
+                  ]
+                ],
+                "translation": [
+                  -0.053470047346111826,
+                  0.01932749931755604,
+                  -0.2254442039109728
+                ],
+                "scale": 1.0
+              },
+              "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+              "position_rmse_m": 0.01739942109851156,
+              "position_max_m": 0.033573008534820196,
+              "rotation_rmse_rad": 0.018983903627308254,
+              "rotation_max_rad": 0.0335391123246967,
+              "truth_distance_m": 14.74790054369587,
+              "estimated_distance_m": 14.778521471707602,
+              "rpe_1s_pairs": 205,
+              "rpe_1s_position_rmse_m": 0.004069391202422598,
+              "rpe_1s_rotation_rmse_rad": 0.002663209334908232,
+              "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+            },
+            "online_pose_metrics": {
+              "evaluated": true,
+              "states": 224,
+              "duration_s": 69.5,
+              "evaluation_alignment": {
+                "rotation": [
+                  [
+                    -0.993943681642019,
+                    0.10989066258745048,
+                    0.0
+                  ],
+                  [
+                    -0.10989066258745048,
+                    -0.993943681642019,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    0.0,
+                    1.0
+                  ]
+                ],
+                "translation": [
+                  -0.05346994064181427,
+                  0.019327721437459023,
+                  -0.22544418823277673
+                ],
+                "scale": 1.0
+              },
+              "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+              "position_rmse_m": 0.017949924033307193,
+              "position_max_m": 0.03425691977300256,
+              "rotation_rmse_rad": 0.018828867467409756,
+              "rotation_max_rad": 0.033533294847739314,
+              "truth_distance_m": 14.74790054369587,
+              "estimated_distance_m": 14.833088856909432,
+              "rpe_1s_pairs": 205,
+              "rpe_1s_position_rmse_m": 0.006226652127748046,
+              "rpe_1s_rotation_rmse_rad": 0.0028929345225808057,
+              "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+            },
+            "surface_distance_m": {
+              "points": 1000,
+              "within_10cm": 1000,
+              "median": 0.009569671235180922,
+              "p90": 0.024703474972122996,
+              "maximum": 0.059214772517936706
+            },
+            "common_raw_surface_distance_m": {
+              "points": 1221,
+              "within_10cm": 1221,
+              "median": 0.008962475734351416,
+              "p90": 0.024096477313612478,
+              "maximum": 0.059214772517936706
+            },
+            "raw_entries": 1221,
+            "ground_registered": 0,
+            "multi_frame_states": 0
+          },
+          {
+            "name": "ground",
+            "final_pose_metrics": {
+              "evaluated": true,
+              "states": 224,
+              "duration_s": 69.5,
+              "evaluation_alignment": {
+                "rotation": [
+                  [
+                    -0.993944320914984,
+                    0.10988488031049284,
+                    0.0
+                  ],
+                  [
+                    -0.10988488031049284,
+                    -0.993944320914984,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    0.0,
+                    1.0
+                  ]
+                ],
+                "translation": [
+                  -0.053470047346111826,
+                  0.01932749931755604,
+                  -0.2254442039109728
+                ],
+                "scale": 1.0
+              },
+              "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+              "position_rmse_m": 0.3442086614765847,
+              "position_max_m": 0.6596271789776946,
+              "rotation_rmse_rad": 0.335466951075066,
+              "rotation_max_rad": 0.6006738266583707,
+              "truth_distance_m": 14.74790054369587,
+              "estimated_distance_m": 14.783610793000769,
+              "rpe_1s_pairs": 205,
+              "rpe_1s_position_rmse_m": 0.004484141085804806,
+              "rpe_1s_rotation_rmse_rad": 0.01011045260820511,
+              "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+            },
+            "online_pose_metrics": {
+              "evaluated": true,
+              "states": 224,
+              "duration_s": 69.5,
+              "evaluation_alignment": {
+                "rotation": [
+                  [
+                    -0.993943681642019,
+                    0.10989066258745048,
+                    0.0
+                  ],
+                  [
+                    -0.10989066258745048,
+                    -0.993943681642019,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    0.0,
+                    1.0
+                  ]
+                ],
+                "translation": [
+                  -0.05346994064181427,
+                  0.019327721437459023,
+                  -0.22544418823277673
+                ],
+                "scale": 1.0
+              },
+              "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+              "position_rmse_m": 0.3424915702126722,
+              "position_max_m": 0.6587582685515098,
+              "rotation_rmse_rad": 0.3312563720870188,
+              "rotation_max_rad": 0.6006680091536323,
+              "truth_distance_m": 14.74790054369587,
+              "estimated_distance_m": 14.831161286746436,
+              "rpe_1s_pairs": 205,
+              "rpe_1s_position_rmse_m": 0.006420549115110912,
+              "rpe_1s_rotation_rmse_rad": 0.011081267269903598,
+              "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+            },
+            "surface_distance_m": {
+              "points": 1001,
+              "within_10cm": 1001,
+              "median": 0.012567617746316163,
+              "p90": 0.030523889328605103,
+              "maximum": 0.07140383648264688
+            },
+            "common_raw_surface_distance_m": {
+              "points": 1221,
+              "within_10cm": 1221,
+              "median": 0.012039641058731988,
+              "p90": 0.02888994376021618,
+              "maximum": 0.07140383648264688
+            },
+            "raw_entries": 1221,
+            "ground_registered": 26,
+            "multi_frame_states": 19
+          }
+        ],
+        "figure": {
+          "camera": {
+            "eye": [
+              0.0,
+              -4.0,
+              -0.15
+            ],
+            "camera_to_world": [
+              [
+                0.5773502691896258,
+                -0.7071067811865475,
+                0.408248290463863
+              ],
+              [
+                0.5773502691896257,
+                0.7071067811865476,
+                0.40824829046386296
+              ],
+              [
+                -0.5773502691896257,
+                0,
+                0.816496580927726
+              ]
+            ],
+            "horizontal_fov": 1.35,
+            "width": 1000,
+            "height": 800,
+            "stamp_ns": 82200000000,
+            "projection": "perspective",
+            "viewpoint": "isometric direction; positive X forward, Y left, Z up",
+            "partition": "inertial-init-290225c7062041c49fa42347d72402d4",
+            "topic": "/validation/slam/isometric_rgb"
+          },
+          "marker_area_pt2": 64,
+          "height_limits_m": [
+            -3.777714702983994,
+            -3.5060415818375277
+          ],
+          "colormap": "turbo"
+        },
+        "sha256": {
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/scripts/evaluate_sonar_ground_live.py": "3896f334efdca9e040a81c94049d16fe3ff2525464fc35021458cb3dfe0eaf13",
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/joint-sonar-normal-capture-20261026-b/demo-runtime/58289cae67d944158ca3100c64db628d/orca5-seafloor.dae": "277c49dd9c3b2ec1c9d3c3754be9d076c7b0438ccd29e9ae11355869849fbeb2",
+          ".local/joint-sonar-normal-capture-20261026-b/live-vio-probe/evaluation-inputs/truth.csv": "b7101eed09e8c8a124ccf2d6815e219988cda368c0763cc9a37b5e4b23896c24",
+          ".local/joint-sonar-normal-capture-20261026-b/live-vio-probe/evaluation-inputs/receipt.json": "ab9a20a68d6b40a49dc4170d832cfafd5770edf5f8e54a47c2ef006fcd8bbabc",
+          ".local/joint-sonar-normal-capture-20261026-b/isometric-rgb.png": "cbf5b99b498e7e61251cb1249d8a0792ae9eb0153262cfe57b7e16dd4f13e504",
+          ".local/joint-sonar-normal-capture-20261026-b/isometric-camera.json": "a110a9701f2a8c82c251f6c59a355f73a22851721b8e6e06e9f935b834fb32f1",
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/sonar-ground-live-20261026/b-control-v9/receipt.json": "d429aac8e55a243bb4cf3ff766c5b94bad8ad342239e59af2ac8a8b2c0a8185c",
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/sonar-ground-live-20261026/b-control-v9/ground-observations.json": "56fccc2f8512de120c51c71cce3dc7dcd39396765792839c6cb6daef81edf1c2",
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/sonar-ground-live-20261026/b-control-v9/ground-map.json": "467c4457b77807a6c5e3514bf5e00400ec9d6a491d37e5fb00bd0f0a8c3e0b8e",
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/sonar-ground-live-20261026/b-control-v9/states.csv": "448f02ee6859740be07dccaf7d28dd2a0b6656e0ed8d9fb4a0344bdfe1beacaf",
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/sonar-ground-live-20261026/b-ground-v9/receipt.json": "834bf271957379ab510de9c2a81b2eb911373fba98d332609d7a9fd07e0a858b",
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/sonar-ground-live-20261026/b-ground-v9/ground-observations.json": "c4773cef20af3db9cbc0c8b0d09c01961bef7411d7f309a20c9fa25dccc86a5f",
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/sonar-ground-live-20261026/b-ground-v9/ground-map.json": "c8203958f38df535775ab2601db9580219b373ead5929cbd4912d5fbf3619fce",
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/sonar-ground-live-20261026/b-ground-v9/states.csv": "cf31b76f9725265907c737b8e5d93e2fa2d64f59f9f594baff0e6690e9467891"
+        }
+      }
+    },
+    "c": {
+      "plain": {
+        "scope": "Native joint-ground versus no-ground control; unqualified recorded-terrain experiment",
+        "map_qualified": false,
+        "voxel_m": 0.1,
+        "common_raw_entries": 840,
+        "runs": [
+          {
+            "name": "control",
+            "final_pose_metrics": {
+              "evaluated": true,
+              "states": 234,
+              "duration_s": 70.0,
+              "evaluation_alignment": {
+                "rotation": [
+                  [
+                    -0.9691417918710378,
+                    0.24650392947982422,
+                    0.0
+                  ],
+                  [
+                    -0.24650392947982422,
+                    -0.9691417918710378,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    0.0,
+                    1.0
+                  ]
+                ],
+                "translation": [
+                  -0.06107438401446285,
+                  0.013535144122818936,
+                  -0.18953513460302035
+                ],
+                "scale": 1.0
+              },
+              "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+              "position_rmse_m": 0.020860267946562695,
+              "position_max_m": 0.04548567893370813,
+              "rotation_rmse_rad": 0.010807579490532758,
+              "rotation_max_rad": 0.01848608436365593,
+              "truth_distance_m": 15.435396183617309,
+              "estimated_distance_m": 15.409520479783382,
+              "rpe_1s_pairs": 225,
+              "rpe_1s_position_rmse_m": 0.004022829174639619,
+              "rpe_1s_rotation_rmse_rad": 0.002839452482943667,
+              "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+            },
+            "online_pose_metrics": {
+              "evaluated": true,
+              "states": 234,
+              "duration_s": 70.0,
+              "evaluation_alignment": {
+                "rotation": [
+                  [
+                    -0.9691425812454891,
+                    0.2465008259962441,
+                    0.0
+                  ],
+                  [
+                    -0.2465008259962441,
+                    -0.9691425812454891,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    0.0,
+                    1.0
+                  ]
+                ],
+                "translation": [
+                  -0.061074377016599624,
+                  0.013535137834672717,
+                  -0.18953513457714027
+                ],
+                "scale": 1.0
+              },
+              "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+              "position_rmse_m": 0.020955676798743335,
+              "position_max_m": 0.04634843052974559,
+              "rotation_rmse_rad": 0.010637986271943334,
+              "rotation_max_rad": 0.018676345478629834,
+              "truth_distance_m": 15.435396183617309,
+              "estimated_distance_m": 15.43891231962623,
+              "rpe_1s_pairs": 225,
+              "rpe_1s_position_rmse_m": 0.004766624818951955,
+              "rpe_1s_rotation_rmse_rad": 0.0029789985441478844,
+              "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+            },
+            "surface_distance_m": {
+              "points": 680,
+              "within_10cm": 680,
+              "median": 0.012620924988754768,
+              "p90": 0.02456281090000919,
+              "maximum": 0.07453534453369955
+            },
+            "common_raw_surface_distance_m": {
+              "points": 840,
+              "within_10cm": 840,
+              "median": 0.01238501575060626,
+              "p90": 0.02394849512405936,
+              "maximum": 0.07453534453369955
+            },
+            "raw_entries": 840,
+            "ground_registered": 0,
+            "multi_frame_states": 0
+          },
+          {
+            "name": "ground",
+            "final_pose_metrics": {
+              "evaluated": true,
+              "states": 234,
+              "duration_s": 70.0,
+              "evaluation_alignment": {
+                "rotation": [
+                  [
+                    -0.9691417918710378,
+                    0.24650392947982422,
+                    0.0
+                  ],
+                  [
+                    -0.24650392947982422,
+                    -0.9691417918710378,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    0.0,
+                    1.0
+                  ]
+                ],
+                "translation": [
+                  -0.06107438401446285,
+                  0.013535144122818936,
+                  -0.18953513460302035
+                ],
+                "scale": 1.0
+              },
+              "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+              "position_rmse_m": 1.1918947124818915,
+              "position_max_m": 2.0620965168145173,
+              "rotation_rmse_rad": 0.7828794733363834,
+              "rotation_max_rad": 1.3419948875335912,
+              "truth_distance_m": 15.435396183617309,
+              "estimated_distance_m": 15.431073188516475,
+              "rpe_1s_pairs": 225,
+              "rpe_1s_position_rmse_m": 0.005614269379738805,
+              "rpe_1s_rotation_rmse_rad": 0.021589408847099496,
+              "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+            },
+            "online_pose_metrics": {
+              "evaluated": true,
+              "states": 234,
+              "duration_s": 70.0,
+              "evaluation_alignment": {
+                "rotation": [
+                  [
+                    -0.9691425812454891,
+                    0.2465008259962441,
+                    0.0
+                  ],
+                  [
+                    -0.2465008259962441,
+                    -0.9691425812454891,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    0.0,
+                    1.0
+                  ]
+                ],
+                "translation": [
+                  -0.061074377016599624,
+                  0.013535137834672717,
+                  -0.18953513457714027
+                ],
+                "scale": 1.0
+              },
+              "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+              "position_rmse_m": 1.1914692682776564,
+              "position_max_m": 2.061693768560505,
+              "rotation_rmse_rad": 0.7796035791734988,
+              "rotation_max_rad": 1.3419916852348974,
+              "truth_distance_m": 15.435396183617309,
+              "estimated_distance_m": 15.454530012007526,
+              "rpe_1s_pairs": 225,
+              "rpe_1s_position_rmse_m": 0.007112576246981128,
+              "rpe_1s_rotation_rmse_rad": 0.024542471407951027,
+              "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+            },
+            "surface_distance_m": {
+              "points": 688,
+              "within_10cm": 634,
+              "median": 0.033030126117287645,
+              "p90": 0.08884650752125822,
+              "maximum": 0.16858582756636775
+            },
+            "common_raw_surface_distance_m": {
+              "points": 840,
+              "within_10cm": 786,
+              "median": 0.03430421001998227,
+              "p90": 0.0775352217824557,
+              "maximum": 0.16858582756636775
+            },
+            "raw_entries": 840,
+            "ground_registered": 18,
+            "multi_frame_states": 10
+          }
+        ],
+        "figure": {
+          "camera": {
+            "eye": [
+              0.0,
+              -4.0,
+              -0.15
+            ],
+            "camera_to_world": [
+              [
+                0.5773502691896258,
+                -0.7071067811865475,
+                0.408248290463863
+              ],
+              [
+                0.5773502691896257,
+                0.7071067811865476,
+                0.40824829046386296
+              ],
+              [
+                -0.5773502691896257,
+                0,
+                0.816496580927726
+              ]
+            ],
+            "horizontal_fov": 1.35,
+            "width": 1000,
+            "height": 800,
+            "stamp_ns": 82400000000,
+            "projection": "perspective",
+            "viewpoint": "isometric direction; positive X forward, Y left, Z up",
+            "partition": "inertial-init-e22c4f3255ae40959244e217c67be67a",
+            "topic": "/validation/slam/isometric_rgb"
+          },
+          "marker_area_pt2": 64,
+          "height_limits_m": [
+            -3.805429368435252,
+            -3.507605435870648
+          ],
+          "colormap": "turbo"
+        },
+        "sha256": {
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/scripts/evaluate_sonar_ground_live.py": "3896f334efdca9e040a81c94049d16fe3ff2525464fc35021458cb3dfe0eaf13",
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/joint-sonar-vertical-capture-20261026-c2/demo-runtime/ecf356159f56474f9f68912b546482c9/orca5-seafloor.dae": "277c49dd9c3b2ec1c9d3c3754be9d076c7b0438ccd29e9ae11355869849fbeb2",
+          ".local/joint-sonar-vertical-capture-20261026-c2/live-vio-probe/evaluation-inputs/truth.csv": "e8c8f341c973e8552a15bad12a6142a5a40be1ecdf9d8505d3a796d96efd196f",
+          ".local/joint-sonar-vertical-capture-20261026-c2/live-vio-probe/evaluation-inputs/receipt.json": "1e499732d1d769fed6d7cf9b213be960810cc9f90847663a758e20001ea0dd01",
+          ".local/joint-sonar-vertical-capture-20261026-c2/isometric-rgb.png": "73a86e7f68d05d4a471cdb1757c55bacd5be5ad95d3fb4e0ac743ae12b007e98",
+          ".local/joint-sonar-vertical-capture-20261026-c2/isometric-camera.json": "144a74ad8b67a5639211ccaa0ac691279455eec43bb2a197ed7766430b353b53",
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/sonar-ground-live-20261026/c-control-plain-v9/receipt.json": "22c83ec533cbfe266762611eb519e085c40dbb08acd3a174080fb5c2f5c6fb7e",
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/sonar-ground-live-20261026/c-control-plain-v9/ground-observations.json": "54f800c12825248779a0d5eab4f76579de5812f523c16e71a2cf0053c7d7f6e1",
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/sonar-ground-live-20261026/c-control-plain-v9/ground-map.json": "c32f2a58b9856fc4659c0450eafdf30a691defbb2dd9c7ae9acc3c1241e4a683",
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/sonar-ground-live-20261026/c-control-plain-v9/states.csv": "4e79abc54dc74418a98b40ad3008590bdd67a51cda17b90dc355b2c98ae41652",
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/sonar-ground-live-20261026/c-ground-plain-v9/receipt.json": "87b934d37db462ef5951d6c9968fd0d4da934f9eb9632fe3ffb18611e8ff5de6",
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/sonar-ground-live-20261026/c-ground-plain-v9/ground-observations.json": "3bd0234e4838d46bc1bd677dd037b9423eefaa7e295c59592b5dbc62bc7d1687",
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/sonar-ground-live-20261026/c-ground-plain-v9/ground-map.json": "e239b9fb366c8aedbd8a921bdfb77e8fc9d05602709c42ade0529f3c17425808",
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/sonar-ground-live-20261026/c-ground-plain-v9/states.csv": "74641a5f74f5eca51e103bc92f68631adc6efbefca137229f080e54dfe578c56"
+        }
+      },
+      "spatial": {
+        "scope": "Native joint-ground versus no-ground control; unqualified recorded-terrain experiment",
+        "map_qualified": false,
+        "voxel_m": 0.1,
+        "common_raw_entries": 840,
+        "runs": [
+          {
+            "name": "control",
+            "final_pose_metrics": {
+              "evaluated": true,
+              "states": 234,
+              "duration_s": 70.0,
+              "evaluation_alignment": {
+                "rotation": [
+                  [
+                    -0.9691417918710378,
+                    0.24650392947982422,
+                    0.0
+                  ],
+                  [
+                    -0.24650392947982422,
+                    -0.9691417918710378,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    0.0,
+                    1.0
+                  ]
+                ],
+                "translation": [
+                  -0.06107438401446285,
+                  0.013535144122818936,
+                  -0.18953513460302035
+                ],
+                "scale": 1.0
+              },
+              "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+              "position_rmse_m": 0.020860267946562695,
+              "position_max_m": 0.04548567893370813,
+              "rotation_rmse_rad": 0.010807579490532758,
+              "rotation_max_rad": 0.01848608436365593,
+              "truth_distance_m": 15.435396183617309,
+              "estimated_distance_m": 15.409520479783382,
+              "rpe_1s_pairs": 225,
+              "rpe_1s_position_rmse_m": 0.004022829174639619,
+              "rpe_1s_rotation_rmse_rad": 0.002839452482943667,
+              "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+            },
+            "online_pose_metrics": {
+              "evaluated": true,
+              "states": 234,
+              "duration_s": 70.0,
+              "evaluation_alignment": {
+                "rotation": [
+                  [
+                    -0.9691425812454891,
+                    0.2465008259962441,
+                    0.0
+                  ],
+                  [
+                    -0.2465008259962441,
+                    -0.9691425812454891,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    0.0,
+                    1.0
+                  ]
+                ],
+                "translation": [
+                  -0.061074377016599624,
+                  0.013535137834672717,
+                  -0.18953513457714027
+                ],
+                "scale": 1.0
+              },
+              "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+              "position_rmse_m": 0.020955676798743335,
+              "position_max_m": 0.04634843052974559,
+              "rotation_rmse_rad": 0.010637986271943334,
+              "rotation_max_rad": 0.018676345478629834,
+              "truth_distance_m": 15.435396183617309,
+              "estimated_distance_m": 15.43891231962623,
+              "rpe_1s_pairs": 225,
+              "rpe_1s_position_rmse_m": 0.004766624818951955,
+              "rpe_1s_rotation_rmse_rad": 0.0029789985441478844,
+              "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+            },
+            "surface_distance_m": {
+              "points": 680,
+              "within_10cm": 680,
+              "median": 0.012620924988754768,
+              "p90": 0.02456281090000919,
+              "maximum": 0.07453534453369955
+            },
+            "common_raw_surface_distance_m": {
+              "points": 840,
+              "within_10cm": 840,
+              "median": 0.01238501575060626,
+              "p90": 0.02394849512405936,
+              "maximum": 0.07453534453369955
+            },
+            "raw_entries": 840,
+            "ground_registered": 0,
+            "multi_frame_states": 0
+          },
+          {
+            "name": "ground",
+            "final_pose_metrics": {
+              "evaluated": true,
+              "states": 234,
+              "duration_s": 70.0,
+              "evaluation_alignment": {
+                "rotation": [
+                  [
+                    -0.9691417918710378,
+                    0.24650392947982422,
+                    0.0
+                  ],
+                  [
+                    -0.24650392947982422,
+                    -0.9691417918710378,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    0.0,
+                    1.0
+                  ]
+                ],
+                "translation": [
+                  -0.06107438401446285,
+                  0.013535144122818936,
+                  -0.18953513460302035
+                ],
+                "scale": 1.0
+              },
+              "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+              "position_rmse_m": 0.571278077045156,
+              "position_max_m": 0.9723220893269945,
+              "rotation_rmse_rad": 0.37424798935007797,
+              "rotation_max_rad": 0.6469704965100461,
+              "truth_distance_m": 15.435396183617309,
+              "estimated_distance_m": 15.41211124596514,
+              "rpe_1s_pairs": 225,
+              "rpe_1s_position_rmse_m": 0.00443694219602039,
+              "rpe_1s_rotation_rmse_rad": 0.011552007701482056,
+              "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+            },
+            "online_pose_metrics": {
+              "evaluated": true,
+              "states": 234,
+              "duration_s": 70.0,
+              "evaluation_alignment": {
+                "rotation": [
+                  [
+                    -0.9691425812454891,
+                    0.2465008259962441,
+                    0.0
+                  ],
+                  [
+                    -0.2465008259962441,
+                    -0.9691425812454891,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    0.0,
+                    1.0
+                  ]
+                ],
+                "translation": [
+                  -0.061074377016599624,
+                  0.013535137834672717,
+                  -0.18953513457714027
+                ],
+                "scale": 1.0
+              },
+              "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+              "position_rmse_m": 0.5703235297280942,
+              "position_max_m": 0.9687291067634398,
+              "rotation_rmse_rad": 0.37122959967618385,
+              "rotation_max_rad": 0.6469736988084982,
+              "truth_distance_m": 15.435396183617309,
+              "estimated_distance_m": 15.439821342144224,
+              "rpe_1s_pairs": 225,
+              "rpe_1s_position_rmse_m": 0.005658519439447077,
+              "rpe_1s_rotation_rmse_rad": 0.011967421161396631,
+              "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+            },
+            "surface_distance_m": {
+              "points": 682,
+              "within_10cm": 682,
+              "median": 0.022256939678686798,
+              "p90": 0.0432964948641254,
+              "maximum": 0.08938656614175473
+            },
+            "common_raw_surface_distance_m": {
+              "points": 840,
+              "within_10cm": 840,
+              "median": 0.022023242213430883,
+              "p90": 0.039536850276211365,
+              "maximum": 0.08938656614175473
+            },
+            "raw_entries": 840,
+            "ground_registered": 18,
+            "multi_frame_states": 10
+          }
+        ],
+        "figure": {
+          "camera": {
+            "eye": [
+              0.0,
+              -4.0,
+              -0.15
+            ],
+            "camera_to_world": [
+              [
+                0.5773502691896258,
+                -0.7071067811865475,
+                0.408248290463863
+              ],
+              [
+                0.5773502691896257,
+                0.7071067811865476,
+                0.40824829046386296
+              ],
+              [
+                -0.5773502691896257,
+                0,
+                0.816496580927726
+              ]
+            ],
+            "horizontal_fov": 1.35,
+            "width": 1000,
+            "height": 800,
+            "stamp_ns": 82400000000,
+            "projection": "perspective",
+            "viewpoint": "isometric direction; positive X forward, Y left, Z up",
+            "partition": "inertial-init-e22c4f3255ae40959244e217c67be67a",
+            "topic": "/validation/slam/isometric_rgb"
+          },
+          "marker_area_pt2": 64,
+          "height_limits_m": [
+            -3.801486973595801,
+            -3.5086536413783644
+          ],
+          "colormap": "turbo"
+        },
+        "sha256": {
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/scripts/evaluate_sonar_ground_live.py": "3896f334efdca9e040a81c94049d16fe3ff2525464fc35021458cb3dfe0eaf13",
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/joint-sonar-vertical-capture-20261026-c2/demo-runtime/ecf356159f56474f9f68912b546482c9/orca5-seafloor.dae": "277c49dd9c3b2ec1c9d3c3754be9d076c7b0438ccd29e9ae11355869849fbeb2",
+          ".local/joint-sonar-vertical-capture-20261026-c2/live-vio-probe/evaluation-inputs/truth.csv": "e8c8f341c973e8552a15bad12a6142a5a40be1ecdf9d8505d3a796d96efd196f",
+          ".local/joint-sonar-vertical-capture-20261026-c2/live-vio-probe/evaluation-inputs/receipt.json": "1e499732d1d769fed6d7cf9b213be960810cc9f90847663a758e20001ea0dd01",
+          ".local/joint-sonar-vertical-capture-20261026-c2/isometric-rgb.png": "73a86e7f68d05d4a471cdb1757c55bacd5be5ad95d3fb4e0ac743ae12b007e98",
+          ".local/joint-sonar-vertical-capture-20261026-c2/isometric-camera.json": "144a74ad8b67a5639211ccaa0ac691279455eec43bb2a197ed7766430b353b53",
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/sonar-ground-live-20261026/c-control-v9/receipt.json": "6ce7937ab98c51df77c16225a370ee53d724a1b036ad07698ee4d4ce02bd2a90",
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/sonar-ground-live-20261026/c-control-v9/ground-observations.json": "54f800c12825248779a0d5eab4f76579de5812f523c16e71a2cf0053c7d7f6e1",
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/sonar-ground-live-20261026/c-control-v9/ground-map.json": "c32f2a58b9856fc4659c0450eafdf30a691defbb2dd9c7ae9acc3c1241e4a683",
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/sonar-ground-live-20261026/c-control-v9/states.csv": "4e79abc54dc74418a98b40ad3008590bdd67a51cda17b90dc355b2c98ae41652",
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/sonar-ground-live-20261026/c-ground-v9/receipt.json": "0559854e50f4db19b6018adba8b62ccebd21d859b7c8982768b73443ebeba74d",
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/sonar-ground-live-20261026/c-ground-v9/ground-observations.json": "3bd0234e4838d46bc1bd677dd037b9423eefaa7e295c59592b5dbc62bc7d1687",
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/sonar-ground-live-20261026/c-ground-v9/ground-map.json": "0c450c5a0fdc0a7d980e4a96117002e127568d551aba3680d24481ce66abdf39",
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/sonar-ground-live-20261026/c-ground-v9/states.csv": "4555389dd6ee3581404d431d2f28a1d454d3b58ff5b98dd438337a40057e7451"
+        }
+      }
+    },
+    "d": {
+      "plain": {
+        "scope": "Native joint-ground versus no-ground control; unqualified recorded-terrain experiment",
+        "map_qualified": false,
+        "voxel_m": 0.1,
+        "common_raw_entries": 846,
+        "runs": [
+          {
+            "name": "control",
+            "final_pose_metrics": {
+              "evaluated": true,
+              "states": 222,
+              "duration_s": 69.5,
+              "evaluation_alignment": {
+                "rotation": [
+                  [
+                    -0.9923719974998583,
+                    0.12327943290809379,
+                    0.0
+                  ],
+                  [
+                    -0.12327943290809379,
+                    -0.9923719974998583,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    0.0,
+                    1.0
+                  ]
+                ],
+                "translation": [
+                  -0.05404003784458456,
+                  0.01978938226201252,
+                  -0.2254841112783773
+                ],
+                "scale": 1.0
+              },
+              "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+              "position_rmse_m": 0.04336015244461337,
+              "position_max_m": 0.11346695608262942,
+              "rotation_rmse_rad": 0.027363110740830837,
+              "rotation_max_rad": 0.04264559473326078,
+              "truth_distance_m": 15.24291113718255,
+              "estimated_distance_m": 15.242222753862787,
+              "rpe_1s_pairs": 207,
+              "rpe_1s_position_rmse_m": 0.004172784163832203,
+              "rpe_1s_rotation_rmse_rad": 0.0018758289081132146,
+              "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+            },
+            "online_pose_metrics": {
+              "evaluated": true,
+              "states": 222,
+              "duration_s": 69.5,
+              "evaluation_alignment": {
+                "rotation": [
+                  [
+                    -0.9923712452938642,
+                    0.12328548784794216,
+                    0.0
+                  ],
+                  [
+                    -0.12328548784794216,
+                    -0.9923712452938642,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    0.0,
+                    1.0
+                  ]
+                ],
+                "translation": [
+                  -0.05404003751831869,
+                  0.019789383488749406,
+                  -0.22548411134852686
+                ],
+                "scale": 1.0
+              },
+              "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+              "position_rmse_m": 0.041734303865450365,
+              "position_max_m": 0.10492662498848172,
+              "rotation_rmse_rad": 0.027996351175279332,
+              "rotation_max_rad": 0.04318858465368658,
+              "truth_distance_m": 15.24291113718255,
+              "estimated_distance_m": 15.323397685634244,
+              "rpe_1s_pairs": 207,
+              "rpe_1s_position_rmse_m": 0.005748328569636857,
+              "rpe_1s_rotation_rmse_rad": 0.002146340037192393,
+              "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+            },
+            "surface_distance_m": {
+              "points": 649,
+              "within_10cm": 649,
+              "median": 0.0092119247064085,
+              "p90": 0.022712321097332306,
+              "maximum": 0.04901916026451943
+            },
+            "common_raw_surface_distance_m": {
+              "points": 846,
+              "within_10cm": 846,
+              "median": 0.008823624337862327,
+              "p90": 0.021904507239856687,
+              "maximum": 0.05202282908408588
+            },
+            "raw_entries": 846,
+            "ground_registered": 0,
+            "multi_frame_states": 0
+          },
+          {
+            "name": "ground",
+            "final_pose_metrics": {
+              "evaluated": true,
+              "states": 222,
+              "duration_s": 69.5,
+              "evaluation_alignment": {
+                "rotation": [
+                  [
+                    -0.9923719974998583,
+                    0.12327943290809379,
+                    0.0
+                  ],
+                  [
+                    -0.12327943290809379,
+                    -0.9923719974998583,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    0.0,
+                    1.0
+                  ]
+                ],
+                "translation": [
+                  -0.05404003784458456,
+                  0.01978938226201252,
+                  -0.2254841112783773
+                ],
+                "scale": 1.0
+              },
+              "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+              "position_rmse_m": 0.19894736549613604,
+              "position_max_m": 0.5410444724731431,
+              "rotation_rmse_rad": 0.18896203735273417,
+              "rotation_max_rad": 0.2985236772341048,
+              "truth_distance_m": 15.24291113718255,
+              "estimated_distance_m": 15.251427920439387,
+              "rpe_1s_pairs": 207,
+              "rpe_1s_position_rmse_m": 0.00509172625854264,
+              "rpe_1s_rotation_rmse_rad": 0.006161431046186302,
+              "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+            },
+            "online_pose_metrics": {
+              "evaluated": true,
+              "states": 222,
+              "duration_s": 69.5,
+              "evaluation_alignment": {
+                "rotation": [
+                  [
+                    -0.9923712452938642,
+                    0.12328548784794216,
+                    0.0
+                  ],
+                  [
+                    -0.12328548784794216,
+                    -0.9923712452938642,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    0.0,
+                    1.0
+                  ]
+                ],
+                "translation": [
+                  -0.05404003751831869,
+                  0.019789383488749406,
+                  -0.22548411134852686
+                ],
+                "scale": 1.0
+              },
+              "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+              "position_rmse_m": 0.19859915093850847,
+              "position_max_m": 0.5267861807984449,
+              "rotation_rmse_rad": 0.19295736617365056,
+              "rotation_max_rad": 0.3002013482682067,
+              "truth_distance_m": 15.24291113718255,
+              "estimated_distance_m": 15.330758107345998,
+              "rpe_1s_pairs": 207,
+              "rpe_1s_position_rmse_m": 0.006263095773853826,
+              "rpe_1s_rotation_rmse_rad": 0.007371338188786445,
+              "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+            },
+            "surface_distance_m": {
+              "points": 639,
+              "within_10cm": 639,
+              "median": 0.014957638938365547,
+              "p90": 0.0335660516398337,
+              "maximum": 0.059195239946425914
+            },
+            "common_raw_surface_distance_m": {
+              "points": 846,
+              "within_10cm": 846,
+              "median": 0.01323411164264582,
+              "p90": 0.03218627542826756,
+              "maximum": 0.059195239946425914
+            },
+            "raw_entries": 846,
+            "ground_registered": 18,
+            "multi_frame_states": 12
+          }
+        ],
+        "figure": {
+          "camera": {
+            "eye": [
+              0.0,
+              -4.0,
+              -0.15
+            ],
+            "camera_to_world": [
+              [
+                0.5773502691896258,
+                -0.7071067811865475,
+                0.408248290463863
+              ],
+              [
+                0.5773502691896257,
+                0.7071067811865476,
+                0.40824829046386296
+              ],
+              [
+                -0.5773502691896257,
+                0,
+                0.816496580927726
+              ]
+            ],
+            "horizontal_fov": 1.35,
+            "width": 1000,
+            "height": 800,
+            "stamp_ns": 82200000000,
+            "projection": "perspective",
+            "viewpoint": "isometric direction; positive X forward, Y left, Z up",
+            "partition": "inertial-init-29fb14a3a8584d48a14201991659def0",
+            "topic": "/validation/slam/isometric_rgb"
+          },
+          "marker_area_pt2": 64,
+          "height_limits_m": [
+            -3.8048119362682162,
+            -3.5026716759603964
+          ],
+          "colormap": "turbo"
+        },
+        "sha256": {
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/scripts/evaluate_sonar_ground_live.py": "3896f334efdca9e040a81c94049d16fe3ff2525464fc35021458cb3dfe0eaf13",
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/joint-sonar-flat-capture-20261026-d/demo-runtime/3109b299a72640f79acf2d1b1803143a/orca5-seafloor.dae": "277c49dd9c3b2ec1c9d3c3754be9d076c7b0438ccd29e9ae11355869849fbeb2",
+          ".local/joint-sonar-flat-capture-20261026-d/live-vio-probe/evaluation-inputs/truth.csv": "da80ea2041aa79cbb5a522fcee64152aa53473d4d67a5f5719c49929e287eca9",
+          ".local/joint-sonar-flat-capture-20261026-d/live-vio-probe/evaluation-inputs/receipt.json": "9ba02decd40e86761653a8e7e1fd1dfa459b28f9854de8d6170200ed34e31d47",
+          ".local/joint-sonar-flat-capture-20261026-d/isometric-rgb.png": "a71b74877b31ba3d756021e66e1657e7e5e6df70fb1b101dff65dc9481baede2",
+          ".local/joint-sonar-flat-capture-20261026-d/isometric-camera.json": "3f8667e214bf32264d5f1486cd1d760a3c7e08662ab92e3d7714f7a634d21957",
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/sonar-ground-live-20261026/d-control-plain-v9/receipt.json": "b66b2b5b0a27005d63ec1b8fd025c7f55d1e0bf2ef44e5a2e7cbfe2b6045add9",
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/sonar-ground-live-20261026/d-control-plain-v9/ground-observations.json": "1cce5ad80c23b4b06d4388673280895eefc92313ed382ca54cfd23378969a55a",
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/sonar-ground-live-20261026/d-control-plain-v9/ground-map.json": "35dc428731b1a716e2ce8ca5571a58dbf023abc8d84b852323f65fcc95328a28",
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/sonar-ground-live-20261026/d-control-plain-v9/states.csv": "aef9b0667789df9be7f62572a6ca36e6ae6821230e69ff286b4daca9c9cfd1cb",
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/sonar-ground-live-20261026/d-ground-plain-v9/receipt.json": "61d83d4701fd6afa4a70eb5c70618667cd804d87582774147105bd96a54d8952",
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/sonar-ground-live-20261026/d-ground-plain-v9/ground-observations.json": "341c241dc9e6610bf49ac64434baab40797d57629f290da594ecb823744be791",
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/sonar-ground-live-20261026/d-ground-plain-v9/ground-map.json": "d4cf0cc1057bc81ef27c5a09092920991f9c5d3b370f46af0d56c317db2b6447",
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/sonar-ground-live-20261026/d-ground-plain-v9/states.csv": "398a8a60ac52ae519086a2f213d0f70da1c33d730caa23f743a44978849cf9ad"
+        }
+      },
+      "spatial": {
+        "scope": "Native joint-ground versus no-ground control; unqualified recorded-terrain experiment",
+        "map_qualified": false,
+        "voxel_m": 0.1,
+        "common_raw_entries": 846,
+        "runs": [
+          {
+            "name": "control",
+            "final_pose_metrics": {
+              "evaluated": true,
+              "states": 222,
+              "duration_s": 69.5,
+              "evaluation_alignment": {
+                "rotation": [
+                  [
+                    -0.9923719974998583,
+                    0.12327943290809379,
+                    0.0
+                  ],
+                  [
+                    -0.12327943290809379,
+                    -0.9923719974998583,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    0.0,
+                    1.0
+                  ]
+                ],
+                "translation": [
+                  -0.05404003784458456,
+                  0.01978938226201252,
+                  -0.2254841112783773
+                ],
+                "scale": 1.0
+              },
+              "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+              "position_rmse_m": 0.04336015244461337,
+              "position_max_m": 0.11346695608262942,
+              "rotation_rmse_rad": 0.027363110740830837,
+              "rotation_max_rad": 0.04264559473326078,
+              "truth_distance_m": 15.24291113718255,
+              "estimated_distance_m": 15.242222753862787,
+              "rpe_1s_pairs": 207,
+              "rpe_1s_position_rmse_m": 0.004172784163832203,
+              "rpe_1s_rotation_rmse_rad": 0.0018758289081132146,
+              "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+            },
+            "online_pose_metrics": {
+              "evaluated": true,
+              "states": 222,
+              "duration_s": 69.5,
+              "evaluation_alignment": {
+                "rotation": [
+                  [
+                    -0.9923712452938642,
+                    0.12328548784794216,
+                    0.0
+                  ],
+                  [
+                    -0.12328548784794216,
+                    -0.9923712452938642,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    0.0,
+                    1.0
+                  ]
+                ],
+                "translation": [
+                  -0.05404003751831869,
+                  0.019789383488749406,
+                  -0.22548411134852686
+                ],
+                "scale": 1.0
+              },
+              "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+              "position_rmse_m": 0.041734303865450365,
+              "position_max_m": 0.10492662498848172,
+              "rotation_rmse_rad": 0.027996351175279332,
+              "rotation_max_rad": 0.04318858465368658,
+              "truth_distance_m": 15.24291113718255,
+              "estimated_distance_m": 15.323397685634244,
+              "rpe_1s_pairs": 207,
+              "rpe_1s_position_rmse_m": 0.005748328569636857,
+              "rpe_1s_rotation_rmse_rad": 0.002146340037192393,
+              "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+            },
+            "surface_distance_m": {
+              "points": 649,
+              "within_10cm": 649,
+              "median": 0.0092119247064085,
+              "p90": 0.022712321097332306,
+              "maximum": 0.04901916026451943
+            },
+            "common_raw_surface_distance_m": {
+              "points": 846,
+              "within_10cm": 846,
+              "median": 0.008823624337862327,
+              "p90": 0.021904507239856687,
+              "maximum": 0.05202282908408588
+            },
+            "raw_entries": 846,
+            "ground_registered": 0,
+            "multi_frame_states": 0
+          },
+          {
+            "name": "ground",
+            "final_pose_metrics": {
+              "evaluated": true,
+              "states": 222,
+              "duration_s": 69.5,
+              "evaluation_alignment": {
+                "rotation": [
+                  [
+                    -0.9923719974998583,
+                    0.12327943290809379,
+                    0.0
+                  ],
+                  [
+                    -0.12327943290809379,
+                    -0.9923719974998583,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    0.0,
+                    1.0
+                  ]
+                ],
+                "translation": [
+                  -0.05404003784458456,
+                  0.01978938226201252,
+                  -0.2254841112783773
+                ],
+                "scale": 1.0
+              },
+              "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+              "position_rmse_m": 0.07988596699639697,
+              "position_max_m": 0.21727834897162976,
+              "rotation_rmse_rad": 0.09272166224193282,
+              "rotation_max_rad": 0.1666799551667079,
+              "truth_distance_m": 15.24291113718255,
+              "estimated_distance_m": 15.243455194828506,
+              "rpe_1s_pairs": 207,
+              "rpe_1s_position_rmse_m": 0.004151244309461778,
+              "rpe_1s_rotation_rmse_rad": 0.0031522900426463464,
+              "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+            },
+            "online_pose_metrics": {
+              "evaluated": true,
+              "states": 222,
+              "duration_s": 69.5,
+              "evaluation_alignment": {
+                "rotation": [
+                  [
+                    -0.9923712452938642,
+                    0.12328548784794216,
+                    0.0
+                  ],
+                  [
+                    -0.12328548784794216,
+                    -0.9923712452938642,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    0.0,
+                    1.0
+                  ]
+                ],
+                "translation": [
+                  -0.05404003751831869,
+                  0.019789383488749406,
+                  -0.22548411134852686
+                ],
+                "scale": 1.0
+              },
+              "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+              "position_rmse_m": 0.07718782533302355,
+              "position_max_m": 0.20384142013886186,
+              "rotation_rmse_rad": 0.09110081453966856,
+              "rotation_max_rad": 0.1666860566402355,
+              "truth_distance_m": 15.24291113718255,
+              "estimated_distance_m": 15.321041546192578,
+              "rpe_1s_pairs": 207,
+              "rpe_1s_position_rmse_m": 0.0057717125452224245,
+              "rpe_1s_rotation_rmse_rad": 0.003506999989412234,
+              "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+            },
+            "surface_distance_m": {
+              "points": 636,
+              "within_10cm": 636,
+              "median": 0.010095359086350557,
+              "p90": 0.02490633304141975,
+              "maximum": 0.04914605170138229
+            },
+            "common_raw_surface_distance_m": {
+              "points": 846,
+              "within_10cm": 846,
+              "median": 0.00935436077710593,
+              "p90": 0.023500312179987406,
+              "maximum": 0.052540133369277375
+            },
+            "raw_entries": 846,
+            "ground_registered": 18,
+            "multi_frame_states": 12
+          }
+        ],
+        "figure": {
+          "camera": {
+            "eye": [
+              0.0,
+              -4.0,
+              -0.15
+            ],
+            "camera_to_world": [
+              [
+                0.5773502691896258,
+                -0.7071067811865475,
+                0.408248290463863
+              ],
+              [
+                0.5773502691896257,
+                0.7071067811865476,
+                0.40824829046386296
+              ],
+              [
+                -0.5773502691896257,
+                0,
+                0.816496580927726
+              ]
+            ],
+            "horizontal_fov": 1.35,
+            "width": 1000,
+            "height": 800,
+            "stamp_ns": 82200000000,
+            "projection": "perspective",
+            "viewpoint": "isometric direction; positive X forward, Y left, Z up",
+            "partition": "inertial-init-29fb14a3a8584d48a14201991659def0",
+            "topic": "/validation/slam/isometric_rgb"
+          },
+          "marker_area_pt2": 64,
+          "height_limits_m": [
+            -3.8048119362682162,
+            -3.507026945131334
+          ],
+          "colormap": "turbo"
+        },
+        "sha256": {
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/scripts/evaluate_sonar_ground_live.py": "3896f334efdca9e040a81c94049d16fe3ff2525464fc35021458cb3dfe0eaf13",
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/joint-sonar-flat-capture-20261026-d/demo-runtime/3109b299a72640f79acf2d1b1803143a/orca5-seafloor.dae": "277c49dd9c3b2ec1c9d3c3754be9d076c7b0438ccd29e9ae11355869849fbeb2",
+          ".local/joint-sonar-flat-capture-20261026-d/live-vio-probe/evaluation-inputs/truth.csv": "da80ea2041aa79cbb5a522fcee64152aa53473d4d67a5f5719c49929e287eca9",
+          ".local/joint-sonar-flat-capture-20261026-d/live-vio-probe/evaluation-inputs/receipt.json": "9ba02decd40e86761653a8e7e1fd1dfa459b28f9854de8d6170200ed34e31d47",
+          ".local/joint-sonar-flat-capture-20261026-d/isometric-rgb.png": "a71b74877b31ba3d756021e66e1657e7e5e6df70fb1b101dff65dc9481baede2",
+          ".local/joint-sonar-flat-capture-20261026-d/isometric-camera.json": "3f8667e214bf32264d5f1486cd1d760a3c7e08662ab92e3d7714f7a634d21957",
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/sonar-ground-live-20261026/d-control-v9/receipt.json": "625c814df57b1d918e9912e3335b06ebe70ca6d737fd08b8ff82f98e77ee2d19",
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/sonar-ground-live-20261026/d-control-v9/ground-observations.json": "1cce5ad80c23b4b06d4388673280895eefc92313ed382ca54cfd23378969a55a",
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/sonar-ground-live-20261026/d-control-v9/ground-map.json": "35dc428731b1a716e2ce8ca5571a58dbf023abc8d84b852323f65fcc95328a28",
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/sonar-ground-live-20261026/d-control-v9/states.csv": "aef9b0667789df9be7f62572a6ca36e6ae6821230e69ff286b4daca9c9cfd1cb",
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/sonar-ground-live-20261026/d-ground-v9/receipt.json": "68e9e889ec15a9186ba57d8718e779928559fa8105bee08caccc077952bd1abd",
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/sonar-ground-live-20261026/d-ground-v9/ground-observations.json": "341c241dc9e6610bf49ac64434baab40797d57629f290da594ecb823744be791",
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/sonar-ground-live-20261026/d-ground-v9/ground-map.json": "934e996ff537ffa03fbd59f9a7bef0c2e4455448c48c972a655b04235a3ab1e7",
+          "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/sonar-ground-live-20261026/d-ground-v9/states.csv": "0719d2f8d1b620ce6a1971484244833449286a2879e345ac846a877f29179947"
+        }
+      }
+    }
+  },
+  "regression": {
+    "a_controls_identical": true,
+    "b_controls_identical": true,
+    "c_controls_identical": true,
+    "d_controls_identical": true
+  },
+  "synthetic_visual": {
+    "scope": "Synthetic 12 second visual inertial regression; no field acceptance",
+    "results": {
+      "tracks": {
+        "states": 61,
+        "position_rmse_m": 0.01894813885566845,
+        "rotation_rmse_rad": 0.003010722744661642,
+        "final_gyro_bias_error_rad_s": 5.305980870677906e-05,
+        "final_accel_bias_error_m_s2": 0.011529691008435568
+      },
+      "images": {
+        "states": 61,
+        "position_rmse_m": 0.02030529313035617,
+        "rotation_rmse_rad": 0.004014870686507233,
+        "final_gyro_bias_error_rad_s": 6.061500144353699e-05,
+        "final_accel_bias_error_m_s2": 0.009363961677623418
+      }
+    },
+    "binary_sha256": "37770f7fed4f944f4f3d6620ab1f50f24f01f3c47c6cbc3c8d6ec1526bae526b"
+  },
+  "before_heading": {
+    "a": {
+      "control": {
+        "heading_error_deg_rmse": 2.2254681971871695,
+        "tilt_error_deg_rmse": 0.0847665508738686,
+        "horizontal_error_m_rmse": 0.05505072176789693,
+        "vertical_error_m_rmse": 0.003314453485267898,
+        "final_gyro_bias_rad_s": [
+          -1.9171014300108403e-05,
+          9.800954468199856e-06,
+          0.0010761323552681999
+        ],
+        "states": 227
+      },
+      "ground": {
+        "heading_error_deg_rmse": 43.69862197040492,
+        "tilt_error_deg_rmse": 0.16737527397919397,
+        "horizontal_error_m_rmse": 1.0849185201371017,
+        "vertical_error_m_rmse": 0.004188505014356208,
+        "final_gyro_bias_rad_s": [
+          -0.0002448567896419664,
+          8.48889148128303e-06,
+          0.019254530173829398
+        ],
+        "states": 227
+      },
+      "spatial": {
+        "heading_error_deg_rmse": 27.074961380560232,
+        "tilt_error_deg_rmse": 0.11004326305119984,
+        "horizontal_error_m_rmse": 0.666993243660944,
+        "vertical_error_m_rmse": 0.0035881260887378735,
+        "final_gyro_bias_rad_s": [
+          0.0001344364168622579,
+          2.209006216971446e-05,
+          -0.011972484576510825
+        ],
+        "states": 227
+      }
+    },
+    "b": {
+      "control": {
+        "heading_error_deg_rmse": 1.1186956049577856,
+        "tilt_error_deg_rmse": 0.08800592392915785,
+        "horizontal_error_m_rmse": 0.01880469031196917,
+        "vertical_error_m_rmse": 0.004344637733219925,
+        "final_gyro_bias_rad_s": [
+          -9.425699985990477e-06,
+          -6.740723113163552e-06,
+          -0.0004993988521390238
+        ],
+        "states": 224
+      },
+      "ground": {
+        "heading_error_deg_rmse": 17.29486123586878,
+        "tilt_error_deg_rmse": 0.12088768158025316,
+        "horizontal_error_m_rmse": 0.35548597307013186,
+        "vertical_error_m_rmse": 0.004035901831094392,
+        "final_gyro_bias_rad_s": [
+          -0.00012908116268553138,
+          -8.738922081577204e-07,
+          0.007207306219213337
+        ],
+        "states": 224
+      },
+      "spatial": {
+        "heading_error_deg_rmse": 19.256261951295965,
+        "tilt_error_deg_rmse": 0.1051325861597227,
+        "horizontal_error_m_rmse": 0.3469420037526818,
+        "vertical_error_m_rmse": 0.004211725815367645,
+        "final_gyro_bias_rad_s": [
+          8.538963699509626e-05,
+          -8.085791386931476e-07,
+          -0.00875882082073542
+        ],
+        "states": 224
+      }
+    },
+    "c": {
+      "control": {
+        "heading_error_deg_rmse": 0.3083788244905704,
+        "tilt_error_deg_rmse": 0.10509169508110722,
+        "horizontal_error_m_rmse": 0.01590282924627993,
+        "vertical_error_m_rmse": 0.0023619107155782477,
+        "final_gyro_bias_rad_s": [
+          -7.62516778135504e-06,
+          -1.4841772715786255e-05,
+          -0.00014251884794750088
+        ],
+        "states": 234
+      },
+      "ground": {
+        "heading_error_deg_rmse": 52.255473582181104,
+        "tilt_error_deg_rmse": 0.24604214700392832,
+        "horizontal_error_m_rmse": 1.3891058709132396,
+        "vertical_error_m_rmse": 0.003257554806416278,
+        "final_gyro_bias_rad_s": [
+          -0.0003891359014961311,
+          1.8407663785126337e-07,
+          0.02246741883049944
+        ],
+        "states": 234
+      },
+      "spatial": {
+        "heading_error_deg_rmse": 20.10274993533845,
+        "tilt_error_deg_rmse": 0.11259960661484528,
+        "horizontal_error_m_rmse": 0.5397783033448209,
+        "vertical_error_m_rmse": 0.0025392895778593542,
+        "final_gyro_bias_rad_s": [
+          0.00014281266468300257,
+          -1.1595245425423179e-05,
+          -0.008732556268674002
+        ],
+        "states": 234
+      }
+    },
+    "d": {
+      "control": {
+        "heading_error_deg_rmse": 1.7281880155050697,
+        "tilt_error_deg_rmse": 0.08567872703124209,
+        "horizontal_error_m_rmse": 0.04328430533812519,
+        "vertical_error_m_rmse": 0.004174387413234259,
+        "final_gyro_bias_rad_s": [
+          -1.888399333240101e-05,
+          1.3437818234743768e-06,
+          0.0006701315507535057
+        ],
+        "states": 222
+      },
+      "ground": {
+        "heading_error_deg_rmse": 10.921671463809146,
+        "tilt_error_deg_rmse": 0.1158384795964367,
+        "horizontal_error_m_rmse": 0.19688631416011268,
+        "vertical_error_m_rmse": 0.004109196326903648,
+        "final_gyro_bias_rad_s": [
+          -9.561275535463553e-05,
+          3.938325421830452e-06,
+          0.004232929233493048
+        ],
+        "states": 222
+      },
+      "spatial": {
+        "heading_error_deg_rmse": 4.823237726778754,
+        "tilt_error_deg_rmse": 0.08880417736255414,
+        "horizontal_error_m_rmse": 0.07185758815325455,
+        "vertical_error_m_rmse": 0.004158104935864256,
+        "final_gyro_bias_rad_s": [
+          -4.301572065630085e-05,
+          1.3739680532594927e-06,
+          0.002225128932090586
+        ],
+        "states": 222
+      }
+    }
+  },
+  "after_heading": {
+    "a": {
+      "control": {
+        "heading_error_deg_rmse": 2.1858420994828696,
+        "tilt_error_deg_rmse": 0.09499186018125508,
+        "horizontal_error_m_rmse": 0.054079301304224094,
+        "vertical_error_m_rmse": 0.0033219933854482177,
+        "final_gyro_bias_rad_s": [
+          -1.899013988038569e-05,
+          9.805750083462525e-06,
+          0.0010594532301181248
+        ],
+        "states": 227
+      },
+      "previous": {
+        "heading_error_deg_rmse": 27.074961380560232,
+        "tilt_error_deg_rmse": 0.11004326305119984,
+        "horizontal_error_m_rmse": 0.666993243660944,
+        "vertical_error_m_rmse": 0.0035881260887378735,
+        "final_gyro_bias_rad_s": [
+          0.0001344364168622579,
+          2.209006216971446e-05,
+          -0.011972484576510825
+        ],
+        "states": 227
+      },
+      "corrected": {
+        "heading_error_deg_rmse": 27.85396414802143,
+        "tilt_error_deg_rmse": 0.14638493053513071,
+        "horizontal_error_m_rmse": 0.6847956102810976,
+        "vertical_error_m_rmse": 0.003639717548224061,
+        "final_gyro_bias_rad_s": [
+          0.0001384930928764433,
+          2.2699660305917746e-05,
+          -0.012326178705672135
+        ],
+        "states": 227
+      }
+    },
+    "b": {
+      "control": {
+        "heading_error_deg_rmse": 1.0690199286450048,
+        "tilt_error_deg_rmse": 0.1368613168819791,
+        "horizontal_error_m_rmse": 0.01741700956902544,
+        "vertical_error_m_rmse": 0.004341376564406223,
+        "final_gyro_bias_rad_s": [
+          -9.613106242755752e-06,
+          -6.730314140481545e-06,
+          -0.0004827692465749239
+        ],
+        "states": 224
+      },
+      "previous": {
+        "heading_error_deg_rmse": 19.256261951295965,
+        "tilt_error_deg_rmse": 0.1051325861597227,
+        "horizontal_error_m_rmse": 0.3469420037526818,
+        "vertical_error_m_rmse": 0.004211725815367645,
+        "final_gyro_bias_rad_s": [
+          8.538963699509626e-05,
+          -8.085791386931476e-07,
+          -0.00875882082073542
+        ],
+        "states": 224
+      },
+      "corrected": {
+        "heading_error_deg_rmse": 18.978504395303503,
+        "tilt_error_deg_rmse": 0.12630714342002838,
+        "horizontal_error_m_rmse": 0.34246565841210436,
+        "vertical_error_m_rmse": 0.004212893911032313,
+        "final_gyro_bias_rad_s": [
+          8.375034002367897e-05,
+          -9.580602247113322e-07,
+          -0.008623699528684504
+        ],
+        "states": 224
+      }
+    },
+    "c": {
+      "control": {
+        "heading_error_deg_rmse": 0.5914649860092431,
+        "tilt_error_deg_rmse": 0.1498966261371417,
+        "horizontal_error_m_rmse": 0.020821399416316045,
+        "vertical_error_m_rmse": 0.0023684839960665936,
+        "final_gyro_bias_rad_s": [
+          -5.462033531043859e-06,
+          -1.4916685926420859e-05,
+          -0.0002655667290728268
+        ],
+        "states": 234
+      },
+      "previous": {
+        "heading_error_deg_rmse": 20.10274993533845,
+        "tilt_error_deg_rmse": 0.11259960661484528,
+        "horizontal_error_m_rmse": 0.5397783033448209,
+        "vertical_error_m_rmse": 0.0025392895778593542,
+        "final_gyro_bias_rad_s": [
+          0.00014281266468300257,
+          -1.1595245425423179e-05,
+          -0.008732556268674002
+        ],
+        "states": 234
+      },
+      "corrected": {
+        "heading_error_deg_rmse": 21.270467355190416,
+        "tilt_error_deg_rmse": 0.16619086216934195,
+        "horizontal_error_m_rmse": 0.5703179483572526,
+        "vertical_error_m_rmse": 0.0025231613278753153,
+        "final_gyro_bias_rad_s": [
+          0.00015149254595666655,
+          -1.1486394684266175e-05,
+          -0.009236482916838247
+        ],
+        "states": 234
+      }
+    },
+    "d": {
+      "control": {
+        "heading_error_deg_rmse": 1.598971517085258,
+        "tilt_error_deg_rmse": 0.13051755019361172,
+        "horizontal_error_m_rmse": 0.04152402697002631,
+        "vertical_error_m_rmse": 0.004184172956065931,
+        "final_gyro_bias_rad_s": [
+          -1.8134623250048263e-05,
+          1.361402914237393e-06,
+          0.0006129969967076795
+        ],
+        "states": 222
+      },
+      "previous": {
+        "heading_error_deg_rmse": 4.823237726778754,
+        "tilt_error_deg_rmse": 0.08880417736255414,
+        "horizontal_error_m_rmse": 0.07185758815325455,
+        "vertical_error_m_rmse": 0.004158104935864256,
+        "final_gyro_bias_rad_s": [
+          -4.301572065630085e-05,
+          1.3739680532594927e-06,
+          0.002225128932090586
+        ],
+        "states": 222
+      },
+      "corrected": {
+        "heading_error_deg_rmse": 5.21830024757266,
+        "tilt_error_deg_rmse": 0.13469849032023848,
+        "horizontal_error_m_rmse": 0.07707490838745613,
+        "vertical_error_m_rmse": 0.0041735927815966765,
+        "final_gyro_bias_rad_s": [
+          -4.5411635044622895e-05,
+          1.2865749374185202e-06,
+          0.0023967626553614884
+        ],
+        "states": 222
+      }
+    }
+  }
+}

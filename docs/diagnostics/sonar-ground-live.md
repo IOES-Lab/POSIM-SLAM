@@ -20,6 +20,11 @@ paired results; it defaults to off and remains unqualified.
 [선택형 공간 표면 불확실성](sonar-ground-spatial.md)의 비교 결과를 별도로 제공합니다.
 기본값은 꺼짐이며 검증 기준을 통과하지 못했습니다.
 
+[Initial bias prior and subsequent comparisons](imu-initial-prior.md) document
+the common initialization correction and the remaining heading failure.
+[초기 바이어스 사전정보와 후속 비교](imu-initial-prior.md)에서 공통 초기화 수정과
+남은 방위각 실패를 확인할 수 있습니다.
+
 ## Inputs and ownership / 입력과 관측 관리
 
 `LiveClient.ground` negotiates `exact_beam_entries_v1` and submits a bounded

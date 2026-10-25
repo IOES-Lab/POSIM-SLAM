@@ -90,6 +90,7 @@ def build(engine, source, output, jobs=2):
          '-DCMAKE_BUILD_TYPE=Release', '-DCMAKE_POLICY_VERSION_MINIMUM=3.5', '-DCMAKE_PREFIX_PATH=' + str(engine),
          '-DSOURCE_ROOT=' + str(source)])
     run([cmake, '--build', output / 'build', '--parallel', jobs])
+    run([output / 'build/basalt_initial_prior_probe'], timeout=30)
     results = {}
     for mode in ('tracks', 'images'):
         path = output / (mode + '.csv')
@@ -103,6 +104,7 @@ def build(engine, source, output, jobs=2):
     for name, pin in pins.items():
         shutil.copyfile(source / name / pin['notice'], notices / (name + '.txt'))
     receipt = dict(schema='posim-slam-basalt-research-1', passed=True,
+                   initial_bias_prior_check='actual_constructor_and_physical_state_increments_v1',
                    scope='12-second synthetic 6DoF VIO; no ROS/native-world or package acceptance',
                    camera_hz=5, imu_hz=200, truth_input=False,
                    source_root=str(source), sources=pins, results=results,

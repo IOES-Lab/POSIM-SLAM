@@ -9,6 +9,11 @@ still have greater position error than the no-ground control.**
 원래 거리 관측, 미지 국소 평면, IMU·DVL·수압 융합을 유지합니다. 기본값은 꺼짐입니다.
 **네 기록 모두 해저 제약 없는 대조군보다 위치 오차가 큽니다.**
 
+For results after correcting the initial bias-weight mapping, see
+[initial IMU bias prior](imu-initial-prior.md).
+초기 바이어스 가중치 연결을 수정한 후의 결과는
+[초기 IMU 바이어스 사전정보](imu-initial-prior.md)에 있습니다.
+
 ## Model / 모델
 
 The range covariance adds `K(i,j)/(a_i*a_j)`, where

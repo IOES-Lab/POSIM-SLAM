@@ -139,6 +139,14 @@ def prepare(source,destination):
     text=replace_once(raw.decode(),'''  imu_meas[t_ns] = IntegratedImuMeasurement<Scalar>(t_ns, bg.cast<Scalar>(),
                                                     ba.cast<Scalar>());''',
         '  // No completed IMU interval at the initial state.')
+    # PoseVelBiasState::applyInc stores gyro at 9:12 and accel at 12:15.
+    # The pinned constructor applies the named initial weights in reverse.
+    # Correct both square-root and Hessian branches without changing weights.
+    for wrapper in ('std::sqrt(Scalar({}))', 'Scalar({})'):
+        for index, before, after in ((9, 'ba', 'bg'), (12, 'bg', 'ba')):
+            prefix = f'marg_data.H.diagonal().template segment<3>({index}).array() =\n        '
+            text=replace_once(text, prefix+wrapper.format(f'config.vio_init_{before}_weight')+';',
+                              prefix+wrapper.format(f'config.vio_init_{after}_weight')+';')
     text=replace_once(text,'calib.dicrete_time_accel_noise_std().array().square()',
                       'calib.accel_noise_std.array().square()')
     text=replace_once(text,'calib.dicrete_time_gyro_noise_std().array().square()',
