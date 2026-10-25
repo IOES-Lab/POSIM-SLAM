@@ -1,0 +1,66 @@
+{
+  "scope": "Profile raw ground heading evidence using only frozen estimated poses.\n\nThe conditional cost varies relative yaw rate while refitting each unknown\nplane. It excludes IMU/DVL/pressure costs and fixes translations and tilt, so\nit is neither a posterior heading uncertainty nor a navigation acceptance.\nNo truth, mesh or RGB file is read. Frozen group membership comes from an\nexisting ground replay; final no-ground estimates supply the conditional poses.",
+  "map_qualified": false,
+  "records": {
+    "a": {
+      "base": {
+        "groups": 4,
+        "boundary_minima": 0,
+        "zero_minus_best_cost_sum": 38.502946794786254,
+        "maximum_zero_minus_best_cost": 28.216843066281143
+      },
+      "spatial": {
+        "groups": 4,
+        "boundary_minima": 2,
+        "zero_minus_best_cost_sum": 5.125694197979424,
+        "maximum_zero_minus_best_cost": 2.8965546689614285
+      }
+    },
+    "b": {
+      "base": {
+        "groups": 6,
+        "boundary_minima": 1,
+        "zero_minus_best_cost_sum": 41.82043335457962,
+        "maximum_zero_minus_best_cost": 14.716592527475655
+      },
+      "spatial": {
+        "groups": 6,
+        "boundary_minima": 1,
+        "zero_minus_best_cost_sum": 4.339461775838554,
+        "maximum_zero_minus_best_cost": 1.4037392257293888
+      }
+    },
+    "c": {
+      "base": {
+        "groups": 4,
+        "boundary_minima": 1,
+        "zero_minus_best_cost_sum": 78.1742311497012,
+        "maximum_zero_minus_best_cost": 68.28420766686557
+      },
+      "spatial": {
+        "groups": 4,
+        "boundary_minima": 2,
+        "zero_minus_best_cost_sum": 2.8640299613695603,
+        "maximum_zero_minus_best_cost": 0.9551767906164912
+      }
+    },
+    "d": {
+      "base": {
+        "groups": 4,
+        "boundary_minima": 0,
+        "zero_minus_best_cost_sum": 48.430365926952014,
+        "maximum_zero_minus_best_cost": 39.914046251100785
+      },
+      "spatial": {
+        "groups": 4,
+        "boundary_minima": 1,
+        "zero_minus_best_cost_sum": 1.0502261075824357,
+        "maximum_zero_minus_best_cost": 0.8619428747226578
+      }
+    }
+  },
+  "native_cost_max_difference": 7.389644451905042e-13,
+  "all_fits_converged": true,
+  "fits": 2916,
+  "native_cost_comparisons": 16
+}

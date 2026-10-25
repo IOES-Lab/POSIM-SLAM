@@ -50,6 +50,9 @@ VIO 검사 전에 이 검사를 실행합니다. 네이티브 센서·작업자 
 
 ## Remaining ground-fusion failure / 남은 해저 융합 실패
 
+[Conditional raw-ground heading profiles](sonar-ground-heading-profile.md) inspect the observation cost before IMU/marginalization.
+[원본 해저 관측의 조건부 방위각 비용](sonar-ground-heading-profile.md)은 IMU·주변화를 포함하기 전의 관측 비용을 조사합니다.
+
 The recorded error is predominantly heading and horizontal motion. In C, the
 spatial ground run has 21.27° heading RMSE and 0.166° gravity-tilt RMSE; the
 matching no-ground control has 0.59° and 0.150°. The corrected initial prior
