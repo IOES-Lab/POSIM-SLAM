@@ -8,7 +8,25 @@ import numpy as np
 
 MAX_POINTS=100000
 MAX_BYTES=MAX_POINTS*12+4096
-SCOPES={'complete_active_local_vio_window','accumulated_local_vio_landmarks'}
+SCOPES={'complete_active_local_vio_window','accumulated_local_vio_landmarks',
+        'accumulated_local_sonar_hypotheses'}
+
+
+def sonar_snapshot(points, *, request_id, stamp_ns):
+    """Encode the complete bounded acoustic archive with an explicit scope."""
+    array=np.asarray(points,dtype='<f4')
+    if (array.ndim!=2 or array.shape[1]!=3 or not 0<len(array)<=MAX_POINTS
+            or not np.isfinite(array).all() or type(request_id) is not int
+            or type(stamp_ns) is not int or not 0<request_id<2**63 or not 0<stamp_ns<2**63):
+        raise ValueError('invalid_acoustic_snapshot')
+    header=('ply\nformat binary_little_endian 1.0\n'
+        'comment scope accumulated_local_sonar_hypotheses\n'
+        'comment map_qualified false\n'
+        f'comment request_id {request_id}\ncomment stamp_ns {stamp_ns}\n'
+        f'element vertex {len(array)}\nproperty float x\nproperty float y\nproperty float z\nend_header\n')
+    data=header.encode('ascii')+array.tobytes()
+    validate_snapshot(data,dict(scope='accumulated_local_sonar_hypotheses'))
+    return data
 
 
 def validate_snapshot(data,expected):

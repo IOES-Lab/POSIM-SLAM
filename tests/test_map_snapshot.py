@@ -1,5 +1,5 @@
 import struct,unittest
-from posim_slam.map_snapshot import annotate_snapshot,validate_snapshot
+from posim_slam.map_snapshot import annotate_snapshot,validate_snapshot,sonar_snapshot
 
 
 def raw(points=1001):
@@ -9,6 +9,17 @@ def raw(points=1001):
 
 
 class SnapshotTests(unittest.TestCase):
+    def test_sonar_export_preserves_hypothesis_scope_and_full_archive(self):
+        data=sonar_snapshot([[1,2,3]]*1001,request_id=4,stamp_ns=100)
+        data=annotate_snapshot(data,nonce='a',frame='vehicle/sonar_inertial_a_segment_1',
+                              request_id=4,stamp_ns=100,points=1001)
+        value=validate_snapshot(data,dict(scope='accumulated_local_sonar_hypotheses',map_qualified='false'))
+        self.assertEqual(value['points'],1001)
+        with self.assertRaisesRegex(ValueError,'provenance'):
+            validate_snapshot(data,dict(scope='accumulated_local_vio_landmarks'))
+        for points in ([],[[float('nan'),0,0]],[[1,2]],[[1,2,3]]*100001):
+            with self.assertRaises(ValueError):sonar_snapshot(points,request_id=4,stamp_ns=100)
+
     def test_complete_snapshot_is_not_limited_by_the_display_sample(self):
         data=annotate_snapshot(raw(),nonce='a',frame='vehicle/vio_a_segment_1',request_id=4,stamp_ns=100,points=1001)
         self.assertEqual(validate_snapshot(data,dict(session_nonce='a'))['points'],1001)

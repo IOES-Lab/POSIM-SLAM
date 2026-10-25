@@ -6,6 +6,7 @@
 
 실험용 카메라 없는 국소 Ping 평면과 같은 입력의 RGB·점군 대조는 [지형 Ping 진단](docs/diagnostics/terrain-ping.md)에 정리합니다. 기본값은 꺼짐이며 신뢰할 수 있는 지형 복원은 미검증입니다. [음향 모델 재실행과 같은 시점의 지도](docs/diagnostics/sonar-normal-rerun.md).
 [카메라 없는 반사 경계 추출과 수직 탐사 비교](docs/diagnostics/sonar-causal-depth.md)에 선택형 원본 소나 추출기와 지도 한계를 정리합니다.
+[카메라 없는 스트리밍 진단](docs/diagnostics/sonar-streaming.md)에 독립 세션 관리, ROS 재생 복구, 지형·가시거리 검증 범위를 정리합니다.
 
 POSIM 애플리케이션에서 사용하는 독립 센서 추정 라이브러리입니다. Python
 알고리즘은 센서 측정 배열과 보정된 변환을 받습니다. WWW-POSIM은 세션, 차량
@@ -55,8 +56,9 @@ Ping 축척 관측은 모든 광선 교점이 관측 평면의 볼록 껍질 안
 `native/basalt/sonar_geometry.hpp`는 지도 점의 거리·방위각 잔차를 Basalt의
 지도 좌표 이동과 지도 기준 좌측 회전 갱신 규약으로 계산합니다. 자세·점
 미분과 설정된 거리·시야 검사를 포함하며 잡음 가중치는 아직 적용하지 않습니다.
-네이티브 연결용 구성 요소이며, 소나 관측 소유권·가중치와 네이티브 최적화
-등록은 아직 연결되지 않았습니다.
+네이티브 기하 구성 요소이며, [네이티브 워커](native/basalt/README.md)는
+가중 소나 제약·측정 소유권·공동 최적화를 연결합니다. 물리적 반사점 연결과
+지형 지도 정확도는 미검증입니다.
 
 `sonar_inertial.optimize_window`는 2–4개 상태 구간의 위치, 속도, 자세,
 IMU 바이어스와 공유 소나 반사점을 함께 최적화합니다. 공분산을 포함한 초기

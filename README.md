@@ -6,6 +6,7 @@
 
 Experimental camera-free local Ping planes and their matched RGB/point-cloud controls are described in [terrain Ping diagnostics](docs/diagnostics/terrain-ping.md). This mode is off by default; reliable terrain reconstruction remains unqualified. [Acoustic-model rerun and same-view map](docs/diagnostics/sonar-normal-rerun.md).
 [Camera-free echo boundaries and vertical survey comparisons](docs/diagnostics/sonar-causal-depth.md) document the optional raw-sonar frontend and its map limitations.
+[Camera-free streaming diagnostics](docs/diagnostics/sonar-streaming.md) cover the independent session owner, ROS replay recovery and terrain/visibility qualification boundaries.
 
 Independent sensor estimation components used by POSIM applications. Python
 algorithms accept measured sensor arrays and calibrated transforms. WWW-POSIM
@@ -57,8 +58,9 @@ these diagnostics do not define a calibrated acceptance threshold.
 `native/basalt/sonar_geometry.hpp` supplies unwhitened range/azimuth rows for a
 map point using Basalt's additive map translation and left map-frame rotation.
 It includes point and pose Jacobians and authored range/FOV checks. It is a
-native integration building block; sonar factor ownership, weighting and native
-optimizer registration are not connected yet.
+native geometry building block. The [native worker](native/basalt/README.md)
+adds weighted sonar factors, measurement ownership and joint optimization.
+Physical echo association and terrain-map accuracy remain unqualified.
 
 `sonar_inertial.optimize_window` jointly adjusts position, velocity, attitude,
 IMU biases and shared sonar points over 2–4 states. It requires an initial-state
