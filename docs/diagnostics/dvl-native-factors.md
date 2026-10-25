@@ -2,6 +2,8 @@
 
 [Machine-readable evidence](dvl-native-factors.json) · [Interface and assumptions](../../native/basalt/README.md)
 
+[Separate recorded-sensor comparison and failure analysis / 별도 센서 기록 비교와 실패 분석](sonar-dvl-recorded.md)
+
 These are analytic sensor and ownership tests of the independent native
 optimizer. They do not measure real-world sonar mapping accuracy. No new
 physical point-cloud comparison or qualified application mode is established.

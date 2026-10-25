@@ -185,3 +185,5 @@ comparison can be presented as an operational method.
 [두 관측 경로와 표면 근접도](diagnostics/two-lane-survey.md)
 
 [Measured sonar fusion and matched replay control / 실측 소나 결합과 대조 재생](diagnostics/measured-sonar.md)
+
+[Camera-free sonar/IMU/DVL and input ablations / 카메라 없는 소나·IMU·DVL과 입력 대조 시험](diagnostics/sonar-dvl-recorded.md)

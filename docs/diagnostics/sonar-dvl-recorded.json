@@ -1,0 +1,679 @@
+{
+  "scope": "Recorded simulated sensor diagnostics, all maps unqualified",
+  "methods": {
+    "joint": {
+      "replay_complete": true,
+      "failure": null,
+      "state_clock": "sonar",
+      "joint_dvl": true,
+      "dvl_input": {
+        "measurements": 65,
+        "valid": 65,
+        "interpolated_gyro": 0,
+        "unknown_gyro_covariance_inputs": 65,
+        "gyro_model_sigma_rad_s": 0.01,
+        "uncertainty": "reported gyro covariance plus explicit isotropic model variance; IMU cross-correlation not modelled",
+        "poses_used": false,
+        "pressure_used": false
+      },
+      "native_states": 147,
+      "camera_frames": 0,
+      "acoustic_hypotheses": 57,
+      "first_stamp_ns": 10500000000,
+      "last_stamp_ns": 75000000000,
+      "worker_sha256": "10bc15c4bc66a01045593f9f286cadbb3fa818d40a68ed12dd00daf658b98bc0",
+      "frontend_opencv_version": "4.13.0",
+      "dvl_optimization_states": 65,
+      "input_ordering": {
+        "policy": "original_clock_watermark_exact_ack_v1",
+        "state_clock": "sonar",
+        "streams": [
+          "sonar",
+          "dvl"
+        ],
+        "arrival_delays": "synthetic_per_stream_ordered_jitter",
+        "max_delay_ns": {
+          "camera": 0,
+          "sonar": 80000000,
+          "imu": 0,
+          "dvl": 80000000
+        },
+        "capacity": 16,
+        "peak_pending": 3,
+        "before_camera": 0,
+        "auxiliary_skipped": 0,
+        "last_ack_ns": 75000000000,
+        "ended": true
+      },
+      "sonar_reference_check": false,
+      "recording_sha256": "4379470cc7918cc9f66ef2ed653b76d00ec406c552a58e56f707cf88f26229dc",
+      "receipt_sha256": "13888affcc349baf824065effc96009671129210a46fb1c26ff8ccc937f71bbd",
+      "evaluation": {
+        "evaluated": true,
+        "states": 147,
+        "duration_s": 64.5,
+        "evaluation_alignment": {
+          "rotation": [
+            [
+              -0.9923712452938642,
+              0.12328548784794216,
+              0.0
+            ],
+            [
+              -0.12328548784794216,
+              -0.9923712452938642,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "translation": [
+            -0.05404003751831869,
+            0.019789383488749406,
+            -0.22548411134852686
+          ],
+          "scale": 1.0
+        },
+        "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+        "position_rmse_m": 0.7352532770512267,
+        "position_max_m": 1.0800358860709756,
+        "rotation_rmse_rad": 0.03362965806140687,
+        "rotation_max_rad": 0.07914914951734991,
+        "truth_distance_m": 16.17376173951254,
+        "estimated_distance_m": 15.677921819351837,
+        "rpe_1s_pairs": 127,
+        "rpe_1s_position_rmse_m": 0.07010947585992351,
+        "rpe_1s_rotation_rmse_rad": 0.014894241162021907,
+        "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+      },
+      "surfaces": {
+        "points": 57,
+        "surface_distance_m": {
+          "minimum": 0.004837343065841715,
+          "median": 0.0920849214395476,
+          "p90": 0.7487476836037972,
+          "maximum": 1.294094136126008
+        },
+        "diagnostic_thresholds_m": {
+          "0.05": {
+            "points_within": 16,
+            "points_outside": 41,
+            "nearest_surface_counts": {
+              "acoustic_validation_target_0": 2,
+              "acoustic_validation_target_1": 4,
+              "acoustic_validation_target_2": 1,
+              "acoustic_validation_wall_0": 6,
+              "acoustic_validation_wall_1": 1,
+              "seabed": 2
+            }
+          },
+          "0.1": {
+            "points_within": 30,
+            "points_outside": 27,
+            "nearest_surface_counts": {
+              "acoustic_validation_target_0": 4,
+              "acoustic_validation_target_1": 4,
+              "acoustic_validation_target_2": 5,
+              "acoustic_validation_wall_0": 9,
+              "acoustic_validation_wall_1": 1,
+              "seabed": 7
+            }
+          },
+          "0.2": {
+            "points_within": 40,
+            "points_outside": 17,
+            "nearest_surface_counts": {
+              "acoustic_validation_target_0": 6,
+              "acoustic_validation_target_1": 6,
+              "acoustic_validation_target_2": 6,
+              "acoustic_validation_wall_0": 12,
+              "acoustic_validation_wall_1": 1,
+              "seabed": 9
+            }
+          }
+        }
+      }
+    },
+    "reference": {
+      "replay_complete": true,
+      "failure": null,
+      "state_clock": "sonar",
+      "joint_dvl": true,
+      "dvl_input": {
+        "measurements": 65,
+        "valid": 65,
+        "interpolated_gyro": 0,
+        "unknown_gyro_covariance_inputs": 65,
+        "gyro_model_sigma_rad_s": 0.01,
+        "uncertainty": "reported gyro covariance plus explicit isotropic model variance; IMU cross-correlation not modelled",
+        "poses_used": false,
+        "pressure_used": false
+      },
+      "native_states": 147,
+      "camera_frames": 0,
+      "acoustic_hypotheses": 5,
+      "first_stamp_ns": 10500000000,
+      "last_stamp_ns": 75000000000,
+      "worker_sha256": "10bc15c4bc66a01045593f9f286cadbb3fa818d40a68ed12dd00daf658b98bc0",
+      "frontend_opencv_version": "4.13.0",
+      "dvl_optimization_states": 65,
+      "input_ordering": {
+        "policy": "original_clock_watermark_exact_ack_v1",
+        "state_clock": "sonar",
+        "streams": [
+          "sonar",
+          "dvl"
+        ],
+        "arrival_delays": "synthetic_per_stream_ordered_jitter",
+        "max_delay_ns": {
+          "camera": 0,
+          "sonar": 80000000,
+          "imu": 0,
+          "dvl": 80000000
+        },
+        "capacity": 16,
+        "peak_pending": 3,
+        "before_camera": 0,
+        "auxiliary_skipped": 0,
+        "last_ack_ns": 75000000000,
+        "ended": true
+      },
+      "sonar_reference_check": true,
+      "recording_sha256": "4379470cc7918cc9f66ef2ed653b76d00ec406c552a58e56f707cf88f26229dc",
+      "receipt_sha256": "572adebeab983ad66b2d6fbbea726431956ffb6858a94c117ce35372c099589c",
+      "evaluation": {
+        "evaluated": true,
+        "states": 147,
+        "duration_s": 64.5,
+        "evaluation_alignment": {
+          "rotation": [
+            [
+              -0.9923712452938642,
+              0.12328548784794216,
+              0.0
+            ],
+            [
+              -0.12328548784794216,
+              -0.9923712452938642,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "translation": [
+            -0.05404003751831869,
+            0.019789383488749406,
+            -0.22548411134852686
+          ],
+          "scale": 1.0
+        },
+        "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+        "position_rmse_m": 0.09894250228768361,
+        "position_max_m": 0.15007778582558998,
+        "rotation_rmse_rad": 0.05989831876915013,
+        "rotation_max_rad": 0.1380297473586625,
+        "truth_distance_m": 16.17376173951254,
+        "estimated_distance_m": 16.214848044801307,
+        "rpe_1s_pairs": 127,
+        "rpe_1s_position_rmse_m": 0.010779358900747486,
+        "rpe_1s_rotation_rmse_rad": 0.01910524575285168,
+        "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+      },
+      "surfaces": {
+        "points": 5,
+        "surface_distance_m": {
+          "minimum": 0.0026983625795873323,
+          "median": 0.05233582607244536,
+          "p90": 0.1362538034020629,
+          "maximum": 0.16992315348512577
+        },
+        "diagnostic_thresholds_m": {
+          "0.05": {
+            "points_within": 2,
+            "points_outside": 3,
+            "nearest_surface_counts": {
+              "acoustic_validation_target_0": 0,
+              "acoustic_validation_target_1": 0,
+              "acoustic_validation_target_2": 1,
+              "acoustic_validation_wall_0": 1,
+              "acoustic_validation_wall_1": 0,
+              "seabed": 0
+            }
+          },
+          "0.1": {
+            "points_within": 4,
+            "points_outside": 1,
+            "nearest_surface_counts": {
+              "acoustic_validation_target_0": 0,
+              "acoustic_validation_target_1": 1,
+              "acoustic_validation_target_2": 1,
+              "acoustic_validation_wall_0": 1,
+              "acoustic_validation_wall_1": 0,
+              "seabed": 1
+            }
+          },
+          "0.2": {
+            "points_within": 5,
+            "points_outside": 0,
+            "nearest_surface_counts": {
+              "acoustic_validation_target_0": 0,
+              "acoustic_validation_target_1": 1,
+              "acoustic_validation_target_2": 2,
+              "acoustic_validation_wall_0": 1,
+              "acoustic_validation_wall_1": 0,
+              "seabed": 1
+            }
+          }
+        }
+      }
+    },
+    "dvl_imu": {
+      "replay_complete": true,
+      "failure": null,
+      "state_clock": "sonar",
+      "joint_dvl": true,
+      "sonar_factors_omitted": true,
+      "dvl_input": {
+        "measurements": 65,
+        "valid": 65,
+        "interpolated_gyro": 0,
+        "unknown_gyro_covariance_inputs": 65,
+        "gyro_model_sigma_rad_s": 0.01,
+        "uncertainty": "reported gyro covariance plus explicit isotropic model variance; IMU cross-correlation not modelled",
+        "poses_used": false,
+        "pressure_used": false
+      },
+      "native_states": 147,
+      "camera_frames": 0,
+      "acoustic_hypotheses": 0,
+      "first_stamp_ns": 10500000000,
+      "last_stamp_ns": 75000000000,
+      "worker_sha256": "10bc15c4bc66a01045593f9f286cadbb3fa818d40a68ed12dd00daf658b98bc0",
+      "frontend_opencv_version": "4.13.0",
+      "dvl_optimization_states": 65,
+      "input_ordering": {
+        "policy": "original_clock_watermark_exact_ack_v1",
+        "state_clock": "sonar",
+        "streams": [
+          "sonar",
+          "dvl"
+        ],
+        "arrival_delays": "synthetic_per_stream_ordered_jitter",
+        "max_delay_ns": {
+          "camera": 0,
+          "sonar": 80000000,
+          "imu": 0,
+          "dvl": 80000000
+        },
+        "capacity": 16,
+        "peak_pending": 3,
+        "before_camera": 0,
+        "auxiliary_skipped": 0,
+        "last_ack_ns": 75000000000,
+        "ended": true
+      },
+      "recording_sha256": "4379470cc7918cc9f66ef2ed653b76d00ec406c552a58e56f707cf88f26229dc",
+      "receipt_sha256": "299c4765c6a2c01d566b75a8c5e0ddecbe150f98eafe4cee62d82d1480b47742",
+      "evaluation": {
+        "evaluated": true,
+        "states": 147,
+        "duration_s": 64.5,
+        "evaluation_alignment": {
+          "rotation": [
+            [
+              -0.9923712452938642,
+              0.12328548784794216,
+              0.0
+            ],
+            [
+              -0.12328548784794216,
+              -0.9923712452938642,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "translation": [
+            -0.05404003751831869,
+            0.019789383488749406,
+            -0.22548411134852686
+          ],
+          "scale": 1.0
+        },
+        "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+        "position_rmse_m": 0.44937894509895576,
+        "position_max_m": 0.8325240811706096,
+        "rotation_rmse_rad": 0.1823449052479313,
+        "rotation_max_rad": 0.3319788524689367,
+        "truth_distance_m": 16.17376173951254,
+        "estimated_distance_m": 16.205418156815675,
+        "rpe_1s_pairs": 127,
+        "rpe_1s_position_rmse_m": 0.011361863775969457,
+        "rpe_1s_rotation_rmse_rad": 0.016770669021688177,
+        "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery",
+        "axis_rmse_m": [
+          0.07308448718594851,
+          0.4417606479948499,
+          0.03804765320210436
+        ]
+      }
+    },
+    "sonar_imu": {
+      "replay_complete": false,
+      "failure": "RuntimeError('worker:sonar_initialization_window_exhausted')",
+      "state_clock": "sonar",
+      "joint_dvl": false,
+      "dvl_input": null,
+      "native_states": 61,
+      "camera_frames": 0,
+      "acoustic_hypotheses": 0,
+      "first_stamp_ns": 10500000000,
+      "last_stamp_ns": 75000000000,
+      "worker_sha256": "10bc15c4bc66a01045593f9f286cadbb3fa818d40a68ed12dd00daf658b98bc0",
+      "frontend_opencv_version": "4.13.0",
+      "dvl_optimization_states": 0,
+      "input_ordering": {
+        "policy": "original_clock_watermark_exact_ack_v1",
+        "state_clock": "sonar",
+        "streams": [
+          "sonar"
+        ],
+        "arrival_delays": "synthetic_per_stream_ordered_jitter",
+        "max_delay_ns": {
+          "camera": 0,
+          "sonar": 80000000,
+          "imu": 0
+        },
+        "capacity": 16,
+        "peak_pending": 1,
+        "before_camera": 0,
+        "auxiliary_skipped": 0,
+        "last_ack_ns": 40500000000,
+        "ended": false
+      },
+      "recording_sha256": "4379470cc7918cc9f66ef2ed653b76d00ec406c552a58e56f707cf88f26229dc",
+      "receipt_sha256": "57bd9760e64d33a4c6f298e3c4cbe2d7701b940289762258a4420c398a1bb72e"
+    },
+    "heldout": {
+      "replay_complete": true,
+      "failure": null,
+      "state_clock": "sonar",
+      "joint_dvl": true,
+      "dvl_input": {
+        "measurements": 68,
+        "valid": 68,
+        "interpolated_gyro": 0,
+        "unknown_gyro_covariance_inputs": 68,
+        "gyro_model_sigma_rad_s": 0.01,
+        "uncertainty": "reported gyro covariance plus explicit isotropic model variance; IMU cross-correlation not modelled",
+        "poses_used": false,
+        "pressure_used": false
+      },
+      "native_states": 147,
+      "camera_frames": 0,
+      "acoustic_hypotheses": 77,
+      "first_stamp_ns": 10000000000,
+      "last_stamp_ns": 77000000000,
+      "worker_sha256": "10bc15c4bc66a01045593f9f286cadbb3fa818d40a68ed12dd00daf658b98bc0",
+      "frontend_opencv_version": "4.13.0",
+      "dvl_optimization_states": 68,
+      "input_ordering": {
+        "policy": "original_clock_watermark_exact_ack_v1",
+        "state_clock": "sonar",
+        "streams": [
+          "sonar",
+          "dvl"
+        ],
+        "arrival_delays": "synthetic_per_stream_ordered_jitter",
+        "max_delay_ns": {
+          "camera": 0,
+          "sonar": 80000000,
+          "imu": 0,
+          "dvl": 80000000
+        },
+        "capacity": 16,
+        "peak_pending": 3,
+        "before_camera": 0,
+        "auxiliary_skipped": 0,
+        "last_ack_ns": 77000000000,
+        "ended": true
+      },
+      "sonar_reference_check": false,
+      "recording_sha256": "1ed889908526a6d79446e72d0858835156051875f0e279b6b3978b0bb8a09ecf",
+      "receipt_sha256": "cab5ce140032ae3cd27299b214b0a1e2ae0502614a43e1e23723323594ef487b",
+      "evaluation": {
+        "evaluated": true,
+        "states": 147,
+        "duration_s": 67.0,
+        "evaluation_alignment": {
+          "rotation": [
+            [
+              -0.8102709870766537,
+              0.5860553962739574,
+              0.0
+            ],
+            [
+              -0.5860553962739574,
+              -0.8102709870766537,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "translation": [
+            -0.061708886127411954,
+            0.012799703918682657,
+            -0.18535265738136247
+          ],
+          "scale": 1.0
+        },
+        "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+        "position_rmse_m": 0.06362557428039534,
+        "position_max_m": 0.14778452681686277,
+        "rotation_rmse_rad": 0.01657211141754709,
+        "rotation_max_rad": 0.03975609920928535,
+        "truth_distance_m": 14.583844045591567,
+        "estimated_distance_m": 14.595824001641228,
+        "rpe_1s_pairs": 132,
+        "rpe_1s_position_rmse_m": 0.02083305219877956,
+        "rpe_1s_rotation_rmse_rad": 0.008404785368098962,
+        "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+      },
+      "surfaces": {
+        "points": 77,
+        "surface_distance_m": {
+          "minimum": 0.00013951914820520273,
+          "median": 0.07926387172025295,
+          "p90": 0.34364283386997946,
+          "maximum": 0.9841964855428534
+        },
+        "diagnostic_thresholds_m": {
+          "0.05": {
+            "points_within": 29,
+            "points_outside": 48,
+            "nearest_surface_counts": {
+              "acoustic_validation_target_0": 2,
+              "acoustic_validation_target_1": 6,
+              "acoustic_validation_target_2": 5,
+              "acoustic_validation_wall_0": 7,
+              "acoustic_validation_wall_1": 4,
+              "seabed": 5
+            }
+          },
+          "0.1": {
+            "points_within": 46,
+            "points_outside": 31,
+            "nearest_surface_counts": {
+              "acoustic_validation_target_0": 4,
+              "acoustic_validation_target_1": 9,
+              "acoustic_validation_target_2": 7,
+              "acoustic_validation_wall_0": 16,
+              "acoustic_validation_wall_1": 4,
+              "seabed": 6
+            }
+          },
+          "0.2": {
+            "points_within": 58,
+            "points_outside": 19,
+            "nearest_surface_counts": {
+              "acoustic_validation_target_0": 4,
+              "acoustic_validation_target_1": 12,
+              "acoustic_validation_target_2": 8,
+              "acoustic_validation_wall_0": 20,
+              "acoustic_validation_wall_1": 6,
+              "seabed": 8
+            }
+          }
+        }
+      }
+    },
+    "heldout_reference": {
+      "replay_complete": true,
+      "failure": null,
+      "state_clock": "sonar",
+      "joint_dvl": true,
+      "dvl_input": {
+        "measurements": 68,
+        "valid": 68,
+        "interpolated_gyro": 0,
+        "unknown_gyro_covariance_inputs": 68,
+        "gyro_model_sigma_rad_s": 0.01,
+        "uncertainty": "reported gyro covariance plus explicit isotropic model variance; IMU cross-correlation not modelled",
+        "poses_used": false,
+        "pressure_used": false
+      },
+      "native_states": 147,
+      "camera_frames": 0,
+      "acoustic_hypotheses": 22,
+      "first_stamp_ns": 10000000000,
+      "last_stamp_ns": 77000000000,
+      "worker_sha256": "10bc15c4bc66a01045593f9f286cadbb3fa818d40a68ed12dd00daf658b98bc0",
+      "frontend_opencv_version": "4.13.0",
+      "dvl_optimization_states": 68,
+      "input_ordering": {
+        "policy": "original_clock_watermark_exact_ack_v1",
+        "state_clock": "sonar",
+        "streams": [
+          "sonar",
+          "dvl"
+        ],
+        "arrival_delays": "synthetic_per_stream_ordered_jitter",
+        "max_delay_ns": {
+          "camera": 0,
+          "sonar": 80000000,
+          "imu": 0,
+          "dvl": 80000000
+        },
+        "capacity": 16,
+        "peak_pending": 3,
+        "before_camera": 0,
+        "auxiliary_skipped": 0,
+        "last_ack_ns": 77000000000,
+        "ended": true
+      },
+      "sonar_reference_check": true,
+      "recording_sha256": "1ed889908526a6d79446e72d0858835156051875f0e279b6b3978b0bb8a09ecf",
+      "receipt_sha256": "9fc5f12fcaa7326a17f60e706eccb45a54e38976ec69cac4b3500758f475c145",
+      "evaluation": {
+        "evaluated": true,
+        "states": 147,
+        "duration_s": 67.0,
+        "evaluation_alignment": {
+          "rotation": [
+            [
+              -0.8102709870766537,
+              0.5860553962739574,
+              0.0
+            ],
+            [
+              -0.5860553962739574,
+              -0.8102709870766537,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "translation": [
+            -0.061708886127411954,
+            0.012799703918682657,
+            -0.18535265738136247
+          ],
+          "scale": 1.0
+        },
+        "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+        "position_rmse_m": 0.22002932196745983,
+        "position_max_m": 0.5737968619686004,
+        "rotation_rmse_rad": 0.1003872145418476,
+        "rotation_max_rad": 0.1829151028938262,
+        "truth_distance_m": 14.583844045591567,
+        "estimated_distance_m": 14.596232792975831,
+        "rpe_1s_pairs": 132,
+        "rpe_1s_position_rmse_m": 0.011328087771625096,
+        "rpe_1s_rotation_rmse_rad": 0.013611575904056627,
+        "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+      },
+      "surfaces": {
+        "points": 22,
+        "surface_distance_m": {
+          "minimum": 0.00610609288464925,
+          "median": 0.08181352263704289,
+          "p90": 0.32661697547089086,
+          "maximum": 0.4850246444555603
+        },
+        "diagnostic_thresholds_m": {
+          "0.05": {
+            "points_within": 9,
+            "points_outside": 13,
+            "nearest_surface_counts": {
+              "acoustic_validation_target_0": 0,
+              "acoustic_validation_target_1": 2,
+              "acoustic_validation_target_2": 1,
+              "acoustic_validation_wall_0": 5,
+              "acoustic_validation_wall_1": 0,
+              "seabed": 1
+            }
+          },
+          "0.1": {
+            "points_within": 13,
+            "points_outside": 9,
+            "nearest_surface_counts": {
+              "acoustic_validation_target_0": 0,
+              "acoustic_validation_target_1": 3,
+              "acoustic_validation_target_2": 2,
+              "acoustic_validation_wall_0": 7,
+              "acoustic_validation_wall_1": 0,
+              "seabed": 1
+            }
+          },
+          "0.2": {
+            "points_within": 15,
+            "points_outside": 7,
+            "nearest_surface_counts": {
+              "acoustic_validation_target_0": 0,
+              "acoustic_validation_target_1": 3,
+              "acoustic_validation_target_2": 4,
+              "acoustic_validation_wall_0": 7,
+              "acoustic_validation_wall_1": 0,
+              "seabed": 1
+            }
+          }
+        }
+      }
+    }
+  }
+}
