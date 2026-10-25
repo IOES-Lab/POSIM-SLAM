@@ -83,6 +83,11 @@ surface/echo association and uncertainty model before adoption.
 있습니다. 해저 제약을 채택하려면 표면·반사 연결과 불확실성 모델을 개선하고
 검증해야 합니다.
 
+[Stationary acoustic diagnostics](sonar-ground-speckle.md) isolate onset and
+plane-normal errors before changing estimator weights.
+[정지 음향 진단](sonar-ground-speckle.md)은 추정기 가중치를 바꾸기 전에 반사 시작점과
+평면 법선의 오차를 분리합니다.
+
 The [IMU interval correction](imu-interval-noise.md) removes a separate
 single-sample covariance failure. In the no-ground C control, online position
 RMSE changes from 0.314 m to 0.016 m, and final owned-pose RMSE from 326.53 m
