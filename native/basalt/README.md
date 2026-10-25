@@ -1138,7 +1138,8 @@ Rejected extensions freeze that source until its native track retires.
 Retired tracks receive fresh native IDs
 when they have enough retained observations to seed again. Wait for the snapshot
 acknowledgement before preparing another one. Create a new manager when the
-estimator or source-track segment resets.
+native estimator segment resets. A frontend-only reset requires fresh source
+IDs while keeping native ownership; `SonarCandidates` assigns those fresh IDs.
 
 Active histories take priority. Free slots within the 16-factor budget go to the
 oldest waiting candidates; attempted candidates move behind others waiting at
@@ -1157,8 +1158,9 @@ entries. Retired poses cannot contribute to subsequent initialization.
 주변화로 생긴 관측 사이의 빈 구간도 등록된 이력에 포함되며 변경할 수 없습니다.
 연장이 거부된 원본 트랙은 네이티브 트랙이 제거될 때까지 더 연장하지 않습니다.
 제거된 트랙은 보관 관측이 충분해지면 새
-네이티브 ID로 등록합니다. 수신 확인 후 다음 스냅샷을 준비하며, 추정기나 원본
-트랙 구간을 초기화할 때 관리 객체도 새로 만듭니다.
+네이티브 ID로 등록합니다. 수신 확인 후 다음 스냅샷을 준비하며, 네이티브 추정기
+구간을 초기화할 때 관리 객체도 새로 만듭니다. 프런트엔드만 초기화하면 기존
+네이티브 소유권을 유지하고 새 원본 ID를 배정하며, `SonarCandidates`가 이를 담당합니다.
 
 현재 사용 중인 이력을 먼저 갱신합니다. 16개 팩터 한도에서 남은 자리는 가장
 오래 기다린 후보부터 배정하고, 시도한 후보는 같은 시각부터 기다린 다른 후보
@@ -1188,3 +1190,15 @@ check does not establish physical scatterer identity or measurement covariance.
 새 ID를 부여합니다. 참조 영상은 공유하고 해당 트랙이 없어지면 해제합니다.
 기본값은 `False`이며, 이 검사가 물리적 반사점의 동일성이나 측정 공분산을
 확정하지는 않습니다.
+
+## Causal fusion owner / 순차 결합 실행부
+
+`posim_slam.sonar_fusion.SonarFusion` combines measured candidate histories, native snapshot ownership and the acoustic point archive for one estimator segment. Supply explicit diagnostic range/azimuth standard deviations. For each ordered camera or auxiliary sonar event, call `prepare(stamp_ns, frame)` with the exactly timestamped `AcousticTracks` output, or `None` when that event has no sonar frame. Send any returned snapshot before the image or sonar tick, then call `observe(state)` for that exact native state before preparing another event. Raw IMU coverage, camera/sonar event ordering and worker transport remain the caller's responsibility.
+
+The owner keeps source IDs across native retirement and rebinding. It stages the bounded factor state and validates the acknowledgement before adding coordinates to the map. Invalid input fails the segment and blocks subsequent processing/export; create a new instance for a new native worker segment. Point archives remain experimental and separate from visual landmarks. This interface does not enable a ROS/UI mode or calibrate measurement uncertainty.
+
+`SonarFusion`은 추정기 구간 하나의 관측 이력·스냅숏 소유권·소나 점 보관을 함께 관리합니다. 거리·방위각 표준편차는 진단 가정으로 명시합니다. 시각순 카메라·소나 이벤트마다 같은 시각의 `AcousticTracks` 결과를 `prepare(stamp_ns, frame)`에 전달합니다. 해당 이벤트에 소나가 없으면 `None`을 사용합니다. 반환된 스냅숏을 이미지 또는 소나 tick보다 먼저 전송하고, 정확히 같은 시각의 상태를 `observe(state)`로 확인한 뒤 다음 이벤트를 준비합니다. 원본 IMU 구간 확보·센서 시각 정렬·실행 파일 통신은 호출자가 담당합니다.
+
+네이티브 트랙이 제거·재등록돼도 원본 ID를 유지합니다. 제한된 팩터 상태를 임시로 검증하고 정상 응답을 확인한 뒤 점을 보관합니다. 잘못된 입력이 들어오면 해당 구간의 처리·내보내기를 중단하며, 새 실행 구간에는 새 객체가 필요합니다. 소나 점군은 실험 단계이고 시각 점군과 별도로 보관합니다. 이 인터페이스만으로 ROS/UI 모드가 활성화되거나 측정 불확실성이 보정되는 것은 아닙니다.
+
+[Recorded causal execution and matched field/map views / 기록 기반 순차 실행과 현장·지도 비교](../../docs/diagnostics/sonar-causal-stream.md).
