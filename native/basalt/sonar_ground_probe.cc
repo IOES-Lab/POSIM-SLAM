@@ -2,6 +2,7 @@
 // Bounded cross-language qualification; no live transport or terrain truth input.
 #include "sonar_ground_group.hpp"
 #include "ground_predictive.hpp"
+#include "ground_surface_noise.hpp"
 #include "ping_optimizer.hpp"
 #include "ping_prior.hpp"
 #include <nlohmann/json.hpp>
@@ -32,6 +33,11 @@ Json jsonMatrix(const Eigen::MatrixXd& value) {
 }
 int main() {try {
   Json input;std::cin>>input;
+  if(input.contains("surface_points")) {
+    const auto c=surfaceRangeCovariance(matrix(input.at("surface_points")),matrix(input.at("surface_incidence")),
+      input.at("surface_sigma_m"),input.at("surface_length_m"));
+    std::cout<<Json({{"surface_covariance",jsonMatrix(c)}}).dump()<<'\n';return 0;
+  }
   if(input.contains("association_jacobian")) {
     const auto check=groundPredictiveCheck(matrix(input.at("association_jacobian")),
       matrix(input.at("association_residual")),input.at("association_old_rows"),input.at("association_sigma"));

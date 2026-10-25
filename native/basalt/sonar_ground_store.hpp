@@ -2,12 +2,13 @@
 #pragma once
 #include "sonar_ground_group.hpp"
 #include "ground_predictive.hpp"
+#include "ground_surface_noise.hpp"
 
 namespace posim_slam {
-struct GroundNoise {double individual,frame_common,time_common;};
+struct GroundNoise {double individual,frame_common,time_common;double surface=0.,surface_length=.5;};
 struct GroundPoint {int64_t stamp;int beam;Vec3 point;};
 inline Eigen::MatrixXd groundCovariance(const std::vector<GroundEntryObservation>& observations,
-                                        const GroundNoise& noise) {
+    const GroundNoise& noise,const std::vector<GroundSurfaceReference>& references={}) {
   for(double sigma:{noise.individual,noise.frame_common,noise.time_common})
     if(!std::isfinite(sigma) || sigma<=0 || sigma>1)throw std::invalid_argument("invalid_ground_noise");
   Eigen::Index count=0;for(const auto& o:observations)count+=o.ranges.size();
@@ -19,6 +20,20 @@ inline Eigen::MatrixXd groundCovariance(const std::vector<GroundEntryObservation
     c.block(start,start,o.ranges.size(),o.ranges.size()).array()+=noise.frame_common*noise.frame_common;
     start+=o.ranges.size();
   }
+  if(!std::isfinite(noise.surface) || noise.surface<0 || noise.surface>.2 ||
+     !std::isfinite(noise.surface_length) || noise.surface_length<.05 || noise.surface_length>5.)
+    throw std::invalid_argument("invalid_ground_surface_noise");
+  if(noise.surface>0) {
+    if(references.size()!=observations.size())throw std::invalid_argument("missing_ground_surface_references");
+    Eigen::MatrixXd points(count,3);Eigen::VectorXd incidence(count);start=0;
+    for(size_t i=0;i<observations.size();++i) {
+      const auto n=observations[i].ranges.size();const auto& r=references[i];
+      if(r.points.rows()!=n || r.points.cols()!=3 || r.incidence.size()!=n)
+        throw std::invalid_argument("ground_surface_reference_shape");
+      points.middleRows(start,n)=r.points;incidence.segment(start,n)=r.incidence;start+=n;
+    }
+    c+=surfaceRangeCovariance(points,incidence,noise.surface,noise.surface_length);
+  }
   return c;
 }
 
@@ -29,6 +44,9 @@ class GroundFactorStore {
     GroundEntryCalibration calibration;
     GroundNoise noise;
     std::vector<GroundEntryObservation> observations;
+    Vec3 reference_normal;
+    std::vector<GroundSurfaceReference> references;
+    Eigen::MatrixXd covariance;
   };
  public:
   explicit GroundFactorStore(basalt::BundleAdjustmentBase<double>& owner):owner_(owner) {}
@@ -55,7 +73,9 @@ class GroundFactorStore {
            const GroundEntryObservation& observation,const Vec3& normal,double distance,const GroundNoise& noise) {
     requireNew(observation.stamp);
     if(definitions_.size()>=8 || definitions_.count(id))throw std::invalid_argument("ground_group_budget_or_identity");
-    Definition d{calibration,noise,{observation}};
+    Definition d{calibration,noise,{observation},normal,{}, {}};
+    if(noise.surface>0)d.references.push_back(surfaceReference(observation,calibration,normal));
+    d.covariance=groundCovariance(d.observations,noise,d.references);
     auto next=definitions_;next.emplace(id,d);auto saved=owner_.posim_ping_planes;
     try {owner_.posim_ping_planes.set(id,normal,distance);build(order,id,d).build({});}
     catch(...) {std::swap(owner_.posim_ping_planes,saved);throw;}
@@ -82,6 +102,8 @@ class GroundFactorStore {
       if((old_points.rowwise()-new_points.row(i)).rowwise().squaredNorm().minCoeff()<=support_radius*support_radius)++supported;
     if(supported*2<size_t(new_points.rows()))return false;
     auto next=d;next.observations.push_back(observation);
+    if(d.noise.surface>0)next.references.push_back(surfaceReference(observation,d.calibration,d.reference_normal));
+    next.covariance=groundCovariance(next.observations,next.noise,next.references);
     const auto joined=build(order,id,next).build({});
     const auto check=groundPredictiveCheck(joined.jacobian.rightCols(3),joined.residual,
                                           count-observation.ranges.size(),innovation_sigma);
@@ -95,7 +117,22 @@ class GroundFactorStore {
     if(stamp<=last_observation_)throw std::invalid_argument("replayed_or_reordered_ground_observation");
   }
   JointPingGroupSpec build(const basalt::AbsOrderMap& order,int id,const Definition& d) const {
-    return makeOwnedGroundGroup(owner_,order,id,d.calibration,d.observations,groundCovariance(d.observations,d.noise));
+    return makeOwnedGroundGroup(owner_,order,id,d.calibration,d.observations,d.covariance);
+  }
+  // Measured footprints and incidence at admission, never plane-projected or
+  // refreshed during optimization. This conditional covariance is immutable
+  // until a new frame is appended, including through group marginalization.
+  GroundSurfaceReference surfaceReference(const GroundEntryObservation& o,
+      const GroundEntryCalibration& c,const Vec3& normal) const {
+    GroundSurfaceReference reference{footprint(o,c),Eigen::VectorXd(o.ranges.size())};
+    const auto sensor=owner_.getPoseStateWithLin(o.stamp).getPose()*c.mount;
+    const double elevation=o.boundary_sign*c.vertical_fov/2;
+    for(Eigen::Index i=0;i<o.ranges.size();++i) {
+      const Vec3 ray(std::cos(o.azimuth[i])*std::cos(elevation),
+                     std::sin(o.azimuth[i])*std::cos(elevation),std::sin(elevation));
+      reference.incidence[i]=normal.dot(sensor.rotationMatrix()*ray);
+    }
+    return reference;
   }
   Eigen::MatrixXd footprint(const GroundEntryObservation& o,const GroundEntryCalibration& c) const {
     const auto sensor=owner_.getPoseStateWithLin(o.stamp).getPose()*c.mount;

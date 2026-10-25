@@ -19,7 +19,7 @@ class GroundNativeTests(unittest.TestCase):
             import sys
             print(self.native_log.read_text()[-6000:],file=sys.stderr);raise
 
-    def worker(self,root,pressure=False):
+    def worker(self,root,pressure=False,surface=False):
         self.native_log=root/'worker.log'
         if pressure:
             (root/'pressure-calibration.json').write_text(json.dumps(dict(
@@ -29,6 +29,7 @@ class GroundNativeTests(unittest.TestCase):
         client=fixture.SonarClockTests.worker(self,root,enable_sonar_ground=True,enable_joint_dvl=True,
             enable_joint_pressure=pressure,
             ground_individual_sigma_m=.03,ground_frame_common_sigma_m=.02,ground_time_common_sigma_m=.01,
+            ground_surface_sigma_m=.08 if surface else 0.,ground_surface_length_m=2.,
             ground_support_radius_m=.75,ground_max_age_s=2.,ground_max_gap_s=.5,ground_innovation_sigma=5.)
         self.assertTrue(client.ground_transport);self.assertFalse(client.sonar_transport);return client
 
@@ -144,9 +145,9 @@ class GroundNativeTests(unittest.TestCase):
             self.assertIsNone(state['dvl'])
             self.assertFalse(state['map_qualified'])
 
-    def test_raw_ground_loss_and_repeated_retirement(self):
+    def test_raw_ground_loss_and_repeated_retirement(self,surface=False):
         with tempfile.TemporaryDirectory() as folder:
-            client=self.worker(Path(folder));initial=10**9;next_imu=initial
+            client=self.worker(Path(folder),surface=surface);initial=10**9;next_imu=initial
             client.gravity_seed(initial,[0,0,1]);planes=set();multi=0;registered=0;errors=[]
             for i in range(61):
                 stamp=initial+i*200_000_000;t=.2*i
@@ -171,9 +172,12 @@ class GroundNativeTests(unittest.TestCase):
                 else:self.assertFalse(state['ground']['owner_received'])
             self.assertGreater(len(planes),3);self.assertGreater(multi,20);self.assertLess(max(errors),.1)
             self.assertGreater(min(state['sonar']['retained_pose_stamps_ns']),initial)
-            print(json.dumps(dict(scope='synthetic native IMU/DVL/ground lifecycle, not recorded-map acceptance',
+            print(json.dumps(dict(scope='synthetic native IMU/DVL/ground lifecycle, not recorded-map acceptance',surface_noise=surface,
                 states=61,ground_registered=registered,multi_frame_states=multi,planes=len(planes),
                 max_position_error_m=max(errors),camera_packets=0,loss_seconds=2)))
+
+    def test_spatial_surface_noise_preserves_loss_and_retirement(self):
+        self.test_raw_ground_loss_and_repeated_retirement(surface=True)
 
     def test_bad_packets_replay_missing_clock_and_double_use_fail(self):
         for case in ('nonfinite','range','duplicate','length','replay','missing_state','point_factors'):

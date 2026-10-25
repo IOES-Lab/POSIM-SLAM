@@ -15,6 +15,11 @@ Jacobians. [Linearization and numerical checks](sonar-ground-linearization.md).
 활성 해저 제약은 현재 형상과 누적 회전 좌표의 야코비안을 사용합니다.
 [선형화와 수치 검사](sonar-ground-linearization.md).
 
+[Optional spatial surface uncertainty](sonar-ground-spatial.md) has separate
+paired results; it defaults to off and remains unqualified.
+[선택형 공간 표면 불확실성](sonar-ground-spatial.md)의 비교 결과를 별도로 제공합니다.
+기본값은 꺼짐이며 검증 기준을 통과하지 못했습니다.
+
 ## Inputs and ownership / 입력과 관측 관리
 
 `LiveClient.ground` negotiates `exact_beam_entries_v1` and submits a bounded

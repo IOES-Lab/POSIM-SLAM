@@ -107,6 +107,11 @@ int main(int argc,char** argv) {
     posim_slam::GroundNoise ground_noise{};double ground_radius=0.,ground_age=0.,ground_gap=0.,ground_gate=0.;
     if(ground_enabled) {
       ground_noise={positive(input_settings,"ground_individual_sigma_m"),positive(input_settings,"ground_frame_common_sigma_m"),positive(input_settings,"ground_time_common_sigma_m")};
+      ground_noise.surface=input_settings.value("ground_surface_sigma_m",0.);
+      ground_noise.surface_length=input_settings.value("ground_surface_length_m",.5);
+      if(!std::isfinite(ground_noise.surface) || ground_noise.surface<0 || ground_noise.surface>.2 ||
+         !std::isfinite(ground_noise.surface_length) || ground_noise.surface_length<.05 || ground_noise.surface_length>5.)
+        fail("ground_surface_model_bounds");
       ground_radius=positive(input_settings,"ground_support_radius_m");ground_age=positive(input_settings,"ground_max_age_s");
       ground_gap=positive(input_settings,"ground_max_gap_s");ground_gate=positive(input_settings,"ground_innovation_sigma");
       if(ground_noise.individual>1 || ground_noise.frame_common>1 || ground_noise.time_common>1 ||
@@ -525,6 +530,8 @@ int main(int argc,char** argv) {
           {"sonar_snapshot_transport",sonar_enabled && !ground_enabled ? Json("exact_image_track_snapshot_v1") : Json(nullptr)},{"joint_sonar_enabled",sonar_enabled && !ground_enabled},{"sonar_auxiliary_transport",auxiliary_enabled ? Json("ordered_imu_state_v1") : Json(nullptr)},
           {"terrain_ping_transport",terrain_enabled ? Json("exact_sensor_range_v1") : Json(nullptr)},
           {"ground_transport",ground_enabled ? Json("exact_beam_entries_v1") : Json(nullptr)},
+          {"ground_surface_model",ground_enabled ? Json({{"schema","frozen_spatial_surface_covariance_v1"},
+            {"sigma_m",ground_noise.surface},{"length_m",ground_noise.surface_length}}) : Json(nullptr)},
           {"image_ping_transport","exact_stamp_range_v1"},{"ping_fused",false},{"joint_ping_enabled",joint_enabled},
           {"opencv_threads",1},{"estimation_threads",2},
           {"keyframe_hold_frames",config.vio_min_frames_after_kf},
