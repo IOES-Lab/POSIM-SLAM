@@ -4,7 +4,7 @@
 
 > 이 프로젝트는 대규모 언어 모델(LLM)을 활용해 개발합니다.
 
-실험용 카메라 없는 국소 Ping 평면과 같은 입력의 RGB·점군 대조는 [지형 Ping 진단](docs/diagnostics/terrain-ping.md)에 정리합니다. 기본값은 꺼짐이며 신뢰할 수 있는 지형 복원은 미검증입니다.
+실험용 카메라 없는 국소 Ping 평면과 같은 입력의 RGB·점군 대조는 [지형 Ping 진단](docs/diagnostics/terrain-ping.md)에 정리합니다. 기본값은 꺼짐이며 신뢰할 수 있는 지형 복원은 미검증입니다. [음향 모델 재실행과 같은 시점의 지도](docs/diagnostics/sonar-normal-rerun.md).
 
 POSIM 애플리케이션에서 사용하는 독립 센서 추정 라이브러리입니다. Python
 알고리즘은 센서 측정 배열과 보정된 변환을 받습니다. WWW-POSIM은 세션, 차량

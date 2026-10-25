@@ -1,0 +1,146 @@
+{
+  "scope": "Same raw recording, worker, frontend and state stamps; acoustic factor ablation only. No camera input. Not a normal-model A/B or a qualified SLAM map.",
+  "same_state_times": true,
+  "states": 245,
+  "worker_sha256": "b236407be035edc95a126ee0bd29f237b71e68cf9e6613c2e72d282dd31cc263",
+  "measured_trace_sha256": "a3be67657bf746821fa61de22c0ef545205ab07b5f97c085b73c0d8c0ea8d515",
+  "metrics": {
+    "sonar": {
+      "evaluated": true,
+      "states": 245,
+      "duration_s": 69.0,
+      "evaluation_alignment": {
+        "rotation": [
+          [
+            -0.9480495662959296,
+            -0.31812264906180404,
+            0.0
+          ],
+          [
+            0.31812264906180404,
+            -0.9480495662959296,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "translation": [
+          -0.04553197918473933,
+          0.014469693841718102,
+          -0.19340769383233386
+        ],
+        "scale": 1.0
+      },
+      "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+      "position_rmse_m": 0.2664438346845221,
+      "position_max_m": 0.3578817686189995,
+      "rotation_rmse_rad": 0.03722570557401008,
+      "rotation_max_rad": 0.11628338596315413,
+      "truth_distance_m": 16.562470397054327,
+      "estimated_distance_m": 17.11991900543355,
+      "rpe_1s_pairs": 230,
+      "rpe_1s_position_rmse_m": 0.041377976722678476,
+      "rpe_1s_rotation_rmse_rad": 0.017167583848529656,
+      "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+    },
+    "no_acoustic_factors": {
+      "evaluated": true,
+      "states": 245,
+      "duration_s": 69.0,
+      "evaluation_alignment": {
+        "rotation": [
+          [
+            -0.9480495662959296,
+            -0.31812264906180404,
+            0.0
+          ],
+          [
+            0.31812264906180404,
+            -0.9480495662959296,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "translation": [
+          -0.04553197918473933,
+          0.014469693841718102,
+          -0.19340769383233386
+        ],
+        "scale": 1.0
+      },
+      "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+      "position_rmse_m": 1.13380244559621,
+      "position_max_m": 1.9815626833475675,
+      "rotation_rmse_rad": 0.7209822985386677,
+      "rotation_max_rad": 1.4489302093147376,
+      "truth_distance_m": 16.562470397054327,
+      "estimated_distance_m": 16.827747061902848,
+      "rpe_1s_pairs": 230,
+      "rpe_1s_position_rmse_m": 0.017208660112547798,
+      "rpe_1s_rotation_rmse_rad": 0.04084339564588909,
+      "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+    }
+  },
+  "surface_distance_m": {
+    "minimum": 0.00040655757817953386,
+    "median": 0.1166379272637421,
+    "p90": 0.39428450551900635,
+    "maximum": 1.1001591268220245
+  },
+  "surface_thresholds": {
+    "0.05": {
+      "points_within": 18,
+      "points_outside": 67,
+      "nearest_surface_counts": {
+        "acoustic_validation_target_0": 1,
+        "acoustic_validation_target_1": 1,
+        "acoustic_validation_target_2": 5,
+        "acoustic_validation_wall_0": 3,
+        "acoustic_validation_wall_1": 3,
+        "seabed": 5
+      }
+    },
+    "0.1": {
+      "points_within": 39,
+      "points_outside": 46,
+      "nearest_surface_counts": {
+        "acoustic_validation_target_0": 8,
+        "acoustic_validation_target_1": 3,
+        "acoustic_validation_target_2": 7,
+        "acoustic_validation_wall_0": 7,
+        "acoustic_validation_wall_1": 6,
+        "seabed": 8
+      }
+    },
+    "0.2": {
+      "points_within": 56,
+      "points_outside": 29,
+      "nearest_surface_counts": {
+        "acoustic_validation_target_0": 15,
+        "acoustic_validation_target_1": 4,
+        "acoustic_validation_target_2": 9,
+        "acoustic_validation_wall_0": 10,
+        "acoustic_validation_wall_1": 6,
+        "seabed": 12
+      }
+    }
+  },
+  "raw_counts": {
+    "sonar": 141,
+    "camera": 707,
+    "raw_imu": 7061,
+    "raw_ping": 706,
+    "raw_dvl": 71,
+    "raw_pressure": 706
+  },
+  "camera_frames_in_estimator": 0,
+  "acoustic_points": 85,
+  "map_qualified": false
+}
