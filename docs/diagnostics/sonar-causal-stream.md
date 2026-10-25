@@ -29,3 +29,19 @@ On the tested Mac with the same research OpenCV 4.10.0 frontend, median/p95 extr
 Live ROS sensor ordering/backpressure, panel activation, physical acoustic correspondence and useful reconstruction remain required. No new dependency, calibrated noise model or research novelty is claimed by this execution refactor.
 
 실시간 ROS 센서 순서·처리 지연 관리, 패널 활성화, 실제 음향 대응 및 유용한 표면 복원이 남아 있습니다. 이번 실행부 통합은 새 의존성·보정된 잡음 모델·연구 신규성을 추가하지 않습니다.
+
+## Ordered arrival replay / 도착 순서 변경 재생
+
+The independent `SensorEvents` queue retains original timestamps, waits for both image streams and a later IMU sample, and releases the next event only after a validated native acknowledgement. Its default bound is 16 pending payloads plus one in flight. Synthetic camera delays up to 120 ms and sonar delays up to 80 ms exercise cross-stream arrival order on the same recorded inputs. Peak occupancy is 6; all 794 state timestamps and 158 frontend frames match the preceding replay, with no auxiliary frames omitted. This is recorded transport stress, not live ROS qualification.
+
+독립 `SensorEvents` 큐는 원래 시각을 유지하고 두 영상 입력과 이후 IMU를 기다리며, 네이티브 응답 검증 후 다음 이벤트를 내보냅니다. 기본 한도는 대기 입력 16개와 처리 중 1개입니다. 같은 기록에 카메라 최대 120 ms·소나 최대 80 ms의 인위적 도착 지연을 적용했습니다. 최대 대기 입력은 6개이고, 상태 시각 794개와 프런트엔드 결과 158개가 이전 재생과 일치하며 생략한 보조 소나는 없습니다. 기록 기반 전달 순서 시험이며 실시간 ROS 검증은 아닙니다.
+
+The resulting 37 hypotheses retain their source IDs. Position RMSE is 4.029 cm; 22/37 points are within 10 cm of a physical surface. Maximum coordinate differences from the preceding run are 1.683 mm for trajectory and 1.091 mm for acoustic points; the cause of numerical variation is unestablished. Map geometry remains unqualified. [Recorded evidence](sonar-ordered-stream.json).
+
+소나 가설 37개의 원본 ID가 유지됩니다. 위치 RMSE는 4.029 cm이며 실제 표면 10 cm 이내의 점은 22/37개입니다. 이전 실행과 좌표 성분별 최대 차이는 궤적 1.683 mm·소나 점 1.091 mm이고 수치 차이의 원인은 확정하지 않았습니다. 지도 형상은 여전히 합격 기준을 충족하지 않습니다. [검증 JSON](sonar-ordered-stream.json).
+
+![Ordered-input acoustic hypotheses and matched RGB field](sonar-ordered-stream.png)
+
+Same camera + IMU + single Ping + sonar combination and isometric view. Four-times-size markers, fixed Turbo height scale; RGB includes underwater attenuation, particles, caustics and sea surface.
+
+같은 카메라·IMU·단일 Ping·소나 조합과 등각 방향 시점입니다. 점 크기는 네 배, Turbo 높이 범위는 고정이며 RGB에는 수중 감쇠·부유 입자·집광무늬·수면이 포함됩니다.

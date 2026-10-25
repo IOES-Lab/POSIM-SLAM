@@ -1202,3 +1202,13 @@ The owner keeps source IDs across native retirement and rebinding. It stages the
 네이티브 트랙이 제거·재등록돼도 원본 ID를 유지합니다. 제한된 팩터 상태를 임시로 검증하고 정상 응답을 확인한 뒤 점을 보관합니다. 잘못된 입력이 들어오면 해당 구간의 처리·내보내기를 중단하며, 새 실행 구간에는 새 객체가 필요합니다. 소나 점군은 실험 단계이고 시각 점군과 별도로 보관합니다. 이 인터페이스만으로 ROS/UI 모드가 활성화되거나 측정 불확실성이 보정되는 것은 아닙니다.
 
 [Recorded causal execution and matched field/map views / 기록 기반 순차 실행과 현장·지도 비교](../../docs/diagnostics/sonar-causal-stream.md).
+
+### Ordered sensor events / 센서 시각 정렬
+
+`posim_slam.sensor_events.SensorEvents` bounds pending camera/sonar payloads to 16 by default, plus one event awaiting a native response. Call `push(kind, stamp_ns, payload)` for each camera/Ping pair and raw sonar frame, and `push('imu', stamp_ns)` after accepting raw IMU data. Each stream must increase monotonically. `next_event()` waits until both image streams have reached that timestamp and IMU extends beyond it. Equal-time camera and sonar share one event. Call `acknowledge(stamp_ns)` only after `SonarFusion.observe` validates the native response. No additional event is released while an acknowledgement is pending.
+
+The native worker permits one auxiliary sonar state between camera images. Earlier sonar frames before the first camera and excess auxiliary frames are counted and omitted without changing timestamps. Missing observations remain absent. A clock violation, wrong acknowledgement or full queue fails the segment. Callers enforce sensor liveness, bounded payload size and continuous IMU coverage; a watermark alone does not prove coverage. `finish(kind)` is for the actual end of finite recordings, never for live sensor timeouts. ROS adapter activation remains separate from this independent queue interface.
+
+`SensorEvents`는 기본적으로 카메라·소나 입력 16개와 네이티브 응답 대기 이벤트 1개를 보관합니다. 카메라/Ping 쌍과 원본 소나에는 `push(kind, stamp_ns, payload)`, 수신·검증한 원본 IMU에는 `push('imu', stamp_ns)`를 호출합니다. 각 센서의 시각은 증가해야 합니다. `next_event()`는 두 영상 입력이 해당 시각까지 도착하고 IMU가 그 이후까지 확보돼야 이벤트를 반환합니다. 같은 시각의 카메라·소나는 하나로 묶습니다. `SonarFusion.observe`로 네이티브 응답을 검증한 뒤 `acknowledge(stamp_ns)`를 호출해야 다음 이벤트를 받을 수 있습니다.
+
+네이티브 실행부는 카메라 사이에 보조 소나 상태 1개를 허용합니다. 첫 카메라 이전 소나와 초과 보조 소나는 개수를 기록하고 생략하며 시각을 바꾸지 않습니다. 누락된 관측은 비워 둡니다. 시각 역전·잘못된 응답·큐 초과는 해당 구간을 중단합니다. 센서 중단 감지·입력 크기 제한·연속 IMU 확보는 호출자가 담당합니다. 최신 시각만으로 IMU 연속성을 보장하지 않습니다. `finish(kind)`는 유한 기록이 실제로 끝났을 때만 사용하며 실시간 센서 타임아웃에 사용하지 않습니다. ROS 어댑터 활성화는 이 독립 큐 인터페이스와 별도입니다.
