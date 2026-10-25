@@ -1,0 +1,216 @@
+{
+  "capture": {
+    "recorded_stamp_ns": 20500000000,
+    "body_position": [
+      -0.05026536491052886,
+      0.01020931326564012,
+      -0.8905449334387526
+    ],
+    "body_rotation": [
+      [
+        0.9991982729649681,
+        0.009045507732849518,
+        -0.03899987299569003
+      ],
+      [
+        -0.008936550813076767,
+        0.9999556658979569,
+        0.0029672037575470974
+      ],
+      [
+        0.039024983835874806,
+        -0.002616300523346699,
+        0.9992348100462579
+      ]
+    ],
+    "mounts": {
+      "sonar": {
+        "eye": [
+          0.1934422079006325,
+          0.0077678206947469864,
+          -0.9811024183227685
+        ],
+        "camera_to_world": [
+          [
+            0.9519925632887811,
+            0.009045507732849518,
+            0.30598748051629665
+          ],
+          [
+            -0.009412199643514849,
+            0.9999556658979569,
+            -0.00027701343672030196
+          ],
+          [
+            -0.3059764205632955,
+            -0.002616300523346699,
+            0.9520354956779945
+          ]
+        ],
+        "horizontal_fov": 2.0943951023931953,
+        "vertical_fov": 0.3490658503988659,
+        "body_mount": {
+          "translation": [
+            0.24,
+            0.0,
+            -0.1
+          ],
+          "rotation": [
+            0.0,
+            0.17410813759359595,
+            0.0,
+            0.9847265389049334
+          ]
+        },
+        "body_pitch_down_deg": 20.053522829578814
+      },
+      "slam_camera": {
+        "eye": [
+          -0.15018519220702567,
+          0.011102968346947796,
+          -0.8944474318223401
+        ],
+        "camera_to_world": [
+          [
+            0.03899987299569025,
+            0.009045507732849518,
+            0.9991982729649681
+          ],
+          [
+            -0.0029672037575470996,
+            0.9999556658979569,
+            -0.008936550813076767
+          ],
+          [
+            -0.9992348100462579,
+            -0.002616300523346699,
+            0.03902498383587503
+          ]
+        ],
+        "horizontal_fov": 1.4,
+        "vertical_fov": 1.1268288633253665,
+        "body_mount": {
+          "translation": [
+            -0.1,
+            0.0,
+            -1.3877787807814457e-17
+          ],
+          "rotation": [
+            0.0,
+            0.7071067811865475,
+            0.0,
+            0.7071067811865476
+          ]
+        },
+        "body_pitch_down_deg": 90.0
+      }
+    },
+    "cameras": {
+      "sonar-view": {
+        "eye": [
+          0.1934422079006325,
+          0.0077678206947469864,
+          -0.9811024183227685
+        ],
+        "camera_to_world": [
+          [
+            0.9519925632887811,
+            0.009045507732849518,
+            0.30598748051629665
+          ],
+          [
+            -0.009412199643514849,
+            0.9999556658979569,
+            -0.00027701343672030196
+          ],
+          [
+            -0.3059764205632955,
+            -0.002616300523346699,
+            0.9520354956779945
+          ]
+        ],
+        "horizontal_fov": 2.0943951023931953,
+        "vertical_fov": 1.7141438957002615,
+        "body_mount": {
+          "translation": [
+            0.24,
+            0.0,
+            -0.1
+          ],
+          "rotation": [
+            0.0,
+            0.17410813759359595,
+            0.0,
+            0.9847265389049334
+          ]
+        },
+        "body_pitch_down_deg": 20.053522829578814,
+        "width": 1200,
+        "height": 800,
+        "stamp_ns": 3400000000,
+        "recorded_pose_stamp_ns": 20500000000,
+        "projection": "perspective",
+        "source": "Actual Gazebo re-render of static scene at recorded pose; optical phase not replayed"
+      },
+      "isometric": {
+        "eye": [
+          -1.5,
+          -3.5,
+          -0.25
+        ],
+        "camera_to_world": [
+          [
+            0.5773502691896258,
+            -0.7071067811865475,
+            0.408248290463863
+          ],
+          [
+            0.5773502691896257,
+            0.7071067811865476,
+            0.40824829046386296
+          ],
+          [
+            -0.5773502691896257,
+            0.0,
+            0.816496580927726
+          ]
+        ],
+        "horizontal_fov": 1.9,
+        "width": 1200,
+        "height": 800,
+        "vertical_fov": 1.5007049554830647,
+        "stamp_ns": 3600000000,
+        "recorded_pose_stamp_ns": 20500000000,
+        "projection": "perspective",
+        "source": "Actual Gazebo re-render of static scene at recorded pose; optical phase not replayed"
+      }
+    },
+    "partition": "sonar-common-view-80f138f60c2a4ef6b832dc481afe2d25",
+    "source_hashes": {
+      "demo-runtime/2bb887dafecb43d9ab30e3b024a1318d/world-waves-underwater-sonar.sdf": "f2eb7fddd11cc6fa4c3abe6a38b353cae74cac56d9bac5c8ccbac77c3a1018cd",
+      "multimodal-inputs/sensor-model.sdf": "df53c2befe13400763850eae8055a3fd72a798118c2f02c7c546b1440539d97e",
+      "physical-targets.sdf": "475023a0a4784a2618d42f5cb5892b1e01e3f8d506888efb00085870efcd1c70",
+      "live-vio-probe/evaluation-inputs/truth.csv": "f5abda220149b564448ee8b1322c1e24e4605ca18328620de4ce49ce7071f27c"
+    },
+    "truth_used_only_for_illustration": true,
+    "live_untouched": true,
+    "capture_hashes": {
+      "capture.sdf": "982db9246d1ba0a2f8398ef7916e54101f2172df99807ff299b5ba4e3349186e",
+      "sonar-view-rgb.png": "aa68f9913d0486c336bb3f715dc1a67be56d532670e66802ae2fabf28e813c8b",
+      "sonar-view-camera.json": "5d01bdc9bcb95a8417c5de832c22fcda0a7257c47cd21b48c6f1bf9cbd512668",
+      "isometric-rgb.png": "3985a8620f0b9225e385c585920ef2e557c6bc464a1e56e9c7ea5dc6e8f5eab1",
+      "isometric-camera.json": "ec4164890c72ad54a7ccba15f42b8803378ae08deacd5de15ee5aa5a66de9298"
+    }
+  },
+  "point_provenance_sha256": "cb072fe076e0ba1729bf551c2712c9e535d5b9fb9cd00a16e03b8e8a93b54dcc",
+  "comparison_sha256": "b35d97e498b96916752d56ed63b9741f5f1368e6da5d0dd84e72f4489d410eb5",
+  "raw_sonar_sha256": "934cb6f28d2d3aa58088a3873ee58a267298b8659961fe7adb5fe0c7e643abf4",
+  "marker_area_pt2": 64,
+  "sonar_rgb_pose_match": true,
+  "sonar_rgb_horizontal_fov_match": true,
+  "sonar_image_vertical_axis": "slant_range",
+  "rgb_image_vertical_axis": "elevation",
+  "sonar_range_display": "near_bottom_far_top",
+  "rgb_is_auxiliary": true,
+  "map_geometry_qualified": false
+}

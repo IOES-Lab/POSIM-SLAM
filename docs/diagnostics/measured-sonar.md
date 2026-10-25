@@ -181,3 +181,43 @@ RMSE 0.023528 m, 최대 오차 0.102329 m입니다. 두 위치 결과는 이 기
 사용합니다. 대응 그림의 색은 추적 ID이며 비교 그림의 높이 색은 Turbo입니다.
 RGB에는 수중 감쇠·입자·해저 집광무늬가 적용됩니다. 초기 방위각·위치만
 정렬하며 축척은 1입니다.
+
+
+## Sensor viewpoint and mount geometry / 센서 시점과 장착 방향
+
+![Matched sonar-view RGB and actual BlueROV sensor geometry](sonar-common-view.png)
+
+The upper RGB is an auxiliary Gazebo camera at the recorded sonar pose (20.5 s),
+with the same origin, rotation and 120° horizontal FOV. Its rectilinear image has
+98.2° vertical FOV; orange curves mark the sonar's ±10° elevation fan. Sonar rows
+are slant range, while RGB rows are elevation, so this is a geometric comparison,
+not pixel alignment. Positive azimuth is displayed on the left in both views. Sonar range increases
+upward: near at the bottom, far at the top.
+The lower pair shares an isometric camera pose and perspective. A–D keep the
+verified track identities; marker diameter is four times the earlier 4 pt² marker.
+
+The physical sonar mount is (+0.24, 0, −0.10) m with 20.1° downward pitch relative
+to the hull. The actual SLAM camera is at (−0.10, 0, 0) m, points 90° down, and has
+80.2° horizontal / 64.6° vertical FOV. Its downward orientation comes from the
+imported Orca5 model (`camera_link` pitch `@d90`). The overview includes the actual vehicle
+and projected viewing frusta. Static scene geometry and recorded body pose are
+preserved; optical phase is re-rendered with attenuation, particles, caustics and
+sea surface. Ground truth sets the illustration pose only; it does not enter the
+estimator. [Capture/projection evidence](sonar-common-view.json).
+
+위쪽 RGB는 20.5초의 소나와 위치·회전·수평 시야 120°가 같은 비교용
+Gazebo 렌더링입니다. RGB 수직 시야는 98.2°이며 주황색 곡선은 소나의
+수직 시야 ±10°입니다. 소나의 세로축은 경사거리, RGB의 세로축은 고도각이므로
+픽셀 일대일 대응이 아닙니다. 두 영상 모두 양의 방위각을 왼쪽에 표시하며 소나는 아래가 가까운 거리,
+위가 먼 거리입니다.
+아래 점군과 시험장 RGB는 등각 방향·원근 투영이 같습니다. A–D는 검증된
+추적 ID이며 점 지름은 기존 4 pt² 마커의 4배입니다.
+
+차량 좌표계에서 소나는 (+0.24, 0, −0.10) m에 장착되어 전방 아래 20.1°를
+봅니다. 실제 SLAM 카메라는 (−0.10, 0, 0) m에서 아래 90°를 보며 시야는
+수평 80.2°·수직 64.6°입니다. 하향 방향은 가져온 Orca5 원본 모델의
+`camera_link` pitch `@d90` 설정입니다. 개요에 실제 차량과 센서 시야를 표시합니다.
+정적 장면·차량 자세는 기록과 일치하며 수중 감쇠·입자·해저 집광무늬·수면은
+다시 렌더링됩니다. 참값 자세는 그림 제작에만 사용하며 추정기에 넣지 않습니다.
+
+[Echo, shadow and ground-onset research / 반사·그림자·해저 시작점 연구](sonar-surface-research.md).
