@@ -1,5 +1,20 @@
 # Measured sonar fusion / 실측 소나 결합
 
+**Calibration failure in the archived recording.** The actual renderer emitted
+±20° elevation and 257 vertical rays; the SDF, replay calibration and orange
+figure overlays assumed ±10° and 256. Consequently the archived acoustic
+hypotheses, uncertainty gates and ground-plane experiments cannot qualify map
+accuracy. The integration's scan geometry is corrected and independently checked
+against a 3 m wall; full corrected-recording SLAM evaluation remains outstanding.
+[Measured ray evidence](sonar-scan-geometry.json).
+
+**보존한 기록의 보정 불일치:** 실제 렌더러는 고도각 ±20°·257광선을
+출력했지만 SDF·재생 보정·그림의 주황색 경계는 ±10°·256광선을 가정했습니다.
+이 기록의 소나 점·불확실성 판정·해저 평면 실험은 지도 정확도의 합격 근거가
+될 수 없습니다. 통합 플러그인의 스캔 형상을 수정하고 3 m 벽에서 확인했으며,
+수정된 기록을 이용한 전체 SLAM 평가는 아직 필요합니다.
+
+
 The comparison replays the same 63.2-second BlueROV camera, raw IMU and single
 Ping recording with Basalt `0f3b2b52c807f70ff4e2973ce253c73329eea7bc` and POSIM
 native extensions. The recent-state budget is 16. Only initial yaw and translation
@@ -144,7 +159,7 @@ is not an obstacle count, and the method remains experimental.
 
 ![Recorded sonar pixels and their corresponding exported hypotheses](sonar-point-provenance.png)
 
-The input is a simulated Sonoptix ECHO short-range configuration: 700 kHz,
+The requested Sonoptix ECHO short-range configuration is: 700 kHz,
 256 horizontal beams, 120° horizontal / 20° vertical FOV, 256 vertical rays,
 10 m range cap and 2 Hz frames. Vertical rays contribute to intensity; the
 399-by-256 intensity matrix contains range/azimuth, not a measured elevation.
@@ -171,7 +186,7 @@ RMSE 0.023528 m, 최대 오차 0.102329 m입니다. 두 위치 결과는 이 기
 0.10 m / 0.25 m 기준을 만족하지만 상자 표면은 복원하지 못합니다.
 한 빈의 독립 잡음은 진단용 가정입니다. 점 가설 수는 장애물 수가 아닙니다.
 
-입력은 Sonoptix ECHO 단거리 설정을 모사합니다. 700 kHz, 수평 256빔,
+요청한 설정은 Sonoptix ECHO 단거리 사양을 참고합니다. 700 kHz, 수평 256빔,
 수평 120°·수직 20° 시야각, 수직 광선 256개, 최대 거리 10 m, 초당 2장을
 사용합니다. 수직 광선은 강도에 기여하며, 399×256 강도 행렬은 거리와
 방위각을 담고 고도를 측정하지 않습니다. 프런트엔드는 20–90 dB를 8비트로
@@ -189,7 +204,8 @@ RGB에는 수중 감쇠·입자·해저 집광무늬가 적용됩니다. 초기 
 
 The upper RGB is an auxiliary Gazebo camera at the recorded sonar pose (20.5 s),
 with the same origin, rotation and 120° horizontal FOV. Its rectilinear image has
-98.2° vertical FOV; orange curves mark the sonar's ±10° elevation fan. Sonar rows
+98.2° vertical FOV; orange curves mark the configured ±10° elevation fan; the archived acoustic
+recording spans ±20°. Sonar rows
 are slant range, while RGB rows are elevation, so this is a geometric comparison,
 not pixel alignment. Positive azimuth is displayed on the left in both views. Sonar range increases
 upward: near at the bottom, far at the top.
@@ -207,7 +223,7 @@ estimator. [Capture/projection evidence](sonar-common-view.json).
 
 위쪽 RGB는 20.5초의 소나와 위치·회전·수평 시야 120°가 같은 비교용
 Gazebo 렌더링입니다. RGB 수직 시야는 98.2°이며 주황색 곡선은 소나의
-수직 시야 ±10°입니다. 소나의 세로축은 경사거리, RGB의 세로축은 고도각이므로
+설정상 수직 시야 ±10°이며 보존한 음향 기록은 ±20°를 포함합니다. 소나의 세로축은 경사거리, RGB의 세로축은 고도각이므로
 픽셀 일대일 대응이 아닙니다. 두 영상 모두 양의 방위각을 왼쪽에 표시하며 소나는 아래가 가까운 거리,
 위가 먼 거리입니다.
 아래 점군과 시험장 RGB는 등각 방향·원근 투영이 같습니다. A–D는 검증된

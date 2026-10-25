@@ -1,0 +1,6 @@
+{
+  "old_frame_sha256": "934cb6f28d2d3aa58088a3873ee58a267298b8659961fe7adb5fe0c7e643abf4",
+  "capture_receipt_sha256": "e0030342a597e4227db824a308d2d59dec57205d1f89c64c305a2d0fa21f347a",
+  "figure_sha256": "4bbd6eddf3406f0a27f0dce628eb9c1ff27965e1dbc356a3cf13e8d95bf66b22",
+  "scope": "Static sonar geometry comparison; not SLAM mapping"
+}

@@ -1,5 +1,15 @@
 # Echo, shadow and ground-onset reconstruction
 
+The archived 119-frame experiment uses a mismatched renderer/calibration fan
+(40° actual / 20° assumed). Its region counts and timing remain recorded, but
+its ground geometry is unqualified. A fitted slope can absorb this sensor error,
+so low fitting residual is insufficient. [Scan check](sonar-scan-geometry.json).
+
+보존한 119장 실험은 실제 40°·가정 20°의 시야 불일치를 포함합니다.
+영역 수와 처리 시간은 당시 기록으로 남기지만 해저 기하는 검증되지 않았습니다.
+평면 기울기가 센서 오차를 흡수할 수 있으므로 작은 적합 잔차만으로 통과시키지 않습니다.
+
+
 The region extractor below is an offline experiment. Multi-view surface
 reconstruction remains a research direction, not a qualified mapping mode.
 The [measured example](measured-sonar.md) still uses intensity corners and flow.
@@ -158,3 +168,23 @@ object counts. Echo/shadow association and multi-view mapping remain unfinished.
 검출에 넣지 않습니다. 20.5초의 세 어두운 영역은 끝을 확정하지 못해 높이·3D
 점을 생성하지 않습니다. 전체 기록의 후보 수는 0–12개이며 물체 수가 아닙니다.
 반사·그림자 대응과 다중 시점 지도 복원은 아직 완료되지 않았습니다.
+
+
+## Corrected static capture / 수정한 정적 촬영
+
+![Actual corrected sonar, same-pose RGB and BlueROV](sonar-scan-comparison.png)
+
+[Capture hashes / 촬영 해시](sonar-scan-comparison.json).
+
+The right sonar image is re-rendered with the corrected 20°/256-ray fan at the
+same recorded body pose. The seabed onset moves outward, as the narrower fan
+predicts. RGB shares the sonar origin and orientation; orange curves are ±10°.
+The overview shows the physical vehicle and targets. Speckle and optical/wave
+phase differ from the archived left image. This is a static sensor check, not a
+new multi-view map or an accuracy result. Corrected moving data are still needed.
+
+오른쪽 소나는 같은 기록 자세에서 수정된 20°·256광선으로 다시 촬영했습니다.
+좁아진 시야에 맞게 해저 반사 시작점이 먼 쪽으로 이동합니다. RGB는 소나와
+위치·방향이 같고 주황색 경계는 ±10°입니다. 개요에 차량과 물체를 함께 표시합니다.
+왼쪽 보존 영상과 스펙클·광학 효과·파도의 위상은 다릅니다. 정적 센서 검사이며
+다중 시점 지도나 정확도 결과가 아닙니다. 수정된 센서의 주행 기록이 필요합니다.

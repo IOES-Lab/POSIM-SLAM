@@ -1,0 +1,59 @@
+{
+  "scope": "Actual isolated Gazebo WGPU ray geometry; no SLAM accuracy or release acceptance",
+  "source_revision": "a1786726bd77290f7fba40d8302dec385e6a5324",
+  "old": {
+    "requested_shape": [
+      256,
+      256
+    ],
+    "observed_shape": [
+      257,
+      256
+    ],
+    "finite_rays": 65792,
+    "passed": false,
+    "azimuth_extent_deg": [
+      -60.000004365293115,
+      60.000154147823345
+    ],
+    "elevation_extent_deg": [
+      -20.00000129202704,
+      20.000058135667146
+    ],
+    "max_wall_error_m": 0.006345510482788086
+  },
+  "corrected": {
+    "requested_shape": [
+      256,
+      256
+    ],
+    "observed_shape": [
+      256,
+      256
+    ],
+    "finite_rays": 65536,
+    "wall_tolerance_m": 0.025084495544433594,
+    "passed": true,
+    "azimuth_extent_deg": [
+      -60.000004354874356,
+      60.000153846311065
+    ],
+    "elevation_extent_deg": [
+      -10.000001359915903,
+      9.999985640545455
+    ],
+    "max_wall_error_m": 0.013973712921142578,
+    "max_azimuth_error_deg": 0.00016592019328243168,
+    "max_elevation_error_deg": 1.6645947960469698e-05
+  },
+  "range_tolerance_basis": "One reported acoustic range bin; initial arbitrary 10 mm diagnostic failed at 13.974 mm and is retained",
+  "old_negative_control_expected_failure": true,
+  "fixed_runtime_passed": true,
+  "fixed_shutdown": {
+    "exit_code": 0,
+    "forced": false
+  },
+  "patch_sha256": "b4716dad5ebb96600c9e749c68e3f7ada2d5e7460b327b41b1fce03e70837a9b",
+  "build_library_sha256": "6e75c53a4edc490f894f0b53d475e28823dccbfcb6cb90a21684aee4e38ebd59",
+  "historical_sonar_results_qualified": false
+}
