@@ -69,6 +69,68 @@ class GroundNativeTests(unittest.TestCase):
         return dict(beam_ids=list(range(16)),azimuth_rad=np.linspace(-.8,.8,16).tolist(),
             range_m=ranges.tolist(),boundary_sign=-1,normal_sonar=[0,0,1],distance_sonar_m=-(2+z))
 
+    def test_rotating_sloped_ground_preserves_owned_trajectory(self):
+        # Exact synthetic acoustic returns isolate geometry/ownership from the
+        # recorded echo-onset frontend. Truth is used only to generate sensors
+        # and score outputs; the worker receives no poses or world-plane prior.
+        def motion(t):
+            r,p,y=.10*math.sin(.4*t),.08*math.sin(.3*t),.12*t
+            cr,sr,cp,sp,cy,sy=math.cos(r),math.sin(r),math.cos(p),math.sin(p),math.cos(y),math.sin(y)
+            rotation=np.array([[cy,-sy,0],[sy,cy,0],[0,0,1]])@np.array([[cp,0,sp],[0,1,0],[-sp,0,cp]])@np.array([[1,0,0],[0,cr,-sr],[0,sr,cr]])
+            gyro=np.array([.04*math.cos(.4*t)-.12*sp,
+                .024*math.cos(.3*t)*cr+.12*sr*cp,
+                -.024*math.cos(.3*t)*sr+.12*cr*cp])
+            position=np.array([.1*t,.1*(1-math.cos(.3*t)),.2*(1-math.cos(.4*t))])
+            velocity=np.array([.1,.03*math.sin(.3*t),.08*math.sin(.4*t)])
+            acceleration=np.array([0,.009*math.cos(.3*t),9.80665+.032*math.cos(.4*t)])
+            return rotation,gyro,position,rotation.T@velocity,rotation.T@acceleration
+        normal=np.array([.08,-.04,1.]);normal/=np.linalg.norm(normal)
+        azimuth=np.linspace(-.8,.8,16)
+        rays=np.column_stack((np.cos(azimuth)*math.cos(.35),np.sin(azimuth)*math.cos(.35),np.full(16,-math.sin(.35))))
+        results=[]
+        for use_ground in (False,True):
+            with tempfile.TemporaryDirectory() as folder:
+                client=self.worker(Path(folder),pressure=True);initial=10**9;next_imu=initial
+                client.gravity_seed(initial,[0,0,1]);maximum=0.;registered=0;multi=0;planes=set()
+                for i in range(61):
+                    for offset in (0,10_000_000,60_000_000):
+                        stamp=initial+i*200_000_000+offset;t=(stamp-initial)*1e-9
+                        rotation,gyro,position,velocity,_=motion(t)
+                        while next_imu<=stamp+10_000_000:
+                            _,w,_,_,acceleration=motion((next_imu-initial)*1e-9)
+                            client.imu(next_imu,w,acceleration);next_imu+=10_000_000
+                        if offset==0:
+                            client.dvl(stamp,velocity,np.eye(3)*.0001,gyro=gyro,gyro_stamp_ns=stamp,
+                                gyro_covariance=np.eye(3)*1e-6,bottom_locked=True,locked_beams=4)
+                        if offset==10_000_000:client.pressure(stamp,position[2]+17,.005**2)
+                        if offset==60_000_000 and use_ground:
+                            ranges=(-1.2-normal@position)/(rays@(rotation.T@normal))
+                            self.assertGreater(float(ranges.min()),.2)
+                            self.assertLess(float(ranges.max()),10.)
+                            # Recover the packet seed from the synthetic range
+                            # samples, exactly as an unknown local-plane fit.
+                            points=rays*ranges[:,None];center=points.mean(axis=0)
+                            _,_,v=np.linalg.svd(points-center);local_normal=v[-1]
+                            if local_normal[2]<0:local_normal=-local_normal
+                            client.ground(stamp,beam_ids=list(range(16)),azimuth_rad=azimuth.tolist(),
+                                range_m=ranges.tolist(),boundary_sign=-1,normal_sonar=local_normal.tolist(),
+                                distance_sonar_m=float(local_normal@center))
+                        client.sonar_tick(stamp);state=self.receive(client,'state')
+                        for pose in state['ground']['pose_estimates']:
+                            truth=motion((pose['stamp_ns']-initial)*1e-9)[2]
+                            maximum=max(maximum,float(np.linalg.norm(np.asarray(pose['position'])-truth)))
+                        if state['ground'].get('factor_registered'):
+                            registered+=1;planes.add(state['ground']['plane_id'])
+                            multi+=int(state['ground'].get('group_frames',0)>1)
+                        self.assertFalse(state['map_qualified'])
+                if use_ground:
+                    self.assertEqual(registered,61);self.assertGreater(multi,20);self.assertGreater(len(planes),3)
+                results.append(dict(ground=use_ground,maximum_owned_pose_error_m=maximum,
+                    ground_registered=registered,multi_frame_states=multi,planes=len(planes)))
+                self.assertLess(maximum,.03)
+        print(json.dumps(dict(scope='synthetic sloped plane and three-axis rotation; no image acceptance',
+            states_per_run=183,results=results)))
+
     def test_ground_event_enters_solver_without_dvl_or_pressure_event(self):
         with tempfile.TemporaryDirectory() as folder:
             client=self.worker(Path(folder));initial=10**9
