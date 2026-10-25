@@ -8,6 +8,19 @@ biases. `basalt_stream` and `LiveClient` provide the live worker interface; the
 host application supplies ROS transport, registration and session supervision.
 The worker maintains a sparse segment map without loop closure.
 
+Visual normal-equation assembly uses only the pose blocks observed by each
+landmark. It scatters their matrix and gradient into the complete state system,
+preserving cross-pose terms while avoiding products of zero velocity, bias and
+unrelated-pose columns. The landmark probe checks equivalence against full-width
+QR rows with mixed pose/inertial layouts, column scaling and landmark damping.
+This changes computation, not observations or estimator acceptance thresholds.
+
+시각 정규방정식은 각 특징점이 관측된 자세 블록만 계산한 뒤 전체 상태 행렬과
+기울기에 반영합니다. 자세 사이의 상관 항을 유지하면서 속도·바이어스·무관한
+자세의 0인 열에 대한 곱셈을 줄입니다. 네이티브 특징점 검증은 자세·관성 상태가
+섞인 배치, 열 스케일링, 감쇠 조건에서 전체 폭 QR 계산과 같은 결과인지 확인합니다.
+관측값과 추정기 합격 기준은 유지합니다.
+
 The recipe compiles only estimation, optical flow and supporting core sources.
 It does not link Basalt's GUI, dataset loaders, AprilTag calibration, mapping
 applications or camera drivers. Exact Basalt, basalt-headers, Sophus, cereal,

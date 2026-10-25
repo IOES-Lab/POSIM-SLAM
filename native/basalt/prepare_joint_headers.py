@@ -91,6 +91,26 @@ def prepare(source,destination):
             text=replace_once(text,'    storage.setZero();','    storage.setZero();\n    posim_joint_raw_ = false;')
             text=replace_once(text,'      state = State::Linearized;','      state = State::Linearized;\n      posim_joint_raw_ = true;')
             text=replace_once(text,'  virtual inline void scaleJl_cols() override {','  virtual inline void scaleJl_cols() override {\n    posim_joint_raw_ = false;')
+            # QR only mixes rows: columns absent from this landmark remain
+            # exactly zero, including inertial velocity/bias columns. Assemble
+            # the same dense normal system through its observed pose blocks.
+            text=replace_once(text,"""    H.noalias() += J.transpose() * J;
+    b.noalias() += J.transpose() * r;""","""    std::vector<size_t> offsets;
+    for (const auto& item : res_idx_by_abs_pose_)
+      offsets.push_back(aom_->abs_order_map.at(item.first).first);
+    MatX compact(J.rows(), POSE_SIZE * offsets.size());
+    for (size_t i = 0; i < offsets.size(); ++i)
+      compact.middleCols(POSE_SIZE * i, POSE_SIZE) =
+          J.middleCols(offsets[i], POSE_SIZE);
+    const MatX normal = compact.transpose() * compact;
+    const VecX gradient = compact.transpose() * r;
+    for (size_t i = 0; i < offsets.size(); ++i) {
+      b.template segment<POSE_SIZE>(offsets[i]) +=
+          gradient.template segment<POSE_SIZE>(POSE_SIZE * i);
+      for (size_t j = 0; j < offsets.size(); ++j)
+        H.template block<POSE_SIZE, POSE_SIZE>(offsets[i], offsets[j]) +=
+            normal.template block<POSE_SIZE, POSE_SIZE>(POSE_SIZE * i, POSE_SIZE * j);
+    }""")
             text=replace_once(text,'  State state = State::Uninitialized;','  bool posim_joint_raw_ = false;\n  State state = State::Uninitialized;')
         target=output/name
         target.parent.mkdir(parents=True,exist_ok=True)
