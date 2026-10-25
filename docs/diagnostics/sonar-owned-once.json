@@ -1,0 +1,53 @@
+{
+  "schema": "sonar-original-measurement-ownership-1",
+  "map_qualified": false,
+  "source_revision_before": "1e24addaecc1511d9d2b71d268c175ff9c3cf9f5",
+  "ownership_source_sha256": "273c41789b7b6002090b07ed110901f599b529147b9b71a69ec6032f10163168",
+  "audit_source_sha256": "f2e0fc0ec54f9d749ff71b9a7a65dab711043319af86a9226d83b13c0e371e7f",
+  "cases": {
+    "a": {
+      "before": {
+        "accepted_observations": 640,
+        "unique_observations": 578,
+        "duplicates": 62,
+        "position_rmse_m": 0.457252523909926,
+        "rotation_rmse_deg": 1.4779099715311288,
+        "points": 64,
+        "within_10cm": 34,
+        "surface_p90_m": 0.5557184565087397
+      },
+      "after": {
+        "accepted_observations": 586,
+        "unique_observations": 586,
+        "duplicates": 0,
+        "position_rmse_m": 0.12096488572582387,
+        "rotation_rmse_deg": 1.4745451342594853,
+        "points": 66,
+        "within_10cm": 33,
+        "surface_p90_m": 0.5764620070174129
+      }
+    },
+    "b": {
+      "before": {
+        "accepted_observations": 692,
+        "unique_observations": 639,
+        "duplicates": 53,
+        "position_rmse_m": 0.22687771359899842,
+        "rotation_rmse_deg": 2.082988421727084,
+        "points": 69,
+        "within_10cm": 38,
+        "surface_p90_m": 0.335549506666677
+      },
+      "after": {
+        "accepted_observations": 660,
+        "unique_observations": 660,
+        "duplicates": 0,
+        "position_rmse_m": 0.10314349569109328,
+        "rotation_rmse_deg": 3.3069141859198328,
+        "points": 73,
+        "within_10cm": 36,
+        "surface_p90_m": 0.496678757973793
+      }
+    }
+  }
+}

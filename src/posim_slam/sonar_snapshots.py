@@ -10,6 +10,9 @@ from .sonar_packet import encode_snapshot
 
 class SonarSnapshots:
     selection_policy = 'oldest_waiting_first_with_owned_history_priority'
+    ownership_policy = 'original_source_timestamp_once'
+    max_retained_poses = 73  # estimator_budget.hpp, including incoming pose/keyframe
+    max_sources_per_pose = 300
 
     def __init__(self):
         self.stamp = 0
@@ -20,6 +23,9 @@ class SonarSnapshots:
         self.pending = None
         self.blocked = set()
         self.candidate_order = {}
+        # Retired factors still contribute through the native marginal prior.
+        # Keep their measurement identities while their poses can be submitted.
+        self.consumed = {}
 
     def point_sources(self):
         """Map native hypotheses to source tracks before consuming a state.
@@ -42,6 +48,9 @@ class SonarSnapshots:
                 any(type(i) is not int or i < 0 for i in active) or
                 active != sorted(set(active))):
             raise ValueError('invalid_sonar_state_report')
+        if (len(retained) > self.max_retained_poses or
+                (self.stamp and not set(retained) <= self.retained | {stamp})):
+            raise ValueError('invalid_sonar_retained_pose_lifecycle')
         rejected = report.get('geometry_rejected_track_ids', [])
         if (not isinstance(rejected, list) or any(type(i) is not int or i < 0 for i in rejected) or
                 rejected != sorted(set(rejected))):
@@ -68,6 +77,17 @@ class SonarSnapshots:
         known = {track['id'] for track in bindings.values()}
         if not set(active) <= known:
             raise ValueError('unknown_native_sonar_track')
+        consumed = {t: sources.copy() for t, sources in self.consumed.items() if t in retained}
+        # Commit registration, not optimizer success: even a zero-step update
+        # can own factors, or retire them into the prior in this same response.
+        for key, track in bindings.items():
+            for observation in track['observations']:
+                t = observation['stamp_ns']
+                if t in retained:
+                    consumed.setdefault(t, set()).add(key)
+        if any(len(sources) > self.max_sources_per_pose for sources in consumed.values()):
+            raise ValueError('sonar_measurement_ownership_budget')
+        self.consumed = consumed
         self.bindings = {key: value for key, value in bindings.items() if value['id'] in active}
         self.blocked = blocked.intersection(self.bindings)
         self.next_id = next_id
@@ -79,7 +99,11 @@ class SonarSnapshots:
         """Prepare full histories keyed by stable source IDs within this segment.
 
         Call after the preceding state response. New candidates lose observations
-        whose poses expired; covariance uses the matching principal submatrix.
+        whose poses expired or whose measurements already entered a factor.
+        Covariance uses the matching principal submatrix. Rebinding requires
+        independence from consumed observations; cross-history correlations
+        with omitted measurements are unsupported and must not be supplied.
+        Source IDs identify physical observation histories, not native factors.
         Existing native history is immutable and may only append one observation.
         Owned histories are updated first. Free slots rotate among waiting
         candidates so rejected low IDs cannot monopolize the 16-factor budget.
@@ -128,11 +152,18 @@ class SonarSnapshots:
             else:
                 if len(bindings) >= 16:
                     continue
+                used = [i for i, obs in enumerate(observations)
+                        if source['id'] in self.consumed.get(obs['stamp_ns'], ())]
                 indices = [i for i, obs in enumerate(observations)
-                           if obs['stamp_ns'] in self.retained or obs['stamp_ns'] == stamp]
+                           if (obs['stamp_ns'] in self.retained or obs['stamp_ns'] == stamp)
+                           and i not in used]
                 selected = [observations[i] for i in indices]
                 if len(selected) < 3:
                     continue
+                used_axes = [axis for i in used for axis in (2*i, 2*i+1)]
+                fresh_axes = [axis for i in indices for axis in (2*i, 2*i+1)]
+                if used_axes and np.any(covariance[np.ix_(used_axes, fresh_axes)] != 0):
+                    raise ValueError('correlated_sonar_rebinding_requires_joint_prior')
             axes = [axis for i in indices for axis in (2*i, 2*i+1)]
             noise = covariance[np.ix_(axes, axes)]
             if old is not None and not np.array_equal(noise[:-2, :-2], old['covariance']):

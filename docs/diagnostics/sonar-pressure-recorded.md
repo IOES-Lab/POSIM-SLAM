@@ -1,5 +1,14 @@
 # Hydrostatic depth in camera-free fusion / 카메라 없는 융합의 정수압 깊이
 
+These preserved runs use the earlier snapshot lifecycle, which reuses some
+marginalized sonar observations. See the [ownership correction and matched
+replays](sonar-owned-once.md) for current evidence. The pressure implementation
+checks below remain distinct from these affected recorded comparisons.
+
+아래 보존 기록에는 주변화한 소나 관측을 다시 사용하는 문제가 있습니다.
+현재 결과는 [소유권 수정과 같은 기록의 재생](sonar-owned-once.md)을 참고하세요.
+수압 구현 자체의 수치 검증과 이 영향을 받는 기록 비교를 구분해야 합니다.
+
 [Metrics and source hashes](sonar-pressure-recorded.json) · [Native method](../../native/basalt/README.md)
 
 The native Basalt research optimizer jointly estimates one unknown pressure

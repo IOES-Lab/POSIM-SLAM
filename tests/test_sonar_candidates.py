@@ -64,10 +64,14 @@ class CandidateTests(unittest.TestCase):
         self.assertEqual([row[:-2] for row in second['covariance'][:-2]],first['covariance'])
         # Native retirement removes the factor when pose 2 is marginalized.
         observe(4,[1,3,4],[],True)
-        tracks=builder.push(frame(5),retained_stamps=owner.retained)
-        rebound=owner.prepare(5,tracks)[0]
+        for stamp in (5,6):
+            tracks=builder.push(frame(stamp),retained_stamps=owner.retained)
+            self.assertEqual(owner.prepare(stamp,tracks),[])
+            observe(stamp,[1,*range(3,stamp+1)])
+        tracks=builder.push(frame(7),retained_stamps=owner.retained)
+        rebound=owner.prepare(7,tracks)[0]
         self.assertNotEqual(rebound['id'],first['id'])
-        self.assertEqual([o['stamp_ns'] for o in rebound['observations']],[1,3,4,5])
+        self.assertEqual([o['stamp_ns'] for o in rebound['observations']],[5,6,7])
         self.assertEqual(owner.point_sources()[rebound['id']],tracks[0]['id'])
 
     def test_invalid_retention_does_not_change_state(self):

@@ -42,9 +42,12 @@ class FusionTests(unittest.TestCase):
     def test_retirement_response_keeps_pending_identity_and_rebind_does_not_duplicate(self):
         f,ident=self.seed()
         f.observe(state(3,received=True,points=[dict(id=ident,point=[1.,0.,0.])],accepted=True))
-        update=f.prepare(4,frame(4))[0]
+        for stamp in (4,5):
+            self.assertEqual(f.prepare(stamp,frame(stamp)),[])
+            f.observe(state(stamp))
+        update=f.prepare(6,frame(6))[0]
         self.assertNotEqual(update['id'],ident)
-        f.observe(state(4,received=True,active=[update['id']],
+        f.observe(state(6,received=True,active=[update['id']],
                         points=[dict(id=update['id'],point=[2.,0.,0.])],accepted=True))
         self.assertEqual(len(f.snapshot()['points']),1)
         self.assertEqual(f.snapshot()['points'][0]['source_id'],0)

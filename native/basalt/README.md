@@ -1293,8 +1293,14 @@ stable within the segment. The manager prunes expired candidate observations and
 selects the corresponding covariance rows and columns, preserving correlations.
 Existing native history is immutable, including gaps left by marginalization.
 Rejected extensions freeze that source until its native track retires.
-Retired tracks receive fresh native IDs
-when they have enough retained observations to seed again. Wait for the snapshot
+Retired tracks receive fresh native IDs only after three unconsumed observations
+are available. An accepted original source/timestamp pair contributes once, even
+when its native track retires in the same response. The ownership ledger expires
+with the pose, is bounded at 73 poses × 300 sources, and commits only on a valid
+acknowledgement. Rejected observations remain available. Nonzero covariance
+between consumed and fresh rows rejects rebinding; correlations with omitted
+history are unsupported. Callers must supply independent noise across omitted
+history boundaries. The measured candidate builder uses diagonal noise. Wait for the snapshot
 acknowledgement before preparing another one. Create a new manager when the
 native estimator segment resets. A frontend-only reset requires fresh source
 IDs while keeping native ownership; `SonarCandidates` assigns those fresh IDs.
@@ -1315,8 +1321,13 @@ entries. Retired poses cannot contribute to subsequent initialization.
 후보 관측을 제외할 때 공분산의 해당 행·열을 선택해 상관관계를 보존합니다.
 주변화로 생긴 관측 사이의 빈 구간도 등록된 이력에 포함되며 변경할 수 없습니다.
 연장이 거부된 원본 트랙은 네이티브 트랙이 제거될 때까지 더 연장하지 않습니다.
-제거된 트랙은 보관 관측이 충분해지면 새
-네이티브 ID로 등록합니다. 수신 확인 후 다음 스냅샷을 준비하며, 네이티브 추정기
+제거된 트랙은 아직 반영하지 않은 관측이 3개 이상 모이면 새 네이티브 ID로
+등록합니다. 등록 직후 같은 응답에서 제거된 트랙도 원본 ID·시각별 관측은 한 번만
+반영합니다. 소유권 기록은 자세가 만료될 때 제거하며 73개 자세 × 300개 원본
+트랙으로 제한합니다. 올바른 수신 확인에서만 갱신하고 거부된 관측은 소모하지
+않습니다. 사용한 행과 새 행의 공분산이 0이 아니면 재등록을 거부합니다. 생략된
+이력과의 상관관계는 지원하지 않으므로 호출자는 이력 경계에서 독립 잡음을
+보장해야 합니다. 측정 후보 생성기는 대각 잡음을 사용합니다. 수신 확인 후 다음 스냅샷을 준비하며, 네이티브 추정기
 구간을 초기화할 때 관리 객체도 새로 만듭니다. 프런트엔드만 초기화하면 기존
 네이티브 소유권을 유지하고 새 원본 ID를 배정하며, `SonarCandidates`가 이를 담당합니다.
 
