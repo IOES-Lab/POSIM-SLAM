@@ -1,0 +1,693 @@
+{
+  "scope": "Render paired transform/ground diagnostics, preserving negative outcomes.",
+  "map_qualified": false,
+  "records": [
+    {
+      "name": "baseline",
+      "before": {
+        "scene": {
+          "normal_sonar": [
+            -0.34289780745545134,
+            0.0,
+            0.9393727128473789
+          ],
+          "height_m": 1.5,
+          "beams": 256,
+          "vertical_rays": 256,
+          "range_bins": 399,
+          "horizontal_fov_rad": 2.0943951023931953,
+          "vertical_fov_rad": 0.3490658503988659,
+          "bandwidth_hz": 29900.0,
+          "sound_speed_m_s": 1500.0,
+          "maximum_range_m": 10,
+          "reflectivity": 0.001,
+          "random_seed": 41,
+          "frame_index_start": 1000,
+          "downward_pitch_degrees": 20.05352282957881,
+          "intensity_zero_floor": "float32 minimum positive normal before log; no added receiver noise"
+        },
+        "processing_seconds": {
+          "median": 0.0744310205009242,
+          "maximum": 0.19367820800107438
+        },
+        "cases": [
+          {
+            "case": "physical_beam_pattern",
+            "frames": 24,
+            "valid_entries": 1248,
+            "possible_entries": 1248,
+            "median_error_m": -0.010631121412978395,
+            "absolute_error_p90_m": 0.03388616797059028,
+            "fitted_frames": 24,
+            "normal_error_degrees_p90": 0.48393138280501624,
+            "threshold_band_available": 1248,
+            "threshold_band_coverage": 0.2604166666666667,
+            "threshold_band_scope": "4/6/8 dB sensitivity only, not a confidence interval"
+          },
+          {
+            "case": "identity_beam_control",
+            "frames": 24,
+            "valid_entries": 1248,
+            "possible_entries": 1248,
+            "median_error_m": -0.007712195701732316,
+            "absolute_error_p90_m": 0.02699358910354377,
+            "fitted_frames": 24,
+            "normal_error_degrees_p90": 0.38529084078408105,
+            "threshold_band_available": 1247,
+            "threshold_band_coverage": 0.21972734562951082,
+            "threshold_band_scope": "4/6/8 dB sensitivity only, not a confidence interval"
+          }
+        ]
+      },
+      "after": {
+        "scene": {
+          "normal_sonar": [
+            -0.34289780745545134,
+            0.0,
+            0.9393727128473789
+          ],
+          "height_m": 1.5,
+          "beams": 256,
+          "vertical_rays": 256,
+          "range_bins": 399,
+          "horizontal_fov_rad": 2.0943951023931953,
+          "vertical_fov_rad": 0.3490658503988659,
+          "bandwidth_hz": 29900.0,
+          "sound_speed_m_s": 1500.0,
+          "maximum_range_m": 10,
+          "reflectivity": 0.001,
+          "random_seed": 41,
+          "frame_index_start": 1000,
+          "downward_pitch_degrees": 20.05352282957881,
+          "intensity_zero_floor": "float32 minimum positive normal before log; no added receiver noise"
+        },
+        "processing_seconds": {
+          "median": 0.07481279150306364,
+          "maximum": 0.3097525410048547
+        },
+        "cases": [
+          {
+            "case": "physical_beam_pattern",
+            "frames": 24,
+            "valid_entries": 1248,
+            "possible_entries": 1248,
+            "median_error_m": -0.008229143851292697,
+            "absolute_error_p90_m": 0.02952400639953856,
+            "fitted_frames": 24,
+            "normal_error_degrees_p90": 0.33931944681910486,
+            "threshold_band_available": 1248,
+            "threshold_band_coverage": 0.2764423076923077,
+            "threshold_band_scope": "4/6/8 dB sensitivity only, not a confidence interval"
+          },
+          {
+            "case": "identity_beam_control",
+            "frames": 24,
+            "valid_entries": 1248,
+            "possible_entries": 1248,
+            "median_error_m": -0.00669262518890168,
+            "absolute_error_p90_m": 0.020877522716012287,
+            "fitted_frames": 24,
+            "normal_error_degrees_p90": 0.4645717301430421,
+            "threshold_band_available": 1248,
+            "threshold_band_coverage": 0.2636217948717949,
+            "threshold_band_scope": "4/6/8 dB sensitivity only, not a confidence interval"
+          }
+        ]
+      }
+    },
+    {
+      "name": "held-seed",
+      "before": {
+        "scene": {
+          "normal_sonar": [
+            -0.34289780745545134,
+            0.0,
+            0.9393727128473789
+          ],
+          "height_m": 1.5,
+          "beams": 256,
+          "vertical_rays": 256,
+          "range_bins": 399,
+          "horizontal_fov_rad": 2.0943951023931953,
+          "vertical_fov_rad": 0.3490658503988659,
+          "bandwidth_hz": 29900.0,
+          "sound_speed_m_s": 1500.0,
+          "maximum_range_m": 10,
+          "reflectivity": 0.001,
+          "random_seed": 97,
+          "frame_index_start": 1000,
+          "downward_pitch_degrees": 20.05352282957881,
+          "intensity_zero_floor": "float32 minimum positive normal before log; no added receiver noise"
+        },
+        "processing_seconds": {
+          "median": 0.0731537704996299,
+          "maximum": 0.19369908299995586
+        },
+        "cases": [
+          {
+            "case": "physical_beam_pattern",
+            "frames": 24,
+            "valid_entries": 1248,
+            "possible_entries": 1248,
+            "median_error_m": -0.011746262423093956,
+            "absolute_error_p90_m": 0.03546716688322782,
+            "fitted_frames": 24,
+            "normal_error_degrees_p90": 0.5859726198003676,
+            "threshold_band_available": 1248,
+            "threshold_band_coverage": 0.2748397435897436,
+            "threshold_band_scope": "4/6/8 dB sensitivity only, not a confidence interval"
+          },
+          {
+            "case": "identity_beam_control",
+            "frames": 24,
+            "valid_entries": 1248,
+            "possible_entries": 1248,
+            "median_error_m": -0.007712195701732316,
+            "absolute_error_p90_m": 0.027183684296722355,
+            "fitted_frames": 24,
+            "normal_error_degrees_p90": 0.48955978913924086,
+            "threshold_band_available": 1248,
+            "threshold_band_coverage": 0.2644230769230769,
+            "threshold_band_scope": "4/6/8 dB sensitivity only, not a confidence interval"
+          }
+        ]
+      },
+      "after": {
+        "scene": {
+          "normal_sonar": [
+            -0.34289780745545134,
+            0.0,
+            0.9393727128473789
+          ],
+          "height_m": 1.5,
+          "beams": 256,
+          "vertical_rays": 256,
+          "range_bins": 399,
+          "horizontal_fov_rad": 2.0943951023931953,
+          "vertical_fov_rad": 0.3490658503988659,
+          "bandwidth_hz": 29900.0,
+          "sound_speed_m_s": 1500.0,
+          "maximum_range_m": 10,
+          "reflectivity": 0.001,
+          "random_seed": 97,
+          "frame_index_start": 1000,
+          "downward_pitch_degrees": 20.05352282957881,
+          "intensity_zero_floor": "float32 minimum positive normal before log; no added receiver noise"
+        },
+        "processing_seconds": {
+          "median": 0.07354962500176043,
+          "maximum": 0.19310433400096372
+        },
+        "cases": [
+          {
+            "case": "physical_beam_pattern",
+            "frames": 24,
+            "valid_entries": 1248,
+            "possible_entries": 1248,
+            "median_error_m": -0.008229143851292697,
+            "absolute_error_p90_m": 0.02977307264425898,
+            "fitted_frames": 24,
+            "normal_error_degrees_p90": 0.4647130317217058,
+            "threshold_band_available": 1248,
+            "threshold_band_coverage": 0.2780448717948718,
+            "threshold_band_scope": "4/6/8 dB sensitivity only, not a confidence interval"
+          },
+          {
+            "case": "identity_beam_control",
+            "frames": 24,
+            "valid_entries": 1248,
+            "possible_entries": 1248,
+            "median_error_m": -0.00669262518890168,
+            "absolute_error_p90_m": 0.020877522716012287,
+            "fitted_frames": 24,
+            "normal_error_degrees_p90": 0.6464781661498111,
+            "threshold_band_available": 1248,
+            "threshold_band_coverage": 0.2516025641025641,
+            "threshold_band_scope": "4/6/8 dB sensitivity only, not a confidence interval"
+          }
+        ]
+      }
+    },
+    {
+      "name": "high",
+      "before": {
+        "scene": {
+          "normal_sonar": [
+            -0.34289780745545134,
+            0.0,
+            0.9393727128473789
+          ],
+          "height_m": 2.5,
+          "beams": 256,
+          "vertical_rays": 256,
+          "range_bins": 399,
+          "horizontal_fov_rad": 2.0943951023931953,
+          "vertical_fov_rad": 0.3490658503988659,
+          "bandwidth_hz": 29900.0,
+          "sound_speed_m_s": 1500.0,
+          "maximum_range_m": 10,
+          "reflectivity": 0.001,
+          "random_seed": 41,
+          "frame_index_start": 1000,
+          "downward_pitch_degrees": 20.05352282957881,
+          "intensity_zero_floor": "float32 minimum positive normal before log; no added receiver noise"
+        },
+        "processing_seconds": {
+          "median": 0.07273993749913643,
+          "maximum": 0.19182966600055806
+        },
+        "cases": [
+          {
+            "case": "physical_beam_pattern",
+            "frames": 24,
+            "valid_entries": 1248,
+            "possible_entries": 1248,
+            "median_error_m": -0.0075891722836587405,
+            "absolute_error_p90_m": 0.04095731041509865,
+            "fitted_frames": 24,
+            "normal_error_degrees_p90": 0.4506556102359478,
+            "threshold_band_available": 1247,
+            "threshold_band_coverage": 0.3504410585404972,
+            "threshold_band_scope": "4/6/8 dB sensitivity only, not a confidence interval"
+          },
+          {
+            "case": "identity_beam_control",
+            "frames": 24,
+            "valid_entries": 1248,
+            "possible_entries": 1248,
+            "median_error_m": -0.006678819404154268,
+            "absolute_error_p90_m": 0.029029150535947946,
+            "fitted_frames": 24,
+            "normal_error_degrees_p90": 0.19759402116477023,
+            "threshold_band_available": 1248,
+            "threshold_band_coverage": 0.28846153846153844,
+            "threshold_band_scope": "4/6/8 dB sensitivity only, not a confidence interval"
+          }
+        ]
+      },
+      "after": {
+        "scene": {
+          "normal_sonar": [
+            -0.34289780745545134,
+            0.0,
+            0.9393727128473789
+          ],
+          "height_m": 2.5,
+          "beams": 256,
+          "vertical_rays": 256,
+          "range_bins": 399,
+          "horizontal_fov_rad": 2.0943951023931953,
+          "vertical_fov_rad": 0.3490658503988659,
+          "bandwidth_hz": 29900.0,
+          "sound_speed_m_s": 1500.0,
+          "maximum_range_m": 10,
+          "reflectivity": 0.001,
+          "random_seed": 41,
+          "frame_index_start": 1000,
+          "downward_pitch_degrees": 20.05352282957881,
+          "intensity_zero_floor": "float32 minimum positive normal before log; no added receiver noise"
+        },
+        "processing_seconds": {
+          "median": 0.07144814550338197,
+          "maximum": 0.20365149999997811
+        },
+        "cases": [
+          {
+            "case": "physical_beam_pattern",
+            "frames": 24,
+            "valid_entries": 1248,
+            "possible_entries": 1248,
+            "median_error_m": -0.007400657265673516,
+            "absolute_error_p90_m": 0.03233893523967879,
+            "fitted_frames": 24,
+            "normal_error_degrees_p90": 0.2019818583362758,
+            "threshold_band_available": 1248,
+            "threshold_band_coverage": 0.33253205128205127,
+            "threshold_band_scope": "4/6/8 dB sensitivity only, not a confidence interval"
+          },
+          {
+            "case": "identity_beam_control",
+            "frames": 24,
+            "valid_entries": 1248,
+            "possible_entries": 1248,
+            "median_error_m": -0.006678819404154268,
+            "absolute_error_p90_m": 0.024905157652712617,
+            "fitted_frames": 24,
+            "normal_error_degrees_p90": 0.3015203239483755,
+            "threshold_band_available": 1248,
+            "threshold_band_coverage": 0.3004807692307692,
+            "threshold_band_scope": "4/6/8 dB sensitivity only, not a confidence interval"
+          }
+        ]
+      }
+    },
+    {
+      "name": "low",
+      "before": {
+        "scene": {
+          "normal_sonar": [
+            -0.34289780745545134,
+            0.0,
+            0.9393727128473789
+          ],
+          "height_m": 0.75,
+          "beams": 256,
+          "vertical_rays": 256,
+          "range_bins": 399,
+          "horizontal_fov_rad": 2.0943951023931953,
+          "vertical_fov_rad": 0.3490658503988659,
+          "bandwidth_hz": 29900.0,
+          "sound_speed_m_s": 1500.0,
+          "maximum_range_m": 10,
+          "reflectivity": 0.001,
+          "random_seed": 41,
+          "frame_index_start": 1000,
+          "downward_pitch_degrees": 20.05352282957881,
+          "intensity_zero_floor": "float32 minimum positive normal before log; no added receiver noise"
+        },
+        "processing_seconds": {
+          "median": 0.07477674999972805,
+          "maximum": 0.19549362499674316
+        },
+        "cases": [
+          {
+            "case": "physical_beam_pattern",
+            "frames": 24,
+            "valid_entries": 1248,
+            "possible_entries": 1248,
+            "median_error_m": -0.01655343237776874,
+            "absolute_error_p90_m": 0.035764487959453584,
+            "fitted_frames": 24,
+            "normal_error_degrees_p90": 1.0328800716267013,
+            "threshold_band_available": 1248,
+            "threshold_band_coverage": 0.12580128205128205,
+            "threshold_band_scope": "4/6/8 dB sensitivity only, not a confidence interval"
+          },
+          {
+            "case": "identity_beam_control",
+            "frames": 24,
+            "valid_entries": 1248,
+            "possible_entries": 1248,
+            "median_error_m": -0.013925050257157512,
+            "absolute_error_p90_m": 0.028130208214564467,
+            "fitted_frames": 24,
+            "normal_error_degrees_p90": 1.517042834195745,
+            "threshold_band_available": 1248,
+            "threshold_band_coverage": 0.10817307692307693,
+            "threshold_band_scope": "4/6/8 dB sensitivity only, not a confidence interval"
+          }
+        ]
+      },
+      "after": {
+        "scene": {
+          "normal_sonar": [
+            -0.34289780745545134,
+            0.0,
+            0.9393727128473789
+          ],
+          "height_m": 0.75,
+          "beams": 256,
+          "vertical_rays": 256,
+          "range_bins": 399,
+          "horizontal_fov_rad": 2.0943951023931953,
+          "vertical_fov_rad": 0.3490658503988659,
+          "bandwidth_hz": 29900.0,
+          "sound_speed_m_s": 1500.0,
+          "maximum_range_m": 10,
+          "reflectivity": 0.001,
+          "random_seed": 41,
+          "frame_index_start": 1000,
+          "downward_pitch_degrees": 20.05352282957881,
+          "intensity_zero_floor": "float32 minimum positive normal before log; no added receiver noise"
+        },
+        "processing_seconds": {
+          "median": 0.07401291699716239,
+          "maximum": 0.19477433300198754
+        },
+        "cases": [
+          {
+            "case": "physical_beam_pattern",
+            "frames": 24,
+            "valid_entries": 1248,
+            "possible_entries": 1248,
+            "median_error_m": -0.015821601351949655,
+            "absolute_error_p90_m": 0.030153870764386692,
+            "fitted_frames": 24,
+            "normal_error_degrees_p90": 0.9838050957112158,
+            "threshold_band_available": 1248,
+            "threshold_band_coverage": 0.14182692307692307,
+            "threshold_band_scope": "4/6/8 dB sensitivity only, not a confidence interval"
+          },
+          {
+            "case": "identity_beam_control",
+            "frames": 24,
+            "valid_entries": 1248,
+            "possible_entries": 1248,
+            "median_error_m": -0.010301145997877903,
+            "absolute_error_p90_m": 0.02298056737807297,
+            "fitted_frames": 24,
+            "normal_error_degrees_p90": 0.8295871555373168,
+            "threshold_band_available": 1248,
+            "threshold_band_coverage": 0.13541666666666666,
+            "threshold_band_scope": "4/6/8 dB sensitivity only, not a confidence interval"
+          }
+        ]
+      }
+    },
+    {
+      "name": "shallow",
+      "before": {
+        "scene": {
+          "normal_sonar": [
+            -0.17364817766693033,
+            0.0,
+            0.984807753012208
+          ],
+          "height_m": 1.5,
+          "beams": 256,
+          "vertical_rays": 256,
+          "range_bins": 399,
+          "horizontal_fov_rad": 2.0943951023931953,
+          "vertical_fov_rad": 0.3490658503988659,
+          "bandwidth_hz": 29900.0,
+          "sound_speed_m_s": 1500.0,
+          "maximum_range_m": 10,
+          "reflectivity": 0.001,
+          "random_seed": 41,
+          "frame_index_start": 1000,
+          "downward_pitch_degrees": 10.0,
+          "intensity_zero_floor": "float32 minimum positive normal before log; no added receiver noise"
+        },
+        "processing_seconds": {
+          "median": 0.07187416699889582,
+          "maximum": 0.19276316699688323
+        },
+        "cases": [
+          {
+            "case": "physical_beam_pattern",
+            "frames": 24,
+            "valid_entries": 1248,
+            "possible_entries": 1248,
+            "median_error_m": -0.007651595875325157,
+            "absolute_error_p90_m": 0.03373258808389057,
+            "fitted_frames": 24,
+            "normal_error_degrees_p90": 0.23320891824160078,
+            "threshold_band_available": 1247,
+            "threshold_band_coverage": 0.326383319967923,
+            "threshold_band_scope": "4/6/8 dB sensitivity only, not a confidence interval"
+          },
+          {
+            "case": "identity_beam_control",
+            "frames": 24,
+            "valid_entries": 1248,
+            "possible_entries": 1248,
+            "median_error_m": -0.004893523332945904,
+            "absolute_error_p90_m": 0.029274926981572413,
+            "fitted_frames": 24,
+            "normal_error_degrees_p90": 0.1323842677788927,
+            "threshold_band_available": 1248,
+            "threshold_band_coverage": 0.25721153846153844,
+            "threshold_band_scope": "4/6/8 dB sensitivity only, not a confidence interval"
+          }
+        ]
+      },
+      "after": {
+        "scene": {
+          "normal_sonar": [
+            -0.17364817766693033,
+            0.0,
+            0.984807753012208
+          ],
+          "height_m": 1.5,
+          "beams": 256,
+          "vertical_rays": 256,
+          "range_bins": 399,
+          "horizontal_fov_rad": 2.0943951023931953,
+          "vertical_fov_rad": 0.3490658503988659,
+          "bandwidth_hz": 29900.0,
+          "sound_speed_m_s": 1500.0,
+          "maximum_range_m": 10,
+          "reflectivity": 0.001,
+          "random_seed": 41,
+          "frame_index_start": 1000,
+          "downward_pitch_degrees": 10.0,
+          "intensity_zero_floor": "float32 minimum positive normal before log; no added receiver noise"
+        },
+        "processing_seconds": {
+          "median": 0.07258306249786983,
+          "maximum": 0.19289445799950045
+        },
+        "cases": [
+          {
+            "case": "physical_beam_pattern",
+            "frames": 24,
+            "valid_entries": 1248,
+            "possible_entries": 1248,
+            "median_error_m": -0.007691193933146323,
+            "absolute_error_p90_m": 0.029274926981572413,
+            "fitted_frames": 24,
+            "normal_error_degrees_p90": 0.171698507087292,
+            "threshold_band_available": 1248,
+            "threshold_band_coverage": 0.30849358974358976,
+            "threshold_band_scope": "4/6/8 dB sensitivity only, not a confidence interval"
+          },
+          {
+            "case": "identity_beam_control",
+            "frames": 24,
+            "valid_entries": 1248,
+            "possible_entries": 1248,
+            "median_error_m": -0.007013332164464536,
+            "absolute_error_p90_m": 0.025028944407086584,
+            "fitted_frames": 24,
+            "normal_error_degrees_p90": 0.11182216236673664,
+            "threshold_band_available": 1248,
+            "threshold_band_coverage": 0.2860576923076923,
+            "threshold_band_scope": "4/6/8 dB sensitivity only, not a confidence interval"
+          }
+        ]
+      }
+    },
+    {
+      "name": "steep",
+      "before": {
+        "scene": {
+          "normal_sonar": [
+            -0.573576436351046,
+            0.0,
+            0.8191520442889918
+          ],
+          "height_m": 1.5,
+          "beams": 256,
+          "vertical_rays": 256,
+          "range_bins": 399,
+          "horizontal_fov_rad": 2.0943951023931953,
+          "vertical_fov_rad": 0.3490658503988659,
+          "bandwidth_hz": 29900.0,
+          "sound_speed_m_s": 1500.0,
+          "maximum_range_m": 10,
+          "reflectivity": 0.001,
+          "random_seed": 41,
+          "frame_index_start": 1000,
+          "downward_pitch_degrees": 35.0,
+          "intensity_zero_floor": "float32 minimum positive normal before log; no added receiver noise"
+        },
+        "processing_seconds": {
+          "median": 0.07524343749537366,
+          "maximum": 0.1945274999961839
+        },
+        "cases": [
+          {
+            "case": "physical_beam_pattern",
+            "frames": 24,
+            "valid_entries": 1248,
+            "possible_entries": 1248,
+            "median_error_m": -0.016891115687575287,
+            "absolute_error_p90_m": 0.038298998574840315,
+            "fitted_frames": 24,
+            "normal_error_degrees_p90": 1.3159896837128324,
+            "threshold_band_available": 1248,
+            "threshold_band_coverage": 0.22516025641025642,
+            "threshold_band_scope": "4/6/8 dB sensitivity only, not a confidence interval"
+          },
+          {
+            "case": "identity_beam_control",
+            "frames": 24,
+            "valid_entries": 1248,
+            "possible_entries": 1248,
+            "median_error_m": -0.00982109644884499,
+            "absolute_error_p90_m": 0.023257593172433033,
+            "fitted_frames": 24,
+            "normal_error_degrees_p90": 1.6497969153740677,
+            "threshold_band_available": 1248,
+            "threshold_band_coverage": 0.19230769230769232,
+            "threshold_band_scope": "4/6/8 dB sensitivity only, not a confidence interval"
+          }
+        ]
+      },
+      "after": {
+        "scene": {
+          "normal_sonar": [
+            -0.573576436351046,
+            0.0,
+            0.8191520442889918
+          ],
+          "height_m": 1.5,
+          "beams": 256,
+          "vertical_rays": 256,
+          "range_bins": 399,
+          "horizontal_fov_rad": 2.0943951023931953,
+          "vertical_fov_rad": 0.3490658503988659,
+          "bandwidth_hz": 29900.0,
+          "sound_speed_m_s": 1500.0,
+          "maximum_range_m": 10,
+          "reflectivity": 0.001,
+          "random_seed": 41,
+          "frame_index_start": 1000,
+          "downward_pitch_degrees": 35.0,
+          "intensity_zero_floor": "float32 minimum positive normal before log; no added receiver noise"
+        },
+        "processing_seconds": {
+          "median": 0.07507097899724613,
+          "maximum": 0.19246254099562066
+        },
+        "cases": [
+          {
+            "case": "physical_beam_pattern",
+            "frames": 24,
+            "valid_entries": 1248,
+            "possible_entries": 1248,
+            "median_error_m": -0.00982109644884499,
+            "absolute_error_p90_m": 0.033517918081203746,
+            "fitted_frames": 24,
+            "normal_error_degrees_p90": 1.3323626728020501,
+            "threshold_band_available": 1248,
+            "threshold_band_coverage": 0.23798076923076922,
+            "threshold_band_scope": "4/6/8 dB sensitivity only, not a confidence interval"
+          },
+          {
+            "case": "identity_beam_control",
+            "frames": 24,
+            "valid_entries": 1248,
+            "possible_entries": 1248,
+            "median_error_m": -0.006939611757143194,
+            "absolute_error_p90_m": 0.021904790789360806,
+            "fitted_frames": 24,
+            "normal_error_degrees_p90": 0.9161742345213867,
+            "threshold_band_available": 1248,
+            "threshold_band_coverage": 0.22435897435897437,
+            "threshold_band_scope": "4/6/8 dB sensitivity only, not a confidence interval"
+          }
+        ]
+      }
+    }
+  ],
+  "transform_max_relative_error": {
+    "before": 0.9994081572750636,
+    "after": 2.8362739746417517e-05
+  },
+  "scatterer_max_relative_deviation": {
+    "before": 0.9791148778760504,
+    "after": 1.4873474872161341e-06
+  },
+  "renderer_sha256": "e20549a7889a1d97c3b45c96b20256e3dd55e7e9fc8e20900c0e082e8d39ada1"
+}
