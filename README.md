@@ -8,6 +8,7 @@ Experimental camera-free local Ping planes and their matched RGB/point-cloud con
 [Camera-free echo boundaries and vertical survey comparisons](docs/diagnostics/sonar-causal-depth.md) document the optional raw-sonar frontend and its map limitations.
 [Camera-free streaming diagnostics](docs/diagnostics/sonar-streaming.md) cover the independent session owner, ROS replay recovery and terrain/visibility qualification boundaries.
 [Ground-entry surface mapping](docs/diagnostics/sonar-ground-entry.md) fits conditional seabed observations from raw sonar with an optional single-Ping check; fixed-pose experiments include a retained failure and do not qualify terrain-aided SLAM.
+The same guide documents the correlated native range/plane factor and its solver checks; live surface fusion is not enabled.
 
 Independent sensor estimation components used by POSIM applications. Python
 algorithms accept measured sensor arrays and calibrated transforms. WWW-POSIM

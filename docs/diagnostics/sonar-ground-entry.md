@@ -64,6 +64,59 @@ introduced; the Python component remains Apache-2.0.
 굴곡진 해저나 중간 물체는 공통 평면 가정을 깨뜨릴 수 있습니다. 네이티브
 최적화에 새 제약을 추가하지 않으며, 새 의존성 없이 Apache-2.0을 유지합니다.
 
+## Joint range/plane factor / 거리·평면 공동 제약
+
+`sonar_ground_joint.linearize_ground_patch` and native
+`makeOwnedGroundGroup` supply raw range rows for poses and one unknown plane.
+They reuse the existing rank-aware plane elimination, nonlinear trial and
+marginal-prior machinery. The fitted normal and height initialize the plane;
+they are not extra measurements. A supplied full covariance retains correlations
+between beams and between frames. Each `(timestamp, beam ID)` remains distinct;
+changed aperture branches reject the geometry rather than dropping residuals.
+The native implementation uses Basalt's fixed-reference, left-rotation convention;
+the NumPy reference uses right rotations and is cross-checked after conversion.
+
+`sonar_ground_joint.linearize_ground_patch`와 네이티브 `makeOwnedGroundGroup`은
+원래의 거리 관측으로 자세들과 하나의 미지 평면을 함께 제약합니다. 기존의
+랭크 기반 평면 제거·비선형 시도·주변화 계산을 재사용합니다. 적합한 법선과
+높이는 초기값이며 추가 측정값이 아닙니다. 전체 공분산으로 빔 사이와 프레임
+사이의 상관관계를 유지합니다. 원래 시각과 빔 ID를 보존하고, 개구 경계가
+달라지는 기하는 잔차를 버리는 대신 거부합니다. Basalt의 고정 기준점·좌측
+회전과 NumPy의 우측 회전을 변환한 뒤 두 구현을 대조합니다.
+
+Finite differences, correlated dense elimination and native marginalization
+agree. A single view of a free plane adds no pose information. Three views of
+one plane constrain only six of their 18 pose coordinates; plane-tangential
+translation and rotation about the plane normal remain unobservable. A bounded
+synthetic native optimization with an explicit pose prior reduces maximum
+relative-height error from 9.09 cm to 4.50 cm. Its finite range noise and pose
+prior leave a height/pitch tradeoff; this is not a millimetre-accuracy result.
+No IMU observations are included in that isolated solver test.
+
+유한 차분·상관관계를 포함한 전체 행렬 계산·네이티브 주변화가 일치합니다.
+미지 평면의 단일 관측은 자세 정보를 추가하지 않습니다. 세 시점에서 같은
+평면을 보아도 자세 자유도 18개 중 6개만 구속하며, 평면 방향 이동과 법선
+주위 회전은 관측할 수 없습니다. 명시적 자세 사전분포를 둔 작은 합성 시험에서
+최대 상대 고도 오차는 9.09 cm에서 4.50 cm로 감소합니다. 유한한 거리 잡음과
+자세 사전분포 때문에 고도·피치 간 모호성이 남으며 mm 정확도 결과가 아닙니다.
+이 독립 최적화 시험에는 IMU 관측을 넣지 않습니다.
+
+The first eligible three-frame windows from A/B/C/D contain 138/150/136/140 raw
+range rows. Native and NumPy reduced information matrices differ by at most
+`3.5e-9`; all have pose rank six. These checks use explicit **uncalibrated**
+individual/frame-common/time-common noise assumptions of 3/2/1 cm. Same-surface
+association is also an assumption. They do not optimize those recorded poses
+or improve the map scores below. Live transport, online patch association,
+calibrated acoustic uncertainty and joint raw-IMU/DVL/pressure replay remain
+required before enabling this factor in an application mode.
+
+A·B·C·D의 첫 적격 3프레임 구간은 각각 원래 거리 관측 138·150·136·140개입니다.
+네이티브와 NumPy의 축소 정보행렬 차이는 최대 `3.5e-9`이고 자세 랭크는 모두
+6입니다. 개별·프레임 공통·시간 공통 잡음을 각각 3·2·1 cm로 둔 **미보정 가정**과
+동일 표면 가정을 사용합니다. 이 검사는 기록 자세를 최적화하거나 아래 지도
+오차를 개선하지 않습니다. 앱 모드에 연결하려면 실시간 전송·온라인 표면 연결·
+음향 불확실성 보정·원본 IMU/DVL/수압과의 공동 재생 검증이 필요합니다.
+
 ## Recorded results / 기록 결과
 
 [Metrics](sonar-ground-entry.json). C was used for development; A, B and D were

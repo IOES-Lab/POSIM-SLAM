@@ -131,5 +131,8 @@ target_include_directories(basalt_sonar_packet_probe PRIVATE ${SOURCE_ROOT}/json
 add_executable(basalt_terrain_ping_probe terrain_ping_probe.cc)
 target_link_libraries(basalt_terrain_ping_probe PRIVATE basalt_core)
 
+add_executable(basalt_sonar_ground_probe sonar_ground_probe.cc)
+target_link_libraries(basalt_sonar_ground_probe PRIVATE basalt_core)
+
 add_executable(basalt_ping_joint_probe ping_joint_probe.cc)
 target_link_libraries(basalt_ping_joint_probe PRIVATE Eigen3::Eigen)
