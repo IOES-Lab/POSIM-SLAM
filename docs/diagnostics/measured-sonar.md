@@ -116,3 +116,68 @@ terrain/textures retain MIT attribution; see the repository's third-party notice
 비교 영상은 같은 카메라 위치와 등각 방향을 사용합니다. 실제 RGB에는 거리 감쇠,
 부유 입자, 해저 집광무늬가 적용되어 있습니다. Orca5 지형과 텍스처의 MIT 고지는
 저장소의 제3자 라이선스 문서에 유지합니다.
+
+## Elevation admission and input-pixel provenance
+
+New acoustic points must have a local conditional elevation standard deviation
+whose 3-sigma half-width is smaller than half the vertical FOV. The native solver
+uses the undamped point Jacobian whitened with the complete supplied covariance.
+Numerical rank and multistart uniqueness alone do not establish this precision.
+The calculation fixes estimated poses; it does not include their uncertainty or
+prove physical correspondence. Rejected new candidates can be reconsidered when
+more retained observations arrive. This check follows the distinction between
+well-constrained and under-constrained landmarks discussed by
+[Westman et al., ICRA 2018, section V-A](https://www.cs.cmu.edu/~kaess/pub/Westman18icra.pdf);
+the 3-sigma/FOV admission criterion here is POSIM's own necessary check, not a
+reproduction of that paper's eigenvalue-ratio criterion or nonparametric solver.
+
+The same 63.2-second recording yields 10 acoustic hypotheses with default chained
+tracks (position RMSE 0.024207 m, maximum 0.102329 m), and four with birth-reference
+consistency (RMSE 0.023528 m, maximum 0.102329 m). Both position results meet the
+recording's 0.10 m / 0.25 m gates. Neither cloud recovers the box surfaces.
+Independent one-bin noise remains a diagnostic assumption. The hypothesis count
+is not an obstacle count, and the method remains experimental.
+
+![Default tracks: acoustic hypotheses and actual RGB](sonar-elevation-default.png)
+
+![Reference-consistent tracks: acoustic hypotheses and actual RGB](sonar-elevation-reference.png)
+
+![Recorded sonar pixels and their corresponding exported hypotheses](sonar-point-provenance.png)
+
+The input is a simulated Sonoptix ECHO short-range configuration: 700 kHz,
+256 horizontal beams, 120° horizontal / 20° vertical FOV, 256 vertical rays,
+10 m range cap and 2 Hz frames. Vertical rays contribute to intensity; the
+399-by-256 intensity matrix contains range/azimuth, not a measured elevation.
+The frontend clips 20–90 dB to 8 bits, applies a 5-by-5 Gaussian filter, detects
+Shi–Tomasi corners and tracks them with pyramidal Lucas–Kanade flow. The figure
+labels exact native-owned observations and the resulting four exported points.
+A uses 19.0–20.5 s; B–D use 20.0–21.5 s, four observations each. Colours here
+identify tracks. The comparison plots retain Turbo height colours. The RGB
+includes attenuation, particles and seabed caustics; initial yaw/translation
+alignment keeps scale at one. [Pixel-to-point records](point-provenance.json).
+
+새 소나 점은 조건부 고도 표준편차의 3배가 수직 시야각의 절반보다 작아야
+등록됩니다. 전체 공분산으로 백색화한 점 자코비안을 사용하며 LM 감쇠는
+포함하지 않습니다. 수치적 랭크와 여러 시작값의 수렴만으로는 고도 정밀도를
+보장할 수 없습니다. 추정 자세를 고정한 계산이므로 자세 불확실성과 물리적
+대응 관계는 별도 검증이 필요합니다. 보류한 새 후보는 관측이 늘면 다시
+평가할 수 있습니다. 위 논문의 충분히 구속된 랜드마크 구분을 참고했으며,
+3시그마/시야각 기준은 POSIM의 필수 조건입니다. 논문의 고유값 비율 기준이나
+비모수 추정기를 구현한 것으로 해석하면 안 됩니다.
+
+같은 63.2초 기록에서 기본 추적은 소나 점 가설 10개, 위치 RMSE 0.024207 m,
+최대 오차 0.102329 m입니다. 첫 프레임과 일관성을 대조한 추적은 4개,
+RMSE 0.023528 m, 최대 오차 0.102329 m입니다. 두 위치 결과는 이 기록의
+0.10 m / 0.25 m 기준을 만족하지만 상자 표면은 복원하지 못합니다.
+한 빈의 독립 잡음은 진단용 가정입니다. 점 가설 수는 장애물 수가 아닙니다.
+
+입력은 Sonoptix ECHO 단거리 설정을 모사합니다. 700 kHz, 수평 256빔,
+수평 120°·수직 20° 시야각, 수직 광선 256개, 최대 거리 10 m, 초당 2장을
+사용합니다. 수직 광선은 강도에 기여하며, 399×256 강도 행렬은 거리와
+방위각을 담고 고도를 측정하지 않습니다. 프런트엔드는 20–90 dB를 8비트로
+변환하고 5×5 가우시안 필터, Shi–Tomasi 특징점, 피라미드 Lucas–Kanade
+추적을 사용합니다. 그림의 A–D는 추정기가 실제 소유한 입력 관측과 내보낸
+4점을 연결합니다. A는 19.0–20.5초, B–D는 20.0–21.5초의 관측 4개를
+사용합니다. 대응 그림의 색은 추적 ID이며 비교 그림의 높이 색은 Turbo입니다.
+RGB에는 수중 감쇠·입자·해저 집광무늬가 적용됩니다. 초기 방위각·위치만
+정렬하며 축척은 1입니다.

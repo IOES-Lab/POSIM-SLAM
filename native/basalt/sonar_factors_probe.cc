@@ -11,6 +11,21 @@ void reject(const std::function<void()>& operation) {
 int main() {
   using namespace posim_slam;
   {
+    // At (4,0,0), elevation's only local derivative is dz/4. Compare against
+    // the known diagonal covariance, including weak-but-nonzero information.
+    Eigen::Matrix3d j=Eigen::Vector3d(100.,50.,2.).asDiagonal();
+    const Eigen::Vector3d p(4.,0.,0.);
+    assert(std::abs(sonarConditionalElevationSigma(j,p,Eigen::Matrix3d::Identity())-.125)<1e-12);
+    assert(std::abs(sonarConditionalElevationSigma(j/2.,p,Eigen::Matrix3d::Identity())-.25)<1e-12);
+    const Eigen::Matrix3d r=Eigen::AngleAxisd(.7,Eigen::Vector3d(1,2,3).normalized()).toRotationMatrix();
+    assert(std::abs(sonarConditionalElevationSigma(j*r.transpose(),p,r.transpose())-.125)<1e-12);
+    j(2,2)=1e-5;
+    assert(sonarConditionalElevationSigma(j,p,Eigen::Matrix3d::Identity())>10000.);
+    j(2,2)=0.;
+    assert(std::isinf(sonarConditionalElevationSigma(j,p,Eigen::Matrix3d::Identity())));
+    reject([&]{sonarConditionalElevationSigma(j,Eigen::Vector3d::Zero(),r);});
+  }
+  {
     const Eigen::VectorXd small=Eigen::VectorXd::Constant(6,.1);
     assert(std::abs(sonarTrackLoss(small).cost-.5*small.squaredNorm())<1e-12);
     assert(sonarTrackLoss(small).sqrt_weight==1.);
@@ -33,7 +48,7 @@ int main() {
   std::vector<SonarObservation> observations;
   for(int i=0;i<4;++i) {
     const int64_t stamp=1000*(i+1);
-    const Eigen::Vector3d position(0,.2*i,.05*i*i);
+    const Eigen::Vector3d position(0,.2*i,.08*i*i);
     poses.emplace(stamp,SonarPose{position,Eigen::Matrix3d::Identity()});
     const Eigen::Vector3d local=truth-position;
     observations.push_back({stamp,local.norm(),std::atan2(local.y(),local.x())});
@@ -127,6 +142,23 @@ int main() {
   batch.applySnapshot(3000,updates,c,poses);
   const auto batch_revision=batch.revision();const auto batch_point=batch.point(10);
   assert((batch_point-truth).norm()<1e-5);
+  {
+    // Exact data, unique multi-view solution and full rank do not imply useful
+    // elevation precision. With the same declared noise, a longer baseline
+    // resolves it. The deferred source can be retried with another native ID.
+    SonarPoses weak_poses;std::vector<SonarObservation> weak_observations;
+    for(int i=0;i<4;++i) {
+      const Eigen::Vector3d position(0,.2*i,.05*i*i),local=truth-position;
+      weak_poses.emplace(1000*(i+1),SonarPose{position,Eigen::Matrix3d::Identity()});
+      weak_observations.push_back({1000*(i+1),local.norm(),std::atan2(local.y(),local.x())});
+    }
+    SonarFactorStore deferred;std::map<int64_t,std::string> reasons;
+    assert(deferred.applySnapshot(3000,{{10,{weak_observations[0],weak_observations[1],weak_observations[2]},covariance}},
+      c,weak_poses,&reasons)==std::vector<int64_t>{10});
+    assert(reasons.at(10)=="sonar_initialization_elevation_underconstrained" && deferred.size()==0);
+    assert(deferred.applySnapshot(4000,{{11,weak_observations,extended}},c,weak_poses,&reasons).empty());
+    assert(reasons.empty() && (deferred.point(11)-truth).norm()<1e-5);
+  }
   // A different map origin/orientation must not alter admission or the fit.
   {
     const Eigen::Matrix3d rotation=Eigen::AngleAxisd(.7,Eigen::Vector3d(1,2,3).normalized()).toRotationMatrix();

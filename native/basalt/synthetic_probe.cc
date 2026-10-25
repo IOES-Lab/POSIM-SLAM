@@ -52,10 +52,10 @@ int main(int argc,char**argv){
    acoustic_measurements.emplace(stamp,posim_slam::SonarObservation{stamp,
      local.norm()+.02*acoustic_noise(acoustic_rng),std::atan2(local.y(),local.x())+.005*acoustic_noise(acoustic_rng)});
  }
- int registered_tracks=0,retired_tracks=0,accepted_acoustic_steps=0,expired_seeds=0;
+ int registered_tracks=0,retired_tracks=0,accepted_acoustic_steps=0,expired_seeds=0,deferred_tracks=0;
  int empty_visual_states=0;size_t max_dropout_states=0;
  std::vector<posim_slam::SonarObservation> acoustic_track;
- int64_t active_track=-1;
+ int64_t active_track=-1,next_track=0;
  auto owner=std::dynamic_pointer_cast<basalt::SqrtKeypointVioEstimator<double>>(vio);
  if(acoustic) {
    if(!owner)throw std::runtime_error("synthetic_joint_owner_unavailable");
@@ -83,13 +83,19 @@ int main(int argc,char**argv){
        ++expired_seeds;
        acoustic_track.erase(std::remove_if(acoustic_track.begin(),acoustic_track.end(),
          [&](const auto& observation){return !poses.count(observation.stamp);}),acoustic_track.end());
-       return;
+       if(acoustic_track.size()<3)return;
      }
      Eigen::MatrixXd covariance=Eigen::MatrixXd::Zero(2*acoustic_track.size(),2*acoustic_track.size());
      for(size_t i=0;i<acoustic_track.size();++i) {covariance(2*i,2*i)=.02*.02;covariance(2*i+1,2*i+1)=.005*.005;}
-     if(active_track<0)active_track=registered_tracks++;
-     store.applySnapshot(stamp,{{active_track,acoustic_track,covariance}},
+     const auto candidate=active_track<0?next_track++:active_track;
+     const auto rejected=store.applySnapshot(stamp,{{candidate,acoustic_track,covariance}},
        {V::Zero(),Eigen::Matrix3d::Identity(),.2,10.,2.1,1.0},poses);
+     if(active_track<0) {
+       // A rejected candidate owns no factors. Retain its observations for the
+       // next admission attempt; do not count it as registered then retired.
+       if(rejected.empty()){active_track=candidate;++registered_tracks;}
+       else ++deferred_tracks;
+     }else if(!rejected.empty())acoustic_track.pop_back();
    };
    owner->posim_after_marginalization=[&](auto& estimator,int64_t stamp) {
      auto& base=static_cast<basalt::BundleAdjustmentBase<double>&>(estimator);
@@ -128,7 +134,7 @@ int main(int argc,char**argv){
      if(asynchronous && frame<camera_frames && frame%sonar_stride==0)expected.push_back(stamp+10000000);
    }
    const bool passed=output_stamps==expected && registered_tracks>=(visual_dropout?1:2) && retired_tracks>=1 && accepted_acoustic_steps>0 && owner->posim_joint_started && (!visual_dropout || (empty_visual_states>=50 && max_dropout_states<=size_t(cfg.vio_max_states)));
-   std::cout<<"sonar_lifecycle camera_hz="<<camera_hz<<" sonar_hz="<<camera_hz/sonar_stride<<" max_recent_states="<<cfg.vio_max_states<<" states="<<output_stamps.size()<<" passed="<<passed<<" expired_seeds="<<expired_seeds<<" registered="<<registered_tracks<<" retired="<<retired_tracks<<" accepted_steps="<<accepted_acoustic_steps<<" empty_visual_states="<<empty_visual_states<<" max_dropout_states="<<max_dropout_states<<"\n";
+   std::cout<<"sonar_lifecycle camera_hz="<<camera_hz<<" sonar_hz="<<camera_hz/sonar_stride<<" max_recent_states="<<cfg.vio_max_states<<" states="<<output_stamps.size()<<" passed="<<passed<<" expired_seeds="<<expired_seeds<<" deferred="<<deferred_tracks<<" registered="<<registered_tracks<<" retired="<<retired_tracks<<" accepted_steps="<<accepted_acoustic_steps<<" empty_visual_states="<<empty_visual_states<<" max_dropout_states="<<max_dropout_states<<"\n";
    return passed?0:1;
  }
  return 0;

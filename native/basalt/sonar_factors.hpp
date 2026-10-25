@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 #pragma once
 #include "sonar_track.hpp"
+#include "sonar_observability.hpp"
 #include <map>
 #include <cstdint>
 #include <set>
@@ -83,17 +84,21 @@ class SonarFactorStore {
   }
   // Validate a complete input batch on a private copy. Existing history and
   // calibration cannot change. New points are fitted across retained views;
-  // require local point rank and no competing solution found by the seed search.
+  // require local point rank, resolved conditional elevation, and no competing
+  // solution found by the seed search. Rejected new tracks can be retried when
+  // more views arrive; rejection does not manufacture an elevation constraint.
   // Unsupported point geometry rejects only that update; malformed input
   // still rolls back the entire batch. Return the rejected native track IDs.
   std::vector<int64_t> applySnapshot(int64_t stamp,const std::vector<SonarTrackInput>& updates,
-      const SonarCalibration& calibration,const SonarPoses& poses) {
+      const SonarCalibration& calibration,const SonarPoses& poses,
+      std::map<int64_t,std::string>* rejection_reasons=nullptr) {
     requireIdle();
     if(stamp<=last_snapshot_ || updates.empty() || updates.size()>16)
       throw std::invalid_argument("invalid_sonar_snapshot_order");
     SonarFactorStore staged;
     staged.tracks_=tracks_;staged.points_=points_;staged.last_id_=last_id_;staged.revision_=revision_;
     std::vector<int64_t> rejected;
+    std::map<int64_t,std::string> reasons;
     int64_t previous=-1;
     for(const auto& update:updates) {
       if(update.id<=previous || update.observations.empty() || update.observations.back().stamp!=stamp)
@@ -112,18 +117,19 @@ class SonarFactorStore {
             throw std::invalid_argument("changed_sonar_snapshot_history");
         }
         try {staged.append(update.id,update.observations.back(),update.covariance,poses);}
-        catch(const SonarPointOutsideSupport&) {rejected.push_back(update.id);}
+        catch(const SonarPointOutsideSupport& error) {rejected.push_back(update.id);reasons.emplace(update.id,error.what());}
       }else {
         if(update.observations.size()<3)throw std::invalid_argument("sonar_seed_requires_track_history");
         try {
           const auto seed=initializePoint(update,calibration,poses);
           staged.add(update.id,seed,calibration,update.observations,update.covariance,poses);
         }
-        catch(const SonarPointOutsideSupport&) {rejected.push_back(update.id);}
+        catch(const SonarPointOutsideSupport& error) {rejected.push_back(update.id);reasons.emplace(update.id,error.what());}
       }
     }
     tracks_.swap(staged.tracks_);points_.swap(staged.points_);
     last_id_=staged.last_id_;revision_=staged.revision_;last_snapshot_=stamp;
+    if(rejection_reasons)rejection_reasons->swap(reasons);
     return rejected;
   }
 
@@ -272,6 +278,17 @@ class SonarFactorStore {
       if(candidate.cost<=best->cost+1. &&
           (candidate.point-best->point).norm()>1e-4*std::max(1.,first.range))
         throw SonarPointOutsideSupport("sonar_initialization_ambiguous_elevation");
+    const auto rows=build(track,best->point,poses);
+    const Eigen::Matrix3d world_to_sonar=calibration.sonar_to_imu.transpose()*pose.attitude.transpose();
+    const Eigen::Vector3d local=world_to_sonar*(best->point-pose.position)-
+      calibration.sonar_to_imu.transpose()*calibration.lever;
+    const double sigma=sonarConditionalElevationSigma(rows.point_jacobian,local,world_to_sonar);
+    // A full-rank fit can still be almost unconstrained along its elevation arc.
+    // Require the local 3-sigma half-width to be narrower than half the vertical
+    // fan. This is necessary, not sufficient: poses and associations are assumed
+    // correct here, and the seed search remains responsible for discrete modes.
+    if(!std::isfinite(sigma) || 3.*sigma>=calibration.vertical_fov/2.)
+      throw SonarPointOutsideSupport("sonar_initialization_elevation_underconstrained");
     return best->point;
   }
   void requireIdle() const {

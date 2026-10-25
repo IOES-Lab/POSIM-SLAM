@@ -952,14 +952,22 @@ outside sensor support are rejected individually; an existing track keeps its
 previous factors. New points are fitted against all retained observations with
 fixed estimated poses and the supplied full covariance. Nine elevation seeds
 span the vertical fan, including both signs. Admission requires sensor support,
-full point-Jacobian rank, a bounded whitened residual and no competing elevation
-solution within one squared-residual unit. Ambiguous or inconsistent tracks wait
+full point-Jacobian rank, a bounded whitened residual, sufficient conditional
+elevation information and no competing elevation solution within one
+squared-residual unit. Ambiguous or inconsistent tracks wait
 for a later candidate with informative observations; no elevation is invented.
 
 The diagnostic initialization gate is squared whitened residual ≤ 9 × max(1,
 measurement count − 3), relative singular-value threshold 1e−10, and competing
-point separation > 1e−4 × max(1 m, first range). These numerical checks ignore
-pose uncertainty, and finite seed sampling cannot prove global uniqueness. They
+point separation > 1e−4 × max(1 m, first range). The local elevation standard
+deviation is computed from the undamped, full-covariance-whitened point Jacobian
+at the fitted point, in the first observation's sonar frame. Three standard
+deviations must be smaller than half the vertical FOV (10° for a 20° fan).
+This necessary test prevents a numerically full-rank but poorly resolved fit
+from initializing a 3D landmark. `geometry_rejections` reports the track ID and
+reason; new candidates can be retried with additional retained observations.
+The calculation conditions on fixed estimated poses, and finite seed sampling
+cannot prove global uniqueness. These checks
 do not establish calibrated point confidence or physical correspondence, and do
 not qualify acoustic map export.
 
@@ -971,13 +979,18 @@ not qualify acoustic map export.
 관측 요인은 유지합니다.
 새 점은 추정 자세를 고정하고 전체 공분산과 유지된 모든 관측으로 맞춥니다.
 수직 팬 양쪽을 포함한 고도각 시작값 9개를 탐색합니다. 센서 지원 범위,
-점 자코비안의 완전 계수, 백색화 잔차와 경쟁 고도 해의 부재를 확인한 뒤
+점 자코비안의 완전 계수, 백색화 잔차, 조건부 고도 정보와 경쟁 고도 해의 부재를 확인한 뒤
 등록합니다. 모호하거나 불일치하는 트랙은 정보가 충분한 후속 후보를 기다립니다.
 
 진단용 초기화 기준은 백색화 잔차 제곱합 ≤ 9 × max(1, 측정 수 − 3),
 상대 특잇값 문턱 1e−10입니다. 최저 비용과 1 이내이면서 점 간 거리가
-1e−4 × max(1 m, 최초 거리)를 넘는 경쟁 해가 있으면 거부합니다. 자세의
-불확실성은 이 계산에 포함되지 않으며 유한한 시작값 탐색으로 전역 유일성을
+1e−4 × max(1 m, 최초 거리)를 넘는 경쟁 해가 있으면 거부합니다. 맞춘 점에서
+전체 공분산으로 백색화한 점 자코비안으로 첫 관측 소나 좌표계의 고도 표준편차를
+계산합니다. LM 감쇠는 포함하지 않습니다. 표준편차의 3배가 수직 시야각의 절반보다
+작아야 합니다(수직 팬 20°이면 10°). 수치적으로 풀리지만 고도가 충분히 결정되지
+않은 점은 3D 랜드마크로 초기화하지 않습니다. `geometry_rejections`는 트랙 ID와
+이유를 보고하며, 새 후보는 유지된 관측이 늘어난 뒤 다시 평가할 수 있습니다.
+자세의 불확실성은 이 조건부 계산에 포함되지 않으며 유한한 시작값 탐색으로 전역 유일성을
 증명할 수 없습니다. 보정된 점 신뢰도나 물리적 대응
 관계를 보장하지 않으며 음향 점군 내보내기의 검증 완료를 의미하지 않습니다.
 

@@ -175,11 +175,14 @@ int main(int argc,char** argv) {
           const auto pose=state.getState().T_w_i;poses.emplace(time,posim_slam::SonarPose{pose.translation(),pose.rotationMatrix()});
         }
         std::vector<int64_t> rejected;
-        try{rejected=estimator.posim_sonar_factors->applySnapshot(stamp,acoustic->tracks,*sonar_calibration,poses);}
+        std::map<int64_t,std::string> rejection_reasons;
+        try{rejected=estimator.posim_sonar_factors->applySnapshot(stamp,acoustic->tracks,*sonar_calibration,poses,&rejection_reasons);}
         catch(const std::exception& error){fail(error.what());}
         std::lock_guard<std::mutex> lock(ping_mutex);
         sonar_reports[stamp]={{"owner_received",true},{"submitted_tracks",acoustic->tracks.size()},
-          {"geometry_rejected_track_ids",rejected}};
+          {"geometry_rejected_track_ids",rejected},{"geometry_rejections",Json::array()}};
+        for(const auto& [id,reason]:rejection_reasons)
+          sonar_reports[stamp]["geometry_rejections"].push_back({{"id",id},{"reason",reason}});
       }
       {
         std::lock_guard<std::mutex> lock(ping_mutex);
