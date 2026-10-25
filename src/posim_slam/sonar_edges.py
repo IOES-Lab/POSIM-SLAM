@@ -30,7 +30,7 @@ def echo_tracking_image(frame):
     return np.uint8(np.clip((relative+10.)*(255./40.),0,255)),smooth
 
 
-def echo_boundaries(frame, *, ground_entry_band_m, config=EchoEdgeConfig()):
+def echo_boundaries(frame, *, ground_entry_band_m=None, config=EchoEdgeConfig()):
     """Return a normalized tracking image and eligible rising-edge mask.
 
     Median filtering rejects isolated spikes. Same-range median subtraction
@@ -38,6 +38,8 @@ def echo_boundaries(frame, *, ground_entry_band_m, config=EchoEdgeConfig()):
     Coherence, a measured positive range gradient and the noise floor constrain
     seeds. The supplied uncertain ground-entry band is excluded; its limits
     never become newly detected edges. It is a local-plane hypothesis, not truth.
+    Without a supplied band, no ground is labelled or excluded. This permits
+    causal camera-free processing without introducing a flat-bottom assumption.
     """
     validate_frame(frame)
     floats=[getattr(config,k) for k in config.__dataclass_fields__ if k!='minimum_beams']
@@ -45,7 +47,9 @@ def echo_boundaries(frame, *, ground_entry_band_m, config=EchoEdgeConfig()):
             or type(config.minimum_beams) is not int or not 3<=config.minimum_beams<=15 or config.minimum_beams%2!=1):
         raise ValueError('invalid_echo_edge_config')
     a=np.asarray(frame['intensity_db'],dtype=float);ranges=np.asarray(frame['ranges'],dtype=float)
-    rows,beams=a.shape;band=np.asarray(ground_entry_band_m,dtype=float)
+    rows,beams=a.shape
+    band=(np.full((beams,2),np.inf) if ground_entry_band_m is None
+          else np.asarray(ground_entry_band_m,dtype=float))
     if band.shape!=(beams,2) or np.isnan(band).any() or np.any(band<=0) or np.any(band[:,0]>band[:,1]):
         raise ValueError('invalid_ground_entry_band')
     noise_rows=(ranges>.2)&(ranges<config.noise_range_max_m)
@@ -80,6 +84,7 @@ def echo_boundaries(frame, *, ground_entry_band_m, config=EchoEdgeConfig()):
     support[:2]=False;support[-2:]=False;support[:,:2]=False;support[:,-2:]=False
     return dict(image=image,edge_mask=eligible,tracking_mask=support,noise_db=noise,gradient_db=gradient,
                 ground_excluded_pixels=int((coherent&peak&ground).sum()),
+                ground_hypothesis_used=ground_entry_band_m is not None,
                 scope='candidate echo boundaries; not physical identities or elevations')
 
 

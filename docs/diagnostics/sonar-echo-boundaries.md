@@ -14,7 +14,9 @@ contrast requirement. No shadow height or elevation is assigned by this stage.
 2픽셀 경계 주변을 허용합니다. 그림자 끝에서 평범한 해저 밝기로 회복하는 구간은
 국소 대비 조건으로 제외합니다. 이 단계는 그림자로부터 높이나 고도각을 만들지 않습니다.
 
-The caller supplies a ground-entry exclusion band. This replay obtains attitude
+The frontend accepts an optional ground-entry exclusion band. The
+[camera-free causal comparison](sonar-causal-depth.md) omits this assumption.
+This historical two-pass replay supplies the band and obtains attitude
 from an independent camera + IMU + single Ping replay of the same recording,
 then uses exactly timestamped raw Ping, the minimum-ray model and sensor lever
 arms. A locally horizontal seabed, ±0.15 m distance and ±5° normal bounds are
@@ -24,7 +26,9 @@ can also remove real object echoes at the same ranges. Missing exact states or
 Ping reset tracking; this occurred on eight of 129 frames, including startup.
 This is a two-pass offline experiment, not a live integrated method.
 
-해저 시작 제외 구간은 외부에서 제공합니다. 같은 기록의 카메라·IMU·단일 Ping
+해저 시작 제외 구간은 선택 입력입니다. [카메라 없는 순차 처리 비교](sonar-causal-depth.md)는
+이 가정을 사용하지 않습니다. 이 문서의 두 번 재생 실험은 외부에서 구간을 제공합니다.
+같은 기록의 카메라·IMU·단일 Ping
 기준 재생에서 추정 자세를 얻고, 정확히 같은 시각의 원본 Ping과 센서 장착 위치를
 사용합니다. 국소 수평 해저, 거리 ±0.15 m·법선 ±5°는 실험 가정이며 보정된
 신뢰구간이 아닙니다. 경사면이나 물체에서 돌아온 Ping은 가정을 깨뜨릴 수 있고,

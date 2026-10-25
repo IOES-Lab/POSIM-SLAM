@@ -112,6 +112,7 @@ class AcousticTracks:
                         stamp_ns=stamp,retained=retained,observations=observations,
                         frontend=self.frontend,edge_rejected=edge_rejected,
                         ground_excluded_pixels=0 if edge is None else edge['ground_excluded_pixels'],
+                        ground_hypothesis_used=False if edge is None else edge['ground_hypothesis_used'],
                         reference_rejected=reference_rejected,reference_expired=reference_expired)
         except (ValueError,KeyError,TypeError) as error:
             return self.reset(str(error))
