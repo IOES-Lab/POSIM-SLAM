@@ -127,7 +127,7 @@ def prepare(source,destination):
     text=replace_once(text,'    frames_after_kf++;', '    if (!posim_auxiliary) frames_after_kf++;')
     text=replace_once(text,'  std::unordered_set<KeypointId> lost_landmaks;\n  if (config.vio_marg_lost_landmarks) {',
         '  std::unordered_set<KeypointId> lost_landmaks;\n  if (!posim_auxiliary && config.vio_marg_lost_landmarks) {')
-    text='#include "ping_factors.hpp"\n#include "ping_optimizer.hpp"\n'+text
+    text='#include "ping_factors.hpp"\n#include "ping_optimizer.hpp"\n#include <cstdlib>\n'+text
     text=replace_once(text,'      if (kv.first > last_state_to_marg) break;',
         '      if (!posim_joint_started && kv.first > last_state_to_marg) break;')
     text=replace_once(text,'      if (kv.first != last_state_to_marg) {',
@@ -178,8 +178,17 @@ void SqrtKeypointVioEstimator<Scalar_>::posim_optimize_joint() {
   const auto order = posim_slam::planPingMarginalLayout(base, {}, {}, {}, {}).source;
   ImuLinData<double> imu = {g, gyro_bias_sqrt_weight, accel_bias_sqrt_weight, {}};
   for (const auto& [stamp, measurement] : imu_meas) imu.imu_meas[stamp] = &measurement;
+  const bool trace_joint = std::getenv("POSIM_SLAM_TRACE_JOINT") != nullptr;
+  if (trace_joint) std::cerr << "POSIM_JOINT before " << last_state_t_ns
+      << " bias " << frame_states.at(last_state_t_ns).getState().bias_accel.transpose()
+      << " prior " << marg_data.H.norm() << " " << marg_data.b.norm()
+      << " sonar " << (posim_sonar_factors ? posim_sonar_factors->size() : 0) << std::endl;
   const auto report = posim_slam::optimizePingGroups(base, order,
       posim_ping_factors->specs(order), marg_data, imu, {}, posim_sonar_factors.get());
+  if (trace_joint) std::cerr << "POSIM_JOINT after " << last_state_t_ns
+      << " bias " << frame_states.at(last_state_t_ns).getState().bias_accel.transpose()
+      << " cost " << report.initial_cost << " " << report.final_cost
+      << " steps " << report.accepted << " " << report.rejected << std::endl;
   posim_joint_last_accepted = report.accepted;
   posim_projection_rejections += report.projection_rejections;
 }

@@ -4,6 +4,7 @@
 #include <map>
 #include <cstdint>
 #include <set>
+#include <algorithm>
 
 namespace posim_slam {
 struct SonarPose {Eigen::Vector3d position;Eigen::Matrix3d attitude;};
@@ -81,8 +82,8 @@ class SonarFactorStore {
     std::swap(tracks_.at(id),track);++revision_;
   }
   // Validate a complete input batch on a private copy. Existing history and
-  // calibration cannot change. New points start on the first measured fan ray;
-  // that seed is not an elevation constraint or a qualified map point.
+  // calibration cannot change. New points are fitted across retained views;
+  // require local point rank and no competing solution found by the seed search.
   // Unsupported point geometry rejects only that update; malformed input
   // still rolls back the entire batch. Return the rejected native track IDs.
   std::vector<int64_t> applySnapshot(int64_t stamp,const std::vector<SonarTrackInput>& updates,
@@ -114,10 +115,10 @@ class SonarFactorStore {
         catch(const SonarPointOutsideSupport&) {rejected.push_back(update.id);}
       }else {
         if(update.observations.size()<3)throw std::invalid_argument("sonar_seed_requires_track_history");
-        const auto& first=update.observations.front();const auto& pose=poses.at(first.stamp);
-        const Eigen::Vector3d local(first.range*std::cos(first.azimuth),first.range*std::sin(first.azimuth),0.);
-        const Eigen::Vector3d seed=pose.position+pose.attitude*(calibration.lever+calibration.sonar_to_imu*local);
-        try {staged.add(update.id,seed,calibration,update.observations,update.covariance,poses);}
+        try {
+          const auto seed=initializePoint(update,calibration,poses);
+          staged.add(update.id,seed,calibration,update.observations,update.covariance,poses);
+        }
         catch(const SonarPointOutsideSupport&) {rejected.push_back(update.id);}
       }
     }
@@ -133,7 +134,9 @@ class SonarFactorStore {
       auto rows=build(track,points_.at(id),poses);
       if(references) {
         SonarTrackRows fixed;
-        try {fixed=build(track,track.reference_point,*references);}
+        // FEJ references define derivatives, not a second sensor observation.
+        // Current points above still require the actual range/FOV support.
+        try {fixed=build(track,track.reference_point,*references,false);}
         catch(const SonarPointOutsideSupport& error) {
           throw SonarPointOutsideSupport(std::string("sonar_reference_geometry:")+error.what());
         }
@@ -224,10 +227,58 @@ class SonarFactorStore {
     points_.swap(next);++revision_;
   }
  private:
+  static Eigen::Vector3d initializePoint(const SonarTrackInput& input,
+      const SonarCalibration& calibration,const SonarPoses& poses) {
+    const auto& first=input.observations.front();const auto& pose=poses.at(first.stamp);
+    Track track{input.observations,input.covariance,calibration,Eigen::Vector3d::Zero()};
+    struct Solution {Eigen::Vector3d point;double cost;};
+    std::vector<Solution> solutions;
+    // Search both elevation branches; a fan pixel does not measure elevation.
+    for(int seed_index=0;seed_index<9;++seed_index) {
+      const double elevation=calibration.vertical_fov*(seed_index/8.-.5);
+      const Eigen::Vector3d local(first.range*std::cos(elevation)*std::cos(first.azimuth),
+        first.range*std::cos(elevation)*std::sin(first.azimuth),first.range*std::sin(elevation));
+      Eigen::Vector3d point=pose.position+pose.attitude*(calibration.lever+calibration.sonar_to_imu*local);
+      double damping=.001;
+      for(int iteration=0;iteration<40;++iteration) {
+        SonarTrackRows rows;
+        try {rows=build(track,point,poses,false);}catch(const SonarPointOutsideSupport&){break;}
+        Eigen::Matrix3d h=rows.point_jacobian.transpose()*rows.point_jacobian;
+        h.diagonal().array()+=(damping*h.diagonal().array()).max(1e-9);
+        const Eigen::Vector3d step=h.ldlt().solve(-rows.point_jacobian.transpose()*rows.residual);
+        if(!step.allFinite())break;
+        if(step.norm()<1e-9*std::max(1.,first.range))break;
+        try {
+          const auto trial=build(track,point+step,poses,false);
+          if(trial.residual.squaredNorm()<rows.residual.squaredNorm()) {
+            point+=step;damping=std::max(1e-12,damping/3.);continue;
+          }
+        }catch(const SonarPointOutsideSupport&) {}
+        damping*=10.;if(damping>1e12)break;
+      }
+      try {
+        const auto rows=build(track,point,poses);
+        Eigen::JacobiSVD<Eigen::MatrixXd> svd(rows.point_jacobian);
+        const auto singular=svd.singularValues();
+        if(singular[2]<=1e-10*singular[0])continue;
+        const double cost=rows.residual.squaredNorm();
+        if(cost<=9.*std::max<Eigen::Index>(1,rows.residual.size()-3))solutions.push_back({point,cost});
+      }catch(const SonarPointOutsideSupport&) {}
+    }
+    if(solutions.empty())throw SonarPointOutsideSupport("sonar_initialization_inconsistent_or_unobservable");
+    const auto best=std::min_element(solutions.begin(),solutions.end(),
+      [](const auto& a,const auto& b){return a.cost<b.cost;});
+    for(const auto& candidate:solutions)
+      if(candidate.cost<=best->cost+1. &&
+          (candidate.point-best->point).norm()>1e-4*std::max(1.,first.range))
+        throw SonarPointOutsideSupport("sonar_initialization_ambiguous_elevation");
+    return best->point;
+  }
   void requireIdle() const {
     if(trial_)throw std::logic_error("sonar_topology_or_linearization_during_trial");
   }
-  static SonarTrackRows build(const Track& track,const Eigen::Vector3d& point,const SonarPoses& poses) {
+  static SonarTrackRows build(const Track& track,const Eigen::Vector3d& point,const SonarPoses& poses,
+      bool require_sensor_support=true) {
     if(poses.empty() || poses.size()>64 || track.observations.empty() || track.observations.size()>64)
       throw std::invalid_argument("invalid_sonar_window_size");
     std::map<int64_t,int> slots;int slot=0;
@@ -243,7 +294,7 @@ class SonarFactorStore {
       if(observation.stamp<=previous)throw std::invalid_argument("unordered_sonar_track");
       const auto& pose=poses.at(observation.stamp);
       try {rows.push_back(sonarPointRows(pose.position,pose.attitude,c.lever,c.sonar_to_imu,point,
-        observation.range,observation.azimuth,c.minimum,c.maximum,c.horizontal_fov,c.vertical_fov));}
+        observation.range,observation.azimuth,c.minimum,c.maximum,c.horizontal_fov,c.vertical_fov,require_sensor_support));}
       catch(const SonarPointOutsideSupport& error) {unsupported=error.what();}
       indices.push_back(slots.at(observation.stamp));previous=observation.stamp;
     }

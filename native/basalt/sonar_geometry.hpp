@@ -21,7 +21,7 @@ inline SonarPointRows sonarPointRows(const Eigen::Vector3d& position,
     const Eigen::Matrix3d& attitude,const Eigen::Vector3d& lever,
     const Eigen::Matrix3d& sonar_to_imu,const Eigen::Vector3d& point,
     double measured_range,double measured_azimuth,double minimum,double maximum,
-    double horizontal_fov,double vertical_fov) {
+    double horizontal_fov,double vertical_fov,bool require_sensor_support=true) {
   auto rotation=[](const Eigen::Matrix3d& r) {
     return r.allFinite() && (r.transpose()*r-Eigen::Matrix3d::Identity()).norm()<1e-8 && std::abs(r.determinant()-1)<1e-8;
   };
@@ -35,10 +35,11 @@ inline SonarPointRows sonarPointRows(const Eigen::Vector3d& position,
   const Eigen::Vector3d difference=point-position;
   const Eigen::Vector3d local=sonar_to_imu.transpose()*(attitude.transpose()*difference-lever);
   const double x=local.x(),y=local.y(),z=local.z(),rho2=x*x+y*y,range=local.norm();
-  if(x<=0 || rho2<1e-12 || range<minimum || range>maximum)
+  if(rho2<1e-12 || range<1e-12 ||
+      (require_sensor_support && (x<=0 || range<minimum || range>maximum)))
     throw SonarPointOutsideSupport("unsupported_native_sonar_point");
   const double azimuth=std::atan2(y,x),elevation=std::atan2(z,std::sqrt(rho2));
-  if(std::abs(azimuth)>horizontal_fov/2 || std::abs(elevation)>vertical_fov/2)
+  if(require_sensor_support && (std::abs(azimuth)>horizontal_fov/2 || std::abs(elevation)>vertical_fov/2))
     throw SonarPointOutsideSupport("native_sonar_point_outside_fov");
   Eigen::Matrix<double,2,3> projection;
   projection.row(0)=local.transpose()/range;projection.row(1)<<-y/rho2,x/rho2,0.;

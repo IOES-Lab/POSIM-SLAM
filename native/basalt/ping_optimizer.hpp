@@ -6,6 +6,8 @@
 #include <basalt/utils/ba_utils.h>
 #include <algorithm>
 #include <memory>
+#include <cstdlib>
+#include <iostream>
 
 namespace posim_slam {
 using VisualProjectionSupport=std::set<std::pair<basalt::KeypointId,basalt::TimeCamId>>;
@@ -83,6 +85,8 @@ inline PingOptimizationReport optimizePingGroups(basalt::BundleAdjustmentBase<do
       if(sonar && sonar->size()) {
         const auto references=sonar_poses(true);
         sonar_rows=sonar->linearize(sonar_poses(),&references);
+        for(const auto& [id,rows]:sonar_rows->rows)
+          sonar_rows->reduced.at(id)=eliminateSonarPoint(rows,1e-10,damping);
         sonar_to_state=Eigen::MatrixXd::Zero(6*sonar_rows->pose_stamps.size(),order.total_size);
         for(size_t i=0;i<sonar_rows->pose_stamps.size();++i)
           sonar_to_state.block<6,6>(6*i,order.abs_order_map.at(sonar_rows->pose_stamps[i]).first).setIdentity();
@@ -137,7 +141,10 @@ inline PingOptimizationReport optimizePingGroups(basalt::BundleAdjustmentBase<do
           }
           accepted=trial.accept(before,valid ? after : std::numeric_limits<double>::infinity(),predicted);
           if(sonar_trial)sonar_trial->finish(accepted);
-        }catch(const std::invalid_argument&) {
+        }catch(const std::invalid_argument& error) {
+          if(std::getenv("POSIM_SLAM_TRACE_JOINT"))std::cerr
+            << "POSIM_JOINT rejected_geometry " << error.what()
+            << " point_step " << point_step << " damping " << damping << std::endl;
           // A trial can move the beam outside supported geometry. RAII restores
           // every state/landmark/plane before another damping attempt.
         }

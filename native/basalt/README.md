@@ -641,6 +641,25 @@ Basalt는 사전정보 비용에서 상수항을 생략하므로 `JointPingTrial
 
 ### Coupled linearization / 공동 선형화
 
+The joint LM solve damps acoustic point increments before eliminating them,
+along with pose/inertial increments. Trial damping is excluded from the sensor
+cost and the marginalized prior. Sensor range and FOV constrain current points;
+frozen FEJ references are used only for derivatives and may lie outside that
+support. Singular reference geometry still fails validation.
+
+공동 LM 해법은 자세·관성 상태와 함께 음향 점의 갱신량도 감쇠한 뒤 소거합니다.
+시도별 감쇠는 센서 비용과 주변화 사전정보에 포함하지 않습니다. 센서 거리·시야
+검사는 현재 점에 적용합니다. 고정된 FEJ 기준점은 미분 계산에만 사용하므로
+그 범위를 벗어날 수 있지만, 미분이 정의되지 않는 특이 기하는 거부합니다.
+
+Set `POSIM_SLAM_TRACE_JOINT=1` for developer stderr diagnostics of each joint
+optimization pass: sensor timestamp, accelerometer bias, prior norms, costs,
+accepted/rejected step counts and geometric trial failures. It is off by default.
+
+개발 진단은 `POSIM_SLAM_TRACE_JOINT=1`로 켭니다. 각 공동 최적화 단계의 센서
+시각, 가속도계 바이어스, 사전정보 노름, 비용, 수용·거부 횟수와 기하 오류를
+표준 오류에 기록하며 기본값은 꺼짐입니다.
+
 Joint optimization compares costs while preserving the visual projections that
 were valid at the start of each trial. A step that makes any of those projections
 invalid is rejected and rolled back, even if dropping its residual lowers the
@@ -913,8 +932,19 @@ least three observations. An existing track extends by one observation and
 preserves its old observations, covariance block and calibration. A snapshot is
 validated atomically for malformed inputs. Tracks whose point hypothesis falls
 outside sensor support are rejected individually; an existing track keeps its
-previous factors. The initial point uses zero elevation only as a starting
-estimate; elevation is not measured or constrained by this seed.
+previous factors. New points are fitted against all retained observations with
+fixed estimated poses and the supplied full covariance. Nine elevation seeds
+span the vertical fan, including both signs. Admission requires sensor support,
+full point-Jacobian rank, a bounded whitened residual and no competing elevation
+solution within one squared-residual unit. Ambiguous or inconsistent tracks wait
+for a later candidate with informative observations; no elevation is invented.
+
+The diagnostic initialization gate is squared whitened residual ≤ 9 × max(1,
+measurement count − 3), relative singular-value threshold 1e−10, and competing
+point separation > 1e−4 × max(1 m, first range). These numerical checks ignore
+pose uncertainty, and finite seed sampling cannot prove global uniqueness. They
+do not establish calibrated point confidence or physical correspondence, and do
+not qualify acoustic map export.
 
 준비 응답의 위 지원 문자열을 확인한 뒤, 같은 시각의 영상을 보내기 전에
 `LiveClient.sonar_snapshot(stamp_ns, tracks)`를 호출합니다. 바이너리 패킷 종류는
@@ -922,7 +952,17 @@ estimate; elevation is not measured or constrained by this seed.
 이전 관측·공분산 블록·보정을 유지합니다. 입력 형식 오류는 스냅샷 전체를 거부합니다.
 점 가설이 센서 지원 범위를 벗어나면 해당 트랙의 추가만 거부하고, 기존 트랙의
 관측 요인은 유지합니다.
-초기 점의 고도각 0은 시작 추정값이며 높이 측정이나 제약으로 사용하지 않습니다.
+새 점은 추정 자세를 고정하고 전체 공분산과 유지된 모든 관측으로 맞춥니다.
+수직 팬 양쪽을 포함한 고도각 시작값 9개를 탐색합니다. 센서 지원 범위,
+점 자코비안의 완전 계수, 백색화 잔차와 경쟁 고도 해의 부재를 확인한 뒤
+등록합니다. 모호하거나 불일치하는 트랙은 정보가 충분한 후속 후보를 기다립니다.
+
+진단용 초기화 기준은 백색화 잔차 제곱합 ≤ 9 × max(1, 측정 수 − 3),
+상대 특잇값 문턱 1e−10입니다. 최저 비용과 1 이내이면서 점 간 거리가
+1e−4 × max(1 m, 최초 거리)를 넘는 경쟁 해가 있으면 거부합니다. 자세의
+불확실성은 이 계산에 포함되지 않으며 유한한 시작값 탐색으로 전역 유일성을
+증명할 수 없습니다. 보정된 점 신뢰도나 물리적 대응
+관계를 보장하지 않으며 음향 점군 내보내기의 검증 완료를 의미하지 않습니다.
 
 The native solver applies a Huber loss to each full covariance-whitened track.
 Its transition is three RMS standardized residual units. All rows in that track

@@ -44,6 +44,15 @@ int main() {
   store.add(7,seed,c,{observations[0],observations[1],observations[2]},covariance,poses);
   const double before=store.cost(poses);
   const auto rows=store.linearize(poses);
+  auto outside_references=poses;
+  for(auto& [stamp,pose]:outside_references)pose.position.z()-=2.;
+  reject([&]{store.cost(outside_references);});
+  const auto reference_rows=store.linearize(poses,&outside_references);
+  assert(reference_rows.rows.at(7).pose_jacobian.allFinite());
+  assert((reference_rows.rows.at(7).residual-rows.rows.at(7).residual).norm()<1e-12);
+  // Disabling reference support cannot hide an undefined range/azimuth derivative.
+  auto singular_references=poses;singular_references.begin()->second.position=seed;
+  reject([&]{store.linearize(poses,&singular_references);});
   const auto delta=Eigen::VectorXd::Zero(24).eval();
   reject([&]{store.apply(rows,delta);});
   {
@@ -117,6 +126,40 @@ int main() {
                                      {11,{observations[0],observations[1],observations[2]},covariance}};
   batch.applySnapshot(3000,updates,c,poses);
   const auto batch_revision=batch.revision();const auto batch_point=batch.point(10);
+  assert((batch_point-truth).norm()<1e-5);
+  // A different map origin/orientation must not alter admission or the fit.
+  {
+    const Eigen::Matrix3d rotation=Eigen::AngleAxisd(.7,Eigen::Vector3d(1,2,3).normalized()).toRotationMatrix();
+    const Eigen::Vector3d translation(1e6,-2e6,3e6);
+    auto transformed=poses;
+    for(auto& [stamp,pose]:transformed) {
+      pose.position=rotation*pose.position+translation;
+      pose.attitude=rotation*pose.attitude;
+    }
+    SonarFactorStore moved_store;
+    assert(moved_store.applySnapshot(3000,updates,c,transformed).empty());
+    assert((rotation.transpose()*(moved_store.point(10)-translation)-truth).norm()<1e-5);
+  }
+  {
+    auto inconsistent=updates;inconsistent[0].observations[1].range+=2.;
+    inconsistent.resize(1);SonarFactorStore rejected_store;
+    assert(rejected_store.applySnapshot(3000,inconsistent,c,poses)==std::vector<int64_t>{10});
+    assert(rejected_store.size()==0);
+  }
+  // Three equal-height views leave two mirror elevations; stationary views
+  // leave a continuous elevation ambiguity. Neither may seed a fixed 3D point.
+  for(bool stationary:{false,true}) {
+    SonarFactorStore ambiguous;SonarPoses flat;
+    std::vector<SonarObservation> track;
+    for(int i=0;i<3;++i) {
+      const Eigen::Vector3d position(0.,stationary?0.:.2*i,0.);
+      flat.emplace(1000*(i+1),SonarPose{position,Eigen::Matrix3d::Identity()});
+      const Eigen::Vector3d local=truth-position;
+      track.push_back({1000*(i+1),local.norm(),std::atan2(local.y(),local.x())});
+    }
+    assert(ambiguous.applySnapshot(3000,{{10,track,covariance}},c,flat)==std::vector<int64_t>{10});
+    assert(ambiguous.size()==0);
+  }
   for(auto& update:updates){update.observations.push_back(observations[3]);update.covariance=extended;}
   updates[1].observations[0].range+=.1;
   reject([&]{batch.applySnapshot(4000,updates,c,poses);});

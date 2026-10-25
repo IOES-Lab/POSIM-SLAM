@@ -29,6 +29,19 @@ int main() {
   }
   Eigen::MatrixXd h=reduced.pose_jacobian.transpose()*reduced.pose_jacobian;
   assert(h.block(0,6,6,6).norm()>1e-3);
+  for(double damping:{.001,1.,1000.}) {
+    const auto damped=eliminateSonarPoint(rows,1e-10,damping);
+    Eigen::Matrix3d point_h=rows.point_jacobian.transpose()*rows.point_jacobian;
+    const Eigen::Vector3d regularizer=(damping*point_h.diagonal().array()).max(1e-9);
+    point_h.diagonal()+=regularizer;
+    const Eigen::VectorXd pose_delta=Eigen::VectorXd::Constant(18,.002);
+    const Eigen::VectorXd residual=rows.residual+rows.pose_jacobian*pose_delta;
+    const Eigen::Vector3d direct=point_h.ldlt().solve(-rows.point_jacobian.transpose()*residual);
+    const Eigen::Vector3d step=damped.backSubstitute(pose_delta);
+    assert((step-direct).norm()<1e-8);
+    const double full_cost=(residual+rows.point_jacobian*step).squaredNorm()+step.dot(regularizer.asDiagonal()*step);
+    assert(std::abs(full_cost-(damped.residual+damped.pose_jacobian*pose_delta).squaredNorm())<1e-8);
+  }
   // A common world translation remains a gauge after point elimination.
   Eigen::MatrixXd gauge=Eigen::MatrixXd::Zero(18,3);
   for(int i=0;i<3;++i)gauge.block<3,3>(6*i,0).setIdentity();

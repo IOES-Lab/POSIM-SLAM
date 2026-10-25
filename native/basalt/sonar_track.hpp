@@ -74,13 +74,26 @@ inline SonarTrackRows whitenSonarTrack(const std::vector<SonarPointRows>& rows,
 // other sensor rows) have been assembled. This projection retains inter-pose
 // correlations and constant residual cost without inventing elevation data.
 inline SonarReducedRows eliminateSonarPoint(const SonarTrackRows& rows,
-    double relative_rank_tolerance=1e-10) {
+    double relative_rank_tolerance=1e-10,double damping=0.) {
   const auto m=rows.residual.size();
   if(m<1 || rows.pose_jacobian.rows()!=m || rows.point_jacobian.rows()!=m ||
       rows.point_jacobian.cols()!=3 || !rows.pose_jacobian.allFinite() ||
       !rows.point_jacobian.allFinite() || !rows.residual.allFinite() ||
-      !std::isfinite(relative_rank_tolerance) || relative_rank_tolerance<=0 || relative_rank_tolerance>=1)
+      !std::isfinite(relative_rank_tolerance) || relative_rank_tolerance<=0 || relative_rank_tolerance>=1 ||
+      !std::isfinite(damping) || damping<0)
     throw std::invalid_argument("invalid_sonar_elimination_rows");
+  if(damping>0) {
+    // LM regularizes the point increment before Schur elimination. These rows
+    // belong only to the trial solve, never to the measurement cost or prior.
+    SonarTrackRows augmented=rows;
+    augmented.pose_jacobian.conservativeResize(m+3,Eigen::NoChange);
+    augmented.pose_jacobian.bottomRows(3).setZero();
+    augmented.point_jacobian.conservativeResize(m+3,Eigen::NoChange);
+    const Eigen::Vector3d diagonal=(damping*rows.point_jacobian.colwise().squaredNorm().array()).max(1e-9).sqrt();
+    augmented.point_jacobian.bottomRows(3)=diagonal.asDiagonal();
+    augmented.residual.conservativeResize(m+3);augmented.residual.tail(3).setZero();
+    return eliminateSonarPoint(augmented,relative_rank_tolerance);
+  }
   Eigen::JacobiSVD<Eigen::MatrixXd> svd(rows.point_jacobian,Eigen::ComputeFullU | Eigen::ComputeFullV);
   const double cutoff=relative_rank_tolerance*svd.singularValues()[0];
   const Eigen::Index rank=(svd.singularValues().array()>cutoff).count();
