@@ -18,8 +18,9 @@ velocity initialization follow the local estimator convention; an arbitrary
 moving-start velocity is not measured by that direction. Acoustic constraints
 drive the bounded state window once geometry is admitted. Unobservable startup
 fails at the existing initialization budget. The worker rejects camera packets
-and reports `map_qualified: false`; this interface does not provide terrain or
-pressure factors, sonar image association, or application mode qualification.
+and reports `map_qualified: false`; terrain factors, sonar image association
+and application mode qualification remain separate. Optional DVL and pressure
+inputs are described below.
 `SensorEvents(state_clock="sonar")` orders sonar and future IMU with the same
 bounded, one-state-at-a-time acknowledgement contract.
 
@@ -31,7 +32,8 @@ bounded, one-state-at-a-time acknowledgement contract.
 방향만으로 이동 중의 초기 속도를 측정할 수는 없습니다.
 음향 기하가 성립하면 제한된 상태 창을 유지하고, 성립하지 않는 시작 구간은
 기존 초기화 한도에서 실패합니다. 카메라 패킷은 거부하고 `map_qualified: false`를
-보고합니다. 지형·수압 제약, 소나 영상 대응점 추적, 앱 모드 검증은 별도입니다.
+보고합니다. 지형 제약·소나 영상 대응점 추적·앱 모드 검증은 별도입니다.
+선택형 DVL·수압 입력은 아래에 설명합니다.
 `SensorEvents(state_clock="sonar")`는 소나와 이후 IMU를 정렬하고, 한 상태의
 응답을 확인한 뒤 다음 상태를 전달합니다.
 
@@ -68,8 +70,8 @@ This is a native research interface. Its synthetic moving-start, loss/recovery,
 Jacobian and marginalization checks do not qualify field initialization, map
 geometry or a selectable application mode. High-rate DVL states shorten a
 fixed-count temporal window; acoustic track support and real-time throughput
-must be evaluated at the actual sensor rates. Pressure and terrain factors are
-separate work. Source and dependency notices remain required.
+must be evaluated at the actual sensor rates. Terrain factors remain separate
+work. Source and dependency notices remain required.
 
 `enable_joint_dvl: true`는 바닥 잠금 DVL 속도를 네이티브 자세·속도·바이어스
 공동 최적화와 주변화 사전정보에 연결합니다. `dvl-calibration.json`의 스키마는
@@ -96,8 +98,60 @@ DVL을 켠 카메라 구간은 영상 사이 여러 보조 상태를 허용하�
 네이티브 연구용 인터페이스입니다. 합성 이동 시작·손실·복구, Jacobian, 주변화
 시험은 실제 초기화·지도 기하·앱 선택 모드의 검증이 아닙니다. DVL 상태 빈도가
 높으면 고정 개수 상태 창의 시간 길이가 줄어듭니다. 실제 센서 빈도에서 음향
-트랙 유지와 실시간 처리량을 검증해야 합니다. 수압·지형 제약은 별도 작업이며
+트랙 유지와 실시간 처리량을 검증해야 합니다. 지형 제약은 별도 작업이며
 소스와 의존성 라이선스 고지 의무는 유지됩니다.
+
+## Hydrostatic height factors / 정수압 높이 제약
+
+`enable_joint_pressure: true` enables original-time height observations through
+`LiveClient.pressure(stamp_ns, height_m, variance_m2)`. The negotiated transport
+is `height_unknown_datum_v1`. `pressure-calibration.json` uses schema
+`posim-slam-pressure-calibration-1` and `imu_to_pressure`, the IMU-frame lever
+arm in metres. Submit each measurement before its exact image or `sonar_tick`.
+`SensorEvents(pressure=True)` preserves its clock and permits consecutive
+auxiliary states; invalid/surfaced status must not become a measurement factor.
+
+The caller converts pressure to upward height `h = -(p-p_ref)/(rho*g)` and
+variance `var(h) = var(p)/(rho*g)^2`, using calibrated density and gravity.
+The native residual is `(z_IMU + (R*lever)_z + datum - h)/sigma`, with Huber
+threshold 3. One unknown datum is shared by the segment. Its first value is a
+numerical seed, with no absolute-height prior; the first noisy sample is never
+subtracted from every later measurement. Frozen state references determine
+Jacobians. The datum and all state cross-information enter the same joint
+marginalization. Orthogonal rotation splits the resulting prior into one
+datum/state row and Basalt's state-only rows, consumed together on subsequent
+marginalizations. Raw measurements are retired once their pose is removed.
+
+The model assumes a fixed pressure offset, calibrated density/gravity and
+independent measurement noise. It does not estimate density drift or dynamic
+wave pressure. Callers reject clipped near-surface readings and unknown/zero
+variance. Depth assistance does not determine horizontal position or resolve
+sonar elevation ambiguity. This native interface is experimental and is not an
+application selector mode. See [paired recorded comparisons](../../docs/diagnostics/sonar-pressure-recorded.md).
+
+`enable_joint_pressure: true`는 원래 시각의 높이 관측을
+`LiveClient.pressure(stamp_ns, height_m, variance_m2)`로 받습니다. 전송 협약은
+`height_unknown_datum_v1`입니다. `pressure-calibration.json`은
+`posim-slam-pressure-calibration-1` 스키마와 IMU 좌표계의 장착 위치(m)인
+`imu_to_pressure`를 사용합니다. 같은 시각의 영상 또는 `sonar_tick`보다 먼저
+전달합니다. `SensorEvents(pressure=True)`는 원래 시각과 연속 보조 상태를
+보존하며, 유효하지 않거나 수면에 나온 상태는 측정 제약으로 보내지 않습니다.
+
+호출자가 보정된 밀도·중력으로 `h = -(p-p_ref)/(rho*g)`와
+`var(h) = var(p)/(rho*g)^2`를 계산합니다. 네이티브 잔차는
+`(z_IMU + (R*lever)_z + datum - h)/sigma`이며 Huber 임계값은 3입니다.
+구간 전체가 미지의 높이 기준값 하나를 공유합니다. 첫 측정은 초기 계산값에만
+쓰고 절대 높이 사전정보를 주지 않으며, 이후 측정에서 첫 잡음값을 빼지 않습니다.
+고정된 상태 기준점으로 Jacobian을 계산합니다. 기준값과 상태 간 상관정보를
+공동 주변화에 넣고, 직교 변환으로 기준값·상태 행 하나와 Basalt 상태 전용 행으로
+나눕니다. 다음 주변화에서도 함께 소비하며 자세를 제거할 때 원본 관측을 한 번만
+제거합니다.
+
+고정 압력 오프셋, 보정된 밀도·중력, 독립 측정 잡음을 가정합니다. 밀도 변화나
+파도 동압은 추정하지 않습니다. 호출자가 수면 근처에서 잘린 측정과 알 수 없거나
+0인 분산을 거부합니다. 깊이 보조만으로 수평 위치나 소나 고도 모호성이 해결되지는
+않습니다. 실험적 네이티브 인터페이스이며 앱 선택 모드에는 아직 연결되지 않습니다.
+[기록 비교 그림과 한계](../../docs/diagnostics/sonar-pressure-recorded.md)를 참고하세요.
 
 Visual normal-equation assembly uses only the pose blocks observed by each
 landmark. It scatters their matrix and gradient into the complete state system,

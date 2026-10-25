@@ -64,19 +64,20 @@ class PingFactorStore {
       basalt::MargLinData<double>& prior,ImuMap& measurements,
       const basalt::ImuLinData<double>& imu,const std::set<int64_t>& removed,
       const std::set<int64_t>& pose_only,const std::unordered_set<basalt::KeypointId>& lost,
-      SonarFactorStore* sonar=nullptr,DvlFactorStore* dvl=nullptr) {
+      SonarFactorStore* sonar=nullptr,DvlFactorStore* dvl=nullptr,PressureFactorStore* pressure=nullptr) {
     if(imu.imu_meas.size()!=measurements.size())throw std::invalid_argument("changed_ping_factor_imu_owner");
     for(const auto& [stamp,measurement]:measurements)
       if(!imu.imu_meas.count(stamp) || imu.imu_meas.at(stamp)!=&measurement)
         throw std::invalid_argument("changed_ping_factor_imu_owner");
     auto groups=specs(order);
-    auto prepared=preparePingPrior(owner_,order,groups,prior,imu,removed,pose_only,lost,sonar,dvl);
+    auto prepared=preparePingPrior(owner_,order,groups,prior,imu,removed,pose_only,lost,sonar,dvl,pressure);
     auto install=[&] {
       installPingMarginalPrior(owner_,prior,groups,measurements,prepared.retirement,
         prepared.layout,removed,pose_only,prepared.prior);
     };
     auto with_acoustic=[&] {if(sonar)sonar->retireWith(*prepared.acoustic,install);else install();};
-    if(dvl)dvl->retireWith(*prepared.dvl,with_acoustic);else with_acoustic();
+    auto with_velocity=[&] {if(dvl)dvl->retireWith(*prepared.dvl,with_acoustic);else with_acoustic();};
+    if(pressure)pressure->retireWith(*prepared.pressure,prepared.pressure_prior,with_velocity);else with_velocity();
     for(int id:prepared.retirement.planes)definitions_.erase(id);
     return std::move(prepared.retirement);
   }

@@ -32,7 +32,7 @@ class LiveClient:
         self.closed=threading.Event()
         self.ready=threading.Event()
         self.ping_transport=False;self.gravity_seed_transport=False;self.sonar_transport=False;self.sonar_auxiliary_transport=False
-        self.sonar_clock_transport=False;self.dvl_transport=False;self.sensor_state_transport=False
+        self.sonar_clock_transport=False;self.dvl_transport=False;self.sensor_state_transport=False;self.pressure_transport=False
         self.process=subprocess.Popen([str(Path(binary).resolve()),str(Path(calibration).resolve())],
             stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=log,bufsize=65536)
         self.writer=threading.Thread(target=self._write,daemon=True)
@@ -82,11 +82,14 @@ class LiveClient:
                     self.sonar_auxiliary_transport=value.get("sonar_auxiliary_transport")=="ordered_imu_state_v1"
                     self.sonar_transport=value.get("sonar_snapshot_transport")=="exact_image_track_snapshot_v1"
                     self.dvl_transport=value.get('dvl_measurement_transport')=='body_velocity_gyro_covariance_v1'
+                    self.pressure_transport=value.get('pressure_measurement_transport')=='height_unknown_datum_v1'
                     self.sensor_state_transport=value.get('sensor_state_transport')=='ordered_camera_auxiliary_states_v1'
                     if self.processing_request.get('enable_joint_dvl',False) and not self.dvl_transport:
                         raise ValueError('worker_dvl_unsupported')
                     if self.processing_request.get('enable_joint_dvl',False) and not self.sensor_state_transport:
                         raise ValueError('worker_dvl_state_clock_unsupported')
+                    if self.processing_request.get('enable_joint_pressure',False) and not (self.pressure_transport and self.sensor_state_transport):
+                        raise ValueError('worker_pressure_unsupported')
                 elif not self.ready.is_set():
                     raise ValueError('worker_output_before_ready')
                 # Never silently drop poses/maps while calling the segment live.
@@ -165,13 +168,19 @@ class LiveClient:
             gyro_stamp_ns=gyro_stamp_ns,gyro_covariance=gyro_covariance,
             bottom_locked=bottom_locked,locked_beams=locked_beams))
 
+    def pressure(self,stamp_ns,height_m,variance_m2):
+        """Submit calibrated upward height before its original-time state event."""
+        if not getattr(self,'pressure_transport',False):raise ValueError('worker_pressure_unsupported')
+        from .pressure_packet import encode_pressure
+        self.send(10,encode_pressure(stamp_ns,height_m,variance_m2))
+
     def sonar_tick(self,stamp_ns):
         """Advance at the original sonar time, after its optional snapshot.
 
         Camera clock allows one auxiliary state between consecutive images;
-        negotiated DVL support permits consecutive auxiliary states too.
+        negotiated DVL/pressure support permits consecutive auxiliary states too.
         Explicit sonar clock permits camera-free startup and consecutive ticks,
-        including original DVL observation times when that transport is enabled.
+        including original DVL/pressure times when those transports are enabled.
         """
         if not (getattr(self,'sonar_auxiliary_transport',False) or getattr(self,'sonar_clock_transport',False)
                 or getattr(self,'sensor_state_transport',False)):

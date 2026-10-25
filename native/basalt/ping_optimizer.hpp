@@ -4,6 +4,7 @@
 #include "ping_marginal.hpp"
 #include "sonar_factors.hpp"
 #include "dvl_factors.hpp"
+#include "pressure_factors.hpp"
 #include <basalt/utils/ba_utils.h>
 #include <algorithm>
 #include <memory>
@@ -52,7 +53,8 @@ struct PingOptimizationReport {
 inline PingOptimizationReport optimizePingGroups(basalt::BundleAdjustmentBase<double>& owner,
     const basalt::AbsOrderMap& order,const std::vector<JointPingGroupSpec>& groups,
     const basalt::MargLinData<double>& prior,const basalt::ImuLinData<double>& imu,
-    const PingOptimizationOptions& options={},SonarFactorStore* sonar=nullptr,DvlFactorStore* dvl=nullptr) {
+    const PingOptimizationOptions& options={},SonarFactorStore* sonar=nullptr,DvlFactorStore* dvl=nullptr,
+    PressureFactorStore* pressure=nullptr) {
   requireStateOrder(order);
   if(owner.posim_ping_trial_active || options.iterations<1 || options.iterations>20 ||
      options.trials<1 || options.trials>10 || !std::isfinite(options.initial_damping) ||
@@ -96,6 +98,8 @@ inline PingOptimizationReport optimizePingGroups(basalt::BundleAdjustmentBase<do
       if(!valid)throw std::runtime_error("invalid_ping_initial_linearization");
       std::optional<DvlFactorStore::Rows> dvl_rows;
       if(dvl) {dvl_rows=dvl->linearize(owner,order);before+=dvl_rows->cost;}
+      std::optional<PressureFactorStore::Rows> pressure_rows;
+      if(pressure) {pressure_rows=pressure->linearize(owner,order);before+=pressure_rows->cost;}
       const auto visual_support=visualProjectionSupport(owner,order);
       if(iteration==0 && attempt==0)report.initial_cost=report.final_cost=before;
       linearization->performQR();Eigen::MatrixXd h;Eigen::VectorXd b;
@@ -113,11 +117,18 @@ inline PingOptimizationReport optimizePingGroups(basalt::BundleAdjustmentBase<do
         h.noalias()+=jacobian.transpose()*jacobian;
         b.noalias()+=jacobian.transpose()*rows.residual;
       }
+      if(pressure_rows) {
+        const auto n=h.cols();h.conservativeResize(n+1,n+1);b.conservativeResize(n+1);
+        h.row(n).setZero();h.col(n).setZero();b[n]=0;
+        h.noalias()+=pressure_rows->jacobian.transpose()*pressure_rows->jacobian;
+        b.noalias()+=pressure_rows->jacobian.transpose()*pressure_rows->residual;
+      }
       h.diagonal().array()+=(h.diagonal().array().abs()*damping).max(1e-9);
-      Eigen::LDLT<Eigen::MatrixXd> solve(h);const Eigen::VectorXd increment=solve.solve(-b);
-      if(solve.info()!=Eigen::Success || !increment.allFinite()) {
+      Eigen::LDLT<Eigen::MatrixXd> solve(h);const Eigen::VectorXd full_increment=solve.solve(-b);
+      if(solve.info()!=Eigen::Success || !full_increment.allFinite()) {
         ++report.rejected;damping=std::min(1e12,damping*10.);continue;
       }
+      const Eigen::VectorXd increment=full_increment.head(order.total_size);
       Eigen::VectorXd sonar_increment;
       double point_step=0.;
       if(sonar_rows) {
@@ -125,14 +136,21 @@ inline PingOptimizationReport optimizePingGroups(basalt::BundleAdjustmentBase<do
         for(const auto& [id,rows]:sonar_rows->reduced)
           point_step=std::max(point_step,rows.backSubstitute(sonar_increment).lpNorm<Eigen::Infinity>());
       }
-      if(increment.lpNorm<Eigen::Infinity>()<1e-9 && point_step<1e-9) {report.termination="small_step";return report;}
+      if(full_increment.lpNorm<Eigen::Infinity>()<1e-9 && point_step<1e-9) {report.termination="small_step";return report;}
       double after=before;
       {
         JointPingTrial trial(owner);
         std::unique_ptr<SonarFactorStore::Trial> sonar_trial;
         if(sonar_rows)sonar_trial=std::make_unique<SonarFactorStore::Trial>(*sonar);
+        std::unique_ptr<PressureFactorStore::Trial> pressure_trial;
+        if(pressure)pressure_trial=std::make_unique<PressureFactorStore::Trial>(*pressure);
         try {
           double predicted=linearization->backSubstitute(increment);
+          if(pressure_rows) {
+            predicted+=.5*(pressure_rows->residual.squaredNorm()-
+              (pressure_rows->residual+pressure_rows->jacobian*full_increment).squaredNorm());
+            pressure_trial->apply(full_increment[order.total_size]);
+          }
           if(dvl_rows)predicted+=.5*(dvl_rows->residual.squaredNorm()-
               (dvl_rows->residual+dvl_rows->jacobian*increment).squaredNorm());
           if(sonar_rows) {
@@ -150,11 +168,13 @@ inline PingOptimizationReport optimizePingGroups(basalt::BundleAdjustmentBase<do
           after=linearization->linearizeProblem(&valid);
           if(sonar_rows)after+=sonar->cost(sonar_poses());
           if(dvl)after+=dvl->linearize(owner,order).cost;
+          if(pressure)after+=pressure->linearize(owner,order).cost;
           if(!preservesVisualProjectionSupport(visual_support,visualProjectionSupport(owner,order))) {
             valid=false;++report.projection_rejections;
           }
           accepted=trial.accept(before,valid ? after : std::numeric_limits<double>::infinity(),predicted);
           if(sonar_trial)sonar_trial->finish(accepted);
+          if(pressure_trial)pressure_trial->finish(accepted);
         }catch(const std::invalid_argument& error) {
           if(std::getenv("POSIM_SLAM_TRACE_JOINT"))std::cerr
             << "POSIM_JOINT rejected_geometry " << error.what()

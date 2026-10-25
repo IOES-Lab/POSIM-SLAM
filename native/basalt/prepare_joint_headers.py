@@ -56,7 +56,7 @@ def prepare(source,destination):
         if hashlib.sha256(raw).hexdigest()!=checksum:raise ValueError('pinned_basalt_joint_header_changed:'+name)
         text=raw.decode()
         if name.endswith('/sqrt_keypoint_vio.h'):
-            text=replace_once(text,'#pragma once','#pragma once\n#include <functional>\nnamespace posim_slam { class PingFactorStore; class SonarFactorStore; class DvlFactorStore; }')
+            text=replace_once(text,'#pragma once','#pragma once\n#include <functional>\nnamespace posim_slam { class PingFactorStore; class SonarFactorStore; class DvlFactorStore; class PressureFactorStore; }')
             text=replace_once(text,'  using Scalar = Scalar_;','''  using Scalar = Scalar_;
   // Configured before input is submitted; called only by the estimator thread.
   std::function<void(SqrtKeypointVioEstimator&, int64_t)> posim_before_marginalization;
@@ -65,6 +65,7 @@ def prepare(source,destination):
   std::shared_ptr<posim_slam::PingFactorStore> posim_ping_factors;
   std::shared_ptr<posim_slam::SonarFactorStore> posim_sonar_factors;
   std::shared_ptr<posim_slam::DvlFactorStore> posim_dvl_factors;
+  std::shared_ptr<posim_slam::PressureFactorStore> posim_pressure_factors;
   bool posim_joint_started = false;
   bool posim_had_visual_landmarks = false;
   int posim_joint_last_accepted = 0;
@@ -132,7 +133,8 @@ def prepare(source,destination):
         '  const bool new_acoustic = posim_sonar_factors && posim_sonar_factors->size() &&\n'
         '    (!posim_joint_started || posim_sonar_factors->revision() != acoustic_revision);\n'
         '  const bool new_dvl = posim_dvl_factors && posim_dvl_factors->lastObservation() == last_state_t_ns;\n'
-        '  if ((posim_ping_factors && posim_ping_factors->lastObservation() == last_state_t_ns) || new_acoustic || new_dvl) {\n'
+        '  const bool new_pressure = posim_pressure_factors && posim_pressure_factors->lastObservation() == last_state_t_ns;\n'
+        '  if ((posim_ping_factors && posim_ping_factors->lastObservation() == last_state_t_ns) || new_acoustic || new_dvl || new_pressure) {\n'
         '    posim_joint_started = true; opt_started = true; posim_optimize_joint();\n'
         '  }\n'
         '  if (posim_after_joint) posim_after_joint(*this, last_state_t_ns);\n'
@@ -178,7 +180,7 @@ def prepare(source,destination):
       ImuLinData<double> imu = {g, gyro_bias_sqrt_weight, accel_bias_sqrt_weight, {}};
       for (const auto& [stamp, measurement] : imu_meas) imu.imu_meas[stamp] = &measurement;
       posim_ping_factors->marginalize(aom, marg_data, imu_meas, imu, removed,
-                                    states_to_marg_vel_bias, lost_landmaks, posim_sonar_factors.get(), posim_dvl_factors.get());
+                                    states_to_marg_vel_bias, lost_landmaks, posim_sonar_factors.get(), posim_dvl_factors.get(), posim_pressure_factors.get());
       for (int64_t stamp : removed) {
         kf_ids.erase(stamp); num_points_kf.erase(stamp); prev_opt_flow_res.erase(stamp);
       }
@@ -192,7 +194,7 @@ def prepare(source,destination):
     text=replace_once(text,'template <class Scalar_>\nvoid SqrtKeypointVioEstimator<Scalar_>::debug_finalize()', '''template <class Scalar_>
 void SqrtKeypointVioEstimator<Scalar_>::posim_optimize_joint() {
   if (!posim_ping_factors) {
-    if (!posim_sonar_factors && !posim_dvl_factors) throw std::logic_error("missing_joint_factor_store");
+    if (!posim_sonar_factors && !posim_dvl_factors && !posim_pressure_factors) throw std::logic_error("missing_joint_factor_store");
     posim_ping_factors = std::make_shared<posim_slam::PingFactorStore>(
         static_cast<BundleAdjustmentBase<double>&>(*this));
   }
@@ -206,7 +208,7 @@ void SqrtKeypointVioEstimator<Scalar_>::posim_optimize_joint() {
       << " prior " << marg_data.H.norm() << " " << marg_data.b.norm()
       << " sonar " << (posim_sonar_factors ? posim_sonar_factors->size() : 0) << std::endl;
   const auto report = posim_slam::optimizePingGroups(base, order,
-      posim_ping_factors->specs(order), marg_data, imu, {}, posim_sonar_factors.get(), posim_dvl_factors.get());
+      posim_ping_factors->specs(order), marg_data, imu, {}, posim_sonar_factors.get(), posim_dvl_factors.get(), posim_pressure_factors.get());
   if (trace_joint) std::cerr << "POSIM_JOINT after " << last_state_t_ns
       << " bias " << frame_states.at(last_state_t_ns).getState().bias_accel.transpose()
       << " cost " << report.initial_cost << " " << report.final_cost

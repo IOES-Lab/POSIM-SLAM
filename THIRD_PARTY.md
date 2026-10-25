@@ -85,6 +85,14 @@ ORB-SLAM3 코드·사전·학습 가중치는 포함하지 않습니다. Basalt�
 
 ## Experimental Basalt research recipe / 실험적 Basalt 연구
 
+The original hydrostatic-height factor and unknown-datum marginalization in
+`native/basalt/pressure_factors.hpp` are POSIM-SLAM Apache-2.0 code. They add no
+third-party dependency; the Basalt and SDK notices below still apply.
+
+`native/basalt/pressure_factors.hpp`의 자체 정수압 높이 제약과 미지 기준값
+주변화 코드는 POSIM-SLAM Apache-2.0 코드입니다. 새 외부 의존성은 없으며,
+아래 Basalt·SDK 고지는 계속 적용됩니다.
+
 The opt-in [headless target](native/basalt/README.md) has its own exact
 [source pins](native/basalt/sources.json): Basalt/basalt-headers and OpenGV
 (BSD-3-Clause), Sophus (MIT), cereal (BSD-3-Clause), magic_enum (MIT), and

@@ -4,6 +4,7 @@
 #include "ping_marginal.hpp"
 #include "sonar_factors.hpp"
 #include "dvl_factors.hpp"
+#include "pressure_factors.hpp"
 #include <memory>
 #include <basalt/imu/preintegration.h>
 
@@ -12,6 +13,8 @@ struct PreparedPingPrior {
   PingRetirementPlan retirement;
   std::optional<SonarFactorStore::Retirement> acoustic;
   std::optional<DvlFactorStore::Retirement> dvl;
+  std::optional<PressureFactorStore::Retirement> pressure;
+  PressureDatumPrior pressure_prior;
   PingMarginalLayout layout;
   basalt::MargLinData<double> prior;
 };
@@ -23,7 +26,8 @@ inline PreparedPingPrior preparePingPrior(basalt::BundleAdjustmentBase<double>& 
     const basalt::AbsOrderMap& group_order,const std::vector<JointPingGroupSpec>& groups,
     const basalt::MargLinData<double>& previous,const basalt::ImuLinData<double>& imu,
     const std::set<int64_t>& removed,const std::set<int64_t>& pose_only,
-    const std::unordered_set<basalt::KeypointId>& lost,SonarFactorStore* sonar=nullptr,DvlFactorStore* dvl=nullptr) {
+    const std::unordered_set<basalt::KeypointId>& lost,SonarFactorStore* sonar=nullptr,DvlFactorStore* dvl=nullptr,
+    PressureFactorStore* pressure=nullptr) {
   PreparedPingPrior result;
   result.retirement=planPingRetirement(owner,groups,removed,removed,lost);
   std::vector<std::pair<int64_t,int64_t>> intervals;
@@ -101,7 +105,15 @@ inline PreparedPingPrior preparePingPrior(basalt::BundleAdjustmentBase<double>& 
       if(pose.isLinearized())delta.segment<6>(block.first)=pose.getDelta();
     }
   }
-  result.prior=marginalizeJointSystem(j,r,result.layout.source,result.layout.retained,delta);
+  if(pressure) {
+    result.pressure=pressure->planRetirement(removed);
+    const auto depth=pressure->linearize(owner,result.layout.source,&result.pressure->stamps);
+    const auto old=j.rows();j.conservativeResize(old+depth.residual.size(),j.cols()+1);
+    j.col(j.cols()-1).head(old).setZero();j.bottomRows(depth.residual.size())=depth.jacobian;
+    r.conservativeResize(old+depth.residual.size());r.tail(depth.residual.size())=depth.residual;
+    const auto reduced=marginalizePressureSystem(j,r,result.layout.source,result.layout.retained,delta,pressure->datum());
+    result.prior=reduced.states;result.pressure_prior=reduced.datum;
+  } else result.prior=marginalizeJointSystem(j,r,result.layout.source,result.layout.retained,delta);
   return result;
 }
 }

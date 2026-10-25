@@ -5,6 +5,19 @@ from posim_slam.sensor_events import SensorEvents
 
 
 class SensorEventsTests(unittest.TestCase):
+    def test_pressure_and_dvl_coalesce_only_equal_times_under_delayed_arrival(self):
+        for order in set(itertools.permutations('ssddppi')):
+            q=SensorEvents(state_clock='sonar',dvl=True,pressure=True)
+            times={'sonar':iter([10,30]),'dvl':iter([20,30]),'pressure':iter([15,30]),'imu':iter([31])}
+            events=[]
+            for letter in order:
+                kind={'s':'sonar','d':'dvl','p':'pressure','i':'imu'}[letter];stamp=next(times[kind])
+                q.push(kind,stamp,(kind,stamp));events.extend(self.drain(q))
+            self.assertEqual([e['stamp_ns'] for e in events],[10,15,20,30])
+            self.assertEqual(events[1]['pressure'],('pressure',15))
+            self.assertIsNone(events[1]['sonar']);self.assertIsNone(events[1]['dvl'])
+            self.assertEqual(events[-1]['pressure'],('pressure',30))
+
     def test_dvl_and_sonar_keep_original_times_under_all_arrival_orders(self):
         for order in set(itertools.permutations('ssddii')):
             q=SensorEvents(state_clock='sonar',dvl=True)
