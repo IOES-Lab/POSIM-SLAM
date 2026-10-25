@@ -1,0 +1,962 @@
+{
+  "native_revision": "cc25084",
+  "worker_sha256": "fbf8bb0136320477353a65de1dd6732e9f1f7cfac7e8038633d3e1c35b20b0ed",
+  "managed_passed": true,
+  "recovery": {
+    "killed_owned_worker": 7910,
+    "old_frame": "vehicle/vio_b44687fe95d34366966aa3ae89d456ce_segment_0",
+    "new_frame": "vehicle/vio_b44687fe95d34366966aa3ae89d456ce_segment_1",
+    "new_pose_count": 5,
+    "acceptance": "five visually constrained poses; bootstrap predictions retained separately",
+    "empty_new_segment_clouds": 17
+  },
+  "mission": {
+    "recording_parameters": {
+      "depth_m": 1.5,
+      "distance_m": 5.0,
+      "duration_s": 60.0,
+      "initialization_depth_m": 2.4,
+      "width_m": 0.0
+    },
+    "live_poses": 300,
+    "segment_stable": true,
+    "position_acceptance": {
+      "metrics": {
+        "evaluated": true,
+        "states": 300,
+        "duration_s": 59.800000000000004,
+        "evaluation_alignment": {
+          "rotation": [
+            [
+              -0.9875707324020534,
+              -0.15717521593073083,
+              0.0
+            ],
+            [
+              0.15717521593073083,
+              -0.9875707324020534,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "translation": [
+            -0.03642524697614164,
+            -0.009612601365620966,
+            -0.18266700056263743
+          ],
+          "scale": 1.0
+        },
+        "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+        "position_rmse_m": 0.026889057963460024,
+        "position_max_m": 0.042779833625354854,
+        "rotation_rmse_rad": 0.0019394039136849917,
+        "rotation_max_rad": 0.003962881764940247,
+        "truth_distance_m": 16.668761016568702,
+        "estimated_distance_m": 16.808769833235242,
+        "rpe_1s_pairs": 295,
+        "rpe_1s_position_rmse_m": 0.0063314509576987785,
+        "rpe_1s_rotation_rmse_rad": 0.0010513433517472044,
+        "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+      },
+      "accepted": true,
+      "checks": {
+        "evaluated": true,
+        "states": true,
+        "duration": true,
+        "actual_motion": true,
+        "position_rmse": true,
+        "position_max": true
+      },
+      "criteria": {
+        "minimum_states": 250,
+        "minimum_duration_s": 29.0,
+        "minimum_truth_distance_m": 0.5,
+        "maximum_position_rmse_m": 0.1,
+        "maximum_position_error_m": 0.25
+      },
+      "scope": "Single recorded motion position gate; map geometry, orientation, repeatability and installed-app qualification remain separate"
+    }
+  },
+  "visual_export": {
+    "scope": "accumulated_local_vio_landmarks",
+    "points": 1955,
+    "stamp_ns": 75900000000,
+    "request_id": 1
+  },
+  "sonar_export": {
+    "session_nonce": "b44687fe95d34366966aa3ae89d456ce",
+    "frame": "vehicle/vio_b44687fe95d34366966aa3ae89d456ce_segment_1",
+    "segment": 1,
+    "stamp_ns": 76000000000,
+    "points": 69,
+    "map_qualified": false,
+    "scope": "local_acoustic_track_hypotheses",
+    "sha256": "1cd813bd54a83207c4f83c5ae0f28439b324fc5b2bf276c80ac1c011980cb2cd"
+  },
+  "surface_evaluation": {
+    "scope": "Post-estimation point-to-triangle distances to physical collision boxes and static seabed; not physical track identity or area coverage",
+    "points": 69,
+    "surface_distance_m": {
+      "minimum": 0.0015411127381614877,
+      "median": 0.09101840649110748,
+      "p90": 0.336810691666795,
+      "maximum": 1.1461796780282019
+    },
+    "diagnostic_thresholds_m": {
+      "0.05": {
+        "points_within": 22,
+        "points_outside": 47,
+        "nearest_surface_counts": {
+          "acoustic_validation_target_0": 3,
+          "acoustic_validation_target_1": 1,
+          "acoustic_validation_target_2": 5,
+          "acoustic_validation_wall_0": 7,
+          "acoustic_validation_wall_1": 3,
+          "seabed": 3
+        }
+      },
+      "0.1": {
+        "points_within": 36,
+        "points_outside": 33,
+        "nearest_surface_counts": {
+          "acoustic_validation_target_0": 4,
+          "acoustic_validation_target_1": 4,
+          "acoustic_validation_target_2": 6,
+          "acoustic_validation_wall_0": 11,
+          "acoustic_validation_wall_1": 5,
+          "seabed": 6
+        }
+      },
+      "0.2": {
+        "points_within": 52,
+        "points_outside": 17,
+        "nearest_surface_counts": {
+          "acoustic_validation_target_0": 6,
+          "acoustic_validation_target_1": 6,
+          "acoustic_validation_target_2": 8,
+          "acoustic_validation_wall_0": 16,
+          "acoustic_validation_wall_1": 7,
+          "seabed": 9
+        }
+      }
+    },
+    "map_qualified": false,
+    "alignment": "initial yaw and translation only; scale 1; simulator geometry used only for evaluation",
+    "per_point": [
+      {
+        "export_vertex_index": 0,
+        "world": [
+          4.957116671706251,
+          0.9856217721359049,
+          -1.7312268461812317
+        ],
+        "nearest_surface": "acoustic_validation_target_1",
+        "distance_m": 0.12910321917824552
+      },
+      {
+        "export_vertex_index": 1,
+        "world": [
+          8.000543181929213,
+          1.6500348510313425,
+          -2.3506644970020303
+        ],
+        "nearest_surface": "acoustic_validation_wall_0",
+        "distance_m": 0.12445681807078657
+      },
+      {
+        "export_vertex_index": 2,
+        "world": [
+          7.870489948809542,
+          0.4940329291544561,
+          -3.5494861974025538
+        ],
+        "nearest_surface": "acoustic_validation_wall_0",
+        "distance_m": 0.004510051190457887
+      },
+      {
+        "export_vertex_index": 3,
+        "world": [
+          4.914020939251286,
+          1.412485094931415,
+          -1.8367827541197188
+        ],
+        "nearest_surface": "acoustic_validation_target_1",
+        "distance_m": 0.023547311239758395
+      },
+      {
+        "export_vertex_index": 4,
+        "world": [
+          7.863281243219344,
+          0.982920283199775,
+          -3.570053884009367
+        ],
+        "nearest_surface": "acoustic_validation_wall_0",
+        "distance_m": 0.011718756780656037
+      },
+      {
+        "export_vertex_index": 5,
+        "world": [
+          7.882000440648142,
+          -1.7132546937117141,
+          -2.9675737542858336
+        ],
+        "nearest_surface": "acoustic_validation_wall_0",
+        "distance_m": 0.007000440648141648
+      },
+      {
+        "export_vertex_index": 6,
+        "world": [
+          7.965984558599524,
+          1.35083120316,
+          -2.3817451093571487
+        ],
+        "nearest_surface": "acoustic_validation_wall_0",
+        "distance_m": 0.0909845585995237
+      },
+      {
+        "export_vertex_index": 7,
+        "world": [
+          6.687716538808706,
+          -0.9820185495836867,
+          -3.1331262802910924
+        ],
+        "nearest_surface": "acoustic_validation_target_2",
+        "distance_m": 0.01798145041631327
+      },
+      {
+        "export_vertex_index": 8,
+        "world": [
+          6.554666158185106,
+          -1.1987204971965224,
+          -3.500295488170569
+        ],
+        "nearest_surface": "seabed",
+        "distance_m": 0.17680226774542618
+      },
+      {
+        "export_vertex_index": 9,
+        "world": [
+          6.708200269839003,
+          -1.1007450322641488,
+          -3.5185881478090835
+        ],
+        "nearest_surface": "acoustic_validation_target_2",
+        "distance_m": 0.10074503226414877
+      },
+      {
+        "export_vertex_index": 10,
+        "world": [
+          4.170881032057779,
+          -1.6508773297649966,
+          -2.2367371984038806
+        ],
+        "nearest_surface": "acoustic_validation_target_0",
+        "distance_m": 0.07497240943925654
+      },
+      {
+        "export_vertex_index": 11,
+        "world": [
+          6.433260893826185,
+          -1.0080145637112607,
+          -3.3865023940785766
+        ],
+        "nearest_surface": "acoustic_validation_target_2",
+        "distance_m": 0.01855884982912751
+      },
+      {
+        "export_vertex_index": 12,
+        "world": [
+          7.9895535204170995,
+          0.5519062636436157,
+          -2.7303944195876877
+        ],
+        "nearest_surface": "acoustic_validation_wall_0",
+        "distance_m": 0.11455352041709956
+      },
+      {
+        "export_vertex_index": 13,
+        "world": [
+          7.9340590127379915,
+          3.1771913846877182,
+          -3.4331407872444393
+        ],
+        "nearest_surface": "acoustic_validation_wall_0",
+        "distance_m": 0.059059012737991516
+      },
+      {
+        "export_vertex_index": 14,
+        "world": [
+          6.916154586532959,
+          2.8623220500257385,
+          -2.5943729584049495
+        ],
+        "nearest_surface": "acoustic_validation_wall_1",
+        "distance_m": 0.38767794997426147
+      },
+      {
+        "export_vertex_index": 15,
+        "world": [
+          7.155123769244709,
+          2.872827099768036,
+          -2.4790635434490778
+        ],
+        "nearest_surface": "acoustic_validation_wall_1",
+        "distance_m": 0.3771729002319639
+      },
+      {
+        "export_vertex_index": 16,
+        "world": [
+          7.915736127995645,
+          2.7136281006357765,
+          -2.943451485639884
+        ],
+        "nearest_surface": "acoustic_validation_wall_0",
+        "distance_m": 0.04073612799564508
+      },
+      {
+        "export_vertex_index": 17,
+        "world": [
+          3.8637884260618276,
+          -1.7526581092903564,
+          -2.3567313624995236
+        ],
+        "nearest_surface": "acoustic_validation_target_0",
+        "distance_m": 0.03621157393817276
+      },
+      {
+        "export_vertex_index": 18,
+        "world": [
+          6.451541112738162,
+          -0.17168681507143835,
+          -2.5045316088923437
+        ],
+        "nearest_surface": "acoustic_validation_target_2",
+        "distance_m": 0.0015411127381614877
+      },
+      {
+        "export_vertex_index": 19,
+        "world": [
+          5.024697569533753,
+          1.0103182846396217,
+          -3.59503213105944
+        ],
+        "nearest_surface": "seabed",
+        "distance_m": 0.037191362052009055
+      },
+      {
+        "export_vertex_index": 20,
+        "world": [
+          5.348812899970166,
+          0.8711007284249228,
+          -3.7865408507928695
+        ],
+        "nearest_surface": "acoustic_validation_target_1",
+        "distance_m": 0.1294771418331587
+      },
+      {
+        "export_vertex_index": 21,
+        "world": [
+          6.2738596470765575,
+          -0.9846507292882835,
+          -3.416354866445656
+        ],
+        "nearest_surface": "acoustic_validation_target_2",
+        "distance_m": 0.17614035292344266
+      },
+      {
+        "export_vertex_index": 22,
+        "world": [
+          5.277863350507524,
+          3.2231589092146624,
+          -3.393351106806987
+        ],
+        "nearest_surface": "acoustic_validation_wall_1",
+        "distance_m": 0.026841090785337585
+      },
+      {
+        "export_vertex_index": 23,
+        "world": [
+          6.102549172253131,
+          3.2912263472873193,
+          -3.730347315934497
+        ],
+        "nearest_surface": "acoustic_validation_wall_1",
+        "distance_m": 0.05514306756848386
+      },
+      {
+        "export_vertex_index": 24,
+        "world": [
+          4.8913722808604225,
+          3.1662381123261505,
+          -3.334604161166212
+        ],
+        "nearest_surface": "seabed",
+        "distance_m": 0.280677961036696
+      },
+      {
+        "export_vertex_index": 25,
+        "world": [
+          6.540076163748686,
+          0.8292903607542103,
+          -4.7922782199861516
+        ],
+        "nearest_surface": "seabed",
+        "distance_m": 1.1461796780282019
+      },
+      {
+        "export_vertex_index": 26,
+        "world": [
+          5.666429806718542,
+          3.305315149336178,
+          -3.1171215643862014
+        ],
+        "nearest_surface": "acoustic_validation_wall_1",
+        "distance_m": 0.055315149336177864
+      },
+      {
+        "export_vertex_index": 27,
+        "world": [
+          5.238101675304202,
+          0.6493573023368012,
+          -3.3798818571061893
+        ],
+        "nearest_surface": "acoustic_validation_target_1",
+        "distance_m": 0.2506426976631987
+      },
+      {
+        "export_vertex_index": 28,
+        "world": [
+          4.7183551757887425,
+          1.803606142685312,
+          -3.851550604914464
+        ],
+        "nearest_surface": "seabed",
+        "distance_m": 0.23517980457267076
+      },
+      {
+        "export_vertex_index": 29,
+        "world": [
+          6.594552090276457,
+          -0.7446335564674822,
+          -3.783327356265825
+        ],
+        "nearest_surface": "acoustic_validation_target_2",
+        "distance_m": 0.08827131051419145
+      },
+      {
+        "export_vertex_index": 30,
+        "world": [
+          4.988958982603409,
+          1.7252715782951165,
+          -3.6259685336405516
+        ],
+        "nearest_surface": "seabed",
+        "distance_m": 0.00648248904516707
+      },
+      {
+        "export_vertex_index": 31,
+        "world": [
+          5.251273871006647,
+          1.1633278446133182,
+          -3.9870502048849796
+        ],
+        "nearest_surface": "acoustic_validation_target_1",
+        "distance_m": 0.3267201395255026
+      },
+      {
+        "export_vertex_index": 32,
+        "world": [
+          7.299769275707864,
+          -1.3325662044913045,
+          -3.7618278909842973
+        ],
+        "nearest_surface": "seabed",
+        "distance_m": 0.08978359895400384
+      },
+      {
+        "export_vertex_index": 33,
+        "world": [
+          5.370236961151161,
+          -0.6018174065446746,
+          -3.9351114672522476
+        ],
+        "nearest_surface": "seabed",
+        "distance_m": 0.2631794761710073
+      },
+      {
+        "export_vertex_index": 34,
+        "world": [
+          5.406128523463696,
+          3.4652722963089073,
+          -3.857949653773822
+        ],
+        "nearest_surface": "acoustic_validation_wall_1",
+        "distance_m": 0.1827454054078088
+      },
+      {
+        "export_vertex_index": 35,
+        "world": [
+          6.210792193218118,
+          3.274427071463003,
+          -4.149499753889267
+        ],
+        "nearest_surface": "acoustic_validation_wall_1",
+        "distance_m": 0.47429550552325406
+      },
+      {
+        "export_vertex_index": 36,
+        "world": [
+          5.842555667320955,
+          3.0735248431940705,
+          -4.4825889328265305
+        ],
+        "nearest_surface": "acoustic_validation_wall_1",
+        "distance_m": 0.8264463138468747
+      },
+      {
+        "export_vertex_index": 37,
+        "world": [
+          5.101196997887869,
+          0.8320379709562006,
+          -3.731067399325478
+        ],
+        "nearest_surface": "seabed",
+        "distance_m": 0.09372250191845324
+      },
+      {
+        "export_vertex_index": 38,
+        "world": [
+          4.005410361808585,
+          -0.9669294314857634,
+          -3.723393955203114
+        ],
+        "nearest_surface": "acoustic_validation_target_0",
+        "distance_m": 0.011684347359976588
+      },
+      {
+        "export_vertex_index": 39,
+        "world": [
+          6.505092968346086,
+          3.2302073048089235,
+          -3.5943980438319705
+        ],
+        "nearest_surface": "acoustic_validation_wall_1",
+        "distance_m": 0.01979269519107651
+      },
+      {
+        "export_vertex_index": 40,
+        "world": [
+          5.436102645694816,
+          3.261525517772101,
+          -3.2126175874970295
+        ],
+        "nearest_surface": "acoustic_validation_wall_1",
+        "distance_m": 0.01152551777210098
+      },
+      {
+        "export_vertex_index": 41,
+        "world": [
+          6.518570232529892,
+          -1.1834015253954662,
+          -3.5747244732377683
+        ],
+        "nearest_surface": "seabed",
+        "distance_m": 0.1025507880773822
+      },
+      {
+        "export_vertex_index": 42,
+        "world": [
+          6.5667552080630145,
+          3.1738035550348016,
+          -3.8573470168339705
+        ],
+        "nearest_surface": "acoustic_validation_wall_1",
+        "distance_m": 0.19743831018955388
+      },
+      {
+        "export_vertex_index": 43,
+        "world": [
+          4.940945539436029,
+          1.1060564793434977,
+          -3.3195447325854084
+        ],
+        "nearest_surface": "acoustic_validation_target_1",
+        "distance_m": 0.09094553943602879
+      },
+      {
+        "export_vertex_index": 44,
+        "world": [
+          6.791519047390703,
+          -1.23613414457586,
+          -3.511645326683221
+        ],
+        "nearest_surface": "seabed",
+        "distance_m": 0.16379850728024334
+      },
+      {
+        "export_vertex_index": 45,
+        "world": [
+          5.203851630319655,
+          2.020332494871931,
+          -3.6572370369214533
+        ],
+        "nearest_surface": "seabed",
+        "distance_m": 0.03662794897026998
+      },
+      {
+        "export_vertex_index": 46,
+        "world": [
+          5.927072967538077,
+          2.8062903783438036,
+          -4.107043213095549
+        ],
+        "nearest_surface": "seabed",
+        "distance_m": 0.4776567236826624
+      },
+      {
+        "export_vertex_index": 47,
+        "world": [
+          5.356268109910352,
+          3.0245334143639733,
+          -3.1871341048758377
+        ],
+        "nearest_surface": "acoustic_validation_wall_1",
+        "distance_m": 0.22546658563602673
+      },
+      {
+        "export_vertex_index": 48,
+        "world": [
+          6.6380248425896635,
+          3.2033893883850144,
+          -4.5326009771214535
+        ],
+        "nearest_surface": "acoustic_validation_wall_1",
+        "distance_m": 0.8586627391448015
+      },
+      {
+        "export_vertex_index": 49,
+        "world": [
+          4.009374697573212,
+          -0.7387233302929213,
+          -2.5111720553408605
+        ],
+        "nearest_surface": "acoustic_validation_target_0",
+        "distance_m": 0.16127666970707888
+      },
+      {
+        "export_vertex_index": 50,
+        "world": [
+          7.77180880829674,
+          1.2016618768602714,
+          -3.594854524907021
+        ],
+        "nearest_surface": "seabed",
+        "distance_m": 0.051836552895032
+      },
+      {
+        "export_vertex_index": 51,
+        "world": [
+          3.9731658886506787,
+          -1.5488983219882204,
+          -2.200341232322041
+        ],
+        "nearest_surface": "acoustic_validation_target_0",
+        "distance_m": 0.11136837552109612
+      },
+      {
+        "export_vertex_index": 52,
+        "world": [
+          3.9654209621153265,
+          -0.8985897693562708,
+          -2.308341370363061
+        ],
+        "nearest_surface": "acoustic_validation_target_0",
+        "distance_m": 0.0036515440830835696
+      },
+      {
+        "export_vertex_index": 53,
+        "world": [
+          7.119417743788304,
+          0.5611073754439921,
+          -3.372479955456148
+        ],
+        "nearest_surface": "seabed",
+        "distance_m": 0.2769904993021185
+      },
+      {
+        "export_vertex_index": 54,
+        "world": [
+          7.666629078526579,
+          1.6463924100230214,
+          -3.2944610644896333
+        ],
+        "nearest_surface": "acoustic_validation_wall_0",
+        "distance_m": 0.20837092147342062
+      },
+      {
+        "export_vertex_index": 55,
+        "world": [
+          4.913436334451048,
+          0.8409458756653191,
+          -2.0793663984536064
+        ],
+        "nearest_surface": "acoustic_validation_target_1",
+        "distance_m": 0.059054124334680824
+      },
+      {
+        "export_vertex_index": 56,
+        "world": [
+          7.883435194940065,
+          0.5668247741737165,
+          -3.4010530563292583
+        ],
+        "nearest_surface": "acoustic_validation_wall_0",
+        "distance_m": 0.008435194940065394
+      },
+      {
+        "export_vertex_index": 57,
+        "world": [
+          6.637182171013089,
+          0.2489410772457748,
+          -2.4411700834089385
+        ],
+        "nearest_surface": "acoustic_validation_target_2",
+        "distance_m": 0.048941077245774844
+      },
+      {
+        "export_vertex_index": 58,
+        "world": [
+          5.058452720634898,
+          1.0215332781881603,
+          -1.9182572361995873
+        ],
+        "nearest_surface": "acoustic_validation_target_1",
+        "distance_m": 0.05792717084011012
+      },
+      {
+        "export_vertex_index": 59,
+        "world": [
+          6.621563966223358,
+          -0.7738499567334314,
+          -2.4129798415589527
+        ],
+        "nearest_surface": "acoustic_validation_target_2",
+        "distance_m": 0.017923795807318843
+      },
+      {
+        "export_vertex_index": 60,
+        "world": [
+          7.7839815935088925,
+          -2.4554673717643745,
+          -2.401439991115024
+        ],
+        "nearest_surface": "acoustic_validation_wall_0",
+        "distance_m": 0.09101840649110748
+      },
+      {
+        "export_vertex_index": 61,
+        "world": [
+          7.842399966286697,
+          -2.283970315725478,
+          -2.416582803309188
+        ],
+        "nearest_surface": "acoustic_validation_wall_0",
+        "distance_m": 0.03260003371330278
+      },
+      {
+        "export_vertex_index": 62,
+        "world": [
+          7.566945441872602,
+          -2.5468939196711093,
+          -2.362717289767389
+        ],
+        "nearest_surface": "acoustic_validation_wall_0",
+        "distance_m": 0.3116033544190223
+      },
+      {
+        "export_vertex_index": 63,
+        "world": [
+          7.735474546043474,
+          -2.616903622203413,
+          -2.724109964699614
+        ],
+        "nearest_surface": "acoustic_validation_wall_0",
+        "distance_m": 0.1820269463185406
+      },
+      {
+        "export_vertex_index": 64,
+        "world": [
+          7.748742538145153,
+          -2.2244281981834906,
+          -2.3412485594877976
+        ],
+        "nearest_surface": "acoustic_validation_wall_0",
+        "distance_m": 0.12625746185484665
+      },
+      {
+        "export_vertex_index": 65,
+        "world": [
+          7.685270377723881,
+          -2.348899969909093,
+          -2.3946714425114366
+        ],
+        "nearest_surface": "acoustic_validation_wall_0",
+        "distance_m": 0.18972962227611934
+      },
+      {
+        "export_vertex_index": 66,
+        "world": [
+          8.045923738351505,
+          -0.0544277944771529,
+          -2.4530020440499736
+        ],
+        "nearest_surface": "acoustic_validation_wall_0",
+        "distance_m": 0.07907626164849547
+      },
+      {
+        "export_vertex_index": 67,
+        "world": [
+          7.65721861086596,
+          -1.7016978849410296,
+          -2.136036216143654
+        ],
+        "nearest_surface": "acoustic_validation_wall_0",
+        "distance_m": 0.21778138913404013
+      },
+      {
+        "export_vertex_index": 68,
+        "world": [
+          7.826862407646607,
+          -1.9936598436518986,
+          -2.4204568322033047
+        ],
+        "nearest_surface": "acoustic_validation_wall_0",
+        "distance_m": 0.04813759235339266
+      }
+    ],
+    "source_sha256": {
+      "physical-targets.sdf": "538302181cbe75340969f1c8acdd3998077b86537ab717f3b01dbbd592476a63",
+      "demo-runtime/b44687fe95d34366966aa3ae89d456ce/world-waves-underwater-sonar.sdf": "1bcbbfc56e266ce8b75cab3f72561f53117dc8fcbc0046fe40d698112fd92a4b",
+      "demo-runtime/b44687fe95d34366966aa3ae89d456ce/orca5-seafloor.dae": "277c49dd9c3b2ec1c9d3c3754be9d076c7b0438ccd29e9ae11355869849fbeb2",
+      "acoustic-comparison.json": "3ad5641ef2b98e0c8a5e49f64b7b85504ff0c0b67cd70bb673962d2a0c761e80",
+      "sonar-local-map.ply": "1cd813bd54a83207c4f83c5ae0f28439b324fc5b2bf276c80ac1c011980cb2cd",
+      "live-vio-probe.json": "23a6cb7f78c5932b28595bbf3a271fbbfcd1e5c31fa0e73e4c1fc2f81185d380"
+    }
+  },
+  "comparison": {
+    "method": "camera_imu_single_ping_measured_sonar_managed",
+    "library": "Basalt",
+    "revision": "0f3b2b52c807f70ff4e2973ce253c73329eea7bc",
+    "snapshot": {
+      "session_nonce": "b44687fe95d34366966aa3ae89d456ce",
+      "frame": "vehicle/vio_b44687fe95d34366966aa3ae89d456ce_segment_1",
+      "segment": 1,
+      "stamp_ns": 76000000000,
+      "points": 69,
+      "map_qualified": false,
+      "scope": "local_acoustic_track_hypotheses",
+      "sha256": "1cd813bd54a83207c4f83c5ae0f28439b324fc5b2bf276c80ac1c011980cb2cd"
+    },
+    "frame": "vehicle/vio_b44687fe95d34366966aa3ae89d456ce_segment_1",
+    "total_points": 69,
+    "points_in_view": 69,
+    "height_limits_m": [
+      -5,
+      0
+    ],
+    "colormap": "turbo",
+    "marker_area_pt2": 64,
+    "camera": {
+      "eye": [
+        0.0,
+        -4.0,
+        -0.15
+      ],
+      "camera_to_world": [
+        [
+          0.5773502691896258,
+          -0.7071067811865475,
+          0.408248290463863
+        ],
+        [
+          0.5773502691896257,
+          0.7071067811865476,
+          0.40824829046386296
+        ],
+        [
+          -0.5773502691896257,
+          0,
+          0.816496580927726
+        ]
+      ],
+      "horizontal_fov": 1.35,
+      "width": 1000,
+      "height": 800,
+      "stamp_ns": 78000000000,
+      "projection": "perspective",
+      "viewpoint": "isometric direction; positive X forward, Y left, Z up",
+      "partition": "inertial-init-d275f20130144c8295a887d1290a679a",
+      "topic": "/validation/slam/isometric_rgb"
+    },
+    "metrics": {
+      "evaluated": true,
+      "states": 300,
+      "duration_s": 59.800000000000004,
+      "evaluation_alignment": {
+        "rotation": [
+          [
+            -0.9875707324020534,
+            -0.15717521593073083,
+            0.0
+          ],
+          [
+            0.15717521593073083,
+            -0.9875707324020534,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "translation": [
+          -0.03642524697614165,
+          -0.00961260136562097,
+          -0.18266700056263743
+        ],
+        "scale": 1.0
+      },
+      "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+      "position_rmse_m": 0.02688905796346002,
+      "position_max_m": 0.042779833625354854,
+      "rotation_rmse_rad": 0.0019394039136788855,
+      "rotation_max_rad": 0.003962881764940247,
+      "truth_distance_m": 16.668761016568702,
+      "estimated_distance_m": 16.808769833235242,
+      "rpe_1s_pairs": 295,
+      "rpe_1s_position_rmse_m": 0.006331450957698772,
+      "rpe_1s_rotation_rmse_rad": 0.0010513433517214308,
+      "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+    },
+    "input_sha256": {
+      "isometric-rgb.png": "1691e0a3fc62d1b8b688f0a5a2fc23a1623f4aa89003cbe4a05679334501c725",
+      "isometric-camera.json": "8c1e221414de3a719beba84632d09a2f81051484bc27ea3fa6d32499a5404af0",
+      "physical-targets.sdf": "538302181cbe75340969f1c8acdd3998077b86537ab717f3b01dbbd592476a63",
+      "measured_ply": "1cd813bd54a83207c4f83c5ae0f28439b324fc5b2bf276c80ac1c011980cb2cd"
+    },
+    "map_geometry_qualified": false,
+    "replay_provenance": {
+      "managed_probe_sha256": "23a6cb7f78c5932b28595bbf3a271fbbfcd1e5c31fa0e73e4c1fc2f81185d380",
+      "worker_sha256": "fbf8bb0136320477353a65de1dd6732e9f1f7cfac7e8038633d3e1c35b20b0ed",
+      "managed_probe_passed": true,
+      "live_gazebo": true
+    },
+    "scope": "Same-recording static scene comparison; actual RGB reference captured after mission; acoustic hypotheses"
+  },
+  "map_qualified": false
+}
