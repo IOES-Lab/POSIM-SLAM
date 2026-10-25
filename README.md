@@ -17,6 +17,7 @@ version; acoustic/DVL fusion retains its algorithm version **0.2.1**.
 | Visual + single Ping | Robust local-plane fit and synchronized range with mount/bias compensation; stable median metric scale; requires a suitable downward view and locally planar seabed |
 | Visual + DVL | Bottom-locked velocity integration with calibrated axes and rotating lever arm; metric scale calibration, not joint drift correction |
 | Acoustic frontend | OpenCV Shi–Tomasi corners and forward/backward pyramidal Lucas–Kanade flow; robust 2D SVD/RANSAC registration in the sonar fan plane |
+| Offline sonar regions | NumPy median/quantile intensity segmentation, analytic plane/fan bounds and censored shadow intervals; experimental candidates without 3D landmarks; [method and limits](docs/diagnostics/sonar-surface-research.md) |
 | Acoustic + DVL | Bracketed velocity integration for translation, acoustic yaw/features and displacement consistency gate; planar experimental odometry; elevation unresolved |
 | Surface filter | Pressure/orientation-derived mean-water plane and calibrated metric-map clipping; does not classify individual surface echoes |
 | Inertial core | Raw gyro/accelerometer midpoint SO(3) preintegration, bias Jacobian and 15-state error covariance; preparation code, not a complete fused estimator |

@@ -1,6 +1,7 @@
 # Echo, shadow and ground-onset reconstruction
 
-This is a research direction, not an implemented or qualified mapping mode.
+The region extractor below is an offline experiment. Multi-view surface
+reconstruction remains a research direction, not a qualified mapping mode.
 The [measured example](measured-sonar.md) still uses intensity corners and flow.
 Its four exported hypotheses do not recover the physical box surfaces.
 
@@ -81,8 +82,9 @@ No external implementation, dataset or figure is imported by this research note.
 
 ## 한국어
 
-현재 예시는 강도 특징점과 광류를 사용합니다. 반사·그림자 방식은 연구 제안이며
-구현·검증 완료된 지도 모드가 아닙니다.
+현재 네이티브 예시는 강도 특징점과 광류를 사용합니다. 별도 영역 검출기는
+오프라인 실험으로 구현되어 있으며, 다중 시점 표면 복원은 연구 제안입니다.
+구현·검증 완료된 지도 모드는 아닙니다.
 
 Song·Choi(2016)는 해저 강도를 기준으로 물체와 그림자를 검출하고 그림자 길이와
 Lambert 반사 모델로 높이를 추정합니다. Westman 등(2020)은 센서 이동에 따른
@@ -116,3 +118,43 @@ Xie 등(2024)의 신경망 해저 복원은 정확한 항법과 주로 오프라
 통과시키지 않습니다. 평지·경사·상자·고도 변화·약한 반사·중첩 및 잘린 그림자·
 수면 효과를 시험하고 참값은 평가에만 사용합니다. 광학 집광무늬와 음향 반사도
 구분합니다. 이 문서는 외부 코드·데이터셋·그림을 포함하지 않습니다.
+
+
+## Implemented region experiment / 구현한 영역 검출 실험
+
+`sonar_surface.ground_entry_band` computes analytic plane/fan intersection bounds.
+`segment_surface` uses raw dB, separable three-sample medians, same-range 70th
+percentiles and sustained runs across at least three neighbouring beams. Echo
+excess is 8 dB; shadow deficit is 10 dB. Near-range noise (0.2–1 m) sets a 12 dB
+return margin. Minimum echo/shadow extent is 0.075/0.30 m; an observed shadow end
+requires 0.15 m of background recovery. These are diagnostic defaults. Uniform
+gain changes preserve detections; spatial beam gain and weak reflectors remain
+ambiguous. A prior-mask boundary is never labelled as an observed start.
+
+The offline replay uses exact-time estimated native attitude and calibrated Ping
+with a locally horizontal hypothesis, ±0.15 m distance and ±5° normal bounds.
+These are assumptions, not a fitted plane or covariance. It processes 119 frames,
+skips 10 without exact pose/Ping and takes 19.70 ms median / 23.57 ms p95 for the
+core frontend on the tested Mac. No simulator truth or RGB enters extraction.
+At 20.5 s, three dark regions have unresolved endpoints, so no heights or 3D
+points are produced. Full-record region counts vary from 0 to 12 and are not
+object counts. Echo/shadow association and multi-view mapping remain unfinished.
+[Evidence and parameters](sonar-surface-summary.json).
+
+![Raw sonar, region candidates and same-pose RGB](sonar-surface-regions.png)
+
+`ground_entry_band`는 평면과 전체 수직 팬의 교차 범위를 해석적으로 계산합니다.
+`segment_surface`는 원본 dB, 3표본 중앙값, 같은 거리의 70분위수와 인접 3빔
+이상의 연속 구간을 사용합니다. 반사 초과는 8 dB, 그림자 부족은 10 dB이며,
+0.2–1 m 잡음보다 12 dB 높은 반사를 요구합니다. 최소 반사·그림자 길이는
+0.075·0.30 m, 그림자 끝의 배경 회복 길이는 0.15 m입니다. 진단용 기본값이며
+공간별 빔 이득·약한 반사는 아직 구분하지 못합니다. 가정한 범위 경계를 실제
+관측한 시작점으로 표시하지 않습니다.
+
+오프라인 실험은 같은 시각의 네이티브 추정 자세와 보정된 Ping, 국소 수평 해저
+가정 및 ±0.15 m·±5° 범위를 사용합니다. 적합된 평면이나 공분산이 아닙니다.
+119장을 처리하고 정확한 자세·Ping이 없는 10장은 건너뛰었습니다. 시험한 Mac의
+핵심 처리 시간은 중앙값 19.70 ms, 95분위수 23.57 ms입니다. 참값이나 RGB는
+검출에 넣지 않습니다. 20.5초의 세 어두운 영역은 끝을 확정하지 못해 높이·3D
+점을 생성하지 않습니다. 전체 기록의 후보 수는 0–12개이며 물체 수가 아닙니다.
+반사·그림자 대응과 다중 시점 지도 복원은 아직 완료되지 않았습니다.

@@ -1,0 +1,2578 @@
+{
+  "frames_processed": 119,
+  "frames_skipped": 10,
+  "processing_ms": {
+    "median": 19.700249999914377,
+    "p95": 23.570174699671043,
+    "maximum": 45.07666700010304
+  },
+  "selected": {
+    "stamp_ns": 20500000000,
+    "raw_sha256": "934cb6f28d2d3aa58088a3873ee58a267298b8659961fe7adb5fe0c7e643abf4",
+    "conditional_altitude_m": 2.6699214419610087,
+    "echo_regions": [
+      {
+        "beam_first": 64,
+        "beam_last": 107,
+        "intervals": [
+          {
+            "beam": 64,
+            "start_bin": 156,
+            "stop_bin": 162,
+            "range_start_m": 3.913043260574341,
+            "range_last_m": 4.038461208343506
+          },
+          {
+            "beam": 65,
+            "start_bin": 156,
+            "stop_bin": 164,
+            "range_start_m": 3.913043260574341,
+            "range_last_m": 4.088628768920898
+          },
+          {
+            "beam": 66,
+            "start_bin": 158,
+            "stop_bin": 164,
+            "range_start_m": 3.9632108211517334,
+            "range_last_m": 4.088628768920898
+          },
+          {
+            "beam": 67,
+            "start_bin": 158,
+            "stop_bin": 164,
+            "range_start_m": 3.9632108211517334,
+            "range_last_m": 4.088628768920898
+          },
+          {
+            "beam": 68,
+            "start_bin": 139,
+            "stop_bin": 143,
+            "range_start_m": 3.4866220951080322,
+            "range_last_m": 3.561872959136963
+          },
+          {
+            "beam": 68,
+            "start_bin": 158,
+            "stop_bin": 165,
+            "range_start_m": 3.9632108211517334,
+            "range_last_m": 4.113712310791016
+          },
+          {
+            "beam": 69,
+            "start_bin": 139,
+            "stop_bin": 144,
+            "range_start_m": 3.4866220951080322,
+            "range_last_m": 3.58695650100708
+          },
+          {
+            "beam": 69,
+            "start_bin": 148,
+            "stop_bin": 154,
+            "range_start_m": 3.712374687194824,
+            "range_last_m": 3.8377926349639893
+          },
+          {
+            "beam": 69,
+            "start_bin": 155,
+            "stop_bin": 165,
+            "range_start_m": 3.8879597187042236,
+            "range_last_m": 4.113712310791016
+          },
+          {
+            "beam": 70,
+            "start_bin": 139,
+            "stop_bin": 164,
+            "range_start_m": 3.4866220951080322,
+            "range_last_m": 4.088628768920898
+          },
+          {
+            "beam": 71,
+            "start_bin": 139,
+            "stop_bin": 164,
+            "range_start_m": 3.4866220951080322,
+            "range_last_m": 4.088628768920898
+          },
+          {
+            "beam": 72,
+            "start_bin": 139,
+            "stop_bin": 167,
+            "range_start_m": 3.4866220951080322,
+            "range_last_m": 4.16387939453125
+          },
+          {
+            "beam": 73,
+            "start_bin": 139,
+            "stop_bin": 168,
+            "range_start_m": 3.4866220951080322,
+            "range_last_m": 4.188963413238525
+          },
+          {
+            "beam": 74,
+            "start_bin": 113,
+            "stop_bin": 131,
+            "range_start_m": 2.8344480991363525,
+            "range_last_m": 3.2608695030212402
+          },
+          {
+            "beam": 74,
+            "start_bin": 137,
+            "stop_bin": 168,
+            "range_start_m": 3.436455011367798,
+            "range_last_m": 4.188963413238525
+          },
+          {
+            "beam": 75,
+            "start_bin": 113,
+            "stop_bin": 131,
+            "range_start_m": 2.8344480991363525,
+            "range_last_m": 3.2608695030212402
+          },
+          {
+            "beam": 75,
+            "start_bin": 136,
+            "stop_bin": 168,
+            "range_start_m": 3.4113714694976807,
+            "range_last_m": 4.188963413238525
+          },
+          {
+            "beam": 76,
+            "start_bin": 121,
+            "stop_bin": 131,
+            "range_start_m": 3.0351171493530273,
+            "range_last_m": 3.2608695030212402
+          },
+          {
+            "beam": 76,
+            "start_bin": 136,
+            "stop_bin": 168,
+            "range_start_m": 3.4113714694976807,
+            "range_last_m": 4.188963413238525
+          },
+          {
+            "beam": 77,
+            "start_bin": 121,
+            "stop_bin": 130,
+            "range_start_m": 3.0351171493530273,
+            "range_last_m": 3.235785961151123
+          },
+          {
+            "beam": 77,
+            "start_bin": 136,
+            "stop_bin": 168,
+            "range_start_m": 3.4113714694976807,
+            "range_last_m": 4.188963413238525
+          },
+          {
+            "beam": 78,
+            "start_bin": 121,
+            "stop_bin": 130,
+            "range_start_m": 3.0351171493530273,
+            "range_last_m": 3.235785961151123
+          },
+          {
+            "beam": 78,
+            "start_bin": 134,
+            "stop_bin": 168,
+            "range_start_m": 3.361203908920288,
+            "range_last_m": 4.188963413238525
+          },
+          {
+            "beam": 79,
+            "start_bin": 102,
+            "stop_bin": 131,
+            "range_start_m": 2.558528423309326,
+            "range_last_m": 3.2608695030212402
+          },
+          {
+            "beam": 79,
+            "start_bin": 132,
+            "stop_bin": 170,
+            "range_start_m": 3.3110368251800537,
+            "range_last_m": 4.23913049697876
+          },
+          {
+            "beam": 80,
+            "start_bin": 91,
+            "stop_bin": 131,
+            "range_start_m": 2.2826087474823,
+            "range_last_m": 3.2608695030212402
+          },
+          {
+            "beam": 80,
+            "start_bin": 132,
+            "stop_bin": 170,
+            "range_start_m": 3.3110368251800537,
+            "range_last_m": 4.23913049697876
+          },
+          {
+            "beam": 81,
+            "start_bin": 102,
+            "stop_bin": 131,
+            "range_start_m": 2.558528423309326,
+            "range_last_m": 3.2608695030212402
+          },
+          {
+            "beam": 81,
+            "start_bin": 132,
+            "stop_bin": 169,
+            "range_start_m": 3.3110368251800537,
+            "range_last_m": 4.214046955108643
+          },
+          {
+            "beam": 82,
+            "start_bin": 98,
+            "stop_bin": 170,
+            "range_start_m": 2.4581940174102783,
+            "range_last_m": 4.23913049697876
+          },
+          {
+            "beam": 83,
+            "start_bin": 109,
+            "stop_bin": 168,
+            "range_start_m": 2.7341136932373047,
+            "range_last_m": 4.188963413238525
+          },
+          {
+            "beam": 84,
+            "start_bin": 109,
+            "stop_bin": 115,
+            "range_start_m": 2.7341136932373047,
+            "range_last_m": 2.859531879425049
+          },
+          {
+            "beam": 84,
+            "start_bin": 116,
+            "stop_bin": 167,
+            "range_start_m": 2.909698963165283,
+            "range_last_m": 4.16387939453125
+          },
+          {
+            "beam": 85,
+            "start_bin": 121,
+            "stop_bin": 166,
+            "range_start_m": 3.0351171493530273,
+            "range_last_m": 4.138795852661133
+          },
+          {
+            "beam": 86,
+            "start_bin": 124,
+            "stop_bin": 166,
+            "range_start_m": 3.110367774963379,
+            "range_last_m": 4.138795852661133
+          },
+          {
+            "beam": 87,
+            "start_bin": 113,
+            "stop_bin": 166,
+            "range_start_m": 2.8344480991363525,
+            "range_last_m": 4.138795852661133
+          },
+          {
+            "beam": 88,
+            "start_bin": 116,
+            "stop_bin": 131,
+            "range_start_m": 2.909698963165283,
+            "range_last_m": 3.2608695030212402
+          },
+          {
+            "beam": 88,
+            "start_bin": 132,
+            "stop_bin": 166,
+            "range_start_m": 3.3110368251800537,
+            "range_last_m": 4.138795852661133
+          },
+          {
+            "beam": 89,
+            "start_bin": 116,
+            "stop_bin": 166,
+            "range_start_m": 2.909698963165283,
+            "range_last_m": 4.138795852661133
+          },
+          {
+            "beam": 90,
+            "start_bin": 109,
+            "stop_bin": 114,
+            "range_start_m": 2.7341136932373047,
+            "range_last_m": 2.8344480991363525
+          },
+          {
+            "beam": 90,
+            "start_bin": 116,
+            "stop_bin": 164,
+            "range_start_m": 2.909698963165283,
+            "range_last_m": 4.088628768920898
+          },
+          {
+            "beam": 91,
+            "start_bin": 109,
+            "stop_bin": 114,
+            "range_start_m": 2.7341136932373047,
+            "range_last_m": 2.8344480991363525
+          },
+          {
+            "beam": 91,
+            "start_bin": 116,
+            "stop_bin": 121,
+            "range_start_m": 2.909698963165283,
+            "range_last_m": 3.010033369064331
+          },
+          {
+            "beam": 91,
+            "start_bin": 123,
+            "stop_bin": 164,
+            "range_start_m": 3.0852842330932617,
+            "range_last_m": 4.088628768920898
+          },
+          {
+            "beam": 92,
+            "start_bin": 109,
+            "stop_bin": 166,
+            "range_start_m": 2.7341136932373047,
+            "range_last_m": 4.138795852661133
+          },
+          {
+            "beam": 93,
+            "start_bin": 102,
+            "stop_bin": 163,
+            "range_start_m": 2.558528423309326,
+            "range_last_m": 4.063545227050781
+          },
+          {
+            "beam": 94,
+            "start_bin": 99,
+            "stop_bin": 162,
+            "range_start_m": 2.4832775592803955,
+            "range_last_m": 4.038461208343506
+          },
+          {
+            "beam": 95,
+            "start_bin": 100,
+            "stop_bin": 164,
+            "range_start_m": 2.5083611011505127,
+            "range_last_m": 4.088628768920898
+          },
+          {
+            "beam": 96,
+            "start_bin": 100,
+            "stop_bin": 164,
+            "range_start_m": 2.5083611011505127,
+            "range_last_m": 4.088628768920898
+          },
+          {
+            "beam": 97,
+            "start_bin": 93,
+            "stop_bin": 98,
+            "range_start_m": 2.332775831222534,
+            "range_last_m": 2.433110475540161
+          },
+          {
+            "beam": 97,
+            "start_bin": 100,
+            "stop_bin": 161,
+            "range_start_m": 2.5083611011505127,
+            "range_last_m": 4.013377666473389
+          },
+          {
+            "beam": 98,
+            "start_bin": 85,
+            "stop_bin": 94,
+            "range_start_m": 2.1321070194244385,
+            "range_last_m": 2.332775831222534
+          },
+          {
+            "beam": 98,
+            "start_bin": 96,
+            "stop_bin": 160,
+            "range_start_m": 2.408026933670044,
+            "range_last_m": 3.9882943630218506
+          },
+          {
+            "beam": 99,
+            "start_bin": 85,
+            "stop_bin": 159,
+            "range_start_m": 2.1321070194244385,
+            "range_last_m": 3.9632108211517334
+          },
+          {
+            "beam": 100,
+            "start_bin": 98,
+            "stop_bin": 160,
+            "range_start_m": 2.4581940174102783,
+            "range_last_m": 3.9882943630218506
+          },
+          {
+            "beam": 101,
+            "start_bin": 98,
+            "stop_bin": 160,
+            "range_start_m": 2.4581940174102783,
+            "range_last_m": 3.9882943630218506
+          },
+          {
+            "beam": 102,
+            "start_bin": 119,
+            "stop_bin": 160,
+            "range_start_m": 2.984949827194214,
+            "range_last_m": 3.9882943630218506
+          },
+          {
+            "beam": 103,
+            "start_bin": 128,
+            "stop_bin": 160,
+            "range_start_m": 3.210702419281006,
+            "range_last_m": 3.9882943630218506
+          },
+          {
+            "beam": 104,
+            "start_bin": 129,
+            "stop_bin": 160,
+            "range_start_m": 3.235785961151123,
+            "range_last_m": 3.9882943630218506
+          },
+          {
+            "beam": 105,
+            "start_bin": 129,
+            "stop_bin": 147,
+            "range_start_m": 3.235785961151123,
+            "range_last_m": 3.66220760345459
+          },
+          {
+            "beam": 105,
+            "start_bin": 148,
+            "stop_bin": 160,
+            "range_start_m": 3.712374687194824,
+            "range_last_m": 3.9882943630218506
+          },
+          {
+            "beam": 106,
+            "start_bin": 132,
+            "stop_bin": 141,
+            "range_start_m": 3.3110368251800537,
+            "range_last_m": 3.5117056369781494
+          },
+          {
+            "beam": 106,
+            "start_bin": 143,
+            "stop_bin": 147,
+            "range_start_m": 3.58695650100708,
+            "range_last_m": 3.66220760345459
+          },
+          {
+            "beam": 106,
+            "start_bin": 153,
+            "stop_bin": 159,
+            "range_start_m": 3.8377926349639893,
+            "range_last_m": 3.9632108211517334
+          },
+          {
+            "beam": 107,
+            "start_bin": 132,
+            "stop_bin": 141,
+            "range_start_m": 3.3110368251800537,
+            "range_last_m": 3.5117056369781494
+          },
+          {
+            "beam": 107,
+            "start_bin": 153,
+            "stop_bin": 157,
+            "range_start_m": 3.8377926349639893,
+            "range_last_m": 3.913043260574341
+          }
+        ]
+      },
+      {
+        "beam_first": 110,
+        "beam_last": 112,
+        "intervals": [
+          {
+            "beam": 110,
+            "start_bin": 130,
+            "stop_bin": 137,
+            "range_start_m": 3.2608695030212402,
+            "range_last_m": 3.4113714694976807
+          },
+          {
+            "beam": 111,
+            "start_bin": 130,
+            "stop_bin": 137,
+            "range_start_m": 3.2608695030212402,
+            "range_last_m": 3.4113714694976807
+          },
+          {
+            "beam": 112,
+            "start_bin": 130,
+            "stop_bin": 137,
+            "range_start_m": 3.2608695030212402,
+            "range_last_m": 3.4113714694976807
+          }
+        ]
+      },
+      {
+        "beam_first": 113,
+        "beam_last": 118,
+        "intervals": [
+          {
+            "beam": 113,
+            "start_bin": 174,
+            "stop_bin": 178,
+            "range_start_m": 4.364548683166504,
+            "range_last_m": 4.4397993087768555
+          },
+          {
+            "beam": 114,
+            "start_bin": 173,
+            "stop_bin": 178,
+            "range_start_m": 4.339465141296387,
+            "range_last_m": 4.4397993087768555
+          },
+          {
+            "beam": 115,
+            "start_bin": 174,
+            "stop_bin": 178,
+            "range_start_m": 4.364548683166504,
+            "range_last_m": 4.4397993087768555
+          },
+          {
+            "beam": 116,
+            "start_bin": 173,
+            "stop_bin": 178,
+            "range_start_m": 4.339465141296387,
+            "range_last_m": 4.4397993087768555
+          },
+          {
+            "beam": 117,
+            "start_bin": 173,
+            "stop_bin": 178,
+            "range_start_m": 4.339465141296387,
+            "range_last_m": 4.4397993087768555
+          },
+          {
+            "beam": 118,
+            "start_bin": 173,
+            "stop_bin": 177,
+            "range_start_m": 4.339465141296387,
+            "range_last_m": 4.414715766906738
+          }
+        ]
+      },
+      {
+        "beam_first": 119,
+        "beam_last": 121,
+        "intervals": [
+          {
+            "beam": 119,
+            "start_bin": 240,
+            "stop_bin": 248,
+            "range_start_m": 6.020066738128662,
+            "range_last_m": 6.195652008056641
+          },
+          {
+            "beam": 120,
+            "start_bin": 242,
+            "stop_bin": 248,
+            "range_start_m": 6.070234298706055,
+            "range_last_m": 6.195652008056641
+          },
+          {
+            "beam": 121,
+            "start_bin": 241,
+            "stop_bin": 247,
+            "range_start_m": 6.0451507568359375,
+            "range_last_m": 6.170568466186523
+          }
+        ]
+      },
+      {
+        "beam_first": 122,
+        "beam_last": 164,
+        "intervals": [
+          {
+            "beam": 122,
+            "start_bin": 173,
+            "stop_bin": 177,
+            "range_start_m": 4.339465141296387,
+            "range_last_m": 4.414715766906738
+          },
+          {
+            "beam": 123,
+            "start_bin": 172,
+            "stop_bin": 177,
+            "range_start_m": 4.3143815994262695,
+            "range_last_m": 4.414715766906738
+          },
+          {
+            "beam": 124,
+            "start_bin": 172,
+            "stop_bin": 177,
+            "range_start_m": 4.3143815994262695,
+            "range_last_m": 4.414715766906738
+          },
+          {
+            "beam": 125,
+            "start_bin": 172,
+            "stop_bin": 177,
+            "range_start_m": 4.3143815994262695,
+            "range_last_m": 4.414715766906738
+          },
+          {
+            "beam": 126,
+            "start_bin": 172,
+            "stop_bin": 178,
+            "range_start_m": 4.3143815994262695,
+            "range_last_m": 4.4397993087768555
+          },
+          {
+            "beam": 127,
+            "start_bin": 172,
+            "stop_bin": 178,
+            "range_start_m": 4.3143815994262695,
+            "range_last_m": 4.4397993087768555
+          },
+          {
+            "beam": 128,
+            "start_bin": 172,
+            "stop_bin": 178,
+            "range_start_m": 4.3143815994262695,
+            "range_last_m": 4.4397993087768555
+          },
+          {
+            "beam": 129,
+            "start_bin": 172,
+            "stop_bin": 177,
+            "range_start_m": 4.3143815994262695,
+            "range_last_m": 4.414715766906738
+          },
+          {
+            "beam": 130,
+            "start_bin": 172,
+            "stop_bin": 177,
+            "range_start_m": 4.3143815994262695,
+            "range_last_m": 4.414715766906738
+          },
+          {
+            "beam": 131,
+            "start_bin": 171,
+            "stop_bin": 177,
+            "range_start_m": 4.289297580718994,
+            "range_last_m": 4.414715766906738
+          },
+          {
+            "beam": 132,
+            "start_bin": 171,
+            "stop_bin": 178,
+            "range_start_m": 4.289297580718994,
+            "range_last_m": 4.4397993087768555
+          },
+          {
+            "beam": 133,
+            "start_bin": 171,
+            "stop_bin": 178,
+            "range_start_m": 4.289297580718994,
+            "range_last_m": 4.4397993087768555
+          },
+          {
+            "beam": 134,
+            "start_bin": 171,
+            "stop_bin": 177,
+            "range_start_m": 4.289297580718994,
+            "range_last_m": 4.414715766906738
+          },
+          {
+            "beam": 135,
+            "start_bin": 171,
+            "stop_bin": 177,
+            "range_start_m": 4.289297580718994,
+            "range_last_m": 4.414715766906738
+          },
+          {
+            "beam": 136,
+            "start_bin": 171,
+            "stop_bin": 177,
+            "range_start_m": 4.289297580718994,
+            "range_last_m": 4.414715766906738
+          },
+          {
+            "beam": 137,
+            "start_bin": 171,
+            "stop_bin": 178,
+            "range_start_m": 4.289297580718994,
+            "range_last_m": 4.4397993087768555
+          },
+          {
+            "beam": 138,
+            "start_bin": 171,
+            "stop_bin": 177,
+            "range_start_m": 4.289297580718994,
+            "range_last_m": 4.414715766906738
+          },
+          {
+            "beam": 139,
+            "start_bin": 172,
+            "stop_bin": 177,
+            "range_start_m": 4.3143815994262695,
+            "range_last_m": 4.414715766906738
+          },
+          {
+            "beam": 140,
+            "start_bin": 172,
+            "stop_bin": 177,
+            "range_start_m": 4.3143815994262695,
+            "range_last_m": 4.414715766906738
+          },
+          {
+            "beam": 141,
+            "start_bin": 172,
+            "stop_bin": 178,
+            "range_start_m": 4.3143815994262695,
+            "range_last_m": 4.4397993087768555
+          },
+          {
+            "beam": 142,
+            "start_bin": 172,
+            "stop_bin": 178,
+            "range_start_m": 4.3143815994262695,
+            "range_last_m": 4.4397993087768555
+          },
+          {
+            "beam": 143,
+            "start_bin": 172,
+            "stop_bin": 178,
+            "range_start_m": 4.3143815994262695,
+            "range_last_m": 4.4397993087768555
+          },
+          {
+            "beam": 144,
+            "start_bin": 171,
+            "stop_bin": 178,
+            "range_start_m": 4.289297580718994,
+            "range_last_m": 4.4397993087768555
+          },
+          {
+            "beam": 145,
+            "start_bin": 171,
+            "stop_bin": 178,
+            "range_start_m": 4.289297580718994,
+            "range_last_m": 4.4397993087768555
+          },
+          {
+            "beam": 146,
+            "start_bin": 172,
+            "stop_bin": 178,
+            "range_start_m": 4.3143815994262695,
+            "range_last_m": 4.4397993087768555
+          },
+          {
+            "beam": 147,
+            "start_bin": 172,
+            "stop_bin": 178,
+            "range_start_m": 4.3143815994262695,
+            "range_last_m": 4.4397993087768555
+          },
+          {
+            "beam": 148,
+            "start_bin": 172,
+            "stop_bin": 178,
+            "range_start_m": 4.3143815994262695,
+            "range_last_m": 4.4397993087768555
+          },
+          {
+            "beam": 149,
+            "start_bin": 172,
+            "stop_bin": 178,
+            "range_start_m": 4.3143815994262695,
+            "range_last_m": 4.4397993087768555
+          },
+          {
+            "beam": 150,
+            "start_bin": 172,
+            "stop_bin": 178,
+            "range_start_m": 4.3143815994262695,
+            "range_last_m": 4.4397993087768555
+          },
+          {
+            "beam": 151,
+            "start_bin": 172,
+            "stop_bin": 179,
+            "range_start_m": 4.3143815994262695,
+            "range_last_m": 4.464882850646973
+          },
+          {
+            "beam": 152,
+            "start_bin": 172,
+            "stop_bin": 181,
+            "range_start_m": 4.3143815994262695,
+            "range_last_m": 4.515049934387207
+          },
+          {
+            "beam": 153,
+            "start_bin": 172,
+            "stop_bin": 176,
+            "range_start_m": 4.3143815994262695,
+            "range_last_m": 4.389632225036621
+          },
+          {
+            "beam": 154,
+            "start_bin": 172,
+            "stop_bin": 176,
+            "range_start_m": 4.3143815994262695,
+            "range_last_m": 4.389632225036621
+          },
+          {
+            "beam": 155,
+            "start_bin": 172,
+            "stop_bin": 176,
+            "range_start_m": 4.3143815994262695,
+            "range_last_m": 4.389632225036621
+          },
+          {
+            "beam": 156,
+            "start_bin": 172,
+            "stop_bin": 177,
+            "range_start_m": 4.3143815994262695,
+            "range_last_m": 4.414715766906738
+          },
+          {
+            "beam": 157,
+            "start_bin": 172,
+            "stop_bin": 178,
+            "range_start_m": 4.3143815994262695,
+            "range_last_m": 4.4397993087768555
+          },
+          {
+            "beam": 158,
+            "start_bin": 172,
+            "stop_bin": 177,
+            "range_start_m": 4.3143815994262695,
+            "range_last_m": 4.414715766906738
+          },
+          {
+            "beam": 159,
+            "start_bin": 172,
+            "stop_bin": 178,
+            "range_start_m": 4.3143815994262695,
+            "range_last_m": 4.4397993087768555
+          },
+          {
+            "beam": 160,
+            "start_bin": 172,
+            "stop_bin": 178,
+            "range_start_m": 4.3143815994262695,
+            "range_last_m": 4.4397993087768555
+          },
+          {
+            "beam": 161,
+            "start_bin": 173,
+            "stop_bin": 178,
+            "range_start_m": 4.339465141296387,
+            "range_last_m": 4.4397993087768555
+          },
+          {
+            "beam": 162,
+            "start_bin": 173,
+            "stop_bin": 178,
+            "range_start_m": 4.339465141296387,
+            "range_last_m": 4.4397993087768555
+          },
+          {
+            "beam": 163,
+            "start_bin": 174,
+            "stop_bin": 178,
+            "range_start_m": 4.364548683166504,
+            "range_last_m": 4.4397993087768555
+          },
+          {
+            "beam": 164,
+            "start_bin": 174,
+            "stop_bin": 178,
+            "range_start_m": 4.364548683166504,
+            "range_last_m": 4.4397993087768555
+          }
+        ]
+      },
+      {
+        "beam_first": 123,
+        "beam_last": 126,
+        "intervals": [
+          {
+            "beam": 123,
+            "start_bin": 232,
+            "stop_bin": 240,
+            "range_start_m": 5.819397926330566,
+            "range_last_m": 5.994983196258545
+          },
+          {
+            "beam": 124,
+            "start_bin": 232,
+            "stop_bin": 241,
+            "range_start_m": 5.819397926330566,
+            "range_last_m": 6.020066738128662
+          },
+          {
+            "beam": 125,
+            "start_bin": 233,
+            "stop_bin": 237,
+            "range_start_m": 5.844481945037842,
+            "range_last_m": 5.919732570648193
+          },
+          {
+            "beam": 126,
+            "start_bin": 233,
+            "stop_bin": 237,
+            "range_start_m": 5.844481945037842,
+            "range_last_m": 5.919732570648193
+          }
+        ]
+      },
+      {
+        "beam_first": 129,
+        "beam_last": 134,
+        "intervals": [
+          {
+            "beam": 129,
+            "start_bin": 234,
+            "stop_bin": 238,
+            "range_start_m": 5.869565486907959,
+            "range_last_m": 5.9448161125183105
+          },
+          {
+            "beam": 130,
+            "start_bin": 233,
+            "stop_bin": 238,
+            "range_start_m": 5.844481945037842,
+            "range_last_m": 5.9448161125183105
+          },
+          {
+            "beam": 131,
+            "start_bin": 234,
+            "stop_bin": 240,
+            "range_start_m": 5.869565486907959,
+            "range_last_m": 5.994983196258545
+          },
+          {
+            "beam": 132,
+            "start_bin": 233,
+            "stop_bin": 240,
+            "range_start_m": 5.844481945037842,
+            "range_last_m": 5.994983196258545
+          },
+          {
+            "beam": 133,
+            "start_bin": 233,
+            "stop_bin": 243,
+            "range_start_m": 5.844481945037842,
+            "range_last_m": 6.070234298706055
+          },
+          {
+            "beam": 134,
+            "start_bin": 238,
+            "stop_bin": 243,
+            "range_start_m": 5.969899654388428,
+            "range_last_m": 6.070234298706055
+          }
+        ]
+      },
+      {
+        "beam_first": 138,
+        "beam_last": 141,
+        "intervals": [
+          {
+            "beam": 138,
+            "start_bin": 395,
+            "stop_bin": 399,
+            "range_start_m": 9.908026695251465,
+            "range_last_m": 9.983277320861816
+          },
+          {
+            "beam": 139,
+            "start_bin": 395,
+            "stop_bin": 399,
+            "range_start_m": 9.908026695251465,
+            "range_last_m": 9.983277320861816
+          },
+          {
+            "beam": 140,
+            "start_bin": 395,
+            "stop_bin": 399,
+            "range_start_m": 9.908026695251465,
+            "range_last_m": 9.983277320861816
+          },
+          {
+            "beam": 141,
+            "start_bin": 395,
+            "stop_bin": 399,
+            "range_start_m": 9.908026695251465,
+            "range_last_m": 9.983277320861816
+          }
+        ]
+      },
+      {
+        "beam_first": 158,
+        "beam_last": 165,
+        "intervals": [
+          {
+            "beam": 158,
+            "start_bin": 183,
+            "stop_bin": 194,
+            "range_start_m": 4.590301036834717,
+            "range_last_m": 4.841137409210205
+          },
+          {
+            "beam": 159,
+            "start_bin": 180,
+            "stop_bin": 194,
+            "range_start_m": 4.515049934387207,
+            "range_last_m": 4.841137409210205
+          },
+          {
+            "beam": 160,
+            "start_bin": 180,
+            "stop_bin": 194,
+            "range_start_m": 4.515049934387207,
+            "range_last_m": 4.841137409210205
+          },
+          {
+            "beam": 161,
+            "start_bin": 180,
+            "stop_bin": 192,
+            "range_start_m": 4.515049934387207,
+            "range_last_m": 4.7909698486328125
+          },
+          {
+            "beam": 162,
+            "start_bin": 181,
+            "stop_bin": 187,
+            "range_start_m": 4.540133476257324,
+            "range_last_m": 4.665551662445068
+          },
+          {
+            "beam": 162,
+            "start_bin": 188,
+            "stop_bin": 192,
+            "range_start_m": 4.715719223022461,
+            "range_last_m": 4.7909698486328125
+          },
+          {
+            "beam": 163,
+            "start_bin": 182,
+            "stop_bin": 187,
+            "range_start_m": 4.5652174949646,
+            "range_last_m": 4.665551662445068
+          },
+          {
+            "beam": 163,
+            "start_bin": 188,
+            "stop_bin": 192,
+            "range_start_m": 4.715719223022461,
+            "range_last_m": 4.7909698486328125
+          },
+          {
+            "beam": 164,
+            "start_bin": 182,
+            "stop_bin": 190,
+            "range_start_m": 4.5652174949646,
+            "range_last_m": 4.740802764892578
+          },
+          {
+            "beam": 165,
+            "start_bin": 182,
+            "stop_bin": 190,
+            "range_start_m": 4.5652174949646,
+            "range_last_m": 4.740802764892578
+          }
+        ]
+      },
+      {
+        "beam_first": 168,
+        "beam_last": 171,
+        "intervals": [
+          {
+            "beam": 168,
+            "start_bin": 187,
+            "stop_bin": 196,
+            "range_start_m": 4.690635681152344,
+            "range_last_m": 4.8913044929504395
+          },
+          {
+            "beam": 169,
+            "start_bin": 187,
+            "stop_bin": 192,
+            "range_start_m": 4.690635681152344,
+            "range_last_m": 4.7909698486328125
+          },
+          {
+            "beam": 170,
+            "start_bin": 187,
+            "stop_bin": 192,
+            "range_start_m": 4.690635681152344,
+            "range_last_m": 4.7909698486328125
+          },
+          {
+            "beam": 171,
+            "start_bin": 187,
+            "stop_bin": 191,
+            "range_start_m": 4.690635681152344,
+            "range_last_m": 4.765886306762695
+          }
+        ]
+      },
+      {
+        "beam_first": 200,
+        "beam_last": 203,
+        "intervals": [
+          {
+            "beam": 200,
+            "start_bin": 393,
+            "stop_bin": 397,
+            "range_start_m": 9.85785961151123,
+            "range_last_m": 9.933110237121582
+          },
+          {
+            "beam": 201,
+            "start_bin": 393,
+            "stop_bin": 397,
+            "range_start_m": 9.85785961151123,
+            "range_last_m": 9.933110237121582
+          },
+          {
+            "beam": 202,
+            "start_bin": 393,
+            "stop_bin": 397,
+            "range_start_m": 9.85785961151123,
+            "range_last_m": 9.933110237121582
+          },
+          {
+            "beam": 203,
+            "start_bin": 393,
+            "stop_bin": 397,
+            "range_start_m": 9.85785961151123,
+            "range_last_m": 9.933110237121582
+          }
+        ]
+      }
+    ],
+    "shadow_candidates": [
+      {
+        "beam_first": 71,
+        "beam_last": 107,
+        "intervals": [
+          {
+            "beam": 71,
+            "start_bin": 301,
+            "stop_bin": 314,
+            "range_start_m": 7.550167083740234,
+            "range_last_m": 7.851171016693115,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 71,
+            "start_bin": 317,
+            "stop_bin": 337,
+            "range_start_m": 7.951505184173584,
+            "range_last_m": 8.428093910217285,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 72,
+            "start_bin": 284,
+            "stop_bin": 314,
+            "range_start_m": 7.123745918273926,
+            "range_last_m": 7.851171016693115,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 72,
+            "start_bin": 317,
+            "stop_bin": 337,
+            "range_start_m": 7.951505184173584,
+            "range_last_m": 8.428093910217285,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 72,
+            "start_bin": 338,
+            "stop_bin": 353,
+            "range_start_m": 8.47826099395752,
+            "range_last_m": 8.829431533813477,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 73,
+            "start_bin": 266,
+            "stop_bin": 337,
+            "range_start_m": 6.672240734100342,
+            "range_last_m": 8.428093910217285,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 73,
+            "start_bin": 338,
+            "stop_bin": 354,
+            "range_start_m": 8.47826099395752,
+            "range_last_m": 8.854515075683594,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 73,
+            "start_bin": 355,
+            "stop_bin": 382,
+            "range_start_m": 8.904682159423828,
+            "range_last_m": 9.556856155395508,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 74,
+            "start_bin": 253,
+            "stop_bin": 382,
+            "range_start_m": 6.34615421295166,
+            "range_last_m": 9.556856155395508,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 75,
+            "start_bin": 238,
+            "stop_bin": 391,
+            "range_start_m": 5.969899654388428,
+            "range_last_m": 9.782608985900879,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 76,
+            "start_bin": 195,
+            "stop_bin": 212,
+            "range_start_m": 4.8913044929504395,
+            "range_last_m": 5.292642116546631,
+            "start_observed": false,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 76,
+            "start_bin": 214,
+            "stop_bin": 391,
+            "range_start_m": 5.367893218994141,
+            "range_last_m": 9.782608985900879,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 77,
+            "start_bin": 194,
+            "stop_bin": 354,
+            "range_start_m": 4.866220951080322,
+            "range_last_m": 8.854515075683594,
+            "start_observed": false,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 77,
+            "start_bin": 355,
+            "stop_bin": 392,
+            "range_start_m": 8.904682159423828,
+            "range_last_m": 9.807692527770996,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 78,
+            "start_bin": 194,
+            "stop_bin": 354,
+            "range_start_m": 4.866220951080322,
+            "range_last_m": 8.854515075683594,
+            "start_observed": false,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 78,
+            "start_bin": 355,
+            "stop_bin": 394,
+            "range_start_m": 8.904682159423828,
+            "range_last_m": 9.85785961151123,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 79,
+            "start_bin": 194,
+            "stop_bin": 394,
+            "range_start_m": 4.866220951080322,
+            "range_last_m": 9.85785961151123,
+            "start_observed": false,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 80,
+            "start_bin": 193,
+            "stop_bin": 393,
+            "range_start_m": 4.841137409210205,
+            "range_last_m": 9.832776069641113,
+            "start_observed": false,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 81,
+            "start_bin": 193,
+            "stop_bin": 393,
+            "range_start_m": 4.841137409210205,
+            "range_last_m": 9.832776069641113,
+            "start_observed": false,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 82,
+            "start_bin": 193,
+            "stop_bin": 393,
+            "range_start_m": 4.841137409210205,
+            "range_last_m": 9.832776069641113,
+            "start_observed": false,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 83,
+            "start_bin": 192,
+            "stop_bin": 393,
+            "range_start_m": 4.816053867340088,
+            "range_last_m": 9.832776069641113,
+            "start_observed": false,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 84,
+            "start_bin": 192,
+            "stop_bin": 393,
+            "range_start_m": 4.816053867340088,
+            "range_last_m": 9.832776069641113,
+            "start_observed": false,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 85,
+            "start_bin": 192,
+            "stop_bin": 394,
+            "range_start_m": 4.816053867340088,
+            "range_last_m": 9.85785961151123,
+            "start_observed": false,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 86,
+            "start_bin": 191,
+            "stop_bin": 396,
+            "range_start_m": 4.7909698486328125,
+            "range_last_m": 9.908026695251465,
+            "start_observed": false,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 87,
+            "start_bin": 191,
+            "stop_bin": 396,
+            "range_start_m": 4.7909698486328125,
+            "range_last_m": 9.908026695251465,
+            "start_observed": false,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 88,
+            "start_bin": 191,
+            "stop_bin": 396,
+            "range_start_m": 4.7909698486328125,
+            "range_last_m": 9.908026695251465,
+            "start_observed": false,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 89,
+            "start_bin": 190,
+            "stop_bin": 396,
+            "range_start_m": 4.765886306762695,
+            "range_last_m": 9.908026695251465,
+            "start_observed": false,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 90,
+            "start_bin": 190,
+            "stop_bin": 396,
+            "range_start_m": 4.765886306762695,
+            "range_last_m": 9.908026695251465,
+            "start_observed": false,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 91,
+            "start_bin": 190,
+            "stop_bin": 396,
+            "range_start_m": 4.765886306762695,
+            "range_last_m": 9.908026695251465,
+            "start_observed": false,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 92,
+            "start_bin": 190,
+            "stop_bin": 393,
+            "range_start_m": 4.765886306762695,
+            "range_last_m": 9.832776069641113,
+            "start_observed": false,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 93,
+            "start_bin": 189,
+            "stop_bin": 394,
+            "range_start_m": 4.740802764892578,
+            "range_last_m": 9.85785961151123,
+            "start_observed": false,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 94,
+            "start_bin": 189,
+            "stop_bin": 394,
+            "range_start_m": 4.740802764892578,
+            "range_last_m": 9.85785961151123,
+            "start_observed": false,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 95,
+            "start_bin": 189,
+            "stop_bin": 393,
+            "range_start_m": 4.740802764892578,
+            "range_last_m": 9.832776069641113,
+            "start_observed": false,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 96,
+            "start_bin": 189,
+            "stop_bin": 395,
+            "range_start_m": 4.740802764892578,
+            "range_last_m": 9.882943153381348,
+            "start_observed": false,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 97,
+            "start_bin": 189,
+            "stop_bin": 393,
+            "range_start_m": 4.740802764892578,
+            "range_last_m": 9.832776069641113,
+            "start_observed": false,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 98,
+            "start_bin": 189,
+            "stop_bin": 393,
+            "range_start_m": 4.740802764892578,
+            "range_last_m": 9.832776069641113,
+            "start_observed": false,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 99,
+            "start_bin": 189,
+            "stop_bin": 393,
+            "range_start_m": 4.740802764892578,
+            "range_last_m": 9.832776069641113,
+            "start_observed": false,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 100,
+            "start_bin": 189,
+            "stop_bin": 393,
+            "range_start_m": 4.740802764892578,
+            "range_last_m": 9.832776069641113,
+            "start_observed": false,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 101,
+            "start_bin": 189,
+            "stop_bin": 393,
+            "range_start_m": 4.740802764892578,
+            "range_last_m": 9.832776069641113,
+            "start_observed": false,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 102,
+            "start_bin": 189,
+            "stop_bin": 235,
+            "range_start_m": 4.740802764892578,
+            "range_last_m": 5.869565486907959,
+            "start_observed": false,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 102,
+            "start_bin": 236,
+            "stop_bin": 376,
+            "range_start_m": 5.919732570648193,
+            "range_last_m": 9.406354904174805,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 102,
+            "start_bin": 377,
+            "stop_bin": 395,
+            "range_start_m": 9.456521987915039,
+            "range_last_m": 9.882943153381348,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 103,
+            "start_bin": 189,
+            "stop_bin": 235,
+            "range_start_m": 4.740802764892578,
+            "range_last_m": 5.869565486907959,
+            "start_observed": false,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 103,
+            "start_bin": 237,
+            "stop_bin": 306,
+            "range_start_m": 5.9448161125183105,
+            "range_last_m": 7.650501728057861,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 103,
+            "start_bin": 342,
+            "stop_bin": 375,
+            "range_start_m": 8.578595161437988,
+            "range_last_m": 9.381271362304688,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 103,
+            "start_bin": 377,
+            "stop_bin": 390,
+            "range_start_m": 9.456521987915039,
+            "range_last_m": 9.757525444030762,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 104,
+            "start_bin": 199,
+            "stop_bin": 235,
+            "range_start_m": 4.991638660430908,
+            "range_last_m": 5.869565486907959,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 104,
+            "start_bin": 254,
+            "stop_bin": 289,
+            "range_start_m": 6.371237754821777,
+            "range_last_m": 7.2240800857543945,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 104,
+            "start_bin": 291,
+            "stop_bin": 306,
+            "range_start_m": 7.299330711364746,
+            "range_last_m": 7.650501728057861,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 104,
+            "start_bin": 342,
+            "stop_bin": 360,
+            "range_start_m": 8.578595161437988,
+            "range_last_m": 9.005016326904297,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 105,
+            "start_bin": 199,
+            "stop_bin": 235,
+            "range_start_m": 4.991638660430908,
+            "range_last_m": 5.869565486907959,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 105,
+            "start_bin": 342,
+            "stop_bin": 355,
+            "range_start_m": 8.578595161437988,
+            "range_last_m": 8.879598617553711,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 106,
+            "start_bin": 203,
+            "stop_bin": 235,
+            "range_start_m": 5.091973304748535,
+            "range_last_m": 5.869565486907959,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 107,
+            "start_bin": 204,
+            "stop_bin": 221,
+            "range_start_m": 5.117056846618652,
+            "range_last_m": 5.518394470214844,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          }
+        ]
+      },
+      {
+        "beam_first": 112,
+        "beam_last": 137,
+        "intervals": [
+          {
+            "beam": 112,
+            "start_bin": 345,
+            "stop_bin": 359,
+            "range_start_m": 8.653846740722656,
+            "range_last_m": 8.97993278503418,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 113,
+            "start_bin": 306,
+            "stop_bin": 324,
+            "range_start_m": 7.6755852699279785,
+            "range_last_m": 8.102006912231445,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 113,
+            "start_bin": 345,
+            "stop_bin": 363,
+            "range_start_m": 8.653846740722656,
+            "range_last_m": 9.080266952514648,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 113,
+            "start_bin": 365,
+            "stop_bin": 383,
+            "range_start_m": 9.155518531799316,
+            "range_last_m": 9.581939697265625,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 114,
+            "start_bin": 306,
+            "stop_bin": 324,
+            "range_start_m": 7.6755852699279785,
+            "range_last_m": 8.102006912231445,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 114,
+            "start_bin": 328,
+            "stop_bin": 342,
+            "range_start_m": 8.227424621582031,
+            "range_last_m": 8.553511619567871,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 114,
+            "start_bin": 345,
+            "stop_bin": 363,
+            "range_start_m": 8.653846740722656,
+            "range_last_m": 9.080266952514648,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 114,
+            "start_bin": 365,
+            "stop_bin": 383,
+            "range_start_m": 9.155518531799316,
+            "range_last_m": 9.581939697265625,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 115,
+            "start_bin": 290,
+            "stop_bin": 343,
+            "range_start_m": 7.274247169494629,
+            "range_last_m": 8.578595161437988,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 115,
+            "start_bin": 344,
+            "stop_bin": 363,
+            "range_start_m": 8.628763198852539,
+            "range_last_m": 9.080266952514648,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 115,
+            "start_bin": 365,
+            "stop_bin": 396,
+            "range_start_m": 9.155518531799316,
+            "range_last_m": 9.908026695251465,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 116,
+            "start_bin": 290,
+            "stop_bin": 363,
+            "range_start_m": 7.274247169494629,
+            "range_last_m": 9.080266952514648,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 116,
+            "start_bin": 365,
+            "stop_bin": 396,
+            "range_start_m": 9.155518531799316,
+            "range_last_m": 9.908026695251465,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 117,
+            "start_bin": 292,
+            "stop_bin": 396,
+            "range_start_m": 7.32441520690918,
+            "range_last_m": 9.908026695251465,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 118,
+            "start_bin": 289,
+            "stop_bin": 396,
+            "range_start_m": 7.249163627624512,
+            "range_last_m": 9.908026695251465,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 119,
+            "start_bin": 290,
+            "stop_bin": 395,
+            "range_start_m": 7.274247169494629,
+            "range_last_m": 9.882943153381348,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 120,
+            "start_bin": 291,
+            "stop_bin": 394,
+            "range_start_m": 7.299330711364746,
+            "range_last_m": 9.85785961151123,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 121,
+            "start_bin": 291,
+            "stop_bin": 394,
+            "range_start_m": 7.299330711364746,
+            "range_last_m": 9.85785961151123,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 122,
+            "start_bin": 289,
+            "stop_bin": 394,
+            "range_start_m": 7.249163627624512,
+            "range_last_m": 9.85785961151123,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 123,
+            "start_bin": 289,
+            "stop_bin": 394,
+            "range_start_m": 7.249163627624512,
+            "range_last_m": 9.85785961151123,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 124,
+            "start_bin": 289,
+            "stop_bin": 395,
+            "range_start_m": 7.249163627624512,
+            "range_last_m": 9.882943153381348,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 125,
+            "start_bin": 288,
+            "stop_bin": 395,
+            "range_start_m": 7.2240800857543945,
+            "range_last_m": 9.882943153381348,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 126,
+            "start_bin": 288,
+            "stop_bin": 395,
+            "range_start_m": 7.2240800857543945,
+            "range_last_m": 9.882943153381348,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 127,
+            "start_bin": 288,
+            "stop_bin": 395,
+            "range_start_m": 7.2240800857543945,
+            "range_last_m": 9.882943153381348,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 128,
+            "start_bin": 288,
+            "stop_bin": 395,
+            "range_start_m": 7.2240800857543945,
+            "range_last_m": 9.882943153381348,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 129,
+            "start_bin": 287,
+            "stop_bin": 395,
+            "range_start_m": 7.198996543884277,
+            "range_last_m": 9.882943153381348,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 130,
+            "start_bin": 288,
+            "stop_bin": 396,
+            "range_start_m": 7.2240800857543945,
+            "range_last_m": 9.908026695251465,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 131,
+            "start_bin": 288,
+            "stop_bin": 394,
+            "range_start_m": 7.2240800857543945,
+            "range_last_m": 9.85785961151123,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 132,
+            "start_bin": 288,
+            "stop_bin": 386,
+            "range_start_m": 7.2240800857543945,
+            "range_last_m": 9.657191276550293,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 133,
+            "start_bin": 287,
+            "stop_bin": 313,
+            "range_start_m": 7.198996543884277,
+            "range_last_m": 7.826086521148682,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 133,
+            "start_bin": 315,
+            "stop_bin": 384,
+            "range_start_m": 7.90133810043335,
+            "range_last_m": 9.607023239135742,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 134,
+            "start_bin": 287,
+            "stop_bin": 313,
+            "range_start_m": 7.198996543884277,
+            "range_last_m": 7.826086521148682,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 134,
+            "start_bin": 315,
+            "stop_bin": 346,
+            "range_start_m": 7.90133810043335,
+            "range_last_m": 8.653846740722656,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 134,
+            "start_bin": 348,
+            "stop_bin": 384,
+            "range_start_m": 8.729097366333008,
+            "range_last_m": 9.607023239135742,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 135,
+            "start_bin": 289,
+            "stop_bin": 313,
+            "range_start_m": 7.249163627624512,
+            "range_last_m": 7.826086521148682,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 135,
+            "start_bin": 315,
+            "stop_bin": 346,
+            "range_start_m": 7.90133810043335,
+            "range_last_m": 8.653846740722656,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 135,
+            "start_bin": 349,
+            "stop_bin": 369,
+            "range_start_m": 8.754180908203125,
+            "range_last_m": 9.230769157409668,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 135,
+            "start_bin": 370,
+            "stop_bin": 384,
+            "range_start_m": 9.280936241149902,
+            "range_last_m": 9.607023239135742,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 136,
+            "start_bin": 295,
+            "stop_bin": 309,
+            "range_start_m": 7.399665832519531,
+            "range_last_m": 7.725752353668213,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 136,
+            "start_bin": 322,
+            "stop_bin": 346,
+            "range_start_m": 8.076922416687012,
+            "range_last_m": 8.653846740722656,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 136,
+            "start_bin": 349,
+            "stop_bin": 369,
+            "range_start_m": 8.754180908203125,
+            "range_last_m": 9.230769157409668,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 137,
+            "start_bin": 329,
+            "stop_bin": 346,
+            "range_start_m": 8.252508163452148,
+            "range_last_m": 8.653846740722656,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          }
+        ]
+      },
+      {
+        "beam_first": 151,
+        "beam_last": 172,
+        "intervals": [
+          {
+            "beam": 151,
+            "start_bin": 239,
+            "stop_bin": 266,
+            "range_start_m": 5.994983196258545,
+            "range_last_m": 6.647157192230225,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 151,
+            "start_bin": 301,
+            "stop_bin": 334,
+            "range_start_m": 7.550167083740234,
+            "range_last_m": 8.352843284606934,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 151,
+            "start_bin": 352,
+            "stop_bin": 373,
+            "range_start_m": 8.829431533813477,
+            "range_last_m": 9.331103324890137,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 152,
+            "start_bin": 232,
+            "stop_bin": 282,
+            "range_start_m": 5.819397926330566,
+            "range_last_m": 7.048494815826416,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 152,
+            "start_bin": 295,
+            "stop_bin": 350,
+            "range_start_m": 7.399665832519531,
+            "range_last_m": 8.754180908203125,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 152,
+            "start_bin": 352,
+            "stop_bin": 373,
+            "range_start_m": 8.829431533813477,
+            "range_last_m": 9.331103324890137,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 152,
+            "start_bin": 375,
+            "stop_bin": 389,
+            "range_start_m": 9.406354904174805,
+            "range_last_m": 9.732441902160645,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 153,
+            "start_bin": 231,
+            "stop_bin": 282,
+            "range_start_m": 5.794314384460449,
+            "range_last_m": 7.048494815826416,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 153,
+            "start_bin": 295,
+            "stop_bin": 350,
+            "range_start_m": 7.399665832519531,
+            "range_last_m": 8.754180908203125,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 153,
+            "start_bin": 352,
+            "stop_bin": 373,
+            "range_start_m": 8.829431533813477,
+            "range_last_m": 9.331103324890137,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 153,
+            "start_bin": 375,
+            "stop_bin": 389,
+            "range_start_m": 9.406354904174805,
+            "range_last_m": 9.732441902160645,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 154,
+            "start_bin": 231,
+            "stop_bin": 284,
+            "range_start_m": 5.794314384460449,
+            "range_last_m": 7.098662376403809,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 154,
+            "start_bin": 293,
+            "stop_bin": 350,
+            "range_start_m": 7.349498748779297,
+            "range_last_m": 8.754180908203125,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 154,
+            "start_bin": 352,
+            "stop_bin": 389,
+            "range_start_m": 8.829431533813477,
+            "range_last_m": 9.732441902160645,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 155,
+            "start_bin": 222,
+            "stop_bin": 350,
+            "range_start_m": 5.568561553955078,
+            "range_last_m": 8.754180908203125,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 155,
+            "start_bin": 352,
+            "stop_bin": 390,
+            "range_start_m": 8.829431533813477,
+            "range_last_m": 9.757525444030762,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 156,
+            "start_bin": 224,
+            "stop_bin": 396,
+            "range_start_m": 5.618729114532471,
+            "range_last_m": 9.908026695251465,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 157,
+            "start_bin": 224,
+            "stop_bin": 396,
+            "range_start_m": 5.618729114532471,
+            "range_last_m": 9.908026695251465,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 158,
+            "start_bin": 225,
+            "stop_bin": 395,
+            "range_start_m": 5.643812656402588,
+            "range_last_m": 9.882943153381348,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 159,
+            "start_bin": 225,
+            "stop_bin": 395,
+            "range_start_m": 5.643812656402588,
+            "range_last_m": 9.882943153381348,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 160,
+            "start_bin": 221,
+            "stop_bin": 395,
+            "range_start_m": 5.543478012084961,
+            "range_last_m": 9.882943153381348,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 161,
+            "start_bin": 221,
+            "stop_bin": 396,
+            "range_start_m": 5.543478012084961,
+            "range_last_m": 9.908026695251465,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 162,
+            "start_bin": 218,
+            "stop_bin": 394,
+            "range_start_m": 5.468227386474609,
+            "range_last_m": 9.85785961151123,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 163,
+            "start_bin": 217,
+            "stop_bin": 394,
+            "range_start_m": 5.443143844604492,
+            "range_last_m": 9.85785961151123,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 164,
+            "start_bin": 215,
+            "stop_bin": 394,
+            "range_start_m": 5.392976760864258,
+            "range_last_m": 9.85785961151123,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 165,
+            "start_bin": 216,
+            "stop_bin": 394,
+            "range_start_m": 5.418060302734375,
+            "range_last_m": 9.85785961151123,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 166,
+            "start_bin": 212,
+            "stop_bin": 396,
+            "range_start_m": 5.317725658416748,
+            "range_last_m": 9.908026695251465,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 167,
+            "start_bin": 212,
+            "stop_bin": 394,
+            "range_start_m": 5.317725658416748,
+            "range_last_m": 9.85785961151123,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 168,
+            "start_bin": 217,
+            "stop_bin": 286,
+            "range_start_m": 5.443143844604492,
+            "range_last_m": 7.148829460144043,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 168,
+            "start_bin": 288,
+            "stop_bin": 394,
+            "range_start_m": 7.2240800857543945,
+            "range_last_m": 9.85785961151123,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 169,
+            "start_bin": 217,
+            "stop_bin": 245,
+            "range_start_m": 5.443143844604492,
+            "range_last_m": 6.120401382446289,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 169,
+            "start_bin": 259,
+            "stop_bin": 286,
+            "range_start_m": 6.496655464172363,
+            "range_last_m": 7.148829460144043,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 169,
+            "start_bin": 288,
+            "stop_bin": 392,
+            "range_start_m": 7.2240800857543945,
+            "range_last_m": 9.807692527770996,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 170,
+            "start_bin": 259,
+            "stop_bin": 275,
+            "range_start_m": 6.496655464172363,
+            "range_last_m": 6.872910022735596,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 170,
+            "start_bin": 289,
+            "stop_bin": 313,
+            "range_start_m": 7.249163627624512,
+            "range_last_m": 7.826086521148682,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 170,
+            "start_bin": 315,
+            "stop_bin": 392,
+            "range_start_m": 7.90133810043335,
+            "range_last_m": 9.807692527770996,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 171,
+            "start_bin": 261,
+            "stop_bin": 275,
+            "range_start_m": 6.546822547912598,
+            "range_last_m": 6.872910022735596,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 171,
+            "start_bin": 289,
+            "stop_bin": 313,
+            "range_start_m": 7.249163627624512,
+            "range_last_m": 7.826086521148682,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 171,
+            "start_bin": 315,
+            "stop_bin": 331,
+            "range_start_m": 7.90133810043335,
+            "range_last_m": 8.277591705322266,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 171,
+            "start_bin": 332,
+            "stop_bin": 356,
+            "range_start_m": 8.3277587890625,
+            "range_last_m": 8.904682159423828,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          },
+          {
+            "beam": 172,
+            "start_bin": 297,
+            "stop_bin": 312,
+            "range_start_m": 7.449832916259766,
+            "range_last_m": 7.8010029792785645,
+            "start_observed": true,
+            "end_observed": false,
+            "range_end_m": null
+          }
+        ]
+      }
+    ],
+    "noise_db": -9.627341747283936,
+    "native_ping_fused": false
+  },
+  "config": {
+    "noise_range_max_m": 1.0,
+    "return_margin_db": 12.0,
+    "echo_excess_db": 8.0,
+    "shadow_drop_db": 10.0,
+    "min_shadow_length_m": 0.3,
+    "min_echo_length_m": 0.075,
+    "recovery_length_m": 0.15,
+    "min_region_beams": 3
+  },
+  "pose_source": "native estimated IMU poses; no simulator truth",
+  "ground_hypothesis": "locally horizontal, calibrated Ping minimum-ray model and lever arms; not a fitted surface",
+  "diagnostic_bounds": {
+    "distance_m": 0.15,
+    "normal_deg": 5
+  },
+  "height_estimates_emitted": 0,
+  "map_qualified": false,
+  "region_count_range": [
+    0,
+    12
+  ],
+  "implementation_sha256": {
+    "scripts/analyze_recorded_sonar_surfaces.py": "af28c2fa37469b0579d9ab08f6000f75991457c3e438e4e6809e06895fc16420",
+    "libraries/posim-slam/src/posim_slam/sonar_surface.py": "59089ea703d8956a76fd0f020f6b472c7432d65afe2cd69c07df479b760ce9d4",
+    "libraries/posim-slam/src/posim_slam/sonar_input.py": "4f424f6b5549a8866bd01677356eaf51921779767c59c53af3de3b826c6d9516"
+  },
+  "native_replay_receipt_sha256": "64f3e99db4e38c10d0b8d3b75b73e089ea83f9fecc9218e40999737ee8f9b7b2",
+  "native_events_sha256": "e2adf6ab8cc382b624fb4621aaf153f1cd46d0887e09e7ea96145986a5e88df9",
+  "calibration_sha256": {
+    "ping-calibration.json": "6a17eae68ebef151bc57843e8f3b6dbbb00cee8eb5be5dce2d95ac4527d35669",
+    "sonar-calibration.json": "fc3dd76d72b5a5a8f4c05a54eb1aeb537a2d092528ff871e5c06b18f81f23fb0"
+  }
+}

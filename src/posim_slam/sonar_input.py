@@ -25,3 +25,21 @@ def projected_frame(message):
     # Negative infinity represents no acoustic return and is retained for replay.
     return dict(intensity_db=power,ranges=ranges,beam_directions=directions,
                 stamp=np.asarray([sec,nsec],dtype=np.int64))
+
+
+def validate_frame(frame):
+    power = np.asarray(frame['intensity_db'])
+    ranges = np.asarray(frame['ranges'])
+    directions = np.asarray(frame['beam_directions'])
+    stamp = np.asarray(frame['stamp'])
+    if (power.ndim != 2 or power.size > 2_000_000 or not 16 <= min(power.shape) or max(power.shape) > 4096
+            or ranges.shape != (power.shape[0],) or directions.shape != (power.shape[1], 3)
+            or stamp.shape != (2,) or not all(np.isfinite(v).all() for v in (power, ranges, directions, stamp))
+            or not (np.diff(ranges) > 0).all() or ranges[0] < 0
+            or stamp[0] < 0 or not np.equal(stamp,np.floor(stamp)).all()
+            or not 0 <= stamp[1] < 1e9):
+        raise ValueError('invalid_acoustic_frame')
+    angles = np.arctan2(directions[:, 1], directions[:, 0])
+    if (not (np.diff(angles) > 0).all() or np.max(np.abs(directions[:, 2])) > 1e-5
+            or not np.allclose(np.linalg.norm(directions, axis=1), 1, atol=1e-5)):
+        raise ValueError('invalid_acoustic_fan')
