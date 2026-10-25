@@ -20,13 +20,13 @@ struct OwnedPingObservation {
 // already own the plane, and must retain these exact factors until retirement.
 inline JointPingGroupSpec makeOwnedPingGroup(basalt::BundleAdjustmentBase<double>& owner,
     const basalt::AbsOrderMap& order,int plane_id,const std::set<basalt::KeypointId>& ids,
-    const std::vector<OwnedPingObservation>& observations,double surface_sigma,double support_radius) {
+    const std::vector<OwnedPingObservation>& observations,double surface_sigma,double support_radius,bool range_only=false) {
   requireStateOrder(order);
-  if(owner.posim_ping_trial_active || ids.size()<8 || ids.size()>64 || observations.empty() || observations.size()>64 ||
+  if(owner.posim_ping_trial_active || (range_only ? !ids.empty() : ids.size()<8) || ids.size()>64 || observations.empty() || observations.size()>64 ||
      !std::isfinite(surface_sigma) || surface_sigma<=0 || !std::isfinite(support_radius) || support_radius<=0)
     throw std::invalid_argument("invalid_owned_ping_group");
   const auto reference=owner.posim_ping_planes.at(plane_id).reference;
-  JointPingGroupSpec spec;spec.plane_id=plane_id;spec.landmark_ids=ids;
+  JointPingGroupSpec spec;spec.plane_id=plane_id;spec.landmark_ids=ids;spec.range_only=range_only;
   for(const auto& observation:observations) {
     if(observation.stamp<=0 || !order.abs_order_map.count(observation.stamp) ||
        !spec.observation_pose_stamps.insert(observation.stamp).second ||
@@ -47,7 +47,7 @@ inline JointPingGroupSpec makeOwnedPingGroup(basalt::BundleAdjustmentBase<double
     for(const auto& [target,pixel]:point.obs)
       if(!order.abs_order_map.count(target.frame_id))throw std::invalid_argument("missing_owned_ping_visual_target");
   }
-  spec.build=[&owner,order,plane_id,ids,observations,surface_sigma,support_radius,reference](const auto& blocks) {
+  spec.build=[&owner,order,plane_id,ids,observations,surface_sigma,support_radius,reference,range_only](const auto& blocks) {
     if(blocks.size()!=ids.size())throw std::invalid_argument("changed_owned_ping_membership");
     const auto& plane=owner.posim_ping_planes.at(plane_id);
     if((plane.reference.normal-reference.normal).norm()>1e-12 || std::abs(plane.reference.distance-reference.distance)>1e-12)
@@ -66,7 +66,7 @@ inline JointPingGroupSpec makeOwnedPingGroup(basalt::BundleAdjustmentBase<double
         pose.getPose(),c.mount,c.rays,observation.measured,observation.bias,observation.return_sigma,c.minimum,c.maximum,
         pose.getPoseLin(),observation.per_ray_sigma,observation.range_loss_scale,observation.range_loss});
     }
-    return assemblePingGroup(order.total_size,plane.normal,plane.distance,landmarks,rows,surface_sigma,support_radius,reference);
+    return assemblePingGroup(order.total_size,plane.normal,plane.distance,landmarks,rows,surface_sigma,support_radius,reference,range_only);
   };
   return spec;
 }

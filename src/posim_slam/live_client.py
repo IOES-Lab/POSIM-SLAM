@@ -32,7 +32,7 @@ class LiveClient:
         self.closed=threading.Event()
         self.ready=threading.Event()
         self.ping_transport=False;self.gravity_seed_transport=False;self.sonar_transport=False;self.sonar_auxiliary_transport=False
-        self.sonar_clock_transport=False;self.dvl_transport=False;self.sensor_state_transport=False;self.pressure_transport=False
+        self.sonar_clock_transport=False;self.dvl_transport=False;self.sensor_state_transport=False;self.pressure_transport=False;self.terrain_ping_transport=False
         self.process=subprocess.Popen([str(Path(binary).resolve()),str(Path(calibration).resolve())],
             stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=log,bufsize=65536)
         self.writer=threading.Thread(target=self._write,daemon=True)
@@ -82,6 +82,9 @@ class LiveClient:
                     self.sonar_auxiliary_transport=value.get("sonar_auxiliary_transport")=="ordered_imu_state_v1"
                     self.sonar_transport=value.get("sonar_snapshot_transport")=="exact_image_track_snapshot_v1"
                     self.dvl_transport=value.get('dvl_measurement_transport')=='body_velocity_gyro_covariance_v1'
+                    self.terrain_ping_transport=value.get('terrain_ping_transport')=='exact_sensor_range_v1'
+                    if self.processing_request.get('enable_terrain_ping',False) and not self.terrain_ping_transport:
+                        raise ValueError('worker_terrain_ping_unsupported')
                     self.pressure_transport=value.get('pressure_measurement_transport')=='height_unknown_datum_v1'
                     self.sensor_state_transport=value.get('sensor_state_transport')=='ordered_camera_auxiliary_states_v1'
                     if self.processing_request.get('enable_joint_dvl',False) and not self.dvl_transport:
@@ -173,6 +176,12 @@ class LiveClient:
         if not getattr(self,'pressure_transport',False):raise ValueError('worker_pressure_unsupported')
         from .pressure_packet import encode_pressure
         self.send(10,encode_pressure(stamp_ns,height_m,variance_m2))
+
+    def terrain_ping(self,stamp_ns,range_m):
+        """Submit a raw range before its exact state; no camera packet required."""
+        if not getattr(self,'terrain_ping_transport',False):raise ValueError('worker_terrain_ping_unsupported')
+        from .ping_packet import encode_ping
+        self.send(11,encode_ping(stamp_ns,range_m))
 
     def sonar_tick(self,stamp_ns):
         """Advance at the original sonar time, after its optional snapshot.

@@ -13,6 +13,8 @@ struct JointPingGroupSpec {
   // Membership and observed measurement identities stay fixed during a trial.
   std::function<NativePingGroup(const std::map<basalt::KeypointId,basalt::LandmarkBlock<double>*>&)> build;
   std::set<int64_t> observation_pose_stamps;
+  // Explicit local-planarity hypothesis supported by raw range observations.
+  bool range_only=false;
 
 };
 
@@ -35,7 +37,7 @@ inline PingRetirementPlan planPingRetirement(const basalt::BundleAdjustmentBase<
   PingRetirementPlan plan;plan.landmarks=lost;
   std::set<int> plane_ids;std::set<basalt::KeypointId> owned;std::set<int64_t> observations;
   for(const auto& group:groups) {
-    if(!group.build || group.landmark_ids.size()<3 || group.landmark_ids.size()>64 ||
+    if(!group.build || (group.range_only ? !group.landmark_ids.empty() : group.landmark_ids.size()<3) || group.landmark_ids.size()>64 ||
        group.observation_pose_stamps.empty() || group.observation_pose_stamps.size()>64 ||
        !plane_ids.insert(group.plane_id).second)
       throw std::invalid_argument("invalid_ping_retirement_group");
@@ -97,7 +99,7 @@ class PingLinearization final : public basalt::LinearizationAbsQR<double,6> {
     if(specs.empty() || specs.size()>8)throw std::invalid_argument("invalid_joint_group_count");
     std::map<basalt::KeypointId,size_t> membership;std::set<int> planes;
     for(auto& spec:specs) {
-      if(!spec.build || spec.landmark_ids.size()<3 || spec.landmark_ids.size()>64 ||
+      if(!spec.build || (spec.range_only ? !spec.landmark_ids.empty() : spec.landmark_ids.size()<3) || spec.landmark_ids.size()>64 ||
          !planes.insert(spec.plane_id).second)throw std::invalid_argument("invalid_joint_group_membership");
       owner_->posim_ping_planes.at(spec.plane_id);
       for(auto id:spec.landmark_ids)
@@ -123,6 +125,7 @@ class PingLinearization final : public basalt::LinearizationAbsQR<double,6> {
   double linearizeProblem(bool* valid=nullptr) override {
     phase_=Phase::Empty;bool all_valid=true;
     double cost=Parent::linearizeProblem(&all_valid);std::set<int64_t> observations;
+    if(!std::isfinite(cost))throw std::runtime_error("nonfinite_joint_base_cost");
     for(auto& group:groups_) {
       std::map<basalt::KeypointId,basalt::LandmarkBlock<double>*> blocks;std::set<basalt::LandmarkBlock<double>*> expected;
       for(auto& [id,block]:group.owned) {
@@ -166,6 +169,11 @@ class PingLinearization final : public basalt::LinearizationAbsQR<double,6> {
       h.noalias()+=group.reduced.jacobian.transpose()*group.reduced.jacobian;
       b.noalias()+=group.reduced.jacobian.transpose()*group.reduced.residual;
     }
+  }
+  void dampNuisance(double damping) {
+    requireReduced();
+    for(auto& group:groups_)
+      group.reduced=eliminateJointPatch(group.raw.jacobian,group.raw.residual,aom.total_size,damping);
   }
   void get_dense_Q2Jp_Q2r(MatX& j,VecX& r) const override {
     requireReduced();Parent::get_dense_Q2Jp_Q2r(j,r);

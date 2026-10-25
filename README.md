@@ -4,6 +4,8 @@
 
 > This project is developed with assistance from large language models (LLMs).
 
+Experimental camera-free local Ping planes and their matched RGB/point-cloud controls are described in [terrain Ping diagnostics](docs/diagnostics/terrain-ping.md). This mode is off by default; reliable terrain reconstruction remains unqualified.
+
 Independent sensor estimation components used by POSIM applications. Python
 algorithms accept measured sensor arrays and calibrated transforms. WWW-POSIM
 owns sessions, vehicle composition, runtime supervision, UI and map downloads.

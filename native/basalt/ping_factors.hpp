@@ -13,6 +13,7 @@ class PingFactorStore {
     std::vector<OwnedPingObservation> observations;
     double surface_sigma,support_radius;
     PingPlaneReference reference;
+    bool range_only=false;
   };
  public:
   explicit PingFactorStore(basalt::BundleAdjustmentBase<double>& owner):owner_(owner) {}
@@ -23,14 +24,14 @@ class PingFactorStore {
 
   void add(const basalt::AbsOrderMap& order,int plane_id,const Vec3& normal,double distance,
       const std::set<basalt::KeypointId>& ids,const OwnedPingObservation& observation,
-      double surface_sigma,double support_radius) {
+      double surface_sigma,double support_radius,bool range_only=false) {
     requireNewObservation(observation.stamp);
     if(definitions_.size()>=8 || definitions_.count(plane_id))
       throw std::invalid_argument("duplicate_or_excess_ping_factor_group");
     for(const auto& [id,definition]:definitions_)
       for(auto point:ids)if(definition.ids.count(point))
         throw std::invalid_argument("duplicate_ping_factor_landmark");
-    Definition definition{ids,{observation},surface_sigma,support_radius,{normal,distance}};
+    Definition definition{ids,{observation},surface_sigma,support_radius,{normal,distance},range_only};
     auto next=definitions_;next.emplace(plane_id,definition);
     auto saved_planes=owner_.posim_ping_planes;
     try {
@@ -48,6 +49,27 @@ class PingFactorStore {
     next.observations.push_back(observation);
     validate(order,plane_id,next);
     std::swap(definitions_.at(plane_id),next);last_observation_=observation.stamp;
+  }
+
+  // Association uses a bounded neighbourhood and innovation gate; it is an
+  // explicit local-planarity hypothesis, not an observed infinite sea floor.
+  bool appendRangePatch(const basalt::AbsOrderMap& order,int id,
+      const OwnedPingObservation& observation,double radius,double age_s,double innovation_sigma) {
+    const auto& d=definitions_.at(id);
+    if(!d.range_only || !std::isfinite(radius) || radius<=0 || !std::isfinite(age_s) || age_s<=0 ||
+       !std::isfinite(innovation_sigma) || innovation_sigma<=0 || !observation.per_ray_sigma)
+      throw std::invalid_argument("invalid_range_patch_association");
+    const auto& first=d.observations.front();
+    if(observation.stamp-first.stamp>int64_t(age_s*1e9))return false;
+    const Vec3 origin=(owner_.getPoseStateWithLin(first.stamp).getPose()*first.calibration.mount).translation();
+    const auto pose=owner_.getPoseStateWithLin(observation.stamp).getPose();
+    if(((pose*observation.calibration.mount).translation()-origin).norm()>radius)return false;
+    const auto& plane=owner_.posim_ping_planes.at(id);
+    const auto prediction=expectedPingRange(pose,observation.calibration.mount,observation.calibration.rays,
+        plane.normal,plane.distance,observation.bias,*observation.per_ray_sigma,
+        observation.calibration.minimum,observation.calibration.maximum).range.prediction;
+    if(std::abs(prediction-observation.measured)>innovation_sigma*observation.return_sigma)return false;
+    append(order,id,observation);return true;
   }
 
   std::vector<JointPingGroupSpec> specs(const basalt::AbsOrderMap& order) const {
@@ -98,7 +120,7 @@ class PingFactorStore {
     const auto& reference=owner_.posim_ping_planes.at(id).reference;
     if((reference.normal-d.reference.normal).norm()>1e-12 || std::abs(reference.distance-d.reference.distance)>1e-12)
       throw std::invalid_argument("changed_ping_factor_reference");
-    return makeOwnedPingGroup(owner_,order,id,d.ids,d.observations,d.surface_sigma,d.support_radius);
+    return makeOwnedPingGroup(owner_,order,id,d.ids,d.observations,d.surface_sigma,d.support_radius,d.range_only);
   }
   basalt::BundleAdjustmentBase<double>& owner_;
   std::map<int,Definition> definitions_;

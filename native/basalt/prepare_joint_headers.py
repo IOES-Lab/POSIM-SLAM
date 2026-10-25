@@ -123,7 +123,17 @@ def prepare(source,destination):
     raw=(Path(source)/'src/vi_estimator/sqrt_keypoint_vio.cpp').read_bytes()
     if hashlib.sha256(raw).hexdigest()!='141dc9747dfb60e19e8ab93eab3b5600a6bb95fc249afdd5e15f4d844276c5c9':
         raise ValueError('pinned_basalt_owner_source_changed')
-    text=replace_once(raw.decode(),'  optimize();\n  marginalize(num_points_connected, lost_landmaks);',
+    # A bootstrap state has no preceding IMU interval. Upstream inserts an
+    # empty placeholder and waits for later visual frames before optimization;
+    # auxiliary factors can optimize immediately. Only measure() may publish a
+    # completed integration, otherwise the IMU bias rows divide by sqrt(0).
+    text=replace_once(raw.decode(),'''  imu_meas[t_ns] = IntegratedImuMeasurement<Scalar>(t_ns, bg.cast<Scalar>(),
+                                                    ba.cast<Scalar>());''',
+        '  // No completed IMU interval at the initial state.')
+    text=replace_once(text,'''        imu_meas[last_state_t_ns] =
+            IntegratedImuMeasurement<Scalar>(last_state_t_ns, bg, ba);''',
+        '        // No completed IMU interval at the initial state.')
+    text=replace_once(text,'  optimize();\n  marginalize(num_points_connected, lost_landmaks);',
         '  if (!posim_joint_started && posim_sonar_factors && lmdb.numLandmarks() > 0) {\n'
         '    posim_joint_started = true; opt_started = true;\n'
         '  }\n'

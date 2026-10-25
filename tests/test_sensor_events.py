@@ -5,6 +5,18 @@ from posim_slam.sensor_events import SensorEvents
 
 
 class SensorEventsTests(unittest.TestCase):
+    def test_range_only_clock_preserves_delayed_ping_without_camera(self):
+        for order in set(itertools.permutations('ssppi')):
+            q=SensorEvents(state_clock='sonar',ping=True)
+            times={'sonar':iter([10,30]),'ping':iter([15,30]),'imu':iter([31])};events=[]
+            for letter in order:
+                kind={'s':'sonar','p':'ping','i':'imu'}[letter];stamp=next(times[kind])
+                q.push(kind,stamp,(kind,stamp));events.extend(self.drain(q))
+            self.assertEqual([e['stamp_ns'] for e in events],[10,15,30])
+            self.assertEqual(events[1]['ping'],('ping',15))
+            self.assertIsNone(events[1]['sonar'])
+            self.assertTrue(all(e['camera'] is None for e in events))
+
     def test_pressure_and_dvl_coalesce_only_equal_times_under_delayed_arrival(self):
         for order in set(itertools.permutations('ssddppi')):
             q=SensorEvents(state_clock='sonar',dvl=True,pressure=True)

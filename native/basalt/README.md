@@ -1381,3 +1381,54 @@ The native worker permits one auxiliary sonar state between camera images. Earli
 `SensorEvents`는 기본적으로 카메라·소나 입력 16개와 네이티브 응답 대기 이벤트 1개를 보관합니다. 카메라/Ping 쌍과 원본 소나에는 `push(kind, stamp_ns, payload)`, 수신·검증한 원본 IMU에는 `push('imu', stamp_ns)`를 호출합니다. 각 센서의 시각은 증가해야 합니다. `next_event()`는 두 영상 입력이 해당 시각까지 도착하고 IMU가 그 이후까지 확보돼야 이벤트를 반환합니다. 같은 시각의 카메라·소나는 하나로 묶습니다. `SonarFusion.observe`로 네이티브 응답을 검증한 뒤 `acknowledge(stamp_ns)`를 호출해야 다음 이벤트를 받을 수 있습니다.
 
 네이티브 실행부는 카메라 사이에 보조 소나 상태 1개를 허용합니다. 첫 카메라 이전 소나와 초과 보조 소나는 개수를 기록하고 생략하며 시각을 바꾸지 않습니다. 누락된 관측은 비워 둡니다. 시각 역전·잘못된 응답·큐 초과는 해당 구간을 중단합니다. 센서 중단 감지·입력 크기 제한·연속 IMU 확보는 호출자가 담당합니다. 최신 시각만으로 IMU 연속성을 보장하지 않습니다. `finish(kind)`는 유한 기록이 실제로 끝났을 때만 사용하며 실시간 센서 타임아웃에 사용하지 않습니다. ROS 어댑터 활성화는 이 독립 큐 인터페이스와 별도입니다.
+
+
+### Camera-free local Ping planes / 카메라 없는 국소 Ping 평면
+
+`enable_terrain_ping` enables experimental range-only groups with a free plane
+normal and distance. It is mutually exclusive with visual `enable_joint_ping`.
+Packet 11 is little-endian `<int64 timestamp_ns, float64 range_m>`; send it before
+the state event at its original timestamp. The ready capability is
+`terrain_ping_transport: exact_sensor_range_v1`. A missing sample creates no
+factor. Replay adapters preserve missing-sample clocks and select original
+samples without averaging or retiming.
+
+Required configuration: `terrain_return_sigma_m`, `terrain_patch_radius_m`,
+`terrain_patch_max_age_s`, `terrain_innovation_sigma`. The diagnostic defaults
+are 0.03 m, 0.75 m, 2 s and 5 sigma. These are uncalibrated model assumptions.
+Association bounds sensor-origin separation, age and range innovation; it does
+not prove that the beam footprints lie on one physical plane. Predictions use
+the expected minimum of independently noisy rays and the calibrated mounting
+transform. A downward normal seeds the numerical solution; no normal or height
+prior is added. Maximum eight groups and 64 observations per group apply.
+
+Plane and state variables share nonlinear cost acceptance and FEJ references.
+LM damping includes eliminated plane/landmark increments during optimization;
+undamped rows alone enter marginalization. Retiring any dependent state consumes
+the entire group's observations once. A flat surface supplies no horizontal
+translation or yaw information. Plane rank is conditional on the current pose
+estimates, not a confidence estimate or a map-quality gate. No FLS point-to-plane
+association, loop closure or terrain mesh export is provided by this mode.
+
+`enable_terrain_ping`은 법선과 거리가 미지인 실험용 거리 전용 평면 그룹을
+사용합니다. 시각 `enable_joint_ping`과 동시에 켤 수 없습니다. 11번 패킷은
+리틀엔디언 `<int64 timestamp_ns, float64 range_m>`이며 원래 시각의 상태
+이벤트보다 먼저 보냅니다. 지원 표시는 `exact_sensor_range_v1`입니다.
+관측이 없으면 팩터를 만들지 않습니다. 기록 재생은 누락 관측의 시각도
+유지하며 선택한 원본 표본을 평균하거나 다른 시각으로 옮기지 않습니다.
+
+필수 설정은 위 네 항목이며 진단 기본값은 0.03 m, 0.75 m, 2초, 5시그마입니다.
+보정된 하드웨어 잡음값이 아닌 모델 가정입니다. 센서 원점 간 거리·시간·거리
+잔차로 관측을 연결하므로 같은 물리 평면을 관측했다는 보장은 없습니다.
+예측값은 독립 잡음이 있는 각 광선의 최소 거리 기댓값과 센서 장착 변환을
+사용합니다. 아래쪽 법선은 계산 시작값이며 법선·높이 사전 제약은 없습니다.
+최대 8개 그룹과 그룹당 64개 관측을 보관합니다.
+
+평면과 상태는 비선형 비용 승인·FEJ 기준을 공유합니다. 최적화할 때 소거되는
+평면·특징점 증분에도 LM 감쇠를 적용하며 주변화에는 감쇠 없는 행만 넣습니다.
+의존하는 상태가 제거되면 그룹 관측 전체를 한 번만 반영합니다. 평탄한 표면은
+수평 이동이나 요각 정보를 주지 않습니다. 평면 랭크는 현재 자세를 고정한
+조건부 값이며 신뢰도나 지도 합격 판정이 아닙니다. 이 모드에는 전방 소나
+점과 평면의 연결, 루프 폐쇄, 지형 메시 내보내기가 없습니다.
+
+[Matched replay evidence / 같은 입력의 비교 검증](../../docs/diagnostics/terrain-ping.md).

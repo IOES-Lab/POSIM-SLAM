@@ -85,10 +85,10 @@ struct NativePingGroup {
 inline NativePingGroup assemblePingGroup(Eigen::Index pose_columns,const Vec3& normal,double distance,
     const std::vector<PingGroupLandmark>& landmarks,const std::vector<PingGroupObservation>& observations,
     double surface_sigma,double support_radius,
-    const std::optional<PingPlaneReference>& reference=std::nullopt) {
+    const std::optional<PingPlaneReference>& reference=std::nullopt,bool range_only=false) {
   planeBasis(normal);
   if(reference) {planeBasis(reference->normal);if(!std::isfinite(reference->distance))throw std::invalid_argument("invalid_plane_reference");}
-  if(pose_columns<6 || pose_columns>kMaxStateColumns || landmarks.size()<3 || landmarks.size()>kMaxPingLandmarks ||
+  if(pose_columns<6 || pose_columns>kMaxStateColumns || (range_only ? !landmarks.empty() : landmarks.size()<3) || landmarks.size()>kMaxPingLandmarks ||
      observations.empty() || observations.size()>64 || !std::isfinite(distance) ||
      !std::isfinite(surface_sigma) || surface_sigma<=0)
     throw std::invalid_argument("invalid_ping_group");
@@ -156,7 +156,7 @@ inline NativePingGroup assemblePingGroup(Eigen::Index pose_columns,const Vec3& n
     if(row.prediction<observation.minimum || row.prediction>observation.maximum ||
        row.prediction-observation.bias<observation.minimum || row.prediction-observation.bias>observation.maximum)
       throw std::invalid_argument("predicted_ping_out_of_range");
-    requireNativeSurfaceSupport(points,row.intersections,normal,support_radius);
+    if(!range_only)requireNativeSurfaceSupport(points,row.intersections,normal,support_radius);
     const double error=(row.prediction-observation.measured)/observation.sigma;
     const double magnitude=std::abs(error);
     const bool tail=observation.range_loss_scale && magnitude>*observation.range_loss_scale;

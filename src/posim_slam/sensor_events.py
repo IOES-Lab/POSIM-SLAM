@@ -8,18 +8,18 @@ or reused. The caller separately enforces wall-clock liveness and IMU coverage.
 
 
 class SensorEvents:
-    def __init__(self, *, capacity=16, state_clock='camera', dvl=False, pressure=False):
+    def __init__(self, *, capacity=16, state_clock='camera', dvl=False, pressure=False, ping=False):
         if type(capacity) is not int or not 2 <= capacity <= 256:
             raise ValueError('sensor_events_capacity')
         self.capacity = capacity
         if state_clock not in ('camera', 'sonar'):
             raise ValueError('sensor_events_state_clock')
         self.state_clock = state_clock
-        for kind, enabled in (('dvl', dvl), ('pressure', pressure)):
+        for kind, enabled in (('dvl', dvl), ('pressure', pressure), ('ping', ping)):
             if type(enabled) is not bool:
                 raise ValueError('sensor_events_' + kind + '_selection')
         self.dvl_enabled = dvl
-        self.auxiliary_streams = tuple(kind for kind, enabled in (('dvl', dvl), ('pressure', pressure)) if enabled)
+        self.auxiliary_streams = tuple(kind for kind, enabled in (('dvl', dvl), ('pressure', pressure), ('ping', ping)) if enabled)
         self.streams = ('sonar',) if state_clock == 'sonar' else ('camera', 'sonar')
         self.streams += self.auxiliary_streams
         self.pending = {'camera': {}, 'sonar': {}}
@@ -86,7 +86,7 @@ class SensorEvents:
         and omitted, never shifted onto a camera timestamp.
         Sonar clock requires only sonar and future IMU; no camera heartbeat or
         auxiliary decimation is applied. Clock selection is fixed per segment.
-        Selecting DVL or pressure adds its watermark and exact-time payload,
+        Selecting DVL, pressure or Ping adds its watermark and exact-time payload,
         and disables auxiliary decimation. The native ordered state-clock
         capability is required. Invalid observations still advance the clock
         through an explicit status payload; they are never reused as factors.

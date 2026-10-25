@@ -45,6 +45,9 @@ class DvlNativeTests(unittest.TestCase):
                 if present:client.dvl(**self.observation(stamp,[.25+.02*t,.05,0]))
                 client.sonar_tick(stamp);state=self.receive(client,'state')
                 self.assertFalse(state['map_qualified']);self.assertEqual(state['sonar']['active_track_ids'],[])
+                if index==0:
+                    self.assertGreater(state['dvl']['accepted_steps'],0)
+                    np.testing.assert_allclose(state['velocity'],[.25,.05,0],atol=1e-6)
                 retained=set(state['sonar']['retained_pose_stamps_ns'])
                 self.assertLessEqual(len(retained),16)
                 if present:
