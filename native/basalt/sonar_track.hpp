@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 #pragma once
+#include "estimator_budget.hpp"
 #include "sonar_geometry.hpp"
 #include <vector>
 
@@ -50,7 +51,7 @@ inline SonarTrackRows whitenSonarTrack(const std::vector<SonarPointRows>& rows,
     const std::vector<int>& pose_slots,int pose_count,
     const Eigen::MatrixXd& covariance) {
   const Eigen::Index n=rows.size(),m=2*n;
-  if(n<1 || n>64 || pose_slots.size()!=rows.size() || pose_count<1 || pose_count>64 ||
+  if(n<1 || n>64 || pose_slots.size()!=rows.size() || pose_count<1 || pose_count>kMaxLivePoseBlocks ||
       covariance.rows()!=m || covariance.cols()!=m || !covariance.allFinite() ||
       !(covariance.diagonal().array()>0).all())
     throw std::invalid_argument("invalid_sonar_track_covariance");

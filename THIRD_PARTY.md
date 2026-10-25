@@ -1,5 +1,22 @@
 # Third-party code and notices / 제3자 코드와 고지
 
+## Documentation imagery / 문서 이미지
+
+Diagnostic RGB figures render the BlueROV vehicle and textured seafloor from
+[Clyde McQueen's Orca5](https://github.com/clydemcqueen/orca5/tree/5f7cdc1f044926ebd56f2ce8a1fc4a82990cfa5e),
+revision `5f7cdc1f044926ebd56f2ce8a1fc4a82990cfa5e`. The original
+[MIT notice](docs/diagnostics/notices/orca5-MIT.txt) is retained verbatim.
+Figures adapt the scene with a 3× horizontal terrain footprint, underwater
+rendering effects and added physical test structures. These rendered images
+do not include Orca5's SLAM executable or ORB-SLAM code.
+
+진단 RGB 그림은 위 Orca5 리비전의 BlueROV 차량과 사진을 입힌 해저를 렌더링합니다.
+원본 MIT 고지를 그대로 보존합니다. 지형의 수평 범위를 3배로 확장하고 수중 효과와
+물리적 시험 구조물을 추가합니다. 그림에는 Orca5의 SLAM 실행 파일이나 ORB-SLAM
+코드를 포함하지 않습니다.
+
+## Estimator dependencies / 추정기 의존성
+
 POSIM-SLAM's original Python/C++ source is Apache-2.0. Dependencies retain the
 licenses below. A license for the main estimator does not cover every optional
 solver, vocabulary, dataset, model or runtime dependency.

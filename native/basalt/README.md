@@ -1077,12 +1077,22 @@ observations span one second; six states cannot cover a 10 Hz camera stream.
 Camera keyframes do not guarantee retention of auxiliary poses. Larger budgets
 increase optimizer work and require separate map-quality validation.
 
+Calibration and coupled Ping/sonar matrices share `estimator_budget.hpp`: up to
+64 recent full states, seven pose keyframes and one incoming block of each kind
+before marginalization. State and nuisance column bounds derive from these
+budgets. Sensor observation-count limits remain separate.
+
 보정 파일의 `max_recent_states`로 최근 IMU 전체 상태 보관 개수를 지정합니다
 (정수 3–64). 기본값은 보조 이벤트가 없으면 3개, 있으면 6개이며, 준비 응답에서
 적용값을 확인합니다. 트랙 초기화 구간의 카메라·보조 이벤트를 모두 세고 다음
 이벤트를 위한 여유를 둡니다. 2Hz 소나 관측 3개는 1초에 걸치므로 카메라
 10Hz에서 상태 6개로는 부족합니다. 카메라 키프레임 보관은 보조 자세의 보관을
 보장하지 않습니다. 개수가 늘면 최적화 연산량이 증가하며 지도 품질은 별도로 검증합니다.
+
+보정 입력과 Ping·소나 행렬은 `estimator_budget.hpp`의 공통 한도를 사용합니다.
+최근 전체 상태 최대 64개, 자세 키프레임 7개와 주변화 직전의 추가 상태·
+키프레임 각 1개를 포함해 열 개수 한도를 계산합니다. 센서별 관측 개수 한도는
+이 상태 보관 한도와 구분합니다.
 
 
 Each sonar state report includes `retained_pose_stamps_ns`, a sorted list of

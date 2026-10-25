@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 #pragma once
+#include "estimator_budget.hpp"
 #include <Eigen/Dense>
 #include <Eigen/SVD>
 #include <algorithm>
@@ -27,7 +28,7 @@ struct JointPatchReduction {
 
 inline JointPatchReduction eliminateJointPatch(
     const Eigen::MatrixXd& j,const Eigen::VectorXd& residual,Eigen::Index retained) {
-  if (j.rows()<1 || j.rows()>4096 || j.cols()<2 || j.cols()>1024 ||
+  if (j.rows()<1 || j.rows()>4096 || j.cols()<2 || j.cols()>kMaxJointColumns ||
       residual.size()!=j.rows() || !j.allFinite() || !residual.allFinite() ||
       retained<1 || retained>j.cols())
     throw std::invalid_argument("invalid_joint_patch_system");

@@ -14,6 +14,17 @@ int main() {
   Eigen::VectorXd scale(6);scale<<.02,.003,.02,.003,.02,.003;
   covariance=scale.asDiagonal()*covariance*scale.asDiagonal();
   auto rows=whitenSonarTrack(observations,{0,1,2},3,covariance);
+  // Extra retained camera/keyframe poses add empty columns, not observations
+  // or information. The full supported estimator window can exceed 64 poses.
+  const auto wide=whitenSonarTrack(observations,{0,32,kMaxLivePoseBlocks-1},kMaxLivePoseBlocks,covariance);
+  assert((wide.residual-rows.residual).norm()==0 && (wide.point_jacobian-rows.point_jacobian).norm()==0);
+  const std::vector<int> slots={0,32,kMaxLivePoseBlocks-1};
+  for(int i=0;i<3;++i)assert((wide.pose_jacobian.middleCols(6*slots[i],6)-rows.pose_jacobian.middleCols(6*i,6)).norm()==0);
+  assert(std::abs(wide.pose_jacobian.squaredNorm()-rows.pose_jacobian.squaredNorm())<1e-9);
+  bool oversized=false;
+  try{whitenSonarTrack(observations,{0,1,2},kMaxLivePoseBlocks+1,covariance);}
+  catch(const std::invalid_argument&){oversized=true;}
+  assert(oversized);
   Eigen::VectorXd raw(6);for(int i=0;i<3;++i)raw.segment<2>(2*i)=observations[i].residual;
   assert(std::abs(rows.residual.squaredNorm()-raw.dot(covariance.ldlt().solve(raw)))<1e-9);
   auto reduced=eliminateSonarPoint(rows);

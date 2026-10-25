@@ -1,5 +1,13 @@
 # Measured sonar fusion / 실측 소나 결합
 
+For the corrected 20°/256-ray recording with physical wall/box targets, see
+[the corner-scene comparison](sonar-corner-scene.md). The historical results
+below retain the calibration-mismatch warning.
+
+수정된 20°·256광선과 실제 벽·상자를 사용한 기록은
+[모서리 시험장 비교](sonar-corner-scene.md)를 참고하세요. 아래 과거 결과의
+보정 불일치 표시는 유지합니다.
+
 **Calibration failure in the archived recording.** The actual renderer emitted
 ±20° elevation and 257 vertical rays; the SDF, replay calibration and orange
 figure overlays assumed ±10° and 256. Consequently the archived acoustic

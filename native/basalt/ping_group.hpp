@@ -88,7 +88,7 @@ inline NativePingGroup assemblePingGroup(Eigen::Index pose_columns,const Vec3& n
     const std::optional<PingPlaneReference>& reference=std::nullopt) {
   planeBasis(normal);
   if(reference) {planeBasis(reference->normal);if(!std::isfinite(reference->distance))throw std::invalid_argument("invalid_plane_reference");}
-  if(pose_columns<6 || pose_columns>512 || landmarks.size()<3 || landmarks.size()>64 ||
+  if(pose_columns<6 || pose_columns>kMaxStateColumns || landmarks.size()<3 || landmarks.size()>kMaxPingLandmarks ||
      observations.empty() || observations.size()>64 || !std::isfinite(distance) ||
      !std::isfinite(surface_sigma) || surface_sigma<=0)
     throw std::invalid_argument("invalid_ping_group");

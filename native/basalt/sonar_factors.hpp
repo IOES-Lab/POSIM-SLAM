@@ -296,7 +296,7 @@ class SonarFactorStore {
   }
   static SonarTrackRows build(const Track& track,const Eigen::Vector3d& point,const SonarPoses& poses,
       bool require_sensor_support=true) {
-    if(poses.empty() || poses.size()>64 || track.observations.empty() || track.observations.size()>64)
+    if(poses.empty() || poses.size()>kMaxLivePoseBlocks || track.observations.empty() || track.observations.size()>64)
       throw std::invalid_argument("invalid_sonar_window_size");
     std::map<int64_t,int> slots;int slot=0;
     for(const auto& [stamp,pose]:poses) {

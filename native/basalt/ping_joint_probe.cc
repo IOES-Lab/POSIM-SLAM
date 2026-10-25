@@ -7,7 +7,7 @@
 int main() {
   try {
     Eigen::Index rows,cols,retained;
-    if (!(std::cin>>rows>>cols>>retained) || rows<1 || rows>4096 || cols<2 || cols>1024)
+    if (!(std::cin>>rows>>cols>>retained) || rows<1 || rows>4096 || cols<2 || cols>posim_slam::kMaxJointColumns)
       return 2;
     Eigen::MatrixXd j(rows,cols);Eigen::VectorXd r(rows);
     for (Eigen::Index row=0;row<rows;++row) {

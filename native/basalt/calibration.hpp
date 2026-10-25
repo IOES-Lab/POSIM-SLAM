@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 #pragma once
+#include "estimator_budget.hpp"
 #include <basalt/vi_estimator/vio_estimator.h>
 #include <nlohmann/json.hpp>
 #include <filesystem>
@@ -94,7 +95,7 @@ inline InputCalibration input_calibration(const fs::path& file) {
         throw std::runtime_error("feature_budget_aspect_ratio");
     }
     const int max_recent_states=c.contains("max_recent_states")
-      ? integer_budget(c,"max_recent_states",3,64,"invalid_recent_state_budget")
+      ? integer_budget(c,"max_recent_states",3,posim_slam::kMaxRecentStates,"invalid_recent_state_budget")
       : (c.value("enable_auxiliary_sonar",false) ? 6 : 3);
     return {width,height,processed_width,processed_height,cal,gravity,max_gap,feature_grid,max_recent_states};
 }
@@ -102,6 +103,7 @@ inline InputCalibration input_calibration(const fs::path& file) {
 inline basalt::VioConfig processing_config(const InputCalibration& c) {
   basalt::VioConfig config;
   config.vio_max_states=c.max_recent_states;
+  config.vio_max_kfs=posim_slam::kMaxKeyframes;
   if(c.feature_grid)config.optical_flow_detection_grid_size=c.feature_grid;
   return config;
 }

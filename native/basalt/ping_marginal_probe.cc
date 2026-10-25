@@ -7,9 +7,42 @@
 #include <iostream>
 #include <random>
 
+// A 32-state recording previously aborted at 516 columns. Exercise both that
+// boundary and the full supported window, including pre-retirement slack.
+void verifyWindowBudget() {
+  using namespace posim_slam;
+  for(int recent:{32,kMaxRecentStates,kMaxRecentStates+1}) {
+    basalt::AbsOrderMap source,keep;
+    auto add=[](auto& order,int64_t stamp,int size) {
+      order.abs_order_map[stamp]={order.total_size,size};order.total_size+=size;++order.items;
+    };
+    for(int i=0;i<kMaxKeyframes+1;++i)add(source,100+i,6);
+    for(int i=0;i<recent;++i)add(source,200+i,15);
+    for(const auto& [stamp,block]:source.abs_order_map)if(stamp!=100)add(keep,stamp,block.second);
+    const int columns=source.total_size;
+    Eigen::MatrixXd j=Eigen::MatrixXd::Zero(32,columns+3);
+    j.topLeftCorner(6,6).setIdentity();j.block(6,columns,3,3).setIdentity();
+    // Only the last 20 retained coordinates are observed; the remaining gauge
+    // directions must stay unobserved when the old pose and plane are removed.
+    for(int row=0;row<32;++row)for(int col=0;col<20;++col)
+      j(row,columns-20+col)=std::sin(.3*row+.7*col);
+    Eigen::VectorXd residual=Eigen::VectorXd::LinSpaced(32,-1.,1.);
+    const auto prior=marginalizeJointSystem(j,residual,source,keep,Eigen::VectorXd::Zero(keep.total_size));
+    const Eigen::MatrixXd expected=j.bottomRows(23).middleCols(6,columns-6);
+    if((prior.H.transpose()*prior.H-expected.transpose()*expected).norm()>1e-9 ||
+       (prior.H.transpose()*prior.b-expected.transpose()*residual.tail(23)).norm()>1e-9)
+      throw std::runtime_error("large_window_information_changed");
+  }
+  // Reject an over-budget layout before allocation, keeping the resource guard.
+  basalt::AbsOrderMap excess;excess.total_size=kMaxStateColumns+1;
+  bool rejected=false;try{requireStateOrder(excess);}catch(const std::invalid_argument&){rejected=true;}
+  if(!rejected)throw std::runtime_error("unbounded_state_order");
+}
+
 int main() {
   try {
     using namespace posim_slam;
+    verifyWindowBudget();
     // Two full IMU states plus one plane and one landmark. Retain the second
     // IMU state first, then only the first state's pose (different column order).
     basalt::AbsOrderMap source,keep;source.items=keep.items=2;
