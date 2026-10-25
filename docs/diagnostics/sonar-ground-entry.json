@@ -1,0 +1,230 @@
+{
+  "c-noise-control": {
+    "scope": "Conditional FLS ground-entry mapping on fixed native sonar/IMU/DVL/pressure poses; not terrain-aided SLAM",
+    "config": {
+      "noise_range_max_m": 1.0,
+      "return_margin_db": 12.0,
+      "beam_relative_margin_db": null,
+      "sustained_return_m": 0.15,
+      "angular_spacing_rad": 0.03490658503988659,
+      "minimum_span_rad": 0.7853981633974483,
+      "maximum_slope_rad": 0.5235987755982988,
+      "range_sigma_m": 0.03,
+      "minimum_consensus": 0.6,
+      "ransac_trials": 256
+    },
+    "ping_check": false,
+    "frames_processed": 141,
+    "frames_missing_pose": 3,
+    "frames_fitted": 125,
+    "frames_emitted": 125,
+    "points_before_voxel": 4998,
+    "points": 2817,
+    "voxel_size_m": 0.1,
+    "position_rmse_m": 0.10445729416280124,
+    "pose_optimization_changed": false,
+    "map_qualified": false,
+    "surface_distance_m": {
+      "minimum": 0.00031082667227801895,
+      "median": 0.9354909360507621,
+      "p90": 1.6222889385664785,
+      "maximum": 2.035337093707641
+    },
+    "within_10cm": 346,
+    "processing_ms": {
+      "median": 16.921416000000633,
+      "p95": 17.567750000000437
+    },
+    "evaluation": "Initial yaw/translation only, scale 1. Distance to seabed, not obstacle coverage or proven reflector identity."
+  },
+  "c-v2": {
+    "scope": "Conditional FLS ground-entry mapping on fixed native sonar/IMU/DVL/pressure poses; not terrain-aided SLAM",
+    "config": {
+      "noise_range_max_m": 1.0,
+      "return_margin_db": 12.0,
+      "beam_relative_margin_db": 6.0,
+      "sustained_return_m": 0.15,
+      "angular_spacing_rad": 0.03490658503988659,
+      "minimum_span_rad": 0.7853981633974483,
+      "maximum_slope_rad": 0.5235987755982988,
+      "range_sigma_m": 0.03,
+      "minimum_consensus": 0.6,
+      "ransac_trials": 256
+    },
+    "ping_check": false,
+    "frames_processed": 141,
+    "frames_missing_pose": 3,
+    "frames_fitted": 36,
+    "frames_emitted": 36,
+    "points_before_voxel": 1562,
+    "points": 1279,
+    "voxel_size_m": 0.1,
+    "position_rmse_m": 0.10445729416280124,
+    "pose_optimization_changed": false,
+    "map_qualified": false,
+    "surface_distance_m": {
+      "minimum": 3.8118470728118286e-05,
+      "median": 0.014993516257174318,
+      "p90": 0.05060138407831307,
+      "maximum": 1.1649003499426351
+    },
+    "within_10cm": 1222,
+    "processing_ms": {
+      "median": 17.590582999998716,
+      "p95": 18.10891700000017
+    },
+    "evaluation": "Initial yaw/translation only, scale 1. Distance to seabed, not obstacle coverage or proven reflector identity."
+  },
+  "c-ping-v2": {
+    "scope": "Conditional FLS ground-entry mapping on fixed native sonar/IMU/DVL/pressure poses; not terrain-aided SLAM",
+    "config": {
+      "noise_range_max_m": 1.0,
+      "return_margin_db": 12.0,
+      "beam_relative_margin_db": 6.0,
+      "sustained_return_m": 0.15,
+      "angular_spacing_rad": 0.03490658503988659,
+      "minimum_span_rad": 0.7853981633974483,
+      "maximum_slope_rad": 0.5235987755982988,
+      "range_sigma_m": 0.03,
+      "minimum_consensus": 0.6,
+      "ransac_trials": 256
+    },
+    "ping_check": true,
+    "frames_processed": 141,
+    "frames_missing_pose": 3,
+    "frames_fitted": 36,
+    "frames_emitted": 18,
+    "points_before_voxel": 840,
+    "points": 676,
+    "voxel_size_m": 0.1,
+    "position_rmse_m": 0.10445729416280124,
+    "pose_optimization_changed": false,
+    "map_qualified": false,
+    "surface_distance_m": {
+      "minimum": 3.8118470728118286e-05,
+      "median": 0.015508788199290075,
+      "p90": 0.04489432490917624,
+      "maximum": 0.09047495301169446
+    },
+    "within_10cm": 676,
+    "processing_ms": {
+      "median": 17.58575000000029,
+      "p95": 18.19520800000074
+    },
+    "evaluation": "Initial yaw/translation only, scale 1. Distance to seabed, not obstacle coverage or proven reflector identity."
+  },
+  "a-ping": {
+    "scope": "Conditional FLS ground-entry mapping on fixed native sonar/IMU/DVL/pressure poses; not terrain-aided SLAM",
+    "config": {
+      "noise_range_max_m": 1.0,
+      "return_margin_db": 12.0,
+      "beam_relative_margin_db": 6.0,
+      "sustained_return_m": 0.15,
+      "angular_spacing_rad": 0.03490658503988659,
+      "minimum_span_rad": 0.7853981633974483,
+      "maximum_slope_rad": 0.5235987755982988,
+      "range_sigma_m": 0.03,
+      "minimum_consensus": 0.6,
+      "ransac_trials": 256
+    },
+    "ping_check": true,
+    "frames_processed": 139,
+    "frames_missing_pose": 2,
+    "frames_fitted": 37,
+    "frames_emitted": 20,
+    "points_before_voxel": 920,
+    "points": 806,
+    "voxel_size_m": 0.1,
+    "position_rmse_m": 0.2664438346845221,
+    "pose_optimization_changed": false,
+    "map_qualified": false,
+    "surface_distance_m": {
+      "minimum": 6.843875503935954e-07,
+      "median": 0.03715357442036262,
+      "p90": 0.31162767095273997,
+      "maximum": 0.36239445700751804
+    },
+    "within_10cm": 453,
+    "processing_ms": {
+      "median": 19.059333999999595,
+      "p95": 20.17548720000093
+    },
+    "evaluation": "Initial yaw/translation only, scale 1. Distance to seabed, not obstacle coverage or proven reflector identity."
+  },
+  "b-ping": {
+    "scope": "Conditional FLS ground-entry mapping on fixed native sonar/IMU/DVL/pressure poses; not terrain-aided SLAM",
+    "config": {
+      "noise_range_max_m": 1.0,
+      "return_margin_db": 12.0,
+      "beam_relative_margin_db": 6.0,
+      "sustained_return_m": 0.15,
+      "angular_spacing_rad": 0.03490658503988659,
+      "minimum_span_rad": 0.7853981633974483,
+      "maximum_slope_rad": 0.5235987755982988,
+      "range_sigma_m": 0.03,
+      "minimum_consensus": 0.6,
+      "ransac_trials": 256
+    },
+    "ping_check": true,
+    "frames_processed": 140,
+    "frames_missing_pose": 2,
+    "frames_fitted": 34,
+    "frames_emitted": 26,
+    "points_before_voxel": 1221,
+    "points": 1011,
+    "voxel_size_m": 0.1,
+    "position_rmse_m": 0.25178380926405086,
+    "pose_optimization_changed": false,
+    "map_qualified": false,
+    "surface_distance_m": {
+      "minimum": 3.6826425388647284e-05,
+      "median": 0.013043685483254484,
+      "p90": 0.03356128723410066,
+      "maximum": 0.06327871552780011
+    },
+    "within_10cm": 1011,
+    "processing_ms": {
+      "median": 19.114291500000213,
+      "p95": 20.18938125000007
+    },
+    "evaluation": "Initial yaw/translation only, scale 1. Distance to seabed, not obstacle coverage or proven reflector identity."
+  },
+  "d-ping": {
+    "scope": "Conditional FLS ground-entry mapping on fixed native sonar/IMU/DVL/pressure poses; not terrain-aided SLAM",
+    "config": {
+      "noise_range_max_m": 1.0,
+      "return_margin_db": 12.0,
+      "beam_relative_margin_db": 6.0,
+      "sustained_return_m": 0.15,
+      "angular_spacing_rad": 0.03490658503988659,
+      "minimum_span_rad": 0.7853981633974483,
+      "maximum_slope_rad": 0.5235987755982988,
+      "range_sigma_m": 0.03,
+      "minimum_consensus": 0.6,
+      "ransac_trials": 256
+    },
+    "ping_check": true,
+    "frames_processed": 140,
+    "frames_missing_pose": 2,
+    "frames_fitted": 33,
+    "frames_emitted": 18,
+    "points_before_voxel": 846,
+    "points": 646,
+    "voxel_size_m": 0.1,
+    "position_rmse_m": 0.06497891542610046,
+    "pose_optimization_changed": false,
+    "map_qualified": false,
+    "surface_distance_m": {
+      "minimum": 3.886379053883762e-05,
+      "median": 0.014429654722341334,
+      "p90": 0.03651883081191899,
+      "maximum": 0.08716561247050739
+    },
+    "within_10cm": 646,
+    "processing_ms": {
+      "median": 19.007187499999745,
+      "p95": 19.783362500000745
+    },
+    "evaluation": "Initial yaw/translation only, scale 1. Distance to seabed, not obstacle coverage or proven reflector identity."
+  }
+}

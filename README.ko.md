@@ -7,6 +7,7 @@
 실험용 카메라 없는 국소 Ping 평면과 같은 입력의 RGB·점군 대조는 [지형 Ping 진단](docs/diagnostics/terrain-ping.md)에 정리합니다. 기본값은 꺼짐이며 신뢰할 수 있는 지형 복원은 미검증입니다. [음향 모델 재실행과 같은 시점의 지도](docs/diagnostics/sonar-normal-rerun.md).
 [카메라 없는 반사 경계 추출과 수직 탐사 비교](docs/diagnostics/sonar-causal-depth.md)에 선택형 원본 소나 추출기와 지도 한계를 정리합니다.
 [카메라 없는 스트리밍 진단](docs/diagnostics/sonar-streaming.md)에 독립 세션 관리, ROS 재생 복구, 지형·가시거리 검증 범위를 정리합니다.
+[해저 반사 시작점 지도](docs/diagnostics/sonar-ground-entry.md)는 원본 소나와 선택형 단일 Ping 검사로 조건부 해저 관측을 추출합니다. 고정 추정 자세의 실험에는 실패 사례가 있으며 지형 보조 SLAM 합격을 의미하지 않습니다.
 
 POSIM 애플리케이션에서 사용하는 독립 센서 추정 라이브러리입니다. Python
 알고리즘은 센서 측정 배열과 보정된 변환을 받습니다. WWW-POSIM은 세션, 차량

@@ -7,6 +7,7 @@
 Experimental camera-free local Ping planes and their matched RGB/point-cloud controls are described in [terrain Ping diagnostics](docs/diagnostics/terrain-ping.md). This mode is off by default; reliable terrain reconstruction remains unqualified. [Acoustic-model rerun and same-view map](docs/diagnostics/sonar-normal-rerun.md).
 [Camera-free echo boundaries and vertical survey comparisons](docs/diagnostics/sonar-causal-depth.md) document the optional raw-sonar frontend and its map limitations.
 [Camera-free streaming diagnostics](docs/diagnostics/sonar-streaming.md) cover the independent session owner, ROS replay recovery and terrain/visibility qualification boundaries.
+[Ground-entry surface mapping](docs/diagnostics/sonar-ground-entry.md) fits conditional seabed observations from raw sonar with an optional single-Ping check; fixed-pose experiments include a retained failure and do not qualify terrain-aided SLAM.
 
 Independent sensor estimation components used by POSIM applications. Python
 algorithms accept measured sensor arrays and calibrated transforms. WWW-POSIM
