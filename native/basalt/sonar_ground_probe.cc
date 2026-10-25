@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 // Bounded cross-language qualification; no live transport or terrain truth input.
 #include "sonar_ground_group.hpp"
+#include "ground_predictive.hpp"
 #include "ping_optimizer.hpp"
 #include "ping_prior.hpp"
 #include <nlohmann/json.hpp>
@@ -31,6 +32,11 @@ Json jsonMatrix(const Eigen::MatrixXd& value) {
 }
 int main() {try {
   Json input;std::cin>>input;
+  if(input.contains("association_jacobian")) {
+    const auto check=groundPredictiveCheck(matrix(input.at("association_jacobian")),
+      matrix(input.at("association_residual")),input.at("association_old_rows"),input.at("association_sigma"));
+    std::cout<<Json({{"score",check.score},{"limit",check.limit},{"new_rows",check.new_rows}}).dump()<<'\n';return 0;
+  }
   basalt::BundleAdjustmentBase<double> owner;owner.huber_thresh=1.;owner.obs_std_dev=1.;
   basalt::AbsOrderMap order;std::vector<GroundEntryObservation> observations;
   for(const auto& item:input.at("observations")) {

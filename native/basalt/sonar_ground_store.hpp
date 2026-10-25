@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 #pragma once
 #include "sonar_ground_group.hpp"
+#include "ground_predictive.hpp"
 
 namespace posim_slam {
 struct GroundNoise {double individual,frame_common,time_common;};
@@ -61,7 +62,9 @@ class GroundFactorStore {
     definitions_.swap(next);last_observation_=observation.stamp;
   }
   bool appendPatch(const basalt::AbsOrderMap& order,int id,const GroundEntryObservation& observation,
-                   double support_radius,double max_age_s,double max_gap_s,double innovation_sigma) {
+                   double support_radius,double max_age_s,double max_gap_s,double innovation_sigma,
+                   std::optional<GroundPredictiveCheck>* diagnostic=nullptr) {
+    if(diagnostic)diagnostic->reset();
     requireNew(observation.stamp);
     for(double value:{support_radius,max_age_s,max_gap_s,innovation_sigma})
       if(!std::isfinite(value) || value<=0)throw std::invalid_argument("invalid_ground_association");
@@ -73,15 +76,17 @@ class GroundFactorStore {
     // Overlap is tested on measured, unprojected footprints at current poses.
     // Proximity plus a range innovation is a bounded association hypothesis;
     // it does not establish object identity on a perfectly featureless plane.
-    Definition single{d.calibration,d.noise,{observation}};
-    const auto check=build(order,id,single).build({});
     const auto old_points=footprint(last,d.calibration),new_points=footprint(observation,d.calibration);
     size_t supported=0;
     for(Eigen::Index i=0;i<new_points.rows();++i)
       if((old_points.rowwise()-new_points.row(i)).rowwise().squaredNorm().minCoeff()<=support_radius*support_radius)++supported;
     if(supported*2<size_t(new_points.rows()))return false;
-    if(check.residual.norm()>innovation_sigma*std::sqrt(double(check.residual.size())))return false;
-    auto next=d;next.observations.push_back(observation);build(order,id,next).build({});
+    auto next=d;next.observations.push_back(observation);
+    const auto joined=build(order,id,next).build({});
+    const auto check=groundPredictiveCheck(joined.jacobian.rightCols(3),joined.residual,
+                                          count-observation.ranges.size(),innovation_sigma);
+    if(diagnostic)*diagnostic=check;
+    if(check.score>check.limit)return false;
     std::swap(definitions_.at(id),next);last_observation_=observation.stamp;return true;
   }
  private:

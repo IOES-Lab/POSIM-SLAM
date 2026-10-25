@@ -32,13 +32,15 @@ group and triggers optimization at its own sensor event, including events withou
 
 Local association requires overlapping measured footprints and consistent range
 residuals. The diagnostic profile uses 0.75 m support, 2 s maximum age, 1.25 s
-maximum gap and a five-sigma aggregate innovation gate. Independent,
+maximum gap and a [conditional predictive innovation test](sonar-ground-association.md)
+with tail parameter five. Independent,
 frame-common and time-common noise are assumed to be 3/2/1 cm. These are
 uncalibrated hypotheses, not established acoustic uncertainty. The optional
 exact-time single-Ping check only selects entries; it adds no native range factor.
 
 국소 표면 연결은 관측 영역의 겹침과 거리 잔차 일치를 요구합니다. 진단 설정은
-지지 반경 0.75 m, 최대 유지 2초, 최대 간격 1.25초, 합산 혁신 5시그마 검사를
+지지 반경 0.75 m, 최대 유지 2초, 최대 간격 1.25초,
+[조건부 예측 오차 검사](sonar-ground-association.md)의 꼬리 계수 5를
 사용합니다. 독립·프레임 공통·시간 공통 잡음을 3·2·1 cm로 가정합니다. 실제
 음향 불확실성을 보정한 값이 아닙니다. 선택형 동일 시각 단일 Ping 검사는
 관측 선택에만 쓰며 네이티브 거리 제약을 추가하지 않습니다.

@@ -299,7 +299,11 @@ int main(int argc,char** argv) {
         Json report={{"owner_received",true},{"factor_registered",false},{"map_qualified",false}};
         int selected=-1;
         for(int id:store.ids())try {
-          if(store.appendPatch(order,id,ground->observation,ground_radius,ground_age,ground_gap,ground_gate)){selected=id;break;}
+          std::optional<posim_slam::GroundPredictiveCheck> diagnostic;
+          const bool accepted=store.appendPatch(order,id,ground->observation,ground_radius,ground_age,ground_gap,ground_gate,&diagnostic);
+          if(diagnostic)report["association_checks"].push_back({{"plane_id",id},{"score",diagnostic->score},
+            {"limit",diagnostic->limit},{"new_rows",diagnostic->new_rows},{"accepted",accepted}});
+          if(accepted){selected=id;break;}
         }catch(const std::invalid_argument& error){report["association_rejection"]=error.what();}
         if(selected<0)try {
           const auto sensor=base.getPoseStateWithLin(stamp).getPose()*ground_calibration->mount;

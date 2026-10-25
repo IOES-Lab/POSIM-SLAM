@@ -100,6 +100,57 @@ class NativeGroundTests(unittest.TestCase):
         if result.returncode:raise RuntimeError(result.stderr)
         return json.loads(result.stdout)
 
+    def association(self,j,r,old_rows,sigma=5.):
+        return self.native({},association_jacobian=j,association_residual=np.asarray(r)[:,None],
+                           association_old_rows=old_rows,association_sigma=sigma)
+
+    def test_predictive_association_matches_dense_conditional_gaussian(self):
+        rng=np.random.default_rng(9);old=18;new=12;n=old+new
+        j=rng.normal(size=(n,3));j[:,0]=1
+        covariance=np.eye(n)*.03**2+np.ones((n,n))*.01**2
+        covariance[:old,:old]+=.02**2;covariance[old:,old:]+=.02**2
+        r=rng.normal(size=n)*.04+j@np.array([.02,-.01,.03])
+        lower=np.linalg.cholesky(covariance)
+        result=self.association(np.linalg.solve(lower,j),np.linalg.solve(lower,r),old)
+        cross=covariance[old:,:old]@np.linalg.inv(covariance[:old,:old])
+        info=j[:old].T@np.linalg.solve(covariance[:old,:old],j[:old])
+        plane_cov=np.linalg.inv(info)
+        estimate=plane_cov@j[:old].T@np.linalg.solve(covariance[:old,:old],r[:old])
+        effective=j[old:]-cross@j[:old]
+        predictive=covariance[old:,old:]-cross@covariance[:old,old:]+effective@plane_cov@effective.T
+        error=r[old:]-cross@r[:old]-effective@estimate
+        expected=float(error@np.linalg.solve(predictive,error))
+        self.assertAlmostEqual(result['score'],expected,places=10)
+        # Row order within each block and free plane coordinates cannot change
+        # the result; recompute Cholesky after permuting the correlated inputs.
+        order=np.r_[rng.permutation(old),old+rng.permutation(new)]
+        l=np.linalg.cholesky(covariance[np.ix_(order,order)])
+        basis=np.array([[2.,.3,0],[0,1.2,.2],[0,0,.7]])
+        changed=self.association(np.linalg.solve(l,j[order]@basis),np.linalg.solve(l,r[order]),old)
+        self.assertAlmostEqual(changed['score'],expected,places=10)
+
+    def test_predictive_gate_detects_distributed_surface_disagreement(self):
+        az=np.linspace(-1,1,20);design=np.column_stack((np.ones(20),az,az**2))
+        error=(-1.)**np.arange(20)
+        error-=design@np.linalg.lstsq(design,error,rcond=None)[0]
+        error*=2.5*np.sqrt(20)/np.linalg.norm(error)
+        result=self.association(np.tile(design,(3,1)),np.r_[np.zeros(40),error],40)
+        self.assertAlmostEqual(result['score'],125.,places=9)
+        self.assertGreater(result['score'],result['limit'])
+        self.assertLess(np.linalg.norm(error),5*np.sqrt(20))
+        self.assertAlmostEqual(result['limit'],20+5*np.sqrt(40)+25,places=10)
+
+    def test_predictive_gate_retains_plane_fit_uncertainty(self):
+        rng=np.random.default_rng(31);j=rng.normal(size=(30,3));j[:,0]=1
+        r=np.r_[np.zeros(18),j[18:]@np.array([.2,.1,-.1])]
+        scores=[]
+        for old_sigma in (.01,.2):
+            sigma=np.r_[np.full(18,old_sigma),np.full(12,.03)]
+            scores.append(self.association(j/sigma[:,None],r/sigma,18)['score'])
+        self.assertLess(scores[1],scores[0]/5)
+        with self.assertRaisesRegex(RuntimeError,'ground_predictive_plane_rank'):
+            self.association(np.ones((20,3)),np.zeros(20),10)
+
     def test_updated_plane_keeps_flat_yaw_unobservable(self):
         a=fixture(flat=True)
         turn=np.array([.02,-.03,0.]);a['plane_normal']=exp_so3(turn)@a['plane_normal']
