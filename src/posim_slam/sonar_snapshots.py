@@ -18,6 +18,15 @@ class SonarSnapshots:
         self.pending = None
         self.blocked = set()
 
+    def point_sources(self):
+        """Map native hypotheses to source tracks before consuming a state.
+
+        Includes the pending batch because retirement can remove a point in the
+        same response that first reports it. Source IDs survive native rebinding.
+        """
+        bindings = self.pending[1] if self.pending is not None else self.bindings
+        return {track['id']: source for source, track in bindings.items()}
+
     def observe(self, state):
         """Consume each native state in order before preparing the next event."""
         stamp = state['stamp_ns']

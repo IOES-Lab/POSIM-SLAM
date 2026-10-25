@@ -87,6 +87,23 @@ cover a rotating sensor baseline, gauge, scale drift, gravity tilt and gaps:
 python -m unittest discover -s native/basalt -p 'test_*.py'
 ```
 
+## Acoustic point inspection
+
+With joint sonar enabled, each state report includes `point_estimates` copied on
+its estimator thread before marginalization and `point_update_accepted` for the
+joint step. `SonarSnapshots.point_sources()` resolves native IDs before consuming
+that state. `SonarPointArchive` retains accepted coordinates by source track ID,
+so native retirement and rebinding do not multiply one source track. Its separate
+PLY contains acoustic hypotheses only; it has no visual points, inferred surfaces,
+loop closure or joint covariance. This inspection output does not certify a map.
+
+공동 소나 추정이 켜져 있으면 상태 보고에 주변화 전 추정기 스레드에서 복사한
+`point_estimates`와 공동 갱신의 수락 여부 `point_update_accepted`가 포함됩니다.
+상태를 소비하기 전에 `SonarSnapshots.point_sources()`로 원본 추적 ID를 확인합니다.
+`SonarPointArchive`는 수락된 좌표를 원본 추적 ID별로 보관하므로 내부 ID가 바뀌어도
+같은 추적점이 중복되지 않습니다. 별도 PLY는 소나 점 가설만 담으며 시각점, 추정한
+표면, 루프 폐쇄, 공동 공분산을 포함하지 않습니다. 이 출력은 지도 품질 검증용입니다.
+
 ## Live worker transport
 
 `basalt_stream calibration.json` accepts framed raw IMU and grayscale pixels

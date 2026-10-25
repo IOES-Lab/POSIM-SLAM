@@ -127,6 +127,16 @@ int main(int argc,char** argv) {
           {"gyro_bias",vector3(oldest.bias_gyro)},{"accel_bias",vector3(oldest.bias_accel)}};
         if(initialization_windows.size()>16)fail("initialization_diagnostic_backlog");
       }
+      if(sonar_enabled) {
+        auto& report=sonar_reports[stamp];if(report.is_null())report=Json::object();
+        Json points=Json::array();
+        // Copy committed estimates on their owner thread, before retirement.
+        // These are acoustic track hypotheses, not classified solid surfaces.
+        for(auto id:estimator.posim_sonar_factors->activeIds())
+          points.push_back({{"id",id},{"point",vector3(estimator.posim_sonar_factors->point(id))}});
+        report["point_estimates"]=std::move(points);
+        report["point_update_accepted"]=estimator.posim_joint_last_accepted>0;
+      }
       auto found=image_pings.find(stamp);
       if(found!=image_pings.end() && estimator.posim_ping_factors)
         found->second.fused=estimator.posim_ping_factors->lastObservation()==stamp && estimator.posim_joint_last_accepted>0;

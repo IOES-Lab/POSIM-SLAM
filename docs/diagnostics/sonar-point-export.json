@@ -1,0 +1,20 @@
+[
+  {
+    "method": "default",
+    "acoustic_hypotheses": 71,
+    "position_rmse_m": 0.04294631775720605,
+    "position_max_m": 0.29951827632603256,
+    "worker_sha256": "597ed4912ac7bfd75c8441ceb28335c9e177c58fd67b05cb49bad4a0386aa43c",
+    "input_timeline_sha256": "64acf2ba46913ce3a4eac9a0607d4479bbd5dc9d1b28e01702f29774938e0741",
+    "map_qualified": false
+  },
+  {
+    "method": "reference",
+    "acoustic_hypotheses": 154,
+    "position_rmse_m": 0.025785738146639234,
+    "position_max_m": 0.10140114057552417,
+    "worker_sha256": "597ed4912ac7bfd75c8441ceb28335c9e177c58fd67b05cb49bad4a0386aa43c",
+    "input_timeline_sha256": "64acf2ba46913ce3a4eac9a0607d4479bbd5dc9d1b28e01702f29774938e0741",
+    "map_qualified": false
+  }
+]
