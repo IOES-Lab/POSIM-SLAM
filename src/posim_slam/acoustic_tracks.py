@@ -13,12 +13,14 @@ from .acoustic_flow import validate_frame,corner_pixels,correspondences,polar_ob
 
 
 class AcousticTracks:
-    def __init__(self,*,max_tracks=300,max_gap_seconds=1.25,reference_check=False):
+    def __init__(self,*,max_tracks=300,max_gap_seconds=1.25,reference_check=False,frontend='intensity'):
         if type(max_tracks) is not int or not 1<=max_tracks<=300:
             raise ValueError('invalid_track_capacity')
         if not math.isfinite(max_gap_seconds) or max_gap_seconds<=0:
             raise ValueError('invalid_track_gap')
         if type(reference_check) is not bool:raise ValueError('invalid_reference_check')
+        if frontend not in ('intensity','echo_boundary'):raise ValueError('invalid_acoustic_frontend')
+        self.frontend=frontend
         self.reference_check=reference_check;self.anchors={};self.references={}
         self.capacity=max_tracks;self.max_gap_ns=int(max_gap_seconds*1e9)
         self.segment=0;self.next_id=0;self.previous=None;self.stamp=None
@@ -30,16 +32,21 @@ class AcousticTracks:
         self.pixels=np.empty((0,2),dtype=np.float32);self.ids=[];self.lengths=[]
         return dict(state='lost',reason=reason,segment=self.segment,observations=[])
 
-    def push(self,frame):
+    def push(self,frame,*,ground_entry_band_m=None):
         try:
             validate_frame(frame)
+            edge=None;edge_rejected=0
+            if self.frontend=='echo_boundary':
+                from .sonar_edges import echo_boundaries,near_edge
+                edge=echo_boundaries(frame,ground_entry_band_m=ground_entry_band_m)
+            flow_options={} if edge is None else dict(variant='echo_boundary')
             stamp=int(frame['stamp'][0])*1_000_000_000+int(frame['stamp'][1])
             if self.stamp is not None:
                 if stamp<=self.stamp:return self.reset('nonincreasing_timestamp')
                 if stamp-self.stamp>self.max_gap_ns:return self.reset('frame_gap')
             retained=0;errors={};reference_rejected=0;reference_expired=0
             if self.previous is not None and len(self.pixels):
-                tracks=correspondences(self.previous,frame,seed_pixels=self.pixels)
+                tracks=correspondences(self.previous,frame,seed_pixels=self.pixels,**flow_options)
                 if not tracks['matched']:return self.reset('acoustic_tracks_lost')
                 moved=np.array(tracks['current_pixels'],dtype=np.float32)
                 # A shared one-pixel footprint cannot carry two independent IDs.
@@ -49,6 +56,9 @@ class AcousticTracks:
                 if not unique.any():return self.reset('ambiguous_acoustic_tracks')
                 indices=np.asarray(tracks['previous_indices'])[unique].tolist()
                 moved=moved[unique]
+                if edge is not None:
+                    keep=near_edge(moved,edge['tracking_mask'],radius=0);edge_rejected=int((~keep).sum())
+                    indices=[index for index,valid in zip(indices,keep) if valid];moved=moved[keep]
                 if self.reference_check:
                     keep=np.ones(len(indices),dtype=bool);groups={}
                     for output_index,index in enumerate(indices):
@@ -59,7 +69,7 @@ class AcousticTracks:
                             groups.setdefault(birth,[]).append((output_index,pixel))
                     for birth,items in groups.items():
                         direct=correspondences(self.references[birth],frame,
-                            seed_pixels=np.asarray([pixel for _,pixel in items],dtype=np.float32))
+                            seed_pixels=np.asarray([pixel for _,pixel in items],dtype=np.float32),**flow_options)
                         matches=dict(zip(direct.get('previous_indices',[]),direct.get('current_pixels',[])))
                         for seed,(output_index,_) in enumerate(items):
                             if seed not in matches or np.linalg.norm(moved[output_index]-matches[seed])>=.5:
@@ -78,7 +88,8 @@ class AcousticTracks:
                         not np.array_equal(frame['beam_directions'],self.previous['beam_directions'])):
                     return self.reset('acoustic_pair_calibration_changed')
             points=list(self.pixels)
-            for pixel in corner_pixels(frame):
+            seeds=corner_pixels(frame) if edge is None else corner_pixels(frame,'echo_boundary',mask=edge['tracking_mask'])
+            for pixel in seeds:
                 if len(points)>=self.capacity:break
                 height,width=frame['intensity_db'].shape
                 if not np.isfinite(pixel).all() or np.any(pixel<0) or np.any(pixel>=[width-1,height-1]):continue
@@ -99,6 +110,8 @@ class AcousticTracks:
             self.stamp=stamp
             return dict(state='tracking' if retained else 'initializing',segment=self.segment,
                         stamp_ns=stamp,retained=retained,observations=observations,
+                        frontend=self.frontend,edge_rejected=edge_rejected,
+                        ground_excluded_pixels=0 if edge is None else edge['ground_excluded_pixels'],
                         reference_rejected=reference_rejected,reference_expired=reference_expired)
         except (ValueError,KeyError,TypeError) as error:
             return self.reset(str(error))

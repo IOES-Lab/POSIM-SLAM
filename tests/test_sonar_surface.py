@@ -1,6 +1,6 @@
 import unittest
 import numpy as np
-from posim_slam.sonar_surface import ground_entry_band, segment_surface
+from posim_slam.sonar_surface import ground_entry_band, segment_surface, ping_plane_in_sonar
 from posim_slam.inertial import exp_so3
 
 
@@ -18,6 +18,23 @@ def frame(*, shadow=True, clipped=False, gain=0.):
 
 
 class SonarSurfaceTests(unittest.TestCase):
+    def test_ping_plane_levers_bias_and_tilt(self):
+        r=exp_so3([0,.2,0]);rs=exp_so3([0,.35,0]);lp=np.array([0,0,-.1]);ls=np.array([.2,0,0])
+        rays=np.array([[0,0,-1.],[np.sin(.1),0,-np.cos(.1)]])
+        # Independently intersect rays with world z=-2, then choose first return.
+        distance=min((-2-(r@lp)[2])/(r@ray)[2] for ray in rays)
+        normal,altitude=ping_plane_in_sonar(r,np.eye(3),lp,rs,ls,rays,distance+.03,bias_m=.03)
+        np.testing.assert_allclose(normal,(r@rs).T@[0,0,1],atol=1e-12)
+        self.assertAlmostEqual(altitude,2+(r@ls)[2])
+
+    def test_ping_plane_invalid_geometry_and_no_downward_return(self):
+        args=[np.eye(3),np.eye(3),np.zeros(3),np.eye(3),np.zeros(3),[[0,0,-1]],2.]
+        for index,value in ((0,np.diag([1,1,-1])),(3,np.eye(3)*2),(5,[[0,0,-2]]),(6,-1.)):
+            changed=list(args);changed[index]=value
+            with self.assertRaisesRegex(ValueError,'invalid_ping_plane_inputs'):ping_plane_in_sonar(*changed)
+        args[5]=[[0,0,1]]
+        with self.assertRaisesRegex(ValueError,'ping_has_no_downward_ray'):ping_plane_in_sonar(*args)
+
     def test_central_flat_ground_matches_geometry(self):
         # 2 m altitude; downward 20-degree central axis and 20-degree aperture.
         normal=np.array([-np.sin(np.deg2rad(20)),0,np.cos(np.deg2rad(20))])

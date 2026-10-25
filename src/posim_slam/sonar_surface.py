@@ -22,6 +22,31 @@ class SurfaceConfig:
     min_region_beams: int = 3
 
 
+def ping_plane_in_sonar(rotation_world_imu, rotation_imu_ping, imu_to_ping,
+                        rotation_imu_sonar, imu_to_sonar, ping_rays, range_m, *, bias_m=0.):
+    """Conditional horizontal plane from a minimum-ray Ping and IMU attitude.
+
+    This is a caller-selected flat-ground hypothesis. One range does not measure
+    slope, and a Ping return from an intervening object can invalidate it.
+    Returns a unit normal towards the sensor and positive sonar altitude.
+    """
+    r,rp,rs=(np.asarray(v,dtype=float) for v in (rotation_world_imu,rotation_imu_ping,rotation_imu_sonar))
+    lp,ls=(np.asarray(v,dtype=float) for v in (imu_to_ping,imu_to_sonar))
+    rays=np.asarray(ping_rays,dtype=float)
+    if (any(v.shape!=(3,3) or not np.isfinite(v).all() or
+            not np.allclose(v.T@v,np.eye(3),atol=1e-8,rtol=0) or np.linalg.det(v)<0 for v in (r,rp,rs))
+            or any(v.shape!=(3,) or not np.isfinite(v).all() for v in (lp,ls))
+            or rays.ndim!=2 or rays.shape[1]!=3 or not 1<=len(rays)<=4096 or not np.isfinite(rays).all()
+            or not np.allclose(np.linalg.norm(rays,axis=1),1,atol=1e-8,rtol=0)
+            or not np.isfinite([range_m,bias_m]).all() or range_m-bias_m<=0):
+        raise ValueError('invalid_ping_plane_inputs')
+    up=np.array([0.,0.,1.]);down=np.max(-(rays@(r@rp).T)@up)
+    if down<=0:raise ValueError('ping_has_no_downward_ray')
+    altitude=float((range_m-bias_m)*down+up@r@(ls-lp))
+    if altitude<=0:raise ValueError('nonpositive_sonar_altitude')
+    return (r@rs).T@up,altitude
+
+
 def ground_entry_band(azimuth_rad, vertical_fov_rad, normal_sonar, plane_distance_m,
                       *, distance_bound_m=0., normal_bound_rad=0.):
     """Bound first plane intersections over the entire elevation fan.

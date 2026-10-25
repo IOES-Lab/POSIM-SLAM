@@ -10,6 +10,9 @@ FILTERS = ('raw', 'smooth', 'contrast', 'whiten', 'range_whiten')
 
 
 def image(frame, variant):
+    if variant=='echo_boundary':
+        from .sonar_edges import echo_tracking_image
+        return echo_tracking_image(frame)[0]
     power = np.asarray(frame['intensity_db'], dtype=np.float32)
     if variant == 'raw':
         return cv2.GaussianBlur(np.uint8(np.clip((power - 20) * 255 / 70, 0, 255)), (5, 5), 0)
@@ -53,13 +56,17 @@ def fit(source, target):
     return rotation, b - rotation @ a
 
 
-def corner_pixels(frame,variant='raw'):
-    return _corner_pixels(image(frame,variant),frame['ranges'])
+def corner_pixels(frame,variant='raw',*,mask=None):
+    return _corner_pixels(image(frame,variant),frame['ranges'],mask=mask)
 
 
-def _corner_pixels(a,ranges):
-    mask=np.uint8(ranges[:,None]>.4)*np.ones_like(a)
-    pixels=cv2.goodFeaturesToTrack(a,300,.04,5,mask=mask,blockSize=7)
+def _corner_pixels(a,ranges,*,mask=None):
+    allowed=np.uint8(ranges[:,None]>.4)*np.ones_like(a)
+    if mask is not None:
+        mask=np.asarray(mask)
+        if mask.shape!=a.shape or mask.dtype!=bool:raise ValueError('invalid_acoustic_seed_mask')
+        allowed*=mask
+    pixels=cv2.goodFeaturesToTrack(a,300,.04,5,mask=allowed,blockSize=7)
     return np.empty((0,2),dtype=np.float32) if pixels is None else pixels.reshape(-1,2)
 
 

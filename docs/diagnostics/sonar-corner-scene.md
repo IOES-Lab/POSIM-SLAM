@@ -93,6 +93,9 @@ increase count without improving the reported errors; defaults are not raised.
 Map acceptance remains false. The next unresolved issue is physical echo
 association, not generating more points by weakening elevation admission.
 
+The [echo-boundary experiment](sonar-echo-boundaries.md) compares an optional
+background-relative frontend on this same recording; it does not improve map quality.
+
 실제 상자·벽 충돌 형상과 지형 삼각형까지 거리를 측정합니다. 상태 16개에서는
 30점 중 16점이 표면 10 cm 이내에 있고, 벽 근처 8점·상자 6점·해저 2점입니다.
 중앙값·90백분위·최대 거리는 8.17·22.18·37.74 cm입니다. 상태 32개에서는
@@ -101,6 +104,9 @@ association, not generating more points by weakening elevation admission.
 두 결과 모두 벽·상자 표면을 복원하지 못했습니다. 보관량 증가는 점 수만 늘리고
 오차를 개선하지 않았으므로 기본값은 올리지 않습니다. 지도 합격은 보류하며 실제
 에코의 연속 대응을 개선해야 합니다.
+
+[에코 경계 실험](sonar-echo-boundaries.md)은 같은 기록에서 배경 대비 추출기를
+비교하며, 지도 품질은 개선되지 않았습니다.
 
 The native matrix budget now derives from the supported recent-state and
 keyframe budgets. The previously failing 32-state configuration completes this
