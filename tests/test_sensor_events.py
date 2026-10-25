@@ -5,6 +5,32 @@ from posim_slam.sensor_events import SensorEvents
 
 
 class SensorEventsTests(unittest.TestCase):
+    def test_sonar_clock_needs_no_camera_and_never_decimates_ticks(self):
+        for order in set(itertools.permutations('sssiii')):
+            q = SensorEvents(state_clock='sonar')
+            times = {'sonar': iter([10, 20, 30]), 'imu': iter([11, 21, 31])}
+            events = []
+            for letter in order:
+                kind = 'sonar' if letter == 's' else 'imu'
+                stamp = next(times[kind])
+                q.push(kind, stamp, ('echo', stamp) if kind == 'sonar' else None)
+                events.extend(self.drain(q))
+            self.assertEqual([e['stamp_ns'] for e in events], [10, 20, 30])
+            self.assertTrue(all(e['camera'] is None for e in events))
+            self.assertEqual([e['sonar'] for e in events], [('echo', t) for t in [10, 20, 30]])
+            self.assertEqual((q.before_camera, q.auxiliary_skipped), (0, 0))
+
+    def test_sonar_clock_still_requires_future_imu_and_bounds_backlog(self):
+        q = SensorEvents(capacity=2, state_clock='sonar')
+        q.push('sonar', 10, 'echo'); q.push('imu', 10)
+        self.assertIsNone(q.next_event())
+        q.push('sonar', 20, 'echo')
+        with self.assertRaisesRegex(ValueError, 'backlog'): q.push('sonar', 30, 'echo')
+        self.assertFalse(any(q.pending.values()))
+        with self.assertRaises(RuntimeError): q.next_event()
+        q = SensorEvents(state_clock='sonar')
+        with self.assertRaisesRegex(ValueError, 'input_kind'): q.push('camera', 10, 'image')
+
     def drain(self, queue):
         result = []
         while (event := queue.next_event()) is not None:

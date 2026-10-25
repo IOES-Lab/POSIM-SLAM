@@ -42,42 +42,46 @@ struct InputCalibration {
 };
 inline InputCalibration input_calibration(const fs::path& file) {
     auto c = read_json(file);
-    if (c.at("schema") != "posim-slam-vio-recording-1" ||
+    const bool sonar_clock=c.value("state_clock",std::string("camera"))=="sonar";
+    if (c.at("schema") != (sonar_clock ? "posim-slam-sonar-inertial-recording-1" : "posim-slam-vio-recording-1") ||
         c.at("orientation_used") != false)
       throw std::runtime_error("unsupported_recording");
-    int width = c.at("width"), height = c.at("height");
-    if (width < 32 || height < 32 || width > 1920 || height > 1080)
-      throw std::runtime_error("invalid_resolution");
-    int processed_width=width,processed_height=height;
-    if(c.contains("max_image_pixels")) {
-      int budget=integer_budget(c,"max_image_pixels",1024,1920*1080,"invalid_pixel_budget");
-      double scale=std::min(1.,std::sqrt(double(budget)/(width*height)));
-      processed_width=std::max(1,int(std::floor(width*scale)));
-      processed_height=std::max(1,int(std::floor(height*scale)));
-      if(processed_width<32 || processed_height<32)throw std::runtime_error("processing_resolution_too_small");
-    }
-    Eigen::Vector4d intrinsics(c.at("fx").get<double>(),c.at("fy").get<double>(),
-                               c.at("cx").get<double>(),c.at("cy").get<double>());
-    if(!intrinsics.allFinite() || intrinsics[0]<=0 || intrinsics[1]<=0)
-      throw std::runtime_error("invalid_intrinsics");
-    const double sx=double(processed_width)/width,sy=double(processed_height)/height;
-    intrinsics[0]*=sx;intrinsics[1]*=sy;
-    intrinsics[2]=(intrinsics[2]+.5)*sx-.5;
-    intrinsics[3]=(intrinsics[3]+.5)*sy-.5;
+    int width=0,height=0,processed_width=0,processed_height=0;
     basalt::Calibration<double> cal;
-    auto camera = basalt::GenericCamera<double>::fromString("pinhole");
-    camera.setFromInit(intrinsics);
-    cal.intrinsics.push_back(camera);
-    cal.resolution.emplace_back(processed_width, processed_height);
-    auto q = c.at("T_i_c_q_xyzw").get<std::vector<double>>();
-    auto p = c.at("T_i_c_translation_m").get<std::vector<double>>();
-    if (q.size() != 4 || p.size() != 3) throw std::runtime_error("invalid_mount");
-    Eigen::Quaterniond rotation(q[3], q[0], q[1], q[2]);
-    Vec3 translation(p[0], p[1], p[2]);
-    if (!rotation.coeffs().allFinite() || !translation.allFinite() ||
-        std::abs(rotation.norm() - 1) > 1e-6 || translation.norm() > 10)
-      throw std::runtime_error("invalid_mount");
-    cal.T_i_c.emplace_back(rotation, translation);
+    if(!sonar_clock) {
+      width = c.at("width"); height = c.at("height");
+      if (width < 32 || height < 32 || width > 1920 || height > 1080)
+        throw std::runtime_error("invalid_resolution");
+      processed_width=width;processed_height=height;
+      if(c.contains("max_image_pixels")) {
+        int budget=integer_budget(c,"max_image_pixels",1024,1920*1080,"invalid_pixel_budget");
+        double scale=std::min(1.,std::sqrt(double(budget)/(width*height)));
+        processed_width=std::max(1,int(std::floor(width*scale)));
+        processed_height=std::max(1,int(std::floor(height*scale)));
+        if(processed_width<32 || processed_height<32)throw std::runtime_error("processing_resolution_too_small");
+      }
+      Eigen::Vector4d intrinsics(c.at("fx").get<double>(),c.at("fy").get<double>(),
+                                 c.at("cx").get<double>(),c.at("cy").get<double>());
+      if(!intrinsics.allFinite() || intrinsics[0]<=0 || intrinsics[1]<=0)
+        throw std::runtime_error("invalid_intrinsics");
+      const double sx=double(processed_width)/width,sy=double(processed_height)/height;
+      intrinsics[0]*=sx;intrinsics[1]*=sy;
+      intrinsics[2]=(intrinsics[2]+.5)*sx-.5;
+      intrinsics[3]=(intrinsics[3]+.5)*sy-.5;
+      auto camera = basalt::GenericCamera<double>::fromString("pinhole");
+      camera.setFromInit(intrinsics);
+      cal.intrinsics.push_back(camera);
+      cal.resolution.emplace_back(processed_width, processed_height);
+      auto q = c.at("T_i_c_q_xyzw").get<std::vector<double>>();
+      auto p = c.at("T_i_c_translation_m").get<std::vector<double>>();
+      if (q.size() != 4 || p.size() != 3) throw std::runtime_error("invalid_mount");
+      Eigen::Quaterniond rotation(q[3], q[0], q[1], q[2]);
+      Vec3 translation(p[0], p[1], p[2]);
+      if (!rotation.coeffs().allFinite() || !translation.allFinite() ||
+          std::abs(rotation.norm() - 1) > 1e-6 || translation.norm() > 10)
+        throw std::runtime_error("invalid_mount");
+      cal.T_i_c.emplace_back(rotation, translation);
+    }
     cal.imu_update_rate = positive(c, "imu_rate_hz");
     cal.gyro_noise_std.setConstant(positive(c, "gyro_noise_density"));
     cal.accel_noise_std.setConstant(positive(c, "accel_noise_density"));
@@ -88,6 +92,8 @@ inline InputCalibration input_calibration(const fs::path& file) {
     if (max_gap > 100000000) throw std::runtime_error("invalid_gap_limit");
 
     int feature_grid=0;
+    if(sonar_clock && (c.contains("max_image_pixels") || c.contains("max_feature_cells")))
+      throw std::runtime_error("sonar_clock_camera_budget");
     if(c.contains("max_feature_cells")) {
       int cells=integer_budget(c,"max_feature_cells",32,512,"invalid_feature_budget");
       feature_grid=std::max(16,int(std::ceil(std::sqrt(double(processed_width)*processed_height/cells))));

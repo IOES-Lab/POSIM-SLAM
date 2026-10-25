@@ -32,6 +32,7 @@ class LiveClient:
         self.closed=threading.Event()
         self.ready=threading.Event()
         self.ping_transport=False;self.gravity_seed_transport=False;self.sonar_transport=False;self.sonar_auxiliary_transport=False
+        self.sonar_clock_transport=False
         self.process=subprocess.Popen([str(Path(binary).resolve()),str(Path(calibration).resolve())],
             stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=log,bufsize=65536)
         self.writer=threading.Thread(target=self._write,daemon=True)
@@ -68,7 +69,12 @@ class LiveClient:
                     if self.ready.is_set() or value.get('protocol')!=1 or value.get('inertial_fused') is not True:
                         raise ValueError('worker_protocol')
                     self._check_processing_ready(value)
-                    self.gravity_seed_transport=value.get('gravity_seed_transport')=='first_image_direction_v1'
+                    sonar_clock=self.processing_request.get('state_clock','camera')=='sonar'
+                    self.sonar_clock_transport=value.get('sonar_clock_transport')=='ordered_sonar_state_v1'
+                    if sonar_clock and (not self.sonar_clock_transport or value.get('state_clock')!='sonar'):
+                        raise ValueError('worker_sonar_clock_unsupported')
+                    self.gravity_seed_transport=value.get('gravity_seed_transport')==(
+                        'first_sensor_direction_v1' if sonar_clock else 'first_image_direction_v1')
                     if self.processing_request.get('require_gravity_seed',False) and (
                         not self.gravity_seed_transport or value.get('gravity_seed_required') is not True):
                         raise ValueError('worker_gravity_seed_unsupported')
@@ -119,6 +125,8 @@ class LiveClient:
         self.send(1,struct.pack('<q6d',stamp_ns,*values))
 
     def image(self,stamp_ns,width,height,pixels,*,ping=None):
+        if self.processing_request.get('state_clock','camera')=='sonar':
+            raise ValueError('camera_packet_in_sonar_clock')
         if (type(stamp_ns) is not int or not 0<stamp_ns<2**63 or
             type(width) is not int or type(height) is not int or
             not 32<=width<=1920 or not 32<=height<=1080 or len(pixels)!=width*height):
@@ -136,7 +144,7 @@ class LiveClient:
         self.send(5 if ping is not None else 2,payload+pixels)
 
     def sonar_snapshot(self,stamp_ns,tracks):
-        """Send before its exact image; caller observes active IDs in state replies."""
+        """Send before its exact sensor event; active IDs arrive in state replies."""
         if not getattr(self,'sonar_transport',False):
             raise ValueError('worker_sonar_snapshot_unsupported')
         from .sonar_packet import encode_snapshot
@@ -145,9 +153,10 @@ class LiveClient:
     def sonar_tick(self,stamp_ns):
         """Advance at the original sonar time, after its optional snapshot.
 
-        At most one auxiliary state between consecutive camera frames.
+        Camera clock allows one auxiliary state between consecutive images.
+        Explicit sonar clock permits camera-free startup and consecutive ticks.
         """
-        if not getattr(self,'sonar_auxiliary_transport',False):
+        if not (getattr(self,'sonar_auxiliary_transport',False) or getattr(self,'sonar_clock_transport',False)):
             raise ValueError('worker_sonar_auxiliary_unsupported')
         if type(stamp_ns) is not int or not 0<stamp_ns<2**63:
             raise ValueError('invalid_sonar_auxiliary_stamp')

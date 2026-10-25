@@ -68,8 +68,16 @@ int main(int argc,char** argv) {
     cv::setNumThreads(1);
     tbb::global_control workers(tbb::global_control::max_allowed_parallelism,2);
     const auto input_settings=read_json(argv[1]);
+    const auto state_clock=input_settings.value("state_clock",std::string("camera"));
+    if(state_clock!="camera" && state_clock!="sonar")fail("invalid_state_clock");
+    const bool sonar_clock=state_clock=="sonar";
+    const int64_t sonar_gap=sonar_clock ? std::llround(positive(input_settings,"max_sonar_gap_s")*1e9) : 0;
+    if(sonar_clock && (sonar_gap<=0 || sonar_gap>3000000000LL))fail("invalid_sonar_gap_limit");
     const bool sonar_enabled=input_settings.value("enable_joint_sonar",false);
     const bool auxiliary_enabled=input_settings.value("enable_auxiliary_sonar",false);
+    const bool require_gravity_seed=input_settings.value("require_gravity_seed",false);
+    if(sonar_clock && (!sonar_enabled || !require_gravity_seed || input_settings.value("enable_joint_ping",false)))
+      fail("sonar_clock_configuration");
     if(auxiliary_enabled && !sonar_enabled)fail("auxiliary_sonar_requires_joint_sonar");
     auto config=processing_config(c);
     auto vio=basalt::VioEstimatorFactory::getVioEstimator(
@@ -116,7 +124,7 @@ int main(int argc,char** argv) {
       // never inspect mutable optimizer state. This remains diagnostic only.
       const auto& window=static_cast<basalt::BundleAdjustmentBase<double>&>(estimator).frame_states;
       if(window.size()>128 || (!window.empty() && stamp-window.begin()->first>30'000'000'000LL))
-        fail("visual_initialization_window_exhausted");
+        fail(sonar_clock ? "sonar_initialization_window_exhausted" : "visual_initialization_window_exhausted");
       if(!window.empty()) {
         const auto& oldest=window.begin()->second.getState();
         auto q=oldest.T_w_i.unit_quaternion();
@@ -225,11 +233,13 @@ int main(int argc,char** argv) {
       }
       std::lock_guard<std::mutex> lock(ping_mutex);image_pings.at(stamp).candidate=std::move(candidate);
     };
-    auto flow=basalt::OpticalFlowFactory::getOpticalFlow(config,c.cal);
+    // No optical frontend or camera calibration exists in sonar-clock mode.
+    basalt::OpticalFlowBase::Ptr flow;
+    if(!sonar_clock)flow=basalt::OpticalFlowFactory::getOpticalFlow(config,c.cal);
     tbb::concurrent_bounded_queue<basalt::PoseVelBiasState<double>::Ptr> states;
     tbb::concurrent_bounded_queue<basalt::VioVisualizationData::Ptr> maps;
     states.set_capacity(4);maps.set_capacity(4);
-    flow->input_queue.set_capacity(2);
+    if(flow)flow->input_queue.set_capacity(2);
     vio->vision_data_queue.set_capacity(2);
     vio->imu_data_queue.set_capacity(256);
     vio->out_state_queue=&states;vio->out_vis_queue=&maps;
@@ -237,7 +247,7 @@ int main(int argc,char** argv) {
     tbb::concurrent_bounded_queue<SensorEvent> events;
     tbb::concurrent_bounded_queue<basalt::OpticalFlowResult::Ptr> tracked;
     events.set_capacity(4);tracked.set_capacity(2);
-    flow->output_queue=&tracked;
+    if(flow)flow->output_queue=&tracked;
     std::thread event_dispatcher([&] {
       for(;;) {
         SensorEvent event;events.pop(event);
@@ -270,6 +280,7 @@ int main(int argc,char** argv) {
          image_pings.erase(image_pings.begin(),image_pings.upper_bound(s->t_ns));}
         auto q=s->T_w_i.unit_quaternion();
         emit({{"type","state"},{"stamp_ns",s->t_ns},
+              {"state_clock",state_clock},{"map_qualified",false},
               {"position",vector3(s->T_w_i.translation())},
               {"orientation_xyzw",{q.x(),q.y(),q.z(),q.w()}},
               {"velocity",vector3(s->vel_w_i)},{"initialization_window",initialization},{"sonar",acoustic},
@@ -315,10 +326,10 @@ int main(int argc,char** argv) {
               {"observations",data->opt_flow_res && !data->opt_flow_res->observations.empty() ? data->opt_flow_res->observations[0].size() : 0}});
       }
     });
-    const bool require_gravity_seed=input_settings.value("require_gravity_seed",false);
     if(!require_gravity_seed)vio->initialize(Vec3::Zero(),Vec3::Zero());
     int64_t gravity_stamp=0;Vec3 gravity_direction=Vec3::Zero();
-    emit({{"type","ready"},{"gravity_seed_transport","first_image_direction_v1"},{"gravity_seed_required",require_gravity_seed},{"protocol",1},{"inertial_fused",true},{"map_export","segment_landmark_archive_ply_1"},
+    emit({{"type","ready"},{"state_clock",state_clock},{"gravity_seed_transport",sonar_clock ? "first_sensor_direction_v1" : "first_image_direction_v1"},{"gravity_seed_required",require_gravity_seed},{"protocol",1},{"inertial_fused",true},{"map_export",sonar_clock ? Json(nullptr) : Json("segment_landmark_archive_ply_1")},
+          {"sonar_clock_transport",sonar_clock ? Json("ordered_sonar_state_v1") : Json(nullptr)},
           {"sonar_snapshot_transport",sonar_enabled ? Json("exact_image_track_snapshot_v1") : Json(nullptr)},{"joint_sonar_enabled",sonar_enabled},{"sonar_auxiliary_transport",auxiliary_enabled ? Json("ordered_imu_state_v1") : Json(nullptr)},
           {"image_ping_transport","exact_stamp_range_v1"},{"ping_fused",false},{"joint_ping_enabled",joint_enabled},
           {"opencv_threads",1},{"estimation_threads",2},
@@ -326,7 +337,7 @@ int main(int argc,char** argv) {
           {"feature_grid",config.optical_flow_detection_grid_size},{"max_recent_states",config.vio_max_states},
           {"raw_resolution",{c.width,c.height}},
           {"processed_resolution",{c.processed_width,c.processed_height}},
-          {"scope","experimental local visual-inertial odometry with sparse landmark archive"}});
+          {"scope",sonar_clock ? "experimental sonar-inertial state estimation; no terrain, depth or camera frontend" : "experimental local visual-inertial odometry with sparse landmark archive"}});
     int64_t imu_stamp=0,image_stamp=0,event_stamp=0;bool auxiliary_since_image=false;
     for(;;) {
       char header[8];std::cin.read(header,8);
@@ -334,8 +345,10 @@ int main(int argc,char** argv) {
       auto type=u32(header),size=u32(header+4);
       if(type==3 && size==0)std::_Exit(0);
       if((type!=1 && type!=2 && type!=4 && type!=5 && type!=6 && type!=7 && type!=8) ||
-          (type==7 && !sonar_enabled) || (type==8 && !auxiliary_enabled) || size>(type==7 ? posim_slam::sonarSnapshotLimit : uint32_t(c.width*c.height+32)))
+          (type==7 && !sonar_enabled) || (type==8 && !auxiliary_enabled && !sonar_clock) ||
+          size>(type==7 ? posim_slam::sonarSnapshotLimit : std::max(uint32_t(56),uint32_t(c.width*c.height+32))))
         fail("packet_size_or_type");
+      if(sonar_clock && (type==2 || type==5))fail("camera_packet_in_sonar_clock");
       std::vector<char> bytes(size);std::cin.read(bytes.data(),size);
       if(!std::cin)fail("incomplete_packet");
       if(type==7) {
@@ -347,17 +360,23 @@ int main(int argc,char** argv) {
       } else if(type==8) {
         if(size!=8)fail("auxiliary_sonar_packet_size");
         const int64_t stamp=int64_t(u64(bytes.data()));
-        if(!image_stamp || stamp<=event_stamp || stamp-image_stamp>500000000 || auxiliary_since_image)
+        if(sonar_clock ? (stamp<=0 || !imu_stamp || stamp<=event_stamp || (event_stamp && stamp-event_stamp>sonar_gap)) :
+            (!image_stamp || stamp<=event_stamp || stamp-image_stamp>500000000 || auxiliary_since_image))
           fail("auxiliary_sonar_clock_or_capacity");
         {
           std::lock_guard<std::mutex> lock(ping_mutex);
           const auto next=image_sonar.upper_bound(event_stamp);
           if(next!=image_sonar.end() && next->first<stamp)fail("sonar_snapshot_missing_state");
         }
+        if(sonar_clock && !event_stamp) {
+          if(gravity_stamp!=stamp)fail("gravity_seed_sensor_stamp");
+          const Eigen::Quaterniond q=Eigen::Quaterniond::FromTwoVectors(gravity_direction,Vec3::UnitZ());
+          vio->initialize(stamp,Sophus::SE3d(q,Vec3::Zero()),Vec3::Zero(),Vec3::Zero(),Vec3::Zero());
+        }
         if(!events.try_push({stamp,false}))fail("sensor_event_backlog");
         event_stamp=stamp;auxiliary_since_image=true;
       } else if(type==6) {
-        if(size!=32 || !require_gravity_seed || image_stamp || gravity_stamp)fail("gravity_seed_contract");
+        if(size!=32 || !require_gravity_seed || event_stamp || gravity_stamp)fail("gravity_seed_contract");
         gravity_stamp=int64_t(u64(bytes.data()));
         for(int k=0;k<3;++k)gravity_direction[k]=number(bytes.data()+8+k*8);
         if(gravity_stamp<=0 || !gravity_direction.allFinite() || std::abs(gravity_direction.norm()-1)>1e-6)

@@ -8,6 +8,33 @@ biases. `basalt_stream` and `LiveClient` provide the live worker interface; the
 host application supplies ROS transport, registration and session supervision.
 The worker maintains a sparse segment map without loop closure.
 
+The experimental `state_clock: "sonar"` worker accepts raw IMU and ordered
+range/bearing track snapshots without camera calibration, pixels or an optical
+frontend. Its calibration schema is `posim-slam-sonar-inertial-recording-1`;
+`enable_joint_sonar` and `require_gravity_seed` must be true. The caller supplies
+an explicit `max_sonar_gap_s` consistent with its frontend (at most 3 s), and
+an estimated gravity direction at the first sonar timestamp. Position, yaw and
+velocity initialization follow the local estimator convention; an arbitrary
+moving-start velocity is not measured by that direction. Acoustic constraints
+drive the bounded state window once geometry is admitted. Unobservable startup
+fails at the existing initialization budget. The worker rejects camera packets
+and reports `map_qualified: false`; this interface does not provide terrain or
+pressure factors, sonar image association, or application mode qualification.
+`SensorEvents(state_clock="sonar")` orders sonar and future IMU with the same
+bounded, one-state-at-a-time acknowledgement contract.
+
+실험용 `state_clock: "sonar"` 워커는 카메라 보정값·영상·광학 추적기 없이
+원본 IMU와 소나 거리·방위각 트랙을 받습니다. 보정 스키마는
+`posim-slam-sonar-inertial-recording-1`이며 `enable_joint_sonar`와
+`require_gravity_seed`가 참이어야 합니다. 호출자가 첫 소나 시각의 추정 중력
+방향과 추적기의 시간 간격 한도인 `max_sonar_gap_s`(최대 3초)를 제공합니다. 중력
+방향만으로 이동 중의 초기 속도를 측정할 수는 없습니다.
+음향 기하가 성립하면 제한된 상태 창을 유지하고, 성립하지 않는 시작 구간은
+기존 초기화 한도에서 실패합니다. 카메라 패킷은 거부하고 `map_qualified: false`를
+보고합니다. 지형·수압 제약, 소나 영상 대응점 추적, 앱 모드 검증은 별도입니다.
+`SensorEvents(state_clock="sonar")`는 소나와 이후 IMU를 정렬하고, 한 상태의
+응답을 확인한 뒤 다음 상태를 전달합니다.
+
 Visual normal-equation assembly uses only the pose blocks observed by each
 landmark. It scatters their matrix and gradient into the complete state system,
 preserving cross-pose terms while avoiding products of zero velocity, bias and

@@ -8,10 +8,14 @@ or reused. The caller separately enforces wall-clock liveness and IMU coverage.
 
 
 class SensorEvents:
-    def __init__(self, *, capacity=16):
+    def __init__(self, *, capacity=16, state_clock='camera'):
         if type(capacity) is not int or not 2 <= capacity <= 256:
             raise ValueError('sensor_events_capacity')
         self.capacity = capacity
+        if state_clock not in ('camera', 'sonar'):
+            raise ValueError('sensor_events_state_clock')
+        self.state_clock = state_clock
+        self.streams = ('sonar',) if state_clock == 'sonar' else ('camera', 'sonar')
         self.pending = {'camera': {}, 'sonar': {}}
         self.latest = {'camera': 0, 'sonar': 0, 'imu': 0}
         self.closed = set()
@@ -43,7 +47,7 @@ class SensorEvents:
         must be validated, size-bounded and immutable while queued by callers.
         """
         self._healthy()
-        if kind not in self.latest or kind in self.closed:
+        if kind not in (*self.streams, 'imu') or kind in self.closed:
             self._fail('sensor_events_input_kind_or_closed')
         if type(stamp_ns) is not int or not self.latest[kind] < stamp_ns < 2**63:
             self._fail('sensor_events_input_clock')
@@ -59,7 +63,7 @@ class SensorEvents:
     def finish(self, kind):
         """Declare actual end of a finite recording, never a live timeout."""
         self._healthy()
-        if kind not in self.pending or kind in self.closed:
+        if kind not in self.streams or kind in self.closed:
             self._fail('sensor_events_finish_kind_or_closed')
         self.closed.add(kind)
 
@@ -71,19 +75,21 @@ class SensorEvents:
         one event. The native worker accepts at most one auxiliary sonar state
         between consecutive images; excess sonar packets are explicitly counted
         and omitted, never shifted onto a camera timestamp.
+        Sonar clock requires only sonar and future IMU; no camera heartbeat or
+        auxiliary decimation is applied. Clock selection is fixed per segment.
         """
         self._healthy()
         if self.awaiting is not None:
             return None
         watermark = min([self.latest['imu'] - 1] + [
-            self.latest[kind] for kind in self.pending if kind not in self.closed])
+            self.latest[kind] for kind in self.streams if kind not in self.closed])
         while any(self.pending.values()):
             stamp = min(t for queue in self.pending.values() for t in queue)
             if stamp > watermark:
                 return None
             camera = self.pending['camera'].pop(stamp, None)
             sonar = self.pending['sonar'].pop(stamp, None)
-            if camera is None:
+            if camera is None and self.state_clock == 'camera':
                 if not self.started:
                     self.before_camera += 1
                     continue
@@ -102,7 +108,7 @@ class SensorEvents:
         if (self.awaiting is None or type(stamp_ns) is not int
                 or stamp_ns != self.awaiting['stamp_ns']):
             self._fail('sensor_events_unexpected_ack')
-        if self.awaiting['camera'] is not None:
+        if self.state_clock == 'sonar' or self.awaiting['camera'] is not None:
             self.started = True
             self.auxiliary_used = False
         else:

@@ -136,7 +136,7 @@ def prepare(source,destination):
         '  if (posim_after_joint) posim_after_joint(*this, last_state_t_ns);\n'
         '  // Preserve the first unobserved startup, not every later visual dropout.\n'
         '  posim_had_visual_landmarks = posim_had_visual_landmarks || lmdb.numLandmarks() > 0;\n'
-        '  if (posim_had_visual_landmarks) marginalize(num_points_connected, lost_landmaks);\n'
+        '  if (posim_had_visual_landmarks || posim_joint_started) marginalize(num_points_connected, lost_landmaks);\n'
         '  if (posim_after_marginalization) posim_after_marginalization(*this, last_state_t_ns);')
     # An empty camera list explicitly denotes a non-camera sensor event. It
     # advances the inertial state without declaring every visual track lost.

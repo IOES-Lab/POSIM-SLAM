@@ -104,6 +104,23 @@ class LiveInputTests(unittest.TestCase):
         c._read();self.assertEqual(c.fault,'worker_gravity_seed_unsupported')
         self.assertFalse(c.ready.is_set())
 
+    def test_sonar_clock_never_silently_falls_back_to_camera_worker(self):
+        c=self.client();c.ready.clear();c.processing_request={'state_clock':'sonar','require_gravity_seed':True}
+        ready=dict(type='ready',protocol=1,inertial_fused=True,
+                   gravity_seed_transport='first_image_direction_v1',gravity_seed_required=True)
+        c.process=type('Process',(),{'stdout':io.BytesIO((json.dumps(ready)+'\n').encode())})()
+        c._read();self.assertEqual(c.fault,'worker_sonar_clock_unsupported')
+        self.assertFalse(c.ready.is_set())
+
+    def test_sonar_clock_tick_and_camera_rejection(self):
+        c=self.client();c.processing_request={'state_clock':'sonar'};c.sonar_clock_transport=True
+        c.sonar_tick(100)
+        self.assertEqual(c.input.get_nowait(),struct.pack('<IIq',8,8,100))
+        before=c.pending_bytes
+        with self.assertRaisesRegex(ValueError,'camera_packet_in_sonar_clock'):
+            c.image(101,32,32,bytes(1024))
+        self.assertEqual(c.pending_bytes,before);self.assertTrue(c.input.empty())
+
     def test_imu_vectors_must_have_separate_three_axis_shapes(self):
         c=self.client()
         with self.assertRaises(ValueError):c.imu(1,[1,2],[3,4,5,6])
