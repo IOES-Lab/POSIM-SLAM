@@ -9,6 +9,8 @@ from .sonar_packet import encode_snapshot
 
 
 class SonarSnapshots:
+    selection_policy = 'oldest_waiting_first_with_owned_history_priority'
+
     def __init__(self):
         self.stamp = 0
         self.retained = set()
@@ -17,6 +19,7 @@ class SonarSnapshots:
         self.next_id = 0
         self.pending = None
         self.blocked = set()
+        self.candidate_order = {}
 
     def point_sources(self):
         """Map native hypotheses to source tracks before consuming a state.
@@ -45,7 +48,7 @@ class SonarSnapshots:
             raise ValueError('invalid_sonar_rejection_report')
         blocked = self.blocked.copy()
         if self.pending is not None:
-            expected, bindings, next_id, submitted = self.pending
+            expected, bindings, next_id, submitted, candidate_order = self.pending
             if stamp != expected or not report.get('owner_received'):
                 raise ValueError('missing_sonar_snapshot_ack')
             if not set(rejected) <= submitted:raise ValueError('unknown_rejected_sonar_track')
@@ -61,12 +64,14 @@ class SonarSnapshots:
         else:
             if rejected:raise ValueError('unexpected_sonar_rejection_report')
             bindings, next_id = self.bindings, self.next_id
+            candidate_order = self.candidate_order
         known = {track['id'] for track in bindings.values()}
         if not set(active) <= known:
             raise ValueError('unknown_native_sonar_track')
         self.bindings = {key: value for key, value in bindings.items() if value['id'] in active}
         self.blocked = blocked.intersection(self.bindings)
         self.next_id = next_id
+        self.candidate_order = candidate_order
         self.stamp, self.retained, self.active = stamp, set(retained), set(active)
         self.pending = None
 
@@ -76,6 +81,8 @@ class SonarSnapshots:
         Call after the preceding state response. New candidates lose observations
         whose poses expired; covariance uses the matching principal submatrix.
         Existing native history is immutable and may only append one observation.
+        Owned histories are updated first. Free slots rotate among waiting
+        candidates so rejected low IDs cannot monopolize the 16-factor budget.
         Return [] when no candidate is ready; still send the image or sonar tick.
         """
         if self.pending is not None:
@@ -90,7 +97,13 @@ class SonarSnapshots:
         bindings = deepcopy(self.bindings)
         next_id = self.next_id
         updates = []
-        for source in sorted(tracks, key=lambda track: track['id']):
+        # A ticket records first eligibility or the last acknowledged attempt.
+        # At a shared timestamp, untried candidates precede attempted ones.
+        # Pruning to the current input bounds scheduling metadata at 300 entries.
+        candidate_order = {key:self.candidate_order.get(key,(stamp,0)) for key in keys}
+        priority = lambda track: (track['id'] not in self.bindings,
+                                  candidate_order[track['id']], track['id'])
+        for source in sorted(tracks, key=priority):
             # Validate the complete supplied covariance before selecting a subset.
             encode_snapshot(stamp, [source])
             if source['id'] in self.blocked:continue
@@ -130,8 +143,11 @@ class SonarSnapshots:
             update = dict(id=ident, observations=deepcopy(selected), covariance=noise.tolist())
             bindings[source['id']] = update
             updates.append(update)
+            candidate_order[source['id']] = (stamp,1)
         updates.sort(key=lambda track: track['id'])
         if updates:
             encode_snapshot(stamp, updates)
-            self.pending = (stamp, bindings, next_id, {track["id"] for track in updates})
+            self.pending = (stamp, bindings, next_id, {track["id"] for track in updates}, candidate_order)
+        else:
+            self.candidate_order = candidate_order
         return deepcopy(updates)

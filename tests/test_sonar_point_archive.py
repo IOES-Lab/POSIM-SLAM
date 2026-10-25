@@ -43,11 +43,17 @@ class SonarPointArchiveTests(unittest.TestCase):
 
     def test_pending_native_ids_are_mapped_before_retirement_ack(self):
         owner = SonarSnapshots()
-        owner.bindings = {42: {'id': 7}}
-        self.assertEqual(owner.point_sources(), {7: 42})
-        owner.pending = (9, {42: {'id': 7}, 43: {'id': 8}}, 9, {8})
-        self.assertEqual(owner.point_sources(), {7: 42, 8: 43})
-        owner.observe(dict(stamp_ns=9, sonar=dict(retained_pose_stamps_ns=[9],
+        def track(ident, stamps):
+            n=2*len(stamps)
+            return dict(id=ident,observations=[dict(stamp_ns=t,range_m=4.,azimuth_rad=.1) for t in stamps],
+                        covariance=[[.01 if i==j else 0. for j in range(n)] for i in range(n)])
+        owner.observe(dict(stamp_ns=2,sonar=dict(retained_pose_stamps_ns=[1,2],active_track_ids=[])))
+        owner.prepare(3,[track(42,[1,2,3])])
+        owner.observe(dict(stamp_ns=3,sonar=dict(retained_pose_stamps_ns=[1,2,3],active_track_ids=[0],owner_received=True)))
+        self.assertEqual(owner.point_sources(), {0: 42})
+        owner.prepare(4,[track(42,[1,2,3,4]),track(43,[2,3,4])])
+        self.assertEqual(owner.point_sources(), {0: 42, 1: 43})
+        owner.observe(dict(stamp_ns=4, sonar=dict(retained_pose_stamps_ns=[4],
                           active_track_ids=[], owner_received=True)))
         self.assertEqual(owner.point_sources(), {})
 

@@ -4927,7 +4927,8 @@
     }
   },
   "figure_sha256": {
-    "sonar-echo-candidates.png": "cb04e99016de4f461d7c5be02b0720ee2857096b8c4f359f5e851984457aac1a",
+    "sonar-echo-candidates.png": "e2efc7c608e87fb7bd43dd3de586e266e3f7a420e49c24a531ad45a75a0f7c45",
     "sonar-echo-boundaries.png": "39404fd6475668023ec2029914237358a49368b03224bc436bdc589f998faefa"
-  }
+  },
+  "display_projection": "equal-scale sonar-plane lateral/forward metres; elevation unresolved"
 }

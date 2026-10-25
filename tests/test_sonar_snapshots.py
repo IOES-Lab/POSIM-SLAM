@@ -104,5 +104,46 @@ class SnapshotsTest(unittest.TestCase):
         manager.observe(state(3,[1,2,3],[0],True))
         self.assertIsNone(manager.pending)
 
+    def test_rejected_candidates_do_not_starve_other_eligible_tracks(self):
+        manager=SonarSnapshots();manager.observe(state(2,[1,2]));tried=[]
+        for stamp in (3,4,5):
+            updates=manager.prepare(stamp,[track(list(range(1,stamp+1)),i) for i in range(48)])
+            self.assertEqual(len(updates),16)
+            sources=manager.point_sources();tried.extend(sources[u['id']] for u in updates)
+            reply=state(stamp,list(range(1,stamp+1)),[],True)
+            reply['sonar']['geometry_rejected_track_ids']=[u['id'] for u in updates]
+            manager.observe(reply)
+        self.assertEqual(tried,list(range(48)))
+        self.assertEqual(len(manager.candidate_order),48)
+        manager.prepare(6,[])
+        self.assertEqual(manager.candidate_order,{})
+
+    def test_active_history_has_priority_and_waiting_candidates_rotate(self):
+        manager=SonarSnapshots();manager.observe(state(2,[1,2]))
+        manager.prepare(3,[track([1,2,3],199)]);manager.observe(state(3,[1,2,3],[0],True))
+        seen=[]
+        for stamp in (4,5):
+            inputs=[track(list(range(1,stamp+1)),i) for i in [*range(40),199]]
+            updates=manager.prepare(stamp,inputs)
+            self.assertEqual(len(updates),16)
+            owned=next(u for u in updates if u['id']==0)
+            self.assertEqual(len(owned['observations']),stamp)
+            sources=manager.point_sources();seen.extend(sources[u['id']] for u in updates if u['id']!=0)
+            reply=state(stamp,list(range(1,stamp+1)),[0],True)
+            reply['sonar']['geometry_rejected_track_ids']=[u['id'] for u in updates if u['id']!=0]
+            manager.observe(reply)
+        self.assertEqual(seen,list(range(30)))
+
+    def test_failed_batch_and_ack_do_not_commit_scheduler_state(self):
+        manager=SonarSnapshots();manager.observe(state(2,[1,2]))
+        invalid=track([1,2,3],20);invalid['covariance'][0][0]=-1
+        with self.assertRaises(ValueError):manager.prepare(3,[track([1,2,3],0),invalid])
+        self.assertEqual(manager.candidate_order,{})
+        manager.prepare(3,[track([1,2,3],0)])
+        with self.assertRaisesRegex(ValueError,'missing_sonar_snapshot_ack'):manager.observe(state(3,[1,2,3],[0]))
+        self.assertEqual(manager.candidate_order,{})
+        manager.observe(state(3,[1,2,3],[0],True))
+        self.assertEqual(manager.candidate_order,{0:(3,1)})
+
 
 if __name__=='__main__':unittest.main()

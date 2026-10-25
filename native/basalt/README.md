@@ -1140,6 +1140,16 @@ when they have enough retained observations to seed again. Wait for the snapshot
 acknowledgement before preparing another one. Create a new manager when the
 estimator or source-track segment resets.
 
+Active histories take priority. Free slots within the 16-factor budget go to the
+oldest waiting candidates; attempted candidates move behind others waiting at
+that timestamp. Scheduling tickets commit only after acknowledgement and cover
+at most the current 300 input tracks. Repeated geometric rejection of low source
+IDs therefore cannot monopolize admission. This changes which candidates are
+evaluated, not the native residual, uncertainty or elevation acceptance criteria.
+Upstream history buffers should retain the native-reported pose stamps plus the
+new observation, preserving source IDs and all active measurement/covariance
+entries. Retired poses cannot contribute to subsequent initialization.
+
 `SonarSnapshots`는 추정기 구간 하나의 스냅샷을 관리합니다. 네이티브 상태 응답을
 순서대로 `observe`에 전달한 뒤, 대응 관계가 정해진 관측 이력과 전체 공분산을
 `prepare`에 전달합니다. 원본 트랙 ID는 구간 안에서 유지해야 합니다. 만료된
@@ -1149,6 +1159,14 @@ estimator or source-track segment resets.
 제거된 트랙은 보관 관측이 충분해지면 새
 네이티브 ID로 등록합니다. 수신 확인 후 다음 스냅샷을 준비하며, 추정기나 원본
 트랙 구간을 초기화할 때 관리 객체도 새로 만듭니다.
+
+현재 사용 중인 이력을 먼저 갱신합니다. 16개 팩터 한도에서 남은 자리는 가장
+오래 기다린 후보부터 배정하고, 시도한 후보는 같은 시각부터 기다린 다른 후보
+뒤로 보냅니다. 대기 순서는 수신 확인 후 반영하며 현재 입력 트랙 최대 300개만
+보관합니다. 작은 원본 ID의 반복 거부가 등록 기회를 독점하지 않습니다. 이는
+평가 순서의 변경이며 네이티브 잔차·불확실성·고도 합격 기준은 그대로입니다.
+상위 이력 버퍼는 네이티브가 보고한 보관 자세의 관측과 새 관측을 유지합니다.
+원본 ID와 사용 중인 관측·공분산은 보존하며 제거된 자세는 이후 초기화에서 제외합니다.
 
 This manager requires supplied associations and uncertainty. It does not turn
 raw intensity tracks into calibrated acoustic measurements.
