@@ -2,7 +2,8 @@
 
 `src/posim_slam/visual_inertial_seed.py` estimates initial metric velocity and
 gravity from calibrated camera bearings and raw-IMU preintegrals. It is an
-independent experimental calculation, not automatically invoked by the live owner.
+experimental calculation used by an optional ROS owner mode, not the GUI default.
+See [ROS startup and mixed recovery limits](ros-moving-startup.md).
 
 In the first IMU frame, position at time t is initial velocity times t, plus
 half gravity times t squared, plus preintegrated specific-force displacement.
@@ -64,7 +65,7 @@ This figure does not qualify map geometry. Twenty-six native regression tests
 and sixteen client-input tests pass, including flipped-IMU velocity rotation,
 sensor bias preservation and invalid/duplicate seed rejection.
 
-ROS owner integration, robust refinement and uncertainty evaluation remain
+Default/GUI integration, robust refinement and uncertainty evaluation remain
 required. The two-pass recording experiment is not live automatic initialization,
 mixed sonar recovery, installed application acceptance, or navigation readiness.
 
@@ -135,7 +136,7 @@ Turbo 높이 색상과 지름 4배 표시를 유지합니다. 지도 형상은 �
 않았습니다. 네이티브 회귀 검사 26개와 클라이언트 입력 검사 16개가 통과했습니다.
 뒤집힌 IMU의 속도 회전, 바이어스 유지, 잘못된 초기값 거부를 확인합니다.
 
-ROS 실행 관리자 연결, 강건한 보정과 불확실성 평가가 남아 있습니다.
+기본값·GUI 연결, 강건한 보정과 불확실성 평가가 남아 있습니다.
 현재 결과를 실시간 자동 초기화·혼합 소나 복구·설치형 앱·항법 준비 완료의
 검증으로 확대하지 않습니다.
 
