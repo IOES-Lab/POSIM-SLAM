@@ -1,6 +1,6 @@
 import unittest
 import numpy as np
-from posim_slam.auxiliary_inputs import bracketed_gyro, hydrostatic_height, validate_auxiliary_ack, fused_recent
+from posim_slam.auxiliary_inputs import bracketed_gyro, hydrostatic_height, validate_auxiliary_ack, fused_recent, dvl_status, measured_dvl_packet
 
 
 class AuxiliaryInputTests(unittest.TestCase):
@@ -24,6 +24,32 @@ class AuxiliaryInputTests(unittest.TestCase):
                 bracketed_gyro(samples, stamp, model_sigma=sigma)
         with self.assertRaisesRegex(ValueError, 'clock'):
             bracketed_gyro(samples[::-1], 10**9, model_sigma=.01)
+
+    def test_dvl_identity_lock_and_original_clock(self):
+        value = dict(session_nonce='trial', frame_id='dvl', source='/vehicle/sensors/dvl',
+                     version='0.1.0', valid=True, reason='bottom_locked', locked_beams=4,
+                     stamp=dict(sec=1, nanosec=5_000_000), velocity_m_s=[1, 0, 0],
+                     covariance=(np.eye(3)*.04).ravel().tolist())
+        t, payload = dvl_status(value, nonce='trial', frame='dvl')
+        self.assertIsNone(dvl_status(value, nonce='other', frame='dvl'))
+        samples = [(10**9, [0, 0, 0], [0]*9), (1_010_000_000, [0, 2, 0], [0]*9)]
+        packet = measured_dvl_packet(t, payload, samples, gyro_sigma=.01)
+        self.assertEqual(packet['stamp_ns'], 1_005_000_000)
+        self.assertEqual(packet['gyro_stamp_ns'], t)
+        np.testing.assert_allclose(packet['gyro'], [0, 1, 0])
+        np.testing.assert_allclose(packet['covariance'], np.eye(3)*.04)
+        for change in [dict(frame_id='wrong'), dict(locked_beams=2),
+                       dict(covariance=[0]*9), dict(stamp=dict(sec=1, nanosec=10**9))]:
+            with self.subTest(change=change), self.assertRaises(ValueError):
+                dvl_status(dict(value, **change), nonce='trial', frame='dvl')
+        lost = dict(value, valid=False, reason='bottom_lock_lost', velocity_m_s=None, covariance=None)
+        lost_t, missing = dvl_status(lost, nonce='trial', frame='dvl')
+        self.assertEqual(lost_t, t)
+        self.assertEqual(missing, {'valid': False})
+        with self.assertRaises(ValueError):
+            measured_dvl_packet(t, missing, samples, gyro_sigma=.01)
+        with self.assertRaises(ValueError):
+            dvl_status(dict(value, valid=False), nonce='trial', frame='dvl')
 
     def test_pressure_does_not_invent_surface_height_or_accept_unknown_variance(self):
         calibration = dict(reference_pa=101325, density_kg_m3=1025, gravity_m_s2=9.80665)

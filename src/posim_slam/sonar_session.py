@@ -10,8 +10,7 @@ from pathlib import Path
 import numpy as np
 
 from .acoustic_tracks import AcousticTracks
-from .auxiliary_inputs import bracketed_gyro, validate_auxiliary_ack, fused_recent
-from .dvl_packet import encode_dvl
+from .auxiliary_inputs import measured_dvl_packet, validate_auxiliary_ack, fused_recent
 from .gravity_seed import gravity_seed
 from .inertial import ImuWindow
 from .live_client import LiveClient
@@ -199,11 +198,8 @@ class SonarSession:
             self.expected_auxiliary=dict(dvl=bool(dvl and dvl['valid']),
                                          pressure=bool(event.get('pressure') and event['pressure']['valid']))
             if dvl and dvl['valid']:
-                gyro = bracketed_gyro([(t, g, c) for t, g, _, c in self.samples], stamp, model_sigma=self.gyro_sigma)
-                packet = dict(stamp_ns=stamp, velocity=dvl['velocity'], covariance=dvl['covariance'],
-                              gyro=gyro['gyro'], gyro_stamp_ns=stamp, gyro_covariance=gyro['covariance'],
-                              bottom_locked=True, locked_beams=dvl['locked_beams'])
-                encode_dvl(**packet)
+                packet = measured_dvl_packet(stamp,dvl,[(t,g,c) for t,g,_,c in self.samples],
+                                             gyro_sigma=self.gyro_sigma)
                 self.client.dvl(**packet)
             pressure = event.get('pressure')
             if pressure and pressure['valid']:

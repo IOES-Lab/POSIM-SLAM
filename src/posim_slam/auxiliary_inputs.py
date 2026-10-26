@@ -91,3 +91,46 @@ def fused_recent(state_stamp_ns, fused_stamp_ns, fused_wall, now, *, max_age_s=2
                 and math.isfinite(now) and math.isfinite(fused_wall)
                 and 0<=now-fused_wall<max_age_s
                 and 0<=state_stamp_ns-fused_stamp_ns<max_age_s*1e9)
+
+
+def dvl_status(value, *, nonce, frame):
+    """Validate a session-owned DVL status; invalid lock is a timed absence.
+
+    Returns (stamp_ns, payload), or None for another session or an untimed
+    unavailable status. No velocity is invented for lost bottom lock.
+    """
+    if value.get('session_nonce') != nonce:
+        return None
+    if (value.get('frame_id') != frame or value.get('source') != '/vehicle/sensors/dvl'
+            or value.get('version') != '0.1.0' or type(value.get('valid')) is not bool):
+        raise ValueError('dvl_identity')
+    if 'stamp' not in value:
+        if value['valid']:raise ValueError('dvl_stamp_missing')
+        return None
+    sec, ns = value['stamp']['sec'], value['stamp']['nanosec']
+    if type(sec) is not int or type(ns) is not int or sec < 0 or not 0 <= ns < 10**9:
+        raise ValueError('dvl_stamp')
+    payload = dict(valid=value['valid'])
+    if value['valid']:
+        if value.get('reason') != 'bottom_locked' or value.get('locked_beams') not in (3, 4):
+            raise ValueError('dvl_bottom_lock')
+        from .inertial_filter import covariance
+        from .dvl_scale import vector
+        payload.update(velocity=vector(value['velocity_m_s']).tolist(),
+                       covariance=covariance(np.asarray(value['covariance']).reshape(3,3),3).tolist(),
+                       locked_beams=value['locked_beams'])
+    elif value.get('velocity_m_s') is not None or value.get('covariance') is not None:
+        raise ValueError('invalid_dvl_return')
+    return sec*10**9+ns, payload
+
+
+def measured_dvl_packet(stamp_ns, payload, samples, *, gyro_sigma):
+    """Build the shared native DVL packet at its original measurement time."""
+    if payload.get('valid') is not True:raise ValueError('valid_dvl_required')
+    gyro=bracketed_gyro(samples,stamp_ns,model_sigma=gyro_sigma)
+    packet=dict(stamp_ns=stamp_ns,velocity=payload['velocity'],covariance=payload['covariance'],
+                gyro=gyro['gyro'],gyro_stamp_ns=stamp_ns,gyro_covariance=gyro['covariance'],
+                bottom_locked=True,locked_beams=payload['locked_beams'])
+    from .dvl_packet import encode_dvl
+    encode_dvl(**packet)
+    return packet
