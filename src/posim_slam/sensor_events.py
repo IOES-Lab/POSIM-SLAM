@@ -8,19 +8,21 @@ or reused. The caller separately enforces wall-clock liveness and IMU coverage.
 
 
 class SensorEvents:
-    def __init__(self, *, capacity=16, state_clock='camera', dvl=False, pressure=False, ping=False):
+    def __init__(self, *, capacity=16, state_clock='camera', sonar=True, dvl=False, pressure=False, ping=False):
         if type(capacity) is not int or not 2 <= capacity <= 256:
             raise ValueError('sensor_events_capacity')
         self.capacity = capacity
         if state_clock not in ('camera', 'sonar'):
             raise ValueError('sensor_events_state_clock')
         self.state_clock = state_clock
-        for kind, enabled in (('dvl', dvl), ('pressure', pressure), ('ping', ping)):
+        for kind, enabled in (('sonar', sonar), ('dvl', dvl), ('pressure', pressure), ('ping', ping)):
             if type(enabled) is not bool:
                 raise ValueError('sensor_events_' + kind + '_selection')
+        if state_clock == 'sonar' and not sonar:
+            raise ValueError('sensor_events_sonar_clock_requires_sensor')
         self.dvl_enabled = dvl
         self.auxiliary_streams = tuple(kind for kind, enabled in (('dvl', dvl), ('pressure', pressure), ('ping', ping)) if enabled)
-        self.streams = ('sonar',) if state_clock == 'sonar' else ('camera', 'sonar')
+        self.streams = ('sonar',) if state_clock == 'sonar' else ('camera',) + (('sonar',) if sonar else ())
         self.streams += self.auxiliary_streams
         self.pending = {'camera': {}, 'sonar': {}}
         self.pending.update({kind: {} for kind in self.auxiliary_streams})
@@ -92,11 +94,12 @@ class SensorEvents:
     def next_event(self):
         """Release at most one event, requiring its exact native state ack.
 
-        Both streams must have advanced through the event timestamp, and raw
+        All selected streams must have advanced through the event timestamp, and raw
         IMU must extend strictly beyond it. Equal-time camera/sonar packets form
         one event. The native worker accepts at most one auxiliary sonar state
         between consecutive images; excess sonar packets are explicitly counted
         and omitted, never shifted onto a camera timestamp.
+        Camera mode may omit sonar entirely; no synthetic sonar watermark is needed.
         Sonar clock requires only sonar and future IMU; no camera heartbeat or
         auxiliary decimation is applied. Clock selection is fixed per segment.
         Selecting DVL, pressure or Ping adds its watermark and exact-time payload,
@@ -131,7 +134,7 @@ class SensorEvents:
         return None
 
     def acknowledge(self, stamp_ns):
-        """Call only after SonarFusion.observe has validated the native state."""
+        """Call only after the caller has validated the exact native state acknowledgement."""
         self._healthy()
         if (self.awaiting is None or type(stamp_ns) is not int
                 or stamp_ns != self.awaiting['stamp_ns']):

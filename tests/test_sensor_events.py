@@ -5,6 +5,32 @@ from posim_slam.sensor_events import SensorEvents
 
 
 class SensorEventsTests(unittest.TestCase):
+    def test_camera_dvl_clock_has_no_sonar_dependency_under_delayed_arrival(self):
+        for order in set(itertools.permutations('ccddi')):
+            q=SensorEvents(sonar=False,dvl=True)
+            times={'camera':iter([10,30]),'dvl':iter([20,30]),'imu':iter([31])};events=[]
+            for letter in order:
+                kind={'c':'camera','d':'dvl','i':'imu'}[letter];stamp=next(times[kind])
+                q.push(kind,stamp,(kind,stamp));events.extend(self.drain(q))
+            self.assertEqual([e['stamp_ns'] for e in events],[10,20,30])
+            self.assertEqual(events[1]['dvl'],('dvl',20))
+            self.assertIsNone(events[1]['camera'])
+            self.assertTrue(all(e['sonar'] is None for e in events))
+            self.assertEqual(events[-1]['camera'],('camera',30))
+            self.assertEqual(events[-1]['dvl'],('dvl',30))
+
+    def test_camera_only_clock_and_unselected_sonar(self):
+        q=SensorEvents(sonar=False)
+        q.push('camera',10,'image');q.push('imu',10)
+        self.assertIsNone(q.next_event())
+        q.push('imu',11)
+        event=q.next_event();self.assertEqual(event['camera'],'image')
+        self.assertIsNone(event['sonar']);q.acknowledge(10)
+        with self.assertRaisesRegex(ValueError,'input_kind'):q.push('sonar',12,'echo')
+        with self.assertRaisesRegex(ValueError,'sonar_clock_requires_sensor'):
+            SensorEvents(state_clock='sonar',sonar=False)
+        with self.assertRaisesRegex(ValueError,'sonar_selection'):SensorEvents(sonar=1)
+
     def test_decimated_pressure_advances_watermark_without_reusing_factor(self):
         q=SensorEvents(pressure=True)
         q.push('imu',41)
