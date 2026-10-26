@@ -1,5 +1,7 @@
 # POSIM-SLAM
 
+The camera-free `SonarSession` requires an explicit pressure-enabled native calibration by default. Explicit pressure-off configurations are research ablations. The application requires raw IMU and pressure depth for sonar SLAM, with optional DVL. It checks recent acknowledged pressure fusion separately from sensor reception and waits for valid pressure before worker startup. Multiple-view tracks constrain shared point hypotheses; pressure constrains vehicle depth, not seabed distance. Repeated observations from a single pose do not resolve elevation, and physical correspondence/map accuracy remain unqualified.
+
 [한국어](README.ko.md) · [Third-party notices](THIRD_PARTY.md)
 
 > This project is developed with assistance from large language models (LLMs).

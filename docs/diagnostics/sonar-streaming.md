@@ -1,15 +1,25 @@
 # Camera-free sonar streaming / 카메라 없는 소나 스트리밍
 
 `SonarSession` owns one bounded sonar-clock segment using the native Basalt
-worker, raw IMU and measured intensity tracks. Optional DVL and pressure use
-their original timestamps. Raw gyro interpolation and hydrostatic pressure
+worker, raw IMU, required pressure depth and measured intensity tracks. Optional DVL uses
+its original timestamps. Explicit pressure-off configurations are research ablations. Raw gyro interpolation and hydrostatic pressure
 conversion are shared by live and recorded adapters. No camera, simulator pose,
 ideal orientation or known terrain is an estimator input.
 
 `SonarSession`은 native Basalt worker, 원본 IMU와 측정한 강도 특징 추적으로
-소나 시각 기반 세그먼트를 관리합니다. 선택한 DVL·수압은 원래 시각을 사용합니다.
+소나 시각 기반 세그먼트를 관리합니다. 압력 수심은 필수이며 선택형 DVL과 함께 원래 시각을 사용합니다. 압력을 끈 명시적 설정은 연구용 대조 실험입니다.
 실시간·기록 어댑터는 원본 자이로 보간과 정수압 변환 함수를 공유합니다.
 카메라·시뮬레이터 위치·이상적인 자세·알려진 지형은 추정기 입력에 포함하지 않습니다.
+
+## Required depth and multiple views / 필수 수심과 여러 시점
+
+The application requires raw IMU and pressure depth for sonar SLAM. Startup waits for valid pressure before allocating a worker. Tracking/export readiness requires a pressure factor acknowledged as included in optimization within two seconds on both sensor and wall clocks. Invalid pressure traffic alone cannot satisfy this condition. A pressure loss/return ROS replay with the current native binary produces 174 poses, one segment reset and a recovered export of 10 hypotheses. All owned workers stop. This is transport/recovery evidence, not map-accuracy qualification.
+
+앱의 소나 SLAM은 원본 IMU와 압력 수심을 필수로 사용합니다. 유효한 압력이 도착해야 워커를 시작합니다. 추적·내보내기 준비 상태에는 센서 시각과 실제 경과 시간 모두 2초 이내인 압력 제약의 최적화 반영 확인이 필요합니다. 무효한 압력 메시지만 수신하는 경우는 이 조건을 만족하지 못합니다. 현재 네이티브 바이너리의 압력 소실·복구 ROS 재생은 자세 174개, 구간 초기화 1회, 복구 후 가설점 10개 내보내기를 확인했습니다. 소유한 워커는 모두 종료했습니다. 전송·복구 근거이며 지도 정확도 검증은 아닙니다.
+
+Multiple observations constrain a shared point or surface hypothesis. Different sensor positions and attitudes can provide elevation information; repeated frames at one pose do not prove observability. Pressure constrains vertical vehicle motion, not seabed clearance. Current association, curved-terrain modeling and joint uncertainty still need qualification. Legacy planar acoustic diagnostics cannot be selected as fused SLAM in the application.
+
+여러 관측으로 공유 점 또는 표면 가설을 구속합니다. 서로 다른 센서 위치·자세는 높이 정보를 제공할 수 있지만, 한 자세의 반복 프레임만으로 관측 가능성을 입증할 수 없습니다. 압력은 차량의 수직 이동을 구속하며 해저 이격 거리를 직접 측정하지 않습니다. 현재 대응 관계·곡면 지형 모델·공동 불확실성은 검증이 남아 있습니다. 기존 평면 음향 진단은 앱의 융합 SLAM 모드로 선택할 수 없습니다.
 
 ## ROS replay evidence
 

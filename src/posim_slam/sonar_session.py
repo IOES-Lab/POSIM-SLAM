@@ -27,7 +27,13 @@ class SonarSession:
         if self.config.get('state_clock') != 'sonar' or self.config.get('enable_joint_sonar') is not True:
             raise ValueError('camera_free_sonar_configuration_required')
         self.dvl = self.config.get('enable_joint_dvl', False)
-        self.pressure = self.config.get('enable_joint_pressure', False)
+        # Application sonar SLAM requires pressure. Explicit False is retained for
+        # independently labelled research ablations only.
+        self.pressure = self.config.get('enable_joint_pressure', True)
+        if type(self.pressure) is not bool or type(self.dvl) is not bool:
+            raise ValueError('invalid_sonar_auxiliary_selection')
+        if self.pressure and self.config.get('enable_joint_pressure') is not True:
+            raise ValueError('sonar_pressure_calibration_required')
         if self.dvl != (dvl_gyro_sigma is not None):
             raise ValueError('selected_dvl_requires_gyro_uncertainty')
         if dvl_gyro_sigma is not None and (not np.isfinite(dvl_gyro_sigma) or not 0 < dvl_gyro_sigma <= .5):
@@ -43,6 +49,7 @@ class SonarSession:
         self.samples = deque(maxlen=4096)
         self.latest = dict(imu=0, sonar=0, dvl=0, pressure=0)
         self.received = dict.fromkeys(self.latest, None)
+        self.valid_auxiliary = dict(dvl=False, pressure=False)
         self.counts = dict.fromkeys(self.latest, 0)
         self.pending_sonar = None
         self.start_stamp = 0
@@ -56,6 +63,8 @@ class SonarSession:
         self.fault = None
         self.expected_auxiliary = {}
         self.optimized = dict(dvl=0, pressure=0)
+        self.fused_stamp = dict(dvl=0, pressure=0)
+        self.fused_wall = dict(dvl=None, pressure=None)
 
     def _arrival(self, kind, stamp):
         if self.closed or self.fault:
@@ -97,6 +106,7 @@ class SonarSession:
         if type(payload.get('valid')) is not bool:
             raise ValueError('auxiliary_validity_required')
         self._arrival(kind, stamp)
+        self.valid_auxiliary[kind] = payload['valid']
         if self.start_stamp and stamp >= self.start_stamp:
             self.events.push(kind, stamp, payload)
 
@@ -126,6 +136,12 @@ class SonarSession:
     def _tick(self):
         now = self.clock()
         if self.client is None:
+            # Wait for the required depth input before allocating a worker.
+            # A silent pressure source must not cause repeated empty restarts.
+            if self.pressure and (not self.valid_auxiliary['pressure']
+                    or self.received['pressure'] is None
+                    or now-self.received['pressure'] >= 2):
+                return []
             if (self.pending_sonar is None or not self.samples
                     or self.samples[0][0] > self.latest['sonar']-10**9
                     or self.samples[-1][0] <= self.latest['sonar']):
@@ -149,9 +165,16 @@ class SonarSession:
                 report=value.get(kind) or {}
                 if report.get('owner_received',False) is not self.expected_auxiliary.get(kind,False):
                     raise RuntimeError('sonar_auxiliary_ack_mismatch')
-                self.optimized[kind]+=int(report.get('optimization_included',False))
+                included = report.get('optimization_included',False)
+                if type(included) is not bool or included and not self.expected_auxiliary.get(kind,False):
+                    raise RuntimeError('sonar_auxiliary_optimization_mismatch')
             self.fusion.observe(value)
             self.events.acknowledge(value['stamp_ns'])
+            for kind in ('dvl', 'pressure'):
+                if (value.get(kind) or {}).get('optimization_included',False):
+                    self.optimized[kind] += 1
+                    self.fused_stamp[kind] = value['stamp_ns']
+                    self.fused_wall[kind] = now
             self.states += 1
             self.last_result = value
             self.last_result_wall = now
@@ -197,6 +220,15 @@ class SonarSession:
         if now-(self.last_result_wall or self.started_wall) > 10:
             raise RuntimeError('sonar_worker_or_ordering_stalled')
         return results
+
+    def auxiliary_fresh(self, kind, *, max_age_s=2.):
+        """Fresh acknowledged fusion, independently of incoming sensor traffic."""
+        if kind not in self.optimized or not np.isfinite(max_age_s) or max_age_s <= 0:
+            raise ValueError('invalid_auxiliary_freshness_request')
+        wall = self.fused_wall[kind]
+        return bool(not self.closed and not self.fault and self.last_result is not None
+                    and wall is not None and 0 <= self.clock()-wall < max_age_s
+                    and 0 <= self.last_result['stamp_ns']-self.fused_stamp[kind] < max_age_s*1e9)
 
     def close(self):
         self.closed = True

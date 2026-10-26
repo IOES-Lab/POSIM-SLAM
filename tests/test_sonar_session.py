@@ -13,7 +13,7 @@ class Worker:
         self.ready = threading.Event(); self.ready.set()
         self.outputs = [dict(type='ready', state_clock='sonar', joint_sonar_enabled=True,
                              sonar_clock_transport='ordered_sonar_state_v1')]
-        self.seeds = []; self.imus = []; self.ticks = []; self.closed = False
+        self.pressures = []; self.seeds = []; self.imus = []; self.ticks = []; self.closed = False
 
     def poll(self):
         result, self.outputs = self.outputs, []
@@ -22,6 +22,7 @@ class Worker:
     def gravity_seed(self, stamp, direction): self.seeds.append((stamp, list(direction)))
     def imu(self, stamp, gyro, accel): self.imus.append(stamp)
     def sonar_tick(self, stamp): self.ticks.append(stamp)
+    def pressure(self, **packet): self.pressures.append(packet)
     def close(self): self.closed = True
 
 
@@ -29,7 +30,7 @@ class SonarSessionTests(unittest.TestCase):
     def setUp(self):
         self.directory = tempfile.TemporaryDirectory(); self.addCleanup(self.directory.cleanup)
         config = Path(self.directory.name)/'calibration.json'
-        config.write_text(json.dumps(dict(state_clock='sonar', enable_joint_sonar=True)))
+        config.write_text(json.dumps(dict(state_clock='sonar', enable_joint_sonar=True, enable_joint_pressure=False)))
         self.now = 0.
         self.session = SonarSession('worker', config, None, range_sigma=.02, azimuth_sigma=.01,
                                     clock=lambda: self.now, client_factory=Worker)
@@ -93,6 +94,59 @@ class SonarSessionTests(unittest.TestCase):
             self.session.tick()
         self.session.close()
         self.assertTrue(self.session.client.closed)
+
+
+    def test_pressure_default_requires_native_calibration_and_ablation_is_explicit(self):
+        config=Path(self.directory.name)/'missing-pressure.json'
+        config.write_text(json.dumps(dict(state_clock='sonar',enable_joint_sonar=True)))
+        with self.assertRaisesRegex(ValueError,'pressure_calibration_required'):
+            SonarSession('worker',config,None,range_sigma=.02,azimuth_sigma=.01)
+
+    def pressure_session(self):
+        config=Path(self.directory.name)/'pressure.json'
+        config.write_text(json.dumps(dict(state_clock='sonar',enable_joint_sonar=True,enable_joint_pressure=True)))
+        self.session.close()
+        self.session=SonarSession('worker',config,None,range_sigma=.02,azimuth_sigma=.01,
+                                  clock=lambda:self.now,client_factory=Worker)
+        self.addCleanup(self.session.close)
+        self.feed();self.session.tick()
+        self.assertIsNone(self.session.client)
+        self.session.auxiliary('pressure',1_990_000_000,dict(valid=True,packet=dict(stamp_ns=1_990_000_000,height_m=-2.,variance_m2=.01)))
+        self.session.tick()
+        self.assertFalse(self.session.auxiliary_fresh('pressure'))
+        packet=dict(stamp_ns=2_000_000_000,height_m=-2.,variance_m2=.01)
+        self.session.auxiliary('pressure',2_000_000_000,dict(valid=True,packet=packet))
+        self.session.tick()
+        return self.session.client
+
+    def test_pressure_traffic_is_not_fusion_and_freshness_expires_on_either_clock(self):
+        worker=self.pressure_session()
+        self.assertEqual(len(worker.pressures),1)
+        self.assertFalse(self.session.auxiliary_fresh('pressure'))
+        state=self.state();state['pressure']=dict(owner_received=True,optimization_included=True)
+        worker.outputs=[state];self.session.tick()
+        self.assertTrue(self.session.auxiliary_fresh('pressure'))
+        self.session.auxiliary('pressure',2_010_000_000,dict(valid=False))
+        self.now=2.01
+        self.assertFalse(self.session.auxiliary_fresh('pressure'))
+        self.now=.1;self.session.last_result=dict(state,stamp_ns=4_000_000_000)
+        self.assertFalse(self.session.auxiliary_fresh('pressure'))
+        self.assertEqual(self.session.optimized['pressure'],1)
+
+    def test_rejected_pressure_and_wrong_state_never_record_successful_fusion(self):
+        worker=self.pressure_session()
+        state=self.state();state['pressure']=dict(owner_received=True,optimization_included=False)
+        worker.outputs=[state];self.session.tick()
+        self.assertFalse(self.session.auxiliary_fresh('pressure'))
+        self.assertEqual(self.session.optimized['pressure'],0)
+
+    def test_unsolicited_optimization_fails_before_map_or_freshness_update(self):
+        self.feed();self.session.tick()
+        state=self.state();state['pressure']=dict(owner_received=False,optimization_included=True)
+        self.session.client.outputs=[state]
+        with self.assertRaisesRegex(RuntimeError,'optimization_mismatch'):self.session.tick()
+        self.assertEqual(self.session.fusion.archive.stamp,0)
+        self.assertEqual(self.session.optimized['pressure'],0)
 
 
 if __name__ == '__main__': unittest.main()
