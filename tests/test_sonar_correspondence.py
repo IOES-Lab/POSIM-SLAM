@@ -1,6 +1,6 @@
 import unittest
 import numpy as np
-from posim_slam.sonar_correspondence import project_return_arc
+from posim_slam.sonar_correspondence import project_return_arc,rank_return_patches
 
 
 class SonarCorrespondenceTests(unittest.TestCase):
@@ -51,6 +51,26 @@ class SonarCorrespondenceTests(unittest.TestCase):
                         dict(measured_range=float('nan')),dict(measured_azimuth=2.),
                         dict(sonar_to_imu=np.zeros((3,3)))):
             with self.assertRaises(ValueError):project_return_arc(**dict(self.arguments(),**changes))
+
+    def test_patch_translation_survives_gain_and_offset(self):
+        rng=np.random.default_rng(7);a=rng.normal(size=(40,50));b=rng.normal(size=a.shape)
+        b[20:27,30:37]=a[10:17,10:17]*3+12
+        result=rank_return_patches(a,b,[13,13],[[32,22],[20,15]],search_radius=2)
+        self.assertEqual(result['modes'][0]['pixel'],[33,23])
+        self.assertAlmostEqual(result['modes'][0]['correlation'],1.)
+
+    def test_repeated_patches_preserve_competing_modes(self):
+        rng=np.random.default_rng(9);a=rng.normal(size=(50,50));b=np.zeros_like(a)
+        for y,x in ((10,10),(30,30)):b[y-3:y+4,x-3:x+4]=a[17:24,17:24]
+        result=rank_return_patches(a,b,[20,20],[[10,10],[30,30]],search_radius=0)
+        self.assertEqual(len(result['modes']),2)
+        self.assertTrue(all(abs(m['correlation']-1)<1e-12 for m in result['modes']))
+
+    def test_uninformative_border_and_excessive_search(self):
+        a=np.ones((20,20))
+        self.assertEqual(rank_return_patches(a,a,[10,10],[[10,10]])['modes'],[])
+        self.assertEqual(rank_return_patches(a,a,[0,0],[[10,10]])['modes'],[])
+        with self.assertRaises(ValueError):rank_return_patches(a,a,[10,10],np.zeros((258,2)))
 
 
 if __name__=='__main__':unittest.main()

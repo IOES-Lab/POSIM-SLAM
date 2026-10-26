@@ -54,3 +54,54 @@ def project_return_arc(*, measured_range, measured_azimuth, previous_position,
         target_elevation_rad=target_elevations, supported=supported,
         scope='nominal fixed-pose search locus; not an association or uncertainty gate',
         elevation_resolved=False)
+
+
+def rank_return_patches(previous, current, source_pixel, candidate_pixels, *,
+                        patch_radius=3, search_radius=2, maximum_modes=8):
+    """Rank distinct integer-pixel patch modes around a caller-provided locus.
+
+    Zero-mean normalized correlation tolerates positive gain and offset. It is
+    not a probability or an association acceptance test. The caller must inspect
+    competing modes and validate future views. No elevation or point is returned.
+    Search margin is explicit pixels, not a pose-covariance approximation.
+    """
+    images=[np.asarray(v,dtype=float) for v in (previous,current)]
+    if any(v.ndim!=2 or min(v.shape)<3 or max(v.shape)>4096 or v.size>2_000_000
+           or not np.isfinite(v).all() for v in images):
+        raise ValueError('invalid_sonar_patch_image')
+    if (type(patch_radius) is not int or not 1<=patch_radius<=10
+            or type(search_radius) is not int or not 0<=search_radius<=4
+            or type(maximum_modes) is not int or not 1<=maximum_modes<=16):
+        raise ValueError('invalid_sonar_patch_budget')
+    source=np.asarray(source_pixel,dtype=float);candidates=np.asarray(candidate_pixels,dtype=float)
+    if (source.shape!=(2,) or not np.isfinite(source).all() or candidates.ndim!=2
+            or candidates.shape[1]!=2 or len(candidates)>257 or not np.isfinite(candidates).all()):
+        raise ValueError('invalid_sonar_patch_pixels')
+    def patch(image,pixel):
+        x,y=pixel;r=patch_radius
+        if x-r<0 or y-r<0 or x+r>=image.shape[1] or y+r>=image.shape[0]:return None
+        values=image[y-r:y+r+1,x-r:x+r+1].ravel().copy()
+        values-=values.mean();norm=float(np.linalg.norm(values))
+        return values/norm if norm>1e-10 else None
+    result=dict(modes=[],evaluated_centres=0,scope='appearance ranking only; physical identity unresolved')
+    if np.any(source<0) or np.any(source>=[images[0].shape[1],images[0].shape[0]]):
+        return dict(result,reason='source_patch_unavailable')
+    anchor=patch(images[0],tuple(np.rint(source).astype(int)))
+    if anchor is None:return dict(result,reason='source_patch_unavailable')
+    candidates=candidates[np.all(candidates>=-search_radius-1,axis=1)
+        & np.all(candidates<np.array([images[1].shape[1],images[1].shape[0]])+search_radius+1,axis=1)]
+    centres=set()
+    for x,y in np.rint(candidates).astype(int):
+        for dy in range(-search_radius,search_radius+1):
+            for dx in range(-search_radius,search_radius+1):centres.add((int(x+dx),int(y+dy)))
+    scored=[]
+    for centre in sorted(centres):
+        target=patch(images[1],centre)
+        if target is not None:scored.append((float(np.clip(anchor@target,-1,1)),centre))
+    result['evaluated_centres']=len(scored)
+    modes=[]
+    for score,centre in sorted(scored,key=lambda item:(-item[0],item[1])):
+        if any(max(abs(centre[i]-m['pixel'][i]) for i in (0,1))<=patch_radius for m in modes):continue
+        modes.append(dict(pixel=list(centre),correlation=score))
+        if len(modes)==maximum_modes:break
+    return dict(result,modes=modes,reason='ranked' if modes else 'target_patch_unavailable')

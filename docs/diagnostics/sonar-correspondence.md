@@ -41,3 +41,18 @@ an acceptance claim. No simulator truth enters this function.
 기록된 출력 자세를 사용한 진단에서는 영상 추적이 예측 곡선에서 벗어나는
 경우가 확인됐습니다. 이는 탐색 보조 대응 실험의 근거이며 성능 합격을 뜻하지
 않습니다. 이 함수는 시뮬레이터 참값을 입력받지 않습니다.
+
+`rank_return_patches` ranks distinct patch locations around a supplied locus by
+zero-mean normalized correlation. It returns multiple modes and their scores;
+it does not accept an association. Search size, patch radius and mode count are
+bounded. Positive gain/offset, repeated patterns and unavailable patches are
+covered by three additional tests. A single returned mode means only that the
+bounded search found one mode, not that the physical match is unique. Live
+tracking integration, reverse consistency and unused-view validation are pending.
+
+`rank_return_patches`는 입력 탐색 곡선 주변의 패치 위치를 평균 제거 정규화
+상관도로 정렬합니다. 여러 후보와 점수를 반환하며 대응을 확정하지 않습니다.
+탐색 크기·패치 반경·후보 수에 상한을 둡니다. 양의 밝기 배율과 오프셋,
+반복 무늬, 사용할 수 없는 패치를 추가 테스트 3개로 검증했습니다. 후보가
+하나라는 것은 제한된 탐색에서 하나를 찾았다는 뜻이며 실제 대응의 유일성을
+보장하지 않습니다. 라이브 추적 연결, 역방향 일관성과 후속 관측 검증은 남아 있습니다.
