@@ -35,3 +35,5 @@ Exact camera/Ping pairing releases a missing match when a strictly later Ping pr
 공통 보조 변수 제거는 thin SVD로 같은 랭크 판정과 최소 노름 역대입을 수행하고, Householder 변환을 암시적으로 적용합니다. 최적화 시도마다 감쇠를 적용해 원래 그룹을 한 번만 축약합니다. 인자 없는 지도 주변화 경로에는 감쇠를 넣지 않습니다. 독립 수치 검증은 축약 정보·기울기·잔차 비용·역대입을 비교하며, 세 감쇠값에서 랜드마크·평면 결합을 밀집 Schur 계산과 대조합니다. thin SVD의 합성 행렬 네 개는 전체 기저 방식보다 1.02~13.12배 빠르지만 전체 실행이나 중복 제거의 속도 개선율은 아닙니다.
 
 카메라/Ping의 정확한 시각 연결은 더 늦은 Ping 수신으로 누락이 확정된 영상을 해제합니다. 큐·대기·잡음·기하 기준은 그대로입니다. `processing_ms`는 입력 전달부터 자세·지도 응답까지로 스케줄링과 큐 대기를 포함합니다. 짧은 혼합 시험의 최댓값은 879 ms이며 순수 최적화 시간이나 최악 조건 보장은 아닙니다. 혼합 모드 기본 활성화에는 유용한 지도와 더 넓은 실행 검증이 필요합니다. 알려진 수치 계산·입력 정렬 기법이며 연구 신규성을 주장하지 않습니다.
+
+[Moving recovery and matched field comparisons / 이동 중 복구와 현장 비교](moving-recovery.md) separates inadequate viewpoint diversity from divergent restarted VIO.
