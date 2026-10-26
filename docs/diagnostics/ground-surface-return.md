@@ -31,3 +31,20 @@ No application default uses this experimental module.
 곡면에서 내부 광선이 만드는 최소 거리, 가까운 가림, 위치·계수·방향 미분,
 잘못된 기하를 검증했습니다. 곡면 사례는 독립적으로 촘촘하게 생성한 면과
 비교했습니다. 앱 기본 동작에는 이 실험 모듈을 사용하지 않습니다.
+
+`plane_returns` accepts a unit normal and signed distance for `n·X = d`, so
+vertical object faces are representable without a height-function singularity.
+It evaluates all supplied rays and returns origin, direction, normal and distance
+derivatives on the selected branch. A sign reversal of both plane parameters
+preserves geometry. Three additional tests cover vertical faces, height-plane
+equivalence and tangent-normal derivatives, and parallel/behind/blind returns.
+The plane is unbounded: finite object support, acoustic onset and association
+must be established separately. It does not turn every image contour into a plane.
+
+`plane_returns`는 단위 법선과 부호 있는 거리로 `n·X = d`를 표현하므로 높이
+함수로 표현할 수 없는 수직 물체 면도 처리합니다. 입력 광선 전체를 검사하고
+선택된 가지에서 위치·방향·법선·거리 미분을 반환합니다. 법선과 거리의 부호를
+함께 바꿔도 기하는 같습니다. 추가 테스트 3개로 수직 면, 높이 평면과의 일치,
+법선 접선 방향 미분, 평행·뒤쪽·측정 사각지대 반사를 검증했습니다. 면은 무한히
+연장되므로 유한한 물체 범위, 반사 시작점, 대응은 별도로 확인해야 합니다.
+영상 윤곽을 자동으로 평면으로 판정하지 않습니다.

@@ -1,6 +1,6 @@
 import unittest
 import numpy as np
-from posim_slam.ground_surface_return import surface_returns
+from posim_slam.ground_surface_return import surface_returns,plane_returns
 
 
 def fan(azimuth,elevation):
@@ -9,6 +9,36 @@ def fan(azimuth,elevation):
 
 
 class GroundSurfaceReturnTests(unittest.TestCase):
+    def test_vertical_face_selects_interior_ray_and_is_sign_invariant(self):
+        rays=fan([-.2,0.,.3],[-.2,0.,.2]);kwargs=dict(range_min=.1,range_max=10.)
+        result=plane_returns([0,0,0],rays,[1,0,0],4.,**kwargs)
+        np.testing.assert_allclose(result['range_m'],4/np.cos([-.2,0.,.3]))
+        np.testing.assert_array_equal(result['ray_indices'],[1,1,1])
+        reverse=plane_returns([0,0,0],rays,[-1,0,0],-4.,**kwargs)
+        np.testing.assert_allclose(result['points'],reverse['points'])
+        np.testing.assert_allclose(result['points'][:,0],4.)
+
+    def test_general_plane_matches_height_plane_and_derivatives(self):
+        rays=fan([-.2,.1,.35],[-.7,-.5,-.3]);o=np.array([.2,-.1,.15]);c=np.array([-2.,.15,-.1])
+        normal=np.array([-c[1],-c[2],1.]);scale=np.linalg.norm(normal);normal/=scale;distance=c[0]/scale
+        kwargs=dict(range_min=.1,range_max=10.);result=plane_returns(o,rays,normal,distance,**kwargs)
+        np.testing.assert_allclose(result['range_m'],surface_returns(o,rays,c,**kwargs)['range_m'])
+        for i in range(3):
+            step=np.eye(3)[i]*1e-6
+            difference=(plane_returns(o+step,rays,normal,distance,**kwargs)['range_m']-plane_returns(o-step,rays,normal,distance,**kwargs)['range_m'])/2e-6
+            np.testing.assert_allclose(difference,result['origin_jacobian'][:,i],atol=1e-8)
+        tangent=np.cross(normal,[0,1,0]);epsilon=1e-6
+        plus=normal+epsilon*tangent;plus/=np.linalg.norm(plus)
+        minus=normal-epsilon*tangent;minus/=np.linalg.norm(minus)
+        difference=(plane_returns(o,rays,plus,distance,**kwargs)['range_m']-plane_returns(o,rays,minus,distance,**kwargs)['range_m'])/2e-6
+        np.testing.assert_allclose(difference,result['normal_jacobian']@tangent,atol=1e-8)
+
+    def test_plane_parallel_behind_and_blind_returns_invalid(self):
+        rays=fan([0.],[0.]);kwargs=dict(range_min=.2,range_max=10.)
+        for normal,distance in (([0,0,1],2),([1,0,0],-2),([1,0,0],.1)):
+            result=plane_returns([0,0,0],rays,normal,distance,**kwargs)
+            self.assertFalse(result['valid'][0]);self.assertTrue(np.isnan(result['points']).all())
+
     def test_flat_ground_uses_closest_authored_ray(self):
         rays=fan([-.3,0.,.3],[-.6,-.4,-.2])
         r=surface_returns([0,0,0],rays,[-2,0,0],range_min=.1,range_max=10.)

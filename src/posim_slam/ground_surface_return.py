@@ -11,6 +11,38 @@ from __future__ import annotations
 import numpy as np
 
 
+def plane_returns(origin, rays, normal, distance, *, range_min, range_max):
+    """First intersections with an explicitly supplied plane n dot X = distance.
+
+    Unlike height surfaces this includes vertical object faces. A plane has no
+    finite spatial support here; the caller must establish that separately.
+    Normal is unit length. Normal derivatives are ambient coordinates (apply a
+    tangent-space increment when preserving its unit norm). No plane is fitted.
+    """
+    o=np.asarray(origin,dtype=float);d=np.asarray(rays,dtype=float);n=np.asarray(normal,dtype=float)
+    if (o.shape!=(3,) or n.shape!=(3,) or d.ndim!=3 or d.shape[2]!=3
+            or not 1<=d.shape[0]<=128 or not 1<=d.shape[1]<=512
+            or not all(np.isfinite(v).all() for v in (o,d,n))
+            or not np.isfinite([distance,range_min,range_max]).all()
+            or not 0<range_min<range_max or not np.isclose(np.linalg.norm(n),1.,atol=1e-8,rtol=0)
+            or not np.allclose(np.linalg.norm(d,axis=2),1.,atol=1e-8,rtol=0)):
+        raise ValueError('invalid_plane_return_geometry')
+    denominator=d@n
+    usable=abs(denominator)>1e-8
+    ranges=np.full(denominator.shape,np.inf)
+    np.divide(distance-n@o,denominator,out=ranges,where=usable)
+    ranges[(ranges<range_min)|(ranges>range_max)]=np.inf
+    selected=ranges.argmin(axis=1);indices=np.arange(len(d));values=ranges[indices,selected]
+    valid=np.isfinite(values);values=np.where(valid,values,np.nan)
+    denominator=np.where(valid,denominator[indices,selected],np.nan)
+    points=o+values[:,None]*d[indices,selected]
+    origin_jacobian=-n[None,:]/denominator[:,None]
+    return dict(valid=valid,range_m=values,ray_indices=selected,points=points,
+        origin_jacobian=origin_jacobian,direction_jacobian=values[:,None]*origin_jacobian,
+        normal_jacobian=-points/denominator[:,None],distance_jacobian=1/denominator,
+        map_qualified=False,scope='Conditional first return from an unbounded plane; no acoustic identity or pose estimate')
+
+
 def surface_returns(origin, rays, coefficients, *, range_min, range_max):
     """Return per-beam first-hit ranges and local analytic derivatives.
 
