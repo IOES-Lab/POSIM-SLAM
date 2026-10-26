@@ -1,0 +1,362 @@
+[
+  {
+    "scene": "baseline",
+    "model": "physical_beam_pattern",
+    "before": {
+      "case": "physical_beam_pattern",
+      "frames": 24,
+      "valid_entries": 1248,
+      "possible_entries": 1248,
+      "median_error_m": -0.008229143851292697,
+      "absolute_error_p90_m": 0.02952400639953856,
+      "fitted_frames": 24,
+      "normal_error_degrees_p90": 0.33931944681910486,
+      "threshold_band_available": 1248,
+      "threshold_band_coverage": 0.2764423076923077,
+      "threshold_band_scope": "4/6/8 dB sensitivity only, not a confidence interval"
+    },
+    "after": {
+      "case": "physical_beam_pattern",
+      "frames": 24,
+      "valid_entries": 1248,
+      "possible_entries": 1248,
+      "median_error_m": -0.008023252715403828,
+      "absolute_error_p90_m": 0.029524006399538116,
+      "fitted_frames": 24,
+      "normal_error_degrees_p90": 0.32642819795528705,
+      "threshold_band_available": 1248,
+      "threshold_band_coverage": 0.27724358974358976,
+      "threshold_band_scope": "4/6/8 dB sensitivity only, not a confidence interval"
+    }
+  },
+  {
+    "scene": "baseline",
+    "model": "identity_beam_control",
+    "before": {
+      "case": "identity_beam_control",
+      "frames": 24,
+      "valid_entries": 1248,
+      "possible_entries": 1248,
+      "median_error_m": -0.00669262518890168,
+      "absolute_error_p90_m": 0.020877522716012287,
+      "fitted_frames": 24,
+      "normal_error_degrees_p90": 0.4645717301430421,
+      "threshold_band_available": 1248,
+      "threshold_band_coverage": 0.2636217948717949,
+      "threshold_band_scope": "4/6/8 dB sensitivity only, not a confidence interval"
+    },
+    "after": {
+      "case": "identity_beam_control",
+      "frames": 24,
+      "valid_entries": 1248,
+      "possible_entries": 1248,
+      "median_error_m": -0.00669262518890168,
+      "absolute_error_p90_m": 0.020877522716012287,
+      "fitted_frames": 24,
+      "normal_error_degrees_p90": 0.4645717301430421,
+      "threshold_band_available": 1248,
+      "threshold_band_coverage": 0.265224358974359,
+      "threshold_band_scope": "4/6/8 dB sensitivity only, not a confidence interval"
+    }
+  },
+  {
+    "scene": "held-seed",
+    "model": "physical_beam_pattern",
+    "before": {
+      "case": "physical_beam_pattern",
+      "frames": 24,
+      "valid_entries": 1248,
+      "possible_entries": 1248,
+      "median_error_m": -0.008229143851292697,
+      "absolute_error_p90_m": 0.02977307264425898,
+      "fitted_frames": 24,
+      "normal_error_degrees_p90": 0.4647130317217058,
+      "threshold_band_available": 1248,
+      "threshold_band_coverage": 0.2780448717948718,
+      "threshold_band_scope": "4/6/8 dB sensitivity only, not a confidence interval"
+    },
+    "after": {
+      "case": "physical_beam_pattern",
+      "frames": 24,
+      "valid_entries": 1248,
+      "possible_entries": 1248,
+      "median_error_m": -0.008229143851292697,
+      "absolute_error_p90_m": 0.02952400639953856,
+      "fitted_frames": 24,
+      "normal_error_degrees_p90": 0.4647130317217058,
+      "threshold_band_available": 1248,
+      "threshold_band_coverage": 0.27884615384615385,
+      "threshold_band_scope": "4/6/8 dB sensitivity only, not a confidence interval"
+    }
+  },
+  {
+    "scene": "held-seed",
+    "model": "identity_beam_control",
+    "before": {
+      "case": "identity_beam_control",
+      "frames": 24,
+      "valid_entries": 1248,
+      "possible_entries": 1248,
+      "median_error_m": -0.00669262518890168,
+      "absolute_error_p90_m": 0.020877522716012287,
+      "fitted_frames": 24,
+      "normal_error_degrees_p90": 0.6464781661498111,
+      "threshold_band_available": 1248,
+      "threshold_band_coverage": 0.2516025641025641,
+      "threshold_band_scope": "4/6/8 dB sensitivity only, not a confidence interval"
+    },
+    "after": {
+      "case": "identity_beam_control",
+      "frames": 24,
+      "valid_entries": 1248,
+      "possible_entries": 1248,
+      "median_error_m": -0.00669262518890168,
+      "absolute_error_p90_m": 0.020877522716012287,
+      "fitted_frames": 24,
+      "normal_error_degrees_p90": 0.6464781661498111,
+      "threshold_band_available": 1248,
+      "threshold_band_coverage": 0.2532051282051282,
+      "threshold_band_scope": "4/6/8 dB sensitivity only, not a confidence interval"
+    }
+  },
+  {
+    "scene": "high",
+    "model": "physical_beam_pattern",
+    "before": {
+      "case": "physical_beam_pattern",
+      "frames": 24,
+      "valid_entries": 1248,
+      "possible_entries": 1248,
+      "median_error_m": -0.007400657265673516,
+      "absolute_error_p90_m": 0.03233893523967879,
+      "fitted_frames": 24,
+      "normal_error_degrees_p90": 0.2019818583362758,
+      "threshold_band_available": 1248,
+      "threshold_band_coverage": 0.33253205128205127,
+      "threshold_band_scope": "4/6/8 dB sensitivity only, not a confidence interval"
+    },
+    "after": {
+      "case": "physical_beam_pattern",
+      "frames": 24,
+      "valid_entries": 1248,
+      "possible_entries": 1248,
+      "median_error_m": -0.007400657265673516,
+      "absolute_error_p90_m": 0.032338935239678165,
+      "fitted_frames": 24,
+      "normal_error_degrees_p90": 0.2019818583362758,
+      "threshold_band_available": 1248,
+      "threshold_band_coverage": 0.33253205128205127,
+      "threshold_band_scope": "4/6/8 dB sensitivity only, not a confidence interval"
+    }
+  },
+  {
+    "scene": "high",
+    "model": "identity_beam_control",
+    "before": {
+      "case": "identity_beam_control",
+      "frames": 24,
+      "valid_entries": 1248,
+      "possible_entries": 1248,
+      "median_error_m": -0.006678819404154268,
+      "absolute_error_p90_m": 0.024905157652712617,
+      "fitted_frames": 24,
+      "normal_error_degrees_p90": 0.3015203239483755,
+      "threshold_band_available": 1248,
+      "threshold_band_coverage": 0.3004807692307692,
+      "threshold_band_scope": "4/6/8 dB sensitivity only, not a confidence interval"
+    },
+    "after": {
+      "case": "identity_beam_control",
+      "frames": 24,
+      "valid_entries": 1248,
+      "possible_entries": 1248,
+      "median_error_m": -0.006678819404154268,
+      "absolute_error_p90_m": 0.024905157652712617,
+      "fitted_frames": 24,
+      "normal_error_degrees_p90": 0.3015203239483755,
+      "threshold_band_available": 1248,
+      "threshold_band_coverage": 0.2980769230769231,
+      "threshold_band_scope": "4/6/8 dB sensitivity only, not a confidence interval"
+    }
+  },
+  {
+    "scene": "low",
+    "model": "physical_beam_pattern",
+    "before": {
+      "case": "physical_beam_pattern",
+      "frames": 24,
+      "valid_entries": 1248,
+      "possible_entries": 1248,
+      "median_error_m": -0.015821601351949655,
+      "absolute_error_p90_m": 0.030153870764386692,
+      "fitted_frames": 24,
+      "normal_error_degrees_p90": 0.9838050957112158,
+      "threshold_band_available": 1248,
+      "threshold_band_coverage": 0.14182692307692307,
+      "threshold_band_scope": "4/6/8 dB sensitivity only, not a confidence interval"
+    },
+    "after": {
+      "case": "physical_beam_pattern",
+      "frames": 24,
+      "valid_entries": 1248,
+      "possible_entries": 1248,
+      "median_error_m": -0.015821601351949655,
+      "absolute_error_p90_m": 0.030153870764386692,
+      "fitted_frames": 24,
+      "normal_error_degrees_p90": 0.9094226167334231,
+      "threshold_band_available": 1248,
+      "threshold_band_coverage": 0.14423076923076922,
+      "threshold_band_scope": "4/6/8 dB sensitivity only, not a confidence interval"
+    }
+  },
+  {
+    "scene": "low",
+    "model": "identity_beam_control",
+    "before": {
+      "case": "identity_beam_control",
+      "frames": 24,
+      "valid_entries": 1248,
+      "possible_entries": 1248,
+      "median_error_m": -0.010301145997877903,
+      "absolute_error_p90_m": 0.02298056737807297,
+      "fitted_frames": 24,
+      "normal_error_degrees_p90": 0.8295871555373168,
+      "threshold_band_available": 1248,
+      "threshold_band_coverage": 0.13541666666666666,
+      "threshold_band_scope": "4/6/8 dB sensitivity only, not a confidence interval"
+    },
+    "after": {
+      "case": "identity_beam_control",
+      "frames": 24,
+      "valid_entries": 1248,
+      "possible_entries": 1248,
+      "median_error_m": -0.010301145997877903,
+      "absolute_error_p90_m": 0.02298056737807297,
+      "fitted_frames": 24,
+      "normal_error_degrees_p90": 0.8295871555373168,
+      "threshold_band_available": 1248,
+      "threshold_band_coverage": 0.13221153846153846,
+      "threshold_band_scope": "4/6/8 dB sensitivity only, not a confidence interval"
+    }
+  },
+  {
+    "scene": "shallow",
+    "model": "physical_beam_pattern",
+    "before": {
+      "case": "physical_beam_pattern",
+      "frames": 24,
+      "valid_entries": 1248,
+      "possible_entries": 1248,
+      "median_error_m": -0.007691193933146323,
+      "absolute_error_p90_m": 0.029274926981572413,
+      "fitted_frames": 24,
+      "normal_error_degrees_p90": 0.171698507087292,
+      "threshold_band_available": 1248,
+      "threshold_band_coverage": 0.30849358974358976,
+      "threshold_band_scope": "4/6/8 dB sensitivity only, not a confidence interval"
+    },
+    "after": {
+      "case": "physical_beam_pattern",
+      "frames": 24,
+      "valid_entries": 1248,
+      "possible_entries": 1248,
+      "median_error_m": -0.007691193933146323,
+      "absolute_error_p90_m": 0.029274926981572413,
+      "fitted_frames": 24,
+      "normal_error_degrees_p90": 0.16880787863723745,
+      "threshold_band_available": 1248,
+      "threshold_band_coverage": 0.31009615384615385,
+      "threshold_band_scope": "4/6/8 dB sensitivity only, not a confidence interval"
+    }
+  },
+  {
+    "scene": "shallow",
+    "model": "identity_beam_control",
+    "before": {
+      "case": "identity_beam_control",
+      "frames": 24,
+      "valid_entries": 1248,
+      "possible_entries": 1248,
+      "median_error_m": -0.007013332164464536,
+      "absolute_error_p90_m": 0.025028944407086584,
+      "fitted_frames": 24,
+      "normal_error_degrees_p90": 0.11182216236673664,
+      "threshold_band_available": 1248,
+      "threshold_band_coverage": 0.2860576923076923,
+      "threshold_band_scope": "4/6/8 dB sensitivity only, not a confidence interval"
+    },
+    "after": {
+      "case": "identity_beam_control",
+      "frames": 24,
+      "valid_entries": 1248,
+      "possible_entries": 1248,
+      "median_error_m": -0.006384147944276997,
+      "absolute_error_p90_m": 0.025028944407086584,
+      "fitted_frames": 24,
+      "normal_error_degrees_p90": 0.11182216236673664,
+      "threshold_band_available": 1248,
+      "threshold_band_coverage": 0.28685897435897434,
+      "threshold_band_scope": "4/6/8 dB sensitivity only, not a confidence interval"
+    }
+  },
+  {
+    "scene": "steep",
+    "model": "physical_beam_pattern",
+    "before": {
+      "case": "physical_beam_pattern",
+      "frames": 24,
+      "valid_entries": 1248,
+      "possible_entries": 1248,
+      "median_error_m": -0.00982109644884499,
+      "absolute_error_p90_m": 0.033517918081203746,
+      "fitted_frames": 24,
+      "normal_error_degrees_p90": 1.3323626728020501,
+      "threshold_band_available": 1248,
+      "threshold_band_coverage": 0.23798076923076922,
+      "threshold_band_scope": "4/6/8 dB sensitivity only, not a confidence interval"
+    },
+    "after": {
+      "case": "physical_beam_pattern",
+      "frames": 24,
+      "valid_entries": 1248,
+      "possible_entries": 1248,
+      "median_error_m": -0.00982109644884499,
+      "absolute_error_p90_m": 0.033517918081203746,
+      "fitted_frames": 24,
+      "normal_error_degrees_p90": 1.3436035994843758,
+      "threshold_band_available": 1248,
+      "threshold_band_coverage": 0.2387820512820513,
+      "threshold_band_scope": "4/6/8 dB sensitivity only, not a confidence interval"
+    }
+  },
+  {
+    "scene": "steep",
+    "model": "identity_beam_control",
+    "before": {
+      "case": "identity_beam_control",
+      "frames": 24,
+      "valid_entries": 1248,
+      "possible_entries": 1248,
+      "median_error_m": -0.006939611757143194,
+      "absolute_error_p90_m": 0.021904790789360806,
+      "fitted_frames": 24,
+      "normal_error_degrees_p90": 0.9161742345213867,
+      "threshold_band_available": 1248,
+      "threshold_band_coverage": 0.22435897435897437,
+      "threshold_band_scope": "4/6/8 dB sensitivity only, not a confidence interval"
+    },
+    "after": {
+      "case": "identity_beam_control",
+      "frames": 24,
+      "valid_entries": 1248,
+      "possible_entries": 1248,
+      "median_error_m": -0.006939611757143194,
+      "absolute_error_p90_m": 0.021904790789360806,
+      "fitted_frames": 24,
+      "normal_error_degrees_p90": 0.983799996909881,
+      "threshold_band_available": 1248,
+      "threshold_band_coverage": 0.22596153846153846,
+      "threshold_band_scope": "4/6/8 dB sensitivity only, not a confidence interval"
+    }
+  }
+]

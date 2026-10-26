@@ -2,6 +2,8 @@
 
 This experimental NumPy implementation separates conditional sonar samples, local surface support and pose registration. It is not connected to the application estimator. No new dependency or third-party code is introduced.
 
+[Beam-mixing arithmetic and its ground-observation comparison](sonar-beam-mixing.md) identify a separate sensor numerical defect; fixing it does not qualify these terrain correspondences.
+
 `ground_entry_curve` retains observed ranges and beam identifiers under an explicit aperture-boundary elevation assumption. It does not require a whole-fan plane. `surface_matches` fits local PCA planes to earlier observations, requires at least three frames, caps each frame at four neighbours, rejects line-like/nonplanar neighbourhoods, and only interpolates inside their tangent-plane convex hull. The reference holds at most 4,096 samples; a query holds at most 128.
 
 The fixed search radius is 0.75 m, minimum tangent spread 0.05 m and surface-model scale 0.05 m. These are experimental geometric settings, not calibrated probabilistic confidence. The map filter keeps supported original samples without moving them or filling a mesh. It does not establish seabed identity when obstacles are present.
@@ -49,6 +51,8 @@ This diagnostic supplies nothing to estimation and does not model the finite azi
 ## 한국어
 
 실험용 구현은 소나 시작점 곡선, 국소 표면 지지, 위치 정합을 분리합니다. 앱 추정기에는 연결하지 않았습니다. NumPy와 자체 Apache-2.0 코드만 사용하며 새 외부 의존성은 없습니다.
+
+[빔 혼합 계산과 해저 관측 비교](sonar-beam-mixing.md)는 별도의 센서 수치 오류를 확인합니다. 이 수정으로 지형 대응을 합격 처리하지 않습니다.
 
 시작점 곡선은 실제 거리와 빔 번호를 유지하지만 높이는 수직 빔 경계라는 가정입니다. 부채꼴 전체를 평면으로 적합하지 않습니다. 국소 PCA 평면에는 과거 프레임 세 개 이상이 필요하며 프레임당 이웃 네 개, 전체 이웃 24개를 상한으로 둡니다. 선 형태·비평면 지지와 관측 영역 밖 외삽을 거부합니다. 참조는 최대 4,096점, 현재 입력은 최대 128점입니다. 탐색 반경 0.75 m, 최소 접선 방향 퍼짐 0.05 m와 표면 모델 척도 0.05 m는 실험 설정이며 보정된 확률적 신뢰도가 아닙니다.
 
