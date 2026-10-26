@@ -409,3 +409,7 @@ The native worker retains startup velocity/bias states until visual landmarks ex
 Use `--first-image-stamp-ns` with `--gravity-seed` to reproduce a recorded live startup timestamp. The requested image must exist exactly and have covered IMU history. Delayed marginalization establishes a linearization reference for every newly retained pose before constructing its prior; existing references remain unchanged.
 
 [Visual-map depth support / 시각 지도 깊이 지지와 한계](docs/diagnostics/visual-depth-admission.md).
+
+[Fixed-pose sonar power reconstruction / 고정 자세 소나 강도 복원](docs/diagnostics/sonar-power-volume.md)
+provides a separate bounded diagnostic, numeric input fixture and complete candidate-cell PLY.
+It does not change the runtime estimator or qualify a navigation map.

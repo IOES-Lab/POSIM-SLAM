@@ -13,6 +13,7 @@ dependencies = ["numpy>=1.24"]
 
 [project.optional-dependencies]
 research = ["opencv-python-headless>=4.10,<5"]
+diagnostics = ["scipy>=1.10,<2"]
 
 [project.urls]
 Repository = "https://github.com/IOES-Lab/POSIM-SLAM"

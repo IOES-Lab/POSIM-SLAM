@@ -30,7 +30,7 @@ jobs:
         with:
           python-version: ${{ matrix.python }}
       - run: python -m pip install 'setuptools>=68' wheel
-      - run: python -m pip install -e '.[research]'
+      - run: python -m pip install -e '.[research,diagnostics]'
       - run: python -m unittest discover -s tests
       - run: python tools/evaluate_inertial_filter.py --output "$RUNNER_TEMP/inertial-filter.json"
       - run: python tools/evaluate_stationary_initialization.py --output "$RUNNER_TEMP/inertial-initialization.json"

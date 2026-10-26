@@ -1,0 +1,72 @@
+"""Mathematical/ownership checks for the isolated reconstruction diagnostic."""
+from pathlib import Path
+import sys,tempfile,unittest
+import numpy as np
+sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'tools'))
+from sonar_power_volume import Projector,analytic_probe,load_packet,reconstruction,solve,write_cells
+
+
+class PowerVolumeTests(unittest.TestCase):
+    def packet(self):
+        raw=np.arange(48)*.1;coarse=raw.reshape(-1,4).mean(1)
+        poses=[dict(position=np.array([x,0,z]),rotation=np.eye(3)) for x,z in [(0,0),(.25,-.1),(.5,.1),(.75,0)]]
+        az=np.linspace(-.3,.3,13);point=np.array([[2.,0.,-.15]])
+        model=Projector(point,poses,az,coarse,.5,native_ranges=raw,maximum_range=4.7)
+        return dict(positions=np.array([p['position'] for p in poses]),rotations=np.array([p['rotation'] for p in poses]),stamps=np.arange(1,5,dtype=np.int64),observed=model.forward(np.array([2.])),train=np.array([0,2]),test=np.array([1,3]),azimuth=az,ranges=coarse,native_ranges=raw,vertical_fov=np.array(.5),maximum_range=np.array(4.7),beam_pixel_width=np.array(az[1]-az[0]),range_power=np.array(3.),frame_id=np.array('test/estimated_segment_0'))
+
+    def test_analytic_operator_contracts(self):
+        self.assertTrue(all(analytic_probe().values()))
+
+    def test_fista_matches_independent_dense_nonnegative_solve(self):
+        from scipy.optimize import nnls
+        packet=self.packet();poses=[dict(position=p,rotation=q) for p,q in zip(packet['positions'],packet['rotations'])]
+        points=np.array([[2.,0.,-.15],[2.2,.1,-.2],[2.5,-.15,-.4]])
+        model=Projector(points,poses,packet['azimuth'],packet['ranges'],.5,native_ranges=packet['native_ranges'])
+        dense=np.column_stack([model.forward(v).ravel() for v in np.eye(len(points))]);observed=model.forward(np.array([0.,2.,.3]))
+        expected,_=nnls(dense,observed.ravel());actual,_=solve(model,observed,fraction=0.,iterations=200)
+        np.testing.assert_allclose(actual,expected,atol=1e-5)
+
+    def test_test_intensities_do_not_change_fit_or_refinement(self):
+        packet=self.packet();first=reconstruction(packet,cell=.3,refine=1,iterations=40)
+        second_packet={k:v.copy() for k,v in packet.items()};second_packet['observed'][packet['test']]*=100
+        second=reconstruction(second_packet,cell=.3,refine=1,iterations=40)
+        for key in ('points','coefficient','albedo','cell_m'):np.testing.assert_array_equal(first[key],second[key])
+        self.assertNotEqual(first['stages'][-1]['heldout_relative_power_l2'],second['stages'][-1]['heldout_relative_power_l2'])
+
+    def test_packet_rejects_unsigned_time_reversal_and_shared_split(self):
+        packet=self.packet()
+        with tempfile.TemporaryDirectory() as folder:
+            path=Path(folder)/'inputs.npz';np.savez(path,**packet);load_packet(path)
+            packet['stamps']=np.array([4,3,2,1],dtype=np.uint64);np.savez(path,**packet)
+            with self.assertRaises(ValueError):load_packet(path)
+            packet=self.packet();packet['test']=np.array([0,1]);np.savez(path,**packet)
+            with self.assertRaises(ValueError):load_packet(path)
+
+    def test_zero_signal(self):
+        packet=self.packet();packet['observed']*=0
+        result=reconstruction(packet,cell=.3,refine=0,iterations=20)
+        self.assertFalse(np.any(result['coefficient']))
+
+    def test_unsupported_signal_has_empty_solution(self):
+        poses=[dict(position=np.zeros(3),rotation=np.eye(3))]*2
+        model=Projector(np.array([[-2.,0.,0.]]),poses,np.linspace(-.3,.3,13),np.arange(1,10)*.2,.5)
+        result,report=solve(model,np.ones(model.shape))
+        self.assertFalse(np.any(result));self.assertTrue(report['unsupported_signal'])
+
+    def test_direct_api_rejects_invalid_calibration_before_grid(self):
+        packet=self.packet();packet['maximum_range']=np.array(np.inf)
+        with self.assertRaises(ValueError):reconstruction(packet)
+        packet=self.packet();packet.pop('native_ranges')
+        with self.assertRaisesRegex(ValueError,'native_range_bins_required'):reconstruction(packet)
+
+    def test_export_preserves_all_positive_cells_with_explicit_scope(self):
+        result=dict(points=np.arange(12).reshape(4,3),coefficient=np.array([1.,0.,.01,2.]),albedo=np.array([2.,0.,.02,4.]),cell_m=np.full(4,.1))
+        with tempfile.TemporaryDirectory() as folder:
+            path=Path(folder)/'cells.ply';write_cells(path,result,'test/segment_1',123)
+            header,body=path.read_bytes().split(b'end_header\n',1)
+            self.assertIn(b'comment scope experimental_sonar_scattering_cells',header)
+            self.assertIn(b'comment map_qualified false',header);self.assertIn(b'element vertex 3',header)
+            values=np.frombuffer(body,dtype='<f4').reshape(-1,6);np.testing.assert_array_equal(values[:,:3],result['points'][[0,2,3]])
+
+
+if __name__=='__main__':unittest.main()

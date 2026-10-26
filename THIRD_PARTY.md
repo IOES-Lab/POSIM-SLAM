@@ -33,6 +33,7 @@ solver, vocabulary, dataset, model or runtime dependency.
 | tinycolormap | `67198d2b2b48ca5e97600c83b5c0f2310cfd4c03` | [MIT](src/posim_slam/data/notices/tinycolormap.txt) |
 | OpenCV | Native qualified profile: 4.13.0 | [Apache-2.0](https://github.com/opencv/opencv/blob/4.13.0/LICENSE); OpenCV's own third-party notices also apply |
 | NumPy | Python dependency; native qualified SDK profile: 2.5.3 | [BSD-3-Clause and bundled notices](https://numpy.org/doc/stable/license.html); wheels/SDKs supply their own exact build notices |
+| SciPy | Optional volume-diagnostic tool; tested SDK profile: 1.18.1 | [BSD-3-Clause](https://github.com/scipy/scipy/blob/main/LICENSE.txt); installed wheels/SDKs retain their bundled notices; the POSIM-SLAM wheel does not redistribute these binaries |
 | ROS 2, yaml-cpp, spdlog, fmt and native runtime libraries | Supplied by the selected development SDK | Package-specific notices and versions in that SDK; the Python package does not redistribute these binaries |
 
 The selected visual build defines `EIGEN_MPL2_ONLY`, disables g2o LGPL/CSparse/
@@ -72,15 +73,17 @@ WWW-POSIM application files to be published. See the [Mozilla MPL FAQ](https://w
 MPL 적용 파일의 의무가 관련 없는 WWW-POSIM 애플리케이션 파일 공개를 요구하지는
 않습니다.
 
-No ORB-SLAM3 code, vocabulary or learned weights are included. Basalt, Kimera-VIO
-and their dependencies are not selected runtime backends. Their top-level
-licenses do not approve a future dependency closure. In particular, Kimera's
+No ORB-SLAM3 code, vocabulary or learned weights are included. The opt-in native
+Basalt backend has the separate experimental dependency closure below.
+Kimera-VIO is not a selected backend. Top-level licenses do not approve a future
+dependency closure. In particular, Kimera's
 default build links Triangle, whose source notice requires a direct arrangement
 for commercial-system distribution.
 
-ORB-SLAM3 코드·사전·학습 가중치는 포함하지 않습니다. Basalt와 Kimera-VIO는 현재
-실행 백엔드가 아닙니다. 후보의 최상위 라이선스만으로 향후 의존성 전체를 승인하지
-않습니다. Kimera 기본 빌드의 Triangle 고지에는 상업 시스템 배포 시 저자와의 별도
+ORB-SLAM3 코드·사전·학습 가중치는 포함하지 않습니다. 선택형 네이티브 Basalt
+백엔드는 아래에 별도 실험용 의존성 구성이 있습니다. Kimera-VIO는 선택한 백엔드가
+아닙니다. 최상위 라이선스만으로 향후 의존성 전체를 승인하지 않습니다.
+Kimera 기본 빌드의 Triangle 고지에는 상업 시스템 배포 시 저자와의 별도
 협의 조건이 있습니다.
 
 ## Experimental Basalt research recipe / 실험적 Basalt 연구
