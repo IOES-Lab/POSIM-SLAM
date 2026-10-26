@@ -38,7 +38,7 @@ Registration rematches only against previous control observations. It rejects lo
 
 Only 5/142 A probes and 4/138 B probes converge; none of 140 relief probes converge within the support/trust/budget conditions. Independent corrections worsen same-stamp position RMSE from 0.04255 to 0.04309 m in A and 0.02007 to 0.02335 m in B. Relief remains 0.06992 m because no correction is admitted. These are independent probes on an unchanged control reference map, **not closed-loop fused trajectories**. A preliminary probe that treated the iteration limit as success was rejected; all 64 apparent relief successes had reached that limit.
 
-Pose-probe figures: [A](../images/sonar-registration-a.png), [B](../images/sonar-registration-b.png), [relief](../images/sonar-registration-relief.png). Camera-free live startup, RGB visibility ≤2 m, DVL loss, reliable surface association and loop closure remain unqualified.
+Pose-probe figures: [A](../images/sonar-registration-a.png), [B](../images/sonar-registration-b.png), [relief](../images/sonar-registration-relief.png). A subsequent [native run](sonar-low-visibility.md) verifies camera-free startup under a measured 2 m PBR visibility profile. DVL loss, reliable surface association and loop closure remain unqualified.
 
 ## Why elevation freedom alone is insufficient
 
@@ -62,4 +62,4 @@ A에서는 142회 중 5회, B에서는 138회 중 4회만 수렴했습니다. �
 
 실제 자세와 지형을 평가에만 사용한 별도 분석은 명목 방위각에서 수직각 401개를 확인합니다. 7,117개 시작점 중 빔 경계 가정에서는 6,083개, 전체 수직각을 허용하면 6,307개가 해저의 10 cm 이내입니다. 나머지 810개는 표본화한 수직각 전체에서 해저보다 10 cm 넘게 위에 있습니다. 최소 수직 간격 p90도 0.667 m입니다. 유한한 수평 빔 폭은 분석에 포함하지 않았습니다. 높이각 자유도만 추가해서 모든 시작점을 설명할 수는 없으며, 각도별 빔 혼합·반사 선택·표면 식별을 함께 검토해야 합니다. 이 결과만으로 특정 오류 하나를 원인으로 단정하지 않습니다.
 
-RGB 없는 실제 앱 시작, 가시거리 2 m 이하, DVL 손실, 신뢰할 수 있는 지형 대응과 루프 폐쇄는 아직 검증되지 않았습니다. 기본 추정기·센서 임계값은 바꾸지 않았으며 연구 신규성을 주장하지 않습니다.
+후속 [네이티브 시험](sonar-low-visibility.md)은 측정한 2 m PBR 가시거리 프로필에서 카메라 없는 시작을 확인합니다. DVL 손실, 신뢰할 수 있는 지형 대응과 루프 폐쇄는 아직 검증되지 않았습니다. 기본 추정기·센서 임계값은 바꾸지 않았으며 연구 신규성을 주장하지 않습니다.

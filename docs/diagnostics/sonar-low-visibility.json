@@ -1,0 +1,71 @@
+{
+  "passed": true,
+  "worker_sha256": "e4c66f12656bfec37dcfbb05591d0a27ce6fb3f82e6832b476299d55bf90e758",
+  "visibility_m": 2,
+  "profile": {
+    "profile": "surface-optics-visibility-1",
+    "source_sha256": "47708501274de548d9b76ce772adc85a5afbbf9733b2250d93915c54f89bf887",
+    "shader_sha256": "b9980281e2ba7eb311cb456171663ed53546b6ec6568cf8a685b135719d89706",
+    "particle_cell_fraction": 0.1,
+    "particle_brightness": 0.07,
+    "caustic_multiplier": 1.2,
+    "visibility_m": 2.0,
+    "scene_transmission_at_visibility": 0.01,
+    "minimum_attenuation_per_m": 2.3025850929940455,
+    "scope": "PBR surface water-path attenuation; numeric depth and acoustic rays unchanged; sky/custom water materials retain their own optics"
+  },
+  "subscriptions": [
+    [
+      "/model/bluerov2/sonar/sonar_image_raw",
+      [
+        "marine_acoustic_msgs/msg/ProjectedSonarImage"
+      ]
+    ],
+    [
+      "/vehicle/sensors/dvl/status",
+      [
+        "std_msgs/msg/String"
+      ]
+    ],
+    [
+      "/vehicle/sensors/imu",
+      [
+        "sensor_msgs/msg/Imu"
+      ]
+    ],
+    [
+      "/vehicle/sensors/imu/status",
+      [
+        "std_msgs/msg/String"
+      ]
+    ],
+    [
+      "/vehicle/sensors/pressure",
+      [
+        "sensor_msgs/msg/FluidPressure"
+      ]
+    ]
+  ],
+  "camera_used": false,
+  "simulation_duration_s": 60.01,
+  "states": 222,
+  "export": {
+    "scope": "accumulated_local_sonar_hypotheses",
+    "points": 146,
+    "stamp_ns": 68010000000,
+    "request_id": 4
+  },
+  "limits": [
+    "1000",
+    "2000",
+    "5000",
+    "0"
+  ],
+  "mission_status": "completed",
+  "capture_depth_m": 1.5128509251228703,
+  "joint_dvl": true,
+  "joint_pressure": true,
+  "forced_stop": false,
+  "owned_processes_stopped": true,
+  "scope": "Development native app API and sensor transport; local sonar hypotheses, not qualified mapping or navigation; mission controller uses simulator external navigation"
+}

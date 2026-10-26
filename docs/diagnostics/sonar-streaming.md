@@ -47,6 +47,10 @@ third-party code was added.
 
 ## Terrain constraints and low visibility
 
+A subsequent [native low-visibility run](sonar-low-visibility.md) covers camera-free startup, the 2 m PBR rendering condition and application HTTP export. Its map remains unqualified.
+
+후속 [저가시성 네이티브 시험](sonar-low-visibility.md)은 카메라 없는 시작, 2 m PBR 렌더링 조건과 앱 HTTP 내보내기를 확인합니다. 지도 정확도는 미검증입니다.
+
 Known-map terrain-aided navigation correlates measured bathymetry with a prior
 map ([NPS](https://nps.edu/web/research/-/analysis-of-undersea-terrain-aided-navigation-2020)).
 Map-free terrain SLAM estimates both terrain and pose. FLS terrain smoothness
