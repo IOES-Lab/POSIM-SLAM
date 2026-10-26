@@ -64,9 +64,34 @@ This figure does not qualify map geometry. Twenty-six native regression tests
 and sixteen client-input tests pass, including flipped-IMU velocity rotation,
 sensor bias preservation and invalid/duplicate seed rejection.
 
-An online feature bootstrap, robust refinement and uncertainty evaluation remain
+ROS owner integration, robust refinement and uncertainty evaluation remain
 required. The two-pass recording experiment is not live automatic initialization,
 mixed sonar recovery, installed application acceptance, or navigation readiness.
+
+## Single-pass native bootstrap
+
+`preinitialize_camera_tracks_v1` adds bounded optical tracking before the first
+estimator state. The client sends `startup_image` packets and receives only
+feature IDs/pixels, with the processed image dimensions and original timestamp.
+The worker reuses its optical frontend, emits no pre-seed poses/maps and permits
+at most 32 startup frames over 10 seconds, with gaps no greater than 0.5 seconds.
+IMU samples remain in the caller's bounded window until initialization. Normal
+state estimation starts on a subsequent camera frame after a measured seed.
+
+`tracked_imu_seed` validates timestamps, feature identities and image dimensions,
+converts processed pixels to bearings, composes raw-IMU intervals and returns a
+provisional endpoint seed. Its conditioning diagnostics are not calibrated
+uncertainty or an outlier-robust acceptance decision.
+
+A single-pass native packet replay collects 16 frames from 66.2–69.2 s, then
+propagates the seed using measured IMU to the next image at 69.4 s. It reads no
+precomputed feature trace or seed. Over 36 states through 76.4 s, position RMSE
+is 0.00967 m and maximum error 0.02579 m; 259 sparse visual points are exported.
+Truth is used only in subsequent assessment. This test runs native packets,
+not the ROS owner or GUI, and does not certify real-time deadlines or map geometry.
+29 native tests, 17 client-input tests and five seed tests pass. Coverage includes
+feature-only startup, retained feature IDs, seeded handoff, repeated timestamp
+rejection and enforcement of the 32-frame bound.
 
 ## 한국어
 
@@ -110,6 +135,21 @@ Turbo 높이 색상과 지름 4배 표시를 유지합니다. 지도 형상은 �
 않았습니다. 네이티브 회귀 검사 26개와 클라이언트 입력 검사 16개가 통과했습니다.
 뒤집힌 IMU의 속도 회전, 바이어스 유지, 잘못된 초기값 거부를 확인합니다.
 
-실시간 특징점 초기화, 강건한 보정과 불확실성 평가가 남아 있습니다.
+ROS 실행 관리자 연결, 강건한 보정과 불확실성 평가가 남아 있습니다.
 현재 결과를 실시간 자동 초기화·혼합 소나 복구·설치형 앱·항법 준비 완료의
 검증으로 확대하지 않습니다.
+
+네이티브 단일 순차 처리에서는 `startup_image`로 초기화용 영상을 보내고
+특징점 ID·픽셀·처리 영상 크기·원래 시각만 돌려받습니다. 같은 광학 추적기를
+재사용하며 초기값 전달 전에는 자세나 지도를 출력하지 않습니다. 최대 32개
+프레임·10초이고 영상 간격은 0.5초 이하입니다. IMU는 초기화 전까지 호출자의
+제한된 버퍼에 보관합니다. `tracked_imu_seed`는 시각·ID·영상 크기를 검사하고
+방향 벡터와 원시 IMU 적분을 구성해 임시 초기값을 반환합니다.
+
+별도 특징점·초기값 파일 없이 66.2–69.2초의 16프레임을 처리하고 다음 영상인
+69.4초부터 추정기를 시작했습니다. 이후 36개 상태·7초에서 위치 RMSE는
+0.00967m, 최대 오차는 0.02579m였고 점 259개를 내보냈습니다. 정답은 사후
+평가에만 사용했습니다. 네이티브 검사 29개, 클라이언트 입력 검사 17개,
+초기값 검사 5개가 통과했습니다. 특징점 ID 유지, 초기값 전달 후 상태 시작,
+반복 시각 거부, 32프레임 제한을 포함합니다. ROS 관리자·GUI·실시간 처리
+기한·지도 형상의 합격을 뜻하지 않습니다.

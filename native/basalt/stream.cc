@@ -430,7 +430,7 @@ int main(int argc,char** argv) {
     vio->vision_data_queue.set_capacity(2);
     vio->imu_data_queue.set_capacity(256);
     vio->out_state_queue=&states;vio->out_vis_queue=&maps;
-    struct SensorEvent {int64_t stamp;bool image;};
+    struct SensorEvent {int64_t stamp;bool image;bool startup=false;};
     tbb::concurrent_bounded_queue<SensorEvent> events;
     tbb::concurrent_bounded_queue<basalt::OpticalFlowResult::Ptr> tracked;
     events.set_capacity(4);tracked.set_capacity(2);
@@ -444,6 +444,19 @@ int main(int argc,char** argv) {
           if(!result || result->t_ns!=event.stamp)fail("frontend_event_order");
         }else {
           result=std::make_shared<basalt::OpticalFlowResult>();result->t_ns=event.stamp;
+        }
+        if(event.startup) {
+          Json tracks=Json::array();
+          if(result->observations.size()!=1)fail("startup_camera_count");
+          for(const auto& [id,observation]:result->observations[0]) {
+            const auto pixel=observation.translation();
+            if(!pixel.allFinite())fail("startup_invalid_pixel");
+            tracks.push_back({{"id",id},{"pixel",{pixel.x(),pixel.y()}}});
+          }
+          if(tracks.size()>4096)fail("startup_track_capacity");
+          emit({{"type","startup_tracks"},{"stamp_ns",event.stamp},
+                {"width",c.processed_width},{"height",c.processed_height},{"tracks",tracks}});
+          continue;
         }
         vio->vision_data_queue.push(result);
       }
@@ -529,7 +542,7 @@ int main(int argc,char** argv) {
       vio->initialize(stamp,Sophus::SE3d(q,Vec3::Zero()),q*initial_velocity_imu,
                       initial_gyro_bias,initial_accel_bias);
     };
-    emit({{"type","ready"},{"inertial_seed_transport","first_imu_state_v1"},{"state_clock",state_clock},{"gravity_seed_transport",sonar_clock ? "first_sensor_direction_v1" : "first_image_direction_v1"},{"gravity_seed_required",require_gravity_seed},{"protocol",1},{"inertial_fused",true},{"map_export",sonar_clock ? Json(nullptr) : Json("segment_landmark_archive_ply_1")},
+    emit({{"type","ready"},{"startup_tracks_transport",!sonar_clock && require_gravity_seed ? Json("preinitialize_camera_tracks_v1") : Json(nullptr)},{"inertial_seed_transport","first_imu_state_v1"},{"state_clock",state_clock},{"gravity_seed_transport",sonar_clock ? "first_sensor_direction_v1" : "first_image_direction_v1"},{"gravity_seed_required",require_gravity_seed},{"protocol",1},{"inertial_fused",true},{"map_export",sonar_clock ? Json(nullptr) : Json("segment_landmark_archive_ply_1")},
           {"sonar_clock_transport",sonar_clock ? Json("ordered_sonar_state_v1") : Json(nullptr)},
           {"imu_noise_model","continuous_white_midpoint_acceleration_bridge_v1"},
           {"dvl_measurement_transport",dvl_enabled ? Json("body_velocity_gyro_covariance_v1") : Json(nullptr)},
@@ -548,6 +561,14 @@ int main(int argc,char** argv) {
           {"processed_resolution",{c.processed_width,c.processed_height}},
           {"scope",sonar_clock ? (ground_enabled ? "experimental raw sonar ground-plane and inertial estimation; no camera frontend" : terrain_enabled ? "experimental sonar-inertial with local planar range hypotheses; no camera frontend" : "experimental sonar-inertial state estimation; no terrain or camera frontend") : "experimental local visual-inertial odometry with sparse landmark archive"}});
     int64_t imu_stamp=0,image_stamp=0,event_stamp=0,dvl_stamp=0,pressure_stamp=0,range_stamp=0,ground_stamp=0;bool auxiliary_since_image=false;
+    int64_t startup_first=0,startup_last=0;int startup_frames=0;
+    const auto submit_image=[&](int64_t stamp,char* bytes,bool startup) {
+      cv::Mat raw(c.height,c.width,CV_8UC1,bytes);
+      auto data=std::make_shared<basalt::OpticalFlowInput>();
+      data->t_ns=stamp;data->img_data.resize(1);data->img_data[0].img=estimator_image(c,raw);
+      if(!flow->input_queue.try_push(data))fail("image_backlog");
+      if(!events.try_push({stamp,true,startup}))fail("sensor_event_backlog");
+    };
     // Decode failures must be reported before unwinding joinable reader
     // threads. Otherwise std::thread destruction terminates the process and
     // hides the actual invalid-input reason from the owning segment.
@@ -556,7 +577,7 @@ int main(int argc,char** argv) {
       if(!std::cin)std::_Exit(0);
       auto type=u32(header),size=u32(header+4);
       if(type==3 && size==0)std::_Exit(0);
-      if((type!=1 && type!=2 && type!=4 && type!=5 && type!=6 && type!=7 && type!=8 && type!=9 && type!=10 && type!=11 && type!=12 && type!=13) ||
+      if((type!=1 && type!=2 && type!=4 && type!=5 && type!=6 && type!=7 && type!=8 && type!=9 && type!=10 && type!=11 && type!=12 && type!=13 && type!=14) ||
           (type==7 && !sonar_enabled) || (type==8 && !auxiliary_enabled && !sonar_clock && !ordered_auxiliary) ||
           (type==9 && !dvl_enabled) || (type==10 && !pressure_enabled) || (type==11 && !terrain_enabled) || (type==12 && !ground_enabled) || size>(type==13 ? 104 : type==12 ? 2608 : type==7 ? posim_slam::sonarSnapshotLimit : type==9 ? 216 : std::max(uint32_t(56),uint32_t(c.width*c.height+32))))
         fail("packet_size_or_type");
@@ -625,6 +646,17 @@ int main(int argc,char** argv) {
         }
         if(!events.try_push({stamp,false}))fail("sensor_event_backlog");
         event_stamp=stamp;auxiliary_since_image=true;
+      } else if(type==14) {
+        if(sonar_clock || !require_gravity_seed || gravity_stamp || event_stamp || startup_frames>=32)
+          fail("startup_image_contract");
+        if(size!=uint32_t(c.width*c.height+16))fail("image_packet_size");
+        const int64_t stamp=int64_t(u64(bytes.data()));
+        if(u32(bytes.data()+8)!=uint32_t(c.width) || u32(bytes.data()+12)!=uint32_t(c.height))fail("image_shape");
+        if(stamp<=0 || (startup_last && (stamp<=startup_last || stamp-startup_last>500000000 ||
+            stamp-startup_first>10000000000LL)))fail("startup_image_clock");
+        if(!startup_first)startup_first=stamp;
+        startup_last=stamp;++startup_frames;
+        submit_image(stamp,bytes.data()+16,true);
       } else if(type==13) {
         if(size!=104 || !require_gravity_seed || event_stamp || gravity_stamp)fail("inertial_seed_contract");
         gravity_stamp=int64_t(u64(bytes.data()));
@@ -709,17 +741,14 @@ int main(int argc,char** argv) {
           if(image_pings.size()>=64)fail("image_ping_backlog");
           image_pings.emplace(stamp,PendingPing{range,false});
         }
+        if(!image_stamp && startup_last && (stamp<=startup_last || stamp-startup_last>500000000))
+          fail("startup_to_estimator_clock");
         if(!image_stamp && require_gravity_seed) {
           if(gravity_stamp!=stamp)fail("gravity_seed_image_stamp");
           initialize_seed(stamp);
         }
         image_stamp=stamp;event_stamp=stamp;auxiliary_since_image=false;
-        cv::Mat raw(c.height,c.width,CV_8UC1,bytes.data()+offset);
-        auto pixels=estimator_image(c,raw);
-        auto data=std::make_shared<basalt::OpticalFlowInput>();
-        data->t_ns=stamp;data->img_data.resize(1);data->img_data[0].img=pixels;
-        if(!flow->input_queue.try_push(data))fail("image_backlog");
-        if(!events.try_push({stamp,true}))fail("sensor_event_backlog");
+        submit_image(stamp,bytes.data()+offset,false);
       }
     }} catch(const std::exception& error) {fail(error.what());}
   } catch(const std::exception& error) {fail(error.what());}

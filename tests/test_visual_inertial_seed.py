@@ -1,7 +1,7 @@
 import unittest
 import numpy as np
 from posim_slam.inertial import exp_so3, ImuWindow
-from posim_slam.visual_inertial_seed import bearing_imu_seed
+from posim_slam.visual_inertial_seed import bearing_imu_seed, tracked_imu_seed
 
 
 class VisualInertialSeedTests(unittest.TestCase):
@@ -63,6 +63,26 @@ class VisualInertialSeedTests(unittest.TestCase):
         result = bearing_imu_seed(t, r, alpha, tracks, **kwargs)
         np.testing.assert_allclose(result['velocity_initial'], velocity, atol=2e-5)
         np.testing.assert_allclose(result['gravity_initial'], gravity, atol=2e-5)
+        frames = []
+        for i, s in enumerate(t):
+            frames.append(dict(type='startup_tracks', stamp_ns=1_000_000_000+round(s*1e9),
+                width=256, height=256, tracks=[dict(id=ident,
+                    pixel=(ray[i][:2]/ray[i][2]*80+128).tolist(), point=[999,999,999])
+                    for ident,ray in tracks.items()]))
+        shifted = ImuWindow(max_samples=4096)
+        for stamp, gyro, accel in window.samples:shifted.add(stamp+1.,gyro,accel)
+        options=dict(intrinsics=[80,80,128,128],gyro_bias=[0,0,0],accel_bias=[0,0,0],
+                     noise_density=[.001,.02,.0001,.001],**kwargs)
+        endpoint = tracked_imu_seed(frames,shifted,**options)
+        acceleration_velocity = np.array([.24*np.sin(6),.24*(np.cos(9)-1),.16*np.sin(12)])
+        np.testing.assert_allclose(endpoint['velocity_imu'],rotations[-1].T @
+                                   (velocity+acceleration_velocity),atol=3e-5)
+        np.testing.assert_allclose(endpoint['up_direction_imu'],
+                                   -rotations[-1].T @ gravity/np.linalg.norm(gravity),atol=1e-5)
+        self.assertEqual(endpoint['last_measurement_ns'],frames[-1]['stamp_ns'])
+        frames[1]['tracks'].append(frames[1]['tracks'][0])
+        with self.assertRaisesRegex(ValueError,'pixel_identity'):
+            tracked_imu_seed(frames,shifted,**options)
 
     def test_missing_views_and_invalid_bearings_rejected(self):
         args, kwargs, _, _ = self.scene()

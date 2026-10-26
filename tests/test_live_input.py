@@ -120,6 +120,16 @@ class LiveInputTests(unittest.TestCase):
             c.inertial_seed(12,[0,0,2],[0,0,0],[0,0,0],[0,0,0])
         self.assertTrue(c.input.empty())
 
+    def test_startup_image_requires_capability_and_valid_shape(self):
+        c=self.client();pixels=bytes(32*32)
+        with self.assertRaisesRegex(ValueError,'unsupported'):c.startup_image(12,32,32,pixels)
+        c.startup_tracks_transport=True
+        c.startup_image(12,32,32,pixels)
+        packet=c.input.get_nowait()
+        self.assertEqual(struct.unpack('<IIqII',packet[:24]),(14,1040,12,32,32))
+        self.assertEqual(packet[24:],pixels)
+        with self.assertRaisesRegex(ValueError,'invalid_image_packet'):c.startup_image(12,32,32,pixels[:-1])
+
     def test_sonar_clock_never_silently_falls_back_to_camera_worker(self):
         c=self.client();c.ready.clear();c.processing_request={'state_clock':'sonar','require_gravity_seed':True}
         ready=dict(type='ready',protocol=1,inertial_fused=True,

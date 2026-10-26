@@ -31,7 +31,7 @@ class LiveClient:
         self.budget_lock=threading.Lock();self.pending_bytes=0
         self.closed=threading.Event()
         self.ready=threading.Event()
-        self.inertial_seed_transport=False
+        self.startup_tracks_transport=False;self.inertial_seed_transport=False
         self.ping_transport=False;self.gravity_seed_transport=False;self.sonar_transport=False;self.sonar_auxiliary_transport=False
         self.sonar_clock_transport=False;self.dvl_transport=False;self.sensor_state_transport=False;self.pressure_transport=False;self.terrain_ping_transport=False
         self.ground_transport=False
@@ -66,7 +66,7 @@ class LiveClient:
                 value=json.loads(line)
                 if not isinstance(value,dict):raise ValueError('worker_output_object')
                 if value.get('type')=='error':raise ValueError('worker:'+str(value.get('reason')))
-                if value.get('type') not in ('ready','state','map','export'):raise ValueError('worker_output_type')
+                if value.get('type') not in ('ready','state','map','export','startup_tracks'):raise ValueError('worker_output_type')
                 if value['type']=='ready':
                     if self.ready.is_set() or value.get('protocol')!=1 or value.get('inertial_fused') is not True:
                         raise ValueError('worker_protocol')
@@ -80,6 +80,7 @@ class LiveClient:
                     if self.processing_request.get('require_gravity_seed',False) and (
                         not self.gravity_seed_transport or value.get('gravity_seed_required') is not True):
                         raise ValueError('worker_gravity_seed_unsupported')
+                    self.startup_tracks_transport=value.get('startup_tracks_transport')=='preinitialize_camera_tracks_v1'
                     self.inertial_seed_transport=value.get('inertial_seed_transport')=='first_imu_state_v1'
                     self.ping_transport=value.get("image_ping_transport")=="exact_stamp_range_v1"
                     self.sonar_auxiliary_transport=value.get("sonar_auxiliary_transport")=="ordered_imu_state_v1"
@@ -142,14 +143,26 @@ class LiveClient:
             raise ValueError('invalid_imu_packet')
         self.send(1,struct.pack('<q6d',stamp_ns,*values))
 
-    def image(self,stamp_ns,width,height,pixels,*,ping=None):
+    def _image_header(self,stamp_ns,width,height,pixels):
         if self.processing_request.get('state_clock','camera')=='sonar':
             raise ValueError('camera_packet_in_sonar_clock')
         if (type(stamp_ns) is not int or not 0<stamp_ns<2**63 or
             type(width) is not int or type(height) is not int or
             not 32<=width<=1920 or not 32<=height<=1080 or len(pixels)!=width*height):
             raise ValueError('invalid_image_packet')
-        payload=struct.pack('<qII',stamp_ns,width,height)
+        return struct.pack('<qII',stamp_ns,width,height)
+
+    def startup_image(self,stamp_ns,width,height,pixels):
+        """Track a bounded startup image without emitting a VIO state/map.
+
+        The caller retains raw IMU locally until a measured first-state seed is
+        available. At most 32 monotonically timed frames precede initialization.
+        """
+        if not getattr(self,'startup_tracks_transport',False):raise ValueError('worker_startup_tracks_unsupported')
+        self.send(14,self._image_header(stamp_ns,width,height,pixels)+pixels)
+
+    def image(self,stamp_ns,width,height,pixels,*,ping=None):
+        payload=self._image_header(stamp_ns,width,height,pixels)
         if ping is not None:
             if (not isinstance(ping,(tuple,list)) or len(ping)!=2 or
                 type(ping[0]) is not int or ping[0]!=stamp_ns or
