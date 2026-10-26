@@ -44,6 +44,17 @@ class NativeJointTests(unittest.TestCase):
                         self.compare(j,r,retained,damping)
         self.compare(np.zeros((128,18)),rng.normal(size=128),6)
 
+    def test_damped_large_shared_group_and_extreme_scale(self):
+        rng=np.random.default_rng(5202)
+        j=rng.normal(size=(384,210));r=rng.normal(size=384)
+        j[:,-1]=j[:,-2]
+        self.compare(j,r,15,1e-3)
+        # The rank bound must fall back to SVD when a damping floor cannot
+        # establish full numerical rank across extreme column scales.
+        j=np.zeros((20,6));j[:,0]=rng.normal(size=20)
+        j[:,3]=1e12*rng.normal(size=20)
+        self.compare(j,rng.normal(size=20),3,1e-30)
+
     def test_real_ping_block_with_joint_landmark_rows(self):
         normal=np.array([.1,.2,1.]);normal/=np.linalg.norm(normal)
         xy=np.array([(x,y) for x in np.linspace(-.6,.6,8) for y in np.linspace(-.6,.6,8)])

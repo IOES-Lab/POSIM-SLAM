@@ -47,9 +47,9 @@ bounded, one-state-at-a-time acknowledgement contract.
 
 ## Joint nuisance elimination / 공동 보조변수 소거
 
-`ping_joint.hpp` uses thin SVD to determine nuisance rank and the minimum-norm back-substitution. Householder reflectors apply the orthogonal complement without allocating the full left-singular-vector matrix. The reduced information, residual cost, datum/state correlations and LM damping contract are preserved. Rank cutoffs, input limits and optimizer iteration limits are unchanged. The independent NumPy full-SVD reference checks tall, wide, deficient and damped systems.
+`ping_joint.hpp` uses thin SVD to determine nuisance rank and minimum-norm back-substitution. For LM-damped trials, the smallest regularization diagonal bounds the smallest singular value from below. When it exceeds 16 times the SVD cutoff's Frobenius upper bound, full numerical rank is certified and Householder QR performs the same elimination and back-substitution. Other systems retain SVD. Marginalization remains undamped. Neither route forms a full left-singular-vector matrix. The independent NumPy full-SVD reference checks reduced information, gradient, residual cost and back-substitution for tall, wide, deficient, damped and extreme-scale systems.
 
-`ping_joint.hpp`는 thin SVD로 보조변수의 순위와 최소 노름 역대입을 구합니다. 전체 좌특이벡터 행렬을 만들지 않고 Householder 반사로 직교 여공간을 적용합니다. 축약된 정보·잔차 비용·높이 기준과 상태의 상관관계·LM 감쇠 규약을 보존합니다. 순위 기준, 입력 한도와 최적화 반복 한도는 같습니다. 독립 NumPy 전체 SVD 기준으로 긴 행렬·넓은 행렬·순위 부족·감쇠 사례를 검사합니다.
+`ping_joint.hpp`는 thin SVD로 보조변수의 계수와 최소 노름 역대입을 구합니다. LM 감쇠가 적용된 시도에서는 가장 작은 정규화 대각값이 최소 특이값의 하한입니다. 이 값이 Frobenius 노름으로 구한 SVD 판정 임계값 상한의 16배보다 크면 수치적인 완전 계수가 보장되므로 Householder QR로 같은 소거·역대입을 수행합니다. 그 외에는 SVD를 유지하며, 주변화에는 감쇠를 적용하지 않습니다. 두 경로 모두 전체 좌특이벡터 행렬을 만들지 않습니다. 독립 NumPy 전체 SVD 기준으로 긴 행렬·넓은 행렬·계수 부족·감쇠·극단적인 크기 차이에서 축약 정보·기울기·잔차 비용·역대입을 검사합니다.
 
 ## Raw DVL velocity factors / 원본 DVL 속도 제약
 

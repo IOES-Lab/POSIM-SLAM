@@ -44,6 +44,25 @@ inline JointPatchReduction eliminateJointPatch(
     augmented.bottomRightCorner(count,count).diagonal()=
         (j.rightCols(count).colwise().squaredNorm().transpose().array()*damping).max(1e-9).sqrt();
     Eigen::VectorXd values=Eigen::VectorXd::Zero(residual.size()+count);values.head(residual.size())=residual;
+    // Damping supplies an independent positive row for every nuisance column.
+    // Its smallest diagonal bounds sigma_min from below; the Frobenius norm
+    // bounds sigma_max from above. Use QR only when these bounds certify the
+    // same full rank that the SVD cutoff below would select (with margin).
+    const Eigen::MatrixXd nuisance=augmented.rightCols(count);
+    const double lower=augmented.bottomRightCorner(count,count).diagonal().minCoeff();
+    const double cutoff=std::max(nuisance.rows(),nuisance.cols())*
+        std::numeric_limits<double>::epsilon()*nuisance.norm();
+    if(augmented.rows()<=4096 && std::isfinite(cutoff) && lower>16.*cutoff) {
+      Eigen::HouseholderQR<Eigen::MatrixXd> qr(nuisance);
+      Eigen::MatrixXd combined(augmented.rows(),retained+1);
+      combined.leftCols(retained)=augmented.leftCols(retained);combined.col(retained)=values;
+      combined=(qr.householderQ().adjoint()*combined).eval();
+      const Eigen::MatrixXd backsub=-qr.matrixQR().topRows(count)
+          .triangularView<Eigen::Upper>().solve(combined.topRows(count));
+      const auto remaining=augmented.rows()-count;
+      return {combined.bottomRows(remaining).leftCols(retained),combined.col(retained).tail(remaining),
+              backsub.leftCols(retained),backsub.col(retained),count,0};
+    }
     return eliminateJointPatch(augmented,values,retained);
   }
   const Eigen::MatrixXd nuisance=j.rightCols(j.cols()-retained);
