@@ -10,8 +10,8 @@ class PairTests(unittest.TestCase):
             else:b.ping(100,2.);b.image(100,'a',0)
             self.assertEqual(b.drain(.01),[('a',(100,2.))])
         b=ExactImagePing();b.image(100,'a',0);b.image(200,'b',.01);b.ping(200,3.)
-        self.assertEqual(b.drain(.02),[])
-        self.assertEqual(b.drain(.16),[('a',None),('b',(200,3.))])
+        self.assertEqual(b.drain(.02),[('a',None),('b',(200,3.))])
+        self.assertEqual(b.drain(.16),[])
 
     def test_nearby_and_late_samples_never_retime_and_invalid_return_is_missing(self):
         b=ExactImagePing();b.image(100,'a',0);b.ping(99,2.)
@@ -20,6 +20,19 @@ class PairTests(unittest.TestCase):
         b.ping(200,None);b.image(200,'b',.2)
         self.assertEqual(b.drain(.2),[('b',None)])
         self.assertEqual((b.matched,b.unpaired),(0,2))
+
+    def test_missing_ping_watermark_releases_burst_without_reusing_measurement(self):
+        b=ExactImagePing()
+        for stamp in (100,200,300,400):b.image(stamp,str(stamp),0.)
+        self.assertEqual(b.drain(.01),[])
+        b.ping(300,3.)
+        self.assertEqual(b.drain(.01),[('100',None),('200',None),('300',(300,3.))])
+        b.image(500,'500',.02)
+        self.assertEqual(b.drain(.03),[])
+        self.assertEqual(b.drain(.16),[('400',None)])
+        b.ping(500,5.)
+        self.assertEqual(b.drain(.16),[('500',(500,5.))])
+        self.assertEqual((b.matched,b.unpaired),(2,3))
 
     def test_bounded_inputs_and_clock_reversal(self):
         b=ExactImagePing()

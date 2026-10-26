@@ -9,12 +9,17 @@ from posim_slam.ping_scale import PING_DIRECTIONS
 
 @unittest.skipUnless(os.environ.get('POSIM_SLAM_PING_PROBE'),'compiled native Ping probe required')
 class NativeJointTests(unittest.TestCase):
-    def compare(self,j,r,retained):
+    def compare(self,j,r,retained,damping=0.):
         rows,cols=j.shape
         text=f'{rows} {cols} {retained}\n'+'\n'.join(' '.join(map(str,[*row,value])) for row,value in zip(j,r))+'\n'
-        result=subprocess.run([os.environ['POSIM_SLAM_PING_PROBE']],input=text,text=True,
+        result=subprocess.run([os.environ['POSIM_SLAM_PING_PROBE'],str(damping)],input=text,text=True,
                               capture_output=True,timeout=30,check=True)
-        actual=np.fromstring(result.stdout,sep=' ');ref=eliminate_patch(j,r,retained_columns=retained)
+        actual=np.fromstring(result.stdout,sep=' ')
+        if damping:
+            nuisance=j[:,retained:];n=nuisance.shape[1]
+            extra=np.zeros((n,j.shape[1]));extra[:,retained:]=np.diag(np.sqrt(np.maximum((nuisance*nuisance).sum(axis=0)*damping,1e-9)))
+            j=np.vstack([j,extra]);r=np.r_[r,np.zeros(n)]
+        ref=eliminate_patch(j,r,retained_columns=retained)
         expected=np.r_[ref['nuisance_rank'],ref['nuisance_nullity'],
             (ref['jacobian'].T@ref['jacobian']).ravel(),ref['jacobian'].T@ref['residual'],
             ref['residual']@ref['residual'],ref['backsub_matrix'].ravel(),ref['backsub_offset']]
@@ -27,6 +32,17 @@ class NativeJointTests(unittest.TestCase):
             self.compare(j,r,retained)
             j[:,-1]=j[:,-2];self.compare(j,r,retained)
         self.compare(np.zeros((8,15)),np.ones(8),6)
+
+    def test_tall_damped_and_rank_deficient_groups_preserve_information(self):
+        rng=np.random.default_rng(319)
+        for rows,retained,nuisance in ((1024,12,9),(300,36,24),(7,6,12)):
+            j=rng.normal(size=(rows,retained+nuisance));r=rng.normal(size=rows)
+            for rank_deficient in (False,True):
+                if rank_deficient:j[:,-3:]=j[:,[-4,-4,-4]]
+                for damping in (0.,1e-3,10.):
+                    with self.subTest(rows=rows,rank_deficient=rank_deficient,damping=damping):
+                        self.compare(j,r,retained,damping)
+        self.compare(np.zeros((128,18)),rng.normal(size=128),6)
 
     def test_real_ping_block_with_joint_landmark_rows(self):
         normal=np.array([.1,.2,1.]);normal/=np.linalg.norm(normal)

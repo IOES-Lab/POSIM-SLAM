@@ -45,6 +45,12 @@ bounded, one-state-at-a-time acknowledgement contract.
 `SensorEvents(state_clock="sonar")`는 소나와 이후 IMU를 정렬하고, 한 상태의
 응답을 확인한 뒤 다음 상태를 전달합니다.
 
+## Joint nuisance elimination / 공동 보조변수 소거
+
+`ping_joint.hpp` uses thin SVD to determine nuisance rank and the minimum-norm back-substitution. Householder reflectors apply the orthogonal complement without allocating the full left-singular-vector matrix. The reduced information, residual cost, datum/state correlations and LM damping contract are preserved. Rank cutoffs, input limits and optimizer iteration limits are unchanged. The independent NumPy full-SVD reference checks tall, wide, deficient and damped systems.
+
+`ping_joint.hpp`는 thin SVD로 보조변수의 순위와 최소 노름 역대입을 구합니다. 전체 좌특이벡터 행렬을 만들지 않고 Householder 반사로 직교 여공간을 적용합니다. 축약된 정보·잔차 비용·높이 기준과 상태의 상관관계·LM 감쇠 규약을 보존합니다. 순위 기준, 입력 한도와 최적화 반복 한도는 같습니다. 독립 NumPy 전체 SVD 기준으로 긴 행렬·넓은 행렬·순위 부족·감쇠 사례를 검사합니다.
+
 ## Raw DVL velocity factors / 원본 DVL 속도 제약
 
 `enable_joint_dvl: true` adds bottom-locked velocity factors to the same native
@@ -776,14 +782,14 @@ the caller; the wire format accepts finite positive ranges up to 1000 m.
 유한한 양수 거리를 허용합니다.
 
 
-`posim_slam.exact_pair.ExactImagePing` joins independently delivered images and
+`posim_slam.exact_pair.ExactImagePing` releases an unmatched image once a strictly later Ping arrives; the missing exact timestamp cannot arrive within that ordered stream. It joins independently delivered images and
 single ranges by exact nanosecond timestamps. It waits up to 0.15 seconds for a
 missing pair, then releases the image without a range. Invalid returns are
 represented by `None`; late observations never modify an already released image.
 It bounds pending input to four images and 64 ranges. The single-threaded owner
 must replace the buffer when its sensor clock or estimator segment resets.
 
-`posim_slam.exact_pair.ExactImagePing`은 따로 도착하는 영상과 단일 거리를
+`posim_slam.exact_pair.ExactImagePing`은 더 늦은 Ping이 도착하면 짝이 없는 이전 영상을 즉시 처리합니다. 순서가 보장된 스트림에서 그 이전 시각의 Ping은 더 이상 도착할 수 없습니다. 따로 도착하는 영상과 단일 거리를
 나노초 타임스탬프가 정확히 같은 경우에만 묶습니다. 짝이 없으면 최대 0.15초
 기다린 뒤 거리 없이 영상을 내보냅니다. 무효 반환값은 `None`으로 표현하며,
 늦게 온 관측으로 이미 내보낸 영상을 수정하지 않습니다. 대기 입력은 영상 4개와

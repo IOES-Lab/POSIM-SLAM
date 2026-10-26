@@ -24,7 +24,9 @@ class ExactImagePing:
     def drain(self,now):
         result=[]
         for stamp,(payload,arrival) in list(self.images.items()):
-            if stamp not in self.pings and now-arrival<.15:break
+            # Ping stamps are strictly increasing. A later packet proves this
+            # exact match was omitted; waiting cannot recover it.
+            if stamp not in self.pings and self.last_ping<=stamp and now-arrival<.15:break
             value=self.pings.get(stamp)
             if value is None:self.unpaired+=1
             else:self.matched+=1

@@ -47,16 +47,30 @@ inline JointPatchReduction eliminateJointPatch(
     return eliminateJointPatch(augmented,values,retained);
   }
   const Eigen::MatrixXd nuisance=j.rightCols(j.cols()-retained);
-  Eigen::JacobiSVD<Eigen::MatrixXd> svd(nuisance,Eigen::ComputeFullU|Eigen::ComputeFullV);
+  Eigen::JacobiSVD<Eigen::MatrixXd> svd(nuisance,Eigen::ComputeThinU|Eigen::ComputeThinV);
   if (svd.info()!=Eigen::Success)throw std::runtime_error("joint_patch_svd_failed");
   const auto& singular=svd.singularValues();
   const double tolerance=std::max(nuisance.rows(),nuisance.cols())*
       std::numeric_limits<double>::epsilon()*singular[0];
   const Eigen::Index rank=(singular.array()>tolerance).count();
-  const Eigen::MatrixXd null=svd.matrixU().rightCols(j.rows()-rank);
-  const Eigen::MatrixXd inverse=svd.matrixV().leftCols(rank)*
-      singular.head(rank).cwiseInverse().asDiagonal()*svd.matrixU().leftCols(rank).transpose();
-  return {null.transpose()*j.leftCols(retained),null.transpose()*residual,
-          -inverse*j.leftCols(retained),-inverse*residual,rank,nuisance.cols()-rank};
+  // Only the observed nuisance span is needed. Forming full U (rows x rows)
+  // and its explicit nullspace makes tall groups unnecessarily quadratic in
+  // observation count. Apply the orthogonal complement through reflectors.
+  // SVD still decides rank with the identical cutoff and minimum-norm solve.
+  Eigen::MatrixXd combined(j.rows(),retained+1);
+  combined.leftCols(retained)=j.leftCols(retained);combined.col(retained)=residual;
+  Eigen::MatrixXd backsub=Eigen::MatrixXd::Zero(nuisance.cols(),retained+1);
+  if(rank) {
+    const Eigen::MatrixXd observed=svd.matrixU().leftCols(rank);
+    backsub.noalias()=-(svd.matrixV().leftCols(rank)*singular.head(rank).cwiseInverse().asDiagonal())*
+        (observed.transpose()*combined);
+    if(rank<j.rows()) {
+      Eigen::HouseholderQR<Eigen::MatrixXd> qr(observed);
+      combined=(qr.householderQ().adjoint()*combined).eval();
+    }
+  }
+  const auto remaining=j.rows()-rank;
+  return {combined.bottomRows(remaining).leftCols(retained),combined.col(retained).tail(remaining),
+          backsub.leftCols(retained),backsub.col(retained),rank,nuisance.cols()-rank};
 }
 }  // namespace posim_slam
