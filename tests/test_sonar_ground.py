@@ -2,7 +2,7 @@ import math
 import unittest
 from dataclasses import replace
 import numpy as np
-from posim_slam.sonar_ground import GroundEntryConfig, ground_entries, fit_ground_entry
+from posim_slam.sonar_ground import GroundEntryConfig, ground_entries, fit_ground_entry, ground_entry_curve
 
 
 def scene(*,gain=0.,occlusion=False,visible=True,normal=None):
@@ -25,6 +25,17 @@ def scene(*,gain=0.,occlusion=False,visible=True,normal=None):
 
 
 class GroundEntryTests(unittest.TestCase):
+    def test_curve_preserves_measured_onsets_without_plane_or_elevation_claim(self):
+        frame,up,_=scene(occlusion=True)
+        curve=ground_entry_curve(frame,vertical_fov_rad=.35,up_sonar=up)
+        plane=fit_ground_entry(frame,vertical_fov_rad=.35,up_sonar=up)
+        self.assertTrue(curve['accepted'])
+        self.assertGreater(len(curve['beam_ids']),len(plane['inlier_beams']))
+        np.testing.assert_allclose(np.linalg.norm(curve['points_sonar'],axis=1),
+                                   curve['entries']['range_m'][curve['beam_ids']])
+        self.assertFalse(curve['map_qualified'])
+        self.assertIn('elevation not measured',curve['scope'])
+
     def test_recovers_sloped_plane_from_independent_fan_intersections(self):
         frame,up,normal=scene()
         result=fit_ground_entry(frame,vertical_fov_rad=.35,up_sonar=up)

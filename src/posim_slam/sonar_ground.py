@@ -78,6 +78,32 @@ def ground_entries(frame, *, config=GroundEntryConfig()):
                 noise_db=noise,return_floor_db=floor)
 
 
+def ground_entry_curve(frame, *, vertical_fov_rad, up_sonar, config=GroundEntryConfig()):
+    """Measured onset curve under an explicit downward aperture-boundary assumption.
+
+    No whole-fan plane is required. The returned elevation is assumed, not
+    observed; curved/occluding surfaces may violate this hypothesis. Retain the
+    raw range/beam identifiers so downstream estimators can model that ambiguity.
+    """
+    entries=ground_entries(frame,config=config);up=np.asarray(up_sonar,dtype=float)
+    if (up.shape!=(3,) or not np.isfinite(up).all() or not np.isclose(np.linalg.norm(up),1.,atol=1e-8,rtol=0)
+            or not np.isfinite(vertical_fov_rad) or not 0<vertical_fov_rad<math.pi):
+        raise ValueError('invalid_ground_entry_geometry')
+    base=dict(accepted=False,map_qualified=False,navigation_ready=False,entries=entries,
+              scope='conditional aperture-boundary curve; elevation not measured')
+    if abs(up[2])<=math.sin(config.maximum_slope_rad):
+        return dict(base,reason='ground_aperture_branch_unresolved')
+    indices=entries['selected_beams'];indices=indices[np.isfinite(entries['range_m'][indices])]
+    angles=entries['azimuth_rad'][indices];ranges=entries['range_m'][indices]
+    if len(indices)<8 or np.ptp(angles)<config.minimum_span_rad:
+        return dict(base,reason='insufficient_ground_entry_support')
+    elevation=-math.copysign(vertical_fov_rad/2,up[2])
+    rays=np.column_stack([np.cos(angles)*math.cos(elevation),np.sin(angles)*math.cos(elevation),
+                          np.full(len(angles),math.sin(elevation))])
+    return dict(base,accepted=True,reason='conditional_ground_curve',beam_ids=indices,
+                rays=rays,points_sonar=ranges[:,None]*rays,boundary_elevation_rad=elevation)
+
+
 def fit_ground_entry(frame, *, vertical_fov_rad, up_sonar, config=GroundEntryConfig()):
     """Fit a supported aperture-boundary plane; emit measured inliers only.
 
@@ -88,23 +114,15 @@ def fit_ground_entry(frame, *, vertical_fov_rad, up_sonar, config=GroundEntryCon
     Output points depend on the boundary hypothesis, not measured elevation.
     No position correction, loop closure or navigation readiness is claimed.
     """
-    entries=ground_entries(frame,config=config);up=np.asarray(up_sonar,dtype=float)
-    if (up.shape!=(3,) or not np.isfinite(up).all() or not np.isclose(np.linalg.norm(up),1.,atol=1e-8,rtol=0)
-            or not np.isfinite(vertical_fov_rad) or not 0<vertical_fov_rad<math.pi):
-        raise ValueError('invalid_ground_entry_geometry')
+    curve=ground_entry_curve(frame,vertical_fov_rad=vertical_fov_rad,up_sonar=up_sonar,config=config)
+    entries=curve['entries'];up=np.asarray(up_sonar,dtype=float)
     base=dict(accepted=False,map_qualified=False,navigation_ready=False,entries=entries,
               scope='conditional local ground-entry surface; no fixed point correspondence')
-    # Gravity plus the explicit slope bound must identify the downward side
-    # of the elevation aperture. Otherwise both branches remain possible.
-    if abs(up[2])<=math.sin(config.maximum_slope_rad):
-        return dict(base,reason='ground_aperture_branch_unresolved')
-    indices=entries['selected_beams'];indices=indices[np.isfinite(entries['range_m'][indices])]
+    if not curve['accepted']:
+        return dict(base,reason=curve['reason'])
+    indices=curve['beam_ids']
     angles=entries['azimuth_rad'][indices];ranges=entries['range_m'][indices]
-    if len(indices)<8 or np.ptp(angles)<config.minimum_span_rad:
-        return dict(base,reason='insufficient_ground_entry_support')
-    elevation=-math.copysign(vertical_fov_rad/2,up[2])
-    rays=np.column_stack([np.cos(angles)*math.cos(elevation),np.sin(angles)*math.cos(elevation),
-                          np.full(len(angles),math.sin(elevation))])
+    elevation=curve['boundary_elevation_rad'];rays=curve['rays']
     def supported(q):
         length=np.linalg.norm(q)
         return (np.isfinite(q).all() and length>1e-9

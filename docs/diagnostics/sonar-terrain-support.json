@@ -1,0 +1,475 @@
+{
+  "schema": "supported-terrain-probe-1",
+  "map_qualified": false,
+  "estimator_integration": false,
+  "records": [
+    {
+      "schema": "sonar-supported-surface-probe-1",
+      "map_qualified": false,
+      "scope": "Independent causal registration probes on unmodified native control reference poses; not fused SLAM",
+      "frames": 142,
+      "accepted": 5,
+      "reasons": {
+        "insufficient_supported_overlap": 29,
+        "surface_iteration_limit": 79,
+        "conditional_surface_registration": 5,
+        "surface_step_outside_trust_region": 29
+      },
+      "config": {
+        "neighborhood_m": 0.75,
+        "surface_sigma_m": 0.05,
+        "minimum_spread_m": 0.05,
+        "maximum_neighbors": 24,
+        "maximum_per_frame": 4,
+        "minimum_frames": 3,
+        "maximum_reference": 4096,
+        "maximum_query": 128,
+        "iterations": 10
+      },
+      "entry_config": {
+        "noise_range_max_m": 1.0,
+        "return_margin_db": 12.0,
+        "beam_relative_margin_db": 6.0,
+        "sustained_return_m": 0.15,
+        "angular_spacing_rad": 0.03490658503988659,
+        "minimum_span_rad": 0.7853981633974483,
+        "maximum_slope_rad": 0.5235987755982988,
+        "range_sigma_m": 0.03,
+        "minimum_consensus": 0.6,
+        "ransac_trials": 256
+      },
+      "processing_ms": {
+        "median": 51.372812499999924,
+        "p95": 70.26118989999998
+      },
+      "camera_frames": 0,
+      "feedback_to_estimator": false,
+      "metrics": [
+        {
+          "name": "control",
+          "pose": {
+            "evaluated": true,
+            "states": 142,
+            "duration_s": 70.5,
+            "evaluation_alignment": {
+              "rotation": [
+                [
+                  -0.993943681642019,
+                  0.10989066258745048,
+                  0.0
+                ],
+                [
+                  -0.10989066258745048,
+                  -0.993943681642019,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ],
+              "translation": [
+                -0.05346994064181427,
+                0.019327721437459023,
+                -0.22544418823277673
+              ],
+              "scale": 1.0
+            },
+            "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+            "position_rmse_m": 0.04255371043080018,
+            "position_max_m": 0.05576495638704397,
+            "rotation_rmse_rad": 0.007179215653774024,
+            "rotation_max_rad": 0.01672914755345842,
+            "truth_distance_m": 16.61717414453491,
+            "estimated_distance_m": 16.64214919434736,
+            "rpe_1s_pairs": 127,
+            "rpe_1s_position_rmse_m": 0.005976211848727231,
+            "rpe_1s_rotation_rmse_rad": 0.0035688293812005615,
+            "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+          },
+          "points": 4543,
+          "surface_distance_m": {
+            "median": 0.0530366459600357,
+            "p90": 1.441280499550109,
+            "within_10cm": 2542
+          }
+        },
+        {
+          "name": "probe",
+          "pose": {
+            "evaluated": true,
+            "states": 142,
+            "duration_s": 70.5,
+            "evaluation_alignment": {
+              "rotation": [
+                [
+                  -0.993943681642019,
+                  0.10989066258745048,
+                  0.0
+                ],
+                [
+                  -0.10989066258745048,
+                  -0.993943681642019,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ],
+              "translation": [
+                -0.05346994064181427,
+                0.019327721437459023,
+                -0.22544418823277673
+              ],
+              "scale": 1.0
+            },
+            "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+            "position_rmse_m": 0.04309300309794641,
+            "position_max_m": 0.06885157537127946,
+            "rotation_rmse_rad": 0.007317873559249185,
+            "rotation_max_rad": 0.01672914755345842,
+            "truth_distance_m": 16.61717414453491,
+            "estimated_distance_m": 16.843642757979502,
+            "rpe_1s_pairs": 127,
+            "rpe_1s_position_rmse_m": 0.014124842463885385,
+            "rpe_1s_rotation_rmse_rad": 0.004352503486883715,
+            "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+          },
+          "points": 4565,
+          "surface_distance_m": {
+            "median": 0.053516777107118677,
+            "p90": 1.438099277450945,
+            "within_10cm": 2549
+          }
+        }
+      ]
+    },
+    {
+      "schema": "sonar-supported-surface-probe-1",
+      "map_qualified": false,
+      "scope": "Independent causal registration probes on unmodified native control reference poses; not fused SLAM",
+      "frames": 138,
+      "accepted": 4,
+      "reasons": {
+        "insufficient_supported_overlap": 25,
+        "surface_iteration_limit": 81,
+        "conditional_surface_registration": 4,
+        "surface_step_outside_trust_region": 28
+      },
+      "config": {
+        "neighborhood_m": 0.75,
+        "surface_sigma_m": 0.05,
+        "minimum_spread_m": 0.05,
+        "maximum_neighbors": 24,
+        "maximum_per_frame": 4,
+        "minimum_frames": 3,
+        "maximum_reference": 4096,
+        "maximum_query": 128,
+        "iterations": 10
+      },
+      "entry_config": {
+        "noise_range_max_m": 1.0,
+        "return_margin_db": 12.0,
+        "beam_relative_margin_db": 6.0,
+        "sustained_return_m": 0.15,
+        "angular_spacing_rad": 0.03490658503988659,
+        "minimum_span_rad": 0.7853981633974483,
+        "maximum_slope_rad": 0.5235987755982988,
+        "range_sigma_m": 0.03,
+        "minimum_consensus": 0.6,
+        "ransac_trials": 256
+      },
+      "processing_ms": {
+        "median": 58.17956249999945,
+        "p95": 70.36820619999907
+      },
+      "camera_frames": 0,
+      "feedback_to_estimator": false,
+      "metrics": [
+        {
+          "name": "control",
+          "pose": {
+            "evaluated": true,
+            "states": 138,
+            "duration_s": 68.5,
+            "evaluation_alignment": {
+              "rotation": [
+                [
+                  -0.993943681642019,
+                  0.10989066258745048,
+                  0.0
+                ],
+                [
+                  -0.10989066258745048,
+                  -0.993943681642019,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ],
+              "translation": [
+                -0.05346994064181427,
+                0.019327721437459023,
+                -0.22544418823277673
+              ],
+              "scale": 1.0
+            },
+            "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+            "position_rmse_m": 0.02006704367039916,
+            "position_max_m": 0.03259287178454911,
+            "rotation_rmse_rad": 0.0163630181893539,
+            "rotation_max_rad": 0.029753276597476584,
+            "truth_distance_m": 15.289446894539061,
+            "estimated_distance_m": 15.357697137519498,
+            "rpe_1s_pairs": 125,
+            "rpe_1s_position_rmse_m": 0.006131946780272294,
+            "rpe_1s_rotation_rmse_rad": 0.0024537873512120827,
+            "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+          },
+          "points": 4378,
+          "surface_distance_m": {
+            "median": 0.039091525454948844,
+            "p90": 1.331311404707589,
+            "within_10cm": 2588
+          }
+        },
+        {
+          "name": "probe",
+          "pose": {
+            "evaluated": true,
+            "states": 138,
+            "duration_s": 68.5,
+            "evaluation_alignment": {
+              "rotation": [
+                [
+                  -0.993943681642019,
+                  0.10989066258745048,
+                  0.0
+                ],
+                [
+                  -0.10989066258745048,
+                  -0.993943681642019,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ],
+              "translation": [
+                -0.05346994064181427,
+                0.019327721437459023,
+                -0.22544418823277673
+              ],
+              "scale": 1.0
+            },
+            "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+            "position_rmse_m": 0.023353982416171887,
+            "position_max_m": 0.11929653748870662,
+            "rotation_rmse_rad": 0.01646184062907329,
+            "rotation_max_rad": 0.029753276597476584,
+            "truth_distance_m": 15.289446894539061,
+            "estimated_distance_m": 15.610794518888978,
+            "rpe_1s_pairs": 125,
+            "rpe_1s_position_rmse_m": 0.02009189180836273,
+            "rpe_1s_rotation_rmse_rad": 0.005260496408179095,
+            "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+          },
+          "points": 4401,
+          "surface_distance_m": {
+            "median": 0.03911358483011868,
+            "p90": 1.328811674943322,
+            "within_10cm": 2600
+          }
+        }
+      ]
+    },
+    {
+      "schema": "sonar-supported-surface-probe-1",
+      "map_qualified": false,
+      "scope": "Independent causal registration probes on unmodified native control reference poses; not fused SLAM",
+      "frames": 140,
+      "accepted": 0,
+      "reasons": {
+        "insufficient_supported_overlap": 30,
+        "surface_iteration_limit": 64,
+        "surface_step_outside_trust_region": 46
+      },
+      "config": {
+        "neighborhood_m": 0.75,
+        "surface_sigma_m": 0.05,
+        "minimum_spread_m": 0.05,
+        "maximum_neighbors": 24,
+        "maximum_per_frame": 4,
+        "minimum_frames": 3,
+        "maximum_reference": 4096,
+        "maximum_query": 128,
+        "iterations": 10
+      },
+      "entry_config": {
+        "noise_range_max_m": 1.0,
+        "return_margin_db": 12.0,
+        "beam_relative_margin_db": 6.0,
+        "sustained_return_m": 0.15,
+        "angular_spacing_rad": 0.03490658503988659,
+        "minimum_span_rad": 0.7853981633974483,
+        "maximum_slope_rad": 0.5235987755982988,
+        "range_sigma_m": 0.03,
+        "minimum_consensus": 0.6,
+        "ransac_trials": 256
+      },
+      "processing_ms": {
+        "median": 40.429916999999094,
+        "p95": 74.7145288500003
+      },
+      "camera_frames": 0,
+      "feedback_to_estimator": false,
+      "metrics": [
+        {
+          "name": "control",
+          "pose": {
+            "evaluated": true,
+            "states": 140,
+            "duration_s": 69.5,
+            "evaluation_alignment": {
+              "rotation": [
+                [
+                  -0.99970221462218,
+                  -0.024402501501049712,
+                  0.0
+                ],
+                [
+                  0.024402501501049712,
+                  -0.99970221462218,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ],
+              "translation": [
+                -0.050407663408993365,
+                0.0028571986753269988,
+                -0.21943583131073663
+              ],
+              "scale": 1.0
+            },
+            "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+            "position_rmse_m": 0.0699193494198388,
+            "position_max_m": 0.1502404426124527,
+            "rotation_rmse_rad": 0.046046789215256914,
+            "rotation_max_rad": 0.07528301692504882,
+            "truth_distance_m": 16.513900576907965,
+            "estimated_distance_m": 16.569668298651607,
+            "rpe_1s_pairs": 128,
+            "rpe_1s_position_rmse_m": 0.008913943526825827,
+            "rpe_1s_rotation_rmse_rad": 0.004252380766652544,
+            "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+          },
+          "points": 4758,
+          "surface_distance_m": {
+            "median": 0.02239843355808846,
+            "p90": 0.6273720240731291,
+            "within_10cm": 3974
+          }
+        },
+        {
+          "name": "probe",
+          "pose": {
+            "evaluated": true,
+            "states": 140,
+            "duration_s": 69.5,
+            "evaluation_alignment": {
+              "rotation": [
+                [
+                  -0.99970221462218,
+                  -0.024402501501049712,
+                  0.0
+                ],
+                [
+                  0.024402501501049712,
+                  -0.99970221462218,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ],
+              "translation": [
+                -0.050407663408993365,
+                0.0028571986753269988,
+                -0.21943583131073663
+              ],
+              "scale": 1.0
+            },
+            "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+            "position_rmse_m": 0.0699193494198388,
+            "position_max_m": 0.1502404426124527,
+            "rotation_rmse_rad": 0.046046789215256914,
+            "rotation_max_rad": 0.07528301692504882,
+            "truth_distance_m": 16.513900576907965,
+            "estimated_distance_m": 16.569668298651607,
+            "rpe_1s_pairs": 128,
+            "rpe_1s_position_rmse_m": 0.008913943526825827,
+            "rpe_1s_rotation_rmse_rad": 0.004252380766652544,
+            "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+          },
+          "points": 4758,
+          "surface_distance_m": {
+            "median": 0.02239843355808846,
+            "p90": 0.6273720240731291,
+            "within_10cm": 3974
+          }
+        }
+      ]
+    }
+  ],
+  "mapping": [
+    {
+      "case": "a",
+      "raw_selected": 3291,
+      "voxel_points": 2013,
+      "p90_m": 1.3927381087222546,
+      "within_10cm": 1249
+    },
+    {
+      "case": "b",
+      "raw_selected": 3265,
+      "voxel_points": 2020,
+      "p90_m": 1.3841179348548243,
+      "within_10cm": 1269
+    },
+    {
+      "case": "relief",
+      "raw_selected": 3853,
+      "voxel_points": 2504,
+      "p90_m": 0.09001773564498905,
+      "within_10cm": 2269
+    }
+  ],
+  "arc_diagnostic": {
+    "scope": "Post-estimation truth-only diagnostic; nominal azimuth, full elevation arc, triangle-interpolated seabed vertical gaps; finite azimuth beam width not modelled",
+    "points": 7117,
+    "elevation_samples": 401,
+    "terrain_crossing": 2317,
+    "arc_within_10cm": 6307,
+    "boundary_within_10cm": 6083,
+    "boundary_above_10cm": 810,
+    "boundary_below_minus10cm": 224,
+    "boundary_vertical_abs_p90_m": 0.6817072103204935,
+    "arc_minimum_vertical_abs_p90_m": 0.6669434036168292,
+    "outside_boundary_but_arc_supported": 224,
+    "outside_boundary_and_arc": 810
+  }
+}
