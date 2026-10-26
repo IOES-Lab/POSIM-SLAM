@@ -187,3 +187,5 @@ comparison can be presented as an operational method.
 [Measured sonar fusion and matched replay control / 실측 소나 결합과 대조 재생](diagnostics/measured-sonar.md)
 
 [Camera-free sonar/IMU/DVL and input ablations / 카메라 없는 소나·IMU·DVL과 입력 대조 시험](diagnostics/sonar-dvl-recorded.md)
+
+[Camera-free pressure recovery / 카메라 없는 수압 복구](diagnostics/sonar-pressure-recovery.md)
