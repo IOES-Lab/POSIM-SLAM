@@ -102,8 +102,9 @@ inline PingOptimizationReport optimizePingGroups(basalt::BundleAdjustmentBase<do
       if(pressure) {pressure_rows=pressure->linearize(owner,order);before+=pressure_rows->cost;}
       const auto visual_support=visualProjectionSupport(owner,order);
       if(iteration==0 && attempt==0)report.initial_cost=report.final_cost=before;
-      linearization->performQR();Eigen::MatrixXd h;Eigen::VectorXd b;
-      if(!groups.empty())static_cast<PingLinearization&>(*linearization).dampNuisance(damping);
+      if(groups.empty())linearization->performQR();
+      else static_cast<PingLinearization&>(*linearization).performQR(damping);
+      Eigen::MatrixXd h;Eigen::VectorXd b;
       linearization->get_dense_H_b(h,b);
       if(dvl_rows) {
         for(size_t i=0;i<dvl_rows->offsets.size();++i) {

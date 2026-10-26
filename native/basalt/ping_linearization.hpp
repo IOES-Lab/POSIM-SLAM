@@ -155,11 +155,17 @@ class PingLinearization final : public basalt::LinearizationAbsQR<double,6> {
     return cost;
   }
 
-  void performQR() override {
+  void performQR() override { performQR(0.); }
+
+  // Optimization reduces the raw group once with its trial damping. The
+  // polymorphic no-argument path remains undamped for marginalization.
+  void performQR(double nuisance_damping) {
     if(phase_!=Phase::Raw || revision_!=owner_->posim_ping_state_revision)throw std::logic_error("joint_qr_requires_linearization");
+    if(!std::isfinite(nuisance_damping) || nuisance_damping<0. || nuisance_damping>1e12)
+      throw std::invalid_argument("invalid_joint_nuisance_damping");
     Parent::performQR();
     for(auto& group:groups_)
-      group.reduced=eliminateJointPatch(group.raw.jacobian,group.raw.residual,aom.total_size);
+      group.reduced=eliminateJointPatch(group.raw.jacobian,group.raw.residual,aom.total_size,nuisance_damping);
     phase_=Phase::Reduced;
   }
 
@@ -169,11 +175,6 @@ class PingLinearization final : public basalt::LinearizationAbsQR<double,6> {
       h.noalias()+=group.reduced.jacobian.transpose()*group.reduced.jacobian;
       b.noalias()+=group.reduced.jacobian.transpose()*group.reduced.residual;
     }
-  }
-  void dampNuisance(double damping) {
-    requireReduced();
-    for(auto& group:groups_)
-      group.reduced=eliminateJointPatch(group.raw.jacobian,group.raw.residual,aom.total_size,damping);
   }
   void get_dense_Q2Jp_Q2r(MatX& j,VecX& r) const override {
     requireReduced();Parent::get_dense_Q2Jp_Q2r(j,r);

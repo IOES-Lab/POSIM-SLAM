@@ -202,6 +202,19 @@ int main(int argc,char** argv) {
     Eigen::VectorXd full_r(ir.size()+raw.residual.size());full_r<<ir,raw.residual;
     const auto reduced=eliminateJointPatch(full,full_r,45);
     const double information_error=(h-reduced.jacobian.transpose()*reduced.jacobian).norm();
+    // Direct damped reduction must preserve the full coupled landmark/plane
+    // system. Check against a dense Schur solve, including independent rows.
+    for(double damping:{.001,1.,1000.}) {
+      joint.linearizeProblem();joint.performQR(damping);
+      Eigen::MatrixXd dh;Eigen::VectorXd db;joint.get_dense_H_b(dh,db);
+      const Eigen::MatrixXd a=raw.jacobian.leftCols(45),n=raw.jacobian.rightCols(raw.jacobian.cols()-45);
+      Eigen::MatrixXd hn=n.transpose()*n;
+      hn.diagonal().array()+=(n.colwise().squaredNorm().transpose().array()*damping).max(1e-9);
+      const Eigen::MatrixXd expected_h=ij.transpose()*ij+a.transpose()*a-a.transpose()*n*hn.ldlt().solve(n.transpose()*a);
+      const Eigen::VectorXd expected_b=ij.transpose()*ir+a.transpose()*raw.residual-a.transpose()*n*hn.ldlt().solve(n.transpose()*raw.residual);
+      if(((dh-expected_h).norm()+(db-expected_b).norm())/std::max(1.,expected_h.norm()+expected_b.norm())>1e-10)
+        throw std::runtime_error("direct_damped_joint_schur_mismatch");
+    }
     // Marginalization selects the complete coupled group, excluding the
     // independent visual track that remains live. IMU/prior appear once.
     const auto saved_raw=raw;

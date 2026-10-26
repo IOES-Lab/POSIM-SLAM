@@ -81,7 +81,7 @@ int main() {
     if((j.transpose()*j-h).norm()>1e-8 || (j.transpose()*r-g).norm()>1e-8)
       throw std::runtime_error("terrain_joint_schur_mismatch");
     for(double damping:{.001,1.,1000.}) {
-      lin.dampNuisance(damping);lin.get_dense_Q2Jp_Q2r(j,r);
+      lin.linearizeProblem();lin.performQR(damping);lin.get_dense_Q2Jp_Q2r(j,r);
       Eigen::Matrix3d hn=b.transpose()*b;
       hn.diagonal().array()+=(b.colwise().squaredNorm().transpose().array()*damping).max(1e-9);
       const Eigen::MatrixXd hd=a.transpose()*a-a.transpose()*b*hn.ldlt().solve(b.transpose()*a);
