@@ -15,6 +15,16 @@ do not include Orca5's SLAM executable or ORB-SLAM code.
 물리적 시험 구조물을 추가합니다. 그림에는 Orca5의 SLAM 실행 파일이나 ORB-SLAM
 코드를 포함하지 않습니다.
 
+Diagnostic height figures use the [Google Turbo colormap](https://gist.github.com/mikhailov-work/ee72ba4191942acecc03fe6da94fc73f),
+Copyright 2019 Google LLC, author Anton Mikhailov, under Apache-2.0. The
+[retained attribution and license](docs/diagnostics/notices/turbo-Apache-2.0.txt)
+identify the original source revision. This notice also applies to the visual
+depth-support comparison figures.
+
+진단 높이 그림은 Google Turbo 색상표를 사용합니다. 저작권자·저자와 Apache-2.0
+라이선스, 원본 소스 리비전을 위 고지 파일에 보존합니다. 시각 지도의 깊이 지지
+비교 그림에도 같은 고지가 적용됩니다.
+
 ## Estimator dependencies / 추정기 의존성
 
 POSIM-SLAM's original Python/C++ source is Apache-2.0. Dependencies retain the
