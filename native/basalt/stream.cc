@@ -521,7 +521,15 @@ int main(int argc,char** argv) {
     });
     if(!require_gravity_seed)vio->initialize(Vec3::Zero(),Vec3::Zero());
     int64_t gravity_stamp=0;Vec3 gravity_direction=Vec3::Zero();
-    emit({{"type","ready"},{"state_clock",state_clock},{"gravity_seed_transport",sonar_clock ? "first_sensor_direction_v1" : "first_image_direction_v1"},{"gravity_seed_required",require_gravity_seed},{"protocol",1},{"inertial_fused",true},{"map_export",sonar_clock ? Json(nullptr) : Json("segment_landmark_archive_ply_1")},
+    Vec3 initial_velocity_imu=Vec3::Zero(),initial_gyro_bias=Vec3::Zero(),initial_accel_bias=Vec3::Zero();
+    const auto initialize_seed=[&](int64_t stamp) {
+      const Eigen::Quaterniond q=Eigen::Quaterniond::FromTwoVectors(gravity_direction,Vec3::UnitZ());
+      // Seed velocity is expressed in this first IMU frame, not the arbitrary
+      // gravity-aligned world frame. Biases remain in IMU sensor coordinates.
+      vio->initialize(stamp,Sophus::SE3d(q,Vec3::Zero()),q*initial_velocity_imu,
+                      initial_gyro_bias,initial_accel_bias);
+    };
+    emit({{"type","ready"},{"inertial_seed_transport","first_imu_state_v1"},{"state_clock",state_clock},{"gravity_seed_transport",sonar_clock ? "first_sensor_direction_v1" : "first_image_direction_v1"},{"gravity_seed_required",require_gravity_seed},{"protocol",1},{"inertial_fused",true},{"map_export",sonar_clock ? Json(nullptr) : Json("segment_landmark_archive_ply_1")},
           {"sonar_clock_transport",sonar_clock ? Json("ordered_sonar_state_v1") : Json(nullptr)},
           {"imu_noise_model","continuous_white_midpoint_acceleration_bridge_v1"},
           {"dvl_measurement_transport",dvl_enabled ? Json("body_velocity_gyro_covariance_v1") : Json(nullptr)},
@@ -548,9 +556,9 @@ int main(int argc,char** argv) {
       if(!std::cin)std::_Exit(0);
       auto type=u32(header),size=u32(header+4);
       if(type==3 && size==0)std::_Exit(0);
-      if((type!=1 && type!=2 && type!=4 && type!=5 && type!=6 && type!=7 && type!=8 && type!=9 && type!=10 && type!=11 && type!=12) ||
+      if((type!=1 && type!=2 && type!=4 && type!=5 && type!=6 && type!=7 && type!=8 && type!=9 && type!=10 && type!=11 && type!=12 && type!=13) ||
           (type==7 && !sonar_enabled) || (type==8 && !auxiliary_enabled && !sonar_clock && !ordered_auxiliary) ||
-          (type==9 && !dvl_enabled) || (type==10 && !pressure_enabled) || (type==11 && !terrain_enabled) || (type==12 && !ground_enabled) || size>(type==12 ? 2608 : type==7 ? posim_slam::sonarSnapshotLimit : type==9 ? 216 : std::max(uint32_t(56),uint32_t(c.width*c.height+32))))
+          (type==9 && !dvl_enabled) || (type==10 && !pressure_enabled) || (type==11 && !terrain_enabled) || (type==12 && !ground_enabled) || size>(type==13 ? 104 : type==12 ? 2608 : type==7 ? posim_slam::sonarSnapshotLimit : type==9 ? 216 : std::max(uint32_t(56),uint32_t(c.width*c.height+32))))
         fail("packet_size_or_type");
       if(terrain_enabled && type==5)fail("conflicting_ping_transport");
       if(sonar_clock && (type==2 || type==5))fail("camera_packet_in_sonar_clock");
@@ -613,11 +621,22 @@ int main(int argc,char** argv) {
         }
         if(sonar_clock && !event_stamp) {
           if(gravity_stamp!=stamp)fail("gravity_seed_sensor_stamp");
-          const Eigen::Quaterniond q=Eigen::Quaterniond::FromTwoVectors(gravity_direction,Vec3::UnitZ());
-          vio->initialize(stamp,Sophus::SE3d(q,Vec3::Zero()),Vec3::Zero(),Vec3::Zero(),Vec3::Zero());
+          initialize_seed(stamp);
         }
         if(!events.try_push({stamp,false}))fail("sensor_event_backlog");
         event_stamp=stamp;auxiliary_since_image=true;
+      } else if(type==13) {
+        if(size!=104 || !require_gravity_seed || event_stamp || gravity_stamp)fail("inertial_seed_contract");
+        gravity_stamp=int64_t(u64(bytes.data()));
+        for(int k=0;k<3;++k) {
+          gravity_direction[k]=number(bytes.data()+8+k*8);
+          initial_velocity_imu[k]=number(bytes.data()+32+k*8);
+          initial_gyro_bias[k]=number(bytes.data()+56+k*8);
+          initial_accel_bias[k]=number(bytes.data()+80+k*8);
+        }
+        if(gravity_stamp<=0 || !gravity_direction.allFinite() || std::abs(gravity_direction.norm()-1)>1e-6 ||
+            !initial_velocity_imu.allFinite() || !initial_gyro_bias.allFinite() || !initial_accel_bias.allFinite())
+          fail("invalid_inertial_seed");
       } else if(type==6) {
         if(size!=32 || !require_gravity_seed || event_stamp || gravity_stamp)fail("gravity_seed_contract");
         gravity_stamp=int64_t(u64(bytes.data()));
@@ -692,8 +711,7 @@ int main(int argc,char** argv) {
         }
         if(!image_stamp && require_gravity_seed) {
           if(gravity_stamp!=stamp)fail("gravity_seed_image_stamp");
-          const Eigen::Quaterniond q=Eigen::Quaterniond::FromTwoVectors(gravity_direction,Vec3::UnitZ());
-          vio->initialize(stamp,Sophus::SE3d(q,Vec3::Zero()),Vec3::Zero(),Vec3::Zero(),Vec3::Zero());
+          initialize_seed(stamp);
         }
         image_stamp=stamp;event_stamp=stamp;auxiliary_since_image=false;
         cv::Mat raw(c.height,c.width,CV_8UC1,bytes.data()+offset);

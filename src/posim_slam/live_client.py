@@ -31,6 +31,7 @@ class LiveClient:
         self.budget_lock=threading.Lock();self.pending_bytes=0
         self.closed=threading.Event()
         self.ready=threading.Event()
+        self.inertial_seed_transport=False
         self.ping_transport=False;self.gravity_seed_transport=False;self.sonar_transport=False;self.sonar_auxiliary_transport=False
         self.sonar_clock_transport=False;self.dvl_transport=False;self.sensor_state_transport=False;self.pressure_transport=False;self.terrain_ping_transport=False
         self.ground_transport=False
@@ -79,6 +80,7 @@ class LiveClient:
                     if self.processing_request.get('require_gravity_seed',False) and (
                         not self.gravity_seed_transport or value.get('gravity_seed_required') is not True):
                         raise ValueError('worker_gravity_seed_unsupported')
+                    self.inertial_seed_transport=value.get('inertial_seed_transport')=='first_imu_state_v1'
                     self.ping_transport=value.get("image_ping_transport")=="exact_stamp_range_v1"
                     self.sonar_auxiliary_transport=value.get("sonar_auxiliary_transport")=="ordered_imu_state_v1"
                     self.sonar_transport=value.get("sonar_snapshot_transport")=="exact_image_track_snapshot_v1"
@@ -214,6 +216,22 @@ class LiveClient:
             or abs(sum(v*v for v in values)-1)>1e-6):raise ValueError('invalid_gravity_seed')
         if not getattr(self,'gravity_seed_transport',False):raise ValueError('worker_gravity_seed_unsupported')
         self.send(6,struct.pack('<q3d',stamp_ns,*values))
+
+    def inertial_seed(self,stamp_ns,up_direction_imu,velocity_imu,gyro_bias,accel_bias):
+        """Numerical startup only, at the exact first sensor state timestamp.
+
+        Up direction and velocity use the first IMU frame; biases use sensor
+        axes. This packet carries no covariance or readiness certificate.
+        """
+        vectors=[list(v) for v in (up_direction_imu,velocity_imu,gyro_bias,accel_bias)]
+        if (type(stamp_ns) is not int or not 0<stamp_ns<2**63
+            or any(len(v)!=3 for v in vectors)
+            or not all(isinstance(x,numbers.Real) and not isinstance(x,bool) and math.isfinite(x)
+                       for v in vectors for x in v)
+            or abs(sum(x*x for x in vectors[0])-1)>1e-6):
+            raise ValueError('invalid_inertial_seed')
+        if not getattr(self,'inertial_seed_transport',False):raise ValueError('worker_inertial_seed_unsupported')
+        self.send(13,struct.pack('<q12d',stamp_ns,*(x for v in vectors for x in v)))
 
     def snapshot(self,request_id):
         if type(request_id) is not int or not 0<request_id<2**63:

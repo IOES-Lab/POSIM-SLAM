@@ -104,6 +104,22 @@ class LiveInputTests(unittest.TestCase):
         c._read();self.assertEqual(c.fault,'worker_gravity_seed_unsupported')
         self.assertFalse(c.ready.is_set())
 
+    def test_inertial_seed_capability_frames_and_validation(self):
+        c=self.client()
+        with self.assertRaisesRegex(ValueError,'unsupported'):
+            c.inertial_seed(12,[0,0,-1],[1,2,3],[.01,.02,.03],[.1,.2,.3])
+        c.inertial_seed_transport=True
+        c.inertial_seed(12,[0,0,-1],[1,2,3],[.01,.02,.03],[.1,.2,.3])
+        packet=c.input.get_nowait()
+        self.assertEqual(struct.unpack('<IIq12d',packet),
+                         (13,104,12,0.,0.,-1.,1.,2.,3.,.01,.02,.03,.1,.2,.3))
+        for velocity in ([0,0],[0,0,float('nan')],[False,0,0]):
+            with self.assertRaisesRegex(ValueError,'invalid_inertial_seed'):
+                c.inertial_seed(12,[0,0,1],velocity,[0,0,0],[0,0,0])
+        with self.assertRaisesRegex(ValueError,'invalid_inertial_seed'):
+            c.inertial_seed(12,[0,0,2],[0,0,0],[0,0,0],[0,0,0])
+        self.assertTrue(c.input.empty())
+
     def test_sonar_clock_never_silently_falls_back_to_camera_worker(self):
         c=self.client();c.ready.clear();c.processing_request={'state_clock':'sonar','require_gravity_seed':True}
         ready=dict(type='ready',protocol=1,inertial_fused=True,

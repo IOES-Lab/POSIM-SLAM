@@ -7,6 +7,7 @@ the worker boundary. Initial velocity is zero in this synthetic fixture.
 import json
 import math
 import os
+import struct
 from pathlib import Path
 import tempfile
 import time
@@ -52,6 +53,44 @@ class SonarClockTests(unittest.TestCase):
                 self.assertNotEqual(value['type'], 'map', 'Sonar mode emitted a visual map')
             time.sleep(.002)
         self.fail('worker reply timeout: ' + kind)
+
+    def test_moving_seed_rotates_velocity_and_retains_sensor_biases(self):
+        with tempfile.TemporaryDirectory() as folder:
+            client = self.worker(Path(folder))
+            initial = 1_000_000_000
+            velocity = np.array([.7, -.2, .1])
+            bg, ba = np.array([.01, -.02, .03]), np.array([.1, -.2, .05])
+            client.inertial_seed(initial, [0, 0, -1], velocity, bg, ba)
+            next_imu = initial
+            first = None
+            for index in range(3):
+                stamp = initial+index*200_000_000
+                while next_imu <= stamp+10_000_000:
+                    client.imu(next_imu, bg, np.array([0, 0, -9.80665])+ba)
+                    next_imu += 10_000_000
+                client.sonar_tick(stamp)
+                state = self.receive(client, 'state')
+                if first is None:
+                    first = state
+                    x,y,z,w = state['orientation_xyzw']
+                    rotation = np.array([[1-2*(y*y+z*z),2*(x*y-z*w),2*(x*z+y*w)],
+                        [2*(x*y+z*w),1-2*(x*x+z*z),2*(y*z-x*w)],
+                        [2*(x*z-y*w),2*(y*z+x*w),1-2*(x*x+y*y)]])
+                np.testing.assert_allclose(state['velocity'], rotation @ velocity, atol=1e-7)
+                np.testing.assert_allclose(state['position'], index*.2*(rotation @ velocity), atol=1e-7)
+                np.testing.assert_allclose(state['initialization_window']['gyro_bias'], bg, atol=1e-7)
+                np.testing.assert_allclose(state['initialization_window']['accel_bias'], ba, atol=1e-7)
+
+    def test_native_rejects_nonfinite_and_duplicate_state_seed(self):
+        for malformed in (True, False):
+            with self.subTest(malformed=malformed), tempfile.TemporaryDirectory() as folder:
+                client = self.worker(Path(folder))
+                values = [0., 0., 1., 0., 0., 0., 0., 0., 0., 0., 0., 0.]
+                if malformed:values[3] = float('nan')
+                client.send(13, struct.pack('<q12d', 1_000_000_000, *values))
+                if not malformed:client.inertial_seed(1_000_000_000,[0,0,1],[0,0,0],[0,0,0],[0,0,0])
+                reason = 'invalid_inertial_seed' if malformed else 'inertial_seed_contract'
+                with self.assertRaisesRegex(RuntimeError, reason):self.receive(client, 'state')
 
     def test_acoustic_states_marginalize_without_any_camera(self, with_dvl=False):
         with tempfile.TemporaryDirectory() as folder:
