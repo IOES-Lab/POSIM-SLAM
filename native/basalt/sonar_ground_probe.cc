@@ -1,10 +1,12 @@
 // SPDX-License-Identifier: Apache-2.0
 // Bounded cross-language qualification; no live transport or terrain truth input.
 #include "sonar_ground_group.hpp"
+#include "sonar_plane_group.hpp"
 #include "ground_predictive.hpp"
 #include "ground_surface_noise.hpp"
 #include "ping_optimizer.hpp"
 #include "ping_prior.hpp"
+#include "ping_commit.hpp"
 #include <nlohmann/json.hpp>
 #include <iostream>
 using namespace posim_slam;
@@ -45,6 +47,8 @@ int main() {try {
   }
   basalt::BundleAdjustmentBase<double> owner;owner.huber_thresh=1.;owner.obs_std_dev=1.;
   basalt::AbsOrderMap order;std::vector<GroundEntryObservation> observations;
+  std::vector<SonarPlaneFrame> plane_frames;std::vector<int64_t> stamps;
+  const bool general=input.contains("planes");
   for(const auto& item:input.at("observations")) {
     const int64_t stamp=item.at("stamp_ns");const auto& state=input.at("states").at(std::to_string(stamp));
     const Eigen::Matrix3d rotation=matrix(state.at("attitude"));
@@ -59,15 +63,27 @@ int main() {try {
       owner.frame_poses.at(stamp).applyInc(Eigen::Map<const Eigen::Matrix<double,6,1>>(values.data()));
     }
     order.abs_order_map[stamp]={order.total_size,6};order.total_size+=6;++order.items;
+    stamps.push_back(stamp);
+    if(general) {
+      SonarPlaneFrame frame{stamp,{}};
+      for(const auto& row:item.at("returns"))frame.returns.push_back({row.at("source_id"),row.at("plane_id"),row.at("range_m"),matrix(row.at("rays"))});
+      plane_frames.push_back(frame);continue;
+    }
     const auto ranges=item.at("range_m").get<std::vector<double>>(),az=item.at("azimuth_rad").get<std::vector<double>>();
     observations.push_back({stamp,item.at("beam_ids").get<std::vector<int>>(),
       Eigen::Map<const Eigen::VectorXd>(az.data(),az.size()),Eigen::Map<const Eigen::VectorXd>(ranges.data(),ranges.size()),item.at("boundary_sign")});
   }
   GroundEntryCalibration c{Sophus::SE3d(Mat3(matrix(input.at("sonar_to_imu"))),vector3(input.at("imu_to_sonar"))),
-    input.at("vertical_fov"),input.at("range_min"),input.at("range_max")};
-  owner.posim_ping_planes.set(0,vector3(input.at("plane_normal")),input.at("plane_distance"));
+    input.value("vertical_fov",.4),input.at("range_min"),input.at("range_max")};
+  if(general) {
+    for(const auto& plane:input.at("planes")) {
+      int id=plane.at("id");owner.posim_ping_planes.set(id,vector3(plane.at("normal")),plane.at("distance"));
+      if(plane.contains("delta"))owner.posim_ping_planes.apply(id,vector3(plane.at("delta")));
+    }
+  }else owner.posim_ping_planes.set(0,vector3(input.at("plane_normal")),input.at("plane_distance"));
   if(input.contains("plane_delta"))owner.posim_ping_planes.apply(0,vector3(input.at("plane_delta")));
-  const auto group=makeOwnedGroundGroup(owner,order,0,c,observations,matrix(input.at("measurement_covariance")));
+  const auto group=general ? makeOwnedSonarPlanes(owner,order,c.mount,c.minimum,c.maximum,plane_frames,matrix(input.at("measurement_covariance"))) :
+    makeOwnedGroundGroup(owner,order,0,c,observations,matrix(input.at("measurement_covariance")));
   const auto raw=group.build({});const auto reduced=eliminateJointPatch(raw.jacobian,raw.residual,order.total_size);
   Json output={{"jacobian",jsonMatrix(raw.jacobian)},{"residual",jsonMatrix(raw.residual)},
     {"reduced_H",jsonMatrix(reduced.jacobian.transpose()*reduced.jacobian)},
@@ -82,9 +98,9 @@ int main() {try {
         owner.backup();const double step=(sign?1.:-1.)*epsilon;
         if(k<Eigen::Index(order.total_size)) {
           Eigen::Matrix<double,6,1> delta=Eigen::Matrix<double,6,1>::Zero();delta[k%6]=step;
-          owner.frame_poses.at(observations[k/6].stamp).applyInc(delta);
+          owner.frame_poses.at(stamps[k/6]).applyInc(delta);
         } else {
-          Vec3 delta=Vec3::Zero();delta[k-order.total_size]=step;owner.posim_ping_planes.apply(0,delta);
+          const auto index=k-order.total_size;Vec3 delta=Vec3::Zero();delta[index%3]=step;owner.posim_ping_planes.apply(group.planeIds()[index/3],delta);
         }
         values[sign]=group.build({}).residual;owner.restore();
       }
@@ -99,20 +115,34 @@ int main() {try {
     if(prior.H.cols()!=Eigen::Index(order.total_size))throw std::invalid_argument("probe_prior_shape");
     const Vec3 gravity(0,0,-9.80665),weight=Vec3::Ones();
     const basalt::ImuLinData<double> imu{gravity,weight,weight,{}};
-    const auto prepared=preparePingPrior(owner,order,{group},prior,imu,{observations.front().stamp},{},{});
+    const auto prepared=preparePingPrior(owner,order,{group},prior,imu,{stamps.front()},{},{});
     output["retired_stamps"]=prepared.retirement.observations;
+    output["retired_planes"]=prepared.retirement.planes;
     output["marginal_H"]=jsonMatrix(prepared.prior.H.transpose()*prepared.prior.H);
     output["marginal_g"]=jsonMatrix(prepared.prior.H.transpose()*prepared.prior.b);
     const auto result=optimizePingGroups(owner,order,{group},prior,imu,{20,8,.001});
     output["optimization"]={{"accepted",result.accepted},{"initial_cost",result.initial_cost},
       {"final_cost",result.final_cost},{"termination",result.termination}};
-    for(const auto& o:observations) {
-      const auto pose=owner.frame_poses.at(o.stamp).getPose();
-      output["states"][std::to_string(o.stamp)]={{"position",jsonMatrix(pose.translation())},
+    for(int64_t stamp:stamps) {
+      const auto pose=owner.frame_poses.at(stamp).getPose();
+      output["states"][std::to_string(stamp)]={{"position",jsonMatrix(pose.translation())},
         {"attitude",jsonMatrix(pose.rotationMatrix())}};
     }
+    for(int id:group.planeIds())output["planes"][std::to_string(id)]={{"normal",jsonMatrix(owner.posim_ping_planes.at(id).normal)},
+      {"distance",owner.posim_ping_planes.at(id).distance}};
     output["plane_normal"]=jsonMatrix(owner.posim_ping_planes.at(0).normal);
     output["plane_distance"]=owner.posim_ping_planes.at(0).distance;
+    if(input.value("check_install",false)) {
+      const auto final=preparePingPrior(owner,order,{group},prior,imu,{stamps.front()},{},{});
+      auto groups=std::vector<JointPingGroupSpec>{group};
+      std::map<int64_t,basalt::IntegratedImuMeasurement<double>> consumed;
+      installPingMarginalPrior(owner,prior,groups,consumed,final.retirement,final.layout,{stamps.front()},{},final.prior);
+      bool replay_rejected=false;
+      try {installPingMarginalPrior(owner,prior,groups,consumed,final.retirement,final.layout,{stamps.front()},{},final.prior);}
+      catch(const std::exception&){replay_rejected=true;}
+      output["installation"]={{"remaining_planes",owner.posim_ping_planes.size()},{"remaining_groups",groups.size()},
+        {"remaining_poses",owner.frame_poses.size()},{"replay_rejected",replay_rejected}};
+    }
   }
   std::cout<<output.dump()<<'\n';
 }catch(const std::exception& error){std::cerr<<error.what()<<'\n';return 1;}}

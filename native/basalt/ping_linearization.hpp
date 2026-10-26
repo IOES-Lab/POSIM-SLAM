@@ -8,6 +8,13 @@
 namespace posim_slam {
 struct JointPingGroupSpec {
   int plane_id;
+  // Correlated range-only surfaces share one elimination and covariance block.
+  std::vector<int> planeIds() const {
+    std::vector<int> ids{plane_id};ids.insert(ids.end(),additional_plane_ids.begin(),additional_plane_ids.end());
+    if(ids.size()>8 || std::set<int>(ids.begin(),ids.end()).size()!=ids.size() ||
+       (!additional_plane_ids.empty() && !range_only))throw std::invalid_argument("invalid_joint_plane_membership");
+    return ids;
+  }
   std::set<basalt::KeypointId> landmark_ids;
   // Build geometry/rows at the current state with the caller's FEJ convention.
   // Membership and observed measurement identities stay fixed during a trial.
@@ -15,6 +22,7 @@ struct JointPingGroupSpec {
   std::set<int64_t> observation_pose_stamps;
   // Explicit local-planarity hypothesis supported by raw range observations.
   bool range_only=false;
+  std::vector<int> additional_plane_ids;
 
 };
 
@@ -38,10 +46,12 @@ inline PingRetirementPlan planPingRetirement(const basalt::BundleAdjustmentBase<
   std::set<int> plane_ids;std::set<basalt::KeypointId> owned;std::set<int64_t> observations;
   for(const auto& group:groups) {
     if(!group.build || (group.range_only ? !group.landmark_ids.empty() : group.landmark_ids.size()<3) || group.landmark_ids.size()>64 ||
-       group.observation_pose_stamps.empty() || group.observation_pose_stamps.size()>64 ||
-       !plane_ids.insert(group.plane_id).second)
+       group.observation_pose_stamps.empty() || group.observation_pose_stamps.size()>64)
       throw std::invalid_argument("invalid_ping_retirement_group");
-    owner.posim_ping_planes.at(group.plane_id);
+    for(int id:group.planeIds()) {
+      if(!plane_ids.insert(id).second)throw std::invalid_argument("duplicate_joint_plane_owner");
+      owner.posim_ping_planes.at(id);
+    }
     bool retire=false;std::set<int64_t> dependencies=group.observation_pose_stamps;
     for(int64_t stamp:group.observation_pose_stamps) {
       if(stamp<=0 || !observations.insert(stamp).second)throw std::invalid_argument("duplicate_joint_ping_owner");
@@ -62,7 +72,7 @@ inline PingRetirementPlan planPingRetirement(const basalt::BundleAdjustmentBase<
       if(!owner.frame_states.count(stamp) && !owner.frame_poses.count(stamp))
         throw std::invalid_argument("missing_ping_dependency_pose");
     if(retire) {
-      plan.groups.push_back(group);plan.planes.insert(group.plane_id);
+      plan.groups.push_back(group);for(int id:group.planeIds())plan.planes.insert(id);
       plan.landmarks.insert(group.landmark_ids.begin(),group.landmark_ids.end());
       plan.observations.insert(group.observation_pose_stamps.begin(),group.observation_pose_stamps.end());
       plan.required_frames.insert(dependencies.begin(),dependencies.end());
@@ -99,9 +109,11 @@ class PingLinearization final : public basalt::LinearizationAbsQR<double,6> {
     if(specs.empty() || specs.size()>8)throw std::invalid_argument("invalid_joint_group_count");
     std::map<basalt::KeypointId,size_t> membership;std::set<int> planes;
     for(auto& spec:specs) {
-      if(!spec.build || (spec.range_only ? !spec.landmark_ids.empty() : spec.landmark_ids.size()<3) || spec.landmark_ids.size()>64 ||
-         !planes.insert(spec.plane_id).second)throw std::invalid_argument("invalid_joint_group_membership");
-      owner_->posim_ping_planes.at(spec.plane_id);
+      if(!spec.build || (spec.range_only ? !spec.landmark_ids.empty() : spec.landmark_ids.size()<3) || spec.landmark_ids.size()>64)throw std::invalid_argument("invalid_joint_group_membership");
+      for(int id:spec.planeIds()) {
+        if(!planes.insert(id).second)throw std::invalid_argument("duplicate_joint_plane_owner");
+        owner_->posim_ping_planes.at(id);
+      }
       for(auto id:spec.landmark_ids)
         if(!membership.emplace(id,groups_.size()).second)throw std::invalid_argument("duplicate_joint_landmark_owner");
       Group group;group.spec=std::move(spec);groups_.push_back(std::move(group));
@@ -137,9 +149,17 @@ class PingLinearization final : public basalt::LinearizationAbsQR<double,6> {
       if(!group.raw.reference || (group.raw.reference->normal-reference.normal).norm()>1e-12 ||
          std::abs(group.raw.reference->distance-reference.distance)>1e-12)
         throw std::invalid_argument("joint_plane_reference_mismatch");
+      if(group.raw.additional_references.size()!=group.spec.additional_plane_ids.size())
+        throw std::invalid_argument("joint_plane_membership_changed");
+      for(size_t i=0;i<group.spec.additional_plane_ids.size();++i) {
+        const auto& expected=owner_->posim_ping_planes.at(group.spec.additional_plane_ids[i]).reference;
+        const auto& actual=group.raw.additional_references[i];
+        if((actual.normal-expected.normal).norm()>1e-12 || std::abs(actual.distance-expected.distance)>1e-12)
+          throw std::invalid_argument("joint_plane_reference_mismatch");
+      }
       const std::set<basalt::LandmarkBlock<double>*> actual(group.raw.blocks.begin(),group.raw.blocks.end());
       if(actual!=expected || actual.size()!=group.raw.blocks.size() || group.raw.observation_stamps.empty() ||
-         group.raw.jacobian.cols()!=Eigen::Index(aom.total_size+3+3*expected.size()))
+         group.raw.jacobian.cols()!=Eigen::Index(aom.total_size+3*group.raw.planeCount()+3*expected.size()))
         throw std::invalid_argument("joint_builder_changed_membership");
       if(!group.spec.observation_pose_stamps.empty() &&
          std::set<int64_t>(group.raw.observation_stamps.begin(),group.raw.observation_stamps.end())!=group.spec.observation_pose_stamps)
@@ -196,7 +216,7 @@ class PingLinearization final : public basalt::LinearizationAbsQR<double,6> {
       const auto& delta=nuisance.back();
       if(!delta.allFinite())throw std::invalid_argument("invalid_joint_nuisance_increment");
       for(size_t i=0;i<group.raw.blocks.size();++i)
-        if(!group.raw.blocks[i]->jointIncrementValid(delta.segment<3>(3+3*i)))
+        if(!group.raw.blocks[i]->jointIncrementValid(delta.segment<3>(3*group.raw.planeCount()+3*i)))
           throw std::invalid_argument("invalid_joint_landmark_increment");
     }
     // Blocks cache the trial's state after applying an increment. A restored
@@ -206,7 +226,8 @@ class PingLinearization final : public basalt::LinearizationAbsQR<double,6> {
     for(size_t i=0;i<groups_.size();++i) {
       auto& group=groups_[i];VecX delta(pose_delta.size()+nuisance[i].size());delta<<pose_delta,nuisance[i];
       change+=.5*(group.raw.residual.squaredNorm()-(group.raw.residual+group.raw.jacobian*delta).squaredNorm());
-      owner_->posim_ping_planes.apply(group.spec.plane_id,nuisance[i].head<3>());
+      const auto planes=group.spec.planeIds();
+      for(size_t k=0;k<planes.size();++k)owner_->posim_ping_planes.apply(planes[k],nuisance[i].segment<3>(3*k));
       if(!group.raw.applyLandmarks(nuisance[i]))throw std::runtime_error("joint_landmark_apply_failed");
     }
     return change;

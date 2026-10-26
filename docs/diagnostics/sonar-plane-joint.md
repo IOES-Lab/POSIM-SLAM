@@ -68,3 +68,52 @@ rejection, ambiguous rays and invalid identities/covariances.
 수행하지 않습니다. 회전된 장착 위치에서의 수치 미분, 미지 평면 제거 후 세계 좌표
 게이지 자유도, 전체 결합 행렬 역행렬과 상관 공분산의 일치, 유한 지지 영역 거부,
 동률 광선, 잘못된 식별자와 공분산을 테스트합니다.
+
+## Native grouped optimizer / 네이티브 그룹 최적화
+
+`native/basalt/sonar_plane_group.hpp::makeOwnedSonarPlanes` connects explicitly
+associated raw returns to the existing Basalt joint optimizer. One acoustic group
+can contain several plane variables, with one covariance matrix spanning all
+frames, sources and surfaces. Every frame/source pair has one owner; a source's
+plane membership remains fixed during the group. This prevents treating correlated
+surfaces as independent factors or counting one frame in multiple acoustic groups.
+The existing global budget remains eight owned planes. A group has at most
+16 frames, 512 range rows and 512 vertical rays per row.
+
+Native pose columns use Basalt's map translation and map-left rotation. Plane
+increments use the owner's fixed-reference rotation coordinates. Accumulated
+pose/plane increments are differentiated at their current values. Every plane
+is back-substituted in the existing whole-trial transaction; retirement eliminates
+all group planes into the same state prior and removes them atomically. Full
+range covariance is whitened before elimination. Tied minimum rays reject the
+whole correlated group. Legacy one-plane visual/Ping groups use the same path.
+
+The native probe covers two surfaces at shared timestamps, NumPy agreement,
+nonzero accumulated increments, joint optimization, correlated marginalization,
+atomic prior installation and replay rejection. Frozen recorded sonar groups
+exercise the geometry path without a synthetic pose prior or truth. This does not
+yet install an online source-association owner or a ROS packet handler, qualify
+finite object extent, estimate real sensor noise, or validate trajectory/map
+accuracy. Native finite-support admission remains the caller's responsibility.
+
+`native/basalt/sonar_plane_group.hpp::makeOwnedSonarPlanes`는 대응이 명시된 원시
+거리 관측을 기존 Basalt 결합 최적화에 연결합니다. 하나의 음향 그룹에 여러 평면
+변수를 담고, 모든 프레임·소스·면을 포괄하는 공분산 행렬 하나를 사용합니다.
+프레임·소스 쌍의 소유자는 하나이며, 그룹 안에서 소스의 평면 소속은 고정됩니다.
+상관된 면을 독립 인자로 취급하거나 같은 프레임을 여러 음향 그룹에 중복 반영하지
+않습니다. 전체 소유 평면 예산은 기존의 8개를 유지합니다. 그룹당 최대 프레임은
+16개, 거리 관측은 512행, 행마다 수직 광선은 512개입니다.
+
+네이티브 자세 열은 Basalt의 지도 좌표 이동과 지도 좌표 좌측 회전을 사용합니다.
+평면 증분은 소유자의 고정 기준 회전 좌표를 사용합니다. 누적된 자세·평면 증분의
+현재 값에서 미분합니다. 모든 평면을 기존의 전체 시도 트랜잭션 안에서 역대입하고,
+그룹이 퇴역하면 모든 평면을 같은 자세 사전 정보로 주변화한 뒤 원자적으로 제거합니다.
+전체 거리 공분산은 주변화 전에 백색화합니다. 최소 거리 광선이 동률이면 상관 그룹
+전체를 거부합니다. 기존 단일 평면 시각/Ping 그룹도 같은 경로를 사용합니다.
+
+네이티브 검사기는 같은 시각에 관측한 두 면, NumPy와의 일치, 0이 아닌 누적 증분,
+결합 최적화, 상관 주변화, 사전 정보의 원자적 설치와 재적용 거부를 확인합니다.
+고정된 실제 소나 관측 그룹으로 가상의 자세 사전 정보나 참값 없이 기하 경로를
+검사합니다. 온라인 소스 대응 소유자와 ROS 패킷 처리는 아직 연결하지 않았습니다.
+유한한 물체 범위, 실제 센서 잡음, 궤적·지도 정확도도 검증하지 않았습니다.
+네이티브의 유한 지지 영역 채택은 호출자가 책임져야 합니다.

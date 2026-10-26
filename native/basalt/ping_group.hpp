@@ -71,13 +71,16 @@ struct NativePingGroup {
   std::vector<int64_t> observation_stamps;
   double auxiliary_cost=0.;
   std::optional<PingPlaneReference> reference;
+  std::vector<PingPlaneReference> additional_references;
+  size_t planeCount() const {return 1+additional_references.size();}
   // Called only by the estimator owner thread after accepting a whole trial.
-  // The first three nuisance coordinates belong to the caller-owned plane.
+  // Leading three-coordinate blocks belong to the caller-owned planes.
   bool applyLandmarks(const Eigen::VectorXd& nuisance) const {
-    if(nuisance.size()!=3+3*Eigen::Index(blocks.size()) || !nuisance.allFinite())return false;
+    const Eigen::Index offset=3*planeCount();
+    if(nuisance.size()!=offset+3*Eigen::Index(blocks.size()) || !nuisance.allFinite())return false;
     for(size_t i=0;i<blocks.size();++i)
-      if(!blocks[i]->jointIncrementValid(nuisance.segment<3>(3+3*i)))return false;
-    for(size_t i=0;i<blocks.size();++i)blocks[i]->applyJointIncrement(nuisance.segment<3>(3+3*i));
+      if(!blocks[i]->jointIncrementValid(nuisance.segment<3>(offset+3*i)))return false;
+    for(size_t i=0;i<blocks.size();++i)blocks[i]->applyJointIncrement(nuisance.segment<3>(offset+3*i));
     return true;
   }
 };
