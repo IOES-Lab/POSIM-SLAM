@@ -5,6 +5,32 @@ from posim_slam.sensor_events import SensorEvents
 
 
 class SensorEventsTests(unittest.TestCase):
+    def test_decimated_pressure_advances_watermark_without_reusing_factor(self):
+        q=SensorEvents(pressure=True)
+        q.push('imu',41)
+        for t in (10,20,30,40):q.push('camera',t,'image')
+        for t in (10,40):q.push('sonar',t,'echo')
+        q.push('pressure',10,{'valid':True})
+        self.assertEqual([e['stamp_ns'] for e in self.drain(q)],[10])
+        q.advance('pressure',25)
+        released=self.drain(q)
+        self.assertEqual([e['stamp_ns'] for e in released],[20])
+        self.assertIsNone(released[0]['pressure'])
+        q.push('pressure',40,{'valid':True})
+        released=self.drain(q)
+        self.assertEqual([e['stamp_ns'] for e in released],[30,40])
+        self.assertIsNone(released[0]['pressure'])
+        self.assertTrue(released[1]['pressure']['valid'])
+        self.assertEqual(q.latest['pressure'],40)
+        with self.assertRaisesRegex(ValueError,'input_clock'):q.advance('pressure',39)
+        with self.assertRaises(RuntimeError):q.next_event()
+
+    def test_advancing_unselected_or_finished_stream_is_rejected(self):
+        q=SensorEvents()
+        with self.assertRaisesRegex(ValueError,'input_kind'):q.advance('pressure',10)
+        q=SensorEvents(pressure=True);q.finish('pressure')
+        with self.assertRaisesRegex(ValueError,'input_kind'):q.advance('pressure',10)
+
     def test_range_only_clock_preserves_delayed_ping_without_camera(self):
         for order in set(itertools.permutations('ssppi')):
             q=SensorEvents(state_clock='sonar',ping=True)

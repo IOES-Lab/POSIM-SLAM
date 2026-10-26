@@ -1,6 +1,6 @@
 import unittest
 import numpy as np
-from posim_slam.auxiliary_inputs import bracketed_gyro, hydrostatic_height
+from posim_slam.auxiliary_inputs import bracketed_gyro, hydrostatic_height, validate_auxiliary_ack, fused_recent
 
 
 class AuxiliaryInputTests(unittest.TestCase):
@@ -37,6 +37,17 @@ class AuxiliaryInputTests(unittest.TestCase):
         self.assertNotIn('packet', surface)
         with self.assertRaises(ValueError):
             hydrostatic_height(125, 101325+scale, 0, **calibration)
+
+    def test_acknowledged_fusion_is_distinct_from_reception(self):
+        self.assertEqual(validate_auxiliary_ack({'pressure':{'owner_received':True}},dict(pressure=True)),())
+        self.assertEqual(validate_auxiliary_ack({'pressure':{'owner_received':True,'optimization_included':True}},dict(pressure=True)),('pressure',))
+        for report,expected in [({'owner_received':True},False),({'optimization_included':True},False),({'owner_received':True,'optimization_included':1},True),([],True)]:
+            with self.assertRaises(RuntimeError):validate_auxiliary_ack({'pressure':report},dict(pressure=expected))
+
+    def test_freshness_requires_both_clocks_and_a_real_measurement(self):
+        self.assertTrue(fused_recent(2_000_000_000,1_000_000_000,0.,1.))
+        for state,fused,wall,now in [(3_000_000_000,1_000_000_000,0.,1.),(2_000_000_000,1_000_000_000,0.,2.),(2,0,0.,1.),(1,2,0.,1.),(2,1,None,1.),(2,1,2.,1.)]:
+            self.assertFalse(fused_recent(state,fused,wall,now))
 
 
 if __name__ == '__main__': unittest.main()

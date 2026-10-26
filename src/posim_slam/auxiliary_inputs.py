@@ -61,3 +61,33 @@ def hydrostatic_height(stamp_ns, pressure_pa, variance_pa2, *, reference_pa, den
     from .pressure_packet import encode_pressure
     encode_pressure(**packet)
     return dict(stamp_ns=stamp_ns, valid=True, packet=packet)
+
+
+def validate_auxiliary_ack(state, expected):
+    """Validate exact-event ownership before committing any estimator output.
+
+    ``expected`` maps selected sensor names to booleans indicating a valid
+    measurement sent for this event. Reception alone does not prove fusion.
+    """
+    included=[]
+    for kind, sent in expected.items():
+        if kind not in ('pressure','dvl') or type(sent) is not bool:
+            raise ValueError('invalid_auxiliary_ack_expectation')
+        report=state.get(kind) or {}
+        if not isinstance(report,dict) or report.get('owner_received',False) is not sent:
+            raise RuntimeError('sonar_auxiliary_ack_mismatch')
+        fused=report.get('optimization_included',False)
+        if type(fused) is not bool or fused and not sent:
+            raise RuntimeError('sonar_auxiliary_optimization_mismatch')
+        if fused:included.append(kind)
+    return tuple(included)
+
+
+def fused_recent(state_stamp_ns, fused_stamp_ns, fused_wall, now, *, max_age_s=2.):
+    """A recently optimized observation on both measurement and wall clocks."""
+    if not math.isfinite(max_age_s) or max_age_s<=0:
+        raise ValueError('invalid_auxiliary_freshness_request')
+    return bool(fused_wall is not None and fused_stamp_ns>0 and state_stamp_ns>0
+                and math.isfinite(now) and math.isfinite(fused_wall)
+                and 0<=now-fused_wall<max_age_s
+                and 0<=state_stamp_ns-fused_stamp_ns<max_age_s*1e9)

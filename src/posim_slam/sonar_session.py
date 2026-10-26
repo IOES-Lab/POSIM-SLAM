@@ -10,7 +10,7 @@ from pathlib import Path
 import numpy as np
 
 from .acoustic_tracks import AcousticTracks
-from .auxiliary_inputs import bracketed_gyro
+from .auxiliary_inputs import bracketed_gyro, validate_auxiliary_ack, fused_recent
 from .dvl_packet import encode_dvl
 from .gravity_seed import gravity_seed
 from .inertial import ImuWindow
@@ -161,20 +161,14 @@ class SonarSession:
                 continue
             if value['type'] != 'state' or value.get('state_clock') != 'sonar':
                 raise RuntimeError('unexpected_camera_free_worker_output')
-            for kind in ('dvl', 'pressure'):
-                report=value.get(kind) or {}
-                if report.get('owner_received',False) is not self.expected_auxiliary.get(kind,False):
-                    raise RuntimeError('sonar_auxiliary_ack_mismatch')
-                included = report.get('optimization_included',False)
-                if type(included) is not bool or included and not self.expected_auxiliary.get(kind,False):
-                    raise RuntimeError('sonar_auxiliary_optimization_mismatch')
+            included = validate_auxiliary_ack(value, {kind:self.expected_auxiliary.get(kind,False)
+                                                       for kind in ('dvl','pressure')})
             self.fusion.observe(value)
             self.events.acknowledge(value['stamp_ns'])
-            for kind in ('dvl', 'pressure'):
-                if (value.get(kind) or {}).get('optimization_included',False):
-                    self.optimized[kind] += 1
-                    self.fused_stamp[kind] = value['stamp_ns']
-                    self.fused_wall[kind] = now
+            for kind in included:
+                self.optimized[kind] += 1
+                self.fused_stamp[kind] = value['stamp_ns']
+                self.fused_wall[kind] = now
             self.states += 1
             self.last_result = value
             self.last_result_wall = now
@@ -225,10 +219,9 @@ class SonarSession:
         """Fresh acknowledged fusion, independently of incoming sensor traffic."""
         if kind not in self.optimized or not np.isfinite(max_age_s) or max_age_s <= 0:
             raise ValueError('invalid_auxiliary_freshness_request')
-        wall = self.fused_wall[kind]
         return bool(not self.closed and not self.fault and self.last_result is not None
-                    and wall is not None and 0 <= self.clock()-wall < max_age_s
-                    and 0 <= self.last_result['stamp_ns']-self.fused_stamp[kind] < max_age_s*1e9)
+                    and fused_recent(self.last_result['stamp_ns'],self.fused_stamp[kind],
+                                     self.fused_wall[kind],self.clock(),max_age_s=max_age_s))
 
     def close(self):
         self.closed = True

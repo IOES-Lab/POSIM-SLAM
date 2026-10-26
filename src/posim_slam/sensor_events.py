@@ -55,11 +55,7 @@ class SensorEvents:
         A DVL loss-status payload advances its stream clock but must not be
         submitted as a native velocity factor. Silence is not a loss status.
         """
-        self._healthy()
-        if kind not in (*self.streams, 'imu') or kind in self.closed:
-            self._fail('sensor_events_input_kind_or_closed')
-        if type(stamp_ns) is not int or not self.latest[kind] < stamp_ns < 2**63:
-            self._fail('sensor_events_input_clock')
+        self._check_input(kind, stamp_ns)
         if kind != 'imu':
             if payload is None:
                 self._fail('sensor_events_payload_required')
@@ -67,6 +63,23 @@ class SensorEvents:
                 self._fail('sensor_events_backlog')
             self.pending[kind][stamp_ns] = payload
             self.peak_pending = max(self.peak_pending, sum(map(len, self.pending.values())))
+        self.latest[kind] = stamp_ns
+
+    def _check_input(self, kind, stamp_ns):
+        self._healthy()
+        if kind not in (*self.streams, 'imu') or kind in self.closed:
+            self._fail('sensor_events_input_kind_or_closed')
+        if type(stamp_ns) is not int or not self.latest[kind] < stamp_ns < 2**63:
+            self._fail('sensor_events_input_clock')
+
+    def advance(self, kind, stamp_ns):
+        """Acknowledge an intentionally omitted input without a native event.
+
+        Call only after receiving and validating this packet in stream order.
+        This separates rate-limited factor admission from the arrival watermark;
+        it never predicts missing packets or repeats the previous measurement.
+        """
+        self._check_input(kind, stamp_ns)
         self.latest[kind] = stamp_ns
 
     def finish(self, kind):
