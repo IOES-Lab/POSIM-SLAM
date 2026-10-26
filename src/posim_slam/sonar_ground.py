@@ -28,13 +28,16 @@ class GroundEntryConfig:
     ransac_trials: int = 256
 
 
-def ground_entries(frame, *, config=GroundEntryConfig()):
+def ground_entries(frame, *, config=GroundEntryConfig(), source_bounds=None, amplitude_error=None):
     """First sustained, observed noise-to-return transition in each beam.
 
     Near-range noise and absent returns remain censored. Smoothing rejects
     isolated samples but does not establish seabed identity. Angular thinning
     bounds computation and avoids counting every oversampled beam as a new fit
     constraint; it is not a claim that the remaining errors are independent.
+    Optional source_bounds requires an explicit complex response and amplitude
+    error interval. It only censors existing angularly thinned samples whose
+    source amplitude may be zero; it never searches a later, stronger onset.
     """
     validate_frame(frame)
     values=[getattr(config,k) for k in config.__dataclass_fields__ if k not in ('ransac_trials','beam_relative_margin_db')]
@@ -46,6 +49,16 @@ def ground_entries(frame, *, config=GroundEntryConfig()):
         raise ValueError('invalid_ground_entry_config')
     if config.beam_relative_margin_db is not None and (not np.isfinite(config.beam_relative_margin_db)
             or config.beam_relative_margin_db<=0):raise ValueError('invalid_ground_relative_margin')
+    if source_bounds is None:
+        if amplitude_error is not None:raise ValueError('amplitude_error_requires_beam_response')
+    else:
+        from .sonar_phase_bounds import BeamPhaseBounds
+        if (not isinstance(source_bounds,BeamPhaseBounds) or source_bounds.beams!=frame['intensity_db'].shape[1]
+                or not isinstance(amplitude_error,(tuple,list)) or len(amplitude_error)!=2):
+            raise ValueError('explicit_ground_beam_response_and_error_required')
+        # Validate even when no onset is visible; errors cannot bypass the contract.
+        source_bounds.query(np.zeros((1,source_bounds.beams)),[0],
+                            relative_error=amplitude_error[0],absolute_error=amplitude_error[1])
     ranges=np.asarray(frame['ranges'],dtype=float)
     angles=np.arctan2(frame['beam_directions'][:,1],frame['beam_directions'][:,0])
     if not np.all(np.diff(angles)>0) or np.any(abs(angles)>=math.pi/2):
@@ -74,18 +87,31 @@ def ground_entries(frame, *, config=GroundEntryConfig()):
     for i,angle in enumerate(angles):
         if not selected or angle-angles[selected[-1]]>=config.angular_spacing_rad:selected.append(i)
     if len(selected)>128:raise ValueError('ground_entry_angular_budget')
+    bound_report={}
+    if source_bounds is not None:
+        indices=np.asarray(selected,dtype=int);indices=indices[np.isfinite(onsets[indices])]
+        excluded=0
+        if len(indices):
+            bins=np.searchsorted(ranges,onsets[indices])
+            with np.errstate(over='ignore'):
+                magnitudes=10.**(np.asarray(frame['intensity_db'][bins],dtype=float)/20.)
+            interval=source_bounds.query(magnitudes,indices,
+                relative_error=amplitude_error[0],absolute_error=amplitude_error[1])
+            rejected=indices[interval['lower']<=0];excluded=len(rejected);onsets[rejected]=np.nan
+        bound_report=dict(source_bound_tested=len(indices),source_bound_excluded=excluded)
     return dict(azimuth_rad=angles,range_m=onsets,selected_beams=np.asarray(selected,dtype=int),
-                noise_db=noise,return_floor_db=floor)
+                noise_db=noise,return_floor_db=floor,**bound_report)
 
 
-def ground_entry_curve(frame, *, vertical_fov_rad, up_sonar, config=GroundEntryConfig()):
+def ground_entry_curve(frame, *, vertical_fov_rad, up_sonar, config=GroundEntryConfig(),
+                       source_bounds=None, amplitude_error=None):
     """Measured onset curve under an explicit downward aperture-boundary assumption.
 
     No whole-fan plane is required. The returned elevation is assumed, not
     observed; curved/occluding surfaces may violate this hypothesis. Retain the
     raw range/beam identifiers so downstream estimators can model that ambiguity.
     """
-    entries=ground_entries(frame,config=config);up=np.asarray(up_sonar,dtype=float)
+    entries=ground_entries(frame,config=config,source_bounds=source_bounds,amplitude_error=amplitude_error);up=np.asarray(up_sonar,dtype=float)
     if (up.shape!=(3,) or not np.isfinite(up).all() or not np.isclose(np.linalg.norm(up),1.,atol=1e-8,rtol=0)
             or not np.isfinite(vertical_fov_rad) or not 0<vertical_fov_rad<math.pi):
         raise ValueError('invalid_ground_entry_geometry')
@@ -104,7 +130,8 @@ def ground_entry_curve(frame, *, vertical_fov_rad, up_sonar, config=GroundEntryC
                 rays=rays,points_sonar=ranges[:,None]*rays,boundary_elevation_rad=elevation)
 
 
-def fit_ground_entry(frame, *, vertical_fov_rad, up_sonar, config=GroundEntryConfig()):
+def fit_ground_entry(frame, *, vertical_fov_rad, up_sonar, config=GroundEntryConfig(),
+                       source_bounds=None, amplitude_error=None):
     """Fit a supported aperture-boundary plane; emit measured inliers only.
 
     A plane n·x=-h is represented by q=n/h. For boundary ray u and measured
@@ -114,7 +141,8 @@ def fit_ground_entry(frame, *, vertical_fov_rad, up_sonar, config=GroundEntryCon
     Output points depend on the boundary hypothesis, not measured elevation.
     No position correction, loop closure or navigation readiness is claimed.
     """
-    curve=ground_entry_curve(frame,vertical_fov_rad=vertical_fov_rad,up_sonar=up_sonar,config=config)
+    curve=ground_entry_curve(frame,vertical_fov_rad=vertical_fov_rad,up_sonar=up_sonar,config=config,
+                             source_bounds=source_bounds,amplitude_error=amplitude_error)
     entries=curve['entries'];up=np.asarray(up_sonar,dtype=float)
     base=dict(accepted=False,map_qualified=False,navigation_ready=False,entries=entries,
               scope='conditional local ground-entry surface; no fixed point correspondence')
