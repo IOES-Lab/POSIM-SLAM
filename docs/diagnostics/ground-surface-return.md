@@ -48,3 +48,7 @@ must be established separately. It does not turn every image contour into a plan
 법선 접선 방향 미분, 평행·뒤쪽·측정 사각지대 반사를 검증했습니다. 면은 무한히
 연장되므로 유한한 물체 범위, 반사 시작점, 대응은 별도로 확인해야 합니다.
 영상 윤곽을 자동으로 평면으로 판정하지 않습니다.
+
+[Experimental joint pose/plane rows and explicit pose-prior sensitivity](sonar-plane-joint.md).
+
+[실험용 자세·평면 결합 인자와 명시적 자세 사전 공분산의 민감도](sonar-plane-joint.md).
