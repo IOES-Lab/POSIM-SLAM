@@ -136,11 +136,12 @@ class SonarSession:
     def _tick(self):
         now = self.clock()
         if self.client is None:
-            # Wait for the required depth input before allocating a worker.
-            # A silent pressure source must not cause repeated empty restarts.
-            if self.pressure and (not self.valid_auxiliary['pressure']
-                    or self.received['pressure'] is None
-                    or now-self.received['pressure'] >= 2):
+            # Every selected auxiliary is required before allocating a worker.
+            # Missing/invalid DVL and pressure share the same readiness rule;
+            # input arrival alone does not establish native fusion readiness.
+            if any(not self.valid_auxiliary[kind] or self.received[kind] is None
+                   or now-self.received[kind] >= 2
+                   for kind in self.events.auxiliary_streams):
                 return []
             if (self.pending_sonar is None or not self.samples
                     or self.samples[0][0] > self.latest['sonar']-10**9

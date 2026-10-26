@@ -119,6 +119,35 @@ class SonarSessionTests(unittest.TestCase):
         self.session.tick()
         return self.session.client
 
+    def test_all_selected_auxiliaries_must_be_valid_and_recent_before_allocation(self):
+        for enabled in (('dvl',), ('pressure',), ('dvl', 'pressure')):
+            with self.subTest(enabled=enabled):
+                self.session.close(); self.now=0.
+                config=Path(self.directory.name)/'selected.json'
+                config.write_text(json.dumps(dict(state_clock='sonar',enable_joint_sonar=True,
+                    enable_joint_dvl='dvl' in enabled,enable_joint_pressure='pressure' in enabled)))
+                self.session=SonarSession('worker',config,None,range_sigma=.02,azimuth_sigma=.01,
+                    dvl_gyro_sigma=.001 if 'dvl' in enabled else None,
+                    clock=lambda:self.now,client_factory=Worker)
+                self.addCleanup(self.session.close);self.feed()
+                for self.now in (0.,4.,40.):
+                    self.assertEqual(self.session.tick(),[])
+                    self.assertIsNone(self.session.client)
+                # Each selected source is required, not just the first one.
+                for kind in enabled[:-1]:
+                    self.session.auxiliary(kind,1_990_000_000,dict(valid=True))
+                missing=enabled[-1]
+                self.session.auxiliary(missing,1_990_000_000,dict(valid=False))
+                self.session.tick();self.assertIsNone(self.session.client)
+                self.session.auxiliary(missing,1_991_000_000,dict(valid=True))
+                self.now+=2.
+                self.session.tick();self.assertIsNone(self.session.client)
+                for kind in enabled:
+                    self.session.auxiliary(kind,1_992_000_000,dict(valid=True))
+                self.session.tick();self.assertIsNotNone(self.session.client)
+                self.assertEqual(self.session.states,0)
+                self.assertFalse(any(self.session.optimized.values()))
+
     def test_pressure_traffic_is_not_fusion_and_freshness_expires_on_either_clock(self):
         worker=self.pressure_session()
         self.assertEqual(len(worker.pressures),1)
