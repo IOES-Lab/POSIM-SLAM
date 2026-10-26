@@ -32,9 +32,15 @@ p90은 1.316°에서 1.332°로 커졌습니다. 자세나 지도의 정확도�
 
 The [earlier stationary evidence](sonar-ground-speckle.md) and recorded trajectory
 failures remain valid for their original sensor builds. Recorded images are not
-retroactively corrected. Moving-scene recapture, independent terrain, RGB visibility
-≤2 m, absent-RGB startup and DVL dropout still require validation.
+retroactively corrected. Fresh moving captures and independent relief preserve the remaining ground-model
+failures in the comparison below. RGB visibility ≤2 m, camera-free live startup
+and DVL dropout still require validation.
 
 [기존 정지 시험](sonar-ground-speckle.md)과 기록 궤적의 실패는 당시 센서 빌드의
-결과로 보존합니다. 기록 영상을 사후 수정하지 않습니다. 이동 장면의 새 기록,
-독립 지형, RGB 가시거리 2 m 이하, RGB 없는 시작과 DVL 손실은 검증이 필요합니다.
+결과로 보존합니다. 기록 영상을 사후 수정하지 않습니다. 아래 새 이동 기록과 독립 지형 비교에도
+해저 모델의 실패가 남습니다. RGB 가시거리 2 m 이하, RGB 없는 실제 앱 시작과
+DVL 손실은 검증이 필요합니다.
+
+[Fresh moving captures and independent relief comparisons](sonar-exact-range-live.md) preserve the remaining ground-model failures.
+
+[새 이동 기록과 독립 굴곡 지형 비교](sonar-exact-range-live.md)에 남은 해저 모델 실패를 보존합니다.
