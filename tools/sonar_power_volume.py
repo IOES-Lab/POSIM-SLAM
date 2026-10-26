@@ -9,7 +9,7 @@ import numpy as np
 
 
 class Projector:
-    def __init__(self, points, poses, azimuth, ranges, vertical_fov, *, range_power=3., absorption_db_m=.0354, maximum_range=None, beam_pixel_width=None, native_ranges=None):
+    def __init__(self, points, poses, azimuth, ranges, vertical_fov, *, range_power=3., absorption_db_m=.0354, maximum_range=None, beam_pixel_width=None, native_ranges=None, fractional_samples=0):
         self.points=np.asarray(points,float);self.poses=poses;self.azimuth=np.asarray(azimuth,float)
         self.ranges=np.asarray(ranges,float);self.size=len(points);self.nr=len(ranges)
         azimuth=self.azimuth;ranges=self.ranges
@@ -33,26 +33,48 @@ class Projector:
         self.nb=len(self.groups);self.shape=(len(poses),self.nr,self.nb)
         maximum_range=ranges[-1]+(ranges[-1]-ranges[-2])/2 if maximum_range is None else maximum_range
         if not np.isfinite(maximum_range) or maximum_range<=.2:raise ValueError('positive_range_required')
-        from scipy.sparse import coo_matrix,eye
-        self.fine_ranges=np.asarray(ranges if native_ranges is None else native_ranges)
-        self.fine_nr=len(self.fine_ranges)
-        if (self.fine_ranges.ndim!=1 or not 2<=self.fine_nr<=1024
-                or not np.isfinite(self.fine_ranges).all() or not np.all(np.diff(self.fine_ranges)>0)):
-            raise ValueError('ordered_native_ranges_required')
-        if native_ranges is None:self.range_mix=eye(self.nr,format='csr')
+        if fractional_samples not in (0,4,8,16):raise ValueError('bounded_fractional_sampling_required')
+        if fractional_samples:
+            if native_ranges is None:raise ValueError('native_ranges_required_for_fractional_response')
+            native=np.asarray(native_ranges,float);n=len(native)
+            if native.ndim!=1 or not 2<=n<=1024 or not np.isfinite(native).all() or native[0]!=0 or not np.all(np.diff(native)>0):raise ValueError('source_range_grid_required')
+            step=native[-1]/(n-1)
+            if not np.allclose(native,np.arange(n)*step,rtol=4*np.finfo(np.float32).eps,atol=np.finfo(np.float32).eps*step):raise ValueError('source_uniform_range_grid_required')
+            starts=np.arange(0,n,4);counts=np.minimum(4,n-starts)
+            np.testing.assert_allclose(np.add.reduceat(native,starts)/counts,ranges,rtol=1e-12,atol=1e-12)
+            if maximum_range>n*step:raise ValueError('native_range_alias_period_exceeded')
+            size=n*fractional_samples;self.fine_nr=size;self.fine_ranges=np.arange(size)*step/fractional_samples
+            window=.54-.46*np.cos(2*np.pi*(np.arange(n)+1)/n);window/=np.linalg.norm(window)
+            response=abs(np.fft.fft(window,n=size))**2/n;columns=np.arange(size)
+            self.range_mix=np.array([np.mean(response[(np.arange(start,start+count)[:,None]*fractional_samples-columns)%size],axis=0) for start,count in zip(starts,counts)])
+            self.range_bytes=self.range_mix.nbytes
         else:
-            if maximum_range>self.fine_ranges[-1]+self.fine_ranges[1]-self.fine_ranges[0]:raise ValueError('native_range_alias_period_exceeded')
-            starts=np.arange(0,self.fine_nr,4);counts=np.minimum(4,self.fine_nr-starts)
-            np.testing.assert_allclose(np.add.reduceat(self.fine_ranges,starts)/counts,ranges,rtol=1e-12,atol=1e-12)
-            # Source window is periodic Hamming, normalized in frequency.
-            # Its integer-bin DFT power has exactly the center and +/-1 taps.
-            # Sub-bin delays interpolate adjacent native bins before averaging.
-            taps=np.array([(.46/2)**2,.54**2,(.46/2)**2]);taps/=taps.sum()
-            source=np.arange(self.fine_nr);rows=[];cols=[];weights=[]
-            for offset,weight in zip((-1,0,1),taps):
-                row=((source+offset)%self.fine_nr)//4;rows.extend(row);cols.extend(source);weights.extend(weight/counts[row])
-            self.range_mix=coo_matrix((weights,(rows,cols)),shape=(self.nr,self.fine_nr)).tocsr()
-        range_gram=(self.range_mix.T@self.range_mix).toarray()
+            from scipy.sparse import coo_matrix,eye
+            self.fine_ranges=np.asarray(ranges if native_ranges is None else native_ranges)
+            self.fine_nr=len(self.fine_ranges)
+            if (self.fine_ranges.ndim!=1 or not 2<=self.fine_nr<=1024
+                    or not np.isfinite(self.fine_ranges).all() or not np.all(np.diff(self.fine_ranges)>0)):
+                raise ValueError('ordered_native_ranges_required')
+            if native_ranges is None:self.range_mix=eye(self.nr,format='csr')
+            else:
+                if maximum_range>self.fine_ranges[-1]+self.fine_ranges[1]-self.fine_ranges[0]:raise ValueError('native_range_alias_period_exceeded')
+                starts=np.arange(0,self.fine_nr,4);counts=np.minimum(4,self.fine_nr-starts)
+                np.testing.assert_allclose(np.add.reduceat(self.fine_ranges,starts)/counts,ranges,rtol=1e-12,atol=1e-12)
+                # Source window is periodic Hamming, normalized in frequency.
+                # Its integer-bin DFT power has exactly the center and +/-1 taps.
+                # Sub-bin delays interpolate adjacent native bins before averaging.
+                taps=np.array([(.46/2)**2,.54**2,(.46/2)**2]);taps/=taps.sum()
+                source=np.arange(self.fine_nr);rows=[];cols=[];weights=[]
+                for offset,weight in zip((-1,0,1),taps):
+                    row=((source+offset)%self.fine_nr)//4;rows.extend(row);cols.extend(source);weights.extend(weight/counts[row])
+                self.range_mix=coo_matrix((weights,(rows,cols)),shape=(self.nr,self.fine_nr)).tocsr()
+            self.range_bytes=self.range_mix.data.nbytes+self.range_mix.indices.nbytes+self.range_mix.indptr.nbytes
+        if fractional_samples:
+            range_norm2=np.sum(self.range_mix**2,axis=0)
+            range_neighbor=np.sum(self.range_mix*self.range_mix[:,np.roll(np.arange(self.fine_nr),-1)],axis=0)
+        else:
+            range_norm2=np.asarray(self.range_mix.power(2).sum(axis=0)).ravel()
+            range_neighbor=np.asarray(self.range_mix.multiply(self.range_mix[:,np.roll(np.arange(self.fine_nr),-1)]).sum(axis=0)).ravel()
         if not np.all(np.diff(azimuth)>0):raise ValueError('ordered_azimuth_required')
         beam_pixel_width=(azimuth[-1]-azimuth[0])/(len(azimuth)-1) if beam_pixel_width is None else beam_pixel_width
         if not np.isfinite(beam_pixel_width) or beam_pixel_width<=0:raise ValueError('positive_beam_width_required')
@@ -78,13 +100,13 @@ class Projector:
             for ri,ar,weight in [(r0,a0,(1-wr)*(1-wa)),(r0,a1,(1-wr)*wa),(r1,a0,wr*(1-wa)),(r1,a1,wr*wa)]:
                 columns.append(((ri*len(azimuth)+ar).astype(np.int32),(weight*gain).astype(np.float64)))
             k2=(1-wa)**2*gram[a0,a0]+2*wa*(1-wa)*gram[a0,a1]+wa**2*gram[a1,a1]
-            range2=(1-wr)**2*range_gram[r0,r0]+2*wr*(1-wr)*range_gram[r0,r1]+wr**2*range_gram[r1,r1]
+            range2=(1-wr)**2*range_norm2[r0]+2*wr*(1-wr)*range_neighbor[r0]+wr**2*range_norm2[r1]
             diagonal[ids]+=gain**2*range2*k2
             self.entries.append((ids,columns))
             entry_bytes+=ids.nbytes+sum(i.nbytes+w.nbytes for i,w in columns)
             if entry_bytes>460_000_000:raise MemoryError('projection_entry_budget')
         self.sensitivity=np.sqrt(diagonal);self.scale=np.divide(1.,self.sensitivity,out=np.zeros_like(diagonal),where=diagonal>0)
-        self.bytes=sum(ids.nbytes+sum(i.nbytes+w.nbytes for i,w in cols) for ids,cols in self.entries)+self.points.nbytes+self.scale.nbytes+self.sensitivity.nbytes+self.kernel.nbytes+self.range_mix.data.nbytes+self.range_mix.indices.nbytes+self.range_mix.indptr.nbytes
+        self.bytes=sum(ids.nbytes+sum(i.nbytes+w.nbytes for i,w in cols) for ids,cols in self.entries)+self.points.nbytes+self.scale.nbytes+self.sensitivity.nbytes+self.kernel.nbytes+self.range_bytes
         if self.bytes>480_000_000:raise MemoryError('projection_memory_budget')
 
     def forward(self,values):
@@ -206,7 +228,7 @@ def validate_packet(packet):
         raise ValueError('bounded_calibrated_observations_required')
 
 
-def reconstruction(packet, *, cell=.2, refine=2, native_range=True, iterations=80, fraction=.02):
+def reconstruction(packet, *, cell=.2, refine=2, native_range=True, fractional_samples=0, iterations=80, fraction=.02):
     """Fit training observations; test intensities affect only reported scores."""
     if not np.isfinite(cell) or not .1<=cell<=.3 or type(refine) is not int or not 0<=refine<=2:raise ValueError('bounded_reconstruction_grid_required')
     validate_packet(packet)
@@ -223,6 +245,7 @@ def reconstruction(packet, *, cell=.2, refine=2, native_range=True, iterations=8
     axes=[lower[i]+(np.arange(shape[i])+.5)*cell for i in range(3)];points=np.stack(np.meshgrid(*axes,indexing='ij'),axis=-1).reshape(-1,3);cells=np.full(len(points),cell)
     train=packet['train'];test=packet['test'];observed=packet['observed'];kwargs=dict(vertical_fov=vertical,maximum_range=maximum,beam_pixel_width=float(packet['beam_pixel_width']),range_power=float(packet['range_power']))
     if native_range:kwargs['native_ranges']=packet['native_ranges']
+    kwargs['fractional_samples']=fractional_samples
     stages=[]
     for level in range(refine+1):
         model=Projector(points,[poses[i] for i in train],azimuth,packet['ranges'],**kwargs)
@@ -256,16 +279,16 @@ def write_cells(path,result,frame,stamp):
 def main():
     import argparse,hashlib,json,time
     from pathlib import Path
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--inputs',type=Path);p.add_argument('--output',type=Path);p.add_argument('--cell',type=float,default=.2);p.add_argument('--refine',type=int,choices=(0,1,2),default=2);p.add_argument('--iterations',type=int,default=80);p.add_argument('--fraction',type=float,default=.02);p.add_argument('--range-response',choices=('native-hamming','coarse-linear'),default='native-hamming')
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--inputs',type=Path);p.add_argument('--output',type=Path);p.add_argument('--cell',type=float,default=.2);p.add_argument('--refine',type=int,choices=(0,1,2),default=2);p.add_argument('--iterations',type=int,default=80);p.add_argument('--fraction',type=float,default=.02);p.add_argument('--range-response',choices=('native-hamming','coarse-linear','fractional-hamming'),default='native-hamming')
     a=p.parse_args()
     if a.inputs is None:print(analytic_probe());return
     if a.output is None:p.error('--output is required with --inputs')
     packet=load_packet(a.inputs);a.output.mkdir(parents=True,exist_ok=False);start=time.perf_counter()
-    result=reconstruction(packet,cell=a.cell,refine=a.refine,native_range=a.range_response=='native-hamming',iterations=a.iterations,fraction=a.fraction)
+    result=reconstruction(packet,cell=a.cell,refine=a.refine,native_range=a.range_response!='coarse-linear',fractional_samples=8 if a.range_response=='fractional-hamming' else 0,iterations=a.iterations,fraction=a.fraction)
     np.savez_compressed(a.output/'field.npz',**{k:result[k] for k in ('points','coefficient','albedo','cell_m')})
     np.savez_compressed(a.output/'predictions.npz',observed=result['observed'],predicted=result['predicted'])
     write_cells(a.output/'albedo-cells.ply',result,str(packet['frame_id']),int(packet['stamps'][packet['train']].max()))
-    report=dict(schema='posim-sonar-volume-diagnostic-1',map_qualified=False,navigation_ready=False,field_type='relative scattering coefficients; not occupancy probability or certified landmarks',frame=str(packet['frame_id']),cell_m=a.cell,refine=a.refine,range_response=a.range_response,stages=result['stages'],inputs_sha256=hashlib.sha256(a.inputs.read_bytes()).hexdigest(),source_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),versions=dict(numpy=np.__version__,scipy=__import__('scipy').__version__),elapsed_s=time.perf_counter()-start,assumptions=['fixed estimated poses without pose covariance','generic POSIM mean-power beam response','per-ray range-power proxy','surface normals and occlusion omitted','approximate sub-bin range response','L1-selected field support is not an uncertainty certificate'])
+    report=dict(schema='posim-sonar-volume-diagnostic-1',map_qualified=False,navigation_ready=False,field_type='relative scattering coefficients; not occupancy probability or certified landmarks',frame=str(packet['frame_id']),cell_m=a.cell,refine=a.refine,range_response=a.range_response,model=dict(range_power=float(packet['range_power']),fractional_samples=8 if a.range_response=='fractional-hamming' else 0,maximum_range_m=float(packet['maximum_range']),vertical_fov_rad=float(packet['vertical_fov']),beam_pixel_width_rad=float(packet['beam_pixel_width'])),stages=result['stages'],inputs_sha256=hashlib.sha256(a.inputs.read_bytes()).hexdigest(),source_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),versions=dict(numpy=np.__version__,scipy=__import__('scipy').__version__),elapsed_s=time.perf_counter()-start,assumptions=['fixed estimated poses without pose covariance','generic POSIM mean-power beam response','per-ray range-power proxy','surface normals and occlusion omitted','source window power sampled at 8 sub-bins with bounded linear interpolation' if a.range_response=='fractional-hamming' else 'approximate sub-bin range response','L1-selected field support is not an uncertainty certificate'])
     (a.output/'report.json').write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(report))
 
 

@@ -59,6 +59,33 @@ class PowerVolumeTests(unittest.TestCase):
         packet=self.packet();packet.pop('native_ranges')
         with self.assertRaisesRegex(ValueError,'native_range_bins_required'):reconstruction(packet)
 
+    def test_fractional_range_response_matches_independent_dft(self):
+        az=np.linspace(-.4,.4,13);native=np.arange(80)*.1;ranges=native.reshape(-1,4).mean(1)
+        poses=[dict(position=np.zeros(3),rotation=np.eye(3))]*2
+        f=np.arange(80);w=.54-.46*np.cos(2*np.pi*(f+1)/80);w/=np.linalg.norm(w)
+        curvature=(2*np.pi/80)**2*2*(w.sum()*(w@(f*f))-(w@f)**2)/80
+        for samples in (4,8,16):
+            points=np.array([[3.15,0,0],[3.157,0,0]])
+            model=Projector(points,poses,az,ranges,.5,native_ranges=native,fractional_samples=samples)
+            dense=np.column_stack([model.forward(x).ravel() for x in np.eye(2)])
+            np.testing.assert_allclose(np.sum(dense**2,axis=0),1.,atol=1e-12)
+            rng=np.random.default_rng(3);x=rng.normal(size=2);y=rng.normal(size=model.shape)
+            np.testing.assert_allclose(np.sum(model.forward(x)*y),x@model.adjoint(y),rtol=1e-12,atol=1e-12)
+            for index,distance in enumerate((3.15,3.157)):
+                expected=abs(np.fft.fft(w*np.exp(2j*np.pi*f*distance/.1/80)))**2/80
+                expected=expected.reshape(-1,4).mean(1);predicted=model.forward(np.eye(2)[index])[0].sum(1)
+                predicted/=np.linalg.norm(predicted);reference=expected/np.linalg.norm(expected)
+                if index==0:np.testing.assert_allclose(predicted,reference,atol=1e-12)
+                bound=curvature/(8*samples*samples)
+                self.assertLessEqual(np.linalg.norm(predicted-reference),2*np.sqrt(len(ranges))*bound/np.linalg.norm(expected))
+
+    def test_fractional_response_requires_a_calibrated_uniform_source_grid(self):
+        packet=self.packet();poses=[dict(position=p,rotation=q) for p,q in zip(packet['positions'],packet['rotations'])]
+        kwargs=dict(points=np.array([[2.,0,0]]),poses=poses,azimuth=packet['azimuth'],ranges=packet['ranges'],vertical_fov=.5,fractional_samples=8)
+        with self.assertRaisesRegex(ValueError,'native_ranges_required'):Projector(**kwargs)
+        irregular=packet['native_ranges'].copy();irregular[3]+=.001
+        with self.assertRaisesRegex(ValueError,'source_uniform_range_grid_required'):Projector(**kwargs,native_ranges=irregular)
+
     def test_export_preserves_all_positive_cells_with_explicit_scope(self):
         result=dict(points=np.arange(12).reshape(4,3),coefficient=np.array([1.,0.,.01,2.]),albedo=np.array([2.,0.,.02,4.]),cell_m=np.full(4,.1))
         with tempfile.TemporaryDirectory() as folder:

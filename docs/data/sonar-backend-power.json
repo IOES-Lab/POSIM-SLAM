@@ -1,0 +1,41 @@
+{
+  "scope": "Report power scaling and range shape of the selected POSIM WGPU C ABI.\n\nRequires a matching sonar_wgpu_compute/sonar_wgpu_free library, NumPy and SciPy.\nThe same seed/frame sequence is reused across distances. No simulator, scene,\nnavigation estimate or hardware calibration enters this isolated return test.\n",
+  "map_qualified": false,
+  "hardware_calibrated": false,
+  "library_sha256": "afbcfe602dc5f27d4f10fb47618ad9a1ba15a60ea41298dc6860aab51377d2b2",
+  "source_sha256": "7910211f2504939d569c1e7beb46077723f145caa21098301158afbd80b0c0f1",
+  "frames_per_distance": 64,
+  "shared_seed_sequence_across_distances": true,
+  "ideal_gaussian_mean_ratio_interval_99": [
+    0.707368209711181,
+    1.3512302253495811
+  ],
+  "quantization": "actual backend fixed-point and floating-point errors retained",
+  "post_dft_amplitude_scale": "bandwidth / native_bins",
+  "rows": [
+    {
+      "range_m": 4.0,
+      "mean_integrated_power": 6779094.6274353955,
+      "expected_mean_integrated_power": 7379926.305918135,
+      "mean_power_ratio": 0.9185856804557901,
+      "normalized_shape_l2_median": 0.00022963043376472817,
+      "normalized_shape_l2_max": 0.0017174525979928295
+    },
+    {
+      "range_m": 5.35,
+      "mean_integrated_power": 2772141.5053944765,
+      "expected_mean_integrated_power": 3017259.4280634597,
+      "mean_power_ratio": 0.9187614030172059,
+      "normalized_shape_l2_median": 0.0003428045858285191,
+      "normalized_shape_l2_max": 0.003214341645473545
+    },
+    {
+      "range_m": 7.17,
+      "mean_integrated_power": 1117933.3552200738,
+      "expected_mean_integrated_power": 1216832.868260507,
+      "mean_power_ratio": 0.9187238316616049,
+      "normalized_shape_l2_median": 0.0005529982413619758,
+      "normalized_shape_l2_max": 0.00985077799897878
+    }
+  ]
+}

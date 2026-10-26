@@ -1,0 +1,77 @@
+{
+  "scope": "New simulated measurement record; fixed estimated camera/IMU/DVL navigation; pressure selects immersion only; no truth in reconstruction input",
+  "engine_revision": "8c47601c7dd4729e3edeabef79665760268fdbc4",
+  "worker_sha256": "5f9e9066df0c5417da545296b5c878f09c3ac1e1510f73c1d4c039451281cf91",
+  "planned_depths_m": [
+    1.2,
+    2.4
+  ],
+  "minimum_planned_clearance_m": 1.1739083414588305,
+  "range_response": "fractional-hamming",
+  "range_power": 3.0,
+  "trajectory_metrics": {
+    "evaluated": true,
+    "states": 300,
+    "duration_s": 59.800000000000004,
+    "evaluation_alignment": {
+      "rotation": [
+        [
+          0.9745414459278375,
+          0.22420742665861831,
+          0.0
+        ],
+        [
+          -0.22420742665861831,
+          0.9745414459278375,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "translation": [
+        -0.041900806408092545,
+        0.011842061561879235,
+        -0.21189346055553304
+      ],
+      "scale": 1.0
+    },
+    "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+    "position_rmse_m": 0.048395674519790204,
+    "position_max_m": 0.08857223299541278,
+    "rotation_rmse_rad": 0.021559001425508813,
+    "rotation_max_rad": 0.03384162763288382,
+    "truth_distance_m": 16.99542061215437,
+    "estimated_distance_m": 16.989187934623004,
+    "rpe_1s_pairs": 295,
+    "rpe_1s_position_rmse_m": 0.007815019207277278,
+    "rpe_1s_rotation_rmse_rad": 0.0035801179474408314,
+    "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+  },
+  "cell_metrics": {
+    "positive_cells": 317,
+    "cell_m_range": [
+      0.05,
+      0.1
+    ],
+    "surface_distance_m": {
+      "median": 0.045500889328376815,
+      "p90": 0.09811354858943577,
+      "maximum": 0.15072620785049562
+    },
+    "within_10cm": 288,
+    "nearest_surface_counts": {
+      "acoustic_validation_target_0": 34,
+      "acoustic_validation_target_1": 19,
+      "acoustic_validation_target_2": 235,
+      "acoustic_validation_wall_0": 0,
+      "acoustic_validation_wall_1": 0,
+      "seabed": 0
+    }
+  },
+  "input_sha256": "0d4dd159143a92e51ff92d25183c805d2bd89e589468fef684c785e8e4ec62b0",
+  "map_qualified": false,
+  "navigation_ready": false
+}

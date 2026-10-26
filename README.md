@@ -413,3 +413,6 @@ Use `--first-image-stamp-ns` with `--gravity-seed` to reproduce a recorded live 
 [Fixed-pose sonar power reconstruction / 고정 자세 소나 강도 복원](docs/diagnostics/sonar-power-volume.md)
 provides a separate bounded diagnostic, numeric input fixture and complete candidate-cell PLY.
 It does not change the runtime estimator or qualify a navigation map.
+
+[Sonar forward-model checks and deeper survey / 소나 관측 모델 검사와 깊은 수심 관측](docs/diagnostics/sonar-forward-model.md)
+include an optional fractional range response and a matching WGPU power probe.

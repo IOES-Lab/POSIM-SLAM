@@ -20,6 +20,12 @@ Its header identifies experimental scattering cells and sets map qualification
 and navigation readiness to false. [Recorded PLY](../data/sonar-power-volume.ply)
 and [input provenance](../data/sonar-power-volume-provenance.json) are supplied.
 
+Use `--range-response fractional-hamming` for the optional continuous-delay
+window-power table. It samples each native bin eight times and keeps the full
+periodic response. This offline option costs more computation; the default
+integer-bin proxy is unchanged. [Source checks and deeper survey](sonar-forward-model.md)
+compare both responses and retain the failed fixed-area control.
+
 ## Inputs and method
 
 The numeric fixture contains 24 measured sonar frames and synchronized

@@ -1,0 +1,1834 @@
+{
+  "scope": "Compare source frequency-window power with the frozen inverse range proxy.",
+  "native_bins": 399,
+  "subsamples": 8,
+  "source": "periodic Hamming, actual plugin convention; continuous delay explicit DFT reference",
+  "cases": 260,
+  "linear_grouped_relative_l2_max": 0.08817558668647674,
+  "lut_grouped_relative_l2_max": 0.003736895028230832,
+  "native_lut_absolute_error_bound": 0.004546416318746911,
+  "native_lut_measured_max_abs": 0.0044566879316321195,
+  "rows": [
+    {
+      "bin_phase_mod4": 0.0,
+      "fraction": 0.0,
+      "coarse_linear_relative_l2": 8.134180860949863e-15,
+      "fractional_lut_relative_l2": 8.393054155661335e-15,
+      "native_lut_max_abs": 5.3013149425851225e-15
+    },
+    {
+      "bin_phase_mod4": 0.015625,
+      "fraction": 0.015625,
+      "coarse_linear_relative_l2": 0.008748370955842242,
+      "fractional_lut_relative_l2": 0.0015626701537264818,
+      "native_lut_max_abs": 0.001963451776551106
+    },
+    {
+      "bin_phase_mod4": 0.03125,
+      "fraction": 0.03125,
+      "coarse_linear_relative_l2": 0.016924646133721823,
+      "fractional_lut_relative_l2": 0.0026532505856205505,
+      "native_lut_max_abs": 0.0033593075885701706
+    },
+    {
+      "bin_phase_mod4": 0.046875,
+      "fraction": 0.046875,
+      "coarse_linear_relative_l2": 0.02454776254123696,
+      "fractional_lut_relative_l2": 0.0032845369776620436,
+      "native_lut_max_abs": 0.0041893809738875465
+    },
+    {
+      "bin_phase_mod4": 0.0625,
+      "fraction": 0.0625,
+      "coarse_linear_relative_l2": 0.03163667569571485,
+      "fractional_lut_relative_l2": 0.0034693734150818933,
+      "native_lut_max_abs": 0.0044566879316317864
+    },
+    {
+      "bin_phase_mod4": 0.078125,
+      "fraction": 0.078125,
+      "coarse_linear_relative_l2": 0.038210261706061725,
+      "fractional_lut_relative_l2": 0.0032205972277433463,
+      "native_lut_max_abs": 0.0041654371052299854
+    },
+    {
+      "bin_phase_mod4": 0.09375,
+      "fraction": 0.09375,
+      "coarse_linear_relative_l2": 0.044287236787853186,
+      "fractional_lut_relative_l2": 0.00255099474990491,
+      "native_lut_max_abs": 0.003321016096230145
+    },
+    {
+      "bin_phase_mod4": 0.109375,
+      "fraction": 0.109375,
+      "coarse_linear_relative_l2": 0.04988609197632563,
+      "fractional_lut_relative_l2": 0.0014732664486487436,
+      "native_lut_max_abs": 0.0019299739662193005
+    },
+    {
+      "bin_phase_mod4": 0.125,
+      "fraction": 0.125,
+      "coarse_linear_relative_l2": 0.05502504097210349,
+      "fractional_lut_relative_l2": 6.6242530045151824e-15,
+      "native_lut_max_abs": 7.688294445529209e-15
+    },
+    {
+      "bin_phase_mod4": 0.140625,
+      "fraction": 0.140625,
+      "coarse_linear_relative_l2": 0.05972197923454011,
+      "fractional_lut_relative_l2": 0.0013083766851180267,
+      "native_lut_max_abs": 0.0017355534129681605
+    },
+    {
+      "bin_phase_mod4": 0.15625,
+      "fraction": 0.15625,
+      "coarse_linear_relative_l2": 0.0639944526192262,
+      "fractional_lut_relative_l2": 0.0022142942446234156,
+      "native_lut_max_abs": 0.00295087113505188
+    },
+    {
+      "bin_phase_mod4": 0.171875,
+      "fraction": 0.171875,
+      "coarse_linear_relative_l2": 0.06785963403470159,
+      "fractional_lut_relative_l2": 0.002732402000973972,
+      "native_lut_max_abs": 0.0036568997322946606
+    },
+    {
+      "bin_phase_mod4": 0.1875,
+      "fraction": 0.1875,
+      "coarse_linear_relative_l2": 0.07133430676428824,
+      "fractional_lut_relative_l2": 0.002877090859414928,
+      "native_lut_max_abs": 0.0038656056555967933
+    },
+    {
+      "bin_phase_mod4": 0.203125,
+      "fraction": 0.203125,
+      "coarse_linear_relative_l2": 0.07443485326026635,
+      "fractional_lut_relative_l2": 0.0026624840413274602,
+      "native_lut_max_abs": 0.003589936933635407
+    },
+    {
+      "bin_phase_mod4": 0.21875,
+      "fraction": 0.21875,
+      "coarse_linear_relative_l2": 0.07717724836753269,
+      "fractional_lut_relative_l2": 0.002102431178451024,
+      "native_lut_max_abs": 0.002843781873906881
+    },
+    {
+      "bin_phase_mod4": 0.234375,
+      "fraction": 0.234375,
+      "coarse_linear_relative_l2": 0.07957705607193268,
+      "fractional_lut_relative_l2": 0.0012105050060668074,
+      "native_lut_max_abs": 0.0016419249419785675
+    },
+    {
+      "bin_phase_mod4": 0.25,
+      "fraction": 0.25,
+      "coarse_linear_relative_l2": 0.08164942899438837,
+      "fractional_lut_relative_l2": 3.4636976714990754e-15,
+      "native_lut_max_abs": 8.43769498715119e-15
+    },
+    {
+      "bin_phase_mod4": 0.265625,
+      "fraction": 0.265625,
+      "coarse_linear_relative_l2": 0.08340910996610151,
+      "fractional_lut_relative_l2": 0.0009865372721721366,
+      "native_lut_max_abs": 0.0012922371306480773
+    },
+    {
+      "bin_phase_mod4": 0.28125,
+      "fraction": 0.28125,
+      "coarse_linear_relative_l2": 0.08487043512286407,
+      "fractional_lut_relative_l2": 0.00166410254027193,
+      "native_lut_max_abs": 0.0021780230722588945
+    },
+    {
+      "bin_phase_mod4": 0.296875,
+      "fraction": 0.296875,
+      "coarse_linear_relative_l2": 0.08604733804866058,
+      "fractional_lut_relative_l2": 0.0020466983109072223,
+      "native_lut_max_abs": 0.0026752358229897855
+    },
+    {
+      "bin_phase_mod4": 0.3125,
+      "fraction": 0.3125,
+      "coarse_linear_relative_l2": 0.08695335458098537,
+      "fractional_lut_relative_l2": 0.0021479649139916025,
+      "native_lut_max_abs": 0.0028023932806252594
+    },
+    {
+      "bin_phase_mod4": 0.328125,
+      "fraction": 0.328125,
+      "coarse_linear_relative_l2": 0.08760162796335202,
+      "fractional_lut_relative_l2": 0.0019811827563403113,
+      "native_lut_max_abs": 0.0025785963147009205
+    },
+    {
+      "bin_phase_mod4": 0.34375,
+      "fraction": 0.34375,
+      "coarse_linear_relative_l2": 0.08800491409519921,
+      "fractional_lut_relative_l2": 0.001559274763884871,
+      "native_lut_max_abs": 0.0020234704631163503
+    },
+    {
+      "bin_phase_mod4": 0.359375,
+      "fraction": 0.359375,
+      "coarse_linear_relative_l2": 0.08817558668647674,
+      "fractional_lut_relative_l2": 0.0008948088126415024,
+      "native_lut_max_abs": 0.001157106484439785
+    },
+    {
+      "bin_phase_mod4": 0.375,
+      "fraction": 0.375,
+      "coarse_linear_relative_l2": 0.08812564217430867,
+      "fractional_lut_relative_l2": 2.2862548374416428e-15,
+      "native_lut_max_abs": 9.270362255620057e-15
+    },
+    {
+      "bin_phase_mod4": 0.390625,
+      "fraction": 0.390625,
+      "coarse_linear_relative_l2": 0.08786670430291886,
+      "fractional_lut_relative_l2": 0.0006677125427218303,
+      "native_lut_max_abs": 0.0007203727502144153
+    },
+    {
+      "bin_phase_mod4": 0.40625,
+      "fraction": 0.40625,
+      "coarse_linear_relative_l2": 0.08741002830603835,
+      "fractional_lut_relative_l2": 0.001121817431726508,
+      "native_lut_max_abs": 0.0011919642595937807
+    },
+    {
+      "bin_phase_mod4": 0.421875,
+      "fraction": 0.421875,
+      "coarse_linear_relative_l2": 0.08676650466375918,
+      "fractional_lut_relative_l2": 0.0013742321901482784,
+      "native_lut_max_abs": 0.0014361170312123805
+    },
+    {
+      "bin_phase_mod4": 0.4375,
+      "fraction": 0.4375,
+      "coarse_linear_relative_l2": 0.08594666243373102,
+      "fractional_lut_relative_l2": 0.0014364713776915759,
+      "native_lut_max_abs": 0.0014743326210916452
+    },
+    {
+      "bin_phase_mod4": 0.453125,
+      "fraction": 0.453125,
+      "coarse_linear_relative_l2": 0.08496067218012533,
+      "fractional_lut_relative_l2": 0.0013196491674835444,
+      "native_lut_max_abs": 0.001328210267111829
+    },
+    {
+      "bin_phase_mod4": 0.46875,
+      "fraction": 0.46875,
+      "coarse_linear_relative_l2": 0.08381834854320695,
+      "fractional_lut_relative_l2": 0.0010344817604998047,
+      "native_lut_max_abs": 0.0010193860127867271
+    },
+    {
+      "bin_phase_mod4": 0.484375,
+      "fraction": 0.484375,
+      "coarse_linear_relative_l2": 0.08252915250804713,
+      "fractional_lut_relative_l2": 0.0005912896796858702,
+      "native_lut_max_abs": 0.0005694725500962061
+    },
+    {
+      "bin_phase_mod4": 0.5,
+      "fraction": 0.5,
+      "coarse_linear_relative_l2": 0.08110219344310977,
+      "fractional_lut_relative_l2": 9.397585114593954e-16,
+      "native_lut_max_abs": 9.492406860545088e-15
+    },
+    {
+      "bin_phase_mod4": 0.515625,
+      "fraction": 0.515625,
+      "coarse_linear_relative_l2": 0.0795462309884384,
+      "fractional_lut_relative_l2": 0.00040077298430897344,
+      "native_lut_max_abs": 0.0005694725500775544
+    },
+    {
+      "bin_phase_mod4": 0.53125,
+      "fraction": 0.53125,
+      "coarse_linear_relative_l2": 0.07786967687921335,
+      "fractional_lut_relative_l2": 0.0006699595276219587,
+      "native_lut_max_abs": 0.0010193860127680754
+    },
+    {
+      "bin_phase_mod4": 0.546875,
+      "fraction": 0.546875,
+      "coarse_linear_relative_l2": 0.07608059679375022,
+      "fractional_lut_relative_l2": 0.0008166081389974942,
+      "native_lut_max_abs": 0.0013282102670952867
+    },
+    {
+      "bin_phase_mod4": 0.5625,
+      "fraction": 0.5625,
+      "coarse_linear_relative_l2": 0.0741867123158244,
+      "fractional_lut_relative_l2": 0.0008493566541059287,
+      "native_lut_max_abs": 0.0014743326210739927
+    },
+    {
+      "bin_phase_mod4": 0.578125,
+      "fraction": 0.578125,
+      "coarse_linear_relative_l2": 0.07219540309977972,
+      "fractional_lut_relative_l2": 0.0007764367997619073,
+      "native_lut_max_abs": 0.0014361170311957272
+    },
+    {
+      "bin_phase_mod4": 0.59375,
+      "fraction": 0.59375,
+      "coarse_linear_relative_l2": 0.07011370932336183,
+      "fractional_lut_relative_l2": 0.0006056791516163343,
+      "native_lut_max_abs": 0.0011919642595771274
+    },
+    {
+      "bin_phase_mod4": 0.609375,
+      "fraction": 0.609375,
+      "coarse_linear_relative_l2": 0.06794833450795919,
+      "fractional_lut_relative_l2": 0.0003445185459343909,
+      "native_lut_max_abs": 0.000720372750198095
+    },
+    {
+      "bin_phase_mod4": 0.625,
+      "fraction": 0.625,
+      "coarse_linear_relative_l2": 0.06570564877905896,
+      "fractional_lut_relative_l2": 6.770122716050004e-16,
+      "native_lut_max_abs": 8.548717289613705e-15
+    },
+    {
+      "bin_phase_mod4": 0.640625,
+      "fraction": 0.640625,
+      "coarse_linear_relative_l2": 0.06339169263153915,
+      "fractional_lut_relative_l2": 0.00020950832188132776,
+      "native_lut_max_abs": 0.0011571064844232426
+    },
+    {
+      "bin_phase_mod4": 0.65625,
+      "fraction": 0.65625,
+      "coarse_linear_relative_l2": 0.06101218125510704,
+      "fractional_lut_relative_l2": 0.00034805802608487693,
+      "native_lut_max_abs": 0.00202347046310114
+    },
+    {
+      "bin_phase_mod4": 0.671875,
+      "fraction": 0.671875,
+      "coarse_linear_relative_l2": 0.0585725094650596,
+      "fractional_lut_relative_l2": 0.0004216511946604048,
+      "native_lut_max_abs": 0.0025785963146846003
+    },
+    {
+      "bin_phase_mod4": 0.6875,
+      "fraction": 0.6875,
+      "coarse_linear_relative_l2": 0.05607775727272906,
+      "fractional_lut_relative_l2": 0.00043591984918777327,
+      "native_lut_max_abs": 0.0028023932806100493
+    },
+    {
+      "bin_phase_mod4": 0.703125,
+      "fraction": 0.703125,
+      "coarse_linear_relative_l2": 0.05353269611880095,
+      "fractional_lut_relative_l2": 0.00039613568714022573,
+      "native_lut_max_abs": 0.0026752358229751305
+    },
+    {
+      "bin_phase_mod4": 0.71875,
+      "fraction": 0.71875,
+      "coarse_linear_relative_l2": 0.05094179578131168,
+      "fractional_lut_relative_l2": 0.00030722043447162705,
+      "native_lut_max_abs": 0.002178023072245794
+    },
+    {
+      "bin_phase_mod4": 0.734375,
+      "fraction": 0.734375,
+      "coarse_linear_relative_l2": 0.04830923195878724,
+      "fractional_lut_relative_l2": 0.00017375679904591692,
+      "native_lut_max_abs": 0.0012922371306346436
+    },
+    {
+      "bin_phase_mod4": 0.75,
+      "fraction": 0.75,
+      "coarse_linear_relative_l2": 0.04563889451787744,
+      "fractional_lut_relative_l2": 1.373227373388624e-16,
+      "native_lut_max_abs": 8.493206138382448e-15
+    },
+    {
+      "bin_phase_mod4": 0.765625,
+      "fraction": 0.765625,
+      "coarse_linear_relative_l2": 0.042934396384114795,
+      "fractional_lut_relative_l2": 9.368432761518365e-05,
+      "native_lut_max_abs": 0.001641924941966466
+    },
+    {
+      "bin_phase_mod4": 0.78125,
+      "fraction": 0.78125,
+      "coarse_linear_relative_l2": 0.04019908304431208,
+      "fractional_lut_relative_l2": 0.00015455155328894548,
+      "native_lut_max_abs": 0.002843781873896667
+    },
+    {
+      "bin_phase_mod4": 0.796875,
+      "fraction": 0.796875,
+      "coarse_linear_relative_l2": 0.03743604261967224,
+      "fractional_lut_relative_l2": 0.00018596275858942524,
+      "native_lut_max_abs": 0.003589936933624638
+    },
+    {
+      "bin_phase_mod4": 0.8125,
+      "fraction": 0.8125,
+      "coarse_linear_relative_l2": 0.0346481164601513,
+      "fractional_lut_relative_l2": 0.0001909989286558076,
+      "native_lut_max_abs": 0.003865605655586468
+    },
+    {
+      "bin_phase_mod4": 0.828125,
+      "fraction": 0.828125,
+      "coarse_linear_relative_l2": 0.031837910202951174,
+      "fractional_lut_relative_l2": 0.0001724749389883063,
+      "native_lut_max_abs": 0.0036568997322856678
+    },
+    {
+      "bin_phase_mod4": 0.84375,
+      "fraction": 0.84375,
+      "coarse_linear_relative_l2": 0.02900780523148077,
+      "fractional_lut_relative_l2": 0.00013295381724399543,
+      "native_lut_max_abs": 0.0029508711350431094
+    },
+    {
+      "bin_phase_mod4": 0.859375,
+      "fraction": 0.859375,
+      "coarse_linear_relative_l2": 0.026159970465595955,
+      "fractional_lut_relative_l2": 7.47612124229572e-05,
+      "native_lut_max_abs": 0.001735553412960611
+    },
+    {
+      "bin_phase_mod4": 0.875,
+      "fraction": 0.875,
+      "coarse_linear_relative_l2": 0.023296374409597084,
+      "fractional_lut_relative_l2": 1.124483669370782e-16,
+      "native_lut_max_abs": 7.299716386910404e-15
+    },
+    {
+      "bin_phase_mod4": 0.890625,
+      "fraction": 0.890625,
+      "coarse_linear_relative_l2": 0.020418797381258312,
+      "fractional_lut_relative_l2": 3.633843180318159e-05,
+      "native_lut_max_abs": 0.0019299739662131943
+    },
+    {
+      "bin_phase_mod4": 0.90625,
+      "fraction": 0.90625,
+      "coarse_linear_relative_l2": 0.01752884384310999,
+      "fractional_lut_relative_l2": 5.968129911469669e-05,
+      "native_lut_max_abs": 0.003321016096224705
+    },
+    {
+      "bin_phase_mod4": 0.921875,
+      "fraction": 0.921875,
+      "coarse_linear_relative_l2": 0.014627954756303905,
+      "fractional_lut_relative_l2": 7.152867186589065e-05,
+      "native_lut_max_abs": 0.0041654371052254335
+    },
+    {
+      "bin_phase_mod4": 0.9375,
+      "fraction": 0.9375,
+      "coarse_linear_relative_l2": 0.0117174198775861,
+      "fractional_lut_relative_l2": 7.321406181528444e-05,
+      "native_lut_max_abs": 0.004456687931628345
+    },
+    {
+      "bin_phase_mod4": 0.953125,
+      "fraction": 0.953125,
+      "coarse_linear_relative_l2": 0.00879838992115436,
+      "fractional_lut_relative_l2": 6.591927182606013e-05,
+      "native_lut_max_abs": 0.004189380973884882
+    },
+    {
+      "bin_phase_mod4": 0.96875,
+      "fraction": 0.96875,
+      "coarse_linear_relative_l2": 0.005871888509441255,
+      "fractional_lut_relative_l2": 5.068898754643978e-05,
+      "native_lut_max_abs": 0.0033593075885686163
+    },
+    {
+      "bin_phase_mod4": 0.984375,
+      "fraction": 0.984375,
+      "coarse_linear_relative_l2": 0.0029388238400374442,
+      "fractional_lut_relative_l2": 2.8445006777391663e-05,
+      "native_lut_max_abs": 0.001963451776550107
+    },
+    {
+      "bin_phase_mod4": 1.0,
+      "fraction": 1.0,
+      "coarse_linear_relative_l2": 4.440892098500624e-16,
+      "fractional_lut_relative_l2": 2.220446049250312e-16,
+      "native_lut_max_abs": 5.689893001203927e-15
+    },
+    {
+      "bin_phase_mod4": 1.0,
+      "fraction": 0.0,
+      "coarse_linear_relative_l2": 4.440892098500624e-16,
+      "fractional_lut_relative_l2": 2.220446049250312e-16,
+      "native_lut_max_abs": 5.689893001203927e-15
+    },
+    {
+      "bin_phase_mod4": 1.015625,
+      "fraction": 0.015625,
+      "coarse_linear_relative_l2": 2.6606546995900147e-06,
+      "fractional_lut_relative_l2": 1.3862903892345987e-05,
+      "native_lut_max_abs": 0.001963451776550662
+    },
+    {
+      "bin_phase_mod4": 1.03125,
+      "fraction": 0.03125,
+      "coarse_linear_relative_l2": 1.024489218465619e-05,
+      "fractional_lut_relative_l2": 2.282461865042573e-05,
+      "native_lut_max_abs": 0.0033593075885701706
+    },
+    {
+      "bin_phase_mod4": 1.046875,
+      "fraction": 0.046875,
+      "coarse_linear_relative_l2": 2.2206352599429655e-05,
+      "fractional_lut_relative_l2": 2.7415409552845045e-05,
+      "native_lut_max_abs": 0.0041893809738878796
+    },
+    {
+      "bin_phase_mod4": 1.0625,
+      "fraction": 0.0625,
+      "coarse_linear_relative_l2": 3.805672731598425e-05,
+      "fractional_lut_relative_l2": 2.81095921714852e-05,
+      "native_lut_max_abs": 0.0044566879316317864
+    },
+    {
+      "bin_phase_mod4": 1.078125,
+      "fraction": 0.078125,
+      "coarse_linear_relative_l2": 5.735548586100011e-05,
+      "fractional_lut_relative_l2": 2.5335999431823156e-05,
+      "native_lut_max_abs": 0.004165437105229541
+    },
+    {
+      "bin_phase_mod4": 1.09375,
+      "fraction": 0.09375,
+      "coarse_linear_relative_l2": 7.970070198088698e-05,
+      "fractional_lut_relative_l2": 1.9487220171100882e-05,
+      "native_lut_max_abs": 0.003321016096229812
+    },
+    {
+      "bin_phase_mod4": 1.109375,
+      "fraction": 0.109375,
+      "coarse_linear_relative_l2": 0.00010472100591502326,
+      "fractional_lut_relative_l2": 1.0927596626224371e-05,
+      "native_lut_max_abs": 0.0019299739662189674
+    },
+    {
+      "bin_phase_mod4": 1.125,
+      "fraction": 0.125,
+      "coarse_linear_relative_l2": 0.00013206866375622666,
+      "fractional_lut_relative_l2": 1.1281043467218007e-16,
+      "native_lut_max_abs": 7.93809462606987e-15
+    },
+    {
+      "bin_phase_mod4": 1.140625,
+      "fraction": 0.140625,
+      "coarse_linear_relative_l2": 0.00016141376107417212,
+      "fractional_lut_relative_l2": 4.0785447738052375e-06,
+      "native_lut_max_abs": 0.0017355534129683825
+    },
+    {
+      "bin_phase_mod4": 1.15625,
+      "fraction": 0.15625,
+      "coarse_linear_relative_l2": 0.00019243944756565425,
+      "fractional_lut_relative_l2": 6.414493822577088e-06,
+      "native_lut_max_abs": 0.00295087113505188
+    },
+    {
+      "bin_phase_mod4": 1.171875,
+      "fraction": 0.171875,
+      "coarse_linear_relative_l2": 0.00022483818308824933,
+      "fractional_lut_relative_l2": 7.304841109219611e-06,
+      "native_lut_max_abs": 0.0036568997322946606
+    },
+    {
+      "bin_phase_mod4": 1.1875,
+      "fraction": 0.1875,
+      "coarse_linear_relative_l2": 0.0002583089130504374,
+      "fractional_lut_relative_l2": 7.040874519340282e-06,
+      "native_lut_max_abs": 0.00386560565559646
+    },
+    {
+      "bin_phase_mod4": 1.203125,
+      "fraction": 0.203125,
+      "coarse_linear_relative_l2": 0.00029255509264932935,
+      "fractional_lut_relative_l2": 5.908046196528422e-06,
+      "native_lut_max_abs": 0.003589936933635074
+    },
+    {
+      "bin_phase_mod4": 1.21875,
+      "fraction": 0.21875,
+      "coarse_linear_relative_l2": 0.0003272834744309977,
+      "fractional_lut_relative_l2": 4.184005528041669e-06,
+      "native_lut_max_abs": 0.002843781873907547
+    },
+    {
+      "bin_phase_mod4": 1.234375,
+      "fraction": 0.234375,
+      "coarse_linear_relative_l2": 0.0003622035715052171,
+      "fractional_lut_relative_l2": 2.133802107327254e-06,
+      "native_lut_max_abs": 0.0016419249419780124
+    },
+    {
+      "bin_phase_mod4": 1.25,
+      "fraction": 0.25,
+      "coarse_linear_relative_l2": 0.000397027708944968,
+      "fractional_lut_relative_l2": 1.1180355580791696e-16,
+      "native_lut_max_abs": 8.548717289613705e-15
+    },
+    {
+      "bin_phase_mod4": 1.265625,
+      "fraction": 0.265625,
+      "coarse_linear_relative_l2": 0.0004314715778057539,
+      "fractional_lut_relative_l2": 4.214128350544429e-06,
+      "native_lut_max_abs": 0.0012922371306486324
+    },
+    {
+      "bin_phase_mod4": 1.28125,
+      "fraction": 0.28125,
+      "coarse_linear_relative_l2": 0.0004652552093052511,
+      "fractional_lut_relative_l2": 7.741509994394696e-06,
+      "native_lut_max_abs": 0.0021780230722591165
+    },
+    {
+      "bin_phase_mod4": 1.296875,
+      "fraction": 0.296875,
+      "coarse_linear_relative_l2": 0.0004981042906272202,
+      "fractional_lut_relative_l2": 1.0314754229535264e-05,
+      "native_lut_max_abs": 0.0026752358229902296
+    },
+    {
+      "bin_phase_mod4": 1.3125,
+      "fraction": 0.3125,
+      "coarse_linear_relative_l2": 0.000529751748180319,
+      "fractional_lut_relative_l2": 1.1671502358394116e-05,
+      "native_lut_max_abs": 0.0028023932806255925
+    },
+    {
+      "bin_phase_mod4": 1.328125,
+      "fraction": 0.328125,
+      "coarse_linear_relative_l2": 0.0005599395287351681,
+      "fractional_lut_relative_l2": 1.1556929842589692e-05,
+      "native_lut_max_abs": 0.0025785963146999213
+    },
+    {
+      "bin_phase_mod4": 1.34375,
+      "fraction": 0.34375,
+      "coarse_linear_relative_l2": 0.0005884205135522082,
+      "fractional_lut_relative_l2": 9.726152237662519e-06,
+      "native_lut_max_abs": 0.0020234704631170164
+    },
+    {
+      "bin_phase_mod4": 1.359375,
+      "fraction": 0.359375,
+      "coarse_linear_relative_l2": 0.000614960505297122,
+      "fractional_lut_relative_l2": 5.94654940073996e-06,
+      "native_lut_max_abs": 0.0011571064844382306
+    },
+    {
+      "bin_phase_mod4": 1.375,
+      "fraction": 0.375,
+      "coarse_linear_relative_l2": 0.000639340232158744,
+      "fractional_lut_relative_l2": 1.1693230651236265e-16,
+      "native_lut_max_abs": 9.547918011776346e-15
+    },
+    {
+      "bin_phase_mod4": 1.390625,
+      "fraction": 0.390625,
+      "coarse_linear_relative_l2": 0.0006613573182086399,
+      "fractional_lut_relative_l2": 9.86895012113314e-06,
+      "native_lut_max_abs": 0.000720372750213083
+    },
+    {
+      "bin_phase_mod4": 1.40625,
+      "fraction": 0.40625,
+      "coarse_linear_relative_l2": 0.000680828173586183,
+      "fractional_lut_relative_l2": 1.718528924532551e-05,
+      "native_lut_max_abs": 0.0011919642595935587
+    },
+    {
+      "bin_phase_mod4": 1.421875,
+      "fraction": 0.421875,
+      "coarse_linear_relative_l2": 0.000697589762706438,
+      "fractional_lut_relative_l2": 2.178647448852661e-05,
+      "native_lut_max_abs": 0.0014361170312120475
+    },
+    {
+      "bin_phase_mod4": 1.4375,
+      "fraction": 0.4375,
+      "coarse_linear_relative_l2": 0.0007115012132843375,
+      "fractional_lut_relative_l2": 2.353213971016285e-05,
+      "native_lut_max_abs": 0.0014743326210923113
+    },
+    {
+      "bin_phase_mod4": 1.453125,
+      "fraction": 0.453125,
+      "coarse_linear_relative_l2": 0.0007224452336871773,
+      "fractional_lut_relative_l2": 2.2305484063026148e-05,
+      "native_lut_max_abs": 0.0013282102671127172
+    },
+    {
+      "bin_phase_mod4": 1.46875,
+      "fraction": 0.46875,
+      "coarse_linear_relative_l2": 0.0007303293108635388,
+      "fractional_lut_relative_l2": 1.801444452812855e-05,
+      "native_lut_max_abs": 0.0010193860127867271
+    },
+    {
+      "bin_phase_mod4": 1.484375,
+      "fraction": 0.484375,
+      "coarse_linear_relative_l2": 0.0007350866660009752,
+      "fractional_lut_relative_l2": 1.0592630076860704e-05,
+      "native_lut_max_abs": 0.0005694725500960951
+    },
+    {
+      "bin_phase_mod4": 1.5,
+      "fraction": 0.5,
+      "coarse_linear_relative_l2": 0.0007366769500081783,
+      "fractional_lut_relative_l2": 1.1211855070448942e-16,
+      "native_lut_max_abs": 8.992806499463768e-15
+    },
+    {
+      "bin_phase_mod4": 1.515625,
+      "fraction": 0.515625,
+      "coarse_linear_relative_l2": 0.0007350866659606299,
+      "fractional_lut_relative_l2": 1.059263007005918e-05,
+      "native_lut_max_abs": 0.0005694725500779985
+    },
+    {
+      "bin_phase_mod4": 1.53125,
+      "fraction": 0.53125,
+      "coarse_linear_relative_l2": 0.0007303293107842304,
+      "fractional_lut_relative_l2": 1.801444451592621e-05,
+      "native_lut_max_abs": 0.0010193860127686305
+    },
+    {
+      "bin_phase_mod4": 1.546875,
+      "fraction": 0.546875,
+      "coarse_linear_relative_l2": 0.0007224452335700593,
+      "fractional_lut_relative_l2": 2.2305484046700902e-05,
+      "native_lut_max_abs": 0.0013282102670947316
+    },
+    {
+      "bin_phase_mod4": 1.5625,
+      "fraction": 0.5625,
+      "coarse_linear_relative_l2": 0.000711501213130955,
+      "fractional_lut_relative_l2": 2.3532139691062717e-05,
+      "native_lut_max_abs": 0.0014743326210731045
+    },
+    {
+      "bin_phase_mod4": 1.578125,
+      "fraction": 0.578125,
+      "coarse_linear_relative_l2": 0.0006975897625191167,
+      "fractional_lut_relative_l2": 2.178647446931312e-05,
+      "native_lut_max_abs": 0.001436117031195172
+    },
+    {
+      "bin_phase_mod4": 1.59375,
+      "fraction": 0.59375,
+      "coarse_linear_relative_l2": 0.0006808281733683008,
+      "fractional_lut_relative_l2": 1.7185289228961506e-05,
+      "native_lut_max_abs": 0.0011919642595763502
+    },
+    {
+      "bin_phase_mod4": 1.609375,
+      "fraction": 0.609375,
+      "coarse_linear_relative_l2": 0.0006613573179634081,
+      "fractional_lut_relative_l2": 9.868950110936127e-06,
+      "native_lut_max_abs": 0.0007203727501977619
+    },
+    {
+      "bin_phase_mod4": 1.625,
+      "fraction": 0.625,
+      "coarse_linear_relative_l2": 0.0006393402318898785,
+      "fractional_lut_relative_l2": 1.1298778893904597e-16,
+      "native_lut_max_abs": 9.325873406851315e-15
+    },
+    {
+      "bin_phase_mod4": 1.640625,
+      "fraction": 0.640625,
+      "coarse_linear_relative_l2": 0.0006149605050085836,
+      "fractional_lut_relative_l2": 5.946549385663334e-06,
+      "native_lut_max_abs": 0.0011571064844241308
+    },
+    {
+      "bin_phase_mod4": 1.65625,
+      "fraction": 0.65625,
+      "coarse_linear_relative_l2": 0.0005884205132492585,
+      "fractional_lut_relative_l2": 9.726152212765373e-06,
+      "native_lut_max_abs": 0.002023470463099697
+    },
+    {
+      "bin_phase_mod4": 1.671875,
+      "fraction": 0.671875,
+      "coarse_linear_relative_l2": 0.0005599395284215411,
+      "fractional_lut_relative_l2": 1.1556929811500935e-05,
+      "native_lut_max_abs": 0.0025785963146851554
+    },
+    {
+      "bin_phase_mod4": 1.6875,
+      "fraction": 0.6875,
+      "coarse_linear_relative_l2": 0.0005297517478614215,
+      "fractional_lut_relative_l2": 1.1671502326275252e-05,
+      "native_lut_max_abs": 0.0028023932806104934
+    },
+    {
+      "bin_phase_mod4": 1.703125,
+      "fraction": 0.703125,
+      "coarse_linear_relative_l2": 0.0004981042903064256,
+      "fractional_lut_relative_l2": 1.0314754199456924e-05,
+      "native_lut_max_abs": 0.002675235822977018
+    },
+    {
+      "bin_phase_mod4": 1.71875,
+      "fraction": 0.71875,
+      "coarse_linear_relative_l2": 0.0004652552089883971,
+      "fractional_lut_relative_l2": 7.741509971548064e-06,
+      "native_lut_max_abs": 0.0021780230722452387
+    },
+    {
+      "bin_phase_mod4": 1.734375,
+      "fraction": 0.734375,
+      "coarse_linear_relative_l2": 0.0004314715774975916,
+      "fractional_lut_relative_l2": 4.21412833842335e-06,
+      "native_lut_max_abs": 0.0012922371306340885
+    },
+    {
+      "bin_phase_mod4": 1.75,
+      "fraction": 0.75,
+      "coarse_linear_relative_l2": 0.0003970277086479829,
+      "fractional_lut_relative_l2": 2.1379890616580065e-17,
+      "native_lut_max_abs": 9.159339953157541e-15
+    },
+    {
+      "bin_phase_mod4": 1.765625,
+      "fraction": 0.765625,
+      "coarse_linear_relative_l2": 0.0003622035712239301,
+      "fractional_lut_relative_l2": 2.1338021223447264e-06,
+      "native_lut_max_abs": 0.0016419249419673543
+    },
+    {
+      "bin_phase_mod4": 1.78125,
+      "fraction": 0.78125,
+      "coarse_linear_relative_l2": 0.0003272834741686393,
+      "fractional_lut_relative_l2": 4.184005551217079e-06,
+      "native_lut_max_abs": 0.0028437818738957787
+    },
+    {
+      "bin_phase_mod4": 1.796875,
+      "fraction": 0.796875,
+      "coarse_linear_relative_l2": 0.00029255509240838645,
+      "fractional_lut_relative_l2": 5.908046222892701e-06,
+      "native_lut_max_abs": 0.0035899369336238607
+    },
+    {
+      "bin_phase_mod4": 1.8125,
+      "fraction": 0.8125,
+      "coarse_linear_relative_l2": 0.0002583089128332335,
+      "fractional_lut_relative_l2": 7.040874544369146e-06,
+      "native_lut_max_abs": 0.0038656056555866902
+    },
+    {
+      "bin_phase_mod4": 1.828125,
+      "fraction": 0.828125,
+      "coarse_linear_relative_l2": 0.00022483818289615866,
+      "fractional_lut_relative_l2": 7.3048411299145325e-06,
+      "native_lut_max_abs": 0.0036568997322853347
+    },
+    {
+      "bin_phase_mod4": 1.84375,
+      "fraction": 0.84375,
+      "coarse_linear_relative_l2": 0.0001924394473993732,
+      "fractional_lut_relative_l2": 6.414493836915097e-06,
+      "native_lut_max_abs": 0.0029508711350434425
+    },
+    {
+      "bin_phase_mod4": 1.859375,
+      "fraction": 0.859375,
+      "coarse_linear_relative_l2": 0.00016141376093371082,
+      "fractional_lut_relative_l2": 4.078544780902568e-06,
+      "native_lut_max_abs": 0.0017355534129602779
+    },
+    {
+      "bin_phase_mod4": 1.875,
+      "fraction": 0.875,
+      "coarse_linear_relative_l2": 0.00013206866364143366,
+      "fractional_lut_relative_l2": 2.222711940096272e-16,
+      "native_lut_max_abs": 7.188694084447889e-15
+    },
+    {
+      "bin_phase_mod4": 1.890625,
+      "fraction": 0.890625,
+      "coarse_linear_relative_l2": 0.0001047210058245628,
+      "fractional_lut_relative_l2": 1.0927596616402733e-05,
+      "native_lut_max_abs": 0.0019299739662128612
+    },
+    {
+      "bin_phase_mod4": 1.90625,
+      "fraction": 0.90625,
+      "coarse_linear_relative_l2": 7.970070191266715e-05,
+      "fractional_lut_relative_l2": 1.9487220153581717e-05,
+      "native_lut_max_abs": 0.0033210160962241497
+    },
+    {
+      "bin_phase_mod4": 1.921875,
+      "fraction": 0.921875,
+      "coarse_linear_relative_l2": 5.7355485812162494e-05,
+      "fractional_lut_relative_l2": 2.5335999409381937e-05,
+      "native_lut_max_abs": 0.0041654371052252115
+    },
+    {
+      "bin_phase_mod4": 1.9375,
+      "fraction": 0.9375,
+      "coarse_linear_relative_l2": 3.8056727284704516e-05,
+      "fractional_lut_relative_l2": 2.8109592145898715e-05,
+      "native_lut_max_abs": 0.004456687931628567
+    },
+    {
+      "bin_phase_mod4": 1.953125,
+      "fraction": 0.953125,
+      "coarse_linear_relative_l2": 2.2206352581812532e-05,
+      "fractional_lut_relative_l2": 2.741540952743979e-05,
+      "native_lut_max_abs": 0.00418938097388466
+    },
+    {
+      "bin_phase_mod4": 1.96875,
+      "fraction": 0.96875,
+      "coarse_linear_relative_l2": 1.0244892176901524e-05,
+      "fractional_lut_relative_l2": 2.282461862985493e-05,
+      "native_lut_max_abs": 0.0033593075885682833
+    },
+    {
+      "bin_phase_mod4": 1.984375,
+      "fraction": 0.984375,
+      "coarse_linear_relative_l2": 2.660654697196266e-06,
+      "fractional_lut_relative_l2": 1.3862903880343521e-05,
+      "native_lut_max_abs": 0.001963451776550107
+    },
+    {
+      "bin_phase_mod4": 2.0,
+      "fraction": 1.0,
+      "coarse_linear_relative_l2": 4.440892098500624e-16,
+      "fractional_lut_relative_l2": 1.664640710760577e-28,
+      "native_lut_max_abs": 5.9674487573602164e-15
+    },
+    {
+      "bin_phase_mod4": 2.0,
+      "fraction": 0.0,
+      "coarse_linear_relative_l2": 4.440892098500624e-16,
+      "fractional_lut_relative_l2": 1.664640710760577e-28,
+      "native_lut_max_abs": 5.9674487573602164e-15
+    },
+    {
+      "bin_phase_mod4": 2.015625,
+      "fraction": 0.015625,
+      "coarse_linear_relative_l2": 0.002938823840037441,
+      "fractional_lut_relative_l2": 2.8445006766647426e-05,
+      "native_lut_max_abs": 0.001963451776551106
+    },
+    {
+      "bin_phase_mod4": 2.03125,
+      "fraction": 0.03125,
+      "coarse_linear_relative_l2": 0.0058718885094410905,
+      "fractional_lut_relative_l2": 5.068898752840472e-05,
+      "native_lut_max_abs": 0.0033593075885701706
+    },
+    {
+      "bin_phase_mod4": 2.046875,
+      "fraction": 0.046875,
+      "coarse_linear_relative_l2": 0.008798389921154308,
+      "fractional_lut_relative_l2": 6.59192718047232e-05,
+      "native_lut_max_abs": 0.0041893809738875465
+    },
+    {
+      "bin_phase_mod4": 2.0625,
+      "fraction": 0.0625,
+      "coarse_linear_relative_l2": 0.011717419877586129,
+      "fractional_lut_relative_l2": 7.32140617934271e-05,
+      "native_lut_max_abs": 0.0044566879316317864
+    },
+    {
+      "bin_phase_mod4": 2.078125,
+      "fraction": 0.078125,
+      "coarse_linear_relative_l2": 0.014627954756303735,
+      "fractional_lut_relative_l2": 7.152867184642165e-05,
+      "native_lut_max_abs": 0.0041654371052299854
+    },
+    {
+      "bin_phase_mod4": 2.09375,
+      "fraction": 0.09375,
+      "coarse_linear_relative_l2": 0.017528843843109244,
+      "fractional_lut_relative_l2": 5.9681299099585194e-05,
+      "native_lut_max_abs": 0.00332101609622959
+    },
+    {
+      "bin_phase_mod4": 2.109375,
+      "fraction": 0.109375,
+      "coarse_linear_relative_l2": 0.020418797381257604,
+      "fractional_lut_relative_l2": 3.633843179507371e-05,
+      "native_lut_max_abs": 0.0019299739662187454
+    },
+    {
+      "bin_phase_mod4": 2.125,
+      "fraction": 0.125,
+      "coarse_linear_relative_l2": 0.023296374409596043,
+      "fractional_lut_relative_l2": 4.5452684722553917e-17,
+      "native_lut_max_abs": 7.605027718682322e-15
+    },
+    {
+      "bin_phase_mod4": 2.140625,
+      "fraction": 0.140625,
+      "coarse_linear_relative_l2": 0.026159970465594224,
+      "fractional_lut_relative_l2": 7.476121242104551e-05,
+      "native_lut_max_abs": 0.0017355534129678274
+    },
+    {
+      "bin_phase_mod4": 2.15625,
+      "fraction": 0.15625,
+      "coarse_linear_relative_l2": 0.029007805231478785,
+      "fractional_lut_relative_l2": 0.0001329538172413946,
+      "native_lut_max_abs": 0.002950871135052102
+    },
+    {
+      "bin_phase_mod4": 2.171875,
+      "fraction": 0.171875,
+      "coarse_linear_relative_l2": 0.031837910202948384,
+      "fractional_lut_relative_l2": 0.0001724749389851844,
+      "native_lut_max_abs": 0.0036568997322943275
+    },
+    {
+      "bin_phase_mod4": 2.1875,
+      "fraction": 0.1875,
+      "coarse_linear_relative_l2": 0.034648116460147725,
+      "fractional_lut_relative_l2": 0.00019099892865292686,
+      "native_lut_max_abs": 0.00386560565559646
+    },
+    {
+      "bin_phase_mod4": 2.203125,
+      "fraction": 0.203125,
+      "coarse_linear_relative_l2": 0.03743604261966789,
+      "fractional_lut_relative_l2": 0.00018596275858731495,
+      "native_lut_max_abs": 0.003589936933635074
+    },
+    {
+      "bin_phase_mod4": 2.21875,
+      "fraction": 0.21875,
+      "coarse_linear_relative_l2": 0.04019908304430682,
+      "fractional_lut_relative_l2": 0.00015455155328765384,
+      "native_lut_max_abs": 0.002843781873907547
+    },
+    {
+      "bin_phase_mod4": 2.234375,
+      "fraction": 0.234375,
+      "coarse_linear_relative_l2": 0.04293439638410852,
+      "fractional_lut_relative_l2": 9.368432761476029e-05,
+      "native_lut_max_abs": 0.0016419249419791226
+    },
+    {
+      "bin_phase_mod4": 2.25,
+      "fraction": 0.25,
+      "coarse_linear_relative_l2": 0.04563889451786984,
+      "fractional_lut_relative_l2": 2.311997735858999e-16,
+      "native_lut_max_abs": 8.826273045769994e-15
+    },
+    {
+      "bin_phase_mod4": 2.265625,
+      "fraction": 0.265625,
+      "coarse_linear_relative_l2": 0.048309231958778606,
+      "fractional_lut_relative_l2": 0.00017375679904644363,
+      "native_lut_max_abs": 0.0012922371306477443
+    },
+    {
+      "bin_phase_mod4": 2.28125,
+      "fraction": 0.28125,
+      "coarse_linear_relative_l2": 0.05094179578130185,
+      "fractional_lut_relative_l2": 0.00030722043447242665,
+      "native_lut_max_abs": 0.0021780230722594496
+    },
+    {
+      "bin_phase_mod4": 2.296875,
+      "fraction": 0.296875,
+      "coarse_linear_relative_l2": 0.05353269611878988,
+      "fractional_lut_relative_l2": 0.00039613568714095746,
+      "native_lut_max_abs": 0.0026752358229900075
+    },
+    {
+      "bin_phase_mod4": 2.3125,
+      "fraction": 0.3125,
+      "coarse_linear_relative_l2": 0.056077757272716154,
+      "fractional_lut_relative_l2": 0.0004359198491879508,
+      "native_lut_max_abs": 0.0028023932806252594
+    },
+    {
+      "bin_phase_mod4": 2.328125,
+      "fraction": 0.328125,
+      "coarse_linear_relative_l2": 0.058572509465045816,
+      "fractional_lut_relative_l2": 0.00042165119466105994,
+      "native_lut_max_abs": 0.0025785963147008095
+    },
+    {
+      "bin_phase_mod4": 2.34375,
+      "fraction": 0.34375,
+      "coarse_linear_relative_l2": 0.061012181255091905,
+      "fractional_lut_relative_l2": 0.00034805802608540434,
+      "native_lut_max_abs": 0.002023470463115906
+    },
+    {
+      "bin_phase_mod4": 2.359375,
+      "fraction": 0.359375,
+      "coarse_linear_relative_l2": 0.06339169263152297,
+      "fractional_lut_relative_l2": 0.00020950832188223396,
+      "native_lut_max_abs": 0.001157106484440451
+    },
+    {
+      "bin_phase_mod4": 2.375,
+      "fraction": 0.375,
+      "coarse_linear_relative_l2": 0.06570564877904171,
+      "fractional_lut_relative_l2": 5.181342929661805e-16,
+      "native_lut_max_abs": 8.881784197001252e-15
+    },
+    {
+      "bin_phase_mod4": 2.390625,
+      "fraction": 0.390625,
+      "coarse_linear_relative_l2": 0.06794833450794052,
+      "fractional_lut_relative_l2": 0.00034451854593436074,
+      "native_lut_max_abs": 0.0007203727502144153
+    },
+    {
+      "bin_phase_mod4": 2.40625,
+      "fraction": 0.40625,
+      "coarse_linear_relative_l2": 0.07011370932334245,
+      "fractional_lut_relative_l2": 0.000605679151615955,
+      "native_lut_max_abs": 0.0011919642595937807
+    },
+    {
+      "bin_phase_mod4": 2.421875,
+      "fraction": 0.421875,
+      "coarse_linear_relative_l2": 0.07219540309975955,
+      "fractional_lut_relative_l2": 0.0007764367997613682,
+      "native_lut_max_abs": 0.0014361170312127136
+    },
+    {
+      "bin_phase_mod4": 2.4375,
+      "fraction": 0.4375,
+      "coarse_linear_relative_l2": 0.07418671231580341,
+      "fractional_lut_relative_l2": 0.0008493566541050585,
+      "native_lut_max_abs": 0.0014743326210918672
+    },
+    {
+      "bin_phase_mod4": 2.453125,
+      "fraction": 0.453125,
+      "coarse_linear_relative_l2": 0.076080596793728,
+      "fractional_lut_relative_l2": 0.0008166081389960092,
+      "native_lut_max_abs": 0.0013282102671112739
+    },
+    {
+      "bin_phase_mod4": 2.46875,
+      "fraction": 0.46875,
+      "coarse_linear_relative_l2": 0.07786967687919182,
+      "fractional_lut_relative_l2": 0.0006699595276220827,
+      "native_lut_max_abs": 0.001019386012786505
+    },
+    {
+      "bin_phase_mod4": 2.484375,
+      "fraction": 0.484375,
+      "coarse_linear_relative_l2": 0.07954623098841697,
+      "fractional_lut_relative_l2": 0.00040077298431012313,
+      "native_lut_max_abs": 0.0005694725500970943
+    },
+    {
+      "bin_phase_mod4": 2.5,
+      "fraction": 0.5,
+      "coarse_linear_relative_l2": 0.08110219344308821,
+      "fractional_lut_relative_l2": 1.2909893273694047e-15,
+      "native_lut_max_abs": 9.2148511043888e-15
+    },
+    {
+      "bin_phase_mod4": 2.515625,
+      "fraction": 0.515625,
+      "coarse_linear_relative_l2": 0.08252915250802634,
+      "fractional_lut_relative_l2": 0.0005912896796877497,
+      "native_lut_max_abs": 0.0005694725500775544
+    },
+    {
+      "bin_phase_mod4": 2.53125,
+      "fraction": 0.53125,
+      "coarse_linear_relative_l2": 0.08381834854318602,
+      "fractional_lut_relative_l2": 0.001034481760500573,
+      "native_lut_max_abs": 0.0010193860127670762
+    },
+    {
+      "bin_phase_mod4": 2.546875,
+      "fraction": 0.546875,
+      "coarse_linear_relative_l2": 0.08496067218010503,
+      "fractional_lut_relative_l2": 0.0013196491674841325,
+      "native_lut_max_abs": 0.0013282102670938434
+    },
+    {
+      "bin_phase_mod4": 2.5625,
+      "fraction": 0.5625,
+      "coarse_linear_relative_l2": 0.08594666243371198,
+      "fractional_lut_relative_l2": 0.0014364713776927203,
+      "native_lut_max_abs": 0.0014743326210744367
+    },
+    {
+      "bin_phase_mod4": 2.578125,
+      "fraction": 0.578125,
+      "coarse_linear_relative_l2": 0.08676650466374113,
+      "fractional_lut_relative_l2": 0.0013742321901498186,
+      "native_lut_max_abs": 0.001436117031194728
+    },
+    {
+      "bin_phase_mod4": 2.59375,
+      "fraction": 0.59375,
+      "coarse_linear_relative_l2": 0.08741002830602182,
+      "fractional_lut_relative_l2": 0.0011218174317291873,
+      "native_lut_max_abs": 0.0011919642595762392
+    },
+    {
+      "bin_phase_mod4": 2.609375,
+      "fraction": 0.609375,
+      "coarse_linear_relative_l2": 0.08786670430290308,
+      "fractional_lut_relative_l2": 0.0006677125427248279,
+      "native_lut_max_abs": 0.000720372750197873
+    },
+    {
+      "bin_phase_mod4": 2.625,
+      "fraction": 0.625,
+      "coarse_linear_relative_l2": 0.08812564217429489,
+      "fractional_lut_relative_l2": 2.317923746741177e-15,
+      "native_lut_max_abs": 9.547918011776346e-15
+    },
+    {
+      "bin_phase_mod4": 2.640625,
+      "fraction": 0.640625,
+      "coarse_linear_relative_l2": 0.08817558668646439,
+      "fractional_lut_relative_l2": 0.0008948088126460992,
+      "native_lut_max_abs": 0.0011571064844237977
+    },
+    {
+      "bin_phase_mod4": 2.65625,
+      "fraction": 0.65625,
+      "coarse_linear_relative_l2": 0.08800491409518775,
+      "fractional_lut_relative_l2": 0.0015592747638889287,
+      "native_lut_max_abs": 0.00202347046310114
+    },
+    {
+      "bin_phase_mod4": 2.671875,
+      "fraction": 0.671875,
+      "coarse_linear_relative_l2": 0.08760162796334271,
+      "fractional_lut_relative_l2": 0.0019811827563451664,
+      "native_lut_max_abs": 0.002578596314684267
+    },
+    {
+      "bin_phase_mod4": 2.6875,
+      "fraction": 0.6875,
+      "coarse_linear_relative_l2": 0.08695335458097771,
+      "fractional_lut_relative_l2": 0.0021479649139969207,
+      "native_lut_max_abs": 0.0028023932806102714
+    },
+    {
+      "bin_phase_mod4": 2.703125,
+      "fraction": 0.703125,
+      "coarse_linear_relative_l2": 0.08604733804865468,
+      "fractional_lut_relative_l2": 0.0020466983109130293,
+      "native_lut_max_abs": 0.0026752358229752415
+    },
+    {
+      "bin_phase_mod4": 2.71875,
+      "fraction": 0.71875,
+      "coarse_linear_relative_l2": 0.08487043512286029,
+      "fractional_lut_relative_l2": 0.0016641025402784487,
+      "native_lut_max_abs": 0.0021780230722452387
+    },
+    {
+      "bin_phase_mod4": 2.734375,
+      "fraction": 0.734375,
+      "coarse_linear_relative_l2": 0.08340910996609992,
+      "fractional_lut_relative_l2": 0.0009865372721797924,
+      "native_lut_max_abs": 0.0012922371306349767
+    },
+    {
+      "bin_phase_mod4": 2.75,
+      "fraction": 0.75,
+      "coarse_linear_relative_l2": 0.08164942899438785,
+      "fractional_lut_relative_l2": 4.11881007268129e-15,
+      "native_lut_max_abs": 9.159339953157541e-15
+    },
+    {
+      "bin_phase_mod4": 2.765625,
+      "fraction": 0.765625,
+      "coarse_linear_relative_l2": 0.0795770560719342,
+      "fractional_lut_relative_l2": 0.0012105050060753904,
+      "native_lut_max_abs": 0.001641924941966466
+    },
+    {
+      "bin_phase_mod4": 2.78125,
+      "fraction": 0.78125,
+      "coarse_linear_relative_l2": 0.07717724836753664,
+      "fractional_lut_relative_l2": 0.00210243117846091,
+      "native_lut_max_abs": 0.0028437818738957787
+    },
+    {
+      "bin_phase_mod4": 2.796875,
+      "fraction": 0.796875,
+      "coarse_linear_relative_l2": 0.07443485326027069,
+      "fractional_lut_relative_l2": 0.0026624840413365363,
+      "native_lut_max_abs": 0.00358993693362486
+    },
+    {
+      "bin_phase_mod4": 2.8125,
+      "fraction": 0.8125,
+      "coarse_linear_relative_l2": 0.07133430676429371,
+      "fractional_lut_relative_l2": 0.0028770908594242116,
+      "native_lut_max_abs": 0.0038656056555866902
+    },
+    {
+      "bin_phase_mod4": 2.828125,
+      "fraction": 0.828125,
+      "coarse_linear_relative_l2": 0.0678596340347086,
+      "fractional_lut_relative_l2": 0.0027324020009840584,
+      "native_lut_max_abs": 0.0036568997322853347
+    },
+    {
+      "bin_phase_mod4": 2.84375,
+      "fraction": 0.84375,
+      "coarse_linear_relative_l2": 0.06399445261923445,
+      "fractional_lut_relative_l2": 0.002214294244633943,
+      "native_lut_max_abs": 0.0029508711350431094
+    },
+    {
+      "bin_phase_mod4": 2.859375,
+      "fraction": 0.859375,
+      "coarse_linear_relative_l2": 0.05972197923454951,
+      "fractional_lut_relative_l2": 0.0013083766851292146,
+      "native_lut_max_abs": 0.0017355534129602779
+    },
+    {
+      "bin_phase_mod4": 2.875,
+      "fraction": 0.875,
+      "coarse_linear_relative_l2": 0.05502504097211497,
+      "fractional_lut_relative_l2": 6.242557892472338e-15,
+      "native_lut_max_abs": 7.521760991835436e-15
+    },
+    {
+      "bin_phase_mod4": 2.890625,
+      "fraction": 0.890625,
+      "coarse_linear_relative_l2": 0.04988609197633706,
+      "fractional_lut_relative_l2": 0.0014732664486606913,
+      "native_lut_max_abs": 0.0019299739662128612
+    },
+    {
+      "bin_phase_mod4": 2.90625,
+      "fraction": 0.90625,
+      "coarse_linear_relative_l2": 0.04428723678786612,
+      "fractional_lut_relative_l2": 0.002550994749917697,
+      "native_lut_max_abs": 0.0033210160962243718
+    },
+    {
+      "bin_phase_mod4": 2.921875,
+      "fraction": 0.921875,
+      "coarse_linear_relative_l2": 0.038210261706075506,
+      "fractional_lut_relative_l2": 0.00322059722775666,
+      "native_lut_max_abs": 0.0041654371052254335
+    },
+    {
+      "bin_phase_mod4": 2.9375,
+      "fraction": 0.9375,
+      "coarse_linear_relative_l2": 0.031636675695729546,
+      "fractional_lut_relative_l2": 0.0034693734150958886,
+      "native_lut_max_abs": 0.004456687931628012
+    },
+    {
+      "bin_phase_mod4": 2.953125,
+      "fraction": 0.953125,
+      "coarse_linear_relative_l2": 0.02454776254125106,
+      "fractional_lut_relative_l2": 0.0032845369776750145,
+      "native_lut_max_abs": 0.004189380973884882
+    },
+    {
+      "bin_phase_mod4": 2.96875,
+      "fraction": 0.96875,
+      "coarse_linear_relative_l2": 0.016924646133739108,
+      "fractional_lut_relative_l2": 0.002653250585637083,
+      "native_lut_max_abs": 0.0033593075885682833
+    },
+    {
+      "bin_phase_mod4": 2.984375,
+      "fraction": 0.984375,
+      "coarse_linear_relative_l2": 0.008748370955859477,
+      "fractional_lut_relative_l2": 0.0015626701537431076,
+      "native_lut_max_abs": 0.001963451776550107
+    },
+    {
+      "bin_phase_mod4": 3.0,
+      "fraction": 1.0,
+      "coarse_linear_relative_l2": 1.0303411320221278e-14,
+      "fractional_lut_relative_l2": 9.869755643180707e-15,
+      "native_lut_max_abs": 6.217248937900877e-15
+    },
+    {
+      "bin_phase_mod4": 3.0,
+      "fraction": 0.0,
+      "coarse_linear_relative_l2": 1.0303411320221278e-14,
+      "fractional_lut_relative_l2": 9.869755643180707e-15,
+      "native_lut_max_abs": 6.217248937900877e-15
+    },
+    {
+      "bin_phase_mod4": 3.015625,
+      "fraction": 0.015625,
+      "coarse_linear_relative_l2": 0.0059072484094738215,
+      "fractional_lut_relative_l2": 0.0016049710419584848,
+      "native_lut_max_abs": 0.001963451776551106
+    },
+    {
+      "bin_phase_mod4": 3.03125,
+      "fraction": 0.03125,
+      "coarse_linear_relative_l2": 0.011439630776720262,
+      "fractional_lut_relative_l2": 0.002768880481182778,
+      "native_lut_max_abs": 0.0033593075885701706
+    },
+    {
+      "bin_phase_mod4": 3.046875,
+      "fraction": 0.046875,
+      "coarse_linear_relative_l2": 0.016591397617099785,
+      "fractional_lut_relative_l2": 0.0034824978396986303,
+      "native_lut_max_abs": 0.0041893809738878796
+    },
+    {
+      "bin_phase_mod4": 3.0625,
+      "fraction": 0.0625,
+      "coarse_linear_relative_l2": 0.021356971626676834,
+      "fractional_lut_relative_l2": 0.003736895028230832,
+      "native_lut_max_abs": 0.0044566879316321195
+    },
+    {
+      "bin_phase_mod4": 3.078125,
+      "fraction": 0.078125,
+      "coarse_linear_relative_l2": 0.025730990235719214,
+      "fractional_lut_relative_l2": 0.003523539628066359,
+      "native_lut_max_abs": 0.0041654371052299854
+    },
+    {
+      "bin_phase_mod4": 3.09375,
+      "fraction": 0.09375,
+      "coarse_linear_relative_l2": 0.029708358459044463,
+      "fractional_lut_relative_l2": 0.002834404643162527,
+      "native_lut_max_abs": 0.003321016096230145
+    },
+    {
+      "bin_phase_mod4": 3.109375,
+      "fraction": 0.109375,
+      "coarse_linear_relative_l2": 0.03328431328501935,
+      "fractional_lut_relative_l2": 0.0016620961396242684,
+      "native_lut_max_abs": 0.0019299739662193005
+    },
+    {
+      "bin_phase_mod4": 3.125,
+      "fraction": 0.125,
+      "coarse_linear_relative_l2": 0.03645450080811926,
+      "fractional_lut_relative_l2": 1.3061687617627565e-14,
+      "native_lut_max_abs": 7.605027718682322e-15
+    },
+    {
+      "bin_phase_mod4": 3.140625,
+      "fraction": 0.140625,
+      "coarse_linear_relative_l2": 0.03921506721448619,
+      "fractional_lut_relative_l2": 0.001523137395930647,
+      "native_lut_max_abs": 0.0017355534129683825
+    },
+    {
+      "bin_phase_mod4": 3.15625,
+      "fraction": 0.15625,
+      "coarse_linear_relative_l2": 0.041562764560149935,
+      "fractional_lut_relative_l2": 0.0026116542593086728,
+      "native_lut_max_abs": 0.00295087113505188
+    },
+    {
+      "bin_phase_mod4": 3.171875,
+      "fraction": 0.171875,
+      "coarse_linear_relative_l2": 0.04349507202011697,
+      "fractional_lut_relative_l2": 0.003263696952673235,
+      "native_lut_max_abs": 0.0036568997322943275
+    },
+    {
+      "bin_phase_mod4": 3.1875,
+      "fraction": 0.1875,
+      "coarse_linear_relative_l2": 0.045010332916067666,
+      "fractional_lut_relative_l2": 0.0034785252423408203,
+      "native_lut_max_abs": 0.0038656056555970153
+    },
+    {
+      "bin_phase_mod4": 3.203125,
+      "fraction": 0.203125,
+      "coarse_linear_relative_l2": 0.046107907334763484,
+      "fractional_lut_relative_l2": 0.0032566871416445675,
+      "native_lut_max_abs": 0.003589936933634852
+    },
+    {
+      "bin_phase_mod4": 3.21875,
+      "fraction": 0.21875,
+      "coarse_linear_relative_l2": 0.04678833951590322,
+      "fractional_lut_relative_l2": 0.002600207012535669,
+      "native_lut_max_abs": 0.002843781873907547
+    },
+    {
+      "bin_phase_mod4": 3.234375,
+      "fraction": 0.234375,
+      "coarse_linear_relative_l2": 0.04705353841027744,
+      "fractional_lut_relative_l2": 0.0015127843975060932,
+      "native_lut_max_abs": 0.0016419249419791226
+    },
+    {
+      "bin_phase_mod4": 3.25,
+      "fraction": 0.25,
+      "coarse_linear_relative_l2": 0.04690696889024661,
+      "fractional_lut_relative_l2": 1.798977570055432e-14,
+      "native_lut_max_abs": 9.325873406851315e-15
+    },
+    {
+      "bin_phase_mod4": 3.265625,
+      "fraction": 0.265625,
+      "coarse_linear_relative_l2": 0.04635385005068779,
+      "fractional_lut_relative_l2": 0.0011590580622800213,
+      "native_lut_max_abs": 0.0012922371306477443
+    },
+    {
+      "bin_phase_mod4": 3.28125,
+      "fraction": 0.28125,
+      "coarse_linear_relative_l2": 0.045401355904210836,
+      "fractional_lut_relative_l2": 0.0019609022284795014,
+      "native_lut_max_abs": 0.0021780230722597826
+    },
+    {
+      "bin_phase_mod4": 3.296875,
+      "fraction": 0.296875,
+      "coarse_linear_relative_l2": 0.04405881260448175,
+      "fractional_lut_relative_l2": 0.002415974699421334,
+      "native_lut_max_abs": 0.0026752358229902296
+    },
+    {
+      "bin_phase_mod4": 3.3125,
+      "fraction": 0.3125,
+      "coarse_linear_relative_l2": 0.04233788520691674,
+      "fractional_lut_relative_l2": 0.002536700156997852,
+      "native_lut_max_abs": 0.0028023932806261476
+    },
+    {
+      "bin_phase_mod4": 3.328125,
+      "fraction": 0.328125,
+      "coarse_linear_relative_l2": 0.04025274600528225,
+      "fractional_lut_relative_l2": 0.0023376059182034807,
+      "native_lut_max_abs": 0.0025785963147004765
+    },
+    {
+      "bin_phase_mod4": 3.34375,
+      "fraction": 0.34375,
+      "coarse_linear_relative_l2": 0.03782021580934818,
+      "fractional_lut_relative_l2": 0.0018354177103120284,
+      "native_lut_max_abs": 0.0020234704631163503
+    },
+    {
+      "bin_phase_mod4": 3.359375,
+      "fraction": 0.359375,
+      "coarse_linear_relative_l2": 0.03505986934285756,
+      "fractional_lut_relative_l2": 0.001049123754944872,
+      "native_lut_max_abs": 0.00115710648444034
+    },
+    {
+      "bin_phase_mod4": 3.375,
+      "fraction": 0.375,
+      "coarse_linear_relative_l2": 0.03199409652594402,
+      "fractional_lut_relative_l2": 2.0031710259978918e-14,
+      "native_lut_max_abs": 9.880984919163893e-15
+    },
+    {
+      "bin_phase_mod4": 3.390625,
+      "fraction": 0.390625,
+      "coarse_linear_relative_l2": 0.028648113277818014,
+      "fractional_lut_relative_l2": 0.0005059055203228939,
+      "native_lut_max_abs": 0.0007203727502147483
+    },
+    {
+      "bin_phase_mod4": 3.40625,
+      "fraction": 0.40625,
+      "coarse_linear_relative_l2": 0.025049919865420336,
+      "fractional_lut_relative_l2": 0.0008147733551908323,
+      "native_lut_max_abs": 0.0011919642595940028
+    },
+    {
+      "bin_phase_mod4": 3.421875,
+      "fraction": 0.421875,
+      "coarse_linear_relative_l2": 0.021230215447757578,
+      "fractional_lut_relative_l2": 0.0009510598688311483,
+      "native_lut_max_abs": 0.0014361170312133797
+    },
+    {
+      "bin_phase_mod4": 3.4375,
+      "fraction": 0.4375,
+      "coarse_linear_relative_l2": 0.017222308099824564,
+      "fractional_lut_relative_l2": 0.0009408172106915694,
+      "native_lut_max_abs": 0.0014743326210913121
+    },
+    {
+      "bin_phase_mod4": 3.453125,
+      "fraction": 0.453125,
+      "coarse_linear_relative_l2": 0.013062174418739454,
+      "fractional_lut_relative_l2": 0.0008115091613188955,
+      "native_lut_max_abs": 0.001328210267112162
+    },
+    {
+      "bin_phase_mod4": 3.46875,
+      "fraction": 0.46875,
+      "coarse_linear_relative_l2": 0.00878943709083048,
+      "fractional_lut_relative_l2": 0.0005917849742591908,
+      "native_lut_max_abs": 0.0010193860127867271
+    },
+    {
+      "bin_phase_mod4": 3.484375,
+      "fraction": 0.484375,
+      "coarse_linear_relative_l2": 0.004456039632373993,
+      "fractional_lut_relative_l2": 0.0003112157909800078,
+      "native_lut_max_abs": 0.0005694725500965392
+    },
+    {
+      "bin_phase_mod4": 3.5,
+      "fraction": 0.5,
+      "coarse_linear_relative_l2": 0.0007007771187219701,
+      "fractional_lut_relative_l2": 1.6997604947243973e-14,
+      "native_lut_max_abs": 7.993605777301127e-15
+    },
+    {
+      "bin_phase_mod4": 3.515625,
+      "fraction": 0.515625,
+      "coarse_linear_relative_l2": 0.004456039632318972,
+      "fractional_lut_relative_l2": 0.0003112157909365035,
+      "native_lut_max_abs": 0.0005694725500765552
+    },
+    {
+      "bin_phase_mod4": 3.53125,
+      "fraction": 0.53125,
+      "coarse_linear_relative_l2": 0.008789437090775233,
+      "fractional_lut_relative_l2": 0.0005917849742156152,
+      "native_lut_max_abs": 0.0010193860127671872
+    },
+    {
+      "bin_phase_mod4": 3.546875,
+      "fraction": 0.546875,
+      "coarse_linear_relative_l2": 0.013062174418686507,
+      "fractional_lut_relative_l2": 0.0008115091612772316,
+      "native_lut_max_abs": 0.0013282102670933993
+    },
+    {
+      "bin_phase_mod4": 3.5625,
+      "fraction": 0.5625,
+      "coarse_linear_relative_l2": 0.017222308099774552,
+      "fractional_lut_relative_l2": 0.0009408172106523261,
+      "native_lut_max_abs": 0.0014743326210744367
+    },
+    {
+      "bin_phase_mod4": 3.578125,
+      "fraction": 0.578125,
+      "coarse_linear_relative_l2": 0.021230215447705047,
+      "fractional_lut_relative_l2": 0.0009510598687889822,
+      "native_lut_max_abs": 0.001436117031194839
+    },
+    {
+      "bin_phase_mod4": 3.59375,
+      "fraction": 0.59375,
+      "coarse_linear_relative_l2": 0.025049919865370425,
+      "fractional_lut_relative_l2": 0.0008147733551509775,
+      "native_lut_max_abs": 0.0011919642595767943
+    },
+    {
+      "bin_phase_mod4": 3.609375,
+      "fraction": 0.609375,
+      "coarse_linear_relative_l2": 0.0286481132777692,
+      "fractional_lut_relative_l2": 0.0005059055202838075,
+      "native_lut_max_abs": 0.0007203727501973178
+    },
+    {
+      "bin_phase_mod4": 3.625,
+      "fraction": 0.625,
+      "coarse_linear_relative_l2": 0.031994096525895376,
+      "fractional_lut_relative_l2": 1.9325928251910237e-14,
+      "native_lut_max_abs": 9.603429163007604e-15
+    },
+    {
+      "bin_phase_mod4": 3.640625,
+      "fraction": 0.640625,
+      "coarse_linear_relative_l2": 0.03505986934281021,
+      "fractional_lut_relative_l2": 0.0010491237549058222,
+      "native_lut_max_abs": 0.0011571064844235757
+    },
+    {
+      "bin_phase_mod4": 3.65625,
+      "fraction": 0.65625,
+      "coarse_linear_relative_l2": 0.03782021580930266,
+      "fractional_lut_relative_l2": 0.0018354177102741112,
+      "native_lut_max_abs": 0.002023470463100363
+    },
+    {
+      "bin_phase_mod4": 3.671875,
+      "fraction": 0.671875,
+      "coarse_linear_relative_l2": 0.04025274600523939,
+      "fractional_lut_relative_l2": 0.0023376059181673347,
+      "native_lut_max_abs": 0.0025785963146853774
+    },
+    {
+      "bin_phase_mod4": 3.6875,
+      "fraction": 0.6875,
+      "coarse_linear_relative_l2": 0.042337885206873545,
+      "fractional_lut_relative_l2": 0.002536700156960446,
+      "native_lut_max_abs": 0.0028023932806108265
+    },
+    {
+      "bin_phase_mod4": 3.703125,
+      "fraction": 0.703125,
+      "coarse_linear_relative_l2": 0.044058812604440625,
+      "fractional_lut_relative_l2": 0.0024159746993854024,
+      "native_lut_max_abs": 0.0026752358229752415
+    },
+    {
+      "bin_phase_mod4": 3.71875,
+      "fraction": 0.71875,
+      "coarse_linear_relative_l2": 0.04540135590417157,
+      "fractional_lut_relative_l2": 0.0019609022284445316,
+      "native_lut_max_abs": 0.002178023072245794
+    },
+    {
+      "bin_phase_mod4": 3.734375,
+      "fraction": 0.734375,
+      "coarse_linear_relative_l2": 0.04635385005064865,
+      "fractional_lut_relative_l2": 0.001159058062244725,
+      "native_lut_max_abs": 0.0012922371306338665
+    },
+    {
+      "bin_phase_mod4": 3.75,
+      "fraction": 0.75,
+      "coarse_linear_relative_l2": 0.046906968890204806,
+      "fractional_lut_relative_l2": 2.0802093320429275e-14,
+      "native_lut_max_abs": 1.1102230246251565e-14
+    },
+    {
+      "bin_phase_mod4": 3.765625,
+      "fraction": 0.765625,
+      "coarse_linear_relative_l2": 0.047053538410241416,
+      "fractional_lut_relative_l2": 0.0015127843974727714,
+      "native_lut_max_abs": 0.001641924941966466
+    },
+    {
+      "bin_phase_mod4": 3.78125,
+      "fraction": 0.78125,
+      "coarse_linear_relative_l2": 0.04678833951586988,
+      "fractional_lut_relative_l2": 0.002600207012504388,
+      "native_lut_max_abs": 0.002843781873896112
+    },
+    {
+      "bin_phase_mod4": 3.796875,
+      "fraction": 0.796875,
+      "coarse_linear_relative_l2": 0.04610790733473148,
+      "fractional_lut_relative_l2": 0.0032566871416141825,
+      "native_lut_max_abs": 0.0035899369336238607
+    },
+    {
+      "bin_phase_mod4": 3.8125,
+      "fraction": 0.8125,
+      "coarse_linear_relative_l2": 0.04501033291603745,
+      "fractional_lut_relative_l2": 0.0034785252423117003,
+      "native_lut_max_abs": 0.0038656056555870233
+    },
+    {
+      "bin_phase_mod4": 3.828125,
+      "fraction": 0.828125,
+      "coarse_linear_relative_l2": 0.04349507202008869,
+      "fractional_lut_relative_l2": 0.0032636969526456385,
+      "native_lut_max_abs": 0.0036568997322853347
+    },
+    {
+      "bin_phase_mod4": 3.84375,
+      "fraction": 0.84375,
+      "coarse_linear_relative_l2": 0.041562764560120986,
+      "fractional_lut_relative_l2": 0.002611654259280008,
+      "native_lut_max_abs": 0.0029508711350431094
+    },
+    {
+      "bin_phase_mod4": 3.859375,
+      "fraction": 0.859375,
+      "coarse_linear_relative_l2": 0.039215067214458964,
+      "fractional_lut_relative_l2": 0.0015231373959033049,
+      "native_lut_max_abs": 0.0017355534129602779
+    },
+    {
+      "bin_phase_mod4": 3.875,
+      "fraction": 0.875,
+      "coarse_linear_relative_l2": 0.0364545008080933,
+      "fractional_lut_relative_l2": 1.3157023167394055e-14,
+      "native_lut_max_abs": 7.605027718682322e-15
+    },
+    {
+      "bin_phase_mod4": 3.890625,
+      "fraction": 0.890625,
+      "coarse_linear_relative_l2": 0.03328431328499508,
+      "fractional_lut_relative_l2": 0.0016620961395995865,
+      "native_lut_max_abs": 0.0019299739662131943
+    },
+    {
+      "bin_phase_mod4": 3.90625,
+      "fraction": 0.90625,
+      "coarse_linear_relative_l2": 0.02970835845901958,
+      "fractional_lut_relative_l2": 0.0028344046431372,
+      "native_lut_max_abs": 0.0033210160962243718
+    },
+    {
+      "bin_phase_mod4": 3.921875,
+      "fraction": 0.921875,
+      "coarse_linear_relative_l2": 0.025730990235696503,
+      "fractional_lut_relative_l2": 0.0035235396280431006,
+      "native_lut_max_abs": 0.0041654371052254335
+    },
+    {
+      "bin_phase_mod4": 3.9375,
+      "fraction": 0.9375,
+      "coarse_linear_relative_l2": 0.021356971626654755,
+      "fractional_lut_relative_l2": 0.003736895028208286,
+      "native_lut_max_abs": 0.004456687931628012
+    },
+    {
+      "bin_phase_mod4": 3.953125,
+      "fraction": 0.953125,
+      "coarse_linear_relative_l2": 0.01659139761707753,
+      "fractional_lut_relative_l2": 0.003482497839675941,
+      "native_lut_max_abs": 0.004189380973884882
+    },
+    {
+      "bin_phase_mod4": 3.96875,
+      "fraction": 0.96875,
+      "coarse_linear_relative_l2": 0.011439630776697076,
+      "fractional_lut_relative_l2": 0.0027688804811592973,
+      "native_lut_max_abs": 0.0033593075885686163
+    },
+    {
+      "bin_phase_mod4": 3.984375,
+      "fraction": 0.984375,
+      "coarse_linear_relative_l2": 0.00590724840945414,
+      "fractional_lut_relative_l2": 0.0016049710419386693,
+      "native_lut_max_abs": 0.001963451776550107
+    },
+    {
+      "bin_phase_mod4": 0.0,
+      "fraction": 1.0,
+      "coarse_linear_relative_l2": 8.975669141138107e-15,
+      "fractional_lut_relative_l2": 9.242184119251117e-15,
+      "native_lut_max_abs": 5.689893001203927e-15
+    }
+  ],
+  "source_sha256": "c18504e6fb267ba3baa794df41b9cf733eadfea9a6c81097cd8310fb4aba778f"
+}
