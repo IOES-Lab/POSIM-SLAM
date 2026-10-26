@@ -15,9 +15,8 @@ import numpy as np
 from scipy.stats import gamma
 
 
-def probe(path, frames=64):
-    if type(frames) is not int or not 16 <= frames <= 128:
-        raise ValueError('bounded_independent_frame_count_required')
+def load_wgpu_backend(path):
+    """Configure the matching, selected POSIM C ABI for diagnostic callers."""
     library = ct.CDLL(str(path.resolve()))
     pointer = ct.POINTER(ct.c_float)
     compute = library.sonar_wgpu_compute
@@ -27,6 +26,13 @@ def probe(path, frames=64):
     release = library.sonar_wgpu_free
     release.argtypes = [pointer, ct.c_size_t]
     release.restype = None
+    return library, compute, release, pointer
+
+
+def probe(path, frames=64):
+    if type(frames) is not int or not 16 <= frames <= 128:
+        raise ValueError('bounded_independent_frame_count_required')
+    library, compute, release, pointer = load_wgpu_backend(path)
     n, beams, rays, bandwidth = 399, 1, 2, 29900.
     frequencies = np.arange(n)
     window = .54 - .46 * np.cos(2 * np.pi * (frequencies + 1) / n)

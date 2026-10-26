@@ -1,0 +1,63 @@
+{
+  "scope": "separate reference evaluation for known-support native-backend fixture; never supplied to fitting",
+  "reference_parameters": [
+    3.15,
+    -0.25,
+    -0.1,
+    -6.907755278982137,
+    -6.907755278982137
+  ],
+  "maximum_foreground_corner_error_m": 0.0031802225443491317,
+  "reference_geometry_heldout_relative_l2": 0.08418438323881178,
+  "initial_relative_l2": 1.1530756275289429,
+  "frames_per_view": 32,
+  "views": 8,
+  "training_views": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "heldout_views": [
+    6,
+    7
+  ],
+  "seed_frame_intervals": [
+    [
+      0,
+      31
+    ],
+    [
+      1000,
+      1031
+    ],
+    [
+      2000,
+      2031
+    ],
+    [
+      3000,
+      3031
+    ],
+    [
+      4000,
+      4031
+    ],
+    [
+      5000,
+      5031
+    ],
+    [
+      6000,
+      6031
+    ],
+    [
+      7000,
+      7031
+    ]
+  ],
+  "library_sha256": "afbcfe602dc5f27d4f10fb47618ad9a1ba15a60ea41298dc6860aab51377d2b2",
+  "inputs_sha256": "eeb70489a7ba9bde03a347679819f5f43e994829014541f03264449cd655c7e3"
+}

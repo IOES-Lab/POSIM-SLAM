@@ -31,6 +31,7 @@ version; acoustic/DVL fusion retains its algorithm version **0.2.1**.
 | Offline sonar regions | NumPy median/quantile intensity segmentation, analytic plane/fan bounds and censored shadow intervals; experimental candidates without 3D landmarks; [method and limits](docs/diagnostics/sonar-surface-research.md) |
 | Offline acoustic magnitude bounds | Calibrated complex beam response and polygon inequalities; optional ground-onset screening; [native replay and limits](docs/diagnostics/sonar-phase-ground.md); [comparisons and limits](docs/diagnostics/sonar-phase-bounds.md) |
 | Offline terrain support | Conditional onset curves, multi-frame local PCA planes and convex-hull support; Huber point-to-plane ICP probes remain outside the estimator; [comparisons and limits](docs/diagnostics/sonar-terrain-support.md) |
+| Offline finite-surface observation | NumPy triangle BVH, opaque first-hit mean power and reflectivity/local vertex adjoints; conditional geometry, without runtime fusion; [model and limits](docs/diagnostics/sonar-finite-surfaces.md) |
 | Acoustic + DVL | Bracketed velocity integration for translation, acoustic yaw/features and displacement consistency gate; planar experimental odometry; elevation unresolved |
 | Surface filter | Pressure/orientation-derived mean-water plane and calibrated metric-map clipping; does not classify individual surface echoes |
 | Inertial core | Raw gyro/accelerometer midpoint SO(3) preintegration, bias Jacobian and 15-state error covariance; preparation code, not a complete fused estimator |
@@ -415,4 +416,6 @@ provides a separate bounded diagnostic, numeric input fixture and complete candi
 It does not change the runtime estimator or qualify a navigation map.
 
 [Sonar forward-model checks and deeper survey / 소나 관측 모델 검사와 깊은 수심 관측](docs/diagnostics/sonar-forward-model.md)
+
+The [finite-surface model and conditional inverse / 유한 표면 모델과 조건부 역문제](docs/diagnostics/sonar-finite-surfaces.md) include opaque first-hit visibility and ideal surface normals.
 include an optional fractional range response and a matching WGPU power probe.

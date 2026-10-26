@@ -1,0 +1,34 @@
+{
+  "scope": "Compare finite-surface mean power with the matching POSIM WGPU C ABI.\n\nKnown analytic geometry and normals are supplied to the backend. Reflective and\nzero-reflectivity foreground panels test opaque first-hit visibility. This is a\nsensor-model experiment, not an unknown-scene reconstruction or hardware test.\n",
+  "map_qualified": false,
+  "hardware_calibrated": false,
+  "library_sha256": "afbcfe602dc5f27d4f10fb47618ad9a1ba15a60ea41298dc6860aab51377d2b2",
+  "source_sha256": "238a5bd4f9ac32a9237088a36f9ded089cddaf8734f910ed3f7088924f3c77fb",
+  "model_sha256": "92ff5ec9461812045ae0401dd2607e1a28bf306795678fe829d54638bc1a373c",
+  "rows": {
+    "reflective_occluder": {
+      "frames": 64,
+      "relative_mean_power_l2": 0.07317143116408917,
+      "unoccluded_control_relative_l2": 0.22492843214957675,
+      "mean_total_power": 458155529.6370877,
+      "predicted_total_power": 464893422.9772272,
+      "total_power_ratio": 0.9855065849351249,
+      "total_mean_standard_error": 5804001.2323789,
+      "total_mean_standard_error_units": -1.1609048775783652
+    },
+    "black_occluder": {
+      "frames": 64,
+      "relative_mean_power_l2": 0.055117001942531475,
+      "unoccluded_control_relative_l2": 1.036570659084203,
+      "mean_total_power": 81730703.88504562,
+      "predicted_total_power": 81702873.88587533,
+      "total_power_ratio": 1.000340624482918,
+      "total_mean_standard_error": 1806005.2248715942,
+      "total_mean_standard_error_units": 0.015409700252814683
+    }
+  },
+  "valid_rays": 14901,
+  "foreground_rays": 7321,
+  "shared_seed_sequence_across_material_controls": true,
+  "elapsed_s": 1.918296082993038
+}

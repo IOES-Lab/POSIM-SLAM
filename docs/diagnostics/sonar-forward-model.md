@@ -153,3 +153,10 @@ WGPU 탐침은 일치하는 C ABI의 라이브러리로 단일 반사점을 계�
 시각 지도도 미통과입니다. 그림은 실제 같은 카메라 자세·원근, Turbo -5~0 m,
 64 pt² 점을 쓰고 RGB에는 수중 감쇠·입자·해저 집광무늬가 포함됩니다.
 정답으로 점을 제거하지 않습니다. 코드·색상표·이미지 고지는 [제3자 문서](../../THIRD_PARTY.md)를 따릅니다.
+
+The independent [finite-surface model and controlled inverse](sonar-finite-surfaces.md)
+represent incidence and opaque first-hit visibility explicitly. Known-support
+fixture accuracy remains separate from the unqualified real-survey geometry.
+
+[유한 표면 모델과 조건부 역문제](sonar-finite-surfaces.md)는 입사각과 불투명 표면의
+가림을 직접 계산합니다. 알려진 범위의 시험 성능과 실제 지도 품질은 구분합니다.

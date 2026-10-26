@@ -1,0 +1,41 @@
+{
+  "scope": "Invert a declared finite-plane fixture, with frozen poses and known support.\n\nThis benchmark estimates foreground plane offset/slopes and two reflectivities.\nForeground YZ support and the background are supplied. It does not discover\nobject support, estimate navigation or certify an unknown-scene map.\n",
+  "map_qualified": false,
+  "navigation_ready": false,
+  "optimizer_success": true,
+  "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+  "iterations": 36,
+  "evaluations": 48,
+  "initial_loss": 0.6726633405953647,
+  "final_loss": 0.0034968886529386104,
+  "gradient": [
+    1.2780356582441088e-06,
+    4.9355416044966766e-06,
+    6.692208791938582e-06,
+    6.763629060437763e-07,
+    2.448170884724503e-07
+  ],
+  "estimated_parameters": [
+    3.150255710883709,
+    -0.24945266286663814,
+    -0.10680305957356867,
+    -6.889938499224005,
+    -6.907954154870465
+  ],
+  "heldout_relative_power_l2": 0.08643374850058531,
+  "assumptions": [
+    "known foreground YZ support and background geometry",
+    "fixed exact fixture poses, without pose covariance",
+    "ideal face normals; single opaque first hits",
+    "conditional ensemble-mean least squares",
+    "branch derivatives exclude silhouette/visibility-cut derivatives"
+  ],
+  "elapsed_s": 7.734308499988401,
+  "inputs_sha256": "eeb70489a7ba9bde03a347679819f5f43e994829014541f03264449cd655c7e3",
+  "source_sha256": "7522f413bf29d9cd78f0c722273b403802d301c94cc0c88a1447bfd6703dd1e1",
+  "model_sha256": "92ff5ec9461812045ae0401dd2607e1a28bf306795678fe829d54638bc1a373c",
+  "versions": {
+    "numpy": "2.5.3",
+    "scipy": "1.18.1"
+  }
+}
