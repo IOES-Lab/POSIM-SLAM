@@ -451,10 +451,17 @@ Distinct landmark IDs remain distinct even if their estimated coordinates coinci
 랜드마크는 추정 좌표가 같아도 별도 점으로 유지합니다.
 
 The native archive admits an ID after full-weight reprojection support in three
-separate exposures. Active IDs receive optimized coordinates; departed IDs keep
+separate exposures with positive three-sigma inverse-range support. Current
+optimized camera poses and full-weight observations supply a pixel-noise-whitened
+point Jacobian. Thin SVD requires full rank and inverse-range sigma below one
+third of the estimated inverse range. Pixel sigma is `vio_obs_std_dev`. This
+conditional test fixes poses; it excludes pose uncertainty and cannot certify
+map accuracy. `point_geometry` reports eligible/unqualified active counts.
+Streaming and recorded Ping-patch inspection use the same admission rule. Active IDs receive optimized coordinates; departed IDs keep
 last coordinates. Unconfirmed departed tracks are discarded. Nonfinite or out-of-bound triangulation
 candidates are rejected and counted without invalidating valid state estimation.
-Previously retained IDs with invalid coordinates are removed and require fresh admission. Up to 100,000
+Previously retained IDs with invalid coordinates or insufficient current depth
+support are removed and require fresh admission. Up to 100,000
 tracks are retained, with oldest-track eviction and explicit eviction counts.
 The archive lifetime is exactly one worker/coordinate segment. It provides
 sparse odometry mapping without loop closure, dense reconstruction or retrospective
@@ -471,10 +478,16 @@ one pending export. Recordings remain read-only. Legacy active-window PLY files
 remain readable by `map_snapshot`, preserving their original scope.
 
 네이티브 누적 저장소는 서로 다른 영상 세 장에서 정상 가중치의 재투영 검사를 통과한
-ID를 채택합니다. 활성 ID는 최적화 좌표로 갱신하고 추정 창에서 빠진 점은 마지막
+ID를 채택하며 양의 역거리 3시그마 조건도 요구합니다. 현재 최적화된 카메라 자세와
+정상 가중치 관측으로 픽셀 잡음 백색화 점 Jacobian을 만들고 thin SVD로 완전 계수와
+역거리 표준편차가 추정 역거리의 1/3보다 작은지 확인합니다. 픽셀 표준편차는
+`vio_obs_std_dev`입니다. 자세를 고정한 조건부 검사이므로 자세 불확실성을 포함하지
+않으며 지도 정확도를 보증하지 않습니다. `point_geometry`에 활성 점의 적합·부적합
+수를 보고하며 스트리밍과 기록 Ping 패치 검사에 같은 기준을 적용합니다.
+활성 ID는 최적화 좌표로 갱신하고 추정 창에서 빠진 점은 마지막
 좌표를 유지합니다. 확인되지 않은 이탈 트랙은 버립니다. 유한하지 않거나 허용 범위를 벗어난 삼각측량
 후보는 제외하고 거부 수를 보고하며 유효한 자세 추정은 유지합니다. 기존 ID도 좌표가
-무효하면 제거하고 다시 관측 검사를 거칩니다. 최대 100,000개 트랙을
+무효하거나 현재 깊이 관측 기하가 부족하면 제거하고 다시 관측 검사를 거칩니다. 최대 100,000개 트랙을
 보존하고 가장 오래 유지된 트랙부터 제거하며 제거 수를 보고합니다. 워커·좌표 구간이
 바뀌면 새 지도를 시작합니다. 희소 odometry 지도이며 루프 폐쇄, 조밀한 표면 복원,
 이탈 점의 사후 보정은 제공하지 않습니다. 재방문 시 같은 특징에 새 ID가 생길 수 있습니다.
@@ -483,6 +496,15 @@ ID를 채택합니다. 활성 ID는 최적화 좌표로 갱신하고 추정 창�
 워커는 실행용 보정 옆에 PLY를 원자적으로 기록하고 요청 ID·시각·점 수를 반환합니다.
 소유자는 세션·프레임·단위를 검증하고 한 번에 하나의 내보내기를 처리합니다.
 기존 활성 로컬 창 파일도 원래 범위를 유지한 채 검증할 수 있습니다.
+
+With `record_visual_tracks: true`, a successful snapshot also writes
+`calibration.archive-export-REQUEST.json` with the same snapshot timestamp,
+request, ordered IDs and float coordinates. This diagnostic makes PLY vertex
+identity exact; it supplies no new estimator observation.
+
+`record_visual_tracks: true`이면 내보낸 스냅샷과 같은 시각·요청·정렬된 ID·실수 좌표를
+`calibration.archive-export-REQUEST.json`에 함께 기록합니다. PLY 꼭짓점의 ID를
+정확히 확인하는 진단이며 추정기에 새 관측을 제공하지 않습니다.
 
 ## Joint Ping adapter development / Ping 공동 최적화 어댑터
 

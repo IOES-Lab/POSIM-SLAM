@@ -24,6 +24,7 @@ int main() {
   archive.update(7,{3,4},{{3,0,0},{4,0,0}},{3,4});
   archive.update(8,{3,4},{{3,0,0},{4,0,0}},{3,4});
   assert(archive.points().size()==3);
+  assert(archive.mature_ids()==std::vector<int>({1,3,4}));
   archive.update(9,{5},{{5,0,0}},{5});
   assert(archive.retained()==3 && archive.evicted()==1);
   auto rejected=[&](int64_t stamp,std::vector<int> keys,std::vector<Point> coordinates) {
@@ -35,6 +36,7 @@ int main() {
   // A degenerate triangulation is a map-quality rejection, not a state fault.
   archive.update(10,{3},{{std::numeric_limits<float>::quiet_NaN(),0,0}},{3});
   assert(archive.rejected()==1 && archive.points().size()==1);
+  assert(archive.mature_ids()==std::vector<int>({4}));
   archive.update(11,{3},{{3,0,0}},{3});
   assert(archive.points().size()==1); // Re-admission requires fresh support.
   std::vector<Point> large;
@@ -44,6 +46,17 @@ int main() {
   for(size_t i=1;i<sample.size();++i)assert(sample[i][0]>sample[i-1][0]);
   assert(LandmarkArchive::display_sample({}).empty());
   assert(LandmarkArchive::display_sample({{1,2,3}}).size()==1);
+  // Explicitly weak active geometry withdraws a mature point. Retirement alone
+  // still preserves a qualified point; renewed geometry needs fresh support.
+  LandmarkArchive geometry;
+  for(int t=1;t<=3;++t)geometry.update(t,{7},{{1,2,3}},{7});
+  assert(geometry.points().size()==1);
+  geometry.update(4,{7},{{1,2,30}},{7},{7});
+  assert(geometry.points().empty());
+  for(int t=5;t<=7;++t)geometry.update(t,{7},{{1,2,3}},{7});
+  assert(geometry.points().size()==1);
+  geometry.update(8,{}, {}, {});
+  assert(geometry.points().size()==1);
   LandmarkArchive next_segment;next_segment.update(1,{1},{{99,0,0}},{1});
   assert(next_segment.points().empty());
 }

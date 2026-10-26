@@ -407,3 +407,5 @@ they do not alter feature selection, triangulation or map admission. The native
 The native worker retains startup velocity/bias states until visual landmarks exist. The stream rejects a retained state window exceeding 128 states or 30 seconds of sensor time. This preserves variables for subsequent visual correction; it does not estimate initial velocity from IMU alone or qualify initialization.
 
 Use `--first-image-stamp-ns` with `--gravity-seed` to reproduce a recorded live startup timestamp. The requested image must exist exactly and have covered IMU history. Delayed marginalization establishes a linearization reference for every newly retained pose before constructing its prior; existing references remain unchanged.
+
+[Visual-map depth support / 시각 지도 깊이 지지와 한계](docs/diagnostics/visual-depth-admission.md).

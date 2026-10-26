@@ -149,7 +149,7 @@ int main(int argc, char** argv) {
             const auto inliers=mapping_inliers(*data,settings.processed_width,settings.processed_height,config.vio_obs_huber_thresh);
             std::vector<LandmarkArchive::Point> coordinates;
             for(const auto& point:data->points)coordinates.push_back({float(point.x()),float(point.y()),float(point.z())});
-            archive.update(data->t_ns,data->point_ids,coordinates,inliers);
+            archive.update(data->t_ns,data->point_ids,coordinates,inliers,unqualified_visual_points(*data));
             std::vector<posim_slam::PingPatchPoint> candidates;
             for(const auto& [id,point]:archive.active_mature(inliers))candidates.push_back({size_t(id),Vec3(point[0],point[1],point[2])});
             Json result={{"stamp_ns",data->t_ns},{"active_mature_points",candidates.size()},{"ping_fused",false}};

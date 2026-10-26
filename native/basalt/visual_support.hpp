@@ -41,6 +41,18 @@ inline std::set<int> mapping_inliers(const basalt::VioVisualizationData& data,in
   return result;
 }
 
+// Both streaming and recorded exports use the same optimized-window geometry.
+// An absent certificate is a protocol error, never permission to admit a point.
+inline std::set<int> unqualified_visual_points(const basalt::VioVisualizationData& data) {
+  std::set<int> result;
+  for(int id:data.point_ids) {
+    const auto found=data.map_quality.find(id);
+    if(found==data.map_quality.end())throw std::runtime_error("visual_geometry_identity_missing");
+    if(!found->second.eligible)result.insert(id);
+  }
+  return result;
+}
+
 // Optional diagnostic output uses actual frontend IDs and optimized points.
 // It never changes feature selection, weights, triangulation or map admission.
 inline Json visual_track_trace(const basalt::VioVisualizationData& data,int width,int height,double huber_px,

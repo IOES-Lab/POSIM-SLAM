@@ -26,6 +26,7 @@ set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS
  ${B}/include/basalt/linearization/landmark_block.hpp
  ${B}/include/basalt/linearization/landmark_block_abs_dynamic.hpp
  ${B}/include/basalt/vi_estimator/ba_base.h
+ ${B}/include/basalt/vi_estimator/vio_estimator.h
  ${B}/include/basalt/vi_estimator/sqrt_keypoint_vio.h
  ${B}/src/vi_estimator/sqrt_keypoint_vio.cpp)
 execute_process(COMMAND ${Python3_EXECUTABLE}
@@ -144,3 +145,7 @@ target_link_libraries(basalt_sonar_ground_probe PRIVATE basalt_core)
 
 add_executable(basalt_ping_joint_probe ping_joint_probe.cc)
 target_link_libraries(basalt_ping_joint_probe PRIVATE Eigen3::Eigen)
+
+add_executable(basalt_visual_geometry_probe visual_geometry_probe.cc)
+target_link_libraries(basalt_visual_geometry_probe PRIVATE Eigen3::Eigen)
+target_compile_options(basalt_visual_geometry_probe PRIVATE -UNDEBUG)

@@ -10,7 +10,8 @@
 #include <vector>
 
 // Segment-local sparse odometry archive. IDs update existing coordinates; they
-// never append another copy. Three distinct inlier exposures admit a landmark.
+// never append another copy. Three geometrically qualified inlier exposures
+// admit a landmark. Explicitly weak active geometry withdraws prior admission.
 // Active coordinates follow optimization; departed coordinates freeze. There is
 // no loop closure or retrospective correction of departed landmarks.
 class LandmarkArchive {
@@ -21,13 +22,14 @@ class LandmarkArchive {
     if(!budget || budget>100000)throw std::runtime_error("archive_budget");
   }
   void update(int64_t stamp,const std::vector<int>& ids,
-              const std::vector<Point>& points,const std::set<int>& inliers) {
+              const std::vector<Point>& points,const std::set<int>& inliers,
+              const std::set<int>& unqualified={}) {
     if(stamp<=stamp_ || ids.size()!=points.size() || ids.size()>100000)
       throw std::runtime_error("archive_input");
     std::set<int> active,invalid,seen;
     for(size_t i=0;i<ids.size();++i) {
       if(ids[i]<0 || !seen.insert(ids[i]).second)throw std::runtime_error("archive_ids");
-      bool valid=true;
+      bool valid=!unqualified.count(ids[i]);
       for(float x:points[i])if(!std::isfinite(x) || std::abs(x)>=10000)valid=false;
       (valid?active:invalid).insert(ids[i]);
     }
@@ -55,6 +57,11 @@ class LandmarkArchive {
       order_.insert({stamp,id});
     }
     stamp_=stamp;
+  }
+  std::vector<int> mature_ids() const {
+    std::vector<int> result;
+    for(const auto& item:entries_)if(item.second.support>=3)result.push_back(item.first);
+    return result;
   }
   std::vector<Point> points() const {
     std::vector<Point> result;

@@ -386,3 +386,5 @@ PYTHONPATH=src python tools/evaluate_stationary_initialization.py --output /tmp/
 네이티브 작업자는 시각 랜드마크가 생길 때까지 초기 속도·바이어스 상태를 보존합니다. 스트림은 보존 상태 창이 128개 상태 또는 센서 시각 30초를 넘으면 거부합니다. 이후 시각 제약으로 보정할 변수를 유지하는 처리이며, IMU만으로 초기 속도를 추정하거나 초기화 합격을 뜻하지 않습니다.
 
 `--gravity-seed`와 함께 `--first-image-stamp-ns`를 지정하면 기록된 라이브 시작 시각을 재현합니다. 요청한 시각의 영상이 정확히 존재하고 IMU 이력이 해당 구간을 덮어야 합니다. 지연된 주변화에서는 사전 제약을 구성하기 전에 새로 보존하는 각 자세의 선형화 기준점을 설정하며, 기존 기준점은 유지합니다.
+
+[Visual-map depth support / 시각 지도 깊이 지지와 한계](docs/diagnostics/visual-depth-admission.md).

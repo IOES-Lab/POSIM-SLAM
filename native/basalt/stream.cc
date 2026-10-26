@@ -56,7 +56,7 @@ int main(int argc,char** argv) {
   };
   try {
     auto c=input_calibration(argv[1]);
-    struct Snapshot {int64_t stamp;std::vector<std::array<float,3>> points;};
+    struct Snapshot {int64_t stamp;std::vector<std::array<float,3>> points;std::vector<int> ids;};
     // Exact image/Ping pairs travel atomically. This is observation transport;
     // the joint optimizer must explicitly consume them before claiming fusion.
     std::mutex ping_mutex;
@@ -505,11 +505,14 @@ int main(int argc,char** argv) {
         auto full=std::make_shared<Snapshot>();full->stamp=data->t_ns;
         std::vector<LandmarkArchive::Point> active;
         for(const auto& point:data->points)active.push_back({float(point.x()),float(point.y()),float(point.z())});
+        std::set<int> unqualified;
         try {
+          unqualified=unqualified_visual_points(*data);
           archive.update(data->t_ns,data->point_ids,active,
-              mapping_inliers(*data,c.processed_width,c.processed_height,config.vio_obs_huber_thresh));
+              mapping_inliers(*data,c.processed_width,c.processed_height,config.vio_obs_huber_thresh),unqualified);
         } catch(const std::exception& error) {fail(error.what());}
         full->points=archive.points();
+        if(record_visual_tracks)full->ids=archive.mature_ids();
         if(record_visual_tracks && traced_frames<=1800) {
           Json trace={{"stamp_ns",data->t_ns},{"width",c.processed_width},{"height",c.processed_height}};
           if(traced_frames==1800)trace["truncated"]=true;
@@ -525,7 +528,7 @@ int main(int argc,char** argv) {
         Json points=Json::array();
         const size_t count=full->points.size();
         for(const auto& point:LandmarkArchive::display_sample(full->points))points.push_back(point);
-        emit({{"type","map"},{"stamp_ns",data->t_ns},
+        emit({{"type","map"},{"stamp_ns",data->t_ns},{"point_geometry",{{"policy","positive_three_sigma_inverse_range"},{"pose_uncertainty_included",false},{"pixel_sigma",config.vio_obs_std_dev},{"active_eligible",data->point_ids.size()-unqualified.size()},{"active_unqualified",unqualified.size()}}},
               {"landmarks_window",data->points.size()},{"landmarks_accumulated",count},
               {"archive_evicted",archive.evicted()},{"archive_rejected",archive.rejected()},{"points",points},
               {"visual_support",visual_support(*data,c.processed_width,c.processed_height,config.vio_obs_huber_thresh)},
@@ -701,6 +704,15 @@ int main(int argc,char** argv) {
         }
         file.flush();if(!file)fail("snapshot_write_failed");file.close();
         fs::rename(temporary,export_file);
+        if(record_visual_tracks) {
+          if(full->ids.size()!=full->points.size())fail("archive_trace_identity");
+          auto path=fs::path(argv[1]);path.replace_extension(".archive-export-"+std::to_string(request)+".json");
+          if(fs::exists(path) || fs::is_symlink(path))fail("archive_trace_path");
+          std::ofstream diagnostic(path);
+          diagnostic<<Json({{"schema","posim-visual-archive-trace-1"},{"stamp_ns",full->stamp},
+            {"request_id",request},{"ids",full->ids},{"points",full->points}}).dump()<<'\n';
+          diagnostic.flush();if(!diagnostic)fail("archive_trace_write_failed");
+        }
         emit({{"type","export"},{"request_id",request},{"success",true},
               {"stamp_ns",full->stamp},{"points",full->points.size()}});
       } else if(type==1) {

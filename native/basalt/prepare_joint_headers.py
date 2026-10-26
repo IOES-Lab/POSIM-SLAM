@@ -8,6 +8,7 @@ from pathlib import Path
 import sys
 
 HASHES={
+    'vi_estimator/vio_estimator.h':'48ca1e3bc8fabc7378ddd8c3b913dca93ea12cba104192145b019c16599ac754',
     'vi_estimator/sqrt_keypoint_vio.h':'1c98d1cb3efeab33d6df6371f4294880678ae854c18a8cd496abf0d0e14522b3',
     'linearization/landmark_block.hpp':'491cbd5cb633f13923b8c440364e2b72db1ea8abf5b88c604a348367fa57115e',
     'linearization/landmark_block_abs_dynamic.hpp':'5ed3a2082aa09ad41c22dd7ce36e4e904329b3d9ed446c84b106e57dc88e8927',
@@ -64,7 +65,10 @@ def prepare(source,destination):
         raw=(Path(source)/'include/basalt'/name).read_bytes()
         if hashlib.sha256(raw).hexdigest()!=checksum:raise ValueError('pinned_basalt_joint_header_changed:'+name)
         text=raw.decode()
-        if name.endswith('/sqrt_keypoint_vio.h'):
+        if name.endswith('/vio_estimator.h'):
+            text=replace_once(text,'#pragma once','#pragma once\n#include <map>\n#include "visual_geometry.hpp"')
+            text=replace_once(text,'  std::vector<int> point_ids;','  std::vector<int> point_ids;\n  std::map<int,posim_slam::VisualPointSupport> map_quality;')
+        elif name.endswith('/sqrt_keypoint_vio.h'):
             text=replace_once(text,'#pragma once','#pragma once\n#include <functional>\nnamespace posim_slam { class PingFactorStore; class SonarFactorStore; class DvlFactorStore; class PressureFactorStore; }')
             text=replace_once(text,'  using Scalar = Scalar_;','''  using Scalar = Scalar_;
   // Configured before input is submitted; called only by the estimator thread.
@@ -81,8 +85,9 @@ def prepare(source,destination):
   uint64_t posim_projection_rejections = 0;
   void posim_optimize_joint();''')
         elif name.endswith('/ba_base.h'):
-            text=replace_once(text,'#pragma once','#pragma once\n#include "ping_state.hpp"\n#include "consumed_visual.hpp"')
-            text=replace_once(text,'  inline void backup() {','''  posim_slam::PingPlaneStore posim_ping_planes;
+            text=replace_once(text,'#pragma once','#pragma once\n#include "ping_state.hpp"\n#include "consumed_visual.hpp"\n#include "visual_geometry.hpp"')
+            text=replace_once(text,'  inline void backup() {','''  mutable std::map<int,posim_slam::VisualPointSupport> posim_map_quality;
+  posim_slam::PingPlaneStore posim_ping_planes;
   posim_slam::ConsumedVisualObservations posim_consumed_visual;
   bool posim_ping_trial_active = false;
   uint64_t posim_ping_state_revision = 0;
@@ -254,6 +259,8 @@ void SqrtKeypointVioEstimator<Scalar_>::posim_optimize_joint() {
 
 template <class Scalar_>
 void SqrtKeypointVioEstimator<Scalar_>::debug_finalize()''')
+    text=replace_once(text,'    get_current_points(data->points, data->point_ids);',
+        '    get_current_points(data->points, data->point_ids);\n    data->map_quality = this->posim_map_quality;')
     text=replace_once(text,'  prev_opt_flow_res[opt_flow_meas->t_ns] = opt_flow_meas;',
         '  prev_opt_flow_res[opt_flow_meas->t_ns] = opt_flow_meas;\n'
         '  this->posim_consumed_visual.prune(prev_opt_flow_res);')

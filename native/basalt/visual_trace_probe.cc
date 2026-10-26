@@ -19,4 +19,12 @@ int main() {
   assert(rows[2]["full_weight"]==false && rows[2]["archived"]==true);
   assert(rows[1]["point"]==Json({1.,2.,3.}));
   assert(rows[2]["pixel"]==Json({30.,20.}));
+  bool missing=false;
+  try {unqualified_visual_points(data);}catch(const std::runtime_error& error) {
+    missing=std::string(error.what())=="visual_geometry_identity_missing";
+  }
+  assert(missing);
+  data.map_quality[2].eligible=true;
+  data.map_quality[3].eligible=false;
+  assert(unqualified_visual_points(data)==std::set<int>({3}));
 }

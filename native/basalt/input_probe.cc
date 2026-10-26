@@ -26,6 +26,9 @@ int main(int argc,char** argv) {
     auto support=visual_support(data,c.processed_width,c.processed_height,1.);
     basalt::BundleAdjustmentBase<double> map;
     map.calib.T_i_c.emplace_back();
+    map.calib.intrinsics.emplace_back(basalt::GenericCamera<double>::fromString("pinhole"));
+    map.calib.intrinsics[0].setFromInit(Eigen::Vector4d(100,100,0,0));
+    map.huber_thresh=1.;map.obs_std_dev=.5;
     map.frame_poses.emplace(100,basalt::PoseStateWithLin<double>(100,Sophus::SE3d()));
     for(int id:{7,42}) {
       basalt::Keypoint<double> landmark;
