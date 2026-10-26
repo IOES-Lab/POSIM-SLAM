@@ -1,0 +1,296 @@
+{
+  "schema": "posim-sonar-volume-diagnostic-1",
+  "map_qualified": false,
+  "navigation_ready": false,
+  "field_type": "relative scattering coefficients; not occupancy probability or certified landmarks",
+  "frame": "vehicle/vio_709fb903cadb4a05a677738448ed54aa_segment_1",
+  "cell_m": 0.2,
+  "refine": 2,
+  "range_response": "fractional-hamming",
+  "model": {
+    "range_power": 3.0,
+    "fractional_samples": 8,
+    "maximum_range_m": 10.0,
+    "vertical_fov_rad": 0.3490658503988659,
+    "beam_pixel_width_rad": 0.008213314127032138
+  },
+  "stages": [
+    {
+      "level": 0,
+      "total_cells": 296946,
+      "positive_cells": 105,
+      "minimum_cell_m": 0.2,
+      "projection_bytes": 67032292,
+      "heldout_relative_power_l2": 1.0158844450501878,
+      "fit": {
+        "lambda_value": 2.373670333584587,
+        "lambda_fraction": 0.02,
+        "iterations": 80,
+        "history": [
+          {
+            "iteration": 0,
+            "objective": 118552.25666700295,
+            "relative_power_l2": 0.990382669482418,
+            "positive_coefficients": 128,
+            "lipschitz": 16.397767389646997
+          },
+          {
+            "iteration": 10,
+            "objective": 103808.7670981357,
+            "relative_power_l2": 0.9198891385009367,
+            "positive_coefficients": 116,
+            "lipschitz": 16.397767389646997
+          },
+          {
+            "iteration": 20,
+            "objective": 103352.63819491645,
+            "relative_power_l2": 0.916418083741961,
+            "positive_coefficients": 105,
+            "lipschitz": 16.397767389646997
+          },
+          {
+            "iteration": 30,
+            "objective": 103293.65350815012,
+            "relative_power_l2": 0.9167481984045617,
+            "positive_coefficients": 105,
+            "lipschitz": 16.397767389646997
+          },
+          {
+            "iteration": 40,
+            "objective": 103286.00532289788,
+            "relative_power_l2": 0.9165195407256868,
+            "positive_coefficients": 104,
+            "lipschitz": 16.397767389646997
+          },
+          {
+            "iteration": 50,
+            "objective": 103285.72400068202,
+            "relative_power_l2": 0.9165440875464463,
+            "positive_coefficients": 103,
+            "lipschitz": 16.397767389646997
+          },
+          {
+            "iteration": 60,
+            "objective": 103285.76775139885,
+            "relative_power_l2": 0.9165703254090722,
+            "positive_coefficients": 105,
+            "lipschitz": 16.397767389646997
+          },
+          {
+            "iteration": 70,
+            "objective": 103285.68595522834,
+            "relative_power_l2": 0.9165376065247558,
+            "positive_coefficients": 105,
+            "lipschitz": 16.397767389646997
+          },
+          {
+            "iteration": 79,
+            "objective": 103285.61648450214,
+            "relative_power_l2": 0.9165578059031045,
+            "positive_coefficients": 105,
+            "lipschitz": 16.397767389646997
+          }
+        ]
+      }
+    },
+    {
+      "level": 1,
+      "total_cells": 303491,
+      "positive_cells": 215,
+      "minimum_cell_m": 0.1,
+      "projection_bytes": 72397248,
+      "heldout_relative_power_l2": 1.1244871724912822,
+      "fit": {
+        "lambda_value": 4.530701516788576,
+        "lambda_fraction": 0.02,
+        "iterations": 100,
+        "history": [
+          {
+            "iteration": 0,
+            "objective": 104605.1346686167,
+            "relative_power_l2": 0.9247914377939944,
+            "positive_coefficients": 635,
+            "lipschitz": 19.632129770310208
+          },
+          {
+            "iteration": 10,
+            "objective": 38927.59294497656,
+            "relative_power_l2": 0.49807713501261536,
+            "positive_coefficients": 395,
+            "lipschitz": 19.632129770310208
+          },
+          {
+            "iteration": 20,
+            "objective": 36758.693844090594,
+            "relative_power_l2": 0.4772801583466305,
+            "positive_coefficients": 289,
+            "lipschitz": 19.632129770310208
+          },
+          {
+            "iteration": 30,
+            "objective": 36370.938583476825,
+            "relative_power_l2": 0.47445799269306965,
+            "positive_coefficients": 266,
+            "lipschitz": 19.632129770310208
+          },
+          {
+            "iteration": 40,
+            "objective": 36315.864376673366,
+            "relative_power_l2": 0.47389528035107964,
+            "positive_coefficients": 239,
+            "lipschitz": 19.632129770310208
+          },
+          {
+            "iteration": 50,
+            "objective": 36306.278622796315,
+            "relative_power_l2": 0.4736941513100521,
+            "positive_coefficients": 230,
+            "lipschitz": 19.632129770310208
+          },
+          {
+            "iteration": 60,
+            "objective": 36294.08214456895,
+            "relative_power_l2": 0.473757911915166,
+            "positive_coefficients": 229,
+            "lipschitz": 19.632129770310208
+          },
+          {
+            "iteration": 70,
+            "objective": 36287.247055206455,
+            "relative_power_l2": 0.4736608113686212,
+            "positive_coefficients": 222,
+            "lipschitz": 19.632129770310208
+          },
+          {
+            "iteration": 80,
+            "objective": 36286.724817074275,
+            "relative_power_l2": 0.473709888608028,
+            "positive_coefficients": 220,
+            "lipschitz": 19.632129770310208
+          },
+          {
+            "iteration": 90,
+            "objective": 36286.28279908846,
+            "relative_power_l2": 0.473725214003495,
+            "positive_coefficients": 217,
+            "lipschitz": 19.632129770310208
+          },
+          {
+            "iteration": 99,
+            "objective": 36285.07677053414,
+            "relative_power_l2": 0.4736825798765604,
+            "positive_coefficients": 215,
+            "lipschitz": 19.632129770310208
+          }
+        ]
+      }
+    },
+    {
+      "level": 2,
+      "total_cells": 316098,
+      "positive_cells": 385,
+      "minimum_cell_m": 0.05,
+      "projection_bytes": 82937252,
+      "heldout_relative_power_l2": 1.1204583943735167,
+      "fit": {
+        "lambda_value": 5.270172857793315,
+        "lambda_fraction": 0.02,
+        "iterations": 100,
+        "history": [
+          {
+            "iteration": 0,
+            "objective": 89173.7228335758,
+            "relative_power_l2": 0.8433877755596197,
+            "positive_coefficients": 4394,
+            "lipschitz": 67.8607488093962
+          },
+          {
+            "iteration": 10,
+            "objective": 21277.033010026586,
+            "relative_power_l2": 0.28322974485576735,
+            "positive_coefficients": 1936,
+            "lipschitz": 67.8607488093962
+          },
+          {
+            "iteration": 20,
+            "objective": 16865.383800079624,
+            "relative_power_l2": 0.21504772495973296,
+            "positive_coefficients": 1210,
+            "lipschitz": 67.8607488093962
+          },
+          {
+            "iteration": 30,
+            "objective": 15483.302718648052,
+            "relative_power_l2": 0.18732556245651652,
+            "positive_coefficients": 867,
+            "lipschitz": 67.8607488093962
+          },
+          {
+            "iteration": 40,
+            "objective": 14868.587424249823,
+            "relative_power_l2": 0.17518565088577062,
+            "positive_coefficients": 699,
+            "lipschitz": 67.8607488093962
+          },
+          {
+            "iteration": 50,
+            "objective": 14507.087317969219,
+            "relative_power_l2": 0.16815746127660355,
+            "positive_coefficients": 594,
+            "lipschitz": 67.8607488093962
+          },
+          {
+            "iteration": 60,
+            "objective": 14324.104249259857,
+            "relative_power_l2": 0.164484223861001,
+            "positive_coefficients": 516,
+            "lipschitz": 67.8607488093962
+          },
+          {
+            "iteration": 70,
+            "objective": 14199.481478046175,
+            "relative_power_l2": 0.16301397061769868,
+            "positive_coefficients": 484,
+            "lipschitz": 67.8607488093962
+          },
+          {
+            "iteration": 80,
+            "objective": 14128.011695542747,
+            "relative_power_l2": 0.16219512292791488,
+            "positive_coefficients": 429,
+            "lipschitz": 67.8607488093962
+          },
+          {
+            "iteration": 90,
+            "objective": 14078.305058590946,
+            "relative_power_l2": 0.16183735503969615,
+            "positive_coefficients": 409,
+            "lipschitz": 67.8607488093962
+          },
+          {
+            "iteration": 99,
+            "objective": 14043.555232468125,
+            "relative_power_l2": 0.16107764160267443,
+            "positive_coefficients": 385,
+            "lipschitz": 67.8607488093962
+          }
+        ]
+      }
+    }
+  ],
+  "inputs_sha256": "fa3b77a2e04d7315c437b4c6c21bdea51bbe5c3f49b2191d207cc520d8fdd563",
+  "source_sha256": "44d206f7e5904c68b40131a0fa74d8d7c59d25d8b524bb81d81b3bffb40d90da",
+  "versions": {
+    "numpy": "2.5.3",
+    "scipy": "1.18.1"
+  },
+  "elapsed_s": 49.467917790985666,
+  "assumptions": [
+    "fixed estimated poses without pose covariance",
+    "generic POSIM mean-power beam response",
+    "per-ray range-power proxy",
+    "surface normals and occlusion omitted",
+    "source window power sampled at 8 sub-bins with bounded linear interpolation",
+    "L1-selected field support is not an uncertainty certificate"
+  ]
+}

@@ -1,0 +1,80 @@
+{
+  "scope": "Seal the estimated surface before loading evaluation-only scene geometry.",
+  "map_qualified": false,
+  "mesh_sha256_before_oracle": "218df85e54c4a21106096d786d259b0c966ac4597dd4f05840e721fd0ea7d958",
+  "rows": {
+    "initial_vertices": {
+      "points": 1245,
+      "within_10cm": 1066,
+      "median_m": 0.0522498730701787,
+      "p90_m": 0.11171129029743149,
+      "maximum_m": 0.18069492966515543,
+      "nearest_surface_counts": {
+        "acoustic_validation_target_0": 215,
+        "acoustic_validation_target_1": 108,
+        "acoustic_validation_target_2": 743,
+        "acoustic_validation_wall_0": 0,
+        "acoustic_validation_wall_1": 0,
+        "seabed": 0
+      }
+    },
+    "initial_centroids": {
+      "points": 2560,
+      "within_10cm": 2279,
+      "median_m": 0.04778188142823181,
+      "p90_m": 0.10215841442366307,
+      "maximum_m": 0.1769581392208455,
+      "nearest_surface_counts": {
+        "acoustic_validation_target_0": 400,
+        "acoustic_validation_target_1": 206,
+        "acoustic_validation_target_2": 1673,
+        "acoustic_validation_wall_0": 0,
+        "acoustic_validation_wall_1": 0,
+        "seabed": 0
+      },
+      "total_area_m2": 3.200000000000003,
+      "area_within_10cm_fraction": 0.890234375
+    },
+    "refined_vertices": {
+      "points": 1245,
+      "within_10cm": 1086,
+      "median_m": 0.04836433570782006,
+      "p90_m": 0.10716717517498629,
+      "maximum_m": 0.46212307082507115,
+      "nearest_surface_counts": {
+        "acoustic_validation_target_0": 212,
+        "acoustic_validation_target_1": 108,
+        "acoustic_validation_target_2": 766,
+        "acoustic_validation_wall_0": 0,
+        "acoustic_validation_wall_1": 0,
+        "seabed": 0
+      }
+    },
+    "refined_centroids": {
+      "points": 2560,
+      "within_10cm": 2366,
+      "median_m": 0.042527155472942724,
+      "p90_m": 0.09315000267482798,
+      "maximum_m": 0.28583175269026473,
+      "nearest_surface_counts": {
+        "acoustic_validation_target_0": 400,
+        "acoustic_validation_target_1": 208,
+        "acoustic_validation_target_2": 1758,
+        "acoustic_validation_wall_0": 0,
+        "acoustic_validation_wall_1": 0,
+        "seabed": 0
+      },
+      "total_area_m2": 5.0384713158434575,
+      "area_within_10cm_fraction": 0.8818234674555577
+    }
+  },
+  "visible_vertices": [
+    1245,
+    1245
+  ],
+  "height_range_m": [
+    -3.161941258646152,
+    -2.211885129821291
+  ],
+  "all_vertices_and_faces_retained": true
+}

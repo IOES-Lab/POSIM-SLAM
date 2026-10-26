@@ -417,5 +417,4 @@ It does not change the runtime estimator or qualify a navigation map.
 
 [Sonar forward-model checks and deeper survey / 소나 관측 모델 검사와 깊은 수심 관측](docs/diagnostics/sonar-forward-model.md)
 
-The [finite-surface model and conditional inverse / 유한 표면 모델과 조건부 역문제](docs/diagnostics/sonar-finite-surfaces.md) include opaque first-hit visibility and ideal surface normals.
-include an optional fractional range response and a matching WGPU power probe.
+The [finite-surface model and conditional inverse / 유한 표면 모델과 조건부 역문제](docs/diagnostics/sonar-finite-surfaces.md) include opaque first-hit visibility, ideal surface normals, a fractional range response and matching WGPU power probes. The guide retains the unknown-shape diagnostic's failed geometry assessment and its matched RGB comparison.
