@@ -1,0 +1,50 @@
+{
+  "README.md": {
+    "bytes": 8151,
+    "sha256": "3326dce2c2fef2c81c12ca02196cf411272fdc4b47859d502b5691dc8c57c1d7"
+  },
+  "affine-lifecycle.json": {
+    "bytes": 34,
+    "sha256": "5d17e6325b8c93358847bc281c87817f851181d4636909c00de54225a0a68d41"
+  },
+  "affine-synthetic.json": {
+    "bytes": 22860,
+    "sha256": "14893361637d70ae15a81f6309522f0cef89a8d34786c35eaabd4d392eddd98d"
+  },
+  "all-point-information.json.gz": {
+    "bytes": 659512,
+    "sha256": "202475bb6c39806dd0322d5725ad2a25ee9bcc5349ac3df9976a84c492035e07"
+  },
+  "all-point-photometry.json.gz": {
+    "bytes": 236179,
+    "sha256": "e7237a4d9fa9468573b6a856038b3664fac5936a5bd044fdf4e94b3bd317d060"
+  },
+  "all-point-warp-comparison.json.gz": {
+    "bytes": 292059,
+    "sha256": "68ce1a38c09ea4e7fbd35deb68ed7358e9628580cbe6bff290a16e9c6d51993f"
+  },
+  "component-verification.json": {
+    "bytes": 3314,
+    "sha256": "91c01019471a0dec292cd1e32f8766360bbbfeab52b331b4d3eb5d843bec280c"
+  },
+  "diagnostic-comparison.png": {
+    "bytes": 249010,
+    "sha256": "b423110e47d9ff71ba3c215c89bdb09225e65e19e6da292e4323936c0c691c70"
+  },
+  "flow-lifecycle.json": {
+    "bytes": 143,
+    "sha256": "8d4b8d199737c3aae5f8b143fe9cd0d8ca6330195c4271e604ff92d4b08b954f"
+  },
+  "remaining-track-crops.json": {
+    "bytes": 3071,
+    "sha256": "099bbb34a23e27290acb74c549235230f2a157e5076be31d90f172f8755c5b76"
+  },
+  "remaining-track-crops.png": {
+    "bytes": 120981,
+    "sha256": "37b111a4aec7f876741ec74f037609535cb5c4699e55a8b92e40fdc65c03df90"
+  },
+  "summary.json": {
+    "bytes": 11687,
+    "sha256": "9ecc5ae65669f083490fa8d1d4cc15edc58f1b2d8a64e0d003b030cfe8f30e32"
+  }
+}

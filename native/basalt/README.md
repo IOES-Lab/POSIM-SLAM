@@ -47,6 +47,11 @@ bounded, one-state-at-a-time acknowledgement contract.
 
 ## Visual reference patches / 시각 참조 패치
 
+[Optional native patch diagnostics](diagnostics/README.md) inspect conditioning,
+birth-reference residuals and local warp models without changing estimation.
+[선택형 네이티브 패치 진단](diagnostics/README.md)은 추정을 바꾸지 않고
+패치 조건·최초 참조 잔차·국소 변형 모델을 검사합니다.
+
 Camera calibration accepts `optical_flow_type: "frame_to_frame"` (default) or
 `"patch"`. These select the pinned Basalt previous-frame and birth-frame
 reference trackers. The worker acknowledges the selected value in `ready`;

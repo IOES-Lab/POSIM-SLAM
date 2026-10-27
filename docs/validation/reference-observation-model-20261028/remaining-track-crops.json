@@ -1,0 +1,123 @@
+{
+  "scope": "Source-image inspection only; no attribution or acceptance claim",
+  "pixel_centres": "(native + 0.5) * source / processed - 0.5",
+  "samples": [
+    {
+      "source_id": 13290,
+      "stamp_ns": 49100000000,
+      "pixel_native": [
+        308.0,
+        69.0
+      ],
+      "pixel_source": [
+        616.5,
+        138.5
+      ],
+      "source_image_sha256": "e3b8141a725b83989db252fc8bce634d59800208dc123c43b555142bd3ae7d75"
+    },
+    {
+      "source_id": 13290,
+      "stamp_ns": 51500000000,
+      "pixel_native": [
+        266.9616394042969,
+        132.44125366210938
+      ],
+      "pixel_source": [
+        534.4232788085938,
+        265.38250732421875
+      ],
+      "source_image_sha256": "508d99f9ba3b627345fa9c7ed1be93f86a1e079a0ad2cd5edf714eb1739c0706"
+    },
+    {
+      "source_id": 13290,
+      "stamp_ns": 53800000000,
+      "pixel_native": [
+        273.7684326171875,
+        260.24884033203125
+      ],
+      "pixel_source": [
+        548.036865234375,
+        520.9976806640625
+      ],
+      "source_image_sha256": "7004bc555a453c797c6576e64269d741f89c8567a6eefabe75153a84e8cd44f3"
+    },
+    {
+      "source_id": 12463,
+      "stamp_ns": 47100000000,
+      "pixel_native": [
+        260.0,
+        69.0
+      ],
+      "pixel_source": [
+        520.5,
+        138.5
+      ],
+      "source_image_sha256": "5964266c6432a36dc589b61c7e813bf9b4f3fc59f9d94c4631d545da74d51dba"
+    },
+    {
+      "source_id": 12463,
+      "stamp_ns": 48000000000,
+      "pixel_native": [
+        262.1047058105469,
+        107.88016510009766
+      ],
+      "pixel_source": [
+        524.7094116210938,
+        216.2603302001953
+      ],
+      "source_image_sha256": "bd06d86953cf47b4b1f34c751394ae590044a89e00c3fc9a5cfe46aac33c970b"
+    },
+    {
+      "source_id": 12463,
+      "stamp_ns": 48800000000,
+      "pixel_native": [
+        236.75296020507812,
+        96.57991790771484
+      ],
+      "pixel_source": [
+        474.00592041015625,
+        193.6598358154297
+      ],
+      "source_image_sha256": "28ff786aacd49b1927e976f8928736e8befde6e0611b58c95acf642063102f90"
+    },
+    {
+      "source_id": 21747,
+      "stamp_ns": 70600000000,
+      "pixel_native": [
+        189.0,
+        84.0
+      ],
+      "pixel_source": [
+        378.5,
+        168.5
+      ],
+      "source_image_sha256": "ca46cf0d37c8bd31737839c4e8330890bb882e96966b6390f570c12ca321981d"
+    },
+    {
+      "source_id": 21747,
+      "stamp_ns": 71300000000,
+      "pixel_native": [
+        186.92733764648438,
+        127.76969909667969
+      ],
+      "pixel_source": [
+        374.35467529296875,
+        256.0393981933594
+      ],
+      "source_image_sha256": "db556f2485f92ff9a32d0aa89350834978041c3ac68b0d2b278d5986bc103199"
+    },
+    {
+      "source_id": 21747,
+      "stamp_ns": 71900000000,
+      "pixel_native": [
+        184.52334594726562,
+        185.92970275878906
+      ],
+      "pixel_source": [
+        369.54669189453125,
+        372.3594055175781
+      ],
+      "source_image_sha256": "ee3b5295488af9f1e5fc852b2b59116df3f9893c07aa29fe87cfc8b86e96aa9a"
+    }
+  ]
+}
