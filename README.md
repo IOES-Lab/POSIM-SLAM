@@ -1,5 +1,11 @@
 # POSIM-SLAM
 
+[Visual-map information contract / 시각 지도 정보 계약](docs/diagnostics/visual-map-quality.md)
+provides an independent native request/report interface for world-position
+uncertainty and retained-point reprojection checks.
+세계 좌표 위치의 불확실성과 저장점 재투영 검사를 위한 독립적인 네이티브 요청·응답
+인터페이스를 제공합니다.
+
 The camera-free `SonarSession` requires an explicit pressure-enabled native calibration by default. Explicit pressure-off configurations are research ablations. The application requires raw IMU and pressure depth for sonar SLAM, with optional DVL. It checks recent acknowledged pressure fusion separately from sensor reception and waits for valid pressure before worker startup. Multiple-view tracks constrain shared point hypotheses; pressure constrains vehicle depth, not seabed distance. Repeated observations from a single pose do not resolve elevation, and physical correspondence/map accuracy remain unqualified.
 
 `SensorEvents.advance` records a validated but intentionally omitted observation without creating a factor or repeating a measurement. It keeps input ordering independent of factor rate limits. Shared auxiliary acknowledgement and freshness checks distinguish received measurements from recent optimization on both sensor and wall clocks.
