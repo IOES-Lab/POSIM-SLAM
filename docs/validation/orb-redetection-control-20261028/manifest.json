@@ -1,0 +1,170 @@
+{
+  "README.md": {
+    "bytes": 10078,
+    "sha256": "a962034ac004e1e5882bd048f94eab8639c6567d127c68387140053846d51068"
+  },
+  "candidate-source.patch.gz": {
+    "bytes": 19727,
+    "sha256": "960119a43254db55f07f3aba06f5fdd2071516f814a101e8c410459bc8a50d35"
+  },
+  "native-probe.log": {
+    "bytes": 216,
+    "sha256": "a09c137ef4258a75d1e92beef457d3b81fff87bdaf0452421180a1c78080ed8b"
+  },
+  "native-regression.log": {
+    "bytes": 26673,
+    "sha256": "f0f2dc5f300f2e900aa085a31cd091a1d66e6196b9ab84f215013b497edb1805"
+  },
+  "orb-keyframes-v3/calibration.json.gz": {
+    "bytes": 481,
+    "sha256": "3afd8ca8eb66074587652f8d7885e0888469032287e37f532a1e769512368fcb"
+  },
+  "orb-keyframes-v3/failure.json": {
+    "bytes": 119,
+    "sha256": "32ddaab63ef23f970664842071cc225491e4bcfd159ab9c216013722d56e9c99"
+  },
+  "orb-keyframes-v3/feature-lifetimes.json.gz": {
+    "bytes": 126397,
+    "sha256": "b1e3f5e0167c1fb00b8a46590054b10faff654a48676cdd16fabca800fbf0f67"
+  },
+  "orb-keyframes-v3/map-reports.json.gz": {
+    "bytes": 37922,
+    "sha256": "80a30f3fe5801268319e76cfdf90b41f78f9671a08edfe49a512ffd5805f0509"
+  },
+  "orb-keyframes-v3/receipt.json.gz": {
+    "bytes": 71877,
+    "sha256": "96ba12db7474383ab9867002689270db69b466c4ac78d784b9a09ad32f6fd7ff"
+  },
+  "orb-keyframes-v3/states.csv.gz": {
+    "bytes": 82778,
+    "sha256": "bf9166f32877c8aebd0a590d36d9fc3e7195924b7de8ce4c6a79f22e5189695e"
+  },
+  "orb-reference-v2/calibration.json.gz": {
+    "bytes": 481,
+    "sha256": "3afd8ca8eb66074587652f8d7885e0888469032287e37f532a1e769512368fcb"
+  },
+  "orb-reference-v2/failure.json": {
+    "bytes": 119,
+    "sha256": "32ddaab63ef23f970664842071cc225491e4bcfd159ab9c216013722d56e9c99"
+  },
+  "orb-reference-v2/feature-lifetimes.json.gz": {
+    "bytes": 156883,
+    "sha256": "7b5a23a0b2d5f54c107bfc29f7f420fe85a75a5faabcb765b30fac5f5f698d98"
+  },
+  "orb-reference-v2/map-reports.json.gz": {
+    "bytes": 29299,
+    "sha256": "2774157764f2a0e71e4cee90b548493c79bd20058e8cfdb586567c378822a8d6"
+  },
+  "orb-reference-v2/receipt.json.gz": {
+    "bytes": 71855,
+    "sha256": "28a8e999d601cf451d49bad6d9de2124e7bce9a6235c9aea9d3a0bf0389392e9"
+  },
+  "orb-reference-v2/states.csv.gz": {
+    "bytes": 82948,
+    "sha256": "2904bd74e147729361ec8fc1529e5d0a583f88274e69b78b5245f320badb7e8f"
+  },
+  "orb_reference-native-resolution/all-points.json.gz": {
+    "bytes": 9863,
+    "sha256": "0a07381654ddb364894850c86e57453ea090887ff9eba96f2268075995a1b194"
+  },
+  "orb_reference-native-resolution/calibration.json.gz": {
+    "bytes": 481,
+    "sha256": "77c6047483ba3a7450ca65020c670ecd76af9d2fe931d763b4bb1a2bccc65f7a"
+  },
+  "orb_reference-native-resolution/comparison.json": {
+    "bytes": 145433,
+    "sha256": "942eaff01810e5d7459b3a8218a6394ee95b5553972427c8c259f66abc6fdb56"
+  },
+  "orb_reference-native-resolution/feature-lifetimes.json.gz": {
+    "bytes": 330074,
+    "sha256": "ece1529db3ab5047e9353b1ae648038d273cbff4ebd4c4e43aee73a102dc2c5e"
+  },
+  "orb_reference-native-resolution/map-reports.json.gz": {
+    "bytes": 42317,
+    "sha256": "e3c9aa8c534a7d304affd28d9541db52918d6998a7aefc2ac2d3e4e81fd9b0f7"
+  },
+  "orb_reference-native-resolution/receipt.json.gz": {
+    "bytes": 72278,
+    "sha256": "2b4a84fa65a89895fe2b20ef8266016c22bb4e6904259fc1615590a4ba487d36"
+  },
+  "orb_reference-native-resolution/slam-rgb-comparison.png": {
+    "bytes": 810948,
+    "sha256": "f8e16d11619a73d82ae16dd317c92c7bc148c6aa3ea41ec28b117e9bb6107422"
+  },
+  "orb_reference-native-resolution/states.csv.gz": {
+    "bytes": 82718,
+    "sha256": "51c991eb957dee8920242397951b7a0bcffbc052db9fa5f66a722a0b5499fa6c"
+  },
+  "orb_reference-native-resolution/worker-map.ply": {
+    "bytes": 2410,
+    "sha256": "dfc6c5a872b8ea38d4db498cea6e9753bc00fe2910b82ee92a6e287d7963b2d3"
+  },
+  "overview.json": {
+    "bytes": 1411,
+    "sha256": "93e8e0a0f604d5e8dc4e7b01c9bedb5dfe5661682d7f5424dbf2a856a10e56d2"
+  },
+  "overview.png": {
+    "bytes": 870923,
+    "sha256": "8b4129de0770c24f29c05cef8810b4b35e8b28a764889e85c0479ebc2b2e6f48"
+  },
+  "patch-native-resolution/all-points.json.gz": {
+    "bytes": 279205,
+    "sha256": "46c6edde4dd22844d6b5942527bc4c1cf977d2719591b3076111ca16b0d49b3c"
+  },
+  "patch-native-resolution/calibration.json.gz": {
+    "bytes": 476,
+    "sha256": "32022913ea2a347ac5c915337287796c95b32afc7ad3df2a6301290e20c77e7b"
+  },
+  "patch-native-resolution/comparison.json": {
+    "bytes": 145434,
+    "sha256": "84285e9949ebdd3e2b3a644ead05956606ef6fc1cb31f9558d8b65574d4a0592"
+  },
+  "patch-native-resolution/feature-lifetimes.json.gz": {
+    "bytes": 317612,
+    "sha256": "626eb6c0e330883d6b90483c609f6c55f5d548322e5b18857c52d36f7444e7f3"
+  },
+  "patch-native-resolution/map-reports.json.gz": {
+    "bytes": 42189,
+    "sha256": "becc872c5638d6930007d71781608fd1c532cc72047fd702f4e547067b8fd3c9"
+  },
+  "patch-native-resolution/receipt.json.gz": {
+    "bytes": 72214,
+    "sha256": "65bc596dfa284d0164a25c2778fee13f80feb40f80387ee3816252054bf70dac"
+  },
+  "patch-native-resolution/slam-rgb-comparison.png": {
+    "bytes": 1026291,
+    "sha256": "643733e018afc098850e5d1e0dc6de75b36e8a322c07f6ca9aeec2053041d820"
+  },
+  "patch-native-resolution/states.csv.gz": {
+    "bytes": 82823,
+    "sha256": "a4a282ad09d28effb38555a3960b2f9f7b2e0dc9442aa1a1393a2156d7e94990"
+  },
+  "patch-native-resolution/worker-map.ply": {
+    "bytes": 74771,
+    "sha256": "d2187ebdf1bd1a74880cd68cb62b54fe887a1c2a6aca654170943335583be678"
+  },
+  "patch-v3/calibration.json.gz": {
+    "bytes": 476,
+    "sha256": "d139cdc016537691c78370895724f29fef2e66022c62ec59671038bba7aaaeb1"
+  },
+  "patch-v3/feature-lifetimes.json.gz": {
+    "bytes": 156834,
+    "sha256": "f77ec6a7bb920fec961ba19b648ec5d7640cf3290157f5bfe76e0fd7e24ec1e6"
+  },
+  "patch-v3/map-reports.json.gz": {
+    "bytes": 37591,
+    "sha256": "2533a0b0d855589b361a2c2bcdbaa6e4bfbfa95d7bb4257ec681ad74076f47a2"
+  },
+  "patch-v3/receipt.json.gz": {
+    "bytes": 71798,
+    "sha256": "a76595ac7fa1379340316b6be137f7e41acfcb056e4eb3b5a8534008afb05082"
+  },
+  "patch-v3/states.csv.gz": {
+    "bytes": 82827,
+    "sha256": "001065d0393cb03c69a02455dbfb00983fe1b5985099db294a9f2db7d5dfe33b"
+  },
+  "summary.json": {
+    "bytes": 7816,
+    "sha256": "16a896be54c1f74f872a6b55e980c41ba4d51d0b5237234d4e0058bc519a47db"
+  }
+}
