@@ -273,3 +273,58 @@ geometry or truth enters the bounds.
 이를 곧바로 잘못된 점으로 분류하지 않습니다. 검사는 기존 지도를 자르거나
 수정 효과를 증명하지 않습니다. 원래 규칙의 범위로 다시 추정한 결과도 전체
 지도를 별도로 평가해야 합니다. 범위 계산에 시뮬레이터 형상·정답을 사용하지 않습니다.
+
+## Re-estimation with landmark depth bounds / 랜드마크 깊이 범위로 재추정
+
+![Estimated-landmark depth bounds and matching field RGB](landmark-range-comparison.png)
+
+The next reference uses the upstream P10 × 0.9 / P90 × 1.1 rule audited above.
+It re-estimates all 490 raw depthmaps with the same recorded images, fixed VIO
+poses, observed-track graph and consistency settings. It does not trim the old
+point cloud using scene geometry. The pinned PatchMatch kernel has stochastic
+initialization; these are individual runs, not a deterministic paired isolation
+of the range setting.
+
+위에서 확인한 원본의 10분위 × 0.9 / 90분위 × 1.1 규칙으로 깊이를 다시
+추정합니다. 영상 490개·고정 VIO 자세·공통 특징 그래프·일관성 설정을 유지하고
+원시 깊이맵 전체를 다시 계산합니다. 장면 형상으로 기존 점군을 자르지 않습니다.
+커널의 초기화는 확률적이므로 각 실행의 비교이며, 깊이 설정의 영향만을
+결정론적으로 분리한 실험은 아닙니다.
+
+All **5,031,233 generated points** remain retained and scored. Median surface
+error is 1.59 cm, p90 4.00 cm, p95 4.77 cm and maximum **75.43 cm**. All three
+target roofs retain 100% coverage within 5 cm. Processing takes 2,452.6 s with
+1,361.8 MiB maximum RSS; median raw-depth time is 4.88 s per image.
+
+생성된 **5,031,233점 전체**를 보존·평가합니다. 표면 오차 중앙값은 1.59 cm,
+90분위 4.00 cm, 95분위 4.77 cm, 최대 **75.43 cm**입니다. 세 물체 상부의
+5 cm 이내 복원 비율은 모두 100%입니다. 처리 시간은 2,452.6초, 최대 RSS는
+1,361.8 MiB이며 영상당 원시 깊이 계산 중앙값은 4.88초입니다.
+
+The wide-range case's 29.75 m maximum is absent, while p95 remains practically
+unchanged. There are **3,979 points beyond 10 cm**, compared with 3,585 in the
+wide-range run. The second wall is still poorly recovered. **The complete map
+remains unqualified**; an estimated depth prior does not establish correspondence,
+remove all incorrect matches or supply unobserved surfaces. Runtime integration
+and a usable real-time resource policy remain open.
+
+넓은 범위 실행의 최대 29.75 m 오차는 사라졌지만 95분위는 거의 같습니다.
+**10 cm 밖의 점은 3,979개**로 넓은 범위 실행의 3,585개보다 많습니다.
+두 번째 벽도 여전히 잘 복원하지 못합니다. **완전한 지도는 계속 불합격**입니다.
+추정 깊이 사전정보가 물리적 대응을 입증하거나 모든 오대응·누락 면을 해결하지
+않습니다. 실시간 통합과 실제 사용할 처리 예산 설정은 아직 남아 있습니다.
+
+The same-camera plot uses 64 pt² markers, far-to-near drawing and shared P2–P98
+blue-to-red Turbo height colours. All 4,565,863 in-frustum depth points are
+projected, with 1,939 sparse landmarks in the same view. RGB includes attenuation,
+particles and seabed caustics. Its camera is separate from the onboard downward
+mapping input. [All-point summary](landmark-range-summary.json),
+[all-face coverage](landmark-range-surface-coverage.json),
+[plot metadata](landmark-range-plot.json) and
+[sealed assessment stages](landmark-range-assessment.json).
+
+그림은 64 pt² 점, 먼 점부터 그리기와 공통 높이 2–98분위의 파랑→빨강 Turbo를
+사용합니다. 시야 안 깊이점 4,565,863개와 희소점 1,939개를 모두 투영합니다.
+RGB는 감쇠·입자·집광무늬를 포함하며, 기체의 하향 입력 카메라와 구분한 동일
+시점 비교용 카메라입니다. 위 파일에 전체 점·모든 면·그림·출력 고정 후 평가를
+기록합니다. 60,375,091바이트의 전체 PLY와 원시 자료는 해시와 함께 로컬에 보존합니다.

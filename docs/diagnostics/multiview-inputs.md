@@ -63,15 +63,16 @@ acceptance require separate evidence.
 고지와 실패 사례를 보존합니다. 기하 제어 사례와 고정된 실제 490영상 그래프의
 정확한 일치를 확인합니다. 네이티브 깊이 복원 통합과 설치 패키지 검증은 별도입니다.
 
-The full recorded-rate reference retains 5,023,301 points from 490 RGB images
-with fixed RGB / IMU / DVL estimated poses. All three target roofs reach 100%
-coverage within 5 cm, while a 29.75 m maximum surface error and missing wall
-coverage leave the complete map unqualified. Its matching-view RGB comparison,
-all-point statistics and estimated-landmark depth-range audit remain in the
-[reference record](../validation/visual-dense-reference-20261027/README.md#full-recorded-image-rate--기록-영상-전체-주기).
+The recorded references retain the wide-search failed map and a re-estimation
+using the pinned upstream estimated-landmark depth bounds. The bounded run
+retains 5,031,233 points from 490 RGB images with fixed RGB / IMU / DVL estimated
+poses. All three target roofs reach 100% coverage within 5 cm; a 75.43 cm maximum
+surface error and missing wall coverage leave the complete map unqualified.
+Its same-view RGB comparison and all-point assessment remain in the
+[reference record](../validation/visual-dense-reference-20261027/README.md).
 
-기록 전체 주기의 기준실험은 RGB 영상 490개와 RGB·IMU·DVL 추정 자세를
-고정해 5,023,301점을 보존합니다. 세 물체 상부의 5 cm 이내 복원 비율은
-모두 100%이지만 최대 표면 오차 29.75 m와 누락된 벽 때문에 완전한 지도는
-불합격입니다. 동일 시점 RGB 비교, 모든 점의 통계와 추정 랜드마크 깊이
-범위 검사는 위 기록에 보존합니다.
+기록에는 넓은 탐색 범위의 실패 지도와 원본의 추정 랜드마크 깊이 범위로 다시
+계산한 결과를 함께 보존합니다. 후자는 RGB 영상 490개와 고정한 RGB·IMU·DVL
+자세로 5,031,233점을 남깁니다. 세 물체 상부의 5 cm 이내 복원 비율은 모두
+100%이지만 최대 표면 오차 75.43 cm와 누락된 벽 때문에 완전한 지도는 불합격입니다.
+동일 시점 RGB와 모든 점의 평가는 위 기록에 있습니다.

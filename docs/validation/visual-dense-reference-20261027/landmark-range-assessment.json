@@ -1,0 +1,21 @@
+{
+  "scope": "Run the frozen all-point, face-coverage and matched-view assessment on a sealed reference.",
+  "sealed_field_sha256": "3d84bf43bc04138ffe0ee92d49ef7bae1c95f26f16dc3c61827c5ba1c520491d",
+  "all_points_retained": true,
+  "script_stages": {
+    "sources/assessment-stage-01.py": {
+      "sha256": "bf4740158ee4b834f28d62613c63344d8724211a173b45101d91c09c2e3f8825",
+      "template_sha256": "3d3a10abf155d434e91720c136a96b3f53672afefa36575ddfafbb5974974d00"
+    },
+    "sources/assessment-stage-02.py": {
+      "sha256": "86dbc388c907e49306e9800b7bcb111165a0eb8e13c409f6652c38e16217f606",
+      "template_sha256": "280798652a2df92393345ed993497681572901b721b68b4dfd643e634ef1826c"
+    },
+    "sources/assessment-stage-03.py": {
+      "sha256": "c8e444a5aee68e018730dbd5094c5eab0b0b3064f20ae92101d378a31b66a03c",
+      "template_sha256": "a0c890534c96c6a45f87d10d018e6fd2276fe4c67aab0609f8ae501014d0cf96"
+    }
+  },
+  "map_qualified": false,
+  "point_count": 5031233
+}

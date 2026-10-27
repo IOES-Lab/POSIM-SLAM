@@ -1,0 +1,81 @@
+{
+  "points": 5031233,
+  "surface_distance_m": {
+    "minimum": 2.845068304096128e-10,
+    "median": 0.01591569249925841,
+    "p90": 0.04000135535338965,
+    "p95": 0.04774122439807929,
+    "maximum": 0.7542702948050809
+  },
+  "within_10cm": 5027254,
+  "nearest_surface_counts_within_10cm": {
+    "acoustic_validation_target_0": 199558,
+    "acoustic_validation_target_1": 177939,
+    "acoustic_validation_target_2": 136998,
+    "acoustic_validation_wall_0": 80517,
+    "acoustic_validation_wall_1": 438,
+    "seabed": 4431804
+  },
+  "scope": "All 490 recorded RGB frames, frozen RGB/IMU/DVL estimated poses, upstream per-view estimated-landmark depth range",
+  "map_qualified": false,
+  "all_points_retained_and_scored": true,
+  "raw_depth_frames": 490,
+  "fusion_reference_views": 490,
+  "elapsed_seconds": 2452.591799167014,
+  "maximum_rss_mib": 1361.75,
+  "processing_seconds_per_raw_frame": {
+    "median": 4.884486666982411,
+    "maximum": 5.411576624988811
+  },
+  "input_interval_s": [
+    14.9,
+    112.7
+  ],
+  "field_sha256": "3d84bf43bc04138ffe0ee92d49ef7bae1c95f26f16dc3c61827c5ba1c520491d",
+  "map_ply_sha256": "d6443863224b8a7375e68f490178d3375293f6806e8b4f061d140951e5e743a9",
+  "map_ply_bytes": 60375091,
+  "kernel_revision": "65571c8ae9ac6a1d0bcd3fdc1ea5fff97b1b5611",
+  "kernel_unmodified": true,
+  "full_upstream_pipeline_or_defaults_not_claimed": true,
+  "stochastic_kernel_single_run": true,
+  "settings": {
+    "upstream_revision": "65571c8ae9ac6a1d0bcd3fdc1ea5fff97b1b5611",
+    "upstream_kernel_unmodified": true,
+    "depthmap_method": "PATCH_MATCH_SAMPLE",
+    "depthmap_resolution": 400,
+    "depthmap_min_depth": null,
+    "depthmap_max_depth": null,
+    "depth_range_rule": "Pinned upstream compute_depth_range on observed estimated landmarks; P10 times 0.9 and P90 times 1.1",
+    "depth_ranges_sha256": "da4bfccb069e6c7ee009d9c32b848141092411acbb7f83acfbcc8bbbfaa9c4e9",
+    "depthmap_patchmatch_iterations": 3,
+    "depthmap_patch_size": 7,
+    "depthmap_min_patch_sd": 1.0,
+    "depthmap_min_correlation_score": 0.8,
+    "depthmap_same_depth_threshold": 0.01,
+    "depthmap_min_consistent_views": 3,
+    "source_pose_stride": 1,
+    "neighbor_selection": "observed common VIO tracks; more than 20 shared points at 3 to 30 degrees parallax; maximum 7 matching views",
+    "covisibility_graph_sha256": "80ae01c1e261e322f29651649356f8deafc100ed628b909ac75e260d783930b9",
+    "fusion_view_selection": "Every recorded VIO-pose-matched image; no fixed spatial keyframe cap",
+    "all_field_points_scored_after_sealing": true,
+    "scene_or_truth_input": false,
+    "estimated_pose_input": true,
+    "offline_future_views": true,
+    "map_qualified": false
+  },
+  "top_face_coverage_5cm": {
+    "acoustic_validation_target_0": 1.0,
+    "acoustic_validation_target_1": 1.0,
+    "acoustic_validation_target_2": 1.0,
+    "acoustic_validation_wall_0": 0.0,
+    "acoustic_validation_wall_1": 0.0
+  },
+  "complete_raw_fields_retained_locally": true,
+  "raw_ply_in_git": false,
+  "sealed_source_reports_sha256": {
+    "report.json": "3fb15c9f2030bb6d0b52c57dd0fdefe15da28f34fe02885e78f50829517f51d9",
+    "surface-evaluation.json": "4842e0361cf7d70b861f8d74eba6a8655c064638987794789e5e47cd82443b4e",
+    "surface-coverage.json": "95fee333f3aa9cd3425b90732934ad1d074ecee68cb33d14c5c664569c2a2a1e",
+    "assessment-pipeline.json": "07fa543d249425b31cb9e3f99497b581ba958a52cb166de53149d744888d9436"
+  }
+}
