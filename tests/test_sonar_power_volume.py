@@ -17,6 +17,32 @@ class PowerVolumeTests(unittest.TestCase):
     def test_analytic_operator_contracts(self):
         self.assertTrue(all(analytic_probe().values()))
 
+    def test_physical_projection_is_invariant_to_observation_batch_membership(self):
+        packet=self.packet();poses=[dict(position=p,rotation=q) for p,q in zip(packet['positions'],packet['rotations'])]
+        points=np.array([[2.,0.,-.15],[2.2,.1,-.2],[2.5,-.15,-.4]])
+        args=(points,poses,packet['azimuth'],packet['ranges'],.5)
+        whole=Projector(*args,native_ranges=packet['native_ranges'])
+        training=Projector(points,poses[:2],*args[2:],native_ranges=packet['native_ranges'])
+        testing=Projector(points,poses[2:],*args[2:],native_ranges=packet['native_ranges'])
+        scattering=np.array([.4,.2,.7]);expected=whole.forward_scattering(scattering)
+        np.testing.assert_allclose(training.forward_scattering(scattering),expected[:2],rtol=1e-12)
+        np.testing.assert_allclose(testing.forward_scattering(scattering),expected[2:],rtol=1e-12)
+        optimizer_coordinates=scattering/training.scale
+        np.testing.assert_allclose(training.forward(optimizer_coordinates),expected[:2],rtol=1e-12)
+        # Passing training-normalized coordinates directly to another projector
+        # changes material strength. That previous usage violates this contract.
+        self.assertGreater(np.linalg.norm(testing.forward(optimizer_coordinates)-expected[2:]),.1*np.linalg.norm(expected[2:]))
+        rng=np.random.default_rng(22);y=rng.normal(size=testing.shape)
+        np.testing.assert_allclose(np.sum(expected[2:]*y),scattering@testing.adjoint_scattering(y),rtol=1e-12)
+
+    def test_exported_scattering_reproduces_the_reported_heldout_prediction(self):
+        packet=self.packet();result=reconstruction(packet,cell=.3,refine=0,iterations=40)
+        poses=[dict(position=packet['positions'][i],rotation=packet['rotations'][i]) for i in packet['test']]
+        test=Projector(result['points'],poses,packet['azimuth'],packet['ranges'],float(packet['vertical_fov']),
+                       native_ranges=packet['native_ranges'],maximum_range=float(packet['maximum_range']),
+                       beam_pixel_width=float(packet['beam_pixel_width']))
+        np.testing.assert_allclose(test.forward_scattering(result['albedo']),result['predicted'],rtol=1e-12)
+
     def test_fista_matches_independent_dense_nonnegative_solve(self):
         from scipy.optimize import nnls
         packet=self.packet();poses=[dict(position=p,rotation=q) for p,q in zip(packet['positions'],packet['rotations'])]

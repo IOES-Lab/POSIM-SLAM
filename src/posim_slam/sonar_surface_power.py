@@ -252,6 +252,11 @@ class SurfacePowerModel:
         if maximum_range_m > len(rr) * steps[2]:
             raise ValueError('surface_range_alias_period_exceeded')
         self.nbeams = len(az)
+        self.azimuth_rad = az
+        self.native_ranges_m = rr
+        self.fractional_samples = fractional_samples
+        for value in (self.azimuth_rad, self.native_ranges_m):
+            value.setflags(write=False)
         self.ray_shape = (len(el), len(az))
         self.minimum_range_m, self.maximum_range_m = minimum_range_m, maximum_range_m
         self.directions = np.stack(np.broadcast_arrays(

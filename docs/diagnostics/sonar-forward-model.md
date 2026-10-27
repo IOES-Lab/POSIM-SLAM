@@ -67,19 +67,21 @@ align the evaluation, with scale one. It is a separate asynchronous recording.
 
 | Record depths, m / response / range proxy | Positive cells | Within 10 cm | Held-out power L2 | Median / p90 / max surface distance, m |
 |---|---:|---:|---:|---|
-| 0.6–1.2 / integer / per-ray `r^-3` | 2,910 | 1,826 | 0.64985 | 0.06860 / 0.25380 / 0.74590 |
-| 0.6–1.2 / fractional / per-ray `r^-3` | 2,854 | 1,801 | 0.65171 | 0.06829 / 0.25380 / 0.74590 |
-| 0.6–1.2 / fractional / area `r^-5` | 3,033 | 2,018 | 0.64344 | 0.05893 / 0.20380 / 0.82421 |
-| 1.2–2.4 / integer / per-ray `r^-3` | 308 | 280 | 0.76891 | 0.04550 / 0.09811 / 0.15073 |
-| 1.2–2.4 / fractional / per-ray `r^-3` | 317 | 288 | 0.76525 | 0.04550 / 0.09811 / 0.15073 |
-| 1.2–2.4 / fractional / area `r^-5` | 335 | 290 | 0.76751 | 0.04807 / 0.10752 / 0.15461 |
+| 0.6–1.2 / integer / per-ray `r^-3` | 2,910 | 1,826 | 0.76972 | 0.06860 / 0.25380 / 0.74590 |
+| 0.6–1.2 / fractional / per-ray `r^-3` | 2,854 | 1,801 | 0.77188 | 0.06829 / 0.25380 / 0.74590 |
+| 0.6–1.2 / fractional / area `r^-5` | 3,033 | 2,018 | 4.84398 | 0.05893 / 0.20380 / 0.82421 |
+| 1.2–2.4 / integer / per-ray `r^-3` | 308 | 280 | 0.74216 | 0.04550 / 0.09811 / 0.15073 |
+| 1.2–2.4 / fractional / per-ray `r^-3` | 317 | 288 | 0.74054 | 0.04550 / 0.09811 / 0.15073 |
+| 1.2–2.4 / fractional / area `r^-5` | 335 | 290 | 0.82165 | 0.04807 / 0.10752 / 0.15461 |
 
 The illustrated 317 candidates are 5–10 cm cells: 34/19/235 lie within 10 cm of
 the three objects as their nearest surface; neither wall nor seabed has such
 support. This is partial structure, with no certified feature identity or area
-coverage. Range refinement alone does not fix geometry. More depth diversity
-improves this sample's geometry while its power residual worsens; residual and
-point count cannot be acceptance criteria. Both maps remain unqualified.
+coverage. Range refinement alone does not fix geometry. The deeper record has
+smaller geometric distances and a lower power residual, but changes the motion
+and observations. Residual and point count cannot be acceptance criteria. Both
+maps remain unqualified. The table uses shared scattering units; see the
+[projection unit contract and source statistics](sonar-power-statistics.md).
 
 The fixed-area control follows projected ray density: a finite 1×0.4 m patch
 over 2–8 m gives an effective exponent -4.931 when the per-ray `r^-3` response is
@@ -136,8 +138,10 @@ WGPU 탐침은 일치하는 C ABI의 라이브러리로 단일 반사점을 계�
 표는 양의 후보 셀 전체를 평가합니다. 그림의 317셀 중 세 물체에 가까운 셀은
 34/19/235개이며 벽·해저는 없습니다. 셀 크기는 5~10 cm이고 표면 10 cm 밖에
 29셀이 남습니다. 고유 랜드마크·복원 면적을 입증하지 않으며 지도는 미통과입니다.
-이 기록은 형상이 좋아져도 전력 잔차는 더 큽니다. 거리 응답 정밀화만으로 문제가
-해결되지는 않습니다. 1×0.4 m 고정 면을 2~8 m에서 검사하면 광선 밀도를 합친 감쇠
+깊은 기록은 표면 거리와 전력 잔차가 모두 작지만 경로·관측도 달라 인과 비교는
+아닙니다. 표는 공통 산란 단위로 계산합니다. [투영 단위와 전력 통계](sonar-power-statistics.md)를
+참고하세요. 거리 응답 정밀화만으로 문제가 해결되지는 않습니다. 1×0.4 m 고정 면을
+2~8 m에서 검사하면 광선 밀도를 합친 감쇠
 지수는 -4.931입니다. 그러나 입사각·가림 없이 지수만 바꾼 면적 대조군은 두 기록
 모두 최대 형상 오차가 커져 기본값에 채택하지 않습니다. 입사각·가림·스펙클·자세
 불확실성을 함께 다루는 표면 모델이 필요하며 학술적 새로움을 주장하지 않습니다.

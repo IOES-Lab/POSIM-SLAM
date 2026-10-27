@@ -1,0 +1,110 @@
+{
+  "scope": "Re-score frozen scattering fields with one shared physical coordinate system.\n\nNo optimization, geometry edits, scene mesh, truth pose or camera image enters\nthis correction. Each exported relative-scattering vector owns its units.\n",
+  "map_qualified": false,
+  "rows": [
+    {
+      "case": "shallow_linear_coarse",
+      "positive_cells": 388,
+      "historical_heldout_l2": 0.842157257275,
+      "corrected_heldout_l2": 0.9500832372211663,
+      "coefficient_and_geometry_unchanged": true,
+      "field_sha256": "0042516e557d51a8ac315cac2e8cd1c45dec7140dee0103d58acd8f2d00a7f0d",
+      "inputs_sha256": "5afb0df3a6c7cd2e0271a762a8068deea83683b6436b4bf801dcf0e77bc30675"
+    },
+    {
+      "case": "shallow_linear_adaptive",
+      "positive_cells": 2850,
+      "historical_heldout_l2": 0.6554280288549644,
+      "corrected_heldout_l2": 0.7832212293380815,
+      "coefficient_and_geometry_unchanged": true,
+      "field_sha256": "1c1db2d266b38ad2a9808d514522819168cb296a205e3e87076abddf229e3a4e",
+      "inputs_sha256": "5afb0df3a6c7cd2e0271a762a8068deea83683b6436b4bf801dcf0e77bc30675"
+    },
+    {
+      "case": "shallow_native_coarse",
+      "positive_cells": 419,
+      "historical_heldout_l2": 0.8506711434922114,
+      "corrected_heldout_l2": 0.9352293490385631,
+      "coefficient_and_geometry_unchanged": true,
+      "field_sha256": "4d7c1908510ae540b614b2020744aa66892d4428a1433fde1c72048e58ee073f",
+      "inputs_sha256": "5afb0df3a6c7cd2e0271a762a8068deea83683b6436b4bf801dcf0e77bc30675"
+    },
+    {
+      "case": "shallow_native_adaptive",
+      "positive_cells": 2910,
+      "historical_heldout_l2": 0.6498469661030268,
+      "corrected_heldout_l2": 0.7697243433280393,
+      "coefficient_and_geometry_unchanged": true,
+      "field_sha256": "dc871d7934e0bce5c39b5a722804a57032c7f3948212dddbfb0f5bd9dd4ae7c3",
+      "inputs_sha256": "5afb0df3a6c7cd2e0271a762a8068deea83683b6436b4bf801dcf0e77bc30675"
+    },
+    {
+      "case": "shallow_fractional",
+      "positive_cells": 2854,
+      "historical_heldout_l2": 0.6517076189912192,
+      "corrected_heldout_l2": 0.7718824325550007,
+      "coefficient_and_geometry_unchanged": true,
+      "field_sha256": "64cd66f96a44e1c291f90f5ff5dff61697932ddb8f40b69dc725b4043d70dcfe",
+      "inputs_sha256": "5afb0df3a6c7cd2e0271a762a8068deea83683b6436b4bf801dcf0e77bc30675"
+    },
+    {
+      "case": "shallow_area",
+      "positive_cells": 3033,
+      "historical_heldout_l2": 0.6434358724632249,
+      "corrected_heldout_l2": 4.84397890773962,
+      "coefficient_and_geometry_unchanged": true,
+      "field_sha256": "06fb1fe3029e36817c79e854bca953061c1d76b2972d5a59ff7f4ac74a9478d0",
+      "inputs_sha256": "5afb0df3a6c7cd2e0271a762a8068deea83683b6436b4bf801dcf0e77bc30675"
+    },
+    {
+      "case": "deeper_native",
+      "positive_cells": 308,
+      "historical_heldout_l2": 0.7689079486800531,
+      "corrected_heldout_l2": 0.7421617967780292,
+      "coefficient_and_geometry_unchanged": true,
+      "field_sha256": "aca9eabc6448b5e39c7160378d05e1d896b6020a4a5773a37ec38ef738a76172",
+      "inputs_sha256": "0d4dd159143a92e51ff92d25183c805d2bd89e589468fef684c785e8e4ec62b0"
+    },
+    {
+      "case": "deeper_fractional",
+      "positive_cells": 317,
+      "historical_heldout_l2": 0.7652502918928028,
+      "corrected_heldout_l2": 0.7405430490390345,
+      "coefficient_and_geometry_unchanged": true,
+      "field_sha256": "c9a0fdf500cc0391295aa9df818bdd25236ad81c2ddf1fd75e1130604c6b94e6",
+      "inputs_sha256": "0d4dd159143a92e51ff92d25183c805d2bd89e589468fef684c785e8e4ec62b0"
+    },
+    {
+      "case": "deeper_area",
+      "positive_cells": 335,
+      "historical_heldout_l2": 0.767507068222439,
+      "corrected_heldout_l2": 0.8216474308602104,
+      "coefficient_and_geometry_unchanged": true,
+      "field_sha256": "e9e86a157e57d6a42494edb5fe163e8b552e5d76a295871430e91f3f5513c424",
+      "inputs_sha256": "0d4dd159143a92e51ff92d25183c805d2bd89e589468fef684c785e8e4ec62b0"
+    },
+    {
+      "case": "heading_fractional",
+      "positive_cells": 385,
+      "historical_heldout_l2": 1.1204583943735167,
+      "corrected_heldout_l2": 0.9363334400366031,
+      "coefficient_and_geometry_unchanged": true,
+      "field_sha256": "cc7212f37c03908f86ff30750ca2a69b0b6e2a08da3d07d4aaeea9da67a1cb28",
+      "inputs_sha256": "fa3b77a2e04d7315c437b4c6c21bdea51bbe5c3f49b2191d207cc520d8fdd563",
+      "corrected_heldout_quasi_loss": 455402.5448438912
+    },
+    {
+      "case": "heading_relative_loss",
+      "positive_cells": 94558,
+      "historical_heldout_l2": 0.9985063748424681,
+      "corrected_heldout_l2": 0.9907716819770812,
+      "coefficient_and_geometry_unchanged": true,
+      "field_sha256": "872594eefd80154c3d1e393fec39b3e9c458f1e620a95d5db62682460c7cae1e",
+      "inputs_sha256": "fa3b77a2e04d7315c437b4c6c21bdea51bbe5c3f49b2191d207cc520d8fdd563",
+      "corrected_heldout_quasi_loss": 4.610360031423976
+    }
+  ],
+  "source_sha256": "023a2019aeede89b87c5889f2a210eec867fb727416d067f4a105a820a947510",
+  "projector_sha256": "26c44a875daa64d1aa179b09a92dbd1ae9d4046d4b3c066781d43d86360a68f7",
+  "elapsed_s": 4.934858583990717
+}

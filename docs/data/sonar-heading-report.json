@@ -21,7 +21,7 @@
       "positive_cells": 105,
       "minimum_cell_m": 0.2,
       "projection_bytes": 67032292,
-      "heldout_relative_power_l2": 1.0158844450501878,
+      "heldout_relative_power_l2": 0.9867622471431063,
       "fit": {
         "lambda_value": 2.373670333584587,
         "lambda_fraction": 0.02,
@@ -99,7 +99,7 @@
       "positive_cells": 215,
       "minimum_cell_m": 0.1,
       "projection_bytes": 72397248,
-      "heldout_relative_power_l2": 1.1244871724912822,
+      "heldout_relative_power_l2": 0.9669056877362798,
       "fit": {
         "lambda_value": 4.530701516788576,
         "lambda_fraction": 0.02,
@@ -191,7 +191,7 @@
       "positive_cells": 385,
       "minimum_cell_m": 0.05,
       "projection_bytes": 82937252,
-      "heldout_relative_power_l2": 1.1204583943735167,
+      "heldout_relative_power_l2": 0.9363334400366031,
       "fit": {
         "lambda_value": 5.270172857793315,
         "lambda_fraction": 0.02,
@@ -279,12 +279,12 @@
     }
   ],
   "inputs_sha256": "fa3b77a2e04d7315c437b4c6c21bdea51bbe5c3f49b2191d207cc520d8fdd563",
-  "source_sha256": "44d206f7e5904c68b40131a0fa74d8d7c59d25d8b524bb81d81b3bffb40d90da",
+  "source_sha256": "26c44a875daa64d1aa179b09a92dbd1ae9d4046d4b3c066781d43d86360a68f7",
   "versions": {
     "numpy": "2.5.3",
     "scipy": "1.18.1"
   },
-  "elapsed_s": 49.467917790985666,
+  "elapsed_s": 49.17414033302339,
   "assumptions": [
     "fixed estimated poses without pose covariance",
     "generic POSIM mean-power beam response",
@@ -292,5 +292,6 @@
     "surface normals and occlusion omitted",
     "source window power sampled at 8 sub-bins with bounded linear interpolation",
     "L1-selected field support is not an uncertainty certificate"
-  ]
+  ],
+  "prediction_coordinates": "Shared relative scattering: coefficient multiplied by training scale, without test-set renormalization"
 }

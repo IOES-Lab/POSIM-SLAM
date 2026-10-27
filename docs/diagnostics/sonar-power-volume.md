@@ -54,6 +54,14 @@ iterations. Test intensities never choose cells or coefficients. Limits are
 800,000 candidate cells, 48 poses and 650 MB of stored projection arrays; actual
 process memory includes additional arrays. This is an offline tool.
 
+`Projector.forward` uses optimization coordinates specific to its observation
+batch. The exported `albedo` vector is relative scattering strength, obtained by
+multiplying coefficients by the training scale. `forward_scattering` projects
+that same vector at new poses without another column normalization. Its adjoint
+is `adjoint_scattering`. This contract preserves material strength when the
+observation set changes. [Corrected scores and source statistics](sonar-power-statistics.md)
+separate an evaluation-unit error from unchanged map geometry.
+
 ## Measured diagnostic, 27 October 2026
 
 The supplied run uses Python 3.14.7, NumPy 2.5.3 and SciPy 1.18.1. These are
@@ -64,10 +72,10 @@ removed using truth. Counts are positive scattering cells, not certified landmar
 
 | Range response / grid | Positive cells | Held-out relative power L2 | Cells within 10 cm | Median / p90 / max surface distance, m |
 |---|---:|---:|---:|---|
-| Coarse linear / 20 cm | 388 | 0.84216 | 218 | 0.08407 / 0.37880 / 0.58025 |
-| Coarse linear / adaptive | 2,850 | 0.65543 | 1,793 | 0.06445 / 0.25380 / 0.74090 |
-| Native Hamming / 20 cm | 419 | 0.85067 | 232 | 0.09118 / 0.37880 / 0.58025 |
-| Native Hamming / adaptive | 2,910 | 0.64985 | 1,826 | 0.06860 / 0.25380 / 0.74590 |
+| Coarse linear / 20 cm | 388 | 0.95008 | 218 | 0.08407 / 0.37880 / 0.58025 |
+| Coarse linear / adaptive | 2,850 | 0.78322 | 1,793 | 0.06445 / 0.25380 / 0.74090 |
+| Native Hamming / 20 cm | 419 | 0.93523 | 232 | 0.09118 / 0.37880 / 0.58025 |
+| Native Hamming / adaptive | 2,910 | 0.76972 | 1,826 | 0.06860 / 0.25380 / 0.74590 |
 
 Temporal interpolation and a training-mean image score 0.94639 and 0.99022.
 The adaptive native run retains 531,443 total cells and uses 126.0 MB of stored
@@ -107,6 +115,12 @@ PLY를 저장합니다. PLY는 이상점을 포함한 양의 셀 전체와 셀 �
 반복 횟수는 80/100/100회입니다. 검증 영상 강도는 셀 선택·계수 계산에 쓰지 않습니다.
 후보 80만 셀·48자세·저장 투영 배열 650 MB로 제한한 오프라인 도구이며 실제 프로세스는
 다른 배열 메모리도 사용합니다.
+
+`Projector.forward`의 계수는 해당 관측 묶음의 최적화 좌표입니다. 내보낸 `albedo`는
+계수에 학습 정규화를 곱한 상대 산란 강도입니다. 다른 자세에서는 같은 강도를
+`forward_scattering`에 넣고, 대응 역투영은 `adjoint_scattering`을 사용합니다.
+검증 자료로 열 정규화를 다시 적용하지 않습니다. 위 링크는 정정된 평가 수치와
+유지된 지도 형상을 구분합니다.
 
 표의 실행 환경은 Python 3.14.7·NumPy 2.5.3·SciPy 1.18.1이며 패키지의 최소 버전과는
 구분합니다. 정답 충돌 표면은 복원 후에만 평가에 사용하고 초기 방위각·위치만

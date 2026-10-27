@@ -110,9 +110,20 @@ class Projector:
         if self.bytes>480_000_000:raise MemoryError('projection_memory_budget')
 
     def forward(self,values):
+        """Project optimizer coordinates normalized by this observation set."""
         values=np.asarray(values)
         if values.shape!=(self.size,) or not np.isfinite(values).all():raise ValueError('finite_coefficient_vector_required')
-        values=values*self.scale;result=[]
+        return self.forward_scattering(values*self.scale)
+
+    def forward_scattering(self,values):
+        """Project relative scattering strength, independent of batch scaling.
+
+        Use this contract when transferring a fitted field to other poses.
+        Relative scattering is not calibrated material reflectivity.
+        """
+        values=np.asarray(values)
+        if values.shape!=(self.size,) or not np.isfinite(values).all():raise ValueError('finite_scattering_vector_required')
+        result=[]
         for ids,columns in self.entries:
             image=np.zeros(self.fine_nr*len(self.azimuth))
             for indices,weights in columns:image+=np.bincount(indices,weights=weights*values[ids],minlength=len(image))
@@ -120,6 +131,10 @@ class Projector:
         return np.asarray(result)
 
     def adjoint(self,images):
+        return self.adjoint_scattering(images)*self.scale
+
+    def adjoint_scattering(self,images):
+        """Adjoint in the same relative-scattering coordinates as projection."""
         images=np.asarray(images)
         if images.shape!=self.shape or not np.isfinite(images).all():raise ValueError('finite_observation_tensor_required')
         result=np.zeros(self.size)
@@ -127,7 +142,7 @@ class Projector:
             back=(self.range_mix.T@(image@self.kernel)).ravel();value=np.zeros(len(ids))
             for indices,weights in columns:value+=back[indices]*weights
             result[ids]+=value
-        return result*self.scale
+        return result
 
 
 def solve(projector,observed,*,fraction=.02,iterations=80):
@@ -252,7 +267,8 @@ def reconstruction(packet, *, cell=.2, refine=2, native_range=True, fractional_s
         heldout=Projector(points,[poses[i] for i in test],azimuth,packet['ranges'],**kwargs)
         if model.bytes+heldout.bytes>650_000_000:raise MemoryError('combined_projection_budget')
         coefficient,fit=solve(model,observed[train],fraction=fraction,iterations=iterations if level==0 else min(200,iterations+20))
-        predicted=heldout.forward(coefficient);denominator=float(np.linalg.norm(observed[test]));error=float(np.linalg.norm(predicted-observed[test])/denominator) if denominator else None
+        scattering=coefficient*model.scale
+        predicted=heldout.forward_scattering(scattering);denominator=float(np.linalg.norm(observed[test]));error=float(np.linalg.norm(predicted-observed[test])/denominator) if denominator else None
         stages.append(dict(level=level,total_cells=len(points),positive_cells=int(np.count_nonzero(coefficient)),minimum_cell_m=float(cells.min()),projection_bytes=model.bytes+heldout.bytes,heldout_relative_power_l2=error,fit=fit))
         if level==refine or not np.any(coefficient>0):break
         tree=cKDTree(points);chosen=set()
@@ -262,7 +278,7 @@ def reconstruction(packet, *, cell=.2, refine=2, native_range=True, fractional_s
         children=points[chosen,None,:]+offsets[None,:,:]*cells[chosen,None,None]/4
         points=np.concatenate([points[mask],children.reshape(-1,3)]);cells=np.r_[cells[mask],np.repeat(cells[chosen]/2,8)]
         if len(points)>800_000:raise MemoryError('adaptive_voxel_budget')
-    return dict(points=points,coefficient=coefficient,albedo=coefficient*model.scale,cell_m=cells,predicted=predicted,observed=observed[test],stages=stages)
+    return dict(points=points,coefficient=coefficient,albedo=scattering,cell_m=cells,predicted=predicted,observed=observed[test],stages=stages)
 
 
 def write_cells(path,result,frame,stamp):

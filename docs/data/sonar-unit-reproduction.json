@@ -1,0 +1,80 @@
+[
+  {
+    "case": "shallow",
+    "arrays": {
+      "points": {
+        "bitwise_equal": true,
+        "maximum_absolute_difference": 0.0,
+        "maximum_relative_difference_nonzero": 0.0
+      },
+      "coefficient": {
+        "bitwise_equal": false,
+        "maximum_absolute_difference": 3.3306690738754696e-14,
+        "maximum_relative_difference_nonzero": 5.828657629803801e-11
+      },
+      "albedo": {
+        "bitwise_equal": false,
+        "maximum_absolute_difference": 1.7171259969472885e-09,
+        "maximum_relative_difference_nonzero": 5.828660865970857e-11
+      },
+      "cell_m": {
+        "bitwise_equal": true,
+        "maximum_absolute_difference": 0.0,
+        "maximum_relative_difference_nonzero": 0.0
+      }
+    },
+    "geometry_and_positive_support_identical": true
+  },
+  {
+    "case": "deeper",
+    "arrays": {
+      "points": {
+        "bitwise_equal": true,
+        "maximum_absolute_difference": 0.0,
+        "maximum_relative_difference_nonzero": 0.0
+      },
+      "coefficient": {
+        "bitwise_equal": true,
+        "maximum_absolute_difference": 0.0,
+        "maximum_relative_difference_nonzero": 0.0
+      },
+      "albedo": {
+        "bitwise_equal": true,
+        "maximum_absolute_difference": 0.0,
+        "maximum_relative_difference_nonzero": 0.0
+      },
+      "cell_m": {
+        "bitwise_equal": true,
+        "maximum_absolute_difference": 0.0,
+        "maximum_relative_difference_nonzero": 0.0
+      }
+    },
+    "geometry_and_positive_support_identical": true
+  },
+  {
+    "case": "heading",
+    "arrays": {
+      "points": {
+        "bitwise_equal": true,
+        "maximum_absolute_difference": 0.0,
+        "maximum_relative_difference_nonzero": 0.0
+      },
+      "coefficient": {
+        "bitwise_equal": true,
+        "maximum_absolute_difference": 0.0,
+        "maximum_relative_difference_nonzero": 0.0
+      },
+      "albedo": {
+        "bitwise_equal": true,
+        "maximum_absolute_difference": 0.0,
+        "maximum_relative_difference_nonzero": 0.0
+      },
+      "cell_m": {
+        "bitwise_equal": true,
+        "maximum_absolute_difference": 0.0,
+        "maximum_relative_difference_nonzero": 0.0
+      }
+    },
+    "geometry_and_positive_support_identical": true
+  }
+]

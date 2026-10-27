@@ -1,0 +1,101 @@
+{
+  "scope": "Post-fit oracle and matched-view figure; never an inversion input.",
+  "map_qualified": false,
+  "field_sha256_before_oracle": "872594eefd80154c3d1e393fec39b3e9c458f1e620a95d5db62682460c7cae1e",
+  "positive_cells": 94558,
+  "cell_m_range": [
+    0.05,
+    0.2
+  ],
+  "cell_half_diagonal_m_range": [
+    0.04330127018922193,
+    0.17320508075688773
+  ],
+  "surface_distance_m": {
+    "median": 0.7592746461272313,
+    "p90": 2.209482509814249,
+    "maximum": 3.60716148303563
+  },
+  "within_10cm": 13450,
+  "mass_subsets": [
+    {
+      "mass": "normalized_coefficient",
+      "fraction": 0.5,
+      "cells": 35764,
+      "within_10cm": 9936,
+      "median_m": 0.22250491107783346,
+      "p90_m": 2.402992323357769,
+      "maximum_m": 3.414762323357768,
+      "mass_within_10cm": 0.32600047865996507
+    },
+    {
+      "mass": "normalized_coefficient",
+      "fraction": 0.9,
+      "cells": 77140,
+      "within_10cm": 12437,
+      "median_m": 0.6497293553389185,
+      "p90_m": 2.220934533149571,
+      "maximum_m": 3.60716148303563,
+      "mass_within_10cm": 0.20822716258493806
+    },
+    {
+      "mass": "normalized_coefficient",
+      "fraction": 1.0,
+      "cells": 94558,
+      "within_10cm": 13450,
+      "median_m": 0.7592746461272313,
+      "p90_m": 2.209482509814249,
+      "maximum_m": 3.60716148303563,
+      "mass_within_10cm": 0.19413785781896115
+    },
+    {
+      "mass": "proxy_albedo",
+      "fraction": 0.5,
+      "cells": 15550,
+      "within_10cm": 606,
+      "median_m": 1.436367092405478,
+      "p90_m": 2.8089092667746898,
+      "maximum_m": 3.60716148303563,
+      "mass_within_10cm": 0.038644890800721164
+    },
+    {
+      "mass": "proxy_albedo",
+      "fraction": 0.9,
+      "cells": 45712,
+      "within_10cm": 2098,
+      "median_m": 1.192458584676925,
+      "p90_m": 2.568332824543994,
+      "maximum_m": 3.60716148303563,
+      "mass_within_10cm": 0.043017340285754026
+    },
+    {
+      "mass": "proxy_albedo",
+      "fraction": 1.0,
+      "cells": 94558,
+      "within_10cm": 13450,
+      "median_m": 0.7592746461272313,
+      "p90_m": 2.209482509814249,
+      "maximum_m": 3.60716148303563,
+      "mass_within_10cm": 0.05100086862723728
+    }
+  ],
+  "nearest_surface_counts": {
+    "acoustic_validation_target_0": 1883,
+    "acoustic_validation_target_1": 3826,
+    "acoustic_validation_target_2": 2514,
+    "acoustic_validation_wall_0": 776,
+    "acoustic_validation_wall_1": 465,
+    "seabed": 3986
+  },
+  "source_sha256": {
+    "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/evaluate_heading_sonar_volume_20261027.py": "aaf9da67f1821ae3761a0195e05f3ff6bca408e0c9cd054844571e567f35fc90",
+    ".local/sonar-relative-power-heading-20261027/field.npz": "872594eefd80154c3d1e393fec39b3e9c458f1e620a95d5db62682460c7cae1e",
+    ".local/sonar-relative-power-heading-20261027/report.json": "651f4190851f0902a7c6f744661ed331ab37a1083e09974e70a5bf2e2d2fee17",
+    ".local/visual-heading-survey-narrow-native-20261027/comparison.json": "bd4e6146c2648fbb8ae490e1da26a200d65b49ef48a30cd684ddf32efab8ea6a",
+    ".local/visual-heading-survey-narrow-native-20261027/isometric-camera.json": "e0ca19d9a89456ee5735c6aa15d2a5336203e09f54e35625366d6c375849f1f7",
+    ".local/visual-heading-survey-narrow-native-20261027/isometric-rgb.png": "683ae92500028d002b466a39dea2e146875e46b6c9315242bb262697bef7b884",
+    ".local/visual-heading-survey-narrow-native-20261027/physical-targets.sdf": "538302181cbe75340969f1c8acdd3998077b86537ab717f3b01dbbd592476a63",
+    ".local/visual-heading-survey-narrow-native-20261027/demo-runtime/709fb903cadb4a05a677738448ed54aa/world-waves-underwater-sonar.sdf": "cdc76459bc5d66eba61515fb1a70d858c077a81a1f3e03ada77f2c6e027b54fe",
+    "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/visual-heading-survey-narrow-native-20261027/demo-runtime/709fb903cadb4a05a677738448ed54aa/orca5-seafloor.dae": "277c49dd9c3b2ec1c9d3c3754be9d076c7b0438ccd29e9ae11355869849fbeb2"
+  }
+}
