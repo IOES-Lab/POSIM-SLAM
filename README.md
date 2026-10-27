@@ -421,3 +421,13 @@ The [finite-surface model and conditional inverse / 유한 표면 모델과 조�
 
 [Shared scattering coordinates and correlated power / 공통 산란 좌표와 전력 상관](docs/diagnostics/sonar-power-statistics.md)
 define the volume projector's train/test unit contract and conditional complex-Gaussian intensity moments. Corrected scores preserve all geometry; actual WGPU controls and a rejected relative-loss map retain their limits.
+
+
+[CPU multiview depth reference / CPU 다중 시점 깊이 복원 기준실험](docs/validation/visual-dense-reference-20261027/README.md)
+compares an unmodified BSD-2-Clause OpenSfM depth kernel against recorded sparse
+landmarks using fixed estimated VIO poses. The complete PLY, matching field RGB,
+all-point errors and missing-face evidence describe an offline reference;
+runtime integration and complete-map qualification remain open.
+
+추정 VIO 자세를 고정한 오프라인 기준실험으로 전체 PLY·동일 시점 RGB·모든 점의 오차와
+누락된 면을 보존합니다. 실시간 통합과 완전한 지도 검증은 아직 완료되지 않았습니다.

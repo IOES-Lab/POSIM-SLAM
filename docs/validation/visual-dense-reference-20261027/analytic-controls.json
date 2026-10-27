@@ -1,0 +1,27 @@
+{
+  "kernel_revision": "65571c8ae9ac6a1d0bcd3fdc1ea5fff97b1b5611",
+  "tests": [
+    {
+      "case": "plane",
+      "accepted": 9600,
+      "median_depth_error_m": 0.0022602081298828125,
+      "p90_depth_error_m": 0.00773463249206543,
+      "elapsed_s": 0.8442053750040941
+    },
+    {
+      "case": "sloped",
+      "accepted": 9600,
+      "median_depth_error_m": 0.0026922162574372077,
+      "p90_depth_error_m": 0.00727390997618591,
+      "elapsed_s": 0.727462833019672
+    },
+    {
+      "case": "untextured",
+      "accepted": 0,
+      "median_depth_error_m": null,
+      "p90_depth_error_m": null,
+      "elapsed_s": 0.013922042009653524
+    }
+  ],
+  "passed": true
+}
