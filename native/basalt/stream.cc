@@ -463,6 +463,8 @@ int main(int argc,char** argv) {
           }
           if(tracks.size()>4096)fail("startup_track_capacity");
           emit({{"type","startup_tracks"},{"stamp_ns",event.stamp},
+                {"optical_flow_type",config.optical_flow_type},
+                {"reference_patches",result->reference_patch_count},{"reference_patch_peak",result->reference_patch_peak},
                 {"width",c.processed_width},{"height",c.processed_height},{"tracks",tracks}});
           continue;
         }
@@ -553,6 +555,9 @@ int main(int argc,char** argv) {
           geometry["host_camera_uncertainty_scope"]="diagnostic_only";
         }
         emit({{"type","map"},{"stamp_ns",data->t_ns},{"point_geometry",geometry},
+              {"optical_flow_type",config.optical_flow_type},
+              {"reference_patches",data->opt_flow_res ? data->opt_flow_res->reference_patch_count : 0},
+              {"reference_patch_peak",data->opt_flow_res ? data->opt_flow_res->reference_patch_peak : 0},
               {"landmarks_window",data->points.size()},{"landmarks_accumulated",count},
               {"archive_evicted",archive.evicted()},{"archive_rejected",archive.rejected()},{"points",points},
               {"visual_support",visual_support(*data,c.processed_width,c.processed_height,config.vio_obs_huber_thresh)},
@@ -587,6 +592,7 @@ int main(int argc,char** argv) {
           {"opencv_threads",1},{"estimation_threads",2},
           {"keyframe_hold_frames",config.vio_min_frames_after_kf},
           {"feature_grid",config.optical_flow_detection_grid_size},{"max_recent_states",config.vio_max_states},
+          {"optical_flow_type",sonar_clock ? Json(nullptr) : Json(config.optical_flow_type)},
           {"raw_resolution",{c.width,c.height}},
           {"processed_resolution",{c.processed_width,c.processed_height}},
           {"scope",sonar_clock ? (ground_enabled ? "experimental raw sonar ground-plane and inertial estimation; no camera frontend" : terrain_enabled ? "experimental sonar-inertial with local planar range hypotheses; no camera frontend" : "experimental sonar-inertial state estimation; no terrain or camera frontend") : "experimental local visual-inertial odometry with sparse landmark archive"}});

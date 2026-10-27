@@ -21,6 +21,9 @@ class LiveClient:
     def __init__(self, binary, calibration, log):
         self.processing_request=json.loads(Path(calibration).read_text())
         if not isinstance(self.processing_request,dict):raise ValueError('invalid_worker_calibration')
+        if ('optical_flow_type' in self.processing_request
+                and self.processing_request['optical_flow_type'] not in ('frame_to_frame','patch')):
+            raise ValueError('invalid_optical_flow_type')
         for name,low,high in (('max_image_pixels',1024,1920*1080),('max_feature_cells',32,512)):
             if name in self.processing_request:
                 value=self.processing_request[name]
@@ -110,6 +113,8 @@ class LiveClient:
 
     def _check_processing_ready(self,value):
         request=self.processing_request
+        if 'optical_flow_type' in request and value.get('optical_flow_type')!=request['optical_flow_type']:
+            raise ValueError('worker_optical_flow_type')
         pixels=request.get('max_image_pixels');cells=request.get('max_feature_cells')
         if pixels is None and cells is None:return
         size=value.get('processed_resolution')

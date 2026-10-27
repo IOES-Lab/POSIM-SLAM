@@ -6,6 +6,7 @@
 #include <filesystem>
 #include <fstream>
 #include <cmath>
+#include <string>
 #include <opencv2/imgproc.hpp>
 #include <algorithm>
 using Json = nlohmann::json;
@@ -39,6 +40,7 @@ struct InputCalibration {
  int64_t max_gap;
  int feature_grid;
  int max_recent_states;
+ std::string optical_flow_type;
 };
 inline InputCalibration input_calibration(const fs::path& file) {
     auto c = read_json(file);
@@ -103,11 +105,16 @@ inline InputCalibration input_calibration(const fs::path& file) {
     const int max_recent_states=c.contains("max_recent_states")
       ? integer_budget(c,"max_recent_states",3,posim_slam::kMaxRecentStates,"invalid_recent_state_budget")
       : (c.value("enable_auxiliary_sonar",false) ? 6 : 3);
-    return {width,height,processed_width,processed_height,cal,gravity,max_gap,feature_grid,max_recent_states};
+    const auto optical_flow_type=c.value("optical_flow_type",std::string("frame_to_frame"));
+    if((optical_flow_type!="frame_to_frame" && optical_flow_type!="patch") ||
+       (sonar_clock && c.contains("optical_flow_type")))
+      throw std::runtime_error("invalid_optical_flow_type");
+    return {width,height,processed_width,processed_height,cal,gravity,max_gap,feature_grid,max_recent_states,optical_flow_type};
 }
 
 inline basalt::VioConfig processing_config(const InputCalibration& c) {
   basalt::VioConfig config;
+  config.optical_flow_type=c.optical_flow_type;
   config.vio_max_states=c.max_recent_states;
   config.vio_max_kfs=posim_slam::kMaxKeyframes;
   if(c.feature_grid)config.optical_flow_detection_grid_size=c.feature_grid;

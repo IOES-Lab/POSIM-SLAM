@@ -45,6 +45,40 @@ bounded, one-state-at-a-time acknowledgement contract.
 `SensorEvents(state_clock="sonar")`는 소나와 이후 IMU를 정렬하고, 한 상태의
 응답을 확인한 뒤 다음 상태를 전달합니다.
 
+## Visual reference patches / 시각 참조 패치
+
+Camera calibration accepts `optical_flow_type: "frame_to_frame"` (default) or
+`"patch"`. These select the pinned Basalt previous-frame and birth-frame
+reference trackers. The worker acknowledges the selected value in `ready`;
+`LiveClient` rejects a mismatch. Camera-free sonar calibration rejects this
+camera setting. Both trackers retain Basalt's image pyramids, SE2 patch
+alignment and forward/backward consistency test.
+
+The build-local patch tracker retires a reference only after its identity is
+absent from every camera view. Retirement runs on the frontend owner after
+parallel tracking and filtering finish. `reference_patches` reports retained
+references; `reference_patch_peak` includes new and retiring references. Storage
+therefore follows live observations rather than all historical detections.
+This is not a fixed byte or process-memory limit. The 400-frame native probe
+checks identity retention, repeated blank-frame release and cross-camera
+ownership. Map accuracy, startup and recovery require separate measurements.
+
+카메라 보정 설정은 `optical_flow_type: "frame_to_frame"`(기본값) 또는
+`"patch"`를 받습니다. 고정한 Basalt의 이전 프레임 참조 또는 최초 프레임
+참조 추적기를 선택합니다. 워커는 `ready`에 실제 선택값을 보고하며,
+`LiveClient`는 요청과 다르면 거부합니다. 카메라 없는 소나 보정 설정에서는
+이 옵션을 거부합니다. 두 방식 모두 Basalt의 영상 피라미드, SE2 패치 정합,
+왕복 추적 일관성 검사를 사용합니다.
+
+빌드 사본의 패치 추적기는 모든 카메라에서 사라진 특징점의 참조만 해제합니다.
+병렬 추적과 필터링이 끝난 뒤 추적기 소유 스레드가 해제합니다.
+`reference_patches`는 남은 참조 수, `reference_patch_peak`는 새 참조와 해제될
+참조를 포함한 최대 수입니다. 저장량은 전체 과거 검출 수 대신 현재 관측에
+따릅니다. 고정 바이트 수나 프로세스 메모리 상한을 뜻하지 않습니다.
+400프레임 네이티브 시험은 특징점 ID 유지, 반복되는 빈 영상에서의 해제,
+여러 카메라의 소유 관계를 검사합니다. 지도 정확도·초기화·복구는 별도로
+측정해야 합니다.
+
 ## Joint nuisance elimination / 공동 보조변수 소거
 
 `ping_joint.hpp` uses thin SVD to determine nuisance rank and minimum-norm back-substitution. For LM-damped trials, the smallest regularization diagonal bounds the smallest singular value from below. When it exceeds 16 times the SVD cutoff's Frobenius upper bound, full numerical rank is certified and Householder QR performs the same elimination and back-substitution. Other systems retain SVD. Marginalization remains undamped. Neither route forms a full left-singular-vector matrix. The independent NumPy full-SVD reference checks reduced information, gradient, residual cost and back-substitution for tall, wide, deficient, damped and extreme-scale systems.

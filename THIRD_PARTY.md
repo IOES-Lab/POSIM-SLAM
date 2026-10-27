@@ -144,6 +144,12 @@ BSD-3-Clause notice. Its source and preparation script are included under
 `native/basalt/imu_continuous.inc` and `prepare_joint_headers.py`; it introduces
 no additional dependency.
 
+The build-local optical-flow overlays preserve Basalt's BSD-3-Clause headers.
+`prepare_joint_headers.py` verifies their pinned hashes, adds reference-count
+diagnostics and retires unobserved birth-frame patches using the Apache-2.0
+`reference_patches.hpp`. The original dependency checkout remains unchanged.
+Both tracking algorithms originate in Basalt; this adds no dependency.
+
 선택형 연구 대상의 고정 버전과 고지는 위 파일에서 관리합니다. 외부 소스는 Python
 wheel에 포함하지 않으며 빌더가 정확한 원본 체크아웃을 검사하고 고지를 보존합니다.
 SDK의 Eigen 5.0.1·OpenCV·TBB·fmt 고지와 해당 소스 의무는 별도로 적용됩니다.
@@ -152,3 +158,9 @@ Stella용 Eigen 3.4.0 고지를 이 연구 대상에 대신 적용하지 않습�
 
 빌드 사본의 IMU 구간 확장은 고정 Basalt 헤더의 BSD-3-Clause 고지를 보존합니다.
 확장 소스와 생성 스크립트를 위 경로로 제공하며 추가 의존성은 없습니다.
+
+빌드 사본의 광학 흐름 변경은 Basalt의 BSD-3-Clause 헤더를 보존합니다.
+`prepare_joint_headers.py`가 고정한 원본 해시를 검사하고 참조 수 진단값과
+관측이 끝난 최초 프레임 패치의 해제를 추가합니다. 해제 함수
+`reference_patches.hpp`는 Apache-2.0 코드입니다. 원본 의존성 체크아웃은
+바꾸지 않습니다. 두 추적 알고리즘은 Basalt에서 제공하며 새 의존성은 없습니다.

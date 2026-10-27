@@ -8,6 +8,8 @@ from pathlib import Path
 import sys
 
 HASHES={
+    'optical_flow/optical_flow.h':'8510a2b64f05c5ee2870b1fbf7763e47dbeb8978e8c87c23fc037d33d4589696',
+    'optical_flow/patch_optical_flow.h':'b862f0931aab5c89ddadb92346a2a22aca219a630cf83a4776985f61f97f96ef',
     'vi_estimator/vio_estimator.h':'48ca1e3bc8fabc7378ddd8c3b913dca93ea12cba104192145b019c16599ac754',
     'vi_estimator/sqrt_keypoint_vio.h':'1c98d1cb3efeab33d6df6371f4294880678ae854c18a8cd496abf0d0e14522b3',
     'linearization/landmark_block.hpp':'491cbd5cb633f13923b8c440364e2b72db1ea8abf5b88c604a348367fa57115e',
@@ -65,7 +67,23 @@ def prepare(source,destination):
         raw=(Path(source)/'include/basalt'/name).read_bytes()
         if hashlib.sha256(raw).hexdigest()!=checksum:raise ValueError('pinned_basalt_joint_header_changed:'+name)
         text=raw.decode()
-        if name.endswith('/vio_estimator.h'):
+        if name=='optical_flow/optical_flow.h':
+            text=replace_once(text,'  int64_t t_ns;\n  std::vector<Eigen::aligned_map<KeypointId, Eigen::AffineCompact2f>>',
+                '  int64_t t_ns;\n  size_t reference_patch_count = 0;\n  size_t reference_patch_peak = 0;\n  std::vector<Eigen::aligned_map<KeypointId, Eigen::AffineCompact2f>>')
+        elif name=='optical_flow/patch_optical_flow.h':
+            text=replace_once(text,'#include <basalt/optical_flow/optical_flow.h>',
+                '#include <basalt/optical_flow/optical_flow.h>\n#include "reference_patches.hpp"')
+            text=replace_once(text,'// TODO: patches are currently never erased, so over time memory consumption\n// increases',
+                '// POSIM: reference patches retire after their final camera observation.')
+            text=replace_once(text,'    if (output_queue && frame_counter % config.optical_flow_skip_frames == 0) {',
+                '''    reference_patch_peak = std::max(reference_patch_peak, patches.size());
+    posim_slam::retain_observed_references(patches, transforms->observations);
+    transforms->reference_patch_count = patches.size();
+    transforms->reference_patch_peak = reference_patch_peak;
+    if (output_queue && frame_counter % config.optical_flow_skip_frames == 0) {''')
+            text=replace_once(text,'  size_t frame_counter;',
+                '  size_t frame_counter;\n  size_t reference_patch_peak = 0;')
+        elif name.endswith('/vio_estimator.h'):
             text=replace_once(text,'#pragma once','#pragma once\n#include <map>\n#include "visual_geometry.hpp"')
             text=replace_once(text,'  std::vector<int> point_ids;','  std::vector<int> point_ids;\n  std::map<int,posim_slam::VisualPointSupport> map_quality;\n  std::string map_information_error;')
         elif name.endswith('/sqrt_keypoint_vio.h'):

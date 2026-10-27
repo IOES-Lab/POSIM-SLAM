@@ -267,6 +267,11 @@ updates pose, velocity and biases in that standalone executable. The Python pack
 and supervises the worker and chooses its startup/default-mode policy.
 Native-world timing, calibration, recovery and package acceptance remain separate.
 
+The native camera interface offers previous-frame reference tracking (default)
+and birth-frame reference tracking through `optical_flow_type`. Birth-frame
+references retire after their last camera observation. See the
+[reference-patch contract](native/basalt/README.md#visual-reference-patches--시각-참조-패치).
+
 ## Experimental inertial observation filter
 
 `posim_slam.inertial_filter.InertialFilter` advances one local segment using

@@ -1,0 +1,21 @@
+{
+  "first_image_stamp_ns": 14500000000,
+  "direction_imu": [
+    0.013813184215836029,
+    0.005872210624893522,
+    -0.9998873501971082
+  ],
+  "velocity_seed_imu_m_s": [
+    -0.0027775258145733956,
+    0.009046793715109325,
+    -0.01845880704140918
+  ],
+  "last_measurement_ns": 14500000000,
+  "bootstrap_first_ns": 11300000000,
+  "bootstrap_last_ns": 14300000000,
+  "frames": 16,
+  "selected_tracks": 197,
+  "covariance_estimated": false,
+  "observability_qualified": false,
+  "scope": "Measured linear startup; robust uncertainty qualification pending"
+}

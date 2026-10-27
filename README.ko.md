@@ -244,6 +244,11 @@ VIO 코어를 빌드하고 잡음이 있는 6자유도 특징·영상과 원본 
 모드 선택을 담당합니다. 실제
 월드의 시각·보정·복구와 배포 패키지는 별도로 검증해야 합니다.
 
+네이티브 카메라 인터페이스는 `optical_flow_type`으로 이전 프레임 참조
+추적(기본값)과 최초 프레임 참조 추적을 제공합니다. 최초 프레임 참조는
+모든 카메라에서 마지막 관측이 사라지면 해제합니다.
+[참조 패치 협약](native/basalt/README.md#visual-reference-patches--시각-참조-패치)을 확인하세요.
+
 ## 실험적 관성 관측 필터
 
 `posim_slam.inertial_filter.InertialFilter`는 위치·속도·IMU 자세·gyro/accel
