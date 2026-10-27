@@ -1,0 +1,13 @@
+{
+  "base_posim": "8c47601c7dd4729e3edeabef79665760268fdbc4",
+  "experimental_branch": "codex/world-particle-optics",
+  "files": {
+    "shaders/Underwater_piece_vs_piece_ps.any": "616f1babe8a4a5c24cf44293107a87a6a361ba131da8ceb2e1294e4d3d6c4207",
+    "tests/ParticleRenderTest.cc": "701a8a3d164a65a4ca73527dfeaea6f66d4aca13dfeb293dd8355b32a183662e",
+    "tests/verify_particles.py": "e144e9c366238923cd7a5a79ddd86762569c8c6fbf5b79fd68b030c8d7952627",
+    "CMakeLists.txt": "30438e7aeb040a29268601f5687035d3a98516e696dd7bac5e113933e3bee08d"
+  },
+  "coherence_source_build_passed": true,
+  "settings_ctest_passed": true,
+  "full_SLAM_qualification": false
+}

@@ -1,0 +1,59 @@
+{
+  "scope": "Particle source attribution test; not a SLAM rerun or a pixel-exact recreation of the terrain scene",
+  "fixture_exit": 0,
+  "rows": [
+    {
+      "stamp_ns": 111300000000,
+      "original_gray8_sha256": "97978822bf1a26a489ede93ac768f2da3b561cfcc07b6c2879ee83cebd25bfde",
+      "pixel_native": [
+        21.0,
+        253.0
+      ],
+      "pixel_source": [
+        42.0,
+        506.0
+      ],
+      "particle_delta_max_within_5px": 39.333333333333336,
+      "particle_delta_mean_within_5px": 5.016528925619835,
+      "particle_delta_whole_image_max": 39.333333333333336,
+      "off_sha256": "eb0c8cc744afb8473b3ae4873644db37bb86cc1d248fd534264314581e9e2521",
+      "on_sha256": "6de30e7d06c896425a355867c6a082029af0447ad43bba5a8a886d8e97c8bfcb"
+    },
+    {
+      "stamp_ns": 117300000000,
+      "original_gray8_sha256": "7afceb7c195cfd7c0fef3b19765715b4f193d3115baad41ef66ea7ce39565bd9",
+      "pixel_native": [
+        38.41261672973633,
+        238.23443603515625
+      ],
+      "pixel_source": [
+        76.82523345947266,
+        476.4688720703125
+      ],
+      "particle_delta_max_within_5px": 39.333333333333336,
+      "particle_delta_mean_within_5px": 4.515151515151515,
+      "particle_delta_whole_image_max": 39.333333333333336,
+      "off_sha256": "2ba1709beb359d812a469f5340ca251ce9b5a80c89c44495a3a4ec1c73d1376b",
+      "on_sha256": "5cbbc3eaebf92b509ce792b45f1b7d6573b53bb6b2685caec984ede867482865"
+    },
+    {
+      "stamp_ns": 126300000000,
+      "original_gray8_sha256": "9d607e9531f18c21dd455f0138812e6779d3ada08c48aede598055590a9b9740",
+      "pixel_native": [
+        65.31690216064453,
+        217.72109985351562
+      ],
+      "pixel_source": [
+        130.63380432128906,
+        435.44219970703125
+      ],
+      "particle_delta_max_within_5px": 26.0,
+      "particle_delta_mean_within_5px": 0.5867768595041323,
+      "particle_delta_whole_image_max": 39.333333333333336,
+      "off_sha256": "0d6a5872167529f9cd44d13a5f1abdda7ea7fbb88597176faf1f713e48acde26",
+      "on_sha256": "d681701ae487fc966e0fe914985a2fb963afd6c4066c96a4ed902e2308f88e18"
+    }
+  ],
+  "shader_sha256": "df950fce7f8005a00ed707d82cd38ea6e7d02e5b8f861344830bf6c83712e6f8",
+  "fixture_sha256": "314d04cb5fea422475f145dfc962e6df38d8f20e7a37444e04d7e1143699f143"
+}

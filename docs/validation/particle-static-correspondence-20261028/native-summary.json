@@ -1,0 +1,172 @@
+{
+  "scope": "Fresh isolated macOS native development camera/IMU/Ping survey with an explicit experimental POSIM world-particle shader source. Selected application engine pin remains8c47601; installed assets unchanged.",
+  "runtime_passed": true,
+  "map_qualified": false,
+  "points": 1723,
+  "poses": 1195,
+  "mission_elapsed_s": 73.64,
+  "trajectory": {
+    "evaluated": true,
+    "states": 1195,
+    "duration_s": 119.4,
+    "evaluation_alignment": {
+      "rotation": [
+        [
+          -0.692296966982444,
+          -0.721612714346767,
+          0.0
+        ],
+        [
+          0.721612714346767,
+          -0.692296966982444,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "translation": [
+        -0.028517227306774452,
+        0.011366782816219763,
+        -0.1671943002003314
+      ],
+      "scale": 1.0
+    },
+    "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+    "position_rmse_m": 0.029341179273341615,
+    "position_max_m": 0.11195999835482215,
+    "rotation_rmse_rad": 0.007031219626868876,
+    "rotation_max_rad": 0.02443767469405563,
+    "truth_distance_m": 39.541908150156964,
+    "estimated_distance_m": 39.57036594430217,
+    "rpe_1s_pairs": 1185,
+    "rpe_1s_position_rmse_m": 0.01159130317495852,
+    "rpe_1s_rotation_rmse_rad": 0.0038502044620948236,
+    "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+  },
+  "surface": {
+    "median_m": 0.007137540732359122,
+    "p95_m": 0.02840979438026132,
+    "p99_m": 0.16766659631609324,
+    "maximum_m": 1.4676666554626594,
+    "outside_10cm": 27
+  },
+  "startup": {
+    "visually_constrained_poses": 10,
+    "initial_cloud_points": 0,
+    "map_required_before_motion": false
+  },
+  "recovery": {
+    "killed_owned_worker": 77239,
+    "old_frame": "vehicle/vio_ce3db214ebcc445497ab5f7f67cbdf3b_segment_0",
+    "new_frame": "vehicle/vio_ce3db214ebcc445497ab5f7f67cbdf3b_segment_1",
+    "new_pose_count": 5,
+    "acceptance": "five visually constrained poses; bootstrap predictions retained separately",
+    "empty_new_segment_clouds": 19
+  },
+  "input_delivery": {
+    "pending": 0,
+    "payload_bytes": 0,
+    "max_messages": 4096,
+    "max_payload_bytes": 67108864,
+    "peak_messages": 18,
+    "peak_payload_bytes": 2916864,
+    "received": 17874,
+    "rejected": 0,
+    "discarded_on_reset": 3,
+    "fault": null,
+    "running": true
+  },
+  "image_imu_sync": {
+    "pending": 0,
+    "payload_bytes": 0,
+    "received": 1363,
+    "released": 1363,
+    "discarded_on_reset": 0,
+    "peak_pending": 1,
+    "peak_payload_bytes": 1442048,
+    "imu_watermark_ns": 136380000000
+  },
+  "sensor_inputs": {
+    "ping": {
+      "enabled": true,
+      "joint_enabled": true,
+      "fused": false,
+      "fused_states": 53,
+      "received": 1263,
+      "sent": 1219,
+      "matched": 1262,
+      "unpaired": 0,
+      "late": 0
+    },
+    "dvl": {
+      "enabled": false,
+      "received": 0,
+      "valid": false,
+      "fused": false,
+      "fused_states": 0,
+      "last_fused_stamp_ns": 0
+    },
+    "sonar": {
+      "enabled": false,
+      "received": 0,
+      "processed": 0,
+      "published_points": 0,
+      "frontend_opencv": null,
+      "map_qualified": false
+    },
+    "pressure": {
+      "enabled": false,
+      "fused": false,
+      "fused_states": 0,
+      "received": 0,
+      "queued": 0,
+      "last_fused_stamp_ns": 0,
+      "native_stamp_ns": 0
+    }
+  },
+  "map_geometry": {
+    "active_eligible": 24,
+    "active_joint_observed": 300,
+    "active_unqualified": 276,
+    "admission_coordinate": "world_position",
+    "calibration_uncertainty_included": false,
+    "damping_included": false,
+    "error": null,
+    "gauge": "native_initial_position_and_yaw_prior",
+    "host_camera_uncertainty_scope": "diagnostic_only",
+    "map_qualified": false,
+    "metric_three_sigma_limit_m": 0.1,
+    "observed_outliers_withdrawn": 57,
+    "observed_reprojection_culling": true,
+    "pixel_sigma": 0.5,
+    "policy": "joint_linearized_position_information",
+    "pose_uncertainty_included": true
+  },
+  "lifecycle": {
+    "exit_code": 0,
+    "forced_stop": false
+  },
+  "owned_processes": [
+    {
+      "group": 77016,
+      "live_members": []
+    },
+    {
+      "group": 76980,
+      "live_members": []
+    },
+    {
+      "group": 76978,
+      "live_members": []
+    },
+    {
+      "group": 76982,
+      "live_members": []
+    }
+  ],
+  "original_receipt_sha256": "43ac7838703aa9404511d5744ba4c204f7685522efd522ab2d195a6ef32405dd",
+  "shader_source_sha256": "616f1babe8a4a5c24cf44293107a87a6a361ba131da8ceb2e1294e4d3d6c4207"
+}

@@ -1,5 +1,9 @@
 # POSIM-SLAM
 
+[Static visual-map correspondence / 시각 지도의 고정 특징 대응](docs/diagnostics/visual-static-tracks.md)
+describes the physical-identity assumptions behind visual track and map checks.
+시각 트랙과 지도 검사의 물리적 동일성 가정을 설명합니다.
+
 [Visual-map information contract / 시각 지도 정보 계약](docs/diagnostics/visual-map-quality.md)
 provides an independent native request/report interface for world-position
 uncertainty and retained-point reprojection checks.

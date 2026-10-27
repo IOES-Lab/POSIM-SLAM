@@ -1,0 +1,75 @@
+{
+  "scope": "Single-Mac native800x600 uniform-backdrop fixture;30 warmed RGB captures per row. Excludes full scene, ROS, encoding and full-world frame rate.",
+  "cases": {
+    "old": {
+      "samples": [
+        {
+          "stamp_ns": 111300000000,
+          "particles_enabled": false,
+          "mean_capture_ms": 1.80171
+        },
+        {
+          "stamp_ns": 111300000000,
+          "particles_enabled": true,
+          "mean_capture_ms": 1.67658
+        },
+        {
+          "stamp_ns": 117300000000,
+          "particles_enabled": false,
+          "mean_capture_ms": 2.05181
+        },
+        {
+          "stamp_ns": 117300000000,
+          "particles_enabled": true,
+          "mean_capture_ms": 1.50859
+        },
+        {
+          "stamp_ns": 126300000000,
+          "particles_enabled": false,
+          "mean_capture_ms": 1.47171
+        },
+        {
+          "stamp_ns": 126300000000,
+          "particles_enabled": true,
+          "mean_capture_ms": 1.5933
+        }
+      ],
+      "median_on_ms": 1.5933
+    },
+    "world": {
+      "samples": [
+        {
+          "stamp_ns": 111300000000,
+          "particles_enabled": false,
+          "mean_capture_ms": 1.79146
+        },
+        {
+          "stamp_ns": 111300000000,
+          "particles_enabled": true,
+          "mean_capture_ms": 1.89422
+        },
+        {
+          "stamp_ns": 117300000000,
+          "particles_enabled": false,
+          "mean_capture_ms": 1.54054
+        },
+        {
+          "stamp_ns": 117300000000,
+          "particles_enabled": true,
+          "mean_capture_ms": 2.07465
+        },
+        {
+          "stamp_ns": 126300000000,
+          "particles_enabled": false,
+          "mean_capture_ms": 1.49333
+        },
+        {
+          "stamp_ns": 126300000000,
+          "particles_enabled": true,
+          "mean_capture_ms": 1.79655
+        }
+      ],
+      "median_on_ms": 1.89422
+    }
+  }
+}

@@ -1,0 +1,514 @@
+{
+  "rows": [
+    {
+      "export_vertex_index": 86,
+      "distance_m": 0.586042088180993,
+      "world": [
+        0.0073968068259460465,
+        1.130921307190435,
+        -3.0383527732427065
+      ],
+      "archived_observations": 2,
+      "full_weight_observations": 16,
+      "id": 6111,
+      "observed_frames": 27,
+      "first_stamp_ns": 29700000000,
+      "last_stamp_ns": 32300000000,
+      "duration_s": 2.6,
+      "maximum_reprojection_px": 0.6946065819162753,
+      "last_observation": {
+        "stamp_ns": 32300000000,
+        "pixel": [
+          205.3502197265625,
+          203.6173858642578
+        ],
+        "reprojection_error_px": null,
+        "point": null,
+        "archived": false,
+        "full_weight": false
+      }
+    },
+    {
+      "export_vertex_index": 218,
+      "distance_m": 0.1938490103194938,
+      "world": [
+        2.9594815889063955,
+        2.8731348548431095,
+        -3.3934576964909975
+      ],
+      "archived_observations": 13,
+      "full_weight_observations": 27,
+      "id": 9076,
+      "observed_frames": 33,
+      "first_stamp_ns": 36700000000,
+      "last_stamp_ns": 39900000000,
+      "duration_s": 3.2,
+      "maximum_reprojection_px": 0.9886325185002868,
+      "last_observation": {
+        "stamp_ns": 39900000000,
+        "pixel": [
+          113.34906768798828,
+          262.70849609375
+        ],
+        "reprojection_error_px": 0.5587803087532847,
+        "point": [
+          -0.07040003163364629,
+          -4.165913435543955,
+          -3.2250917566283106
+        ],
+        "archived": true,
+        "full_weight": true
+      }
+    },
+    {
+      "export_vertex_index": 466,
+      "distance_m": 0.6650458429972445,
+      "world": [
+        7.008574376023455,
+        1.6067994916720654,
+        -2.974539086871857
+      ],
+      "archived_observations": 14,
+      "full_weight_observations": 31,
+      "id": 11510,
+      "observed_frames": 34,
+      "first_stamp_ns": 42700000000,
+      "last_stamp_ns": 46000000000,
+      "duration_s": 3.3,
+      "maximum_reprojection_px": 0.5597601021696347,
+      "last_observation": {
+        "stamp_ns": 46000000000,
+        "pixel": [
+          185.3827667236328,
+          187.08583068847656
+        ],
+        "reprojection_error_px": 0.2744226241919239,
+        "point": [
+          -3.8276844874166587,
+          -6.13608422622605,
+          -2.806172970265456
+        ],
+        "archived": true,
+        "full_weight": true
+      }
+    },
+    {
+      "export_vertex_index": 471,
+      "distance_m": 0.5781821495166901,
+      "world": [
+        6.575117677662578,
+        2.0374388400244334,
+        -3.05551867251944
+      ],
+      "archived_observations": 12,
+      "full_weight_observations": 21,
+      "id": 11584,
+      "observed_frames": 29,
+      "first_stamp_ns": 42900000000,
+      "last_stamp_ns": 45700000000,
+      "duration_s": 2.8,
+      "maximum_reprojection_px": 0.8670086251959946,
+      "last_observation": {
+        "stamp_ns": 45700000000,
+        "pixel": [
+          219.43292236328125,
+          200.51300048828125
+        ],
+        "reprojection_error_px": 0.8670086251959946,
+        "point": [
+          -3.216677768826774,
+          -6.133691460866969,
+          -2.8871527865414586
+        ],
+        "archived": true,
+        "full_weight": true
+      }
+    },
+    {
+      "export_vertex_index": 489,
+      "distance_m": 0.17490151738524953,
+      "world": [
+        7.7000984826147505,
+        1.3132241465379113,
+        -2.723701522403473
+      ],
+      "archived_observations": 1,
+      "full_weight_observations": 18,
+      "id": 12000,
+      "observed_frames": 22,
+      "first_stamp_ns": 44000000000,
+      "last_stamp_ns": 46100000000,
+      "duration_s": 2.1,
+      "maximum_reprojection_px": 0.7513213092083175,
+      "last_observation": {
+        "stamp_ns": 46100000000,
+        "pixel": [
+          108.53121185302734,
+          163.259033203125
+        ],
+        "reprojection_error_px": 0.6785299422909812,
+        "point": [
+          -4.524070332948762,
+          -6.417932932898364,
+          -2.555335613460633
+        ],
+        "archived": true,
+        "full_weight": true
+      }
+    },
+    {
+      "export_vertex_index": 490,
+      "distance_m": 0.6688442549870892,
+      "world": [
+        7.206155745012911,
+        1.2852836386672297,
+        -2.9210994697148744
+      ],
+      "archived_observations": 2,
+      "full_weight_observations": 20,
+      "id": 12001,
+      "observed_frames": 24,
+      "first_stamp_ns": 44000000000,
+      "last_stamp_ns": 46300000000,
+      "duration_s": 2.3,
+      "maximum_reprojection_px": 0.828902337851227,
+      "last_observation": {
+        "stamp_ns": 46300000000,
+        "pixel": [
+          166.23094177246094,
+          170.84552001953125
+        ],
+        "reprojection_error_px": 0.5733682463164095,
+        "point": [
+          -4.1947987221290965,
+          -6.048689608313786,
+          -2.7527335278932488
+        ],
+        "archived": true,
+        "full_weight": true
+      }
+    },
+    {
+      "export_vertex_index": 529,
+      "distance_m": 0.21844820889081093,
+      "world": [
+        7.670874206385297,
+        0.789212545219492,
+        -2.012130067401642
+      ],
+      "archived_observations": 8,
+      "full_weight_observations": 16,
+      "id": 13007,
+      "observed_frames": 18,
+      "first_stamp_ns": 46300000000,
+      "last_stamp_ns": 48000000000,
+      "duration_s": 1.7,
+      "maximum_reprojection_px": 0.5177814024571435,
+      "last_observation": {
+        "stamp_ns": 48000000000,
+        "pixel": [
+          71.47907257080078,
+          227.491943359375
+        ],
+        "reprojection_error_px": 0.06496840101825266,
+        "point": [
+          -4.874194018299898,
+          -6.026965464790683,
+          -1.8437640846683074
+        ],
+        "archived": true,
+        "full_weight": true
+      }
+    },
+    {
+      "export_vertex_index": 532,
+      "distance_m": 0.1952190987130713,
+      "world": [
+        7.679780901286929,
+        1.2889032207182454,
+        -2.6986446834142153
+      ],
+      "archived_observations": 2,
+      "full_weight_observations": 16,
+      "id": 13058,
+      "observed_frames": 17,
+      "first_stamp_ns": 46400000000,
+      "last_stamp_ns": 48000000000,
+      "duration_s": 1.6,
+      "maximum_reprojection_px": 0.8385777537880618,
+      "last_observation": {
+        "stamp_ns": 48000000000,
+        "pixel": [
+          112.53028106689453,
+          266.0601501464844
+        ],
+        "reprojection_error_px": 0.8385777537880618,
+        "point": [
+          -4.526921683722992,
+          -6.386370871615163,
+          -2.5302787670349582
+        ],
+        "archived": true,
+        "full_weight": true
+      }
+    },
+    {
+      "export_vertex_index": 536,
+      "distance_m": 0.6111236709631482,
+      "world": [
+        7.263876329036852,
+        0.791006791878277,
+        -2.123364255481476
+      ],
+      "archived_observations": 9,
+      "full_weight_observations": 11,
+      "id": 13102,
+      "observed_frames": 18,
+      "first_stamp_ns": 46500000000,
+      "last_stamp_ns": 48200000000,
+      "duration_s": 1.7,
+      "maximum_reprojection_px": 0.8955344055883834,
+      "last_observation": {
+        "stamp_ns": 48200000000,
+        "pixel": [
+          148.2349395751953,
+          234.4376983642578
+        ],
+        "reprojection_error_px": 0.8955344055883834,
+        "point": [
+          -4.585322550744275,
+          -5.740253911473072,
+          -1.9549982786372821
+        ],
+        "archived": true,
+        "full_weight": true
+      }
+    },
+    {
+      "export_vertex_index": 537,
+      "distance_m": 0.3561357244734529,
+      "world": [
+        7.518864275526547,
+        0.7788665319993804,
+        -2.8440642810399477
+      ],
+      "archived_observations": 2,
+      "full_weight_observations": 9,
+      "id": 13103,
+      "observed_frames": 16,
+      "first_stamp_ns": 46500000000,
+      "last_stamp_ns": 48000000000,
+      "duration_s": 1.5,
+      "maximum_reprojection_px": 0.774840315035554,
+      "last_observation": {
+        "stamp_ns": 48000000000,
+        "pixel": [
+          136.06036376953125,
+          201.29031372070312
+        ],
+        "reprojection_error_px": 0.774840315035554,
+        "point": [
+          -4.7740978199018125,
+          -5.912096758504865,
+          -2.675698191100458
+        ],
+        "archived": true,
+        "full_weight": true
+      }
+    },
+    {
+      "export_vertex_index": 569,
+      "distance_m": 0.347332867116798,
+      "world": [
+        7.14855882888359,
+        -0.3737920068790507,
+        -2.1100744462544863
+      ],
+      "archived_observations": 1,
+      "full_weight_observations": 13,
+      "id": 13874,
+      "observed_frames": 15,
+      "first_stamp_ns": 48400000000,
+      "last_stamp_ns": 49800000000,
+      "duration_s": 1.4,
+      "maximum_reprojection_px": 0.981596450499026,
+      "last_observation": {
+        "stamp_ns": 49800000000,
+        "pixel": [
+          139.23196411132812,
+          242.80020141601562
+        ],
+        "reprojection_error_px": 0.981596450499026,
+        "point": [
+          -5.328010895913,
+          -4.835561871761246,
+          -1.9417084308187456
+        ],
+        "archived": true,
+        "full_weight": true
+      }
+    },
+    {
+      "export_vertex_index": 877,
+      "distance_m": 0.5511656558065353,
+      "world": [
+        1.4398074256733668,
+        -0.16976615177770954,
+        -3.09905795817923
+      ],
+      "archived_observations": 1,
+      "full_weight_observations": 4,
+      "id": 17842,
+      "observed_frames": 11,
+      "first_stamp_ns": 57700000000,
+      "last_stamp_ns": 58700000000,
+      "duration_s": 1.0,
+      "maximum_reprojection_px": 0.41276156005458614,
+      "last_observation": {
+        "stamp_ns": 58700000000,
+        "pixel": [
+          186.22689819335938,
+          212.86512756347656
+        ],
+        "reprojection_error_px": 0.02334587969301278,
+        "point": [
+          -1.1495990906225733,
+          -0.9403926060808216,
+          -2.9306918784032647
+        ],
+        "archived": true,
+        "full_weight": true
+      }
+    },
+    {
+      "export_vertex_index": 888,
+      "distance_m": 0.5301917935228259,
+      "world": [
+        1.3416550399636595,
+        -0.16485469968370486,
+        -3.120695397907013
+      ],
+      "archived_observations": 2,
+      "full_weight_observations": 15,
+      "id": 18012,
+      "observed_frames": 18,
+      "first_stamp_ns": 58100000000,
+      "last_stamp_ns": 59800000000,
+      "duration_s": 1.7,
+      "maximum_reprojection_px": 0.5578717737748562,
+      "last_observation": {
+        "stamp_ns": 59800000000,
+        "pixel": [
+          186.6721649169922,
+          242.62939453125
+        ],
+        "reprojection_error_px": 0.30205023553385685,
+        "point": [
+          -1.0767651381800312,
+          -0.8744135268871039,
+          -2.952329371849912
+        ],
+        "archived": true,
+        "full_weight": true
+      }
+    },
+    {
+      "export_vertex_index": 1258,
+      "distance_m": 0.5878701627376053,
+      "world": [
+        6.770044883430297,
+        -1.5878701627376053,
+        -2.9355042434270326
+      ],
+      "archived_observations": 8,
+      "full_weight_observations": 18,
+      "id": 25538,
+      "observed_frames": 29,
+      "first_stamp_ns": 76200000000,
+      "last_stamp_ns": 79000000000,
+      "duration_s": 2.8,
+      "maximum_reprojection_px": 0.7964258180744317,
+      "last_observation": {
+        "stamp_ns": 79000000000,
+        "pixel": [
+          247.12208557128906,
+          261.1365966796875
+        ],
+        "reprojection_error_px": 0.7964258180744317,
+        "point": [
+          -5.919582371206348,
+          -3.7098168001984777,
+          -2.767138287976307
+        ],
+        "archived": true,
+        "full_weight": true
+      }
+    },
+    {
+      "export_vertex_index": 1571,
+      "distance_m": 0.41186613529890076,
+      "world": [
+        0.929819389112559,
+        0.12674661880990243,
+        -3.2320220923955385
+      ],
+      "archived_observations": 85,
+      "full_weight_observations": 109,
+      "id": 30202,
+      "observed_frames": 110,
+      "first_stamp_ns": 87000000000,
+      "last_stamp_ns": 97900000000,
+      "duration_s": 10.9,
+      "maximum_reprojection_px": 0.955944361850272,
+      "last_observation": {
+        "stamp_ns": 97900000000,
+        "pixel": [
+          183.6460418701172,
+          88.4157943725586
+        ],
+        "reprojection_error_px": 0.4348061050245708,
+        "point": [
+          -0.5794159646026341,
+          -0.7890689339529177,
+          -3.0636561901875385
+        ],
+        "archived": true,
+        "full_weight": true
+      }
+    },
+    {
+      "export_vertex_index": 1573,
+      "distance_m": 2.6760091622550615,
+      "world": [
+        -0.3629589480826333,
+        0.5748359758569292,
+        -0.9666725850636904
+      ],
+      "archived_observations": 18,
+      "full_weight_observations": 85,
+      "id": 38203,
+      "observed_frames": 151,
+      "first_stamp_ns": 111300000000,
+      "last_stamp_ns": 126300000000,
+      "duration_s": 15.0,
+      "maximum_reprojection_px": 2.355427873030006,
+      "last_observation": {
+        "stamp_ns": 126300000000,
+        "pixel": [
+          65.31690216064453,
+          217.72109985351562
+        ],
+        "reprojection_error_px": 0.5751497237550325,
+        "point": [
+          0.6511714758948287,
+          -0.1909766797374555,
+          -0.7983065658540028
+        ],
+        "archived": true,
+        "full_weight": true
+      }
+    }
+  ],
+  "archive_trace_sha256": "7b529a86755667bffb3f0c54ecca43b6ec023d6d9f61debea800111f3c066bb8",
+  "scope": "Post-estimation diagnostics for all native points beyond 10cm; simulator geometry only identifies evaluation errors, not estimator filtering"
+}
