@@ -39,6 +39,15 @@ selection rule and uses original Apache-2.0 source.
 `image_neighbors` 유틸리티는 공개된 공통 특징·시차 규칙을 자체 Apache-2.0
 NumPy 코드로 구현합니다.
 
+The [temporal-stereo reference](docs/validation/visual-temporal-stereo-20261027/README.md)
+also uses OpenCV 4.13.0 rectification and StereoSGBM under the OpenCV Apache-2.0
+notice below, followed by the same OpenSfM BSD-2-Clause depth cleaner. These
+offline native reference tools are not included in the default wheel.
+
+시간차 스테레오 기준실험은 아래 OpenCV 4.13.0의 Apache-2.0 고지와 같은
+OpenSfM BSD-2-Clause 고지를 유지합니다. 오프라인 네이티브 기준 도구는
+기본 wheel에 포함하지 않습니다.
+
 POSIM-SLAM's original Python/C++ source is Apache-2.0. Dependencies retain the
 licenses below. A license for the main estimator does not cover every optional
 solver, vocabulary, dataset, model or runtime dependency.

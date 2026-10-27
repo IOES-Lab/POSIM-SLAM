@@ -76,3 +76,17 @@ Its same-view RGB comparison and all-point assessment remain in the
 자세로 5,031,233점을 남깁니다. 세 물체 상부의 5 cm 이내 복원 비율은 모두
 100%이지만 최대 표면 오차 75.43 cm와 누락된 벽 때문에 완전한 지도는 불합격입니다.
 동일 시점 RGB와 모든 점의 평가는 위 기록에 있습니다.
+
+The [temporal-stereo and coverage record](../validation/visual-temporal-stereo-20261027/README.md)
+audits the difference between all frontend IDs and full-weight observations at
+each image time. The library selector accepts the observations supplied by its
+caller; a later estimated point does not certify an earlier observation. The
+record also retains a faster conventional stereo reference, missing surfaces,
+distant outliers and an unsuccessful long native observation. None qualifies a
+live mapper or new research method.
+
+[시간차 스테레오와 촬영 범위 기록](../validation/visual-temporal-stereo-20261027/README.md)은
+전체 프런트엔드 ID와 영상별 유효 관측의 차이를 검사합니다. 나중에 추정점이 생겼다는
+사실만으로 이전 관측을 유효하다고 보증하지 않습니다. 빠른 기존 스테레오 방식도
+누락 면·먼 이상점과 장시간 네이티브 관측 실패를 보존하며 실시간 지도 합격이나
+새 연구 방법으로 인정하지 않습니다.

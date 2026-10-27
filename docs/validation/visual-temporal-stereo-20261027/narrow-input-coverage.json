@@ -1,0 +1,295 @@
+{
+  "scope": "Assess recorded camera coverage after estimation, without changing a map.\n\nThe view graph uses only image-time full-weight VIO observations and estimated\nlandmarks. Authored collision boxes enter the separate visibility assessment.\nFrustum, front-face, box occlusion and parallax give geometric upper bounds;\nthey do not prove pixel correspondence, seabed visibility or reconstruction.\n",
+  "frames": 490,
+  "spacing_m": 0.05,
+  "full_weight_image_time_observations": 89727,
+  "frames_without_neighbors": 35,
+  "graph_sealed_before_geometry_assessment": true,
+  "graph_sha256": "cc421cc575edd2c04194ad0d936c5a6251ea3dec17ee5b744b3d0e5aca5504a9",
+  "parallax_degrees_exclusive": [
+    3.0,
+    30.0
+  ],
+  "geometry_used_for_assessment_only": true,
+  "authored_box_occlusion_tested": true,
+  "seabed_occlusion_tested": false,
+  "pixel_matching_tested": false,
+  "map_qualification_inferred": false,
+  "models": [
+    {
+      "name": "acoustic_validation_target_0/body/collision",
+      "faces": [
+        {
+          "face": "-x",
+          "samples": 504,
+          "any_view_fraction_upper_bound": 1.0,
+          "three_views_fraction_upper_bound": 1.0,
+          "three_selected_views_fraction_upper_bound": 1.0,
+          "selected_parallax_fraction_upper_bound": 1.0
+        },
+        {
+          "face": "+x",
+          "samples": 504,
+          "any_view_fraction_upper_bound": 1.0,
+          "three_views_fraction_upper_bound": 1.0,
+          "three_selected_views_fraction_upper_bound": 1.0,
+          "selected_parallax_fraction_upper_bound": 1.0
+        },
+        {
+          "face": "-y",
+          "samples": 336,
+          "any_view_fraction_upper_bound": 0.0,
+          "three_views_fraction_upper_bound": 0.0,
+          "three_selected_views_fraction_upper_bound": 0.0,
+          "selected_parallax_fraction_upper_bound": 0.0
+        },
+        {
+          "face": "+y",
+          "samples": 336,
+          "any_view_fraction_upper_bound": 0.6428571428571429,
+          "three_views_fraction_upper_bound": 0.6130952380952381,
+          "three_selected_views_fraction_upper_bound": 0.5982142857142857,
+          "selected_parallax_fraction_upper_bound": 0.5982142857142857
+        },
+        {
+          "face": "-z",
+          "samples": 216,
+          "any_view_fraction_upper_bound": 0.0,
+          "three_views_fraction_upper_bound": 0.0,
+          "three_selected_views_fraction_upper_bound": 0.0,
+          "selected_parallax_fraction_upper_bound": 0.0
+        },
+        {
+          "face": "+z",
+          "samples": 216,
+          "any_view_fraction_upper_bound": 1.0,
+          "three_views_fraction_upper_bound": 1.0,
+          "three_selected_views_fraction_upper_bound": 1.0,
+          "selected_parallax_fraction_upper_bound": 1.0
+        }
+      ]
+    },
+    {
+      "name": "acoustic_validation_target_1/body/collision",
+      "faces": [
+        {
+          "face": "-x",
+          "samples": 432,
+          "any_view_fraction_upper_bound": 1.0,
+          "three_views_fraction_upper_bound": 1.0,
+          "three_selected_views_fraction_upper_bound": 1.0,
+          "selected_parallax_fraction_upper_bound": 1.0
+        },
+        {
+          "face": "+x",
+          "samples": 432,
+          "any_view_fraction_upper_bound": 1.0,
+          "three_views_fraction_upper_bound": 1.0,
+          "three_selected_views_fraction_upper_bound": 0.8333333333333334,
+          "selected_parallax_fraction_upper_bound": 0.8333333333333334
+        },
+        {
+          "face": "-y",
+          "samples": 792,
+          "any_view_fraction_upper_bound": 0.37626262626262624,
+          "three_views_fraction_upper_bound": 0.3611111111111111,
+          "three_selected_views_fraction_upper_bound": 0.30934343434343436,
+          "selected_parallax_fraction_upper_bound": 0.30176767676767674
+        },
+        {
+          "face": "+y",
+          "samples": 792,
+          "any_view_fraction_upper_bound": 0.0,
+          "three_views_fraction_upper_bound": 0.0,
+          "three_selected_views_fraction_upper_bound": 0.0,
+          "selected_parallax_fraction_upper_bound": 0.0
+        },
+        {
+          "face": "-z",
+          "samples": 264,
+          "any_view_fraction_upper_bound": 0.0,
+          "three_views_fraction_upper_bound": 0.0,
+          "three_selected_views_fraction_upper_bound": 0.0,
+          "selected_parallax_fraction_upper_bound": 0.0
+        },
+        {
+          "face": "+z",
+          "samples": 264,
+          "any_view_fraction_upper_bound": 1.0,
+          "three_views_fraction_upper_bound": 1.0,
+          "three_selected_views_fraction_upper_bound": 1.0,
+          "selected_parallax_fraction_upper_bound": 1.0
+        }
+      ]
+    },
+    {
+      "name": "acoustic_validation_target_2/body/collision",
+      "faces": [
+        {
+          "face": "-x",
+          "samples": 624,
+          "any_view_fraction_upper_bound": 0.9983974358974359,
+          "three_views_fraction_upper_bound": 0.9951923076923077,
+          "three_selected_views_fraction_upper_bound": 0.9935897435897436,
+          "selected_parallax_fraction_upper_bound": 0.9935897435897436
+        },
+        {
+          "face": "+x",
+          "samples": 624,
+          "any_view_fraction_upper_bound": 0.0,
+          "three_views_fraction_upper_bound": 0.0,
+          "three_selected_views_fraction_upper_bound": 0.0,
+          "selected_parallax_fraction_upper_bound": 0.0
+        },
+        {
+          "face": "-y",
+          "samples": 260,
+          "any_view_fraction_upper_bound": 1.0,
+          "three_views_fraction_upper_bound": 1.0,
+          "three_selected_views_fraction_upper_bound": 1.0,
+          "selected_parallax_fraction_upper_bound": 1.0
+        },
+        {
+          "face": "+y",
+          "samples": 260,
+          "any_view_fraction_upper_bound": 1.0,
+          "three_views_fraction_upper_bound": 1.0,
+          "three_selected_views_fraction_upper_bound": 1.0,
+          "selected_parallax_fraction_upper_bound": 1.0
+        },
+        {
+          "face": "-z",
+          "samples": 240,
+          "any_view_fraction_upper_bound": 0.0,
+          "three_views_fraction_upper_bound": 0.0,
+          "three_selected_views_fraction_upper_bound": 0.0,
+          "selected_parallax_fraction_upper_bound": 0.0
+        },
+        {
+          "face": "+z",
+          "samples": 240,
+          "any_view_fraction_upper_bound": 1.0,
+          "three_views_fraction_upper_bound": 1.0,
+          "three_selected_views_fraction_upper_bound": 1.0,
+          "selected_parallax_fraction_upper_bound": 1.0
+        }
+      ]
+    },
+    {
+      "name": "acoustic_validation_wall_0/body/collision",
+      "faces": [
+        {
+          "face": "-x",
+          "samples": 3840,
+          "any_view_fraction_upper_bound": 0.5046875,
+          "three_views_fraction_upper_bound": 0.49114583333333334,
+          "three_selected_views_fraction_upper_bound": 0.45859375,
+          "selected_parallax_fraction_upper_bound": 0.45755208333333336
+        },
+        {
+          "face": "+x",
+          "samples": 3840,
+          "any_view_fraction_upper_bound": 0.0,
+          "three_views_fraction_upper_bound": 0.0,
+          "three_selected_views_fraction_upper_bound": 0.0,
+          "selected_parallax_fraction_upper_bound": 0.0
+        },
+        {
+          "face": "-y",
+          "samples": 160,
+          "any_view_fraction_upper_bound": 0.0,
+          "three_views_fraction_upper_bound": 0.0,
+          "three_selected_views_fraction_upper_bound": 0.0,
+          "selected_parallax_fraction_upper_bound": 0.0
+        },
+        {
+          "face": "+y",
+          "samples": 160,
+          "any_view_fraction_upper_bound": 0.0,
+          "three_views_fraction_upper_bound": 0.0,
+          "three_selected_views_fraction_upper_bound": 0.0,
+          "selected_parallax_fraction_upper_bound": 0.0
+        },
+        {
+          "face": "-z",
+          "samples": 600,
+          "any_view_fraction_upper_bound": 0.0,
+          "three_views_fraction_upper_bound": 0.0,
+          "three_selected_views_fraction_upper_bound": 0.0,
+          "selected_parallax_fraction_upper_bound": 0.0
+        },
+        {
+          "face": "+z",
+          "samples": 600,
+          "any_view_fraction_upper_bound": 0.0,
+          "three_views_fraction_upper_bound": 0.0,
+          "three_selected_views_fraction_upper_bound": 0.0,
+          "selected_parallax_fraction_upper_bound": 0.0
+        }
+      ]
+    },
+    {
+      "name": "acoustic_validation_wall_1/body/collision",
+      "faces": [
+        {
+          "face": "-x",
+          "samples": 160,
+          "any_view_fraction_upper_bound": 0.0625,
+          "three_views_fraction_upper_bound": 0.03125,
+          "three_selected_views_fraction_upper_bound": 0.01875,
+          "selected_parallax_fraction_upper_bound": 0.01875
+        },
+        {
+          "face": "+x",
+          "samples": 160,
+          "any_view_fraction_upper_bound": 0.0,
+          "three_views_fraction_upper_bound": 0.0,
+          "three_selected_views_fraction_upper_bound": 0.0,
+          "selected_parallax_fraction_upper_bound": 0.0
+        },
+        {
+          "face": "-y",
+          "samples": 1728,
+          "any_view_fraction_upper_bound": 0.04398148148148148,
+          "three_views_fraction_upper_bound": 0.027199074074074073,
+          "three_selected_views_fraction_upper_bound": 0.022569444444444444,
+          "selected_parallax_fraction_upper_bound": 0.017939814814814815
+        },
+        {
+          "face": "+y",
+          "samples": 1728,
+          "any_view_fraction_upper_bound": 0.0,
+          "three_views_fraction_upper_bound": 0.0,
+          "three_selected_views_fraction_upper_bound": 0.0,
+          "selected_parallax_fraction_upper_bound": 0.0
+        },
+        {
+          "face": "-z",
+          "samples": 270,
+          "any_view_fraction_upper_bound": 0.0,
+          "three_views_fraction_upper_bound": 0.0,
+          "three_selected_views_fraction_upper_bound": 0.0,
+          "selected_parallax_fraction_upper_bound": 0.0
+        },
+        {
+          "face": "+z",
+          "samples": 270,
+          "any_view_fraction_upper_bound": 0.0,
+          "three_views_fraction_upper_bound": 0.0,
+          "three_selected_views_fraction_upper_bound": 0.0,
+          "selected_parallax_fraction_upper_bound": 0.0
+        }
+      ]
+    }
+  ],
+  "source_sha256": {
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/scripts/audit_multiview_input_coverage.py": "ec8820202b04059bc131ee19376f9b3caffe6a3ec37f21d0b0e324a1e0122b4b",
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/visual-textured-overflight-native-20261027-a/live-vio-probe.json": "4eff6c940da64b08168335eb7e17464cfbd396cfebb1b60a215f20f11617f2ac",
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/visual-textured-overflight-native-20261027-a/multimodal-inputs/timeline.json": "bc2059fd76aced0f8793f952020867ddcea17ec16482a29388b8e9641c339b36",
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/visual-textured-overflight-native-20261027-a/slam/b789c222866f42b8a6e8907df2172b91/vio/segment-1-calibration.json": "3f17e331368581857a9c5ae3dd78dde033234d8f74e4b722205c2e7ba8504a20",
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/visual-textured-overflight-native-20261027-a/slam/b789c222866f42b8a6e8907df2172b91/vio/segment-1-calibration.visual-tracks.jsonl": "7f9229d203dabb5aa1e42418490e8d1ec033f7213ba08bd823b8700fab4d6c19",
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/visual-textured-overflight-native-20261027-a/physical-targets.sdf": "e79b5042c4db6b3cd489cd75a24263312f8e9bd83a43f72eaf49841f15aebd3a",
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/visual-textured-overflight-native-20261027-a/comparison.json": "893438e7fb80042c7a831266fd5799f2847aa0f213ff3b25d9daa833b5424887",
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/libraries/posim-slam/src/posim_slam/image_neighbors.py": "a825a23a6bb62d72a7563dd8231bfb5ac2a8639282ee39e8cbd64f801307391e"
+  }
+}

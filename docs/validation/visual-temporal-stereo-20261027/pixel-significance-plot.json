@@ -1,0 +1,64 @@
+{
+  "field_sha256": "07fb7fb94427b18bc233f75c90489560db27daac70e2ad89c2638e7b6d6b1814",
+  "point_limit": 0,
+  "clouds": [
+    {
+      "total": 2605,
+      "display_sample": 2605,
+      "in_view": 2124
+    },
+    {
+      "total": 14257301,
+      "display_sample": 14257301,
+      "in_view": 12587672
+    }
+  ],
+  "all_points_scored": true,
+  "height_colour_limits_m": [
+    -3.7396762371063232,
+    -2.4022226333618164
+  ],
+  "point_area_pt2": 64,
+  "draw_order": "far to near",
+  "display_sampling_changes_map": false,
+  "reference_label": "Temporal StereoSGBM; conditional pixel-noise gate",
+  "camera": {
+    "eye": [
+      0.0,
+      -4.0,
+      -0.15
+    ],
+    "camera_to_world": [
+      [
+        0.5773502691896258,
+        -0.7071067811865475,
+        0.408248290463863
+      ],
+      [
+        0.5773502691896257,
+        0.7071067811865476,
+        0.40824829046386296
+      ],
+      [
+        -0.5773502691896257,
+        0,
+        0.816496580927726
+      ]
+    ],
+    "horizontal_fov": 1.35,
+    "width": 1000,
+    "height": 800,
+    "stamp_ns": 115800000000,
+    "projection": "perspective",
+    "viewpoint": "isometric direction; positive X forward, Y left, Z up",
+    "partition": "inertial-init-1423af43cd2b4a478c2c433821054ed6",
+    "topic": "/validation/slam/isometric_rgb"
+  },
+  "figure_sha256": "462c3db11bcad79b24172c662f38aad0487cb3887083202a847b3d508178dac4",
+  "source_sha256": {
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/scripts/plot_depth_reference.py": "810520f13821268f4c1d490ababe877e303e9669acbf5f522379f031689e8ac3",
+    ".local/visual-wide-temporal-stereo-significance-20261027/surface-evaluation.json": "532a712020d5cbfb1f00aa09cc20b46df631c938ec20203b1b544d167ae9cff3",
+    ".local/visual-wide-coverage-native-20261027-a/isometric-camera.json": "92d4652ac10312f2f835757ab7022fd8b11a40c5475acb1907725655ca5d5908",
+    ".local/visual-wide-coverage-native-20261027-a/isometric-rgb.png": "7ea4624d228fa854b6f8977ad4369cea6e8bc8ddd451e8ed363cdbc40299e084"
+  }
+}

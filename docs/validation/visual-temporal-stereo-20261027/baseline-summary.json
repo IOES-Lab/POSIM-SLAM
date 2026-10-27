@@ -1,0 +1,2533 @@
+{
+  "scope": "Offline temporal stereo and unchanged OpenSfM geometric depth cleaning.\n\nRecorded RGB and estimated VIO poses/landmarks only. No simulator geometry,\nalignment, truth or previous map enters reconstruction or pair selection.\n",
+  "frame": "vehicle/vio_ac1de20ca1534c2d913fb6a2c2d894f7_segment_1",
+  "settings": {
+    "method": "OpenCV 4.13.0 StereoSGBM, mode SGBM_3WAY, then pinned OpenSfM depth cleaner",
+    "upstream_revision": "65571c8ae9ac6a1d0bcd3fdc1ea5fff97b1b5611",
+    "depthmap_resolution": 400,
+    "block_size": 5,
+    "P1": 200,
+    "P2": 800,
+    "disp12MaxDiff": 1,
+    "preFilterCap": 31,
+    "uniquenessRatio": 10,
+    "speckleWindowSize": 50,
+    "speckleRange": 1,
+    "minimum_baseline_m": 0.2,
+    "maximum_baseline_m": 0.8,
+    "maximum_axial_translation_fraction": 0.5,
+    "depth_range_rule": "positive estimated full-weight landmark camera Z: P10*0.9, P90*1.1; select feasible pair, no depth-based output trimming",
+    "maximum_disparities": 128,
+    "same_depth_threshold": 0.01,
+    "minimum_consistent_views": 3,
+    "selected_graph_sha256": "60288d58673e3b766f16c94be1a446f133cc57d0874e739ea5984a1b2a8e0276",
+    "pair_selection": "highest observed common-inlier score among eligible selected views",
+    "all_pose_matched_images_preserved": true,
+    "offline_future_views": true,
+    "estimated_pose_input": true,
+    "scene_or_truth_input": false,
+    "map_qualified": false,
+    "all_cleaned_points_retained": true
+  },
+  "points": 14257265,
+  "raw_frames": 491,
+  "reference_counts": [
+    {
+      "stamp_ns": 14900000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 15100000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 15300000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 15500000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 15700000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 15900000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 16100000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 16300000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 16500000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 16700000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 16900000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 17100000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 17300000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 17500000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 17700000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 17900000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 18100000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 18300000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 18500000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 18700000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 18900000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 19100000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 19300000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 19500000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 19700000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 19900000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 20100000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 20300000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 20500000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 20700000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 20900000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 21100000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 21300000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 21500000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 21700000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 21900000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 22100000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 22300000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 22500000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 22700000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 22900000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 23100000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 23300000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 23500000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 23700000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 23900000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 24100000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 24300000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 24500000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 24700000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 24900000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 25100000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 25300000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 25500000000,
+      "raw": 12961,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 25700000000,
+      "raw": 12603,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 25900000000,
+      "raw": 13781,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 26100000000,
+      "raw": 13042,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 26300000000,
+      "raw": 13064,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 26500000000,
+      "raw": 13237,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 26700000000,
+      "raw": 12871,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 26900000000,
+      "raw": 12411,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 27100000000,
+      "raw": 12899,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 27300000000,
+      "raw": 12418,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 27500000000,
+      "raw": 12469,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 27700000000,
+      "raw": 12748,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 27900000000,
+      "raw": 12520,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 28100000000,
+      "raw": 13905,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 28300000000,
+      "raw": 15211,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 28500000000,
+      "raw": 19576,
+      "clean": 13967
+    },
+    {
+      "stamp_ns": 28700000000,
+      "raw": 20243,
+      "clean": 12600
+    },
+    {
+      "stamp_ns": 28900000000,
+      "raw": 47068,
+      "clean": 30884
+    },
+    {
+      "stamp_ns": 29100000000,
+      "raw": 69055,
+      "clean": 54391
+    },
+    {
+      "stamp_ns": 29300000000,
+      "raw": 92685,
+      "clean": 64697
+    },
+    {
+      "stamp_ns": 29500000000,
+      "raw": 97499,
+      "clean": 73304
+    },
+    {
+      "stamp_ns": 29700000000,
+      "raw": 98506,
+      "clean": 66292
+    },
+    {
+      "stamp_ns": 29900000000,
+      "raw": 98676,
+      "clean": 78511
+    },
+    {
+      "stamp_ns": 30100000000,
+      "raw": 97484,
+      "clean": 84351
+    },
+    {
+      "stamp_ns": 30300000000,
+      "raw": 97801,
+      "clean": 78254
+    },
+    {
+      "stamp_ns": 30500000000,
+      "raw": 88514,
+      "clean": 71813
+    },
+    {
+      "stamp_ns": 30700000000,
+      "raw": 99105,
+      "clean": 73937
+    },
+    {
+      "stamp_ns": 30900000000,
+      "raw": 88832,
+      "clean": 79652
+    },
+    {
+      "stamp_ns": 31100000000,
+      "raw": 81198,
+      "clean": 77648
+    },
+    {
+      "stamp_ns": 31300000000,
+      "raw": 75947,
+      "clean": 74625
+    },
+    {
+      "stamp_ns": 31500000000,
+      "raw": 75722,
+      "clean": 75610
+    },
+    {
+      "stamp_ns": 31700000000,
+      "raw": 92160,
+      "clean": 81731
+    },
+    {
+      "stamp_ns": 31900000000,
+      "raw": 91564,
+      "clean": 56443
+    },
+    {
+      "stamp_ns": 32100000000,
+      "raw": 98274,
+      "clean": 62016
+    },
+    {
+      "stamp_ns": 32300000000,
+      "raw": 91656,
+      "clean": 54698
+    },
+    {
+      "stamp_ns": 32500000000,
+      "raw": 91518,
+      "clean": 64573
+    },
+    {
+      "stamp_ns": 32700000000,
+      "raw": 90500,
+      "clean": 71411
+    },
+    {
+      "stamp_ns": 32900000000,
+      "raw": 90277,
+      "clean": 73309
+    },
+    {
+      "stamp_ns": 33100000000,
+      "raw": 1301,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 33300000000,
+      "raw": 5529,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 33500000000,
+      "raw": 16067,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 33700000000,
+      "raw": 61427,
+      "clean": 45137
+    },
+    {
+      "stamp_ns": 33900000000,
+      "raw": 81616,
+      "clean": 64612
+    },
+    {
+      "stamp_ns": 34100000000,
+      "raw": 2990,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 34300000000,
+      "raw": 1322,
+      "clean": 1
+    },
+    {
+      "stamp_ns": 34500000000,
+      "raw": 91391,
+      "clean": 63045
+    },
+    {
+      "stamp_ns": 34700000000,
+      "raw": 83163,
+      "clean": 62167
+    },
+    {
+      "stamp_ns": 34900000000,
+      "raw": 93135,
+      "clean": 66968
+    },
+    {
+      "stamp_ns": 35100000000,
+      "raw": 82755,
+      "clean": 77482
+    },
+    {
+      "stamp_ns": 35300000000,
+      "raw": 76633,
+      "clean": 72382
+    },
+    {
+      "stamp_ns": 35500000000,
+      "raw": 74230,
+      "clean": 72873
+    },
+    {
+      "stamp_ns": 35700000000,
+      "raw": 75126,
+      "clean": 73750
+    },
+    {
+      "stamp_ns": 35900000000,
+      "raw": 87376,
+      "clean": 79317
+    },
+    {
+      "stamp_ns": 36100000000,
+      "raw": 93429,
+      "clean": 74484
+    },
+    {
+      "stamp_ns": 36300000000,
+      "raw": 95126,
+      "clean": 59277
+    },
+    {
+      "stamp_ns": 36500000000,
+      "raw": 89770,
+      "clean": 85417
+    },
+    {
+      "stamp_ns": 36700000000,
+      "raw": 84871,
+      "clean": 83224
+    },
+    {
+      "stamp_ns": 36900000000,
+      "raw": 79135,
+      "clean": 75167
+    },
+    {
+      "stamp_ns": 37100000000,
+      "raw": 78048,
+      "clean": 77563
+    },
+    {
+      "stamp_ns": 37300000000,
+      "raw": 85524,
+      "clean": 79393
+    },
+    {
+      "stamp_ns": 37500000000,
+      "raw": 94213,
+      "clean": 70748
+    },
+    {
+      "stamp_ns": 37700000000,
+      "raw": 97665,
+      "clean": 72380
+    },
+    {
+      "stamp_ns": 37900000000,
+      "raw": 87617,
+      "clean": 76932
+    },
+    {
+      "stamp_ns": 38100000000,
+      "raw": 84693,
+      "clean": 79071
+    },
+    {
+      "stamp_ns": 38300000000,
+      "raw": 86903,
+      "clean": 81617
+    },
+    {
+      "stamp_ns": 38500000000,
+      "raw": 82475,
+      "clean": 81361
+    },
+    {
+      "stamp_ns": 38700000000,
+      "raw": 90173,
+      "clean": 80573
+    },
+    {
+      "stamp_ns": 38900000000,
+      "raw": 78104,
+      "clean": 52139
+    },
+    {
+      "stamp_ns": 39100000000,
+      "raw": 77381,
+      "clean": 75019
+    },
+    {
+      "stamp_ns": 39300000000,
+      "raw": 91853,
+      "clean": 80324
+    },
+    {
+      "stamp_ns": 39500000000,
+      "raw": 90803,
+      "clean": 70451
+    },
+    {
+      "stamp_ns": 39700000000,
+      "raw": 83919,
+      "clean": 74021
+    },
+    {
+      "stamp_ns": 39900000000,
+      "raw": 80581,
+      "clean": 71234
+    },
+    {
+      "stamp_ns": 40100000000,
+      "raw": 74550,
+      "clean": 40267
+    },
+    {
+      "stamp_ns": 40300000000,
+      "raw": 67087,
+      "clean": 65213
+    },
+    {
+      "stamp_ns": 40500000000,
+      "raw": 55999,
+      "clean": 55574
+    },
+    {
+      "stamp_ns": 40700000000,
+      "raw": 42306,
+      "clean": 36033
+    },
+    {
+      "stamp_ns": 40900000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 41100000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 41300000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 41500000000,
+      "raw": 42987,
+      "clean": 35270
+    },
+    {
+      "stamp_ns": 41700000000,
+      "raw": 53264,
+      "clean": 41095
+    },
+    {
+      "stamp_ns": 41900000000,
+      "raw": 8920,
+      "clean": 1976
+    },
+    {
+      "stamp_ns": 42100000000,
+      "raw": 51334,
+      "clean": 34662
+    },
+    {
+      "stamp_ns": 42300000000,
+      "raw": 76532,
+      "clean": 50715
+    },
+    {
+      "stamp_ns": 42500000000,
+      "raw": 80407,
+      "clean": 60553
+    },
+    {
+      "stamp_ns": 42700000000,
+      "raw": 82315,
+      "clean": 59338
+    },
+    {
+      "stamp_ns": 42900000000,
+      "raw": 79694,
+      "clean": 69399
+    },
+    {
+      "stamp_ns": 43100000000,
+      "raw": 73247,
+      "clean": 44135
+    },
+    {
+      "stamp_ns": 43300000000,
+      "raw": 68725,
+      "clean": 50535
+    },
+    {
+      "stamp_ns": 43500000000,
+      "raw": 31720,
+      "clean": 30092
+    },
+    {
+      "stamp_ns": 43700000000,
+      "raw": 3974,
+      "clean": 5
+    },
+    {
+      "stamp_ns": 43900000000,
+      "raw": 22975,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 44100000000,
+      "raw": 25879,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 44300000000,
+      "raw": 21518,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 44500000000,
+      "raw": 1561,
+      "clean": 1414
+    },
+    {
+      "stamp_ns": 44700000000,
+      "raw": 73887,
+      "clean": 66135
+    },
+    {
+      "stamp_ns": 44900000000,
+      "raw": 82070,
+      "clean": 69205
+    },
+    {
+      "stamp_ns": 45100000000,
+      "raw": 88168,
+      "clean": 57052
+    },
+    {
+      "stamp_ns": 45300000000,
+      "raw": 89966,
+      "clean": 85585
+    },
+    {
+      "stamp_ns": 45500000000,
+      "raw": 95521,
+      "clean": 73619
+    },
+    {
+      "stamp_ns": 45700000000,
+      "raw": 89037,
+      "clean": 74631
+    },
+    {
+      "stamp_ns": 45900000000,
+      "raw": 86766,
+      "clean": 72826
+    },
+    {
+      "stamp_ns": 46100000000,
+      "raw": 91876,
+      "clean": 77847
+    },
+    {
+      "stamp_ns": 46300000000,
+      "raw": 85900,
+      "clean": 83643
+    },
+    {
+      "stamp_ns": 46500000000,
+      "raw": 79019,
+      "clean": 78356
+    },
+    {
+      "stamp_ns": 46700000000,
+      "raw": 74398,
+      "clean": 73656
+    },
+    {
+      "stamp_ns": 46900000000,
+      "raw": 74939,
+      "clean": 73873
+    },
+    {
+      "stamp_ns": 47100000000,
+      "raw": 82224,
+      "clean": 68043
+    },
+    {
+      "stamp_ns": 47300000000,
+      "raw": 89071,
+      "clean": 47307
+    },
+    {
+      "stamp_ns": 47500000000,
+      "raw": 79364,
+      "clean": 55214
+    },
+    {
+      "stamp_ns": 47700000000,
+      "raw": 85396,
+      "clean": 74578
+    },
+    {
+      "stamp_ns": 47900000000,
+      "raw": 75171,
+      "clean": 69279
+    },
+    {
+      "stamp_ns": 48100000000,
+      "raw": 62913,
+      "clean": 56961
+    },
+    {
+      "stamp_ns": 48300000000,
+      "raw": 51939,
+      "clean": 44842
+    },
+    {
+      "stamp_ns": 48500000000,
+      "raw": 65551,
+      "clean": 52158
+    },
+    {
+      "stamp_ns": 48700000000,
+      "raw": 65947,
+      "clean": 48323
+    },
+    {
+      "stamp_ns": 48900000000,
+      "raw": 71394,
+      "clean": 50115
+    },
+    {
+      "stamp_ns": 49100000000,
+      "raw": 65931,
+      "clean": 49251
+    },
+    {
+      "stamp_ns": 49300000000,
+      "raw": 62877,
+      "clean": 47621
+    },
+    {
+      "stamp_ns": 49500000000,
+      "raw": 57413,
+      "clean": 48893
+    },
+    {
+      "stamp_ns": 49700000000,
+      "raw": 57722,
+      "clean": 50119
+    },
+    {
+      "stamp_ns": 49900000000,
+      "raw": 82902,
+      "clean": 66218
+    },
+    {
+      "stamp_ns": 50100000000,
+      "raw": 83281,
+      "clean": 69397
+    },
+    {
+      "stamp_ns": 50300000000,
+      "raw": 83788,
+      "clean": 55439
+    },
+    {
+      "stamp_ns": 50500000000,
+      "raw": 75346,
+      "clean": 64532
+    },
+    {
+      "stamp_ns": 50700000000,
+      "raw": 71862,
+      "clean": 59446
+    },
+    {
+      "stamp_ns": 50900000000,
+      "raw": 64633,
+      "clean": 59046
+    },
+    {
+      "stamp_ns": 51100000000,
+      "raw": 61894,
+      "clean": 57019
+    },
+    {
+      "stamp_ns": 51300000000,
+      "raw": 75088,
+      "clean": 68612
+    },
+    {
+      "stamp_ns": 51500000000,
+      "raw": 86727,
+      "clean": 73009
+    },
+    {
+      "stamp_ns": 51700000000,
+      "raw": 94401,
+      "clean": 58400
+    },
+    {
+      "stamp_ns": 51900000000,
+      "raw": 88588,
+      "clean": 66890
+    },
+    {
+      "stamp_ns": 52100000000,
+      "raw": 86726,
+      "clean": 76764
+    },
+    {
+      "stamp_ns": 52300000000,
+      "raw": 73400,
+      "clean": 69713
+    },
+    {
+      "stamp_ns": 52500000000,
+      "raw": 69863,
+      "clean": 66203
+    },
+    {
+      "stamp_ns": 52700000000,
+      "raw": 68849,
+      "clean": 59406
+    },
+    {
+      "stamp_ns": 52900000000,
+      "raw": 71731,
+      "clean": 54915
+    },
+    {
+      "stamp_ns": 53100000000,
+      "raw": 67873,
+      "clean": 61233
+    },
+    {
+      "stamp_ns": 53300000000,
+      "raw": 66807,
+      "clean": 59202
+    },
+    {
+      "stamp_ns": 53500000000,
+      "raw": 65206,
+      "clean": 59361
+    },
+    {
+      "stamp_ns": 53700000000,
+      "raw": 66753,
+      "clean": 59374
+    },
+    {
+      "stamp_ns": 53900000000,
+      "raw": 62645,
+      "clean": 54877
+    },
+    {
+      "stamp_ns": 54100000000,
+      "raw": 80593,
+      "clean": 57278
+    },
+    {
+      "stamp_ns": 54300000000,
+      "raw": 68417,
+      "clean": 49182
+    },
+    {
+      "stamp_ns": 54500000000,
+      "raw": 89422,
+      "clean": 76582
+    },
+    {
+      "stamp_ns": 54700000000,
+      "raw": 70482,
+      "clean": 64930
+    },
+    {
+      "stamp_ns": 54900000000,
+      "raw": 64412,
+      "clean": 60316
+    },
+    {
+      "stamp_ns": 55100000000,
+      "raw": 63611,
+      "clean": 47928
+    },
+    {
+      "stamp_ns": 55300000000,
+      "raw": 57777,
+      "clean": 50304
+    },
+    {
+      "stamp_ns": 55500000000,
+      "raw": 79498,
+      "clean": 72361
+    },
+    {
+      "stamp_ns": 55700000000,
+      "raw": 88259,
+      "clean": 66984
+    },
+    {
+      "stamp_ns": 55900000000,
+      "raw": 92510,
+      "clean": 64110
+    },
+    {
+      "stamp_ns": 56100000000,
+      "raw": 77885,
+      "clean": 66283
+    },
+    {
+      "stamp_ns": 56300000000,
+      "raw": 68296,
+      "clean": 59659
+    },
+    {
+      "stamp_ns": 56500000000,
+      "raw": 66728,
+      "clean": 58376
+    },
+    {
+      "stamp_ns": 56700000000,
+      "raw": 66574,
+      "clean": 60352
+    },
+    {
+      "stamp_ns": 56900000000,
+      "raw": 86588,
+      "clean": 65068
+    },
+    {
+      "stamp_ns": 57100000000,
+      "raw": 76268,
+      "clean": 49366
+    },
+    {
+      "stamp_ns": 57300000000,
+      "raw": 84512,
+      "clean": 69015
+    },
+    {
+      "stamp_ns": 57500000000,
+      "raw": 86222,
+      "clean": 52692
+    },
+    {
+      "stamp_ns": 57700000000,
+      "raw": 81076,
+      "clean": 59668
+    },
+    {
+      "stamp_ns": 57900000000,
+      "raw": 79702,
+      "clean": 59004
+    },
+    {
+      "stamp_ns": 58100000000,
+      "raw": 82794,
+      "clean": 66531
+    },
+    {
+      "stamp_ns": 58300000000,
+      "raw": 24182,
+      "clean": 22265
+    },
+    {
+      "stamp_ns": 58500000000,
+      "raw": 41043,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 58700000000,
+      "raw": 60342,
+      "clean": 30769
+    },
+    {
+      "stamp_ns": 58900000000,
+      "raw": 73539,
+      "clean": 31468
+    },
+    {
+      "stamp_ns": 59100000000,
+      "raw": 16091,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 59300000000,
+      "raw": 18165,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 59500000000,
+      "raw": 79039,
+      "clean": 55367
+    },
+    {
+      "stamp_ns": 59700000000,
+      "raw": 78657,
+      "clean": 73165
+    },
+    {
+      "stamp_ns": 59900000000,
+      "raw": 77167,
+      "clean": 65318
+    },
+    {
+      "stamp_ns": 60100000000,
+      "raw": 79282,
+      "clean": 67891
+    },
+    {
+      "stamp_ns": 60300000000,
+      "raw": 73977,
+      "clean": 67537
+    },
+    {
+      "stamp_ns": 60500000000,
+      "raw": 65851,
+      "clean": 64684
+    },
+    {
+      "stamp_ns": 60700000000,
+      "raw": 61536,
+      "clean": 60129
+    },
+    {
+      "stamp_ns": 60900000000,
+      "raw": 64639,
+      "clean": 63547
+    },
+    {
+      "stamp_ns": 61100000000,
+      "raw": 74587,
+      "clean": 52729
+    },
+    {
+      "stamp_ns": 61300000000,
+      "raw": 74410,
+      "clean": 51931
+    },
+    {
+      "stamp_ns": 61500000000,
+      "raw": 73874,
+      "clean": 60005
+    },
+    {
+      "stamp_ns": 61700000000,
+      "raw": 65924,
+      "clean": 61243
+    },
+    {
+      "stamp_ns": 61900000000,
+      "raw": 59967,
+      "clean": 58305
+    },
+    {
+      "stamp_ns": 62100000000,
+      "raw": 58389,
+      "clean": 55328
+    },
+    {
+      "stamp_ns": 62300000000,
+      "raw": 57648,
+      "clean": 53503
+    },
+    {
+      "stamp_ns": 62500000000,
+      "raw": 73781,
+      "clean": 47922
+    },
+    {
+      "stamp_ns": 62700000000,
+      "raw": 70782,
+      "clean": 43478
+    },
+    {
+      "stamp_ns": 62900000000,
+      "raw": 73462,
+      "clean": 54513
+    },
+    {
+      "stamp_ns": 63100000000,
+      "raw": 78670,
+      "clean": 50492
+    },
+    {
+      "stamp_ns": 63300000000,
+      "raw": 65308,
+      "clean": 46880
+    },
+    {
+      "stamp_ns": 63500000000,
+      "raw": 68800,
+      "clean": 49782
+    },
+    {
+      "stamp_ns": 63700000000,
+      "raw": 57121,
+      "clean": 44842
+    },
+    {
+      "stamp_ns": 63900000000,
+      "raw": 77475,
+      "clean": 39702
+    },
+    {
+      "stamp_ns": 64100000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 64300000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 64500000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 64700000000,
+      "raw": 76109,
+      "clean": 60411
+    },
+    {
+      "stamp_ns": 64900000000,
+      "raw": 58086,
+      "clean": 47294
+    },
+    {
+      "stamp_ns": 65100000000,
+      "raw": 34112,
+      "clean": 26697
+    },
+    {
+      "stamp_ns": 65300000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 65500000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 65700000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 65900000000,
+      "raw": 727,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 66100000000,
+      "raw": 42057,
+      "clean": 39143
+    },
+    {
+      "stamp_ns": 66300000000,
+      "raw": 3408,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 66500000000,
+      "raw": 31178,
+      "clean": 26117
+    },
+    {
+      "stamp_ns": 66700000000,
+      "raw": 31711,
+      "clean": 30298
+    },
+    {
+      "stamp_ns": 66900000000,
+      "raw": 34692,
+      "clean": 32417
+    },
+    {
+      "stamp_ns": 67100000000,
+      "raw": 34745,
+      "clean": 33257
+    },
+    {
+      "stamp_ns": 67300000000,
+      "raw": 34979,
+      "clean": 33191
+    },
+    {
+      "stamp_ns": 67500000000,
+      "raw": 36146,
+      "clean": 33477
+    },
+    {
+      "stamp_ns": 67700000000,
+      "raw": 37663,
+      "clean": 33573
+    },
+    {
+      "stamp_ns": 67900000000,
+      "raw": 37425,
+      "clean": 34518
+    },
+    {
+      "stamp_ns": 68100000000,
+      "raw": 37866,
+      "clean": 32735
+    },
+    {
+      "stamp_ns": 68300000000,
+      "raw": 36972,
+      "clean": 30859
+    },
+    {
+      "stamp_ns": 68500000000,
+      "raw": 37677,
+      "clean": 30108
+    },
+    {
+      "stamp_ns": 68700000000,
+      "raw": 41633,
+      "clean": 37789
+    },
+    {
+      "stamp_ns": 68900000000,
+      "raw": 43872,
+      "clean": 30916
+    },
+    {
+      "stamp_ns": 69100000000,
+      "raw": 50245,
+      "clean": 46811
+    },
+    {
+      "stamp_ns": 69300000000,
+      "raw": 55269,
+      "clean": 49151
+    },
+    {
+      "stamp_ns": 69500000000,
+      "raw": 60786,
+      "clean": 33844
+    },
+    {
+      "stamp_ns": 69700000000,
+      "raw": 70909,
+      "clean": 60609
+    },
+    {
+      "stamp_ns": 69900000000,
+      "raw": 82632,
+      "clean": 63822
+    },
+    {
+      "stamp_ns": 70100000000,
+      "raw": 90276,
+      "clean": 13823
+    },
+    {
+      "stamp_ns": 70300000000,
+      "raw": 90191,
+      "clean": 61257
+    },
+    {
+      "stamp_ns": 70500000000,
+      "raw": 75827,
+      "clean": 9720
+    },
+    {
+      "stamp_ns": 70700000000,
+      "raw": 29023,
+      "clean": 28736
+    },
+    {
+      "stamp_ns": 70900000000,
+      "raw": 83633,
+      "clean": 72881
+    },
+    {
+      "stamp_ns": 71100000000,
+      "raw": 63829,
+      "clean": 56709
+    },
+    {
+      "stamp_ns": 71300000000,
+      "raw": 84087,
+      "clean": 57673
+    },
+    {
+      "stamp_ns": 71500000000,
+      "raw": 81971,
+      "clean": 66716
+    },
+    {
+      "stamp_ns": 71700000000,
+      "raw": 70094,
+      "clean": 61692
+    },
+    {
+      "stamp_ns": 71900000000,
+      "raw": 64933,
+      "clean": 61225
+    },
+    {
+      "stamp_ns": 72100000000,
+      "raw": 60462,
+      "clean": 58938
+    },
+    {
+      "stamp_ns": 72300000000,
+      "raw": 93342,
+      "clean": 60421
+    },
+    {
+      "stamp_ns": 72500000000,
+      "raw": 94427,
+      "clean": 61833
+    },
+    {
+      "stamp_ns": 72700000000,
+      "raw": 92323,
+      "clean": 71658
+    },
+    {
+      "stamp_ns": 72900000000,
+      "raw": 85369,
+      "clean": 82113
+    },
+    {
+      "stamp_ns": 73100000000,
+      "raw": 77764,
+      "clean": 77022
+    },
+    {
+      "stamp_ns": 73300000000,
+      "raw": 72014,
+      "clean": 70216
+    },
+    {
+      "stamp_ns": 73500000000,
+      "raw": 75818,
+      "clean": 73791
+    },
+    {
+      "stamp_ns": 73700000000,
+      "raw": 94490,
+      "clean": 85246
+    },
+    {
+      "stamp_ns": 73900000000,
+      "raw": 92550,
+      "clean": 69064
+    },
+    {
+      "stamp_ns": 74100000000,
+      "raw": 95873,
+      "clean": 84717
+    },
+    {
+      "stamp_ns": 74300000000,
+      "raw": 95531,
+      "clean": 81950
+    },
+    {
+      "stamp_ns": 74500000000,
+      "raw": 88394,
+      "clean": 83523
+    },
+    {
+      "stamp_ns": 74700000000,
+      "raw": 85744,
+      "clean": 78089
+    },
+    {
+      "stamp_ns": 74900000000,
+      "raw": 89781,
+      "clean": 77090
+    },
+    {
+      "stamp_ns": 75100000000,
+      "raw": 97028,
+      "clean": 90382
+    },
+    {
+      "stamp_ns": 75300000000,
+      "raw": 98752,
+      "clean": 40108
+    },
+    {
+      "stamp_ns": 75500000000,
+      "raw": 95790,
+      "clean": 75719
+    },
+    {
+      "stamp_ns": 75700000000,
+      "raw": 95623,
+      "clean": 50385
+    },
+    {
+      "stamp_ns": 75900000000,
+      "raw": 91110,
+      "clean": 61397
+    },
+    {
+      "stamp_ns": 76100000000,
+      "raw": 93125,
+      "clean": 52255
+    },
+    {
+      "stamp_ns": 76300000000,
+      "raw": 92680,
+      "clean": 83452
+    },
+    {
+      "stamp_ns": 76500000000,
+      "raw": 32988,
+      "clean": 27929
+    },
+    {
+      "stamp_ns": 76700000000,
+      "raw": 26242,
+      "clean": 8
+    },
+    {
+      "stamp_ns": 76900000000,
+      "raw": 56463,
+      "clean": 36048
+    },
+    {
+      "stamp_ns": 77100000000,
+      "raw": 59945,
+      "clean": 56979
+    },
+    {
+      "stamp_ns": 77300000000,
+      "raw": 66705,
+      "clean": 44611
+    },
+    {
+      "stamp_ns": 77500000000,
+      "raw": 28064,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 77700000000,
+      "raw": 27717,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 77900000000,
+      "raw": 79624,
+      "clean": 76480
+    },
+    {
+      "stamp_ns": 78100000000,
+      "raw": 79240,
+      "clean": 74213
+    },
+    {
+      "stamp_ns": 78300000000,
+      "raw": 79569,
+      "clean": 73816
+    },
+    {
+      "stamp_ns": 78500000000,
+      "raw": 74997,
+      "clean": 70206
+    },
+    {
+      "stamp_ns": 78700000000,
+      "raw": 75419,
+      "clean": 73032
+    },
+    {
+      "stamp_ns": 78900000000,
+      "raw": 72905,
+      "clean": 69022
+    },
+    {
+      "stamp_ns": 79100000000,
+      "raw": 75734,
+      "clean": 74238
+    },
+    {
+      "stamp_ns": 79300000000,
+      "raw": 95918,
+      "clean": 87380
+    },
+    {
+      "stamp_ns": 79500000000,
+      "raw": 88920,
+      "clean": 66894
+    },
+    {
+      "stamp_ns": 79700000000,
+      "raw": 91778,
+      "clean": 66695
+    },
+    {
+      "stamp_ns": 79900000000,
+      "raw": 94935,
+      "clean": 56028
+    },
+    {
+      "stamp_ns": 80100000000,
+      "raw": 86427,
+      "clean": 75381
+    },
+    {
+      "stamp_ns": 80300000000,
+      "raw": 88440,
+      "clean": 79320
+    },
+    {
+      "stamp_ns": 80500000000,
+      "raw": 90738,
+      "clean": 78238
+    },
+    {
+      "stamp_ns": 80700000000,
+      "raw": 81702,
+      "clean": 67845
+    },
+    {
+      "stamp_ns": 80900000000,
+      "raw": 74847,
+      "clean": 67187
+    },
+    {
+      "stamp_ns": 81100000000,
+      "raw": 59582,
+      "clean": 55371
+    },
+    {
+      "stamp_ns": 81300000000,
+      "raw": 37950,
+      "clean": 26224
+    },
+    {
+      "stamp_ns": 81500000000,
+      "raw": 17097,
+      "clean": 1188
+    },
+    {
+      "stamp_ns": 81700000000,
+      "raw": 11995,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 81900000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 82100000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 82300000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 82500000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 82700000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 82900000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 83100000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 83300000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 83500000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 83700000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 83900000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 84100000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 84300000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 84500000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 84700000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 84900000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 85100000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 85300000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 85500000000,
+      "raw": 8695,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 85700000000,
+      "raw": 8758,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 85900000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 86100000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 86300000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 86500000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 86700000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 86900000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 87100000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 87300000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 87500000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 87700000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 87900000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 88100000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 88300000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 88500000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 88700000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 88900000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 89100000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 89300000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 89500000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 89700000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 89900000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 90100000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 90300000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 90500000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 90700000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 90900000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 91100000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 91300000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 91500000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 91700000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 91900000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 92100000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 92300000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 92500000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 92700000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 92900000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 93100000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 93300000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 93500000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 93700000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 93900000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 94100000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 94300000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 94500000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 94700000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 94900000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 95100000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 95300000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 95500000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 95700000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 95900000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 96100000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 96300000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 96500000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 96700000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 96900000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 97100000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 97300000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 97500000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 97700000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 97900000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 98100000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 98300000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 98500000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 98700000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 98900000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 99100000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 99300000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 99500000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 99700000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 99900000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 100100000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 100300000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 100500000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 100700000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 100900000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 101100000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 101300000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 101500000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 101700000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 101900000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 102100000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 102300000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 102500000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 102700000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 102900000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 103100000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 103300000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 103500000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 103700000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 103900000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 104100000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 104300000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 104500000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 104700000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 104900000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 105100000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 105300000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 105500000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 105700000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 105900000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 106100000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 106300000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 106500000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 106700000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 106900000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 107100000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 107300000000,
+      "raw": 4176,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 107500000000,
+      "raw": 5212,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 107700000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 107900000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 108100000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 108300000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 108500000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 108700000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 108900000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 109100000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 109300000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 109500000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 109700000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 109900000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 110100000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 110300000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 110500000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 110700000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 110900000000,
+      "raw": 7118,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 111100000000,
+      "raw": 8201,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 111300000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 111500000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 111700000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 111900000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 112100000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 112300000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 112500000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 112700000000,
+      "raw": 0,
+      "clean": 0
+    },
+    {
+      "stamp_ns": 112900000000,
+      "raw": 0,
+      "clean": 0
+    }
+  ],
+  "pair_counts": {
+    "no_eligible_pair": 212,
+    "computed": 279
+  },
+  "elapsed_s": 22.624853291985346,
+  "maximum_rss_mib": 1232.6875,
+  "processing_s": {
+    "median": 0.010081582993734628,
+    "maximum": 0.021517165994737297
+  },
+  "map_qualified": false,
+  "all_admitted_points_retained": true,
+  "source_sha256": {
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/run_temporal_stereo_reference_20261027.py": "75fdf52c604a454f46fb073eb6bccc4aa9758d359ec2c42d91a32ef3b299e779",
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/temporal_stereo_20261027.cc": "855d199b924f636c7865abbfcc3fc11e4858f9e59296475129d92bb606256216",
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/scripts/audit_multiview_input_coverage.py": "ec8820202b04059bc131ee19376f9b3caffe6a3ec37f21d0b0e324a1e0122b4b",
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/visual-wide-coverage-native-20261027-a/slam/ac1de20ca1534c2d913fb6a2c2d894f7/vio/segment-1-calibration.json": "3f17e331368581857a9c5ae3dd78dde033234d8f74e4b722205c2e7ba8504a20",
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/visual-wide-coverage-native-20261027-a/live-vio-probe.json": "8d286238042cd33a6dafc3d9a870533556ac5317a2836b1f2898b619f88bdde7",
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/visual-wide-coverage-native-20261027-a/multimodal-inputs/timeline.json": "f69a984e9e1f0fba08dfd6a32b9fac3cd7db4ed1240ca0e78609e0283750fbda",
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/visual-wide-coverage-native-20261027-a/slam/ac1de20ca1534c2d913fb6a2c2d894f7/vio/segment-1-calibration.visual-tracks.jsonl": "f2f4a025f0ee21e11a2e601e94ac2538ec5fe457c807df964e10e21e8cc6c103",
+    ".local/visual-wide-inlier-coverage-20261027/neighbors.json": "60288d58673e3b766f16c94be1a446f133cc57d0874e739ea5984a1b2a8e0276"
+  },
+  "field_sha256": "c865199cc77a77570bec486902f629b20c8691435b9fd9d5048fec61d26859f9",
+  "raw_artifacts": {
+    "map.ply": {
+      "bytes": 171087477,
+      "sha256": "33805acd743c4e78487102f78f53584c00e7c091cd2e8cee3578bfdb4ebb6f0d",
+      "retained_locally": true
+    },
+    "field.npz": {
+      "bytes": 144809988,
+      "sha256": "c865199cc77a77570bec486902f629b20c8691435b9fd9d5048fec61d26859f9",
+      "retained_locally": true
+    },
+    "evaluated-points.npz": {
+      "bytes": 245159682,
+      "sha256": "24c5aff7375844a8cacc3e42cf42af954d7f1c054855eff3d29a885198fd97b6",
+      "retained_locally": true
+    }
+  },
+  "image_payloads_sha256": "4251af1b89b312d7e43288f69c9e1978a397cfa9b40b427291c97c77a725db67",
+  "loaded_images": 280
+}

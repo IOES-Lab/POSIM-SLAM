@@ -440,3 +440,8 @@ the output graph; display point limits do not select reconstruction images.
 `image_neighbors`는 공통 특징과 시차를 이용하는 기존 뷰 선정 규칙의 독립 NumPy
 구현입니다. 모든 입력 영상 ID를 출력 그래프에 보존하며 표시 점 수로 복원 영상을
 선택하지 않습니다.
+
+[Temporal stereo and acquisition coverage / 시간차 스테레오와 촬영 범위](docs/validation/visual-temporal-stereo-20261027/README.md)
+compares conventional OpenCV stereo with recorded sparse landmarks and matching
+field RGB. It retains complete-map errors and a failed long native observation;
+fast offline calculation does not qualify runtime mapping.

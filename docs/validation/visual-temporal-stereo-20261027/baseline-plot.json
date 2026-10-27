@@ -1,0 +1,64 @@
+{
+  "field_sha256": "c865199cc77a77570bec486902f629b20c8691435b9fd9d5048fec61d26859f9",
+  "point_limit": 0,
+  "clouds": [
+    {
+      "total": 2605,
+      "display_sample": 2605,
+      "in_view": 2124
+    },
+    {
+      "total": 14257265,
+      "display_sample": 14257265,
+      "in_view": 12587635
+    }
+  ],
+  "all_points_scored": true,
+  "height_colour_limits_m": [
+    -3.7396764755249023,
+    -2.4022224617004393
+  ],
+  "point_area_pt2": 64,
+  "draw_order": "far to near",
+  "display_sampling_changes_map": false,
+  "reference_label": "Temporal StereoSGBM + three-view depth check",
+  "camera": {
+    "eye": [
+      0.0,
+      -4.0,
+      -0.15
+    ],
+    "camera_to_world": [
+      [
+        0.5773502691896258,
+        -0.7071067811865475,
+        0.408248290463863
+      ],
+      [
+        0.5773502691896257,
+        0.7071067811865476,
+        0.40824829046386296
+      ],
+      [
+        -0.5773502691896257,
+        0,
+        0.816496580927726
+      ]
+    ],
+    "horizontal_fov": 1.35,
+    "width": 1000,
+    "height": 800,
+    "stamp_ns": 115800000000,
+    "projection": "perspective",
+    "viewpoint": "isometric direction; positive X forward, Y left, Z up",
+    "partition": "inertial-init-1423af43cd2b4a478c2c433821054ed6",
+    "topic": "/validation/slam/isometric_rgb"
+  },
+  "figure_sha256": "45106787841458f633ede7e9b9c80806199e4859be9e153943d5749ea103ad6a",
+  "source_sha256": {
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/scripts/plot_depth_reference.py": "810520f13821268f4c1d490ababe877e303e9669acbf5f522379f031689e8ac3",
+    ".local/visual-wide-temporal-stereo-20261027/surface-evaluation.json": "e812004297d6b6ca5e420a225a48840fd39a66dfb2c2ca5899a2d8570b886d7d",
+    ".local/visual-wide-coverage-native-20261027-a/isometric-camera.json": "92d4652ac10312f2f835757ab7022fd8b11a40c5475acb1907725655ca5d5908",
+    ".local/visual-wide-coverage-native-20261027-a/isometric-rgb.png": "7ea4624d228fa854b6f8977ad4369cea6e8bc8ddd451e8ed363cdbc40299e084"
+  }
+}

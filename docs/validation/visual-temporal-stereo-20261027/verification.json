@@ -1,0 +1,17 @@
+{
+  "passed": true,
+  "desktop_width": 1280,
+  "mobile_width": 390,
+  "mobile_document_width": 390,
+  "image_loaded": true,
+  "english_and_korean_caption_checked": true,
+  "viewport_restored": true,
+  "code_regressions_log": "www-posim-checks-rgcalp6z",
+  "documentation_checks_log": "www-posim-checks-rrptt17o",
+  "library_integrity_log": "www-posim-checks-mfdqtfgw",
+  "installed_gui_qualification": false,
+  "screenshots_sha256": {
+    "temporal-stereo-guide-desktop-20261027.jpg": "55c201f434c7b2ce34c961c5eb9fefd290593f5e994bafa50718345f4160e6b8",
+    "temporal-stereo-guide-mobile-20261027.jpg": "8ba28ce6746dee00311bbbc6ff7cba7bc7621ed5a50f6965d02b79029b1a3739"
+  }
+}

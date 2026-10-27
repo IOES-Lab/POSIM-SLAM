@@ -1,0 +1,488 @@
+{
+  "scope": "All-face threshold proximity after estimation; visibility and physical association not inferred",
+  "sample_spacing_m": 0.05,
+  "thresholds_m": [
+    0.05,
+    0.1
+  ],
+  "all_model_faces_sampled": true,
+  "occluded_and_buried_faces_included": true,
+  "field_sha256": "07fb7fb94427b18bc233f75c90489560db27daac70e2ad89c2638e7b6d6b1814",
+  "models": [
+    {
+      "name": "acoustic_validation_target_0/body/collision",
+      "faces": [
+        {
+          "axis": "x",
+          "sign": -1,
+          "samples": 504,
+          "fraction_of_model_face_near_cloud": {
+            "native": {
+              "0.05": 0.08928571428571429,
+              "0.1": 0.30952380952380953
+            },
+            "reference": {
+              "0.05": 0.8511904761904762,
+              "0.1": 0.9206349206349206
+            }
+          }
+        },
+        {
+          "axis": "x",
+          "sign": 1,
+          "samples": 504,
+          "fraction_of_model_face_near_cloud": {
+            "native": {
+              "0.05": 0.003968253968253968,
+              "0.1": 0.047619047619047616
+            },
+            "reference": {
+              "0.05": 0.3373015873015873,
+              "0.1": 0.5833333333333334
+            }
+          }
+        },
+        {
+          "axis": "y",
+          "sign": -1,
+          "samples": 336,
+          "fraction_of_model_face_near_cloud": {
+            "native": {
+              "0.05": 0.07142857142857142,
+              "0.1": 0.2619047619047619
+            },
+            "reference": {
+              "0.05": 0.9702380952380952,
+              "0.1": 1.0
+            }
+          }
+        },
+        {
+          "axis": "y",
+          "sign": 1,
+          "samples": 336,
+          "fraction_of_model_face_near_cloud": {
+            "native": {
+              "0.05": 0.0,
+              "0.1": 0.01488095238095238
+            },
+            "reference": {
+              "0.05": 0.09226190476190477,
+              "0.1": 0.22023809523809523
+            }
+          }
+        },
+        {
+          "axis": "z",
+          "sign": -1,
+          "samples": 216,
+          "fraction_of_model_face_near_cloud": {
+            "native": {
+              "0.05": 0.009259259259259259,
+              "0.1": 0.06481481481481481
+            },
+            "reference": {
+              "0.05": 0.24537037037037038,
+              "0.1": 0.4398148148148148
+            }
+          }
+        },
+        {
+          "axis": "z",
+          "sign": 1,
+          "samples": 216,
+          "fraction_of_model_face_near_cloud": {
+            "native": {
+              "0.05": 0.5046296296296297,
+              "0.1": 0.8009259259259259
+            },
+            "reference": {
+              "0.05": 0.7777777777777778,
+              "0.1": 0.8333333333333334
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "acoustic_validation_target_1/body/collision",
+      "faces": [
+        {
+          "axis": "x",
+          "sign": -1,
+          "samples": 432,
+          "fraction_of_model_face_near_cloud": {
+            "native": {
+              "0.05": 0.032407407407407406,
+              "0.1": 0.12037037037037036
+            },
+            "reference": {
+              "0.05": 0.375,
+              "0.1": 0.42824074074074076
+            }
+          }
+        },
+        {
+          "axis": "x",
+          "sign": 1,
+          "samples": 432,
+          "fraction_of_model_face_near_cloud": {
+            "native": {
+              "0.05": 0.06018518518518518,
+              "0.1": 0.2175925925925926
+            },
+            "reference": {
+              "0.05": 0.5578703703703703,
+              "0.1": 0.6203703703703703
+            }
+          }
+        },
+        {
+          "axis": "y",
+          "sign": -1,
+          "samples": 792,
+          "fraction_of_model_face_near_cloud": {
+            "native": {
+              "0.05": 0.0,
+              "0.1": 0.006313131313131313
+            },
+            "reference": {
+              "0.05": 0.1527777777777778,
+              "0.1": 0.2196969696969697
+            }
+          }
+        },
+        {
+          "axis": "y",
+          "sign": 1,
+          "samples": 792,
+          "fraction_of_model_face_near_cloud": {
+            "native": {
+              "0.05": 0.04671717171717172,
+              "0.1": 0.16035353535353536
+            },
+            "reference": {
+              "0.05": 0.6085858585858586,
+              "0.1": 0.6704545454545454
+            }
+          }
+        },
+        {
+          "axis": "z",
+          "sign": -1,
+          "samples": 264,
+          "fraction_of_model_face_near_cloud": {
+            "native": {
+              "0.05": 0.0,
+              "0.1": 0.06060606060606061
+            },
+            "reference": {
+              "0.05": 0.23484848484848486,
+              "0.1": 0.4810606060606061
+            }
+          }
+        },
+        {
+          "axis": "z",
+          "sign": 1,
+          "samples": 264,
+          "fraction_of_model_face_near_cloud": {
+            "native": {
+              "0.05": 0.0,
+              "0.1": 0.0
+            },
+            "reference": {
+              "0.05": 0.0,
+              "0.1": 0.0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "acoustic_validation_target_2/body/collision",
+      "faces": [
+        {
+          "axis": "x",
+          "sign": -1,
+          "samples": 624,
+          "fraction_of_model_face_near_cloud": {
+            "native": {
+              "0.05": 0.014423076923076924,
+              "0.1": 0.08653846153846154
+            },
+            "reference": {
+              "0.05": 0.2676282051282051,
+              "0.1": 0.4326923076923077
+            }
+          }
+        },
+        {
+          "axis": "x",
+          "sign": 1,
+          "samples": 624,
+          "fraction_of_model_face_near_cloud": {
+            "native": {
+              "0.05": 0.022435897435897436,
+              "0.1": 0.1266025641025641
+            },
+            "reference": {
+              "0.05": 0.1201923076923077,
+              "0.1": 0.27403846153846156
+            }
+          }
+        },
+        {
+          "axis": "y",
+          "sign": -1,
+          "samples": 260,
+          "fraction_of_model_face_near_cloud": {
+            "native": {
+              "0.05": 0.13846153846153847,
+              "0.1": 0.5269230769230769
+            },
+            "reference": {
+              "0.05": 0.9961538461538462,
+              "0.1": 1.0
+            }
+          }
+        },
+        {
+          "axis": "y",
+          "sign": 1,
+          "samples": 260,
+          "fraction_of_model_face_near_cloud": {
+            "native": {
+              "0.05": 0.09230769230769231,
+              "0.1": 0.3153846153846154
+            },
+            "reference": {
+              "0.05": 0.6923076923076923,
+              "0.1": 0.8538461538461538
+            }
+          }
+        },
+        {
+          "axis": "z",
+          "sign": -1,
+          "samples": 240,
+          "fraction_of_model_face_near_cloud": {
+            "native": {
+              "0.05": 0.0,
+              "0.1": 0.0375
+            },
+            "reference": {
+              "0.05": 0.1875,
+              "0.1": 0.39166666666666666
+            }
+          }
+        },
+        {
+          "axis": "z",
+          "sign": 1,
+          "samples": 240,
+          "fraction_of_model_face_near_cloud": {
+            "native": {
+              "0.05": 0.6041666666666666,
+              "0.1": 0.9625
+            },
+            "reference": {
+              "0.05": 1.0,
+              "0.1": 1.0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "acoustic_validation_wall_0/body/collision",
+      "faces": [
+        {
+          "axis": "x",
+          "sign": -1,
+          "samples": 3840,
+          "fraction_of_model_face_near_cloud": {
+            "native": {
+              "0.05": 0.014583333333333334,
+              "0.1": 0.05546875
+            },
+            "reference": {
+              "0.05": 0.45729166666666665,
+              "0.1": 0.49322916666666666
+            }
+          }
+        },
+        {
+          "axis": "x",
+          "sign": 1,
+          "samples": 3840,
+          "fraction_of_model_face_near_cloud": {
+            "native": {
+              "0.05": 0.0,
+              "0.1": 0.0
+            },
+            "reference": {
+              "0.05": 0.0,
+              "0.1": 0.0
+            }
+          }
+        },
+        {
+          "axis": "y",
+          "sign": -1,
+          "samples": 160,
+          "fraction_of_model_face_near_cloud": {
+            "native": {
+              "0.05": 0.0,
+              "0.1": 0.0
+            },
+            "reference": {
+              "0.05": 0.0875,
+              "0.1": 0.19375
+            }
+          }
+        },
+        {
+          "axis": "y",
+          "sign": 1,
+          "samples": 160,
+          "fraction_of_model_face_near_cloud": {
+            "native": {
+              "0.05": 0.0,
+              "0.1": 0.0
+            },
+            "reference": {
+              "0.05": 0.0,
+              "0.1": 0.0
+            }
+          }
+        },
+        {
+          "axis": "z",
+          "sign": -1,
+          "samples": 600,
+          "fraction_of_model_face_near_cloud": {
+            "native": {
+              "0.05": 0.006666666666666667,
+              "0.1": 0.03666666666666667
+            },
+            "reference": {
+              "0.05": 0.145,
+              "0.1": 0.3616666666666667
+            }
+          }
+        },
+        {
+          "axis": "z",
+          "sign": 1,
+          "samples": 600,
+          "fraction_of_model_face_near_cloud": {
+            "native": {
+              "0.05": 0.0,
+              "0.1": 0.0
+            },
+            "reference": {
+              "0.05": 0.0,
+              "0.1": 0.0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "acoustic_validation_wall_1/body/collision",
+      "faces": [
+        {
+          "axis": "x",
+          "sign": -1,
+          "samples": 160,
+          "fraction_of_model_face_near_cloud": {
+            "native": {
+              "0.05": 0.0375,
+              "0.1": 0.125
+            },
+            "reference": {
+              "0.05": 0.38125,
+              "0.1": 0.46875
+            }
+          }
+        },
+        {
+          "axis": "x",
+          "sign": 1,
+          "samples": 160,
+          "fraction_of_model_face_near_cloud": {
+            "native": {
+              "0.05": 0.00625,
+              "0.1": 0.025
+            },
+            "reference": {
+              "0.05": 0.0,
+              "0.1": 0.0125
+            }
+          }
+        },
+        {
+          "axis": "y",
+          "sign": -1,
+          "samples": 1728,
+          "fraction_of_model_face_near_cloud": {
+            "native": {
+              "0.05": 0.05555555555555555,
+              "0.1": 0.19270833333333334
+            },
+            "reference": {
+              "0.05": 0.42650462962962965,
+              "0.1": 0.46585648148148145
+            }
+          }
+        },
+        {
+          "axis": "y",
+          "sign": 1,
+          "samples": 1728,
+          "fraction_of_model_face_near_cloud": {
+            "native": {
+              "0.05": 0.0,
+              "0.1": 0.0028935185185185184
+            },
+            "reference": {
+              "0.05": 0.005787037037037037,
+              "0.1": 0.013888888888888888
+            }
+          }
+        },
+        {
+          "axis": "z",
+          "sign": -1,
+          "samples": 270,
+          "fraction_of_model_face_near_cloud": {
+            "native": {
+              "0.05": 0.018518518518518517,
+              "0.1": 0.17777777777777778
+            },
+            "reference": {
+              "0.05": 0.16296296296296298,
+              "0.1": 0.4185185185185185
+            }
+          }
+        },
+        {
+          "axis": "z",
+          "sign": 1,
+          "samples": 270,
+          "fraction_of_model_face_near_cloud": {
+            "native": {
+              "0.05": 0.0,
+              "0.1": 0.0
+            },
+            "reference": {
+              "0.05": 0.0,
+              "0.1": 0.0
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

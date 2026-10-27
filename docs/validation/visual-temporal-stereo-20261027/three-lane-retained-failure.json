@@ -1,0 +1,115 @@
+{
+  "passed": false,
+  "map_qualified": false,
+  "mission_status": "completed",
+  "mission_elapsed_sim_seconds": 74.12,
+  "recording_parameters": {
+    "depth_m": 0.6,
+    "distance_m": 7.0,
+    "duration_s": 120.0,
+    "initialization_depth_m": 1.2,
+    "width_m": 4.0,
+    "depth_offset_m": 0.0,
+    "cycles": 1,
+    "hold_heading": true,
+    "lanes": 3
+  },
+  "observed_target_clearance": {
+    "clear": true,
+    "minimum_centerline_clearance_m": 1.3192656611827949,
+    "required_body_margin_m": 0.5,
+    "closest": {
+      "actor": "acoustic_validation_target_1/body/collision",
+      "segment": 976
+    },
+    "segments": 3351,
+    "collision_boxes": 5,
+    "method": "exact segment-to-oriented-box distance; spherical body envelope",
+    "scope": "authored targets only; terrain checked separately by mission planner"
+  },
+  "segment_stable": false,
+  "transitions": [
+    {
+      "segment": 0,
+      "state": "experimental_tracking",
+      "reason": "visual_measurements_present",
+      "stamp_ns": 8600000000
+    },
+    {
+      "segment": 1,
+      "state": "waiting_inputs",
+      "reason": "worker_closed",
+      "stamp_ns": 0
+    },
+    {
+      "segment": 1,
+      "state": "starting_worker",
+      "reason": "waiting_worker_ready",
+      "stamp_ns": 0
+    },
+    {
+      "segment": 1,
+      "state": "initializing",
+      "reason": "waiting_visual_inertial_seed",
+      "stamp_ns": 0
+    },
+    {
+      "segment": 1,
+      "state": "initializing",
+      "reason": "waiting_first_visual_constraints",
+      "stamp_ns": 15700000000
+    },
+    {
+      "segment": 1,
+      "state": "experimental_tracking",
+      "reason": "visual_measurements_present",
+      "stamp_ns": 21300000000
+    },
+    {
+      "segment": 2,
+      "state": "waiting_inputs",
+      "reason": "worker:image_gap_or_reset",
+      "stamp_ns": 0
+    },
+    {
+      "segment": 2,
+      "state": "starting_worker",
+      "reason": "waiting_worker_ready",
+      "stamp_ns": 0
+    },
+    {
+      "segment": 2,
+      "state": "initializing",
+      "reason": "waiting_visual_inertial_seed",
+      "stamp_ns": 0
+    },
+    {
+      "segment": 2,
+      "state": "initializing",
+      "reason": "waiting_first_visual_constraints",
+      "stamp_ns": 113500000000
+    },
+    {
+      "segment": 2,
+      "state": "experimental_tracking",
+      "reason": "visual_measurements_present",
+      "stamp_ns": 117700000000
+    }
+  ],
+  "lifecycle": {
+    "exit_code": 0,
+    "forced_stop": false
+  },
+  "remaining_members": 0,
+  "camera_frames": 1338,
+  "camera_maximum_stamp_gap_s": 0.2,
+  "recording_errors": [],
+  "map_exported": false,
+  "scope": "Failed full observation interval retained; completed physical mission does not qualify estimator continuity",
+  "input_sha256": {
+    "live-vio-probe.json": "9fcdb1229bc5e2d170ab3851af93825420f97ee7f41fd35692f66b6167aed788",
+    "mission-setup.json": "3f2dfc332c54fd4a97f12aec010b977c8f0915b4148d88e43d8597079a800943",
+    "multimodal-inputs/timeline.json": "92cc376446f031c30f82b49be97b3a2c4411097d951822e57d2aba2fee37d9e2",
+    "lifecycle.json": "2a4441d841a5dcd3244a11eac5926c432b98fa84b9da0bc3d3117938e6be7d4d"
+  }
+}

@@ -388,3 +388,8 @@ PYTHONPATH=src python tools/evaluate_stationary_initialization.py --output /tmp/
 `--gravity-seed`와 함께 `--first-image-stamp-ns`를 지정하면 기록된 라이브 시작 시각을 재현합니다. 요청한 시각의 영상이 정확히 존재하고 IMU 이력이 해당 구간을 덮어야 합니다. 지연된 주변화에서는 사전 제약을 구성하기 전에 새로 보존하는 각 자세의 선형화 기준점을 설정하며, 기존 기준점은 유지합니다.
 
 [Visual-map depth support / 시각 지도 깊이 지지와 한계](docs/diagnostics/visual-depth-admission.md).
+
+[시간차 스테레오와 촬영 범위](docs/validation/visual-temporal-stereo-20261027/README.md)는
+기존 OpenCV 스테레오를 희소 지도·동일 시점 RGB와 비교합니다. 전체 지도 오차와
+장시간 네이티브 관측 실패를 보존하며, 빠른 오프라인 계산을 실시간 지도 합격으로
+인정하지 않습니다.

@@ -1,0 +1,295 @@
+{
+  "scope": "Assess recorded camera coverage after estimation, without changing a map.\n\nThe view graph uses only image-time full-weight VIO observations and estimated\nlandmarks. Authored collision boxes enter the separate visibility assessment.\nFrustum, front-face, box occlusion and parallax give geometric upper bounds;\nthey do not prove pixel correspondence, seabed visibility or reconstruction.\n",
+  "frames": 491,
+  "spacing_m": 0.05,
+  "full_weight_image_time_observations": 88079,
+  "frames_without_neighbors": 35,
+  "graph_sealed_before_geometry_assessment": true,
+  "graph_sha256": "60288d58673e3b766f16c94be1a446f133cc57d0874e739ea5984a1b2a8e0276",
+  "parallax_degrees_exclusive": [
+    3.0,
+    30.0
+  ],
+  "geometry_used_for_assessment_only": true,
+  "authored_box_occlusion_tested": true,
+  "seabed_occlusion_tested": false,
+  "pixel_matching_tested": false,
+  "map_qualification_inferred": false,
+  "models": [
+    {
+      "name": "acoustic_validation_target_0/body/collision",
+      "faces": [
+        {
+          "face": "-x",
+          "samples": 504,
+          "any_view_fraction_upper_bound": 1.0,
+          "three_views_fraction_upper_bound": 1.0,
+          "three_selected_views_fraction_upper_bound": 1.0,
+          "selected_parallax_fraction_upper_bound": 1.0
+        },
+        {
+          "face": "+x",
+          "samples": 504,
+          "any_view_fraction_upper_bound": 0.9940476190476191,
+          "three_views_fraction_upper_bound": 0.9920634920634921,
+          "three_selected_views_fraction_upper_bound": 0.9920634920634921,
+          "selected_parallax_fraction_upper_bound": 0.9920634920634921
+        },
+        {
+          "face": "-y",
+          "samples": 336,
+          "any_view_fraction_upper_bound": 1.0,
+          "three_views_fraction_upper_bound": 1.0,
+          "three_selected_views_fraction_upper_bound": 1.0,
+          "selected_parallax_fraction_upper_bound": 1.0
+        },
+        {
+          "face": "+y",
+          "samples": 336,
+          "any_view_fraction_upper_bound": 0.0,
+          "three_views_fraction_upper_bound": 0.0,
+          "three_selected_views_fraction_upper_bound": 0.0,
+          "selected_parallax_fraction_upper_bound": 0.0
+        },
+        {
+          "face": "-z",
+          "samples": 216,
+          "any_view_fraction_upper_bound": 0.0,
+          "three_views_fraction_upper_bound": 0.0,
+          "three_selected_views_fraction_upper_bound": 0.0,
+          "selected_parallax_fraction_upper_bound": 0.0
+        },
+        {
+          "face": "+z",
+          "samples": 216,
+          "any_view_fraction_upper_bound": 1.0,
+          "three_views_fraction_upper_bound": 1.0,
+          "three_selected_views_fraction_upper_bound": 0.9583333333333334,
+          "selected_parallax_fraction_upper_bound": 0.9583333333333334
+        }
+      ]
+    },
+    {
+      "name": "acoustic_validation_target_1/body/collision",
+      "faces": [
+        {
+          "face": "-x",
+          "samples": 432,
+          "any_view_fraction_upper_bound": 0.8935185185185185,
+          "three_views_fraction_upper_bound": 0.8865740740740741,
+          "three_selected_views_fraction_upper_bound": 0.8865740740740741,
+          "selected_parallax_fraction_upper_bound": 0.8865740740740741
+        },
+        {
+          "face": "+x",
+          "samples": 432,
+          "any_view_fraction_upper_bound": 0.8981481481481481,
+          "three_views_fraction_upper_bound": 0.8888888888888888,
+          "three_selected_views_fraction_upper_bound": 0.8865740740740741,
+          "selected_parallax_fraction_upper_bound": 0.8865740740740741
+        },
+        {
+          "face": "-y",
+          "samples": 792,
+          "any_view_fraction_upper_bound": 0.25252525252525254,
+          "three_views_fraction_upper_bound": 0.23106060606060605,
+          "three_selected_views_fraction_upper_bound": 0.20959595959595959,
+          "selected_parallax_fraction_upper_bound": 0.20959595959595959
+        },
+        {
+          "face": "+y",
+          "samples": 792,
+          "any_view_fraction_upper_bound": 1.0,
+          "three_views_fraction_upper_bound": 1.0,
+          "three_selected_views_fraction_upper_bound": 1.0,
+          "selected_parallax_fraction_upper_bound": 1.0
+        },
+        {
+          "face": "-z",
+          "samples": 264,
+          "any_view_fraction_upper_bound": 0.0,
+          "three_views_fraction_upper_bound": 0.0,
+          "three_selected_views_fraction_upper_bound": 0.0,
+          "selected_parallax_fraction_upper_bound": 0.0
+        },
+        {
+          "face": "+z",
+          "samples": 264,
+          "any_view_fraction_upper_bound": 0.2878787878787879,
+          "three_views_fraction_upper_bound": 0.26136363636363635,
+          "three_selected_views_fraction_upper_bound": 0.25,
+          "selected_parallax_fraction_upper_bound": 0.25
+        }
+      ]
+    },
+    {
+      "name": "acoustic_validation_target_2/body/collision",
+      "faces": [
+        {
+          "face": "-x",
+          "samples": 624,
+          "any_view_fraction_upper_bound": 0.5833333333333334,
+          "three_views_fraction_upper_bound": 0.5464743589743589,
+          "three_selected_views_fraction_upper_bound": 0.5384615384615384,
+          "selected_parallax_fraction_upper_bound": 0.5384615384615384
+        },
+        {
+          "face": "+x",
+          "samples": 624,
+          "any_view_fraction_upper_bound": 0.0,
+          "three_views_fraction_upper_bound": 0.0,
+          "three_selected_views_fraction_upper_bound": 0.0,
+          "selected_parallax_fraction_upper_bound": 0.0
+        },
+        {
+          "face": "-y",
+          "samples": 260,
+          "any_view_fraction_upper_bound": 1.0,
+          "three_views_fraction_upper_bound": 1.0,
+          "three_selected_views_fraction_upper_bound": 1.0,
+          "selected_parallax_fraction_upper_bound": 1.0
+        },
+        {
+          "face": "+y",
+          "samples": 260,
+          "any_view_fraction_upper_bound": 1.0,
+          "three_views_fraction_upper_bound": 1.0,
+          "three_selected_views_fraction_upper_bound": 1.0,
+          "selected_parallax_fraction_upper_bound": 1.0
+        },
+        {
+          "face": "-z",
+          "samples": 240,
+          "any_view_fraction_upper_bound": 0.0,
+          "three_views_fraction_upper_bound": 0.0,
+          "three_selected_views_fraction_upper_bound": 0.0,
+          "selected_parallax_fraction_upper_bound": 0.0
+        },
+        {
+          "face": "+z",
+          "samples": 240,
+          "any_view_fraction_upper_bound": 1.0,
+          "three_views_fraction_upper_bound": 1.0,
+          "three_selected_views_fraction_upper_bound": 1.0,
+          "selected_parallax_fraction_upper_bound": 1.0
+        }
+      ]
+    },
+    {
+      "name": "acoustic_validation_wall_0/body/collision",
+      "faces": [
+        {
+          "face": "-x",
+          "samples": 3840,
+          "any_view_fraction_upper_bound": 0.5635416666666667,
+          "three_views_fraction_upper_bound": 0.5388020833333333,
+          "three_selected_views_fraction_upper_bound": 0.51640625,
+          "selected_parallax_fraction_upper_bound": 0.5143229166666666
+        },
+        {
+          "face": "+x",
+          "samples": 3840,
+          "any_view_fraction_upper_bound": 0.0,
+          "three_views_fraction_upper_bound": 0.0,
+          "three_selected_views_fraction_upper_bound": 0.0,
+          "selected_parallax_fraction_upper_bound": 0.0
+        },
+        {
+          "face": "-y",
+          "samples": 160,
+          "any_view_fraction_upper_bound": 0.0,
+          "three_views_fraction_upper_bound": 0.0,
+          "three_selected_views_fraction_upper_bound": 0.0,
+          "selected_parallax_fraction_upper_bound": 0.0
+        },
+        {
+          "face": "+y",
+          "samples": 160,
+          "any_view_fraction_upper_bound": 0.0,
+          "three_views_fraction_upper_bound": 0.0,
+          "three_selected_views_fraction_upper_bound": 0.0,
+          "selected_parallax_fraction_upper_bound": 0.0
+        },
+        {
+          "face": "-z",
+          "samples": 600,
+          "any_view_fraction_upper_bound": 0.0,
+          "three_views_fraction_upper_bound": 0.0,
+          "three_selected_views_fraction_upper_bound": 0.0,
+          "selected_parallax_fraction_upper_bound": 0.0
+        },
+        {
+          "face": "+z",
+          "samples": 600,
+          "any_view_fraction_upper_bound": 0.0,
+          "three_views_fraction_upper_bound": 0.0,
+          "three_selected_views_fraction_upper_bound": 0.0,
+          "selected_parallax_fraction_upper_bound": 0.0
+        }
+      ]
+    },
+    {
+      "name": "acoustic_validation_wall_1/body/collision",
+      "faces": [
+        {
+          "face": "-x",
+          "samples": 160,
+          "any_view_fraction_upper_bound": 0.54375,
+          "three_views_fraction_upper_bound": 0.5125,
+          "three_selected_views_fraction_upper_bound": 0.50625,
+          "selected_parallax_fraction_upper_bound": 0.50625
+        },
+        {
+          "face": "+x",
+          "samples": 160,
+          "any_view_fraction_upper_bound": 0.0,
+          "three_views_fraction_upper_bound": 0.0,
+          "three_selected_views_fraction_upper_bound": 0.0,
+          "selected_parallax_fraction_upper_bound": 0.0
+        },
+        {
+          "face": "-y",
+          "samples": 1728,
+          "any_view_fraction_upper_bound": 0.5821759259259259,
+          "three_views_fraction_upper_bound": 0.5665509259259259,
+          "three_selected_views_fraction_upper_bound": 0.5555555555555556,
+          "selected_parallax_fraction_upper_bound": 0.5555555555555556
+        },
+        {
+          "face": "+y",
+          "samples": 1728,
+          "any_view_fraction_upper_bound": 0.0,
+          "three_views_fraction_upper_bound": 0.0,
+          "three_selected_views_fraction_upper_bound": 0.0,
+          "selected_parallax_fraction_upper_bound": 0.0
+        },
+        {
+          "face": "-z",
+          "samples": 270,
+          "any_view_fraction_upper_bound": 0.0,
+          "three_views_fraction_upper_bound": 0.0,
+          "three_selected_views_fraction_upper_bound": 0.0,
+          "selected_parallax_fraction_upper_bound": 0.0
+        },
+        {
+          "face": "+z",
+          "samples": 270,
+          "any_view_fraction_upper_bound": 0.0,
+          "three_views_fraction_upper_bound": 0.0,
+          "three_selected_views_fraction_upper_bound": 0.0,
+          "selected_parallax_fraction_upper_bound": 0.0
+        }
+      ]
+    }
+  ],
+  "source_sha256": {
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/scripts/audit_multiview_input_coverage.py": "ec8820202b04059bc131ee19376f9b3caffe6a3ec37f21d0b0e324a1e0122b4b",
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/visual-wide-coverage-native-20261027-a/live-vio-probe.json": "8d286238042cd33a6dafc3d9a870533556ac5317a2836b1f2898b619f88bdde7",
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/visual-wide-coverage-native-20261027-a/multimodal-inputs/timeline.json": "f69a984e9e1f0fba08dfd6a32b9fac3cd7db4ed1240ca0e78609e0283750fbda",
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/visual-wide-coverage-native-20261027-a/slam/ac1de20ca1534c2d913fb6a2c2d894f7/vio/segment-1-calibration.json": "3f17e331368581857a9c5ae3dd78dde033234d8f74e4b722205c2e7ba8504a20",
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/visual-wide-coverage-native-20261027-a/slam/ac1de20ca1534c2d913fb6a2c2d894f7/vio/segment-1-calibration.visual-tracks.jsonl": "f2f4a025f0ee21e11a2e601e94ac2538ec5fe457c807df964e10e21e8cc6c103",
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/visual-wide-coverage-native-20261027-a/physical-targets.sdf": "d4795f6c127d739cc1fa4e75eb0329ed55ac3f67d4e593555ae033e06e0bebf6",
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/visual-wide-coverage-native-20261027-a/comparison.json": "c7026f742965714d791b46f003030adb5a3facd3752db11672c6a7df70f0b072",
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/libraries/posim-slam/src/posim_slam/image_neighbors.py": "a825a23a6bb62d72a7563dd8231bfb5ac2a8639282ee39e8cbd64f801307391e"
+  }
+}

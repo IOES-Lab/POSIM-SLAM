@@ -1,0 +1,13 @@
+{
+  "original_provider": "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/vio-geometry-staged8c47601-development-provider.json",
+  "original_provider_sha256": "d8955423741af30caf2ebf005a92e4719cb0f869afeb4d23ba0bbfb35d6c88ff",
+  "original_binary": "/Volumes/BACKUP/POSIM/bluerov-slam-vrx/.local/posim332f629-sdk/www-posim/practice/vio/install/bin/basalt_stream",
+  "relocated_provider": "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/vio-geometry-externalhdd-development-provider-20261027.json",
+  "relocated_binary": "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/posim332f629-sdk/www-posim/practice/vio/install/bin/basalt_stream",
+  "component_files_checked": 68,
+  "sdk_files_checked": 45,
+  "runtime_files_checked": 7,
+  "only_binary_path_changed": true,
+  "source_and_binary_checksums_preserved": true,
+  "scope": "Development descriptor path relocation; existing acceptance scope unchanged; new native session still required"
+}

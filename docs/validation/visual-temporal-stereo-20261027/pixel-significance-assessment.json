@@ -1,0 +1,57 @@
+{
+  "scope": "Score a sealed recorded depth field, including every admitted point.\n\nPhysical surfaces enter after checking the reconstruction hash and frame. Exact\ndistances and all-face proximity are diagnostics, not map acceptance or proof of\nphysical point association. Large per-point results use compressed numeric data.\n",
+  "points": 14257301,
+  "field_sha256_before_assessment": "07fb7fb94427b18bc233f75c90489560db27daac70e2ad89c2638e7b6d6b1814",
+  "all_admitted_points_scored": true,
+  "map_qualified": false,
+  "surface_names": [
+    "acoustic_validation_target_0",
+    "acoustic_validation_target_1",
+    "acoustic_validation_target_2",
+    "acoustic_validation_wall_0",
+    "acoustic_validation_wall_1",
+    "seabed"
+  ],
+  "surface_distance_m": {
+    "minimum": 1.6400172498760996e-09,
+    "median": 0.01317659382553252,
+    "p90": 0.03678920628792039,
+    "p95": 0.04583355823069074,
+    "p99": 0.062044234179040196,
+    "maximum": 16.44575199427693
+  },
+  "within_10cm": 14256061,
+  "nearest_surface_counts_within_10cm": {
+    "acoustic_validation_target_0": 156005,
+    "acoustic_validation_target_1": 68067,
+    "acoustic_validation_target_2": 246636,
+    "acoustic_validation_wall_0": 224279,
+    "acoustic_validation_wall_1": 140808,
+    "seabed": 13420266
+  },
+  "nearest_surface_counts_full_field": {
+    "acoustic_validation_target_0": 156005,
+    "acoustic_validation_target_1": 68105,
+    "acoustic_validation_target_2": 246648,
+    "acoustic_validation_wall_0": 224678,
+    "acoustic_validation_wall_1": 140808,
+    "seabed": 13421057
+  },
+  "evaluation_time_s": 30.690499666001415,
+  "distance_controls": {
+    "method": "Independent accelerated exact triangle distance",
+    "control_maximum_disagreement_m": 2.220446049250313e-16,
+    "extension_sha256": "7aad1b42fe8e98b27ae5ec7cff10150eb27c7979b0d8867096aea7d8dfc83541"
+  },
+  "per_point_data": "evaluated-points.npz",
+  "per_point_world_storage": "float32; distances evaluated before storage conversion",
+  "source_sha256": {
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/scripts/evaluate_depth_reference.py": "708ff4e80bdd1e66a4fdf4d1ee8cd4c7047c0735096756edd6a6a348f9a64d19",
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/visual-wide-temporal-stereo-significance-20261027/field.npz": "07fb7fb94427b18bc233f75c90489560db27daac70e2ad89c2638e7b6d6b1814",
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/visual-wide-temporal-stereo-significance-20261027/report.json": "f17c3d505a8d273fcdb0e458b04f0a1670da96560f69dc38d3f3d5038a219833",
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/visual-wide-coverage-native-20261027-a/comparison.json": "c7026f742965714d791b46f003030adb5a3facd3752db11672c6a7df70f0b072",
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/visual-wide-coverage-native-20261027-a/physical-targets.sdf": "d4795f6c127d739cc1fa4e75eb0329ed55ac3f67d4e593555ae033e06e0bebf6",
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/visual-wide-coverage-native-20261027-a/demo-runtime/ac1de20ca1534c2d913fb6a2c2d894f7/world-waves-underwater-sonar.sdf": "b636c86bf5f462119a07d0b32f28068e74a62a9911becc16365c81582a5027a4",
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/visual-wide-coverage-native-20261027-a/demo-runtime/ac1de20ca1534c2d913fb6a2c2d894f7/orca5-seafloor.dae": "277c49dd9c3b2ec1c9d3c3754be9d076c7b0438ccd29e9ae11355869849fbeb2"
+  }
+}

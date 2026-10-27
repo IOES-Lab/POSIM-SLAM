@@ -1,0 +1,89 @@
+{
+  "opencv_version": "4.13.0",
+  "controls": [
+    {
+      "axis": 0,
+      "sign": -1,
+      "rotation_rad": 0.0,
+      "points": 61440,
+      "median_error_m": 0.0,
+      "p95_error_m": 0.0,
+      "elapsed_s": 0.04371570801595226,
+      "vertical": false
+    },
+    {
+      "axis": 0,
+      "sign": -1,
+      "rotation_rad": 0.08,
+      "points": 52363,
+      "median_error_m": 0.030744075775146484,
+      "p95_error_m": 0.053296566009521484,
+      "elapsed_s": 0.00772054199478589,
+      "vertical": false
+    },
+    {
+      "axis": 0,
+      "sign": 1,
+      "rotation_rad": 0.0,
+      "points": 61438,
+      "median_error_m": 0.0,
+      "p95_error_m": 0.0,
+      "elapsed_s": 0.006791250023525208,
+      "vertical": false
+    },
+    {
+      "axis": 0,
+      "sign": 1,
+      "rotation_rad": 0.08,
+      "points": 52329,
+      "median_error_m": 0.053296566009521484,
+      "p95_error_m": 0.053296566009521484,
+      "elapsed_s": 0.006953875010367483,
+      "vertical": false
+    },
+    {
+      "axis": 1,
+      "sign": -1,
+      "rotation_rad": 0.0,
+      "points": 56320,
+      "median_error_m": 0.0,
+      "p95_error_m": 0.0,
+      "elapsed_s": 0.006558416003827006,
+      "vertical": true
+    },
+    {
+      "axis": 1,
+      "sign": -1,
+      "rotation_rad": 0.08,
+      "points": 47853,
+      "median_error_m": 0.03628087043762207,
+      "p95_error_m": 0.10543036460876465,
+      "elapsed_s": 0.009254415985196829,
+      "vertical": true
+    },
+    {
+      "axis": 1,
+      "sign": 1,
+      "rotation_rad": 0.0,
+      "points": 56320,
+      "median_error_m": 0.0,
+      "p95_error_m": 0.0,
+      "elapsed_s": 0.006563167000422254,
+      "vertical": true
+    },
+    {
+      "axis": 1,
+      "sign": 1,
+      "rotation_rad": 0.08,
+      "points": 47759,
+      "median_error_m": 0.04807853698730469,
+      "p95_error_m": 0.12381625175476074,
+      "elapsed_s": 0.006460208009229973,
+      "vertical": true
+    }
+  ],
+  "blank_valid_points": 0,
+  "initial_requested_rotation_median_tolerance_m": 0.015,
+  "initial_rotation_median_tolerance_met": false,
+  "scope": "Textured 4 m plane; baseline axis/sign/rotation diagnostics. Pair matching errors retained, no map qualification."
+}

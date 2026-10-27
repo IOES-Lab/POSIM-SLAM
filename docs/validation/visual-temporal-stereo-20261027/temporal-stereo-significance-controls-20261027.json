@@ -1,0 +1,94 @@
+{
+  "passed": true,
+  "zero_sigma_preserves_previous_output_exactly": true,
+  "all_changes_only_reject_low_disparity": true,
+  "pixel_noise_assumption_sigma_px": 1.0,
+  "conditional_minimum_disparity_significance": 3.0,
+  "controls": [
+    {
+      "axis": 0,
+      "sign": -1,
+      "disparity_px": 1,
+      "original_points": 61435,
+      "qualified_points": 0
+    },
+    {
+      "axis": 0,
+      "sign": -1,
+      "disparity_px": 2,
+      "original_points": 61437,
+      "qualified_points": 0
+    },
+    {
+      "axis": 0,
+      "sign": -1,
+      "disparity_px": 10,
+      "original_points": 61440,
+      "qualified_points": 61440
+    },
+    {
+      "axis": 0,
+      "sign": 1,
+      "disparity_px": 1,
+      "original_points": 61322,
+      "qualified_points": 0
+    },
+    {
+      "axis": 0,
+      "sign": 1,
+      "disparity_px": 2,
+      "original_points": 61430,
+      "qualified_points": 0
+    },
+    {
+      "axis": 0,
+      "sign": 1,
+      "disparity_px": 10,
+      "original_points": 61438,
+      "qualified_points": 61438
+    },
+    {
+      "axis": 1,
+      "sign": -1,
+      "disparity_px": 1,
+      "original_points": 56320,
+      "qualified_points": 0
+    },
+    {
+      "axis": 1,
+      "sign": -1,
+      "disparity_px": 2,
+      "original_points": 56320,
+      "qualified_points": 0
+    },
+    {
+      "axis": 1,
+      "sign": -1,
+      "disparity_px": 10,
+      "original_points": 56320,
+      "qualified_points": 56320
+    },
+    {
+      "axis": 1,
+      "sign": 1,
+      "disparity_px": 1,
+      "original_points": 56205,
+      "qualified_points": 0
+    },
+    {
+      "axis": 1,
+      "sign": 1,
+      "disparity_px": 2,
+      "original_points": 56302,
+      "qualified_points": 0
+    },
+    {
+      "axis": 1,
+      "sign": 1,
+      "disparity_px": 10,
+      "original_points": 56320,
+      "qualified_points": 56320
+    }
+  ],
+  "pose_uncertainty_included": false
+}

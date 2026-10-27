@@ -1,0 +1,101 @@
+{
+  "passed": true,
+  "mission_status": "completed",
+  "recording_parameters": {
+    "depth_m": 0.6,
+    "distance_m": 7.0,
+    "duration_s": 90.0,
+    "initialization_depth_m": null,
+    "width_m": 4.0,
+    "depth_offset_m": 0.6,
+    "cycles": 1,
+    "hold_heading": true
+  },
+  "position_acceptance": {
+    "metrics": {
+      "evaluated": true,
+      "states": 450,
+      "duration_s": 89.80000000000001,
+      "evaluation_alignment": {
+        "rotation": [
+          [
+            -0.5020856151053209,
+            -0.8648179202030399,
+            0.0
+          ],
+          [
+            0.8648179202030399,
+            -0.5020856151053209,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "translation": [
+          -0.04344662440467719,
+          -0.0019521496689243276,
+          -0.17338892935857453
+        ],
+        "scale": 1.0
+      },
+      "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+      "position_rmse_m": 0.015066857166855437,
+      "position_max_m": 0.02419895576869506,
+      "rotation_rmse_rad": 0.0038913396511095783,
+      "rotation_max_rad": 0.006766113703056933,
+      "truth_distance_m": 26.298843567889506,
+      "estimated_distance_m": 26.325884978580618,
+      "rpe_1s_pairs": 445,
+      "rpe_1s_position_rmse_m": 0.004738805202115,
+      "rpe_1s_rotation_rmse_rad": 0.001155667903845112,
+      "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+    },
+    "accepted": true,
+    "checks": {
+      "evaluated": true,
+      "states": true,
+      "duration": true,
+      "actual_motion": true,
+      "position_rmse": true,
+      "position_max": true
+    },
+    "criteria": {
+      "minimum_states": 250,
+      "minimum_duration_s": 29.0,
+      "minimum_truth_distance_m": 0.5,
+      "maximum_position_rmse_m": 0.1,
+      "maximum_position_error_m": 0.25
+    },
+    "scope": "Single recorded motion position gate; map geometry, orientation, repeatability and installed-app qualification remain separate"
+  },
+  "observed_target_clearance": {
+    "clear": true,
+    "minimum_centerline_clearance_m": 0.7756790466420813,
+    "required_body_margin_m": 0.5,
+    "closest": {
+      "actor": "acoustic_validation_target_1/body/collision",
+      "segment": 1005
+    },
+    "segments": 2609,
+    "collision_boxes": 5,
+    "method": "exact segment-to-oriented-box distance; spherical body envelope",
+    "scope": "authored targets only; terrain checked separately by mission planner"
+  },
+  "map_points": 2605,
+  "lifecycle": {
+    "exit_code": 0,
+    "forced_stop": false
+  },
+  "remaining_members": 0,
+  "input_sha256": {
+    "live-vio-probe.json": "8d286238042cd33a6dafc3d9a870533556ac5317a2836b1f2898b619f88bdde7",
+    "comparison.json": "c7026f742965714d791b46f003030adb5a3facd3752db11672c6a7df70f0b072",
+    "isometric-camera.json": "92d4652ac10312f2f835757ab7022fd8b11a40c5475acb1907725655ca5d5908",
+    "isometric-rgb.png": "7ea4624d228fa854b6f8977ad4369cea6e8bc8ddd451e8ed363cdbc40299e084",
+    "vio-local-map.ply": "400c06071bf7adc3dc314ee83ca379821a898f65e8ed22dee73363f71b51e1bc",
+    "physical-targets.sdf": "d4795f6c127d739cc1fa4e75eb0329ed55ac3f67d4e593555ae033e06e0bebf6"
+  }
+}
