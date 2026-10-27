@@ -1,0 +1,37 @@
+{
+  "schema": "posim-recorded-demo-map-review-1",
+  "scope": "Retrospective geometry review of one recorded camera/IMU/Ping map",
+  "metrics": {
+    "points": 6213,
+    "surface_rmse_m": 0.009501918307472532,
+    "median_m": 0.005571856263732624,
+    "p95_m": 0.015479928217955222,
+    "p99_m": 0.027760248842859686,
+    "p999_m": 0.06787192251531314,
+    "maximum_m": 0.1683054561594693,
+    "outside_10cm": 3,
+    "outside_10cm_percent": 0.04828585224529213,
+    "within_10cm_percent": 99.95171414775471,
+    "trajectory_position_rmse_m": 0.024162975733152323
+  },
+  "assessment": {
+    "recorded_demo_geometry": "accepted_with_reported_tail_errors",
+    "basis": "Aggregate accuracy and observed object support; not a zero-outlier requirement",
+    "user_clarification": "Three of 6213 points beyond 10 cm need not fail the complete map",
+    "universal_marine_threshold": false,
+    "operational_acceptance": false,
+    "hydrographic_compliance_assessed": false,
+    "point_removal": false,
+    "remaining": [
+      "initialization",
+      "loss_and_recovery",
+      "runtime_profiles",
+      "other_scenes_and_sensor_combinations"
+    ]
+  },
+  "sources": {
+    "all-points.json.gz": "46c6edde4dd22844d6b5942527bc4c1cf977d2719591b3076111ca16b0d49b3c",
+    "comparison.json": "84285e9949ebdd3e2b3a644ead05956606ef6fc1cb31f9558d8b65574d4a0592",
+    "worker-map.ply": "d2187ebdf1bd1a74880cd68cb62b54fe887a1c2a6aca654170943335583be678"
+  }
+}
