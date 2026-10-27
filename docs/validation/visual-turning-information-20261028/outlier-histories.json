@@ -1,0 +1,67 @@
+{
+  "9575": {
+    "distance_m": 0.3404256321240968,
+    "observations": 11,
+    "full_weight": 7,
+    "duration_s": 2.0,
+    "first_point_stamp": 50500000000,
+    "last_point_stamp": 51700000000,
+    "position_change_m": 0.029626432343867505,
+    "range_of_position_m": 0.0811090030183739,
+    "first_sigma": 0.08001127423384989,
+    "last_sigma": 0.02069523638313491,
+    "archived_observations": 2
+  },
+  "10113": {
+    "distance_m": 0.20519418918129165,
+    "observations": 12,
+    "full_weight": 7,
+    "duration_s": 2.2,
+    "first_point_stamp": 51900000000,
+    "last_point_stamp": 53300000000,
+    "position_change_m": 0.006966914455181795,
+    "range_of_position_m": 0.022108701579275206,
+    "first_sigma": 0.029802034416206068,
+    "last_sigma": 0.019686188736928296,
+    "archived_observations": 6
+  },
+  "10188": {
+    "distance_m": 0.1495125818285965,
+    "observations": 8,
+    "full_weight": 5,
+    "duration_s": 1.4000000000000001,
+    "first_point_stamp": 51900000000,
+    "last_point_stamp": 52700000000,
+    "position_change_m": 0.1379235637654741,
+    "range_of_position_m": 0.1379235637654741,
+    "first_sigma": 0.035050687561900225,
+    "last_sigma": 0.023640098413382684,
+    "archived_observations": 2
+  },
+  "10512": {
+    "distance_m": 0.19528823969988274,
+    "observations": 13,
+    "full_weight": 8,
+    "duration_s": 2.4000000000000004,
+    "first_point_stamp": 53300000000,
+    "last_point_stamp": 54700000000,
+    "position_change_m": 0.06290105008096196,
+    "range_of_position_m": 0.06290105008096196,
+    "first_sigma": 0.032480463145744126,
+    "last_sigma": 0.019401874334414166,
+    "archived_observations": 6
+  },
+  "15371": {
+    "distance_m": 0.7235297641677362,
+    "observations": 11,
+    "full_weight": 9,
+    "duration_s": 2.0,
+    "first_point_stamp": 68700000000,
+    "last_point_stamp": 70300000000,
+    "position_change_m": 0.11115730347930428,
+    "range_of_position_m": 0.11115730347930428,
+    "first_sigma": 0.08723833547836336,
+    "last_sigma": 0.021476714695411032,
+    "archived_observations": 3
+  }
+}

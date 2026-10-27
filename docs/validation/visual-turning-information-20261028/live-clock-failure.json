@@ -1,0 +1,14 @@
+{
+  "reason": "image_gap_or_reset",
+  "segment": 1,
+  "subscriber_gap_s": 0.6000000000000001,
+  "raw_camera_max_gap_s": 0.1,
+  "source_image_ns": 88500000000,
+  "sent_image_ns": 87900000000,
+  "queued_image_ns": 88500000000,
+  "source_imu_ns": 88600000000,
+  "source_probe_passed": false,
+  "history_depth": 5,
+  "scope": "Independent recorder retained the missing exposures; callback stall cause is not yet attributed; history loss remains a live failure",
+  "diagnostic_sha256": "c73ff1bdea10f92f63db9e5f493f59d4223d112e132afad9a90436409ccfa8c9"
+}

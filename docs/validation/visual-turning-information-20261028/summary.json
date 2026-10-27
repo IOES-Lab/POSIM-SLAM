@@ -1,0 +1,270 @@
+{
+  "schema": "posim-turning-map-information-1",
+  "source_native_world_passed": false,
+  "map_qualified": false,
+  "field_geometry_input_to_worker": false,
+  "methods": {
+    "legacy": {
+      "trajectory": {
+        "evaluated": true,
+        "states": 755,
+        "duration_s": 125.60000000000001,
+        "evaluation_alignment": {
+          "rotation": [
+            [
+              0.9797959027608368,
+              0.19999997233269026,
+              0.0
+            ],
+            [
+              -0.19999997233269026,
+              0.9797959027608368,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "translation": [
+            -0.05007743210612871,
+            0.015595688361313769,
+            -0.211316739551122
+          ],
+          "scale": 1.0
+        },
+        "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+        "position_rmse_m": 0.02075629605870943,
+        "position_max_m": 0.03541996416398763,
+        "rotation_rmse_rad": 0.002707367867082413,
+        "rotation_max_rad": 0.0066992809047405535,
+        "truth_distance_m": 39.22210245677046,
+        "estimated_distance_m": 39.211299015033894,
+        "rpe_1s_pairs": 749,
+        "rpe_1s_position_rmse_m": 0.004806082146043922,
+        "rpe_1s_rotation_rmse_rad": 0.0015433991642531133,
+        "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+      },
+      "processing_s": {
+        "median": 0.04639758399571292,
+        "p95": 0.0826513661944773
+      },
+      "export": {
+        "points": 3624,
+        "request_id": 1,
+        "stamp_ns": 141500000000,
+        "success": true,
+        "type": "export"
+      },
+      "points": 3624,
+      "distance_m": {
+        "median": 0.009867557793304792,
+        "p90": 0.05194402062770783,
+        "p95": 0.10037328886151961,
+        "p99": 0.5030992477510664,
+        "max": 6.515310813001551
+      },
+      "outside_10cm": 182,
+      "all_exported_points_assessed": true,
+      "source_sha256": "0deed5dfafe84bba94a9c2efe338a4baa1630f3eba0465460f087df064dda1b4",
+      "withdrawals": 0,
+      "first_nonempty_stamp_ns": 20500000000,
+      "query_errors": 0,
+      "binary_sha256": "1753ef6c2d07380aa6b44d2a4e6c3aea0c9087e6813a32989d703658f1f3be47",
+      "input_manifest_sha256": "768214ce8fe90f47e0dc444b957d5461ea209839cbdf0bc82c3d0947f1cc4f2f",
+      "calibration_sha256": "3f17e331368581857a9c5ae3dd78dde033234d8f74e4b722205c2e7ba8504a20",
+      "first_stamp_ns": 15900000000,
+      "last_stamp_ns": 141500000000,
+      "camera_frames": 629,
+      "state_events": 755,
+      "estimated_yaw_span_deg": 348.8103067463105
+    },
+    "joint_metric": {
+      "trajectory": {
+        "evaluated": true,
+        "states": 755,
+        "duration_s": 125.60000000000001,
+        "evaluation_alignment": {
+          "rotation": [
+            [
+              0.9797959027608368,
+              0.19999997233269026,
+              0.0
+            ],
+            [
+              -0.19999997233269026,
+              0.9797959027608368,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "translation": [
+            -0.05007743210612871,
+            0.015595688361313769,
+            -0.211316739551122
+          ],
+          "scale": 1.0
+        },
+        "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+        "position_rmse_m": 0.020756296058709652,
+        "position_max_m": 0.03541996416398207,
+        "rotation_rmse_rad": 0.002707367867080458,
+        "rotation_max_rad": 0.0066992809047405535,
+        "truth_distance_m": 39.22210245677046,
+        "estimated_distance_m": 39.2112990150339,
+        "rpe_1s_pairs": 749,
+        "rpe_1s_position_rmse_m": 0.0048060821460438885,
+        "rpe_1s_rotation_rmse_rad": 0.0015433991642365946,
+        "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+      },
+      "processing_s": {
+        "median": 0.0775082920154091,
+        "p95": 0.12047102520591581
+      },
+      "export": {
+        "points": 1983,
+        "request_id": 1,
+        "stamp_ns": 141500000000,
+        "success": true,
+        "type": "export"
+      },
+      "points": 1983,
+      "distance_m": {
+        "median": 0.008901175203615825,
+        "p90": 0.014729718262948225,
+        "p95": 0.016871938272190454,
+        "p99": 0.02557135199309773,
+        "max": 0.7235297641677362
+      },
+      "outside_10cm": 5,
+      "all_exported_points_assessed": true,
+      "source_sha256": "5581d06c1b22a3b634c8a68007701b33386dcc481b84e80f590296c7e2040760",
+      "last_observed_world_sigma_m": {
+        "p05": 0.015781665542030872,
+        "median": 0.028973533141820593,
+        "p95": 0.3299352565341445,
+        "max": 522.9489029532914
+      },
+      "withdrawals": 0,
+      "first_nonempty_stamp_ns": 35900000000,
+      "query_errors": 0,
+      "binary_sha256": "1753ef6c2d07380aa6b44d2a4e6c3aea0c9087e6813a32989d703658f1f3be47",
+      "input_manifest_sha256": "768214ce8fe90f47e0dc444b957d5461ea209839cbdf0bc82c3d0947f1cc4f2f",
+      "calibration_sha256": "3f17e331368581857a9c5ae3dd78dde033234d8f74e4b722205c2e7ba8504a20",
+      "first_stamp_ns": 15900000000,
+      "last_stamp_ns": 141500000000,
+      "camera_frames": 629,
+      "state_events": 755,
+      "estimated_yaw_span_deg": 348.8103067463105,
+      "max_mean_position_change_m": 9.769962616701378e-15
+    },
+    "culling_joint_metric": {
+      "trajectory": {
+        "evaluated": true,
+        "states": 755,
+        "duration_s": 125.60000000000001,
+        "evaluation_alignment": {
+          "rotation": [
+            [
+              0.9797959027608368,
+              0.19999997233269026,
+              0.0
+            ],
+            [
+              -0.19999997233269026,
+              0.9797959027608368,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "translation": [
+            -0.05007743210612871,
+            0.015595688361313769,
+            -0.211316739551122
+          ],
+          "scale": 1.0
+        },
+        "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+        "position_rmse_m": 0.020756296058708833,
+        "position_max_m": 0.03541996416398263,
+        "rotation_rmse_rad": 0.0027073678670799144,
+        "rotation_max_rad": 0.0066992809047405535,
+        "truth_distance_m": 39.22210245677046,
+        "estimated_distance_m": 39.21129901503389,
+        "rpe_1s_pairs": 749,
+        "rpe_1s_position_rmse_m": 0.004806082146043965,
+        "rpe_1s_rotation_rmse_rad": 0.0015433991642335213,
+        "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+      },
+      "processing_s": {
+        "median": 0.0732563339988701,
+        "p95": 0.12281503318808973
+      },
+      "export": {
+        "points": 1962,
+        "request_id": 1,
+        "stamp_ns": 141500000000,
+        "success": true,
+        "type": "export"
+      },
+      "points": 1962,
+      "distance_m": {
+        "median": 0.008897572421170048,
+        "p90": 0.014659190761601423,
+        "p95": 0.016743717088825813,
+        "p99": 0.02437331380266071,
+        "max": 0.7235297641677362
+      },
+      "outside_10cm": 4,
+      "all_exported_points_assessed": true,
+      "source_sha256": "ca9ce690fa85ac593bc49f7feec6a4db971b2ec1ca4e707ed73410b09173624d",
+      "last_observed_world_sigma_m": {
+        "p05": 0.015781665541216947,
+        "median": 0.028973533141562383,
+        "p95": 0.3299352565384342,
+        "max": 522.9489029531401
+      },
+      "withdrawals": 41,
+      "first_nonempty_stamp_ns": 35900000000,
+      "query_errors": 0,
+      "binary_sha256": "1753ef6c2d07380aa6b44d2a4e6c3aea0c9087e6813a32989d703658f1f3be47",
+      "input_manifest_sha256": "768214ce8fe90f47e0dc444b957d5461ea209839cbdf0bc82c3d0947f1cc4f2f",
+      "calibration_sha256": "3f17e331368581857a9c5ae3dd78dde033234d8f74e4b722205c2e7ba8504a20",
+      "first_stamp_ns": 15900000000,
+      "last_stamp_ns": 141500000000,
+      "camera_frames": 629,
+      "state_events": 755,
+      "estimated_yaw_span_deg": 348.8103067463106,
+      "max_mean_position_change_m": 8.770761894538737e-15
+    }
+  },
+  "source": {
+    "mission_status": "completed",
+    "mission_duration_s": 73.48,
+    "segment_stable": false,
+    "minimum_body_center_clearance_m": 1.2784799587836368,
+    "lifecycle": {
+      "exit_code": 0,
+      "forced_stop": false
+    },
+    "no_owned_processes": true
+  },
+  "camera_archive": {
+    "storage": "estimator-gray8",
+    "frames": 1321,
+    "saved_pixel_bytes": 634080000,
+    "source_pixel_bytes": 1902240000,
+    "camera_max_gap_s": 0.1,
+    "raw_imu_max_gap_s": 0.01,
+    "recording_errors": []
+  }
+}

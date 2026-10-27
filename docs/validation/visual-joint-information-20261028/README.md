@@ -107,3 +107,5 @@ retired optimizer IDs, missing observations and three fresh admission exposures.
 - [Input and native-source fingerprints](provenance.json)
 - [OpenVINS dynamic initialization options](https://docs.openvins.com/structov__init_1_1InertialInitializerOptions.html)
 - [Observability and motion excitation paper](https://ijcai.org/proceedings/2016/624)
+
+[Turning-survey follow-up](../visual-turning-information-20261028/README.md) keeps the metric budget unchanged and records the remaining map and live-delivery failures.

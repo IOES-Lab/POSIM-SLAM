@@ -1,0 +1,5 @@
+{
+  "pid": 24074,
+  "group": 24068,
+  "command": "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/posim332f629-sdk/libexec/gz/sim10/gz-sim-main /Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/visual-turning-survey-native-20261028-b/demo-runtime/343a7473a8954c4bbccf817b39cc99c4/world-waves-underwater-sonar.sdf -s -r --render-engine-server-api-backend metal -v 3"
+}

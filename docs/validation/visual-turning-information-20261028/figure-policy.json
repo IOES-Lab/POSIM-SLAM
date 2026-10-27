@@ -1,0 +1,68 @@
+{
+  "scope": "All three complete native archives and actual RGB with shared height colours.",
+  "methods": {
+    "legacy": {
+      "points_in_view": 2970,
+      "colormap": "turbo",
+      "colour_entries": [
+        32,
+        255
+      ],
+      "height_limits_m": [
+        -3.7371037688174797,
+        -2.3187018980899405
+      ],
+      "measured_height_bounds_m": [
+        -10.126553212634619,
+        -1.8606536736407826
+      ],
+      "range_policy": "explicit shared comparison height limits",
+      "colour_saturated_points": 208,
+      "coordinates_filtered": false
+    },
+    "joint_metric": {
+      "points_in_view": 1835,
+      "colormap": "turbo",
+      "colour_entries": [
+        32,
+        255
+      ],
+      "height_limits_m": [
+        -3.7371037688174797,
+        -2.3187018980899405
+      ],
+      "measured_height_bounds_m": [
+        -3.7388326277652335,
+        -1.860830818645055
+      ],
+      "range_policy": "explicit shared comparison height limits",
+      "colour_saturated_points": 47,
+      "coordinates_filtered": false
+    },
+    "culling_joint_metric": {
+      "points_in_view": 1814,
+      "colormap": "turbo",
+      "colour_entries": [
+        32,
+        255
+      ],
+      "height_limits_m": [
+        -3.7371037688174797,
+        -2.3187018980899405
+      ],
+      "measured_height_bounds_m": [
+        -3.7388326277652335,
+        -1.860830818645055
+      ],
+      "range_policy": "explicit shared comparison height limits",
+      "colour_saturated_points": 47,
+      "coordinates_filtered": false
+    }
+  },
+  "all_points_retained": true,
+  "shared_colour_limits": [
+    -3.7371037688174797,
+    -2.3187018980899405
+  ],
+  "marker_area_pt2": 64
+}

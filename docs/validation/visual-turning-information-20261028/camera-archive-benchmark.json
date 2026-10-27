@@ -1,0 +1,17 @@
+{
+  "source": {
+    "frames": 12,
+    "wall_s": 0.45759933299268596,
+    "npz_bytes": 10092913,
+    "saved_pixel_bytes": 17280000,
+    "source_pixel_bytes": 17280000
+  },
+  "estimator-gray8": {
+    "frames": 12,
+    "wall_s": 0.28095508401747793,
+    "npz_bytes": 3020053,
+    "saved_pixel_bytes": 5760000,
+    "source_pixel_bytes": 17280000
+  },
+  "worker_gray8_pixels_identical": true
+}
