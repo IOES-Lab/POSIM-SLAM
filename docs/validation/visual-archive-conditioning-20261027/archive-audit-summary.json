@@ -1,0 +1,97 @@
+{
+  "schema": "posim-visual-archive-audit-1",
+  "scope": "Audit a sparse archive against recorded pixels and fixed estimated poses.\n\nNo map is filtered or reconstructed. The information matrix conditions on the\nhistorical published poses and independent pixel noise. It is not the joint VIO\nposterior: pose, calibration and observation correlations remain unmodelled.",
+  "frame": "vehicle/vio_ae66b100cd24498ab156eb0e660b76ad_segment_1",
+  "stamp_ns": 141600000000,
+  "points": 3508,
+  "pixel_sigma_px": 0.5,
+  "pose_uncertainty_included": false,
+  "inputs_are_historical_published_poses": true,
+  "missing_pose_observations": 0,
+  "trace_frames_through_export": 634,
+  "map_filtered": false,
+  "map_qualified": false,
+  "source_sha256": {
+    "map": "22242aa5a70d7c913c555bd6a2fb91e23368c9e6893f6908c16e00cbb63877cf",
+    "archive": "f92dcdf3ce8e7c96aeba13ca26e228ad168d6ca7be651e2929de38f95a91da56",
+    "calibration": "3f17e331368581857a9c5ae3dd78dde033234d8f74e4b722205c2e7ba8504a20",
+    "trace": "c431a39d8a4dda9c55aaf1658373d12d28059c7dbd3844ea73a7fee0bf4f102c",
+    "poses": "b9845e902ad64b10e36243b195081efe6b9937b31f31d20fb1b5b85ce6b5122a"
+  },
+  "implementation_sha256": {
+    "audit_visual_archive.py": "756c0050318e6eace35b48fe0720c07cb484efb97590d1a7312b81c53b40ff15",
+    "evaluate_vio.py": "8f384a2edbc0026782017679d11c8da46b451f1377af4c5a14f3de1c10317b04",
+    "map_snapshot.py": "5a068ab875dc64ff3286e943659405227bab0a01fc3cfff60f8c22f3e0eda29c"
+  },
+  "full_private_report_sha256": "3efaea275ab65bb7a70a9e21500680df07f6c188e4f5bb644b4c77419079e51a",
+  "per_point_file": "archive-information.npz",
+  "array_nan_meaning": "Not finitely observable in this fixed-pose diagnostic",
+  "post_assessment_groups": {
+    "within_10cm": {
+      "points": 3377,
+      "baseline_m": {
+        "minimum": 0.012899092703457935,
+        "median": 1.1953867508280347,
+        "p95": 2.8562995641334634,
+        "maximum": 3.5948466997484165
+      },
+      "sigma_position_m": {
+        "minimum": 0.0017693287379776806,
+        "median": 0.013819828745738547,
+        "p95": 0.15473535873969788,
+        "maximum": 4.3734071675492014
+      },
+      "maximum_reprojection_px": {
+        "minimum": 0.02232123558967231,
+        "median": 0.31406328066868927,
+        "p95": 2.066593426379937,
+        "maximum": 4.356959732165465
+      },
+      "span_s": {
+        "minimum": 0.4,
+        "median": 3.2,
+        "p95": 45.11999999999989,
+        "maximum": 51.2
+      },
+      "exposures": {
+        "minimum": 3.0,
+        "median": 17.0,
+        "p95": 226.59999999999945,
+        "maximum": 257.0
+      }
+    },
+    "outside_10cm": {
+      "points": 131,
+      "baseline_m": {
+        "minimum": 0.019713951266896387,
+        "median": 0.16037885058568932,
+        "p95": 0.7352474763486546,
+        "maximum": 1.3382033256798227
+      },
+      "sigma_position_m": {
+        "minimum": 0.009959587710403868,
+        "median": 0.11185894693506263,
+        "p95": 1.0240922071865892,
+        "maximum": 3.99851867392955
+      },
+      "maximum_reprojection_px": {
+        "minimum": 0.11428966724946242,
+        "median": 0.9244346387259516,
+        "p95": 3.6275285916330393,
+        "maximum": 9.109766800626504
+      },
+      "span_s": {
+        "minimum": 0.4,
+        "median": 6.2,
+        "p95": 45.6,
+        "maximum": 47.0
+      },
+      "exposures": {
+        "minimum": 3.0,
+        "median": 32.0,
+        "p95": 228.5,
+        "maximum": 236.0
+      }
+    }
+  }
+}

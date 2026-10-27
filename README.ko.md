@@ -393,3 +393,7 @@ PYTHONPATH=src python tools/evaluate_stationary_initialization.py --output /tmp/
 기존 OpenCV 스테레오를 희소 지도·동일 시점 RGB와 비교합니다. 전체 지도 오차와
 장시간 네이티브 관측 실패를 보존하며, 빠른 오프라인 계산을 실시간 지도 합격으로
 인정하지 않습니다.
+
+[지도 관측 정보 진단](docs/diagnostics/multiview-inputs.md#archive-information-audit--지도-관측-정보-진단)은
+내보낸 모든 랜드마크의 자세 고정 픽셀 정보·촬영 기선·다른 시점의 재투영을 보고하며
+지도의 점을 제거하지 않습니다.

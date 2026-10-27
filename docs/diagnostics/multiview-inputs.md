@@ -90,3 +90,31 @@ live mapper or new research method.
 사실만으로 이전 관측을 유효하다고 보증하지 않습니다. 빠른 기존 스테레오 방식도
 누락 면·먼 이상점과 장시간 네이티브 관측 실패를 보존하며 실시간 지도 합격이나
 새 연구 방법으로 인정하지 않습니다.
+
+## Archive information audit / 지도 관측 정보 진단
+
+`tools/audit_visual_archive.py` reads a native archive-ID export, its exact PLY,
+the visual trace, camera/IMU calibration and a same-frame estimated-pose CSV.
+It checks export identity and coordinates, retains every map vertex, and reports
+camera baseline, reprojection residuals and SVD-based conditional position
+information. Repeated images from one camera position do not constrain depth.
+Pass `--pixel-sigma` explicitly. The pixel-noise assumption and fixed historical
+poses exclude joint pose/calibration covariance and correlated observations.
+This diagnostic does not qualify a metric sigma cutoff or change the mapper.
+
+도구는 네이티브 ID·PLY·시각 관측·보정·같은 좌표계의 추정 자세 CSV를 사용합니다.
+내보내기 식별자와 좌표를 확인하고 모든 점의 촬영 기선·재투영·SVD 기반 조건부
+위치 정보를 보고합니다. 같은 위치의 반복 영상으로는 깊이를 구속할 수 없습니다.
+`--pixel-sigma`를 명시해야 하며 결합 자세·보정 공분산과 관측 상관은 포함하지
+않습니다. 이 진단은 지도 저장 기준이나 알고리즘을 바꾸지 않습니다.
+
+The [three-lane native record and matched RGB](../validation/visual-archive-conditioning-20261027/README.md)
+retain 3,508 vertices and a 2.83 m maximum surface error. Median camera baseline
+is 0.160 m for points outside 10 cm, versus 1.195 m for points within 10 cm.
+The successful lighter-capture-load run does not resolve the earlier input-clock
+failure. The complete map remains unqualified.
+
+[세 줄 경로의 네이티브 점군과 같은 시점 RGB](../validation/visual-archive-conditioning-20261027/README.md)는
+3,508점과 최대 표면 오차 2.83m를 보존합니다. 10cm 초과 점의 촬영 기선 중앙값은
+0.160m, 10cm 이내 점은 1.195m입니다. 저장 부하가 작은 재실행의 성공만으로 이전
+입력 시간 오류의 해결을 입증하지 않으며 지도는 아직 불합격입니다.

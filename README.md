@@ -445,3 +445,7 @@ the output graph; display point limits do not select reconstruction images.
 compares conventional OpenCV stereo with recorded sparse landmarks and matching
 field RGB. It retains complete-map errors and a failed long native observation;
 fast offline calculation does not qualify runtime mapping.
+
+[Archive information audit](docs/diagnostics/multiview-inputs.md#archive-information-audit--지도-관측-정보-진단)
+reports fixed-pose pixel information, camera baseline and cross-view reprojection
+for every exported landmark without filtering its map.

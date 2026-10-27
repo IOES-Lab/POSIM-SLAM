@@ -1,0 +1,73 @@
+{
+  "scope": "Instrumented development native run, not installed-app or map qualification",
+  "passed_transport_motion_recovery": true,
+  "map_qualified": false,
+  "sensors_fused": [
+    "camera",
+    "raw_imu",
+    "dvl"
+  ],
+  "physical_ping_sonar_not_fused": true,
+  "recorded_raw_camera_archive": false,
+  "instrumentation": "512 packet headers and 64 camera callback headers, no pixels or IMU values copied",
+  "source_runtime_owner_changed_only_for_clock_diagnostics": true,
+  "first_worker_exit": "Deliberately killed by the recovery observer; not an unexpected fault",
+  "unexpected_segment_resets_after_recovery": 0,
+  "observation_sim_seconds": 120,
+  "mission_status": "completed",
+  "mission_duration_s": 74.56,
+  "mission_width_m": 4,
+  "mission_length_m": 7,
+  "mission_lanes": 3,
+  "survey_depth_m": 0.6,
+  "initialization_depth_m": 1.2,
+  "minimum_swept_center_clearance_m": 1.3072424718662885,
+  "trajectory": {
+    "evaluated": true,
+    "states": 600,
+    "duration_s": 119.80000000000001,
+    "evaluation_alignment": {
+      "rotation": [
+        [
+          -0.8595714254197397,
+          -0.5110156207024174,
+          0.0
+        ],
+        [
+          0.5110156207024174,
+          -0.8595714254197397,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "translation": [
+        -0.05133229496058824,
+        -0.01598467414116079,
+        -0.18180909098102843
+      ],
+      "scale": 1.0
+    },
+    "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+    "position_rmse_m": 0.015000989860088312,
+    "position_max_m": 0.02327872519206503,
+    "rotation_rmse_rad": 0.003796736069889858,
+    "rotation_max_rad": 0.011072774769767747,
+    "truth_distance_m": 38.172909101729864,
+    "estimated_distance_m": 38.25889038271346,
+    "rpe_1s_pairs": 595,
+    "rpe_1s_position_rmse_m": 0.0026118545263553805,
+    "rpe_1s_rotation_rmse_rad": 0.0014843475778144185,
+    "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+  },
+  "full_points": 3508,
+  "points_in_view": 2896,
+  "worker_sha256": "5f9e9066df0c5417da545296b5c878f09c3ac1e1510f73c1d4c039451281cf91",
+  "provider_sha256": "d25bc97ff5c11c4265b6a1c5c130b18dbc9aa9abb0dec19c5675e297fe20c7f8",
+  "prior_failed_record_preserved": ".local/visual-three-lane-native-20261027-a",
+  "clock_failure_fixed": false,
+  "scope_limit": "Capture load differs from the failed record; this success does not identify or fix its input-clock failure. Historical published poses are fixed, not the joint posterior."
+}

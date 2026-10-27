@@ -1,0 +1,14 @@
+{
+  "source_sha256": {
+    "native_probe": "8a9e494242506a19aa99e7c84c5628c470f445b52e4e39a8b280941cfe7b06d7",
+    "calibration": "3f17e331368581857a9c5ae3dd78dde033234d8f74e4b722205c2e7ba8504a20",
+    "visual_trace": "c431a39d8a4dda9c55aaf1658373d12d28059c7dbd3844ea73a7fee0bf4f102c",
+    "archive_export": "f92dcdf3ce8e7c96aeba13ca26e228ad168d6ca7be651e2929de38f95a91da56",
+    "full_audit": "3efaea275ab65bb7a70a9e21500680df07f6c188e4f5bb644b4c77419079e51a",
+    "instrumented_owner": "e6846ec362aef65bdc98b33be144d408ec7f445f7ae08e374991c5973f08a3e1",
+    "clock_probe": "80bde702fd2c31c8c2bf7d1dd3f4465bbf68b40cf6fb24f9037d3cb2ad4a0cb0",
+    "ros_gate": "196507a5a0a5a8551beeceb07bdad6a1c0f29942214cdc33cc51f9de75e7e4d8"
+  },
+  "large_inputs_retained_external": true,
+  "private_capture_directory": "visual-clock-diagnostic-native-20261027-b"
+}

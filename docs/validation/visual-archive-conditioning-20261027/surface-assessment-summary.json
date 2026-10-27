@@ -1,0 +1,62 @@
+{
+  "point_kind": "visual",
+  "scope": "Post-estimation point-to-triangle distances to physical collision boxes and static seabed; not physical track identity or area coverage",
+  "points": 3508,
+  "surface_distance_m": {
+    "minimum": 3.2894225080132744e-06,
+    "median": 0.013589171347463364,
+    "p90": 0.02937544266834865,
+    "maximum": 2.8270300492897578,
+    "p95": 0.0674144723705252,
+    "p99": 0.35888365401489797
+  },
+  "diagnostic_thresholds_m": {
+    "0.05": {
+      "points_within": 3294,
+      "points_outside": 214,
+      "nearest_surface_counts": {
+        "acoustic_validation_target_0": 78,
+        "acoustic_validation_target_1": 87,
+        "acoustic_validation_target_2": 79,
+        "acoustic_validation_wall_0": 42,
+        "acoustic_validation_wall_1": 47,
+        "seabed": 2961
+      }
+    },
+    "0.1": {
+      "points_within": 3377,
+      "points_outside": 131,
+      "nearest_surface_counts": {
+        "acoustic_validation_target_0": 78,
+        "acoustic_validation_target_1": 88,
+        "acoustic_validation_target_2": 79,
+        "acoustic_validation_wall_0": 42,
+        "acoustic_validation_wall_1": 48,
+        "seabed": 3042
+      }
+    },
+    "0.2": {
+      "points_within": 3445,
+      "points_outside": 63,
+      "nearest_surface_counts": {
+        "acoustic_validation_target_0": 79,
+        "acoustic_validation_target_1": 88,
+        "acoustic_validation_target_2": 81,
+        "acoustic_validation_wall_0": 44,
+        "acoustic_validation_wall_1": 48,
+        "seabed": 3105
+      }
+    }
+  },
+  "map_qualified": false,
+  "alignment": "initial yaw and translation only; scale 1; simulator geometry used only for evaluation",
+  "source_sha256": {
+    "physical-targets.sdf": "d4795f6c127d739cc1fa4e75eb0329ed55ac3f67d4e593555ae033e06e0bebf6",
+    "demo-runtime/ae66b100cd24498ab156eb0e660b76ad/world-waves-underwater-sonar.sdf": "a56d4f257e5ee242269e29794d9ba7f4f3e398b42b91db1fe770771385bbd488",
+    "demo-runtime/ae66b100cd24498ab156eb0e660b76ad/orca5-seafloor.dae": "277c49dd9c3b2ec1c9d3c3754be9d076c7b0438ccd29e9ae11355869849fbeb2",
+    "comparison.json": "463fef043d83271f5c0c4169cc8f8758bef9cfc1a58e49710d8c75489c9b06c3",
+    "live-vio-probe.json": "8a9e494242506a19aa99e7c84c5628c470f445b52e4e39a8b280941cfe7b06d7",
+    "vio-local-map.ply": "22242aa5a70d7c913c555bd6a2fb91e23368c9e6893f6908c16e00cbb63877cf"
+  },
+  "per_point_file": "independent-surface-errors.npz"
+}

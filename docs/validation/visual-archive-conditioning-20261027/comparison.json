@@ -1,0 +1,119 @@
+{
+  "method": "camera_imu_dvl_managed",
+  "library": "Basalt",
+  "revision": "0f3b2b52c807f70ff4e2973ce253c73329eea7bc",
+  "snapshot": {
+    "scope": "accumulated_local_vio_landmarks",
+    "points": 3508,
+    "stamp_ns": 141600000000,
+    "request_id": 1
+  },
+  "frame": "vehicle/vio_ae66b100cd24498ab156eb0e660b76ad_segment_1",
+  "total_points": 3508,
+  "points_in_view": 2896,
+  "colormap": "turbo",
+  "colour_entries": [
+    32,
+    255
+  ],
+  "height_limits_m": [
+    -3.756243280777476,
+    -2.323193067917369
+  ],
+  "measured_height_bounds_m": [
+    -4.861618661293528,
+    -0.8312280410619
+  ],
+  "range_policy": "P2/P98 over every exported point; constant-range fallback to measured bounds",
+  "colour_saturated_points": 142,
+  "coordinates_filtered": false,
+  "draw_order": "camera depth descending; far to near",
+  "marker_area_pt2": 64,
+  "camera": {
+    "eye": [
+      0.0,
+      -4.0,
+      -0.15
+    ],
+    "camera_to_world": [
+      [
+        0.5773502691896258,
+        -0.7071067811865475,
+        0.408248290463863
+      ],
+      [
+        0.5773502691896257,
+        0.7071067811865476,
+        0.40824829046386296
+      ],
+      [
+        -0.5773502691896257,
+        0,
+        0.816496580927726
+      ]
+    ],
+    "horizontal_fov": 1.35,
+    "width": 1000,
+    "height": 800,
+    "stamp_ns": 144200000000,
+    "projection": "perspective",
+    "viewpoint": "isometric direction; positive X forward, Y left, Z up",
+    "partition": "inertial-init-64a5bbc3d70346eb8fa3a1d5c8f74aef",
+    "topic": "/validation/slam/isometric_rgb"
+  },
+  "metrics": {
+    "evaluated": true,
+    "states": 600,
+    "duration_s": 119.80000000000001,
+    "evaluation_alignment": {
+      "rotation": [
+        [
+          -0.8595714254197397,
+          -0.5110156207024174,
+          0.0
+        ],
+        [
+          0.5110156207024174,
+          -0.8595714254197397,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "translation": [
+        -0.05133229496058824,
+        -0.01598467414116079,
+        -0.18180909098102843
+      ],
+      "scale": 1.0
+    },
+    "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+    "position_rmse_m": 0.015000989860088312,
+    "position_max_m": 0.02327872519206503,
+    "rotation_rmse_rad": 0.003796736069889858,
+    "rotation_max_rad": 0.011072774769767747,
+    "truth_distance_m": 38.172909101729864,
+    "estimated_distance_m": 38.25889038271346,
+    "rpe_1s_pairs": 595,
+    "rpe_1s_position_rmse_m": 0.0026118545263553805,
+    "rpe_1s_rotation_rmse_rad": 0.0014843475778144185,
+    "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+  },
+  "input_sha256": {
+    "isometric-rgb.png": "1aff76b94bceb4dea6fea94fa212b193566287e440d361b99b409329295b5ba4",
+    "isometric-camera.json": "348f6e77e70a126bfc4c7f403accda13d14de03e87feaad36e4e78dbfc8d955e",
+    "physical-targets.sdf": "d4795f6c127d739cc1fa4e75eb0329ed55ac3f67d4e593555ae033e06e0bebf6",
+    "measured_ply": "22242aa5a70d7c913c555bd6a2fb91e23368c9e6893f6908c16e00cbb63877cf"
+  },
+  "map_geometry_qualified": false,
+  "replay_provenance": {
+    "managed_probe_sha256": "8a9e494242506a19aa99e7c84c5628c470f445b52e4e39a8b280941cfe7b06d7",
+    "worker_sha256": "5f9e9066df0c5417da545296b5c878f09c3ac1e1510f73c1d4c039451281cf91",
+    "managed_probe_passed": true,
+    "live_gazebo": true
+  },
+  "scope": "Same-recording static scene comparison; actual RGB reference captured after mission; visual landmarks"
+}
