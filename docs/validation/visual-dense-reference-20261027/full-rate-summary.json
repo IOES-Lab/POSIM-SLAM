@@ -1,0 +1,77 @@
+{
+  "points": 5023301,
+  "surface_distance_m": {
+    "minimum": 1.4216732066411601e-08,
+    "median": 0.015887962210992042,
+    "p90": 0.04002346493614972,
+    "p95": 0.0477168450740905,
+    "maximum": 29.747750044839353
+  },
+  "within_10cm": 5019716,
+  "nearest_surface_counts_within_10cm": {
+    "acoustic_validation_target_0": 199850,
+    "acoustic_validation_target_1": 178105,
+    "acoustic_validation_target_2": 136998,
+    "acoustic_validation_wall_0": 78942,
+    "acoustic_validation_wall_1": 434,
+    "seabed": 4425387
+  },
+  "scope": "All 490 pose-matched recorded images at 5 Hz; offline fixed-estimated-pose CPU reference",
+  "map_qualified": false,
+  "all_points_retained_and_scored": true,
+  "raw_depth_frames": 490,
+  "fusion_reference_views": 490,
+  "elapsed_seconds": 2415.3734847500164,
+  "maximum_rss_mib": 1823.125,
+  "processing_seconds_per_raw_frame": {
+    "median": 4.824455666501308,
+    "maximum": 5.870368916977895
+  },
+  "input_interval_s": [
+    14.9,
+    112.7
+  ],
+  "field_sha256": "4abf90d5b22b2ad3b0758c45987fc9b5469abab70617be74e74a7292f861c59d",
+  "map_ply_sha256": "309a580016abeecfd74fc9fad5d701012f68f3211d2533dcdd3c00276429638e",
+  "map_ply_bytes": 60279907,
+  "kernel_revision": "65571c8ae9ac6a1d0bcd3fdc1ea5fff97b1b5611",
+  "kernel_unmodified": true,
+  "full_upstream_pipeline_or_defaults_not_claimed": true,
+  "settings": {
+    "upstream_revision": "65571c8ae9ac6a1d0bcd3fdc1ea5fff97b1b5611",
+    "upstream_kernel_unmodified": true,
+    "depthmap_method": "PATCH_MATCH_SAMPLE",
+    "depthmap_resolution": 400,
+    "depthmap_min_depth": 0.1,
+    "depthmap_max_depth": 100.0,
+    "depthmap_patchmatch_iterations": 3,
+    "depthmap_patch_size": 7,
+    "depthmap_min_patch_sd": 1.0,
+    "depthmap_min_correlation_score": 0.8,
+    "depthmap_same_depth_threshold": 0.01,
+    "depthmap_min_consistent_views": 3,
+    "source_pose_stride": 1,
+    "neighbor_selection": "observed common VIO tracks; more than 20 shared points at 3 to 30 degrees parallax; maximum 7 matching views",
+    "covisibility_graph_sha256": "80ae01c1e261e322f29651649356f8deafc100ed628b909ac75e260d783930b9",
+    "fusion_view_selection": "Every recorded VIO-pose-matched image; no fixed spatial keyframe cap",
+    "all_field_points_scored_after_sealing": true,
+    "scene_or_truth_input": false,
+    "estimated_pose_input": true,
+    "offline_future_views": true,
+    "map_qualified": false
+  },
+  "top_face_coverage_5cm": {
+    "acoustic_validation_target_0": 1.0,
+    "acoustic_validation_target_1": 1.0,
+    "acoustic_validation_target_2": 1.0,
+    "acoustic_validation_wall_0": 0.0,
+    "acoustic_validation_wall_1": 0.0
+  },
+  "complete_raw_fields_retained_locally": true,
+  "raw_ply_in_git": false,
+  "sealed_source_reports_sha256": {
+    "report.json": "b68e9880b86281ca69eaf949e6a795d3d9b8c897a7e235843452a02c563c7e7f",
+    "surface-evaluation.json": "cfd2524ef5bc358d125bcddfac42e8f498241bd4049e8196de562452413ba3b8",
+    "surface-coverage.json": "03cef12e2e1b64c7e659d3071c5af247a4b3cde19aa3338776159ffd4c4ae6c6"
+  }
+}

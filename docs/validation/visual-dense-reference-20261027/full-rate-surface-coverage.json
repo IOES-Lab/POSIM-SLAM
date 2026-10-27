@@ -1,0 +1,519 @@
+{
+  "scope": "Post-estimation model-face coverage, independent of output point density.",
+  "sample_spacing_m": 0.05,
+  "thresholds_m": [
+    0.05,
+    0.1
+  ],
+  "all_model_faces_sampled": true,
+  "occluded_and_buried_faces_included": true,
+  "visible_face_coverage_not_inferred": true,
+  "field_sha256": "4abf90d5b22b2ad3b0758c45987fc9b5469abab70617be74e74a7292f861c59d",
+  "models": [
+    {
+      "name": "acoustic_validation_target_0",
+      "faces": [
+        {
+          "axis": "x",
+          "sign": -1,
+          "samples": 504,
+          "area_m2": 1.26,
+          "fraction_of_model_face_near_cloud": {
+            "native": {
+              "0.05": 0.05357142857142857,
+              "0.1": 0.30158730158730157
+            },
+            "reference": {
+              "0.05": 1.0,
+              "0.1": 1.0
+            }
+          }
+        },
+        {
+          "axis": "x",
+          "sign": 1,
+          "samples": 504,
+          "area_m2": 1.26,
+          "fraction_of_model_face_near_cloud": {
+            "native": {
+              "0.05": 0.0,
+              "0.1": 0.013888888888888888
+            },
+            "reference": {
+              "0.05": 1.0,
+              "0.1": 1.0
+            }
+          }
+        },
+        {
+          "axis": "y",
+          "sign": -1,
+          "samples": 336,
+          "area_m2": 0.84,
+          "fraction_of_model_face_near_cloud": {
+            "native": {
+              "0.05": 0.0,
+              "0.1": 0.044642857142857144
+            },
+            "reference": {
+              "0.05": 0.21428571428571427,
+              "0.1": 0.4494047619047619
+            }
+          }
+        },
+        {
+          "axis": "y",
+          "sign": 1,
+          "samples": 336,
+          "area_m2": 0.84,
+          "fraction_of_model_face_near_cloud": {
+            "native": {
+              "0.05": 0.02976190476190476,
+              "0.1": 0.14285714285714285
+            },
+            "reference": {
+              "0.05": 0.7261904761904762,
+              "0.1": 0.8452380952380952
+            }
+          }
+        },
+        {
+          "axis": "z",
+          "sign": -1,
+          "samples": 216,
+          "area_m2": 0.54,
+          "fraction_of_model_face_near_cloud": {
+            "native": {
+              "0.05": 0.0,
+              "0.1": 0.027777777777777776
+            },
+            "reference": {
+              "0.05": 0.25,
+              "0.1": 0.4583333333333333
+            }
+          }
+        },
+        {
+          "axis": "z",
+          "sign": 1,
+          "samples": 216,
+          "area_m2": 0.54,
+          "fraction_of_model_face_near_cloud": {
+            "native": {
+              "0.05": 0.5925925925925926,
+              "0.1": 0.9305555555555556
+            },
+            "reference": {
+              "0.05": 1.0,
+              "0.1": 1.0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "acoustic_validation_target_1",
+      "faces": [
+        {
+          "axis": "x",
+          "sign": -1,
+          "samples": 432,
+          "area_m2": 1.08,
+          "fraction_of_model_face_near_cloud": {
+            "native": {
+              "0.05": 0.009259259259259259,
+              "0.1": 0.041666666666666664
+            },
+            "reference": {
+              "0.05": 1.0,
+              "0.1": 1.0
+            }
+          }
+        },
+        {
+          "axis": "x",
+          "sign": 1,
+          "samples": 432,
+          "area_m2": 1.08,
+          "fraction_of_model_face_near_cloud": {
+            "native": {
+              "0.05": 0.023148148148148147,
+              "0.1": 0.10416666666666667
+            },
+            "reference": {
+              "0.05": 0.9212962962962963,
+              "0.1": 0.9861111111111112
+            }
+          }
+        },
+        {
+          "axis": "y",
+          "sign": -1,
+          "samples": 792,
+          "area_m2": 1.9800000000000002,
+          "fraction_of_model_face_near_cloud": {
+            "native": {
+              "0.05": 0.010101010101010102,
+              "0.1": 0.04292929292929293
+            },
+            "reference": {
+              "0.05": 0.3484848484848485,
+              "0.1": 0.4734848484848485
+            }
+          }
+        },
+        {
+          "axis": "y",
+          "sign": 1,
+          "samples": 792,
+          "area_m2": 1.9800000000000002,
+          "fraction_of_model_face_near_cloud": {
+            "native": {
+              "0.05": 0.0,
+              "0.1": 0.013888888888888888
+            },
+            "reference": {
+              "0.05": 0.1553030303030303,
+              "0.1": 0.2828282828282828
+            }
+          }
+        },
+        {
+          "axis": "z",
+          "sign": -1,
+          "samples": 264,
+          "area_m2": 0.66,
+          "fraction_of_model_face_near_cloud": {
+            "native": {
+              "0.05": 0.007575757575757576,
+              "0.1": 0.03787878787878788
+            },
+            "reference": {
+              "0.05": 0.20075757575757575,
+              "0.1": 0.375
+            }
+          }
+        },
+        {
+          "axis": "z",
+          "sign": 1,
+          "samples": 264,
+          "area_m2": 0.66,
+          "fraction_of_model_face_near_cloud": {
+            "native": {
+              "0.05": 0.015151515151515152,
+              "0.1": 0.06818181818181818
+            },
+            "reference": {
+              "0.05": 1.0,
+              "0.1": 1.0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "acoustic_validation_target_2",
+      "faces": [
+        {
+          "axis": "x",
+          "sign": -1,
+          "samples": 624,
+          "area_m2": 1.56,
+          "fraction_of_model_face_near_cloud": {
+            "native": {
+              "0.05": 0.04807692307692308,
+              "0.1": 0.1971153846153846
+            },
+            "reference": {
+              "0.05": 1.0,
+              "0.1": 1.0
+            }
+          }
+        },
+        {
+          "axis": "x",
+          "sign": 1,
+          "samples": 624,
+          "area_m2": 1.56,
+          "fraction_of_model_face_near_cloud": {
+            "native": {
+              "0.05": 0.016025641025641024,
+              "0.1": 0.09294871794871795
+            },
+            "reference": {
+              "0.05": 0.1330128205128205,
+              "0.1": 0.25961538461538464
+            }
+          }
+        },
+        {
+          "axis": "y",
+          "sign": -1,
+          "samples": 260,
+          "area_m2": 0.65,
+          "fraction_of_model_face_near_cloud": {
+            "native": {
+              "0.05": 0.011538461538461539,
+              "0.1": 0.08076923076923077
+            },
+            "reference": {
+              "0.05": 0.9115384615384615,
+              "0.1": 0.9923076923076923
+            }
+          }
+        },
+        {
+          "axis": "y",
+          "sign": 1,
+          "samples": 260,
+          "area_m2": 0.65,
+          "fraction_of_model_face_near_cloud": {
+            "native": {
+              "0.05": 0.22692307692307692,
+              "0.1": 0.5576923076923077
+            },
+            "reference": {
+              "0.05": 1.0,
+              "0.1": 1.0
+            }
+          }
+        },
+        {
+          "axis": "z",
+          "sign": -1,
+          "samples": 240,
+          "area_m2": 0.6,
+          "fraction_of_model_face_near_cloud": {
+            "native": {
+              "0.05": 0.0,
+              "0.1": 0.075
+            },
+            "reference": {
+              "0.05": 0.1625,
+              "0.1": 0.3541666666666667
+            }
+          }
+        },
+        {
+          "axis": "z",
+          "sign": 1,
+          "samples": 240,
+          "area_m2": 0.6,
+          "fraction_of_model_face_near_cloud": {
+            "native": {
+              "0.05": 0.5791666666666667,
+              "0.1": 0.9666666666666667
+            },
+            "reference": {
+              "0.05": 1.0,
+              "0.1": 1.0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "acoustic_validation_wall_0",
+      "faces": [
+        {
+          "axis": "x",
+          "sign": -1,
+          "samples": 3840,
+          "area_m2": 9.600000000000001,
+          "fraction_of_model_face_near_cloud": {
+            "native": {
+              "0.05": 0.010416666666666666,
+              "0.1": 0.057291666666666664
+            },
+            "reference": {
+              "0.05": 0.45729166666666665,
+              "0.1": 0.5052083333333334
+            }
+          }
+        },
+        {
+          "axis": "x",
+          "sign": 1,
+          "samples": 3840,
+          "area_m2": 9.600000000000001,
+          "fraction_of_model_face_near_cloud": {
+            "native": {
+              "0.05": 0.0,
+              "0.1": 0.0
+            },
+            "reference": {
+              "0.05": 0.0,
+              "0.1": 0.0
+            }
+          }
+        },
+        {
+          "axis": "y",
+          "sign": -1,
+          "samples": 160,
+          "area_m2": 0.4,
+          "fraction_of_model_face_near_cloud": {
+            "native": {
+              "0.05": 0.0,
+              "0.1": 0.0
+            },
+            "reference": {
+              "0.05": 0.08125,
+              "0.1": 0.175
+            }
+          }
+        },
+        {
+          "axis": "y",
+          "sign": 1,
+          "samples": 160,
+          "area_m2": 0.4,
+          "fraction_of_model_face_near_cloud": {
+            "native": {
+              "0.05": 0.0,
+              "0.1": 0.0
+            },
+            "reference": {
+              "0.05": 0.0,
+              "0.1": 0.0
+            }
+          }
+        },
+        {
+          "axis": "z",
+          "sign": -1,
+          "samples": 600,
+          "area_m2": 1.5,
+          "fraction_of_model_face_near_cloud": {
+            "native": {
+              "0.05": 0.0,
+              "0.1": 0.013333333333333334
+            },
+            "reference": {
+              "0.05": 0.18666666666666668,
+              "0.1": 0.395
+            }
+          }
+        },
+        {
+          "axis": "z",
+          "sign": 1,
+          "samples": 600,
+          "area_m2": 1.5,
+          "fraction_of_model_face_near_cloud": {
+            "native": {
+              "0.05": 0.0,
+              "0.1": 0.0
+            },
+            "reference": {
+              "0.05": 0.0,
+              "0.1": 0.0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "acoustic_validation_wall_1",
+      "faces": [
+        {
+          "axis": "x",
+          "sign": -1,
+          "samples": 160,
+          "area_m2": 0.4,
+          "fraction_of_model_face_near_cloud": {
+            "native": {
+              "0.05": 0.0,
+              "0.1": 0.0
+            },
+            "reference": {
+              "0.05": 0.0125,
+              "0.1": 0.0625
+            }
+          }
+        },
+        {
+          "axis": "x",
+          "sign": 1,
+          "samples": 160,
+          "area_m2": 0.4,
+          "fraction_of_model_face_near_cloud": {
+            "native": {
+              "0.05": 0.0,
+              "0.1": 0.0
+            },
+            "reference": {
+              "0.05": 0.0,
+              "0.1": 0.00625
+            }
+          }
+        },
+        {
+          "axis": "y",
+          "sign": -1,
+          "samples": 1728,
+          "area_m2": 4.32,
+          "fraction_of_model_face_near_cloud": {
+            "native": {
+              "0.05": 0.0,
+              "0.1": 0.0
+            },
+            "reference": {
+              "0.05": 0.020833333333333332,
+              "0.1": 0.06770833333333333
+            }
+          }
+        },
+        {
+          "axis": "y",
+          "sign": 1,
+          "samples": 1728,
+          "area_m2": 4.32,
+          "fraction_of_model_face_near_cloud": {
+            "native": {
+              "0.05": 0.0,
+              "0.1": 0.0
+            },
+            "reference": {
+              "0.05": 0.0,
+              "0.1": 0.0005787037037037037
+            }
+          }
+        },
+        {
+          "axis": "z",
+          "sign": -1,
+          "samples": 270,
+          "area_m2": 0.675,
+          "fraction_of_model_face_near_cloud": {
+            "native": {
+              "0.05": 0.0,
+              "0.1": 0.0
+            },
+            "reference": {
+              "0.05": 0.07777777777777778,
+              "0.1": 0.3148148148148148
+            }
+          }
+        },
+        {
+          "axis": "z",
+          "sign": 1,
+          "samples": 270,
+          "area_m2": 0.675,
+          "fraction_of_model_face_near_cloud": {
+            "native": {
+              "0.05": 0.0,
+              "0.1": 0.0
+            },
+            "reference": {
+              "0.05": 0.0,
+              "0.1": 0.0
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

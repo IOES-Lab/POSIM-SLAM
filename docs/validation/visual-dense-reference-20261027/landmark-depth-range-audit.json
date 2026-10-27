@@ -1,0 +1,33 @@
+{
+  "scope": "Evaluate the pinned upstream depth-range function on recorded estimated landmarks.",
+  "upstream_revision": "65571c8ae9ac6a1d0bcd3fdc1ea5fff97b1b5611",
+  "function": "compute_depth_range",
+  "exact_upstream_function_executed_via_ast": true,
+  "rule": "P10 of camera-space landmark z times 0.9; P90 times 1.1; no configured override",
+  "estimated_landmarks_only": true,
+  "point_source": "Last full-weight native VIO point for each track ID, matching the frozen view graph",
+  "simulator_geometry_or_truth_used": false,
+  "frames": 490,
+  "minimum_bound_m": {
+    "minimum": 1.0052078564589364,
+    "maximum": 3.2248041259264704
+  },
+  "maximum_bound_m": {
+    "minimum": 2.6986646550439235,
+    "maximum": 4.198236131645413
+  },
+  "raw_accepted_pixels": 43915798,
+  "raw_accepted_pixels_outside_landmark_range": 5127032,
+  "depths_not_filtered_or_reestimated": true,
+  "map_qualification_not_inferred": true,
+  "analytic_control_passed": true,
+  "source_sha256": {
+    ".local/audit_opensfm_depth_range_20261027.py": "2b6cf983c0880b9157f63c4c99276af0ceb659de3c68777e58e64e7d7e737584",
+    ".local/opensfm-depth-reference-65571c8/opensfm/dense.py": "87299c29b51c04143871c54747f115200e1a97e6d95ae2a484b2866020793e2d",
+    ".local/visual-textured-overflight-native-20261027-a/slam/b789c222866f42b8a6e8907df2172b91/vio/segment-1-calibration.visual-tracks.jsonl": "7f9229d203dabb5aa1e42418490e8d1ec033f7213ba08bd823b8700fab4d6c19",
+    ".local/visual-textured-overflight-native-20261027-a/slam/b789c222866f42b8a6e8907df2172b91/vio/segment-1-calibration.json": "3f17e331368581857a9c5ae3dd78dde033234d8f74e4b722205c2e7ba8504a20",
+    ".local/visual-textured-overflight-native-20261027-a/live-vio-probe.json": "4eff6c940da64b08168335eb7e17464cfbd396cfebb1b60a215f20f11617f2ac",
+    ".local/visual-textured-overflight-native-20261027-a/multimodal-inputs/timeline.json": "bc2059fd76aced0f8793f952020867ddcea17ec16482a29388b8e9641c339b36"
+  },
+  "ranges_sha256": "da4bfccb069e6c7ee009d9c32b848141092411acbb7f83acfbcc8bbbfaa9c4e9"
+}

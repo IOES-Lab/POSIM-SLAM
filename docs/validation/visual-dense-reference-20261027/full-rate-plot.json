@@ -1,0 +1,34 @@
+{
+  "scope": "Present every in-frustum point back-to-front; colour saturation never edits data.",
+  "field_sha256": "4abf90d5b22b2ad3b0758c45987fc9b5469abab70617be74e74a7292f861c59d",
+  "point_count": 5023301,
+  "all_points_scored": true,
+  "points_in_view": [
+    1939,
+    4559986
+  ],
+  "point_area_pt2": 64,
+  "projection": "same recorded perspective camera for both clouds and field RGB",
+  "draw_order": "descending positive camera-forward depth; stable far-to-near order",
+  "color_source": "web/components/data/turbo.json, indices 32 through 255, matching PointCloudView",
+  "shared_color_range_source": "P2 and P98 of all dense-map world heights",
+  "color_range_m": [
+    -3.70601885638343,
+    -1.875235966063606
+  ],
+  "full_dense_height_range_m": [
+    -33.239618948317634,
+    -1.8328004392157666
+  ],
+  "colors_only_saturate": true,
+  "raw_points_not_removed": true,
+  "source_sha256": {
+    ".local/plot_full_rate_reference_ordered_20261027.py": "a0c890534c96c6a45f87d10d018e6fd2276fe4c67aab0609f8ae501014d0cf96",
+    ".local/visual-opensfm-full-rate-reference-20261027/field.npz": "4abf90d5b22b2ad3b0758c45987fc9b5469abab70617be74e74a7292f861c59d",
+    ".local/visual-opensfm-full-rate-reference-20261027/evaluated-points.npz": "9f3a140cc03392cb72df00eddb175a3d54ad00d9196b3578a2b92d0294572084",
+    ".local/visual-textured-overflight-native-20261027-a/isometric-camera.json": "3acfd3bfceb3ef4d7312293c084e13e69a23c9f6dc983118532d350d43c2e925",
+    ".local/visual-textured-overflight-native-20261027-a/isometric-rgb.png": "f09fc87e1c85e8f5f93ed50ff28b7e8754381dcfdacca698954df58b063a202a",
+    "web/components/data/turbo.json": "dff08f4074a6e15fbf194ef88e9b06fa8ebd1d3daae5cb2ca61c0791c97a5236"
+  },
+  "figure_sha256": "989d63f707a415e67d98f94abe2edb3e3dcf24efab5df38daedefaeee20adff7"
+}

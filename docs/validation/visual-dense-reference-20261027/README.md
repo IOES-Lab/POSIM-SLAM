@@ -171,3 +171,105 @@ POSIM-SLAM의 독립 `image_neighbors` 함수는 기존 공통 특징·시차 �
 모든 입력 영상 ID를 보존합니다. 기하 제어 검사·격리 wheel 가져오기·고정된 실제
 490영상 그래프와의 정확한 일치를 확인했습니다. 깊이 복원의 합격을 뜻하거나
 실시간 앱 추정기를 변경하는 결과는 아닙니다.
+
+## Full recorded image rate / 기록 영상 전체 주기
+
+![All 490 images: point clouds and matching field RGB](full-rate-comparison.png)
+
+This offline reference uses all 490 pose-matched RGB images from 14.9–112.7 s
+at 5 Hz. Recorded RGB / IMU / DVL provide fixed estimated VIO poses. The same
+observed-track rule selects up to seven matching views; all computed reference
+views enter pruning and fusion. The unmodified pinned depth kernel and explicit
+0.1–100 m search range remain fixed. This is not the complete upstream OpenSfM
+pipeline or its default configuration.
+
+이 오프라인 기준실험은 14.9–112.7초의 5 Hz RGB 영상 490개를 모두 사용합니다.
+기록된 RGB·IMU·DVL로 추정한 VIO 자세를 고정합니다. 기존 공통 특징 규칙으로
+대응 뷰를 최대 7개 선택하고, 모든 기준 뷰를 중복 제거·합성에 사용합니다.
+고정 리비전의 깊이 커널과 명시적인 0.1–100 m 탐색 범위는 유지합니다.
+전체 OpenSfM 처리 흐름이나 기본 설정을 그대로 실행한 결과는 아닙니다.
+
+- **5,023,301 points** retained and scored, with 5,019,716 within 10 cm of a
+  physical surface. Median error is 1.59 cm, p90 4.00 cm, p95 4.77 cm and
+  **maximum 29.75 m**.
+- Target 0 / 1 / 2 top-face coverage within 5 cm is **100% / 100% / 100%** on
+  the same 5 cm face grid. The second wall remains almost absent: its main inner
+  face coverage is 2.08% within 5 cm.
+- Processing takes **2,415.4 s**, with **1,823.1 MiB** maximum RSS. Median raw
+  depth time is 4.82 s per image. This offline run is not a real-time app mode.
+
+전체 **5,023,301점**을 보존·평가했으며 5,019,716점이 실제 표면의 10 cm
+이내입니다. 중앙값은 1.59 cm, 90분위는 4.00 cm, 95분위는 4.77 cm이고
+**최대 오차는 29.75 m**입니다. 동일한 5 cm 면 격자에서 세 물체 상부의
+5 cm 이내 복원 비율은 모두 **100%**입니다. 두 번째 벽의 주요 안쪽 면은
+2.08%만 복원됩니다. 처리 시간은 **2,415.4초**, 최대 RSS는 **1,823.1 MiB**이고
+영상당 원시 깊이 계산 중앙값은 4.82초입니다. 실시간 앱 모드는 아닙니다.
+
+**The complete map remains unqualified.** Preserving the recorded image rate
+restores the missing roof in this case, but does not establish general map
+accuracy or completeness. This comparison also changes the available view graph
+and number of fused views; it is not an isolated frame-rate-only intervention.
+All far outliers remain in the complete raw field and error statistics.
+
+**완전한 지도는 계속 불합격입니다.** 이 기록에서는 영상 주기를 보존했을 때
+누락된 상부를 복원했지만 지도 정확도와 완성도를 검증한 결과는 아닙니다.
+사용 가능한 뷰 그래프와 합치는 뷰 수도 바뀌므로 영상 주기 하나만의 효과로
+단정하지 않습니다. 멀리 잘못 생성된 점도 원시 필드와 모든 오차 통계에 남깁니다.
+
+The figure projects every point inside the shared comparison-camera frustum:
+1,939 / 2,320 sparse landmarks and 4,559,986 / 5,023,301 depth points. Points
+are drawn far to near at 64 pt². Both clouds use the depth map's shared P2–P98
+height limits, −3.71 to −1.88 m, with the viewer's blue-to-red Turbo entries.
+Only colours saturate; measured bounds and point storage remain unchanged.
+The [original full-height-range figure](full-rate-full-height-comparison.png)
+preserves the −33.24 to −1.83 m dense range. RGB uses the same comparison camera
+and includes attenuation, suspended particles and seabed caustics. The mapping
+input is the separate onboard downward camera shown above.
+
+비교 카메라 시야 안의 희소점 1,939/2,320개와 깊이점 4,559,986/5,023,301개를
+모두 투영하고, 먼 점부터 64 pt²로 그립니다. 두 점군은 깊이 지도의 높이
+2–98분위인 −3.71~−1.88 m와 뷰어의 파랑→빨강 Turbo 색상을 공유합니다.
+색상만 포화시키며 측정 범위와 저장 점은 바꾸지 않습니다. 전체 높이를 쓰는
+별도 그림에는 −33.24~−1.83 m 범위를 보존합니다. RGB는 같은 비교 카메라에서
+촬영했고 감쇠·부유 입자·해저 집광무늬를 포함합니다. 복원 입력은 위에서 제시한
+별도의 기체 하향 카메라입니다.
+
+[All-point summary and raw-file hashes](full-rate-summary.json),
+[complete face coverage](full-rate-surface-coverage.json),
+[projection and colour metadata](full-rate-plot.json).
+The 60,279,907-byte complete binary PLY, raw depthmaps and per-point assessment
+remain in local experiment storage. The JSON records identify the complete
+field and PLY by SHA-256; this documentation does not substitute a sampled cloud
+for that output. Existing smaller experiment PLY files above remain available.
+
+전체 이진 PLY 60,279,907바이트, 원시 깊이맵과 점별 평가는 로컬 실험 저장소에
+보존합니다. JSON은 전체 필드와 PLY의 SHA-256을 기록합니다. 표본 점군을 전체
+결과로 대신 제공하지 않으며, 위의 이전 소규모 실험 PLY도 유지합니다.
+
+### Estimated-landmark depth bounds / 추정 랜드마크의 깊이 범위
+
+The [depth-range audit](landmark-depth-range-audit.json) executes the exact pinned
+upstream `compute_depth_range` function against the recorded estimated points:
+camera-space depth P10 × 0.9 to P90 × 1.1. The near bound spans 1.005–3.225 m
+across 490 images, and the far bound spans 2.699–4.198 m. The point set matches
+the frozen view graph's last full-weight VIO estimate for each track ID.
+Analytic percentile and explicit-override controls pass.
+
+깊이 범위 검사는 고정된 원본 `compute_depth_range` 함수를 그대로 실행합니다.
+카메라 좌표의 추정 점 깊이에서 10분위 × 0.9와 90분위 × 1.1을 사용합니다.
+490영상의 가까운 경계는 1.005–3.225 m, 먼 경계는 2.699–4.198 m입니다.
+뷰 그래프와 같은 트랙별 마지막 full-weight VIO 추정 점을 사용합니다.
+해석적 분위수와 명시적 설정 우선순위 제어 검사를 통과했습니다.
+
+The current 0.1–100 m run has 5,127,032 of 43,915,798 accepted raw depth pixels
+outside those landmark bounds. Those pixels are not thereby classified as
+incorrect: sparse landmark support can miss a real surface. The audit neither
+filters the existing map nor proves a correction. Re-estimation with the
+source-derived range requires its own complete-map assessment. No simulator
+geometry or truth enters the bounds.
+
+기존 0.1–100 m 실험의 수용된 원시 깊이 픽셀 43,915,798개 중 5,127,032개가
+이 랜드마크 범위 밖에 있습니다. 희소 랜드마크가 실제 표면을 놓칠 수 있으므로
+이를 곧바로 잘못된 점으로 분류하지 않습니다. 검사는 기존 지도를 자르거나
+수정 효과를 증명하지 않습니다. 원래 규칙의 범위로 다시 추정한 결과도 전체
+지도를 별도로 평가해야 합니다. 범위 계산에 시뮬레이터 형상·정답을 사용하지 않습니다.
