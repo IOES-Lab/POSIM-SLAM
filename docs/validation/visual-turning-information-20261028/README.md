@@ -117,3 +117,5 @@ are kept separately. This reduces archive cost without proving a clock fix.
 - [Actual simulator identity](simulator-identity.json)
 
 - [Shared figure colour policy](figure-policy.json)
+
+[Independent-receiver follow-up](../slam-sensor-receiver-20261028/README.md) records the native delivery fix and the remaining map-recovery failure.

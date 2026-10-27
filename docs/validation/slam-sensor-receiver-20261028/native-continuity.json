@@ -1,0 +1,30 @@
+{
+  "scope": "Callback-count continuity in status-observed intervals within the recorded moving mission. Endpoints are measurement times, not every source message. Intentional initial reset is outside this interval.",
+  "source_receipt_sha256": "90c07a36245d56c0e2314664b53dc406c863ede65ae1a729d884bd0d86cbdf6a",
+  "moving_interval_ns": [
+    18000000000,
+    138000000000
+  ],
+  "moving_poses": 600,
+  "segment": 1,
+  "streams": {
+    "image": {
+      "first_stamp_ns": 18000000000,
+      "last_stamp_ns": 137900000000,
+      "status_observations": 778,
+      "received_delta": 1199,
+      "source_intervals": 1199,
+      "source_period_ns": 100000000,
+      "unaccounted_intervals": 0
+    },
+    "imu": {
+      "first_stamp_ns": 18070000000,
+      "last_stamp_ns": 137960000000,
+      "status_observations": 939,
+      "received_delta": 11989,
+      "source_intervals": 11989,
+      "source_period_ns": 10000000,
+      "unaccounted_intervals": 0
+    }
+  }
+}

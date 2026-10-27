@@ -1,0 +1,80 @@
+{
+  "source_receipt_passed": false,
+  "snapshot_phase": "initial_before_outage",
+  "map_qualified": false,
+  "receipt_sha256": "f4383cd4ca4f7d1c30311e3a447f985debb1db05001a4ae087a65989f01d790e",
+  "counts": [
+    {
+      "points": 965,
+      "points_in_view": 767
+    },
+    {
+      "points": 6,
+      "points_in_view": 6
+    }
+  ],
+  "shared_height_limits_m": [
+    -3.778673766219765,
+    -1.86591713246122
+  ],
+  "visual_export": {
+    "session_nonce": "joint-ros-replay",
+    "frame": "vehicle/vio_joint-ros-replay_segment_0",
+    "segment": 0,
+    "points": 965,
+    "stamp_ns": 48000000000,
+    "request_id": 1
+  },
+  "sonar_export": {
+    "session_nonce": "joint-ros-replay",
+    "frame": "vehicle/vio_joint-ros-replay_segment_0",
+    "segment": 0,
+    "stamp_ns": 48000000000,
+    "points": 6,
+    "map_qualified": false,
+    "scope": "local_acoustic_track_hypotheses"
+  },
+  "metrics": {
+    "evaluated": true,
+    "states": 111,
+    "duration_s": 22.0,
+    "evaluation_alignment": {
+      "rotation": [
+        [
+          -0.9528617893871718,
+          0.30340469727062075,
+          0.0
+        ],
+        [
+          -0.30340469727062075,
+          -0.9528617893871718,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "translation": [
+        -0.059737230648987734,
+        -0.026846997464509307,
+        -0.20845553692594165
+      ],
+      "scale": 1.0
+    },
+    "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+    "position_rmse_m": 0.023883515752481346,
+    "position_max_m": 0.07231005449595414,
+    "rotation_rmse_rad": 0.004678830996809085,
+    "rotation_max_rad": 0.020460986850064034,
+    "truth_distance_m": 9.486433554045218,
+    "estimated_distance_m": 9.527410198353733,
+    "rpe_1s_pairs": 106,
+    "rpe_1s_position_rmse_m": 0.014952708238237758,
+    "rpe_1s_rotation_rmse_rad": 0.0050167508127827495,
+    "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+  },
+  "all_vertices_retained": true,
+  "world_geometry_input_to_worker": false
+}

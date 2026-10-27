@@ -1,0 +1,25 @@
+{
+  "scope": "Unmodified legacy owner against independent receiver on the same selected sensor input interval",
+  "same_pose_stamps": true,
+  "legacy_owner_sha256": "e6846ec362aef65bdc98b33be144d408ec7f445f7ae08e374991c5973f08a3e1",
+  "new_owner_sha256": "e64e44ae3c32dc4531a6d55ca2d2fba3f6436d6952a5f376be3a20b45fc10589",
+  "maximum_mean_position_change_m": 2.4575896873102465e-12,
+  "legacy": {
+    "passed": false,
+    "error": "ValueError('sonar_map_unavailable')",
+    "initial_sonar_points": 6,
+    "recovered_visual_points": 415,
+    "failures": [
+      "pressure_stale"
+    ]
+  },
+  "receiver": {
+    "passed": false,
+    "error": "ValueError('sonar_map_unavailable')",
+    "initial_sonar_points": 6,
+    "recovered_visual_points": 415,
+    "failures": [
+      "pressure_stale"
+    ]
+  }
+}

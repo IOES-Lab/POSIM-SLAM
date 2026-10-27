@@ -1,0 +1,78 @@
+{
+  "schema": "slam-sensor-receiver-native-1",
+  "passed": true,
+  "scope": "Isolated macOS development native runtime; installed GUI, distribution and map quality unqualified",
+  "map_qualified": false,
+  "mission": {
+    "completed": true,
+    "duration_s": 73.64000000000001,
+    "observation_s": 120,
+    "live_poses": 600,
+    "segment_stable": true,
+    "minimum_centerline_clearance_m": 1.3270180429666898
+  },
+  "snapshot": {
+    "available": true,
+    "session_nonce": "bcb706336e9e4a72be904462f577af1a",
+    "segment": 1,
+    "frame": "vehicle/vio_bcb706336e9e4a72be904462f577af1a_segment_1",
+    "stamp_ns": 138000000000,
+    "total_points": 3574,
+    "scope": "accumulated_local_vio_landmarks",
+    "navigation_ready": false
+  },
+  "displayed_points": 1000,
+  "trajectory": {
+    "position_rmse_m": 0.02056186129975978,
+    "position_max_m": 0.03809071068178494,
+    "rotation_rmse_rad": 0.002844250216575275
+  },
+  "surface_distance_m": {
+    "median": 0.008680861292474218,
+    "p95": 0.09562759214136533,
+    "p99": 0.5024456069946036,
+    "maximum": 2.7201274618431497
+  },
+  "surface_outside_10cm": 175,
+  "input_delivery": {
+    "pending": 0,
+    "payload_bytes": 0,
+    "max_messages": 4096,
+    "max_payload_bytes": 67108864,
+    "peak_messages": 17,
+    "peak_payload_bytes": 1474816,
+    "received": 18301,
+    "rejected": 0,
+    "discarded_on_reset": 1,
+    "fault": null,
+    "running": true
+  },
+  "processing_profile": {
+    "max_image_pixels": 120000,
+    "max_image_rate_hz": 5.0,
+    "max_feature_cells": 200,
+    "max_status_write_ms": 4.551332996925339,
+    "max_tick_ms": 138.8351670175325,
+    "max_input_handler_ms": {
+      "dvl": 1.8030419887509197,
+      "imu_status": 0.19316599355079234,
+      "imu": 93.23804097948596,
+      "camera_info": 0.646457978291437,
+      "image": 2.589874988188967,
+      "ping": 15.938958007609472
+    }
+  },
+  "lifecycle": {
+    "exit_code": 0,
+    "forced_stop": false
+  },
+  "owned_processes_stopped": true,
+  "source_sha256": {
+    "live-vio-probe.json": "90c07a36245d56c0e2314664b53dc406c863ede65ae1a729d884bd0d86cbdf6a",
+    "vio-local-map.ply": "56fcb30a3776a03af90fef54d113617aa4ca0250919293876168f62b6ed23e5d",
+    "comparison.json": "f43d2bea6059ab22a83111898b3dd7bfb75b5e17e838fa56000a2eda47f41dad",
+    "visual-surface-evaluation.json": "d8bca02c208f993de299966ade09bbcd56e460999e5e30ac4c6e309e4cbd9567",
+    "validation-inputs.json": "3127ead853aa3ad5d1f157f8fbceebc10a95286a4db842105eb9ec0632085d10",
+    "simulator-identity.json": "18866a181743054e7341998ae9e92587f260e4151149728c2ef97c7aa18e33cc"
+  }
+}

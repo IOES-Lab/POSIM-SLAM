@@ -1,0 +1,80 @@
+{
+  "passed": true,
+  "scope": "Actual ROS delivery during a deliberate estimator-consumer stall.\n\nCompares the previous single-executor subscriptions with the bounded receiver.\nThis isolates delivery; no native estimator, Gazebo or map accuracy is qualified.\n",
+  "map_qualified": false,
+  "modes": {
+    "single_executor": {
+      "mode": "single_executor",
+      "consumer_stall_s": 1.05,
+      "source_image_count": 50,
+      "source_imu_count": 500,
+      "received_counts": {
+        "image": 45,
+        "imu": 495
+      },
+      "missing": {
+        "image": [
+          2000000000,
+          2100000000,
+          2200000000,
+          2300000000,
+          2400000000
+        ],
+        "imu": [
+          1910000000,
+          1920000000,
+          1930000000,
+          1940000000,
+          1950000000
+        ]
+      },
+      "ordered": {
+        "image": true,
+        "imu": true
+      },
+      "source_camera_max_wall_gap_s": 0.1032207089883741,
+      "maximum_receive_to_consume_s": null,
+      "replay_image_gap_ns": 600000000,
+      "inbox": null,
+      "payload_sha256": "b345488f9ffe8c9965781cb16773743964342deb137279a6d72d050eeda30ace"
+    },
+    "separate_receiver": {
+      "mode": "separate_receiver",
+      "consumer_stall_s": 1.05,
+      "source_image_count": 50,
+      "source_imu_count": 500,
+      "received_counts": {
+        "image": 50,
+        "imu": 500
+      },
+      "missing": {
+        "image": [],
+        "imu": []
+      },
+      "ordered": {
+        "image": true,
+        "imu": true
+      },
+      "source_camera_max_wall_gap_s": 0.10475608301931061,
+      "maximum_receive_to_consume_s": 1.045825250010239,
+      "replay_image_gap_ns": 100000000,
+      "inbox": {
+        "pending": 0,
+        "payload_bytes": 0,
+        "max_messages": 4096,
+        "max_payload_bytes": 67108864,
+        "peak_messages": 115,
+        "peak_payload_bytes": 14635520,
+        "received": 552,
+        "rejected": 0,
+        "discarded_on_reset": 0,
+        "fault": null
+      },
+      "payload_sha256": "b345488f9ffe8c9965781cb16773743964342deb137279a6d72d050eeda30ace"
+    }
+  },
+  "source_sha256": {
+    "scripts/check_sensor_ingress_ros.py": "2606dba767bf766ffc3fb571ee9a713ac3b2f05f5c47e475a3e2e92393bdde2c",
+    "runtime/practice_slam/sensor_ingress.py": "40bb602f001dba98a0e0e5e301472bb08ee5a0bca8b63e929a258fdf3ed3512b"
+  }
+}

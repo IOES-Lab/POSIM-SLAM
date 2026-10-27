@@ -1,0 +1,120 @@
+{
+  "schema": "posim-vio-joint-ros-proof-1",
+  "passed": false,
+  "error": "ValueError('sonar_map_unavailable')",
+  "scope": "Replay measured camera/IMU/Ping/sonar/pressure/DVL through isolated ROS subscriptions.\n\nExercises the actual LiveVio owner and native worker, not Gazebo, a GUI, or a\nreal-time hardware deadline. Inputs retain their recorded measurement times.",
+  "joint_dvl": true,
+  "joint_sonar": true,
+  "joint_ping": true,
+  "moving_initialization": true,
+  "published_poses": 154,
+  "visual_export": {
+    "session_nonce": "joint-ros-replay",
+    "frame": "vehicle/vio_joint-ros-replay_segment_0",
+    "segment": 0,
+    "points": 965,
+    "stamp_ns": 48000000000,
+    "request_id": 1
+  },
+  "sonar_export": {
+    "session_nonce": "joint-ros-replay",
+    "frame": "vehicle/vio_joint-ros-replay_segment_0",
+    "segment": 0,
+    "stamp_ns": 48000000000,
+    "points": 6,
+    "map_qualified": false,
+    "scope": "local_acoustic_track_hypotheses"
+  },
+  "recovery": {
+    "resume_stamp_ns": 51580000000,
+    "old_frame": "vehicle/vio_joint-ros-replay_segment_0",
+    "empty_archive_before_resume": true,
+    "new_frame": "vehicle/vio_joint-ros-replay_segment_1",
+    "new_pose_count": 34,
+    "export": {
+      "session_nonce": "joint-ros-replay",
+      "frame": "vehicle/vio_joint-ros-replay_segment_1",
+      "segment": 1,
+      "points": 415,
+      "stamp_ns": 63000000000,
+      "request_id": 2
+    }
+  },
+  "failures": [
+    {
+      "reason": "pressure_stale",
+      "segment": 1,
+      "wall": 207563.435092791,
+      "visual_support": {
+        "full_weight_reprojections": 160,
+        "huber_threshold_px": 1.0,
+        "observability_qualified": false,
+        "reprojected_landmarks": 160,
+        "reprojection_rmse_px": 0.1229620211048919,
+        "visual_measurements_present": true
+      }
+    }
+  ],
+  "pressure_fusion": {
+    "enabled": true,
+    "optimized_states": 22
+  },
+  "initial_dvl_fusion": {
+    "optimized_states": 22,
+    "last_fused_stamp_ns": 48000000000
+  },
+  "stale_visual_export_rejected": "vio_map_unavailable_or_busy",
+  "stale_visual_map_cleared": true,
+  "startup_export_rejected": "vio_map_unavailable_or_busy",
+  "input_delivery": {
+    "pending": 0,
+    "payload_bytes": 0,
+    "max_messages": 4096,
+    "max_payload_bytes": 67108864,
+    "peak_messages": 12,
+    "peak_payload_bytes": 907682,
+    "received": 6397,
+    "rejected": 0,
+    "discarded_on_reset": 0,
+    "fault": null,
+    "max_tick_ms": 103.60516697983257,
+    "max_status_write_ms": 4.643249994842336,
+    "max_input_handler_ms": {
+      "imu": 0.5725410010199994,
+      "camera_info": 0.10137498611584306,
+      "imu_status": 0.037874997360631824,
+      "image": 0.059542013332247734,
+      "ping": 9.01158302440308,
+      "pressure": 0.6823340081609786,
+      "dvl": 1.9688750035129488,
+      "sonar": 0.6173329893499613
+    }
+  },
+  "cleanup": [
+    {
+      "pid": 63030,
+      "returncode": -15,
+      "threads_stopped": true
+    },
+    {
+      "pid": 63238,
+      "returncode": -15,
+      "threads_stopped": true
+    }
+  ],
+  "worker_sha256": "1753ef6c2d07380aa6b44d2a4e6c3aea0c9087e6813a32989d703658f1f3be47",
+  "owner_source_sha256": "e64e44ae3c32dc4531a6d55ca2d2fba3f6436d6952a5f376be3a20b45fc10589",
+  "runtime_source_files": {
+    "library_paths.py": "cf7eed75bea01de60bde40b2e6f69bf85a98892ddca590035e40c6cd7c27420a",
+    "practice_slam/vio_live.py": "e64e44ae3c32dc4531a6d55ca2d2fba3f6436d6952a5f376be3a20b45fc10589",
+    "practice_slam/worker_liveness.py": "ee453e404938ac286b93224d6025891344f3b4c067d2481a2c5530febc429cb9",
+    "practice_slam/sensor_ingress.py": "40bb602f001dba98a0e0e5e301472bb08ee5a0bca8b63e929a258fdf3ed3512b",
+    "worlds/practice_vio.py": "2a918ad73887e7611dc62cbf31655d6cc44a09867b5de8c2a310393fd6b06db6",
+    "worlds/inertial_source.py": "81989051bedc8c84756d7b3f65a1d2304cff20f6782014f823b7c24bfe6c714a",
+    "worlds/sensor_frames.py": "1a5aef127eebc7ffdccee1bacad0f3bf32c65dc5ad3fa985c037e65d4c0522cc",
+    "worlds/sonar_source.py": "3492a103d7c09e10b296e864da0435afa7aa6f238125b02ecd556c14c916945a"
+  },
+  "receipt_sha256": "f4383cd4ca4f7d1c30311e3a447f985debb1db05001a4ae087a65989f01d790e",
+  "input_manifest_sha256": "768214ce8fe90f47e0dc444b957d5461ea209839cbdf0bc82c3d0947f1cc4f2f",
+  "map_qualified": false
+}
