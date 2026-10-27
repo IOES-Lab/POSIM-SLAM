@@ -1,0 +1,12 @@
+{
+  "passed": false,
+  "poses": 125,
+  "maximum_cloud_points": 0,
+  "last_reason": "waiting_visual_map_precision",
+  "mission_started": false,
+  "lifecycle": {
+    "exit_code": 0,
+    "forced_stop": false
+  },
+  "full_receipt_sha256": "1e67c91c9183c5f6f8f9f8f81843246adc26c18aab3f2c13bf2594ca7fa0bc98"
+}

@@ -1,0 +1,8 @@
+{
+  "passed": true,
+  "isolated_interpreter": true,
+  "relocated_path_contains_spaces": true,
+  "application_or_ros_imported": false,
+  "wheel_sha256": "ce33b6fad07dc4c0faaae80bcd127eef32c5afddcfcd58dc835a9e3a180d4ccf",
+  "module_sha256": "544df6547c43bc81d532dd6cc52a156e7cfa0e92fd02028ed58005054f4220bd"
+}

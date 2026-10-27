@@ -1,0 +1,182 @@
+{
+  "scope": "Fresh isolated macOS native development runtime; camera/IMU/DVL visual map; not installed GUI or platform qualification",
+  "passed": true,
+  "startup": {
+    "visually_constrained_poses": 10,
+    "initial_cloud_points": 0,
+    "map_required_before_motion": false
+  },
+  "recovery": {
+    "killed_owned_worker": 7455,
+    "old_frame": "vehicle/vio_bfd76a4c2b45422ca5c8a6503eaa9fb0_segment_0",
+    "new_frame": "vehicle/vio_bfd76a4c2b45422ca5c8a6503eaa9fb0_segment_1",
+    "new_pose_count": 5,
+    "acceptance": "five visually constrained poses; bootstrap predictions retained separately",
+    "empty_new_segment_clouds": 33
+  },
+  "total_exported_points": 2025,
+  "points_in_view": 1878,
+  "moving_poses": 600,
+  "mission_elapsed_s": 75.48,
+  "minimum_observed_body_centre_clearance_m": 1.3397830927729053,
+  "trajectory": {
+    "evaluated": true,
+    "states": 600,
+    "duration_s": 119.80000000000001,
+    "evaluation_alignment": {
+      "rotation": [
+        [
+          -0.9224809850382367,
+          -0.3860425264694092,
+          0.0
+        ],
+        [
+          0.3860425264694092,
+          -0.9224809850382367,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "translation": [
+        -0.0505235561210161,
+        -0.011133506597712223,
+        -0.18611361333092685
+      ],
+      "scale": 1.0
+    },
+    "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+    "position_rmse_m": 0.020923114407194132,
+    "position_max_m": 0.04046581921387499,
+    "rotation_rmse_rad": 0.005211264517727775,
+    "rotation_max_rad": 0.02828380241360013,
+    "truth_distance_m": 38.639075919309946,
+    "estimated_distance_m": 38.65203960268605,
+    "rpe_1s_pairs": 595,
+    "rpe_1s_position_rmse_m": 0.006089984899365756,
+    "rpe_1s_rotation_rmse_rad": 0.0029677356809188343,
+    "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+  },
+  "surface_m": {
+    "median": 0.007388984049761055,
+    "p95": 0.01715323805547187,
+    "p99": 0.026810324350281352,
+    "maximum": 0.05622170778644534,
+    "outside_10cm": 0
+  },
+  "point_geometry": {
+    "active_eligible": 29,
+    "active_joint_observed": 267,
+    "active_unqualified": 238,
+    "admission_coordinate": "world_position",
+    "calibration_uncertainty_included": false,
+    "damping_included": false,
+    "error": null,
+    "gauge": "native_initial_position_and_yaw_prior",
+    "host_camera_uncertainty_scope": "diagnostic_only",
+    "map_qualified": false,
+    "metric_three_sigma_limit_m": 0.1,
+    "observed_outliers_withdrawn": 44,
+    "observed_reprojection_culling": true,
+    "pixel_sigma": 0.5,
+    "policy": "joint_linearized_position_information",
+    "pose_uncertainty_included": true
+  },
+  "input_delivery": {
+    "pending": 0,
+    "payload_bytes": 0,
+    "max_messages": 4096,
+    "max_payload_bytes": 67108864,
+    "peak_messages": 106,
+    "peak_payload_bytes": 11738192,
+    "received": 18835,
+    "rejected": 0,
+    "discarded_on_reset": 2,
+    "fault": null,
+    "running": true
+  },
+  "processing_profile": {
+    "max_image_pixels": 120000,
+    "max_image_rate_hz": 5.0,
+    "max_feature_cells": 200,
+    "max_status_write_ms": 796.1521669931244,
+    "max_tick_ms": 796.4482920069713,
+    "max_input_handler_ms": {
+      "dvl": 0.5802919913548976,
+      "imu_status": 0.05983398295938969,
+      "camera_info": 0.1745420158840716,
+      "image": 1.7340419872198254,
+      "imu": 88.72783300466835,
+      "ping": 8.886041992809623
+    }
+  },
+  "measurement_counter_continuity": {
+    "image": {
+      "first_stamp_ns": 21700000000,
+      "last_stamp_ns": 141700000000,
+      "counter_increment": 1200,
+      "source_intervals": 1200,
+      "unaccounted_intervals": 0
+    },
+    "imu": {
+      "first_stamp_ns": 21750000000,
+      "last_stamp_ns": 141620000000,
+      "counter_increment": 11987,
+      "source_intervals": 11987,
+      "unaccounted_intervals": 0
+    }
+  },
+  "displayed_default": 1000,
+  "density_views": [
+    {
+      "limit": 2000,
+      "shown": 2000,
+      "total": 2025,
+      "source": "native_archive",
+      "stamp_ns": 141700000000
+    },
+    {
+      "limit": 5000,
+      "shown": 2025,
+      "total": 2025,
+      "source": "native_archive",
+      "stamp_ns": 141700000000
+    },
+    {
+      "limit": 0,
+      "shown": 2025,
+      "total": 2025,
+      "source": "native_archive",
+      "stamp_ns": 141700000000
+    }
+  ],
+  "lifecycle": {
+    "exit_code": 0,
+    "forced_stop": false
+  },
+  "owned_processes": [
+    {
+      "group": 7308,
+      "live_members": []
+    },
+    {
+      "group": 7304,
+      "live_members": []
+    },
+    {
+      "group": 7329,
+      "live_members": []
+    },
+    {
+      "group": 7306,
+      "live_members": []
+    }
+  ],
+  "geometry_or_truth_used_by_estimator": false,
+  "aligned_only_after_estimation": true,
+  "map_product_qualified": false,
+  "receipt_sha256": "adcdf15f886e4cc33a43b19cdd750e9ed70a8b8238ed2726fd907778790fb895"
+}

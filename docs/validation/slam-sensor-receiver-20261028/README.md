@@ -158,3 +158,5 @@ exact image/Ping deadline controls, and relocated package import tests pass.
 - [Old/new control comparison](combined-control-comparison.json)
 - [Failed overview identity and alignment](failed-figure.json)
 - [Source fingerprints and SDK identity](source-manifest.json)
+
+[Live metric-map follow-up / 라이브 정밀도 검사 후속](../visual-live-map-information-20261028/README.md).

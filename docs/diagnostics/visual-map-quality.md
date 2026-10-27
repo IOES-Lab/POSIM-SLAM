@@ -29,3 +29,5 @@ noise assumptions remain; the report does not certify map accuracy.
 - [Joint native information](../../native/basalt/joint_map_information.hpp)
 - [Host and world coordinate query](../../native/basalt/map_information.hpp)
 - [Executable contract controls](../../tests/test_map_quality.py)
+
+[Native RGB/map and recovery evidence / 네이티브 비교·복구 기록](../validation/visual-live-map-information-20261028/README.md).
