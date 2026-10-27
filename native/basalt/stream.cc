@@ -96,6 +96,14 @@ int main(int argc,char** argv) {
     if(fs::exists(ping_file))ping_calibration=posim_slam::pingInputCalibration(read_json(ping_file));
     auto owner=std::dynamic_pointer_cast<basalt::SqrtKeypointVioEstimator<double>>(vio);
     if(!owner)throw std::runtime_error("unsupported_ping_estimator_owner");
+    const bool joint_map_information=input_settings.value("joint_map_information",false);
+    const bool map_observation_culling=input_settings.value("map_observation_culling",false);
+    const double map_point_three_sigma_m=input_settings.value("map_point_three_sigma_m",0.);
+    if(!std::isfinite(map_point_three_sigma_m) || map_point_three_sigma_m<0 || map_point_three_sigma_m>1 ||
+        (!joint_map_information && map_point_three_sigma_m>0) || (joint_map_information && sonar_clock))
+      fail("invalid_joint_map_information_request");
+    owner->posim_map_information_enabled=joint_map_information;
+    owner->posim_map_point_three_sigma_m=map_point_three_sigma_m;
     const bool dvl_enabled=input_settings.value("enable_joint_dvl",false);
     const bool pressure_enabled=input_settings.value("enable_joint_pressure",false);
     const bool terrain_enabled=input_settings.value("enable_terrain_ping",false);
@@ -510,6 +518,8 @@ int main(int argc,char** argv) {
           unqualified=unqualified_visual_points(*data);
           archive.update(data->t_ns,data->point_ids,active,
               mapping_inliers(*data,c.processed_width,c.processed_height,config.vio_obs_huber_thresh),unqualified);
+          if(map_observation_culling)archive.withdraw_observed_outliers(
+              archive_observation_outliers(archive,*data,c.cal,c.processed_width,c.processed_height,config.vio_obs_huber_thresh));
         } catch(const std::exception& error) {fail(error.what());}
         full->points=archive.points();
         if(record_visual_tracks)full->ids=archive.mature_ids();
@@ -528,7 +538,21 @@ int main(int argc,char** argv) {
         Json points=Json::array();
         const size_t count=full->points.size();
         for(const auto& point:LandmarkArchive::display_sample(full->points))points.push_back(point);
-        emit({{"type","map"},{"stamp_ns",data->t_ns},{"point_geometry",{{"policy","positive_three_sigma_inverse_range"},{"pose_uncertainty_included",false},{"pixel_sigma",config.vio_obs_std_dev},{"active_eligible",data->point_ids.size()-unqualified.size()},{"active_unqualified",unqualified.size()}}},
+        Json geometry={{"policy",joint_map_information ? "joint_linearized_position_information" : "positive_three_sigma_inverse_range"},
+          {"pose_uncertainty_included",joint_map_information},{"pixel_sigma",config.vio_obs_std_dev},
+          {"observed_reprojection_culling",map_observation_culling},{"observed_outliers_withdrawn",archive.withdrawn()},
+          {"active_eligible",data->point_ids.size()-unqualified.size()},{"active_unqualified",unqualified.size()}};
+        if(joint_map_information) {
+          size_t observed=0;
+          for(const auto& [id,quality]:data->map_quality)observed+=quality.joint_position_observed;
+          geometry.update({{"calibration_uncertainty_included",false},{"map_qualified",false},
+            {"metric_three_sigma_limit_m",map_point_three_sigma_m},{"active_joint_observed",observed},
+            {"error",data->map_information_error.empty() ? Json(nullptr) : Json(data->map_information_error)},
+            {"gauge","native_initial_position_and_yaw_prior"},{"damping_included",false}});
+          geometry["admission_coordinate"]="world_position";
+          geometry["host_camera_uncertainty_scope"]="diagnostic_only";
+        }
+        emit({{"type","map"},{"stamp_ns",data->t_ns},{"point_geometry",geometry},
               {"landmarks_window",data->points.size()},{"landmarks_accumulated",count},
               {"archive_evicted",archive.evicted()},{"archive_rejected",archive.rejected()},{"points",points},
               {"visual_support",visual_support(*data,c.processed_width,c.processed_height,config.vio_obs_huber_thresh)},
@@ -546,6 +570,9 @@ int main(int argc,char** argv) {
                       initial_gyro_bias,initial_accel_bias);
     };
     emit({{"type","ready"},{"startup_tracks_transport",!sonar_clock && require_gravity_seed ? Json("preinitialize_camera_tracks_v1") : Json(nullptr)},{"inertial_seed_transport","first_imu_state_v1"},{"state_clock",state_clock},{"gravity_seed_transport",sonar_clock ? "first_sensor_direction_v1" : "first_image_direction_v1"},{"gravity_seed_required",require_gravity_seed},{"protocol",1},{"inertial_fused",true},{"map_export",sonar_clock ? Json(nullptr) : Json("segment_landmark_archive_ply_1")},
+          {"map_information_transport","joint_linearized_world_v1"},
+          {"map_observation_culling",map_observation_culling},
+          {"map_information_enabled",joint_map_information},{"map_point_three_sigma_m",map_point_three_sigma_m},
           {"sonar_clock_transport",sonar_clock ? Json("ordered_sonar_state_v1") : Json(nullptr)},
           {"imu_noise_model","continuous_white_midpoint_acceleration_bridge_v1"},
           {"dvl_measurement_transport",dvl_enabled ? Json("body_velocity_gyro_covariance_v1") : Json(nullptr)},

@@ -450,6 +450,41 @@ Distinct landmark IDs remain distinct even if their estimated coordinates coinci
 점을 읽습니다. 여러 영상에서 관측해도 지도점 수를 늘리지 않습니다. ID가 다른
 랜드마크는 추정 좌표가 같아도 별도 점으로 유지합니다.
 
+Optional `joint_map_information: true` evaluates the undamped linearized joint
+pose/landmark posterior, including the marginal prior, IMU and enabled native
+Ping, sonar, DVL and pressure factors. Shared nuisance correlations and
+unobserved directions are retained. The query is limited to 384 state columns;
+failure reports `point_geometry.error` and grants no map certificate. Calibration
+is fixed, so this is a local linearized diagnostic, not calibrated map accuracy.
+The ready contract is `joint_linearized_world_v1`.
+[Recorded comparison and remaining errors](../../docs/validation/visual-joint-information-20261028/README.md).
+
+`map_point_three_sigma_m`, default 0, optionally requires three times the largest
+world-position principal standard deviation to fit a declared metric budget
+(0–1 m). A positive value requires joint information. Host-camera and fixed-pose
+conditional sigmas are trace diagnostics only; they cannot replace the world
+criterion. `map_observation_culling: true` separately checks received feature IDs
+against retained coordinates using the current estimated camera pose and the
+existing reprojection Huber threshold. Contradictory received pixels withdraw an
+ID, including one retired from optimization. Missing observations preserve it.
+Readmission requires three new qualified inlier exposures. Both options default
+to false and do not enable a qualified application provider.
+
+`joint_map_information: true`는 주변화 사전정보·IMU와 활성 Ping·소나·DVL·정수압
+제약을 포함한 공동 자세·랜드마크 선형화 불확실성을 계산합니다. 최적화 감쇠는
+제외하고 공유 보조변수 상관관계와 관측되지 않은 방향을 유지합니다. 상태 열
+384개로 제한하며 계산 실패는 `point_geometry.error`로 보고하고 지도 증명을
+발급하지 않습니다. 보정값은 고정하므로 지도 정확도를 검증하는 값이 아닙니다.
+
+`map_point_three_sigma_m`의 기본값은 0입니다. 양수이면 공동 불확실성을 켜야 하며
+지도 좌표계 위치의 최대 주축 표준편차 3배가 지정 예산(0–1m) 이하여야 합니다.
+카메라 기준·자세 고정 조건부 표준편차는 진단용이며 이 기준을 대체하지 않습니다.
+별도 `map_observation_culling: true`는 현재 수신한 특징 ID를 추정 카메라 자세로
+재투영하여 기존 Huber 픽셀 기준과 비교합니다. 최적화에서 빠진 저장점도 모순된
+관측이 들어오면 제거하고 새 적합 관측 세 장 후에 다시 채택합니다. 관측 누락은
+제거 근거로 쓰지 않습니다. 두 기능의 기본값은 false이며 앱 공급자의 품질
+검증을 통과시키지 않습니다.
+
 The native archive admits an ID after full-weight reprojection support in three
 separate exposures with positive three-sigma inverse-range support. Current
 optimized camera poses and full-weight observations supply a pixel-noise-whitened

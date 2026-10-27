@@ -45,6 +45,20 @@ void BundleAdjustmentBase<Scalar_>::get_current_points(
       const Vec3 host_origin=(T_w_i*calib.T_i_c[host.cam_id]).translation();
       quality=posim_slam::visualPointSupport(jacobian,(world-host_origin).template cast<double>(),rows.size());
     }
+    if(posim_map_information_enabled) {
+      quality.joint_information_evaluated=true;
+      const auto joint=posim_point_information.find(entry.first);
+      if(joint!=posim_point_information.end()) {
+        quality.joint_position_observed=joint->second.world.observed;
+        quality.joint_position_sigma_m=joint->second.world.maximum_sigma_m;
+        quality.joint_host_position_observed=joint->second.host_camera.observed;
+        quality.joint_host_position_sigma_m=joint->second.host_camera.maximum_sigma_m;
+        quality.conditional_host_position_sigma_m=joint->second.conditional_host_camera.maximum_sigma_m;
+      }
+      if(posim_map_point_three_sigma_m>0)
+        quality.eligible=quality.eligible && quality.joint_position_observed &&
+            3*quality.joint_position_sigma_m<=posim_map_point_three_sigma_m;
+    }
     posim_map_quality.emplace(entry.first,quality);
     points.emplace_back(world.template cast<Scalar2>());
     ids.emplace_back(entry.first);

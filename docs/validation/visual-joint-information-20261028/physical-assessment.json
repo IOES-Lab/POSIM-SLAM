@@ -1,0 +1,325 @@
+{
+  "scope": "Post-estimation physical geometry assessment of paired native exports.",
+  "truth_used_by_estimator": false,
+  "map_qualified": false,
+  "methods": {
+    "legacy": {
+      "trajectory": {
+        "evaluated": true,
+        "states": 728,
+        "duration_s": 127.50000000000001,
+        "evaluation_alignment": {
+          "rotation": [
+            [
+              0.24487060154440063,
+              0.9695557686380312,
+              0.0
+            ],
+            [
+              -0.9695557686380312,
+              0.24487060154440063,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "translation": [
+            -0.052585040563358915,
+            0.01504248028414288,
+            -0.21286700589633764
+          ],
+          "scale": 1.0
+        },
+        "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+        "position_rmse_m": 0.03686483433842136,
+        "position_max_m": 0.05839586533131438,
+        "rotation_rmse_rad": 0.015476534512945287,
+        "rotation_max_rad": 0.02256529081892923,
+        "truth_distance_m": 38.21799485616749,
+        "estimated_distance_m": 38.27929002700881,
+        "rpe_1s_pairs": 702,
+        "rpe_1s_position_rmse_m": 0.004711447938521752,
+        "rpe_1s_rotation_rmse_rad": 0.0021317534295588296,
+        "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+      },
+      "processing_s": {
+        "median": 0.055508187506347895,
+        "p95": 0.09219541872880654
+      },
+      "export": {
+        "points": 3526,
+        "request_id": 1,
+        "stamp_ns": 143200000000,
+        "success": true,
+        "type": "export"
+      },
+      "points": 3526,
+      "distance_m": {
+        "median": 0.026929536483476173,
+        "p90": 0.0681447483562193,
+        "p95": 0.09292778902449078,
+        "p99": 0.4553184167225324,
+        "max": 3.0527780502866535
+      },
+      "outside_10cm": 155,
+      "all_exported_points_assessed": true,
+      "source_sha256": "6f8a8a7d38feafc87bce20d05d307275d3aafb4e6627aced6a98620e779fbb15"
+    },
+    "culling": {
+      "trajectory": {
+        "evaluated": true,
+        "states": 728,
+        "duration_s": 127.50000000000001,
+        "evaluation_alignment": {
+          "rotation": [
+            [
+              0.24487060154440063,
+              0.9695557686380312,
+              0.0
+            ],
+            [
+              -0.9695557686380312,
+              0.24487060154440063,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "translation": [
+            -0.052585040563358915,
+            0.01504248028414288,
+            -0.21286700589633764
+          ],
+          "scale": 1.0
+        },
+        "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+        "position_rmse_m": 0.03686483433843282,
+        "position_max_m": 0.058395865331326076,
+        "rotation_rmse_rad": 0.015476534512959772,
+        "rotation_max_rad": 0.02256529081890955,
+        "truth_distance_m": 38.21799485616749,
+        "estimated_distance_m": 38.27929002700879,
+        "rpe_1s_pairs": 702,
+        "rpe_1s_position_rmse_m": 0.004711447938521176,
+        "rpe_1s_rotation_rmse_rad": 0.002131753429553933,
+        "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+      },
+      "processing_s": {
+        "median": 0.054526167004951276,
+        "p95": 0.09512880184192904
+      },
+      "export": {
+        "points": 3474,
+        "request_id": 1,
+        "stamp_ns": 143200000000,
+        "success": true,
+        "type": "export"
+      },
+      "points": 3474,
+      "distance_m": {
+        "median": 0.02677437325971953,
+        "p90": 0.06649704511240616,
+        "p95": 0.08537659843622605,
+        "p99": 0.30740359800790074,
+        "max": 2.8843976721545044
+      },
+      "outside_10cm": 133,
+      "all_exported_points_assessed": true,
+      "source_sha256": "2953aa9a88c308eb4fcd74d4dde48c25f32718d02fa4cc352f95d3173b7a61c3"
+    },
+    "joint_diagnostic": {
+      "trajectory": {
+        "evaluated": true,
+        "states": 728,
+        "duration_s": 127.50000000000001,
+        "evaluation_alignment": {
+          "rotation": [
+            [
+              0.24487060154440063,
+              0.9695557686380312,
+              0.0
+            ],
+            [
+              -0.9695557686380312,
+              0.24487060154440063,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "translation": [
+            -0.052585040563358915,
+            0.01504248028414288,
+            -0.21286700589633764
+          ],
+          "scale": 1.0
+        },
+        "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+        "position_rmse_m": 0.03686483433843155,
+        "position_max_m": 0.05839586533134438,
+        "rotation_rmse_rad": 0.015476534512951712,
+        "rotation_max_rad": 0.02256529081891939,
+        "truth_distance_m": 38.21799485616749,
+        "estimated_distance_m": 38.279290027008784,
+        "rpe_1s_pairs": 702,
+        "rpe_1s_position_rmse_m": 0.004711447938521614,
+        "rpe_1s_rotation_rmse_rad": 0.0021317534295423593,
+        "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+      },
+      "processing_s": {
+        "median": 0.09200516701093875,
+        "p95": 0.1657859918545
+      },
+      "export": {
+        "points": 3526,
+        "request_id": 1,
+        "stamp_ns": 143200000000,
+        "success": true,
+        "type": "export"
+      },
+      "points": 3526,
+      "distance_m": {
+        "median": 0.026929536483476173,
+        "p90": 0.0681447483562193,
+        "p95": 0.09292778902449078,
+        "p99": 0.4553184167225324,
+        "max": 3.0527780502866535
+      },
+      "outside_10cm": 155,
+      "all_exported_points_assessed": true,
+      "source_sha256": "6f8a8a7d38feafc87bce20d05d307275d3aafb4e6627aced6a98620e779fbb15",
+      "last_observed_world_sigma_m": {
+        "p05": 0.058143270062052665,
+        "median": 0.0904997435458828,
+        "p95": 0.24253727983355447,
+        "max": 16.256937950599152
+      }
+    },
+    "joint_metric": {
+      "trajectory": {
+        "evaluated": true,
+        "states": 728,
+        "duration_s": 127.50000000000001,
+        "evaluation_alignment": {
+          "rotation": [
+            [
+              0.24487060154440063,
+              0.9695557686380312,
+              0.0
+            ],
+            [
+              -0.9695557686380312,
+              0.24487060154440063,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "translation": [
+            -0.052585040563358915,
+            0.01504248028414288,
+            -0.21286700589633764
+          ],
+          "scale": 1.0
+        },
+        "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+        "position_rmse_m": 0.03686483433842491,
+        "position_max_m": 0.05839586533133096,
+        "rotation_rmse_rad": 0.015476534512952066,
+        "rotation_max_rad": 0.022565290818948914,
+        "truth_distance_m": 38.21799485616749,
+        "estimated_distance_m": 38.2792900270088,
+        "rpe_1s_pairs": 702,
+        "rpe_1s_position_rmse_m": 0.0047114479385214165,
+        "rpe_1s_rotation_rmse_rad": 0.0021317534295451786,
+        "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+      },
+      "processing_s": {
+        "median": 0.1010246040095808,
+        "p95": 0.15646168134262553
+      },
+      "export": {
+        "reason": "map_unavailable",
+        "request_id": 1,
+        "success": false,
+        "type": "export"
+      },
+      "points": 0
+    },
+    "culling_joint_metric": {
+      "trajectory": {
+        "evaluated": true,
+        "states": 728,
+        "duration_s": 127.50000000000001,
+        "evaluation_alignment": {
+          "rotation": [
+            [
+              0.24487060154440063,
+              0.9695557686380312,
+              0.0
+            ],
+            [
+              -0.9695557686380312,
+              0.24487060154440063,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "translation": [
+            -0.052585040563358915,
+            0.01504248028414288,
+            -0.21286700589633764
+          ],
+          "scale": 1.0
+        },
+        "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+        "position_rmse_m": 0.03686483433842662,
+        "position_max_m": 0.05839586533133561,
+        "rotation_rmse_rad": 0.01547653451295991,
+        "rotation_max_rad": 0.02256529081891939,
+        "truth_distance_m": 38.21799485616749,
+        "estimated_distance_m": 38.279290027008784,
+        "rpe_1s_pairs": 702,
+        "rpe_1s_position_rmse_m": 0.0047114479385211025,
+        "rpe_1s_rotation_rmse_rad": 0.002131753429562687,
+        "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+      },
+      "processing_s": {
+        "median": 0.08261452098668087,
+        "p95": 0.13763585189008154
+      },
+      "export": {
+        "reason": "map_unavailable",
+        "request_id": 1,
+        "success": false,
+        "type": "export"
+      },
+      "points": 0
+    }
+  },
+  "evaluation_source_sha256": {
+    "physical-targets.sdf": "d4795f6c127d739cc1fa4e75eb0329ed55ac3f67d4e593555ae033e06e0bebf6",
+    "demo-runtime/2e34e3a2a3ee4b41971f24f8b9bbeb9d/world-waves-underwater-sonar.sdf": "9a659f3798d5abab597e69f5033d948b10e165d374e15a50102d010078a07e5b",
+    "demo-runtime/2e34e3a2a3ee4b41971f24f8b9bbeb9d/orca5-seafloor.dae": "277c49dd9c3b2ec1c9d3c3754be9d076c7b0438ccd29e9ae11355869849fbeb2",
+    "live-vio-probe/evaluation-inputs/truth.csv": "d58f0b71bbaeb87e1ad5ebffc3c0d8cee0219315962a7b7b31f67ac8c8bfb9ba",
+    "live-vio-probe/evaluation-inputs/receipt.json": "a211799ca5c1d9f11ff44662a4a1a6ada5152e19b097002446231c21ac8a2429",
+    "isometric-camera.json": "1776cbece9be25630f6a2defde1c838756beb688d5e604ac62be0fc5fb4a0aa2",
+    "isometric-rgb.png": "3d957071a9cd774b2bb8deb0232796beb4f31833a2a1ae2575486879c9ca1a93"
+  }
+}

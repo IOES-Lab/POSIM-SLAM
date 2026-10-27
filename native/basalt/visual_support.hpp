@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 #pragma once
 #include "calibration.hpp"
+#include "landmark_archive.hpp"
 #include <limits>
 #include <set>
 
@@ -53,6 +54,36 @@ inline std::set<int> unqualified_visual_points(const basalt::VioVisualizationDat
   return result;
 }
 
+// A missed feature is not counter-evidence. A received pixel for a retained ID
+// is: test its stored coordinate even after its optimizer landmark has retired.
+// Read immutable estimated poses from the visualization packet, never the owner.
+template<class Calibration> std::set<int> archive_observation_outliers(
+    const LandmarkArchive& archive,const basalt::VioVisualizationData& data,
+    const Calibration& calibration,int width,int height,double huber_px) {
+  if(!std::isfinite(huber_px) || huber_px<=0)throw std::invalid_argument("archive_reprojection_threshold");
+  if(!data.opt_flow_res || data.opt_flow_res->observations.empty())return {};
+  const auto& observations=data.opt_flow_res->observations[0];std::set<int> received;
+  for(const auto& [id,observation]:observations) {
+    if(id<0 || id>std::numeric_limits<int>::max())throw std::invalid_argument("archive_observation_id");
+    if(!observation.translation().allFinite())throw std::invalid_argument("archive_observation_pixel");
+    received.insert(int(id));
+  }
+  const auto matches=archive.observed_points(received);
+  if(matches.empty())return {};
+  if(data.states.empty())throw std::runtime_error("archive_observation_pose_missing");
+  const auto camera=(data.states.back()*calibration.T_i_c.at(0)).inverse();
+  std::set<int> rejected;
+  for(const auto& [id,point]:matches) {
+    const Eigen::Vector3d local=camera*Eigen::Vector3d(point[0],point[1],point[2]);
+    Eigen::Vector4d ray;ray.head<3>()=local;ray[3]=1.;Eigen::Vector2d predicted;
+    const auto pixel=observations.at(id).translation().template cast<double>();
+    if(!calibration.intrinsics.at(0).project(ray,predicted) || !predicted.allFinite() ||
+        predicted.x()<0 || predicted.x()>=width || predicted.y()<0 || predicted.y()>=height ||
+        (predicted-pixel).norm()>huber_px)rejected.insert(id);
+  }
+  return rejected;
+}
+
 // Optional diagnostic output uses actual frontend IDs and optimized points.
 // It never changes feature selection, weights, triangulation or map admission.
 inline Json visual_track_trace(const basalt::VioVisualizationData& data,int width,int height,double huber_px,
@@ -76,6 +107,17 @@ inline Json visual_track_trace(const basalt::VioVisualizationData& data,int widt
       {"reprojection_error_px",residual==residuals.end()?Json(nullptr):Json(residual->second)},
       {"full_weight",residual!=residuals.end() && residual->second<=huber_px},
       {"archived",archived.count(id)>0}});
+    const auto quality=data.map_quality.find(id);
+    if(quality!=data.map_quality.end() && quality->second.joint_information_evaluated) {
+      rows.back()["joint_position_observed"]=quality->second.joint_position_observed;
+      rows.back()["joint_position_sigma_m"]=std::isfinite(quality->second.joint_position_sigma_m) ?
+          Json(quality->second.joint_position_sigma_m) : Json(nullptr);
+      rows.back()["joint_host_position_observed"]=quality->second.joint_host_position_observed;
+      rows.back()["joint_host_position_sigma_m"]=std::isfinite(quality->second.joint_host_position_sigma_m) ?
+          Json(quality->second.joint_host_position_sigma_m) : Json(nullptr);
+      rows.back()["conditional_host_position_sigma_m"]=std::isfinite(quality->second.conditional_host_position_sigma_m) ?
+          Json(quality->second.conditional_host_position_sigma_m) : Json(nullptr);
+    }
   }
   return rows;
 }

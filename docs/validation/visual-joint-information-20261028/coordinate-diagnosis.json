@@ -1,0 +1,62 @@
+{
+  "protocol_passed": true,
+  "camera_frames": 638,
+  "query_errors": 0,
+  "export_points": 3526,
+  "processing_s": {
+    "median": 0.09718812549544964,
+    "p95": 0.1566286329500144
+  },
+  "samples": [
+    {
+      "stamp_ns": 79600000000,
+      "tracks": 226,
+      "joint_position_sigma_m": {
+        "p05": 0.07381101161558581,
+        "median": 0.09538053611729794,
+        "p95": 0.11597744555155207,
+        "max": 0.11896760003173977
+      },
+      "joint_host_position_sigma_m": {
+        "p05": 0.011309139269966722,
+        "median": 0.01913872815389609,
+        "p95": 0.04694310025701807,
+        "max": 0.05330999445741324
+      },
+      "conditional_host_position_sigma_m": {
+        "p05": 0.008258151710892756,
+        "median": 0.015994443523699192,
+        "p95": 0.045679059396509125,
+        "max": 0.051629189847625045
+      },
+      "world_three_sigma_within_10cm": 0,
+      "host_three_sigma_within_10cm": 73
+    },
+    {
+      "stamp_ns": 143200000000,
+      "tracks": 351,
+      "joint_position_sigma_m": {
+        "p05": 0.03483261495376177,
+        "median": 0.05903184488491561,
+        "p95": 0.25431161145454045,
+        "max": 0.3400492666927029
+      },
+      "joint_host_position_sigma_m": {
+        "p05": 0.011525895270180811,
+        "median": 0.05804822718782347,
+        "p95": 0.2543080623099907,
+        "max": 0.3399791926907701
+      },
+      "conditional_host_position_sigma_m": {
+        "p05": 0.008442529783573068,
+        "median": 0.056968625562791766,
+        "p95": 0.25159035472357233,
+        "max": 0.33879463659236453
+      },
+      "world_three_sigma_within_10cm": 0,
+      "host_three_sigma_within_10cm": 119
+    }
+  ],
+  "max_pose_change_m": 1.31117339208231e-13,
+  "ply_matches_prior_diagnostic": true
+}

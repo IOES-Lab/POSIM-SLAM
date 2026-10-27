@@ -67,7 +67,7 @@ def prepare(source,destination):
         text=raw.decode()
         if name.endswith('/vio_estimator.h'):
             text=replace_once(text,'#pragma once','#pragma once\n#include <map>\n#include "visual_geometry.hpp"')
-            text=replace_once(text,'  std::vector<int> point_ids;','  std::vector<int> point_ids;\n  std::map<int,posim_slam::VisualPointSupport> map_quality;')
+            text=replace_once(text,'  std::vector<int> point_ids;','  std::vector<int> point_ids;\n  std::map<int,posim_slam::VisualPointSupport> map_quality;\n  std::string map_information_error;')
         elif name.endswith('/sqrt_keypoint_vio.h'):
             text=replace_once(text,'#pragma once','#pragma once\n#include <functional>\nnamespace posim_slam { class PingFactorStore; class SonarFactorStore; class DvlFactorStore; class PressureFactorStore; }')
             text=replace_once(text,'  using Scalar = Scalar_;','''  using Scalar = Scalar_;
@@ -83,10 +83,15 @@ def prepare(source,destination):
   bool posim_had_visual_landmarks = false;
   int posim_joint_last_accepted = 0;
   uint64_t posim_projection_rejections = 0;
-  void posim_optimize_joint();''')
+  void posim_optimize_joint();
+  void posim_update_map_information();''')
         elif name.endswith('/ba_base.h'):
-            text=replace_once(text,'#pragma once','#pragma once\n#include "ping_state.hpp"\n#include "consumed_visual.hpp"\n#include "visual_geometry.hpp"')
+            text=replace_once(text,'#pragma once','#pragma once\n#include "ping_state.hpp"\n#include "consumed_visual.hpp"\n#include "visual_geometry.hpp"\n#include "map_information.hpp"')
             text=replace_once(text,'  inline void backup() {','''  mutable std::map<int,posim_slam::VisualPointSupport> posim_map_quality;
+  bool posim_map_information_enabled = false;
+  double posim_map_point_three_sigma_m = 0.;
+  std::map<int,posim_slam::MapLandmarkInformation> posim_point_information;
+  std::string posim_map_information_error;
   posim_slam::PingPlaneStore posim_ping_planes;
   posim_slam::ConsumedVisualObservations posim_consumed_visual;
   bool posim_ping_trial_active = false;
@@ -178,6 +183,7 @@ def prepare(source,destination):
         '    posim_joint_started = true; opt_started = true; posim_optimize_joint();\n'
         '  }\n'
         '  if (posim_after_joint) posim_after_joint(*this, last_state_t_ns);\n'
+        '  if (this->posim_map_information_enabled) posim_update_map_information();\n'
         '  // Preserve the first unobserved startup, not every later visual dropout.\n'
         '  posim_had_visual_landmarks = posim_had_visual_landmarks || lmdb.numLandmarks() > 0;\n'
         '  if (posim_had_visual_landmarks || posim_joint_started) marginalize(num_points_connected, lost_landmaks);\n'
@@ -191,7 +197,7 @@ def prepare(source,destination):
     text=replace_once(text,'    frames_after_kf++;', '    if (!posim_auxiliary) frames_after_kf++;')
     text=replace_once(text,'  std::unordered_set<KeypointId> lost_landmaks;\n  if (config.vio_marg_lost_landmarks) {',
         '  std::unordered_set<KeypointId> lost_landmaks;\n  if (!posim_auxiliary && config.vio_marg_lost_landmarks) {')
-    text='#include "ping_factors.hpp"\n#include "ping_optimizer.hpp"\n#include <cstdlib>\n'+text
+    text='#include "ping_factors.hpp"\n#include "ping_optimizer.hpp"\n#include "joint_map_information.hpp"\n#include <cstdlib>\n'+text
     text=replace_once(text,'      if (kv.first > last_state_to_marg) break;',
         '      if (!posim_joint_started && kv.first > last_state_to_marg) break;')
     text=replace_once(text,'      if (kv.first != last_state_to_marg) {',
@@ -258,9 +264,27 @@ void SqrtKeypointVioEstimator<Scalar_>::posim_optimize_joint() {
 }
 
 template <class Scalar_>
+void SqrtKeypointVioEstimator<Scalar_>::posim_update_map_information() {
+  this->posim_point_information.clear();this->posim_map_information_error.clear();
+  if (!lmdb.numLandmarks()) return;
+  try {
+    auto& base=static_cast<BundleAdjustmentBase<double>&>(*this);
+    const auto order=posim_slam::planPingMarginalLayout(base, {}, {}, {}, {}).source;
+    ImuLinData<double> imu={g, gyro_bias_sqrt_weight, accel_bias_sqrt_weight, {}};
+    for(const auto& [stamp,measurement]:imu_meas)imu.imu_meas[stamp]=&measurement;
+    const auto groups=posim_ping_factors ? posim_ping_factors->specs(order) : std::vector<posim_slam::JointPingGroupSpec>{};
+    this->posim_point_information=posim_slam::jointMapInformation(base,order,groups,marg_data,imu,
+        posim_sonar_factors.get(),posim_dvl_factors.get(),posim_pressure_factors.get());
+  } catch(const std::exception& error) {
+    // No certificate on failed queries; independently valid tracking continues.
+    this->posim_point_information.clear();this->posim_map_information_error=error.what();
+  }
+}
+
+template <class Scalar_>
 void SqrtKeypointVioEstimator<Scalar_>::debug_finalize()''')
     text=replace_once(text,'    get_current_points(data->points, data->point_ids);',
-        '    get_current_points(data->points, data->point_ids);\n    data->map_quality = this->posim_map_quality;')
+        '    get_current_points(data->points, data->point_ids);\n    data->map_quality = this->posim_map_quality;\n    data->map_information_error = this->posim_map_information_error;')
     text=replace_once(text,'  prev_opt_flow_res[opt_flow_meas->t_ns] = opt_flow_meas;',
         '  prev_opt_flow_res[opt_flow_meas->t_ns] = opt_flow_meas;\n'
         '  this->posim_consumed_visual.prune(prev_opt_flow_res);')

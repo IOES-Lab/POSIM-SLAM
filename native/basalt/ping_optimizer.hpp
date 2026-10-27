@@ -12,6 +12,31 @@
 #include <iostream>
 
 namespace posim_slam {
+// Shared measurement assembly. Optimization adds its numerical damping only
+// after this function; map information uses these undamped observations.
+inline void addAuxiliaryNormal(Eigen::MatrixXd& h,Eigen::VectorXd& b,
+    const std::optional<DvlFactorStore::Rows>& dvl,
+    const std::optional<SonarFactorStore::Linearization>& sonar,
+    const Eigen::MatrixXd& sonar_to_state,
+    const std::optional<PressureFactorStore::Rows>& pressure) {
+  if(dvl)for(size_t i=0;i<dvl->offsets.size();++i) {
+    const int offset=dvl->offsets[i];
+    const auto j=dvl->jacobian.block<3,15>(3*i,offset);
+    h.block<15,15>(offset,offset).noalias()+=j.transpose()*j;
+    b.segment<15>(offset).noalias()+=j.transpose()*dvl->residual.segment<3>(3*i);
+  }
+  if(sonar)for(const auto& [id,rows]:sonar->reduced) {
+    const Eigen::MatrixXd jacobian=rows.pose_jacobian*sonar_to_state;
+    h.noalias()+=jacobian.transpose()*jacobian;
+    b.noalias()+=jacobian.transpose()*rows.residual;
+  }
+  if(pressure) {
+    const auto n=h.cols();h.conservativeResize(n+1,n+1);b.conservativeResize(n+1);
+    h.row(n).setZero();h.col(n).setZero();b[n]=0;
+    h.noalias()+=pressure->jacobian.transpose()*pressure->jacobian;
+    b.noalias()+=pressure->jacobian.transpose()*pressure->residual;
+  }
+}
 using VisualProjectionSupport=std::set<std::pair<basalt::KeypointId,basalt::TimeCamId>>;
 
 // A trial must retain every visual residual that contributed to its baseline
@@ -106,25 +131,7 @@ inline PingOptimizationReport optimizePingGroups(basalt::BundleAdjustmentBase<do
       else static_cast<PingLinearization&>(*linearization).performQR(damping);
       Eigen::MatrixXd h;Eigen::VectorXd b;
       linearization->get_dense_H_b(h,b);
-      if(dvl_rows) {
-        for(size_t i=0;i<dvl_rows->offsets.size();++i) {
-          const int offset=dvl_rows->offsets[i];
-          const auto j=dvl_rows->jacobian.block<3,15>(3*i,offset);
-          h.block<15,15>(offset,offset).noalias()+=j.transpose()*j;
-          b.segment<15>(offset).noalias()+=j.transpose()*dvl_rows->residual.segment<3>(3*i);
-        }
-      }
-      if(sonar_rows)for(const auto& [id,rows]:sonar_rows->reduced) {
-        const Eigen::MatrixXd jacobian=rows.pose_jacobian*sonar_to_state;
-        h.noalias()+=jacobian.transpose()*jacobian;
-        b.noalias()+=jacobian.transpose()*rows.residual;
-      }
-      if(pressure_rows) {
-        const auto n=h.cols();h.conservativeResize(n+1,n+1);b.conservativeResize(n+1);
-        h.row(n).setZero();h.col(n).setZero();b[n]=0;
-        h.noalias()+=pressure_rows->jacobian.transpose()*pressure_rows->jacobian;
-        b.noalias()+=pressure_rows->jacobian.transpose()*pressure_rows->residual;
-      }
+      addAuxiliaryNormal(h,b,dvl_rows,sonar_rows,sonar_to_state,pressure_rows);
       h.diagonal().array()+=(h.diagonal().array().abs()*damping).max(1e-9);
       Eigen::LDLT<Eigen::MatrixXd> solve(h);const Eigen::VectorXd full_increment=solve.solve(-b);
       if(solve.info()!=Eigen::Success || !full_increment.allFinite()) {

@@ -12,6 +12,12 @@ struct VisualPointSupport {
   bool eligible=false;
   size_t exposures=0;
   double relative_range_sigma=std::numeric_limits<double>::infinity();
+  bool joint_position_observed=false;
+  bool joint_information_evaluated=false;
+  double joint_position_sigma_m=std::numeric_limits<double>::infinity();
+  bool joint_host_position_observed=false;
+  double joint_host_position_sigma_m=std::numeric_limits<double>::infinity();
+  double conditional_host_position_sigma_m=std::numeric_limits<double>::infinity();
 };
 inline VisualPointSupport visualPointSupport(const Eigen::MatrixXd& whitened,
     const Eigen::Vector3d& host_to_point,size_t exposures) {

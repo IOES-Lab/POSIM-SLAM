@@ -106,7 +106,7 @@ class PingLinearization final : public basalt::LinearizationAbsQR<double,6> {
       const std::unordered_set<basalt::KeypointId>* retiring_landmarks=nullptr,
       int64_t last_state_to_marg=std::numeric_limits<int64_t>::max())
       :Parent(owner,order,options,prior,imu,retiring_hosts,retiring_landmarks,last_state_to_marg),owner_(owner) {
-    if(specs.empty() || specs.size()>8)throw std::invalid_argument("invalid_joint_group_count");
+    if(specs.size()>8)throw std::invalid_argument("invalid_joint_group_count");
     std::map<basalt::KeypointId,size_t> membership;std::set<int> planes;
     for(auto& spec:specs) {
       if(!spec.build || (spec.range_only ? !spec.landmark_ids.empty() : spec.landmark_ids.size()<3) || spec.landmark_ids.size()>64)throw std::invalid_argument("invalid_joint_group_membership");
@@ -176,6 +176,27 @@ class PingLinearization final : public basalt::LinearizationAbsQR<double,6> {
   }
 
   void performQR() override { performQR(0.); }
+
+  // Read raw observation rows exactly once, before QR or trial damping.
+  // Group landmark ordering follows raw.blocks, not the spec's set order.
+  template<class Visitor> void visitMapRows(Visitor&& visitor) const {
+    if(phase_!=Phase::Raw || revision_!=owner_->posim_ping_state_revision)
+      throw std::logic_error("map_information_requires_raw_linearization");
+    for(size_t i=0;i<landmark_ids.size();++i) {
+      MatX pose,local;VecX residual;
+      landmark_blocks[i]->exportJointLinearization(pose,local,residual);
+      visitor(std::vector<basalt::KeypointId>{landmark_ids[i]},0,pose,local);
+    }
+    for(const auto& group:groups_) {
+      std::map<const basalt::LandmarkBlock<double>*,basalt::KeypointId> identities;
+      for(const auto& [id,block]:group.owned)identities.emplace(block.get(),id);
+      std::vector<basalt::KeypointId> ids;
+      for(const auto* block:group.raw.blocks)ids.push_back(identities.at(block));
+      const MatX pose=group.raw.jacobian.leftCols(aom.total_size);
+      const MatX local=group.raw.jacobian.rightCols(group.raw.jacobian.cols()-aom.total_size);
+      visitor(ids,group.raw.planeCount(),pose,local);
+    }
+  }
 
   // Optimization reduces the raw group once with its trial damping. The
   // polymorphic no-argument path remains undamped for marginalization.

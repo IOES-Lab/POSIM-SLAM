@@ -77,6 +77,21 @@ class LandmarkArchive {
     }
     return result;
   }
+  std::vector<std::pair<int,Point>> observed_points(const std::set<int>& observed) const {
+    std::vector<std::pair<int,Point>> result;
+    for(int id:observed) {
+      const auto found=entries_.find(id);
+      if(found!=entries_.end())result.emplace_back(id,found->second.point);
+    }
+    return result;
+  }
+  void withdraw_observed_outliers(const std::set<int>& ids) {
+    for(int id:ids) {
+      const auto found=entries_.find(id);
+      if(found==entries_.end())continue;
+      order_.erase({found->second.last,id});entries_.erase(found);++withdrawn_;
+    }
+  }
   static std::vector<Point> display_sample(const std::vector<Point>& points) {
     const size_t count=std::min(points.size(),size_t(1000));
     std::vector<Point> result;result.reserve(count);
@@ -87,8 +102,9 @@ class LandmarkArchive {
   size_t retained() const{return entries_.size();}
   size_t evicted() const{return evicted_;}
   size_t rejected() const{return rejected_;}
+  size_t withdrawn() const{return withdrawn_;}
  private:
-  size_t budget_,evicted_=0,rejected_=0;int64_t stamp_=0;
+  size_t budget_,evicted_=0,rejected_=0,withdrawn_=0;int64_t stamp_=0;
   std::map<int,Entry> entries_;
   std::set<std::pair<int64_t,int>> order_;
 };

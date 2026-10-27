@@ -1,0 +1,30 @@
+{
+  "culling": {
+    "position": 1.230682222796986e-13,
+    "orientation_xyzw": 1.8327353523694967e-14,
+    "velocity": 2.722995440240794e-14,
+    "gyro_bias": 3.2780852685099227e-16,
+    "accel_bias": 4.447275880892221e-13
+  },
+  "joint_diagnostic": {
+    "position": 9.831024883055761e-14,
+    "orientation_xyzw": 1.5291587440735555e-14,
+    "velocity": 2.2340202604498316e-14,
+    "gyro_bias": 2.2386403169573355e-16,
+    "accel_bias": 3.238798118587738e-13
+  },
+  "joint_metric": {
+    "position": 4.7406523151494184e-14,
+    "orientation_xyzw": 9.005816925533594e-15,
+    "velocity": 1.2229963135962363e-14,
+    "gyro_bias": 3.746714716907837e-16,
+    "accel_bias": 1.967037643879621e-13
+  },
+  "culling_joint_metric": {
+    "position": 1.035838081975271e-13,
+    "orientation_xyzw": 1.4058199049316045e-14,
+    "velocity": 2.2968606183670914e-14,
+    "gyro_bias": 3.26007311288656e-16,
+    "accel_bias": 3.0647706594777446e-13
+  }
+}
