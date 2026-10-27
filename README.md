@@ -431,3 +431,12 @@ runtime integration and complete-map qualification remain open.
 
 추정 VIO 자세를 고정한 오프라인 기준실험으로 전체 PLY·동일 시점 RGB·모든 점의 오차와
 누락된 면을 보존합니다. 실시간 통합과 완전한 지도 검증은 아직 완료되지 않았습니다.
+
+[Multiview image support / 다중 시점 영상의 관측 지지](docs/diagnostics/multiview-inputs.md)
+describes `image_neighbors`, an independent NumPy implementation of the standard
+shared-track/parallax view-selection rule. Every supplied image ID remains in
+the output graph; display point limits do not select reconstruction images.
+
+`image_neighbors`는 공통 특징과 시차를 이용하는 기존 뷰 선정 규칙의 독립 NumPy
+구현입니다. 모든 입력 영상 ID를 출력 그래프에 보존하며 표시 점 수로 복원 영상을
+선택하지 않습니다.

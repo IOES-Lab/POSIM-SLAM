@@ -1,0 +1,200 @@
+{
+  "scope": "Show original onboard RGB and post-estimation image-coverage evidence.",
+  "camera": "Physical downward camera; actual image inputs used at VIO pose timestamps",
+  "raw_capture_unchanged": true,
+  "full_camera_pose_matched_frames": 490,
+  "reduced_depth_frames": 98,
+  "geometry_scope": "Post-estimation camera coverage upper bound; never reconstruction input.\nUses aligned estimated cameras, frustum, backface and authored-box occlusion.\nSeabed occlusion is not tested. Borderline pixels remain diagnostic only.\n",
+  "geometry_is_visibility_upper_bound": true,
+  "authored_box_occlusion_tested": true,
+  "seabed_occlusion_tested": false,
+  "analytic_segment_box_controls_pass": true,
+  "roof_coverage": [
+    {
+      "name": "acoustic_validation_target_0",
+      "top_face": {
+        "axis": "z",
+        "sign": 1,
+        "samples": 216,
+        "full_5hz_any_view_fraction_upper_bound": 1.0,
+        "full_5hz_at_least_three_views_fraction_upper_bound": 1.0,
+        "sampled_1hz_any_view_fraction_upper_bound": 1.0,
+        "sampled_1hz_at_least_three_views_fraction_upper_bound": 1.0,
+        "sampled_selected_neighbors_three_view_fraction_upper_bound": 1.0,
+        "sixteen_reference_three_view_fraction_upper_bound": 0.9166666666666666
+      }
+    },
+    {
+      "name": "acoustic_validation_target_1",
+      "top_face": {
+        "axis": "z",
+        "sign": 1,
+        "samples": 264,
+        "full_5hz_any_view_fraction_upper_bound": 1.0,
+        "full_5hz_at_least_three_views_fraction_upper_bound": 1.0,
+        "sampled_1hz_any_view_fraction_upper_bound": 1.0,
+        "sampled_1hz_at_least_three_views_fraction_upper_bound": 0.0,
+        "sampled_selected_neighbors_three_view_fraction_upper_bound": 0.0,
+        "sixteen_reference_three_view_fraction_upper_bound": 0.0
+      }
+    },
+    {
+      "name": "acoustic_validation_target_2",
+      "top_face": {
+        "axis": "z",
+        "sign": 1,
+        "samples": 240,
+        "full_5hz_any_view_fraction_upper_bound": 1.0,
+        "full_5hz_at_least_three_views_fraction_upper_bound": 1.0,
+        "sampled_1hz_any_view_fraction_upper_bound": 1.0,
+        "sampled_1hz_at_least_three_views_fraction_upper_bound": 1.0,
+        "sampled_selected_neighbors_three_view_fraction_upper_bound": 1.0,
+        "sixteen_reference_three_view_fraction_upper_bound": 1.0
+      }
+    },
+    {
+      "name": "acoustic_validation_wall_0",
+      "top_face": {
+        "axis": "z",
+        "sign": 1,
+        "samples": 600,
+        "full_5hz_any_view_fraction_upper_bound": 0.0,
+        "full_5hz_at_least_three_views_fraction_upper_bound": 0.0,
+        "sampled_1hz_any_view_fraction_upper_bound": 0.0,
+        "sampled_1hz_at_least_three_views_fraction_upper_bound": 0.0,
+        "sampled_selected_neighbors_three_view_fraction_upper_bound": 0.0,
+        "sixteen_reference_three_view_fraction_upper_bound": 0.0
+      }
+    },
+    {
+      "name": "acoustic_validation_wall_1",
+      "top_face": {
+        "axis": "z",
+        "sign": 1,
+        "samples": 270,
+        "full_5hz_any_view_fraction_upper_bound": 0.0,
+        "full_5hz_at_least_three_views_fraction_upper_bound": 0.0,
+        "sampled_1hz_any_view_fraction_upper_bound": 0.0,
+        "sampled_1hz_at_least_three_views_fraction_upper_bound": 0.0,
+        "sampled_selected_neighbors_three_view_fraction_upper_bound": 0.0,
+        "sixteen_reference_three_view_fraction_upper_bound": 0.0
+      }
+    }
+  ],
+  "wall_1_faces": [
+    {
+      "axis": "x",
+      "sign": -1,
+      "samples": 160,
+      "full_5hz_any_view_fraction_upper_bound": 0.0625,
+      "full_5hz_at_least_three_views_fraction_upper_bound": 0.03125,
+      "sampled_1hz_any_view_fraction_upper_bound": 0.0625,
+      "sampled_1hz_at_least_three_views_fraction_upper_bound": 0.0,
+      "sampled_selected_neighbors_three_view_fraction_upper_bound": 0.0,
+      "sixteen_reference_three_view_fraction_upper_bound": 0.0
+    },
+    {
+      "axis": "x",
+      "sign": 1,
+      "samples": 160,
+      "full_5hz_any_view_fraction_upper_bound": 0.0,
+      "full_5hz_at_least_three_views_fraction_upper_bound": 0.0,
+      "sampled_1hz_any_view_fraction_upper_bound": 0.0,
+      "sampled_1hz_at_least_three_views_fraction_upper_bound": 0.0,
+      "sampled_selected_neighbors_three_view_fraction_upper_bound": 0.0,
+      "sixteen_reference_three_view_fraction_upper_bound": 0.0
+    },
+    {
+      "axis": "y",
+      "sign": -1,
+      "samples": 1728,
+      "full_5hz_any_view_fraction_upper_bound": 0.04398148148148148,
+      "full_5hz_at_least_three_views_fraction_upper_bound": 0.027199074074074073,
+      "sampled_1hz_any_view_fraction_upper_bound": 0.02662037037037037,
+      "sampled_1hz_at_least_three_views_fraction_upper_bound": 0.0005787037037037037,
+      "sampled_selected_neighbors_three_view_fraction_upper_bound": 0.0005787037037037037,
+      "sixteen_reference_three_view_fraction_upper_bound": 0.0
+    },
+    {
+      "axis": "y",
+      "sign": 1,
+      "samples": 1728,
+      "full_5hz_any_view_fraction_upper_bound": 0.0,
+      "full_5hz_at_least_three_views_fraction_upper_bound": 0.0,
+      "sampled_1hz_any_view_fraction_upper_bound": 0.0,
+      "sampled_1hz_at_least_three_views_fraction_upper_bound": 0.0,
+      "sampled_selected_neighbors_three_view_fraction_upper_bound": 0.0,
+      "sixteen_reference_three_view_fraction_upper_bound": 0.0
+    },
+    {
+      "axis": "z",
+      "sign": -1,
+      "samples": 270,
+      "full_5hz_any_view_fraction_upper_bound": 0.0,
+      "full_5hz_at_least_three_views_fraction_upper_bound": 0.0,
+      "sampled_1hz_any_view_fraction_upper_bound": 0.0,
+      "sampled_1hz_at_least_three_views_fraction_upper_bound": 0.0,
+      "sampled_selected_neighbors_three_view_fraction_upper_bound": 0.0,
+      "sixteen_reference_three_view_fraction_upper_bound": 0.0
+    },
+    {
+      "axis": "z",
+      "sign": 1,
+      "samples": 270,
+      "full_5hz_any_view_fraction_upper_bound": 0.0,
+      "full_5hz_at_least_three_views_fraction_upper_bound": 0.0,
+      "sampled_1hz_any_view_fraction_upper_bound": 0.0,
+      "sampled_1hz_at_least_three_views_fraction_upper_bound": 0.0,
+      "sampled_selected_neighbors_three_view_fraction_upper_bound": 0.0,
+      "sixteen_reference_three_view_fraction_upper_bound": 0.0
+    }
+  ],
+  "contact_sheet_frames": [
+    {
+      "stamp_ns": 45900000000,
+      "retained_in_1hz_depth_input": true,
+      "original_image_sha256": "8eeb58f4baad8da24cb92a051000998927b222253992fbff3bb4239fc008dae7"
+    },
+    {
+      "stamp_ns": 46100000000,
+      "retained_in_1hz_depth_input": false,
+      "original_image_sha256": "50b4201f6be1f29f4417e8091490f98210a37a49efbe4405ade60450a4fb2a85"
+    },
+    {
+      "stamp_ns": 46500000000,
+      "retained_in_1hz_depth_input": false,
+      "original_image_sha256": "60f5e52aff5797f499492fe25de1e5c1ba341b7c61c7bfaea17998f9bd95bb3b"
+    },
+    {
+      "stamp_ns": 46900000000,
+      "retained_in_1hz_depth_input": true,
+      "original_image_sha256": "258e76760398dc4aafb3133113063898f196003f547cb80b824d200d472d45b2"
+    },
+    {
+      "stamp_ns": 47100000000,
+      "retained_in_1hz_depth_input": false,
+      "original_image_sha256": "4c544ea89e47f4f744796c70415e3c4c8f51dcbd6976bc960e4984cb1a831ede"
+    },
+    {
+      "stamp_ns": 47300000000,
+      "retained_in_1hz_depth_input": false,
+      "original_image_sha256": "53488e7fde092f62b151d27bedf2a51d0bc7e7a0e1c0d61b1615ec2360db0bdf"
+    },
+    {
+      "stamp_ns": 47700000000,
+      "retained_in_1hz_depth_input": false,
+      "original_image_sha256": "9cbe1e8ca7f08e338934f96f17337f31cf49e006ce153f7e88f7c51322bb2ec8"
+    },
+    {
+      "stamp_ns": 47900000000,
+      "retained_in_1hz_depth_input": true,
+      "original_image_sha256": "a7d69b5b4cfcfebaef8222043dac543dfad44d2f501dad2056c8bd0ab6616be2"
+    }
+  ],
+  "full_rate_selected_neighbors_target_1_top": 1.0,
+  "source_sha256": {
+    ".local/plot_multiview_input_support_20261027.py": "6a38d85489dacec0f3805dcf0ccc567c6e16e35d4c4b117d86c657a35a202998",
+    ".local/visual-surface-support-audit-20261027/report.json": "41cc17fd0151f4259f836892a06b2387c1967d3d3deb6a4d6dd7a6e240b1da2f",
+    ".local/visual-full-rate-surface-support-audit-20261027/report.json": "ad2adc6ba0fff6855fae9bc67ddfc1b6782222e1aeb396a8271c394519ee2a49"
+  }
+}

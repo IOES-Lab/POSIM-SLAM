@@ -117,3 +117,57 @@ particles and seabed caustics in RGB. [Summary](covisibility-summary.json),
 64 pt² 점과 전체 높이 범위의 Turbo 색상을 사용합니다. RGB에는 수중 감쇠·입자·
 해저 집광무늬가 포함됩니다. 이 추가 실험의 요약·면별 복원 비율·전체 PLY를
 별도 파일로 보존합니다. 실시간 통합과 설치형 앱 검증은 아직 완료되지 않았습니다.
+
+## Input coverage audit / 입력 영상의 관측 범위
+
+![Original onboard downward RGB frames retained or omitted by the 1 Hz reduction](input-frames.png)
+
+These are original onboard downward-camera inputs. The isometric field RGB in
+the map comparisons comes from a separate comparison camera at the point-cloud
+plot's viewpoint. It is not the onboard image used to reconstruct the map.
+The frames preserve captured attenuation, particles and seabed caustics.
+
+위 그림은 실제 하향 카메라의 원본 입력입니다. 점군 비교의 등각 방향 RGB는
+점군 그림과 같은 시점에 배치한 별도의 비교 카메라 영상입니다. 지도 복원에 쓴
+기체 카메라 영상과 구분합니다. 기록한 감쇠·부유 입자·해저 집광무늬를 유지합니다.
+
+Fusing all 98 computed depthmaps, instead of the selected 16, retains 1,082,618
+points but still gives **0%** target 1 top-face coverage within 5 cm. All-point
+p95 is 4.08 cm and the maximum is 1.43 m. More fusion views alone do not repair
+the missing surface. [All-98-view summary](all-98-view-summary.json); the complete
+raw fields and failed fusion remain local.
+
+계산한 깊이맵 98개를 모두 합치면 1,082,618점이 남지만 물체 1 상부의 5 cm 이내
+복원 비율은 여전히 **0%**입니다. 전체 점의 95분위 오차는 4.08 cm, 최대 오차는
+1.43 m입니다. 합치는 시점 수만 늘려서는 누락 면을 해결하지 못합니다. 전체 원시
+필드와 실패한 합성 결과는 로컬에 보존하며 위 요약에 모든 점의 평가를 기록합니다.
+
+The [geometric support audit](input-support-summary.json) uses aligned estimated
+cameras, a 5 cm face grid, frustum/front-face checks and authored-box occlusion.
+It is an **upper bound**: seabed occlusion and successful pixel matching are not
+established. For target 1's top, all grid samples can have at least three views
+at the recorded VIO image times (490 frames, 5 Hz). After the fixed 1 Hz reduction
+(98 frames), **none** can have three views. The full-rate selected graph also
+permits three-view support across the top. The second wall's main inner face
+has only 2.7% three-view support even at full rate; that requires better mission
+coverage, rather than accepting its absence as successful reconstruction.
+
+기하 검사는 정렬한 추정 카메라, 5 cm 면 격자, 시야각·앞면 검사와 시험 상자에
+의한 가림을 사용합니다. 해저 가림과 픽셀 대응 성공을 확인하지 않은 **상한값**입니다.
+물체 1 상부는 VIO 영상 시각 전체인 5 Hz·490프레임에서 모든 표본에 3시점 이상의
+관측이 가능하지만, 1 Hz·98프레임으로 줄이면 그 조건을 만족하는 표본이 **없습니다**.
+전체 주기에서 선택한 인접 뷰도 상부 전체의 3시점 관측을 허용합니다. 두 번째 벽의
+주요 안쪽 면은 전체 주기에서도 2.7%만 3시점 지지를 가지므로 촬영 경로를 개선해야
+합니다. 누락된 벽을 성공적인 복원으로 인정하지 않습니다.
+
+POSIM-SLAM's independent
+[`image_neighbors` utility](https://github.com/IOES-Lab/POSIM-SLAM/blob/main/docs/diagnostics/multiview-inputs.md)
+implements the standard common-track/parallax rule while retaining all supplied
+image IDs. Geometry controls, an isolated wheel import and exact agreement with
+the frozen 490-image graph pass. [Recorded selector verification](selector-verification.json).
+This does not qualify depth reconstruction or change the live app estimator.
+
+POSIM-SLAM의 독립 `image_neighbors` 함수는 기존 공통 특징·시차 규칙을 구현하고
+모든 입력 영상 ID를 보존합니다. 기하 제어 검사·격리 wheel 가져오기·고정된 실제
+490영상 그래프와의 정확한 일치를 확인했습니다. 깊이 복원의 합격을 뜻하거나
+실시간 앱 추정기를 변경하는 결과는 아닙니다.

@@ -27,6 +27,18 @@ depth-support comparison figures.
 
 ## Estimator dependencies / 추정기 의존성
 
+The offline [CPU depth reference](docs/validation/visual-dense-reference-20261027/README.md)
+uses Mapillary OpenSfM `65571c8ae9ac6a1d0bcd3fdc1ea5fff97b1b5611`, under
+[BSD-2-Clause](docs/diagnostics/notices/opensfm-BSD-2-Clause.txt).
+Its native kernel is not distributed in the POSIM-SLAM wheel. The independent
+`image_neighbors` NumPy utility follows its published shared-track/parallax
+selection rule and uses original Apache-2.0 source.
+
+오프라인 CPU 깊이 기준실험은 위 OpenSfM 고정 리비전과 BSD-2-Clause 고지를
+사용합니다. 네이티브 커널은 POSIM-SLAM wheel에 포함하지 않습니다. 별도
+`image_neighbors` 유틸리티는 공개된 공통 특징·시차 규칙을 자체 Apache-2.0
+NumPy 코드로 구현합니다.
+
 POSIM-SLAM's original Python/C++ source is Apache-2.0. Dependencies retain the
 licenses below. A license for the main estimator does not cover every optional
 solver, vocabulary, dataset, model or runtime dependency.

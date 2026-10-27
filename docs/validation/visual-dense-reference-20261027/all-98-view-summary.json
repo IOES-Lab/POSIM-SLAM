@@ -1,0 +1,35 @@
+{
+  "scope": "All 98 existing depthmaps fused with original thresholds; every generated point scored",
+  "all_points_retained_and_scored": true,
+  "map_qualified": false,
+  "points": 1082618,
+  "surface_distance_m": {
+    "minimum": 1.384234510419001e-09,
+    "median": 0.01415016218666531,
+    "p90": 0.03392012154229078,
+    "p95": 0.04075761534634183,
+    "maximum": 1.4329855405999827
+  },
+  "within_10cm": 1079982,
+  "nearest_surface_counts_within_10cm": {
+    "acoustic_validation_target_0": 32287,
+    "acoustic_validation_target_1": 6233,
+    "acoustic_validation_target_2": 27968,
+    "acoustic_validation_wall_0": 9879,
+    "acoustic_validation_wall_1": 1,
+    "seabed": 1003614
+  },
+  "fusion_elapsed_seconds": 3.6308221249782946,
+  "maximum_fusion_rss_mib": 365.84375,
+  "computed_depth_frames": 98,
+  "fusion_reference_views": 98,
+  "field_sha256": "2a06fec894f14d53a86ad92dcc61c649f352e475c8626950491de9a42cb8601c",
+  "top_face_coverage_5cm": {
+    "acoustic_validation_target_0": 1.0,
+    "acoustic_validation_target_1": 0.0,
+    "acoustic_validation_target_2": 1.0,
+    "acoustic_validation_wall_0": 0.0,
+    "acoustic_validation_wall_1": 0.0
+  },
+  "complete_raw_fields_retained_locally": true
+}

@@ -1,0 +1,9 @@
+{
+  "passed": true,
+  "frames": 490,
+  "all_recorded_pose_matched_images_preserved": true,
+  "frozen_graph_identical": true,
+  "elapsed_s": 7.057646375003969,
+  "library_source_sha256": "a825a23a6bb62d72a7563dd8231bfb5ac2a8639282ee39e8cbd64f801307391e",
+  "graph_sha256": "80ae01c1e261e322f29651649356f8deafc100ed628b909ac75e260d783930b9"
+}
