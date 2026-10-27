@@ -1,0 +1,7 @@
+{
+  "passed": true,
+  "expected_rejection": "matching_native_proof_required",
+  "returncode": 2,
+  "descriptor_created": false,
+  "source": "imu-sync-long/receipt.json"
+}

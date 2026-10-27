@@ -1,0 +1,12 @@
+{
+  "ping-camera-current": {
+    "receipt_sha256": "4f575f0af9a073eccd137a18b2b4b03bbc05682fa965183a4cbeb9c40c323d12",
+    "excluded": true,
+    "reason": "Both SDK wrapper tests actually used ROS domain 73; input topics mixed. Invalid for SLAM assessment."
+  },
+  "camera-imu-long": {
+    "receipt_sha256": "fda30216cf5ca706bc814225a626935f9c815796fe32a7af1bdd9e0ba67f0b70",
+    "excluded": true,
+    "reason": "Both SDK wrapper tests actually used ROS domain 73; input topics mixed. Invalid for SLAM assessment."
+  }
+}

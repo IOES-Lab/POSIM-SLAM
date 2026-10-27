@@ -1,0 +1,132 @@
+{
+  "schema": "posim-vio-joint-ros-proof-1",
+  "passed": true,
+  "worker_sha256": "1753ef6c2d07380aa6b44d2a4e6c3aea0c9087e6813a32989d703658f1f3be47",
+  "joint_ping": true,
+  "joint_sonar": false,
+  "joint_dvl": true,
+  "moving_initialization": true,
+  "max_image_rate_hz": 5.0,
+  "component_version": "0.1.0",
+  "ros_domain_id": 87,
+  "subscribed_topics": [
+    "/vehicle/sensors/imu",
+    "/vehicle/sensors/imu/status",
+    "/model/bluerov2/slam/camera",
+    "/model/bluerov2/slam/camera_info",
+    "/model/bluerov2/slam/ping",
+    "/vehicle/sensors/dvl/status"
+  ],
+  "initial_ping_fusion": {
+    "input_enabled": true,
+    "joint_enabled": true,
+    "received": 270,
+    "optimized_states": 7
+  },
+  "ping_fusion": {
+    "input_enabled": true,
+    "joint_enabled": true,
+    "received": 612,
+    "optimized_states": 23
+  },
+  "initial_dvl_fusion": {
+    "optimized_states": 22,
+    "last_fused_stamp_ns": 47010000000
+  },
+  "dvl_fusion": {
+    "optimized_states": 55,
+    "last_fused_stamp_ns": 110000000000
+  },
+  "interrupted_sensor": "dvl",
+  "visual_export": {
+    "session_nonce": "joint-ros-replay",
+    "frame": "vehicle/vio_joint-ros-replay_segment_0",
+    "segment": 0,
+    "points": 383,
+    "stamp_ns": 47200000000,
+    "request_id": 1
+  },
+  "startup_export_rejected": "vio_map_unavailable_or_busy",
+  "stale_visual_export_rejected": "vio_map_unavailable_or_busy",
+  "stale_visual_map_cleared": true,
+  "visual_display_withheld": true,
+  "recovery": {
+    "resume_stamp_ns": 51130000000,
+    "old_frame": "vehicle/vio_joint-ros-replay_segment_0",
+    "empty_archive_before_resume": true,
+    "new_frame": "vehicle/vio_joint-ros-replay_segment_1",
+    "new_pose_count": 267,
+    "first_visual_map_stamp_ns": 57500000000,
+    "time_to_first_map_s": 6.37,
+    "export": {
+      "session_nonce": "joint-ros-replay",
+      "frame": "vehicle/vio_joint-ros-replay_segment_1",
+      "segment": 1,
+      "points": 1182,
+      "stamp_ns": 110100000000,
+      "request_id": 2
+    }
+  },
+  "failures": [
+    {
+      "reason": "dvl_stale",
+      "segment": 1,
+      "wall": 216854.560379875,
+      "visual_support": {
+        "full_weight_reprojections": 195,
+        "huber_threshold_px": 1.0,
+        "observability_qualified": false,
+        "reprojected_landmarks": 198,
+        "reprojection_rmse_px": 0.3473627263109164,
+        "visual_measurements_present": true
+      }
+    }
+  ],
+  "published_poses": 388,
+  "recovery_source_seconds": 60.0,
+  "input_delivery": {
+    "pending": 0,
+    "payload_bytes": 0,
+    "max_messages": 4096,
+    "max_payload_bytes": 67108864,
+    "peak_messages": 11,
+    "peak_payload_bytes": 502614,
+    "received": 12688,
+    "rejected": 0,
+    "discarded_on_reset": 0,
+    "fault": null,
+    "max_tick_ms": 92.8412500070408,
+    "max_status_write_ms": 1.9797919958364218,
+    "max_input_handler_ms": {
+      "imu": 0.4397910088300705,
+      "camera_info": 0.04441701457835734,
+      "imu_status": 0.03875000402331352,
+      "image": 0.03587501123547554,
+      "ping": 11.252875003265217,
+      "dvl": 1.9578339997678995
+    }
+  },
+  "cleanup": [
+    {
+      "pid": 51120,
+      "returncode": -15,
+      "threads_stopped": true
+    },
+    {
+      "pid": 51289,
+      "returncode": -15,
+      "threads_stopped": true
+    }
+  ],
+  "original_receipt_sha256": "7342c89186128b195b7534d43dba284b9904f6822b63e55715988d12d4581378",
+  "scope": "Actual ROS replay; transport/recovery only. Map accuracy assessed separately. Original full receipt preserved privately.",
+  "surface": {
+    "points": 1182,
+    "median_m": 0.005160864788629593,
+    "p95_m": 0.013639962858437733,
+    "p99_m": 0.026332005432833146,
+    "maximum_m": 0.061599580736351606,
+    "outside_10cm": 0
+  },
+  "snapshot_phase": "recovered"
+}

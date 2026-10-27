@@ -1,0 +1,60 @@
+{
+  "native_ping": {
+    "points": 1574,
+    "median_m": 0.007747017260295172,
+    "p95_m": 0.02028357106158166,
+    "p99_m": 0.09643032200870258,
+    "maximum_m": 2.6760091622550615,
+    "outside_10cm": 16
+  },
+  "ROS": {
+    "ping-sync": {
+      "points": 1081,
+      "median_m": 0.0044030932973802795,
+      "p95_m": 0.015792930357462317,
+      "p99_m": 0.04355696982956472,
+      "maximum_m": 0.9245607569428709,
+      "outside_10cm": 7,
+      "passed": true,
+      "recovered_poses": 559,
+      "recovered_points": 1081,
+      "time_to_first_map_s": 7.87
+    },
+    "dvl-sync": {
+      "points": 1335,
+      "median_m": 0.005345351356339719,
+      "p95_m": 0.01593474550181546,
+      "p99_m": 0.024393246289937706,
+      "maximum_m": 0.06081866998272851,
+      "outside_10cm": 0,
+      "passed": true,
+      "recovered_poses": 267,
+      "recovered_points": 1335,
+      "time_to_first_map_s": 6.37
+    },
+    "ping-dvl-sync": {
+      "points": 1182,
+      "median_m": 0.005160864788629593,
+      "p95_m": 0.013639962858437733,
+      "p99_m": 0.026332005432833146,
+      "maximum_m": 0.061599580736351606,
+      "outside_10cm": 0,
+      "passed": true,
+      "recovered_poses": 267,
+      "recovered_points": 1182,
+      "time_to_first_map_s": 6.37
+    },
+    "imu-sync-long": {
+      "points": 144,
+      "median_m": 0.005207505606238021,
+      "p95_m": 0.01226269857324896,
+      "p99_m": 0.02579376660220199,
+      "maximum_m": 0.07829859711845033,
+      "outside_10cm": 0,
+      "passed": false,
+      "recovered_poses": 549,
+      "recovered_points": 0,
+      "time_to_first_map_s": null
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "passed": true,
+  "version": "0.1.0",
+  "isolated": 1,
+  "imported_from": "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/camera-ping-recovery-20261028/restored independent wheel/posim_slam/__init__.py",
+  "ROS_imported": false,
+  "status": {
+    "pending": 0,
+    "payload_bytes": 0,
+    "received": 1,
+    "released": 1,
+    "discarded_on_reset": 0,
+    "peak_pending": 1,
+    "peak_payload_bytes": 5,
+    "imu_watermark_ns": 0
+  },
+  "wheel_sha256": "4edbbe737720b07e0687ae429dc66cd0f1fbd57ee794a9566f434f54f36edf17",
+  "relocated_before_import": true
+}

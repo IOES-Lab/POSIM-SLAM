@@ -1,0 +1,59 @@
+{
+  "imu-isolated": {
+    "passed": false,
+    "ros_domain_id": 89,
+    "error": "ValueError('vio_map_unavailable_or_busy')",
+    "visual_export": null,
+    "published_poses": 0,
+    "failures": [],
+    "receipt_sha256": "1f5bd5c75c40953cfb282267c81b128d7059c1e2fc04b92f49930b3ca8f6ed65",
+    "runtime_source_files": {
+      "library_paths.py": "cf7eed75bea01de60bde40b2e6f69bf85a98892ddca590035e40c6cd7c27420a",
+      "practice_slam/vio_live.py": "4dc615a6d5c606910826314ae21bad6fec05a0bbcffdd75a51abe69559a7d091",
+      "practice_slam/worker_liveness.py": "ee453e404938ac286b93224d6025891344f3b4c067d2481a2c5530febc429cb9",
+      "practice_slam/sensor_ingress.py": "40bb602f001dba98a0e0e5e301472bb08ee5a0bca8b63e929a258fdf3ed3512b",
+      "worlds/practice_vio.py": "5a0b29bc1a3435dd149b1c5e083ac9a9cd868d7fabb0663804ade53f55705c8b",
+      "worlds/inertial_source.py": "81989051bedc8c84756d7b3f65a1d2304cff20f6782014f823b7c24bfe6c714a",
+      "worlds/sensor_frames.py": "1a5aef127eebc7ffdccee1bacad0f3bf32c65dc5ad3fa985c037e65d4c0522cc",
+      "worlds/sonar_source.py": "3492a103d7c09e10b296e864da0435afa7aa6f238125b02ecd556c14c916945a"
+    }
+  },
+  "imu-sync": {
+    "passed": false,
+    "ros_domain_id": 89,
+    "error": "ValueError('vio_map_unavailable_or_busy')",
+    "visual_export": null,
+    "published_poses": 224,
+    "failures": [],
+    "receipt_sha256": "3c87e7bdf81a06924be22fca833eb13e22cf22b01b56bfdc56c44b6f7150b966",
+    "runtime_source_files": {
+      "library_paths.py": "cf7eed75bea01de60bde40b2e6f69bf85a98892ddca590035e40c6cd7c27420a",
+      "practice_slam/vio_live.py": "8f158c6f134b88388b9b1d4919593ce4ccf8fc1fb0b2754aec0ea81d31900849",
+      "practice_slam/worker_liveness.py": "ee453e404938ac286b93224d6025891344f3b4c067d2481a2c5530febc429cb9",
+      "practice_slam/sensor_ingress.py": "40bb602f001dba98a0e0e5e301472bb08ee5a0bca8b63e929a258fdf3ed3512b",
+      "worlds/practice_vio.py": "dd6f2fcf02b2ee76d921ecbc521157125c4713c2e82685e77f23b1803194980d",
+      "worlds/inertial_source.py": "81989051bedc8c84756d7b3f65a1d2304cff20f6782014f823b7c24bfe6c714a",
+      "worlds/sensor_frames.py": "1a5aef127eebc7ffdccee1bacad0f3bf32c65dc5ad3fa985c037e65d4c0522cc",
+      "worlds/sonar_source.py": "3492a103d7c09e10b296e864da0435afa7aa6f238125b02ecd556c14c916945a"
+    }
+  },
+  "camera-imu-recovery": {
+    "passed": false,
+    "ros_domain_id": null,
+    "error": "ValueError('vio_map_unavailable_or_busy')",
+    "visual_export": null,
+    "published_poses": 0,
+    "failures": [],
+    "receipt_sha256": "d097d98fac525931af6cd9be0e991ab162706db0b425bef459c363427a180b03",
+    "runtime_source_files": {
+      "library_paths.py": "cf7eed75bea01de60bde40b2e6f69bf85a98892ddca590035e40c6cd7c27420a",
+      "practice_slam/vio_live.py": "4dc615a6d5c606910826314ae21bad6fec05a0bbcffdd75a51abe69559a7d091",
+      "practice_slam/worker_liveness.py": "ee453e404938ac286b93224d6025891344f3b4c067d2481a2c5530febc429cb9",
+      "practice_slam/sensor_ingress.py": "40bb602f001dba98a0e0e5e301472bb08ee5a0bca8b63e929a258fdf3ed3512b",
+      "worlds/practice_vio.py": "3ec65a31dde7507b81710ab4efe4472072ca28699c9d79fad629793612b14b92",
+      "worlds/inertial_source.py": "81989051bedc8c84756d7b3f65a1d2304cff20f6782014f823b7c24bfe6c714a",
+      "worlds/sensor_frames.py": "1a5aef127eebc7ffdccee1bacad0f3bf32c65dc5ad3fa985c037e65d4c0522cc",
+      "worlds/sonar_source.py": "3492a103d7c09e10b296e864da0435afa7aa6f238125b02ecd556c14c916945a"
+    }
+  }
+}

@@ -1,0 +1,1503 @@
+{
+  "point_kind": "visual",
+  "scope": "Post-estimation point-to-triangle distances to physical collision boxes and static seabed; not physical track identity or area coverage",
+  "points": 144,
+  "surface_distance_m": {
+    "minimum": 7.85180985613154e-06,
+    "median": 0.005207505606238021,
+    "p90": 0.010161219624056405,
+    "maximum": 0.07829859711845033
+  },
+  "diagnostic_thresholds_m": {
+    "0.05": {
+      "points_within": 143,
+      "points_outside": 1,
+      "nearest_surface_counts": {
+        "acoustic_validation_target_0": 0,
+        "acoustic_validation_target_1": 0,
+        "acoustic_validation_target_2": 0,
+        "acoustic_validation_wall_0": 0,
+        "acoustic_validation_wall_1": 0,
+        "seabed": 143
+      }
+    },
+    "0.1": {
+      "points_within": 144,
+      "points_outside": 0,
+      "nearest_surface_counts": {
+        "acoustic_validation_target_0": 0,
+        "acoustic_validation_target_1": 0,
+        "acoustic_validation_target_2": 0,
+        "acoustic_validation_wall_0": 0,
+        "acoustic_validation_wall_1": 0,
+        "seabed": 144
+      }
+    },
+    "0.2": {
+      "points_within": 144,
+      "points_outside": 0,
+      "nearest_surface_counts": {
+        "acoustic_validation_target_0": 0,
+        "acoustic_validation_target_1": 0,
+        "acoustic_validation_target_2": 0,
+        "acoustic_validation_wall_0": 0,
+        "acoustic_validation_wall_1": 0,
+        "seabed": 144
+      }
+    }
+  },
+  "map_qualified": false,
+  "alignment": "initial yaw and translation only; scale 1; simulator geometry used only for evaluation",
+  "per_point": [
+    {
+      "export_vertex_index": 0,
+      "world": [
+        1.8122868359066047,
+        -0.4061068758027846,
+        -3.652855328755225
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.003764635103275518
+    },
+    {
+      "export_vertex_index": 1,
+      "world": [
+        1.7351271048430261,
+        0.8753591358435525,
+        -3.6091739456222904
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.004897181745653529
+    },
+    {
+      "export_vertex_index": 2,
+      "world": [
+        1.6309956268096437,
+        -0.7755674451787538,
+        -3.6636549751327885
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.00523276156391363
+    },
+    {
+      "export_vertex_index": 3,
+      "world": [
+        1.5977556717087789,
+        -0.3776317601587291,
+        -3.6449662963913334
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.011166389950500323
+    },
+    {
+      "export_vertex_index": 4,
+      "world": [
+        1.655349650834334,
+        0.9386501018897312,
+        -3.603693894581641
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.008273442558222826
+    },
+    {
+      "export_vertex_index": 5,
+      "world": [
+        1.5843256937118197,
+        1.1041583730128866,
+        -3.6034764568375004
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.003571021868142371
+    },
+    {
+      "export_vertex_index": 6,
+      "world": [
+        1.3810201113826184,
+        -1.597436331648021,
+        -3.7017156402634037
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.008990573449687003
+    },
+    {
+      "export_vertex_index": 7,
+      "world": [
+        1.4691941700456455,
+        0.636516488328141,
+        -3.6184441368149174
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.005088391545649426
+    },
+    {
+      "export_vertex_index": 8,
+      "world": [
+        1.2866111658447001,
+        -1.1891510636361198,
+        -3.683837584690894
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.0012866075831564556
+    },
+    {
+      "export_vertex_index": 9,
+      "world": [
+        1.3201102929451636,
+        -0.054159308685906515,
+        -3.645523719029273
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.0021761629988951716
+    },
+    {
+      "export_vertex_index": 10,
+      "world": [
+        1.3978643993778415,
+        1.4765457182280737,
+        -3.5953141967819584
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.0033718231345891366
+    },
+    {
+      "export_vertex_index": 11,
+      "world": [
+        1.2044901423989924,
+        -0.5263782252587801,
+        -3.6662282268570316
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.0018848800244615042
+    },
+    {
+      "export_vertex_index": 12,
+      "world": [
+        1.7781614020108367,
+        -0.22163138355513778,
+        -3.5721537391708744
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.07829859711845033
+    },
+    {
+      "export_vertex_index": 13,
+      "world": [
+        1.0744493757018312,
+        -0.7350287855409706,
+        -3.674064568714942
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.00281732290111526
+    },
+    {
+      "export_vertex_index": 14,
+      "world": [
+        1.1199365113694817,
+        -0.053779809455042946,
+        -3.6489121238754643
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 6.716729959259919e-05
+    },
+    {
+      "export_vertex_index": 15,
+      "world": [
+        1.1400832902008955,
+        0.7526011875642407,
+        -3.6201578895614994
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.0022518097691020113
+    },
+    {
+      "export_vertex_index": 16,
+      "world": [
+        1.169027872596458,
+        1.442571631822043,
+        -3.5984834949539555
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.0029470925316949295
+    },
+    {
+      "export_vertex_index": 17,
+      "world": [
+        0.9971041748228181,
+        -0.6955558223449758,
+        -3.665215424733008
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.00493665643266624
+    },
+    {
+      "export_vertex_index": 18,
+      "world": [
+        1.0030846246324387,
+        -0.15546141448225498,
+        -3.653294018940772
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.001073756687517536
+    },
+    {
+      "export_vertex_index": 19,
+      "world": [
+        1.202213995874669,
+        0.0909188037306448,
+        -3.6419095317886723
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.001956145838755631
+    },
+    {
+      "export_vertex_index": 20,
+      "world": [
+        0.8932874142252045,
+        -1.0908307904629417,
+        -3.683816603855933
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.0037124395517817506
+    },
+    {
+      "export_vertex_index": 21,
+      "world": [
+        0.914086618781942,
+        -0.4845185709933406,
+        -3.65839498444065
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.004748533787245027
+    },
+    {
+      "export_vertex_index": 22,
+      "world": [
+        0.935271289015234,
+        -0.01396462815536284,
+        -3.647507361607398
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 1.6107149418915222e-05
+    },
+    {
+      "export_vertex_index": 23,
+      "world": [
+        0.9491214312486361,
+        -1.8838969679158137,
+        -3.704328707890357
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.006385124027860392
+    },
+    {
+      "export_vertex_index": 24,
+      "world": [
+        0.8109334639425285,
+        -1.0465038818064407,
+        -3.68580239220127
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.0068006589101352235
+    },
+    {
+      "export_vertex_index": 25,
+      "world": [
+        0.825861427157306,
+        -0.8770676460169814,
+        -3.676914862828101
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.0021321908539122417
+    },
+    {
+      "export_vertex_index": 26,
+      "world": [
+        0.8380289173106836,
+        -0.08636417868899751,
+        -3.650104216770972
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 7.85180985613154e-06
+    },
+    {
+      "export_vertex_index": 27,
+      "world": [
+        0.9706863494037766,
+        1.2393149845077207,
+        -3.607686690525855
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.0004499400139919241
+    },
+    {
+      "export_vertex_index": 28,
+      "world": [
+        0.6805878699569576,
+        -1.2516591462688185,
+        -3.6743296901749027
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.00977513202466101
+    },
+    {
+      "export_vertex_index": 29,
+      "world": [
+        0.7313258088354516,
+        0.07027217937510705,
+        -3.643787316517676
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.003294264957593402
+    },
+    {
+      "export_vertex_index": 30,
+      "world": [
+        1.664883154511676,
+        0.19202754548853612,
+        -3.6349055091904057
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.0018511266943554575
+    },
+    {
+      "export_vertex_index": 31,
+      "world": [
+        0.7751887045474274,
+        1.1076413962236051,
+        -3.61150138779148
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.002144945763912646
+    },
+    {
+      "export_vertex_index": 32,
+      "world": [
+        0.8704593444260227,
+        -1.41696816100575,
+        -3.693600825505103
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.0053729238028911944
+    },
+    {
+      "export_vertex_index": 33,
+      "world": [
+        0.6211220953212555,
+        -1.285867023274856,
+        -3.6746207992599857
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.010336077131763178
+    },
+    {
+      "export_vertex_index": 34,
+      "world": [
+        1.3262269988392552,
+        0.5405012890700107,
+        -3.625650338368262
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.0022588151385217864
+    },
+    {
+      "export_vertex_index": 35,
+      "world": [
+        0.7329341711140569,
+        1.4985808597881614,
+        -3.6007348815964115
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.002919952781658861
+    },
+    {
+      "export_vertex_index": 36,
+      "world": [
+        0.5308343771706782,
+        -1.9214194215116327,
+        -3.708209685520972
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.009642979253363711
+    },
+    {
+      "export_vertex_index": 37,
+      "world": [
+        0.5999885252936868,
+        -0.16630111922190105,
+        -3.6504642288254154
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.003595794598549408
+    },
+    {
+      "export_vertex_index": 38,
+      "world": [
+        1.472042470796697,
+        -0.05400056754262557,
+        -3.6453377525375736
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.0010959434898744549
+    },
+    {
+      "export_vertex_index": 39,
+      "world": [
+        0.6481781245820502,
+        0.9702498218060435,
+        -3.6147934715317143
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.004468204473598951
+    },
+    {
+      "export_vertex_index": 40,
+      "world": [
+        0.4795963844529839,
+        -1.2945541348282128,
+        -3.6948134223984135
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.008676166439669461
+    },
+    {
+      "export_vertex_index": 41,
+      "world": [
+        0.4980937367115267,
+        -0.5262268675629502,
+        -3.668167761998023
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.0036344659105464684
+    },
+    {
+      "export_vertex_index": 42,
+      "world": [
+        1.5424617037118633,
+        0.20289774130564797,
+        -3.635162524418677
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.002156166220798539
+    },
+    {
+      "export_vertex_index": 43,
+      "world": [
+        0.4462286374612393,
+        -0.06482549384224177,
+        -3.6522299568222416
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.0005809674927556966
+    },
+    {
+      "export_vertex_index": 44,
+      "world": [
+        1.0800376442099913,
+        0.06299843309903994,
+        -3.643972567753638
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.00099600365291722
+    },
+    {
+      "export_vertex_index": 45,
+      "world": [
+        1.249661970257573,
+        0.8006356523771109,
+        -3.622203997807349
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.002296099102204166
+    },
+    {
+      "export_vertex_index": 46,
+      "world": [
+        0.34945271702979575,
+        -0.037393216084162656,
+        -3.6514038364456547
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.0015269003596034437
+    },
+    {
+      "export_vertex_index": 47,
+      "world": [
+        0.8493958767236466,
+        0.27567342441926357,
+        -3.6363722602890385
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.004287223199762444
+    },
+    {
+      "export_vertex_index": 48,
+      "world": [
+        0.4001596943218537,
+        0.8817243605428999,
+        -3.6182095329330815
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.006125797474947768
+    },
+    {
+      "export_vertex_index": 49,
+      "world": [
+        1.0113700187394874,
+        0.8315181272541968,
+        -3.6213807384537113
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.0005223114719715555
+    },
+    {
+      "export_vertex_index": 50,
+      "world": [
+        0.41051749453232766,
+        1.1357595641069484,
+        -3.6114320079849613
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.006407635469774442
+    },
+    {
+      "export_vertex_index": 51,
+      "world": [
+        1.1918898325229592,
+        -1.5150227608536688,
+        -3.700728348927344
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.010056138614801789
+    },
+    {
+      "export_vertex_index": 52,
+      "world": [
+        0.5587494305201121,
+        0.21536825802335624,
+        -3.6465558330582035
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.001652361311349492
+    },
+    {
+      "export_vertex_index": 53,
+      "world": [
+        0.31608644272033354,
+        0.7979070521959649,
+        -3.627201728062476
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.0006194023782836609
+    },
+    {
+      "export_vertex_index": 54,
+      "world": [
+        0.20977788348630577,
+        0.08421618968023616,
+        -3.6516949455307377
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.0006310826195658756
+    },
+    {
+      "export_vertex_index": 55,
+      "world": [
+        0.23249382958939352,
+        0.5664963207361415,
+        -3.6345392982529057
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.0015820287701645845
+    },
+    {
+      "export_vertex_index": 56,
+      "world": [
+        0.24479222766923464,
+        0.9314414046425639,
+        -3.625359467701758
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.0003224671070327506
+    },
+    {
+      "export_vertex_index": 57,
+      "world": [
+        0.0963278282126264,
+        -0.02958173233650535,
+        -3.659165314869727
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.004323780677939291
+    },
+    {
+      "export_vertex_index": 58,
+      "world": [
+        0.12098513474475965,
+        0.7305027364498564,
+        -3.6283606807754887
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.004378375466992696
+    },
+    {
+      "export_vertex_index": 59,
+      "world": [
+        0.04116194534562061,
+        -1.2726029488680446,
+        -3.694250754551734
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.006459462137737922
+    },
+    {
+      "export_vertex_index": 60,
+      "world": [
+        -0.028277573852235546,
+        -0.6120344721636707,
+        -3.6682771961258305
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.0020994564278259157
+    },
+    {
+      "export_vertex_index": 61,
+      "world": [
+        0.0051639989362623345,
+        0.6245353746776152,
+        -3.632574729161109
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.004726384642877848
+    },
+    {
+      "export_vertex_index": 62,
+      "world": [
+        1.0397185945854892,
+        0.5196800642745687,
+        -3.628851584629859
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.0021263915968051826
+    },
+    {
+      "export_vertex_index": 63,
+      "world": [
+        0.007720615724205793,
+        -0.8461886594059143,
+        -3.6866587917374027
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.010745783765496177
+    },
+    {
+      "export_vertex_index": 64,
+      "world": [
+        0.833781535563856,
+        0.9082838580192706,
+        -3.6200761119888676
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.0002937384997659792
+    },
+    {
+      "export_vertex_index": 65,
+      "world": [
+        -0.25000324798749995,
+        -0.8242552249803184,
+        -3.6732210437820805
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.004165068145190985
+    },
+    {
+      "export_vertex_index": 66,
+      "world": [
+        -0.23421485272655285,
+        -0.3996953966433834,
+        -3.666313819126929
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.000488570496229106
+    },
+    {
+      "export_vertex_index": 67,
+      "world": [
+        0.7485575675012428,
+        -0.6335591980794502,
+        -3.649832181172217
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.018253615094603267
+    },
+    {
+      "export_vertex_index": 68,
+      "world": [
+        -0.330819004350032,
+        -0.27630906920194487,
+        -3.663752488331641
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.0007800633416025336
+    },
+    {
+      "export_vertex_index": 69,
+      "world": [
+        -0.2942207167652065,
+        0.6036602940422359,
+        -3.6322881500290287
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.01002331039078476
+    },
+    {
+      "export_vertex_index": 70,
+      "world": [
+        -0.3247706115394698,
+        -1.1847634911131915,
+        -3.6955880443619145
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.00922391296327079
+    },
+    {
+      "export_vertex_index": 71,
+      "world": [
+        0.4159231535841761,
+        0.4907521114746164,
+        -3.623217992024268
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.013889656950552292
+    },
+    {
+      "export_vertex_index": 72,
+      "world": [
+        -0.02831530725955797,
+        0.2958397730106167,
+        -3.642371348576392
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.004900716545547163
+    },
+    {
+      "export_vertex_index": 73,
+      "world": [
+        -0.7262152635626193,
+        -1.2378019205849156,
+        -3.692239216999854
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.004555176369113501
+    },
+    {
+      "export_vertex_index": 74,
+      "world": [
+        -0.5698641981240384,
+        -0.9132404795104644,
+        -3.6825241367386234
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.0018505039492880317
+    },
+    {
+      "export_vertex_index": 75,
+      "world": [
+        0.18510196102775284,
+        -1.5254877267975075,
+        -3.702479056553687
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.010485308709636723
+    },
+    {
+      "export_vertex_index": 76,
+      "world": [
+        1.4218302876794058,
+        -1.736775242387978,
+        -3.7055434505508793
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.010040804242437546
+    },
+    {
+      "export_vertex_index": 77,
+      "world": [
+        1.4286362003507571,
+        -0.9065450490720628,
+        -3.678044013218726
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.004580566702315049
+    },
+    {
+      "export_vertex_index": 78,
+      "world": [
+        0.2577909592901934,
+        0.060262389556168014,
+        -3.656298808293189
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.00503611120895648
+    },
+    {
+      "export_vertex_index": 79,
+      "world": [
+        1.2371901329889021,
+        -1.7517323199130987,
+        -3.700932435231055
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.005182249648562411
+    },
+    {
+      "export_vertex_index": 80,
+      "world": [
+        0.18809427613267815,
+        -0.7095687091645689,
+        -3.678471020893897
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.007456518972176019
+    },
+    {
+      "export_vertex_index": 81,
+      "world": [
+        0.6417967091194126,
+        -2.0221654601737304,
+        -3.6818854133652104
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.018349289128696555
+    },
+    {
+      "export_vertex_index": 82,
+      "world": [
+        0.14658942522419344,
+        -1.7054606275111106,
+        -3.7004761020706547
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.005062123187124899
+    },
+    {
+      "export_vertex_index": 83,
+      "world": [
+        0.5573607219097855,
+        -0.7286855186384028,
+        -3.6710237781570805
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.00023072974184053157
+    },
+    {
+      "export_vertex_index": 84,
+      "world": [
+        1.040940897881713,
+        -1.1925634764891162,
+        -3.6886648456619633
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.006027383377510803
+    },
+    {
+      "export_vertex_index": 85,
+      "world": [
+        1.361243885414004,
+        -0.4788213626732659,
+        -3.666236333088721
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.004771326601927204
+    },
+    {
+      "export_vertex_index": 86,
+      "world": [
+        1.0058791693372968,
+        -1.4016129440546574,
+        -3.691687754826392
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.003842875720940628
+    },
+    {
+      "export_vertex_index": 87,
+      "world": [
+        1.585630563241761,
+        -0.9633634209831908,
+        -3.681812218861426
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.0066850842964003765
+    },
+    {
+      "export_vertex_index": 88,
+      "world": [
+        1.7436224296515643,
+        -1.4355067299052504,
+        -3.6925997058914555
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.003910402608686988
+    },
+    {
+      "export_vertex_index": 89,
+      "world": [
+        1.9650564880529706,
+        -1.5383977095305335,
+        -3.6928505222366703
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.0032279158214284635
+    },
+    {
+      "export_vertex_index": 90,
+      "world": [
+        0.14973840732730098,
+        -1.8199742177983498,
+        -3.709876469807471
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.01227486337377551
+    },
+    {
+      "export_vertex_index": 91,
+      "world": [
+        0.6093151100768025,
+        -1.0648995920965472,
+        -3.687400988774146
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.00711670643443719
+    },
+    {
+      "export_vertex_index": 92,
+      "world": [
+        1.4549946770494682,
+        -0.7380924023697591,
+        -3.6752816955612553
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.0062295186963473356
+    },
+    {
+      "export_vertex_index": 93,
+      "world": [
+        1.952432025742699,
+        -1.4496566202501076,
+        -3.6871294300125492
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.0011226656208682705
+    },
+    {
+      "export_vertex_index": 94,
+      "world": [
+        -0.5358640360053135,
+        -0.6834661073330551,
+        -3.6816279212997807
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.005256988207604931
+    },
+    {
+      "export_vertex_index": 95,
+      "world": [
+        1.1609604481163733,
+        -2.1066863180954503,
+        -3.7086006919906986
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.006959906593311647
+    },
+    {
+      "export_vertex_index": 96,
+      "world": [
+        0.8212967622297794,
+        -2.0775392551434986,
+        -3.6697420398758305
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.03140977592432028
+    },
+    {
+      "export_vertex_index": 97,
+      "world": [
+        0.7783569241017189,
+        -1.9422683276878214,
+        -3.7102765361832035
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.011363611674208815
+    },
+    {
+      "export_vertex_index": 98,
+      "world": [
+        -0.040216199764844585,
+        -1.05670502257637,
+        -3.6947449962662113
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.012596654967565716
+    },
+    {
+      "export_vertex_index": 99,
+      "world": [
+        1.237938702223021,
+        -0.5762078722003184,
+        -3.672100476460303
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.006377162003804062
+    },
+    {
+      "export_vertex_index": 100,
+      "world": [
+        0.14467644416939074,
+        -0.9214795225948054,
+        -3.6863507549332035
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.00869261643289869
+    },
+    {
+      "export_vertex_index": 101,
+      "world": [
+        0.8336851913780577,
+        -0.44308740989854245,
+        -3.6674722950027836
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.005698969196638696
+    },
+    {
+      "export_vertex_index": 102,
+      "world": [
+        1.52673119161612,
+        -2.009391277691595,
+        -3.705341033177222
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.007215736789129243
+    },
+    {
+      "export_vertex_index": 103,
+      "world": [
+        0.8416230082888446,
+        -1.584189609995221,
+        -3.696929625706519
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.004535959541668409
+    },
+    {
+      "export_vertex_index": 104,
+      "world": [
+        -0.19401751630359634,
+        -1.3261217839305317,
+        -3.6977531234787357
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.009072208594820719
+    },
+    {
+      "export_vertex_index": 105,
+      "world": [
+        1.835600063148758,
+        -1.7670601215224353,
+        -3.701652459339942
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.008100601544716425
+    },
+    {
+      "export_vertex_index": 106,
+      "world": [
+        1.7831345312687947,
+        -0.5510761726080186,
+        -3.6690711299942387
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.0076303713928899
+    },
+    {
+      "export_vertex_index": 107,
+      "world": [
+        1.63187357471319,
+        -0.7744771411912704,
+        -3.6758403102920902
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.00698203446154459
+    },
+    {
+      "export_vertex_index": 108,
+      "world": [
+        0.5036425341682441,
+        -0.5267388025342554,
+        -3.6725098411606205
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.007957160239759595
+    },
+    {
+      "export_vertex_index": 109,
+      "world": [
+        0.033492735248409164,
+        -0.5823207624651728,
+        -3.6762942592666996
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.007167206467239704
+    },
+    {
+      "export_vertex_index": 110,
+      "world": [
+        1.6341266395482494,
+        -0.37119902358334844,
+        -3.661686829762305
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.006059471321500601
+    },
+    {
+      "export_vertex_index": 111,
+      "world": [
+        0.8783314104246062,
+        -0.7000191454878983,
+        -3.6746317665146244
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.004326348989434221
+    },
+    {
+      "export_vertex_index": 112,
+      "world": [
+        1.1522027465093114,
+        -0.27787435914915726,
+        -3.6617023269699467
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.005415976178747161
+    },
+    {
+      "export_vertex_index": 113,
+      "world": [
+        1.2603883815396244,
+        -0.18216961418797253,
+        -3.657688550190772
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.005238409312404935
+    },
+    {
+      "export_vertex_index": 114,
+      "world": [
+        0.3089717168230249,
+        -0.3566093464554879,
+        -3.669379882054175
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.00816142942822637
+    },
+    {
+      "export_vertex_index": 115,
+      "world": [
+        -0.12513976105769617,
+        -0.6595632398956535,
+        -3.676495007710303
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.004128414481189343
+    },
+    {
+      "export_vertex_index": 116,
+      "world": [
+        1.1292237767327018,
+        -0.0445612293427007,
+        -3.6541599552200688
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.005617901458301773
+    },
+    {
+      "export_vertex_index": 117,
+      "world": [
+        1.2740015091363168,
+        -1.170074932512455,
+        -3.690706900791968
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.008718015879949234
+    },
+    {
+      "export_vertex_index": 118,
+      "world": [
+        1.0205727366872226,
+        -0.6854602262872491,
+        -3.677744082646216
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.00792019371969043
+    },
+    {
+      "export_vertex_index": 119,
+      "world": [
+        0.46698083864639117,
+        -0.23579767461090897,
+        -3.6668917457626713
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.009993522256144244
+    },
+    {
+      "export_vertex_index": 120,
+      "world": [
+        0.7847894841286427,
+        0.010432855041284387,
+        -3.6498305122421635
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.0017012948228082169
+    },
+    {
+      "export_vertex_index": 121,
+      "world": [
+        1.6394063189102455,
+        -1.6749646416757493,
+        -3.702519349293555
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.008103751554911722
+    },
+    {
+      "export_vertex_index": 122,
+      "world": [
+        0.7035219861694857,
+        -0.17068241440589713,
+        -3.663479737477149
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.010164971934745142
+    },
+    {
+      "export_vertex_index": 123,
+      "world": [
+        0.4536336392914827,
+        -0.044393269728746715,
+        -3.6526362220810307
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.0003950036964335704
+    },
+    {
+      "export_vertex_index": 124,
+      "world": [
+        0.12130475901658301,
+        -0.2577831141098893,
+        -3.669353179173316
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.009037392723573203
+    },
+    {
+      "export_vertex_index": 125,
+      "world": [
+        -0.09943631818916561,
+        -0.5445577446988352,
+        -3.673314265446509
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.00402555810054689
+    },
+    {
+      "export_vertex_index": 126,
+      "world": [
+        0.5567187686795798,
+        0.22230480831655447,
+        -3.651987246708716
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.007237668505276394
+    },
+    {
+      "export_vertex_index": 127,
+      "world": [
+        0.7852975602614773,
+        -0.38744999707700767,
+        -3.6667303363846195
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.006804151264738943
+    },
+    {
+      "export_vertex_index": 128,
+      "world": [
+        1.2157260430653254,
+        -2.0062143969823154,
+        -3.7088119308517826
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.008838188222619793
+    },
+    {
+      "export_vertex_index": 129,
+      "world": [
+        1.2731465114992893,
+        0.1362580885221908,
+        -3.647611312107886
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.005835911558453542
+    },
+    {
+      "export_vertex_index": 130,
+      "world": [
+        2.065310443417582,
+        -0.23481794901331612,
+        -3.6610914985702885
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.010152464232449351
+    },
+    {
+      "export_vertex_index": 131,
+      "world": [
+        1.317490619553517,
+        0.20314232125603102,
+        -3.6439716140793217
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.0047855529305499325
+    },
+    {
+      "export_vertex_index": 132,
+      "world": [
+        1.9945790895861566,
+        0.26732992559639635,
+        -3.640758923725928
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.006497865649277801
+    },
+    {
+      "export_vertex_index": 133,
+      "world": [
+        2.212186463566095,
+        -0.10061482974679299,
+        -3.645674637989844
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.0008013956718447051
+    },
+    {
+      "export_vertex_index": 134,
+      "world": [
+        2.2233909166515873,
+        -0.27888881196688164,
+        -3.6579975406692875
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.005597399303409009
+    },
+    {
+      "export_vertex_index": 135,
+      "world": [
+        2.3729991097870218,
+        0.22896629066159704,
+        -3.6428331653641117
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.007298241909738876
+    },
+    {
+      "export_vertex_index": 136,
+      "world": [
+        2.4031495846168918,
+        -0.1862505428384336,
+        -3.655350617604102
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.006026808886640036
+    },
+    {
+      "export_vertex_index": 137,
+      "world": [
+        1.6618576905397486,
+        0.18651425894624574,
+        -3.644925765232886
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.00798060955734809
+    },
+    {
+      "export_vertex_index": 138,
+      "world": [
+        2.2896842142116647,
+        0.20147062456862747,
+        -3.644345931248511
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.007897530749809471
+    },
+    {
+      "export_vertex_index": 139,
+      "world": [
+        2.1053345305149525,
+        -0.308355616612325,
+        -3.665576152043189
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.01219376470359851
+    },
+    {
+      "export_vertex_index": 140,
+      "world": [
+        1.9270447461902833,
+        -0.42324598820910775,
+        -3.6643337528274906
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.007138578190627274
+    },
+    {
+      "export_vertex_index": 141,
+      "world": [
+        2.4409290087784674,
+        -0.46550227656609244,
+        -3.6641077320145023
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.0055100999172743356
+    },
+    {
+      "export_vertex_index": 142,
+      "world": [
+        1.7685935003136857,
+        -0.20415922158500033,
+        -3.6567234317825688
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.006804436979026597
+    },
+    {
+      "export_vertex_index": 143,
+      "world": [
+        1.5031178178621232,
+        -0.052062660331244626,
+        -3.6288599292801273
+      ],
+      "nearest_surface": "seabed",
+      "distance_m": 0.017242107553528306
+    }
+  ],
+  "source_sha256": {
+    "physical-targets.sdf": "d4795f6c127d739cc1fa4e75eb0329ed55ac3f67d4e593555ae033e06e0bebf6",
+    "demo-runtime/bfd76a4c2b45422ca5c8a6503eaa9fb0/world-waves-underwater-sonar.sdf": "1c1da8c1d7aa5f7e164d17be38bec0e58b8609a6e856130ef1184d1ea5b645aa",
+    "demo-runtime/bfd76a4c2b45422ca5c8a6503eaa9fb0/orca5-seafloor.dae": "277c49dd9c3b2ec1c9d3c3754be9d076c7b0438ccd29e9ae11355869849fbeb2",
+    "comparison.json": "186cf9ec50a96211b00fa0c9391f50ec7fe0ec0d0f13fbdb6a66cd4bd2c7f41b",
+    "receipt.json": "e170b0d94b50d29b0ee3f3621706098213b6e78ecbb2c02ca8ebade9365ffde0",
+    "initial-map.ply": "958962e4f4467393086b2df90b24bca03cc694395a9bf2f6f46fbe439e4a8941"
+  },
+  "export_phase": "initial",
+  "diagnostic_failed_initial": true
+}

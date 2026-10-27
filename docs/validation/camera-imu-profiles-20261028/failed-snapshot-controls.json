@@ -1,0 +1,56 @@
+{
+  "passed": true,
+  "scope": "Negative provenance controls; each request rejected before writing a replacement figure or assessment",
+  "cases": [
+    {
+      "command": [
+        "scripts/render_slam_comparison.py",
+        ".local/visual-map-metric-native-20261028-b",
+        "--ros-replay",
+        ".local/camera-ping-recovery-20261028/imu-sync-long"
+      ],
+      "expected_rejection": "comparison_ros_recording_mismatch",
+      "returncode": 1
+    },
+    {
+      "command": [
+        "scripts/render_slam_comparison.py",
+        ".local/visual-map-metric-native-20261028-b",
+        "--ros-replay",
+        ".local/camera-ping-recovery-20261028/imu-sync-long",
+        "--allow-failed-initial",
+        "--export-phase",
+        "recovered"
+      ],
+      "expected_rejection": "failed snapshots require initial visual ROS export",
+      "returncode": 2
+    },
+    {
+      "command": [
+        "scripts/evaluate_sonar_map_surfaces.py",
+        "--record",
+        ".local/visual-map-metric-native-20261028-b",
+        "--replay",
+        ".local/camera-ping-recovery-20261028/imu-sync-long",
+        "--point-kind",
+        "visual"
+      ],
+      "expected_rejection": "evaluation_visual_ros_provenance_required",
+      "returncode": 1
+    },
+    {
+      "command": [
+        "scripts/evaluate_sonar_map_surfaces.py",
+        "--record",
+        ".local/visual-ping-native-20261028-a",
+        "--replay",
+        ".local/visual-ping-native-20261028-a",
+        "--point-kind",
+        "visual",
+        "--allow-failed-initial"
+      ],
+      "expected_rejection": "evaluation_failed_initial_requires_ros_provenance",
+      "returncode": 1
+    }
+  ]
+}

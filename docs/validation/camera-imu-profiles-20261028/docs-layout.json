@@ -1,0 +1,69 @@
+{
+  "passed": true,
+  "results": [
+    {
+      "name": "specifications",
+      "language": "en",
+      "width": 390,
+      "client": 390,
+      "scroll": 390,
+      "contractVisible": true
+    },
+    {
+      "name": "specifications",
+      "language": "en",
+      "width": 1440,
+      "client": 1440,
+      "scroll": 1440,
+      "contractVisible": true
+    },
+    {
+      "name": "slam-fusion",
+      "language": "en",
+      "width": 390,
+      "client": 390,
+      "scroll": 390,
+      "contractVisible": true
+    },
+    {
+      "name": "slam-fusion",
+      "language": "en",
+      "width": 1440,
+      "client": 1440,
+      "scroll": 1440,
+      "contractVisible": true
+    },
+    {
+      "name": "specifications",
+      "language": "ko",
+      "width": 390,
+      "client": 390,
+      "scroll": 390,
+      "contractVisible": true
+    },
+    {
+      "name": "specifications",
+      "language": "ko",
+      "width": 1440,
+      "client": 1440,
+      "scroll": 1440,
+      "contractVisible": true
+    },
+    {
+      "name": "slam-fusion",
+      "language": "ko",
+      "width": 390,
+      "client": 390,
+      "scroll": 390,
+      "contractVisible": true
+    },
+    {
+      "name": "slam-fusion",
+      "language": "ko",
+      "width": 1440,
+      "client": 1440,
+      "scroll": 1440,
+      "contractVisible": true
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "provider_sha256": "0bee1f87f337bc5a0a95d1aad5c90a6aef337dee4ff0fc9c63a4d4308f37a190",
+  "runtime_files": 8,
+  "component_files": 72,
+  "sdk_copied": false,
+  "copy_method": "APFS clone plus current-source overlay and independent component snapshot"
+}

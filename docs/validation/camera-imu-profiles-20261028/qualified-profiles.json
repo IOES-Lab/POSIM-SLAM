@@ -1,0 +1,78 @@
+{
+  "profiles": [
+    {
+      "joint_ping": true,
+      "joint_sonar": false,
+      "joint_dvl": false,
+      "ping_input_enabled": true,
+      "runtime_files": {
+        "library_paths.py": "cf7eed75bea01de60bde40b2e6f69bf85a98892ddca590035e40c6cd7c27420a",
+        "practice_slam/vio_live.py": "8f158c6f134b88388b9b1d4919593ce4ccf8fc1fb0b2754aec0ea81d31900849",
+        "practice_slam/worker_liveness.py": "ee453e404938ac286b93224d6025891344f3b4c067d2481a2c5530febc429cb9",
+        "practice_slam/sensor_ingress.py": "40bb602f001dba98a0e0e5e301472bb08ee5a0bca8b63e929a258fdf3ed3512b",
+        "worlds/practice_vio.py": "dd6f2fcf02b2ee76d921ecbc521157125c4713c2e82685e77f23b1803194980d",
+        "worlds/inertial_source.py": "81989051bedc8c84756d7b3f65a1d2304cff20f6782014f823b7c24bfe6c714a",
+        "worlds/sensor_frames.py": "1a5aef127eebc7ffdccee1bacad0f3bf32c65dc5ad3fa985c037e65d4c0522cc",
+        "worlds/sonar_source.py": "3492a103d7c09e10b296e864da0435afa7aa6f238125b02ecd556c14c916945a"
+      },
+      "recovery_verified": true,
+      "moving_initialization": true,
+      "max_image_rate_hz": 10.0,
+      "pressure_fusion_verified": false,
+      "dvl_recovery_verified": false,
+      "native_managed_verified": false,
+      "receipt_sha256": "3c06f8624c001f1214419e6c277fc4fbf801f64652da913ea4870d2badc997d8",
+      "proof_schema": "posim-vio-joint-ros-proof-1"
+    },
+    {
+      "joint_ping": false,
+      "joint_sonar": false,
+      "joint_dvl": true,
+      "ping_input_enabled": true,
+      "runtime_files": {
+        "library_paths.py": "cf7eed75bea01de60bde40b2e6f69bf85a98892ddca590035e40c6cd7c27420a",
+        "practice_slam/vio_live.py": "8f158c6f134b88388b9b1d4919593ce4ccf8fc1fb0b2754aec0ea81d31900849",
+        "practice_slam/worker_liveness.py": "ee453e404938ac286b93224d6025891344f3b4c067d2481a2c5530febc429cb9",
+        "practice_slam/sensor_ingress.py": "40bb602f001dba98a0e0e5e301472bb08ee5a0bca8b63e929a258fdf3ed3512b",
+        "worlds/practice_vio.py": "dd6f2fcf02b2ee76d921ecbc521157125c4713c2e82685e77f23b1803194980d",
+        "worlds/inertial_source.py": "81989051bedc8c84756d7b3f65a1d2304cff20f6782014f823b7c24bfe6c714a",
+        "worlds/sensor_frames.py": "1a5aef127eebc7ffdccee1bacad0f3bf32c65dc5ad3fa985c037e65d4c0522cc",
+        "worlds/sonar_source.py": "3492a103d7c09e10b296e864da0435afa7aa6f238125b02ecd556c14c916945a"
+      },
+      "recovery_verified": true,
+      "moving_initialization": true,
+      "max_image_rate_hz": 5.0,
+      "pressure_fusion_verified": false,
+      "dvl_recovery_verified": true,
+      "native_managed_verified": false,
+      "receipt_sha256": "e63d51c1a1ea051f377c4fc8c35051540c50bca6445cd4fb1b7c22b1eff10dbf",
+      "proof_schema": "posim-vio-joint-ros-proof-1"
+    },
+    {
+      "joint_ping": true,
+      "joint_sonar": false,
+      "joint_dvl": true,
+      "ping_input_enabled": true,
+      "runtime_files": {
+        "library_paths.py": "cf7eed75bea01de60bde40b2e6f69bf85a98892ddca590035e40c6cd7c27420a",
+        "practice_slam/vio_live.py": "8f158c6f134b88388b9b1d4919593ce4ccf8fc1fb0b2754aec0ea81d31900849",
+        "practice_slam/worker_liveness.py": "ee453e404938ac286b93224d6025891344f3b4c067d2481a2c5530febc429cb9",
+        "practice_slam/sensor_ingress.py": "40bb602f001dba98a0e0e5e301472bb08ee5a0bca8b63e929a258fdf3ed3512b",
+        "worlds/practice_vio.py": "dd6f2fcf02b2ee76d921ecbc521157125c4713c2e82685e77f23b1803194980d",
+        "worlds/inertial_source.py": "81989051bedc8c84756d7b3f65a1d2304cff20f6782014f823b7c24bfe6c714a",
+        "worlds/sensor_frames.py": "1a5aef127eebc7ffdccee1bacad0f3bf32c65dc5ad3fa985c037e65d4c0522cc",
+        "worlds/sonar_source.py": "3492a103d7c09e10b296e864da0435afa7aa6f238125b02ecd556c14c916945a"
+      },
+      "recovery_verified": true,
+      "moving_initialization": true,
+      "max_image_rate_hz": 5.0,
+      "pressure_fusion_verified": false,
+      "dvl_recovery_verified": true,
+      "native_managed_verified": false,
+      "receipt_sha256": "7342c89186128b195b7534d43dba284b9904f6822b63e55715988d12d4581378",
+      "proof_schema": "posim-vio-joint-ros-proof-1"
+    }
+  ],
+  "provider_sha256": "9208bddb6f2f50c56205a70b0d2eb64f3f775c1c6b2c8bb9c071d655702ef6b5",
+  "managed_native_proof_sha256": "aa79c3aaaadb282c00bdb75ee161779d421e81680d1bbb8b3eb78ff0c81f019d"
+}

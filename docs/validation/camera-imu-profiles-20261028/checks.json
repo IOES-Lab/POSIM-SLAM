@@ -1,0 +1,16 @@
+{
+  "passed": true,
+  "application_test_scripts": [
+    "test_sonar_map_surfaces.py",
+    "test_sonar_ground_geometry.py",
+    "test_component_sources.py",
+    "test_practice_vio.py",
+    "test_vio_development_proof.py",
+    "test_vio_startup_owner.py"
+  ],
+  "independent_queue_unit_tests": 4,
+  "negative_provenance_controls": 4,
+  "public_generation_and_audits": true,
+  "EN_KO_desktop_mobile_reviewed": true,
+  "all_16_preexisting_user_files_preserved": true
+}

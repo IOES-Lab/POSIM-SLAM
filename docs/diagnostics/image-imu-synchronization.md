@@ -30,3 +30,4 @@ retain their own readiness checks.
 
 - [Independent implementation](../../src/posim_slam/image_imu_queue.py)
 - [Arrival-order, clock-zero and bounded-reset controls](../../tests/test_image_imu_queue.py)
+- [Matched native/ROS figures, source fingerprints and retained failures](../validation/camera-imu-profiles-20261028/README.md)
