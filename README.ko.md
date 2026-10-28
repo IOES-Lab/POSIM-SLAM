@@ -1,5 +1,9 @@
 # POSIM-SLAM
 
+[초기화 계산 대조](docs/validation/seed-scoring-20261028/README.md)에 센서 원본만 사용하는 수치 비교와 소스가 연결된 복구 지도 전체를 보존합니다.
+
+[상태 발행과 VIO 입력 복구](docs/validation/status-publication-vio-20261028/README.md)에 전체 지도 여섯 개, RGB·점군 비교와 실제 GUI 전환 검증을 정리합니다.
+
 [기본 예산의 기준 패치 추적](docs/validation/default-reference-vio-20261028/README.md)에 같은 입력의 추적 방식 대조와 실제 ROS·시뮬레이터 지도를 정리합니다.
 
 [압력 융합·IMU 전송 비교](docs/validation/pressure-event-imu-20261028/README.md)에 전체 지도·기본 예산의 이상점·복구 검증 근거를 보존합니다.

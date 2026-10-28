@@ -1,6 +1,6 @@
 {
   "sha256": {
-    "README.md": "542bfefd0e8ce39ca158dff8fe049371f7c180f1628616c970754182902f2e04",
+    "README.md": "086a24acbad3c327d380deafcffa9f977bb1433370c0c9e863b977583600c04f",
     "browser-underwater.jpg": "d3d2e8795cca980d9a59c7c1ec4756d3532a58a79cf715eddd3d51b1cf3822e3",
     "gui-summary.json": "ef6d83d7edbce233f9e1cd3f461431885226bda1e65c86de9fabd9ed44c87816",
     "joint-before.ply": "0a667dd8c8bddcf4e9975e6c36cb4084c5fb2d18b75792ad50f3bf341823b3aa",
@@ -39,6 +39,9 @@
     "summary.json": "67ab3738daf61efa80bb262d137a15b82030d9f3cae10b21beeb7679b109a162",
     "transport-confirmed.ply": "ac587ce27d46ec9c94da9909c7313674461571d96a8905f0caabcd5c1e98b780",
     "transport-gate.json": "4dd8e23bb27176f118836d8dd805514ae7d20979733dbfd74ab20f502d582efe",
-    "transport-recovered.ply": "da0e5f57f134f96ab2bb6f3a9d50ff241a61798c7bc5a78dd553dd132987c307"
+    "transport-recovered.ply": "da0e5f57f134f96ab2bb6f3a9d50ff241a61798c7bc5a78dd553dd132987c307",
+    "gui-terminal-status.json.gz": "6fd91127cb8877055b722aa09b9c677ebd72e3e5390b3a7138492449fe2016e6",
+    "gui-terminal-lifecycle.json": "4ed0a6e2963f677fadf05d6433afef31f84fe9535d9bb8e41768c49d6ca908d7",
+    "gui-terminal-processes.json": "b5ee5023e2c82302c1d4aed016aaab22ba0e7deeb4ef53fdf328191a69a8698a"
   }
 }

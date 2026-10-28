@@ -1,0 +1,30 @@
+{
+  "points": 2364,
+  "failures": [],
+  "max_tick_ms": 1710.782750044018,
+  "mission_status": "completed",
+  "mission_waypoints": 21,
+  "lifecycle": {
+    "exit_code": 0,
+    "forced_stop": false,
+    "error": null
+  },
+  "owned_groups": [
+    {
+      "group": 65293,
+      "live_members": []
+    },
+    {
+      "group": 65295,
+      "live_members": []
+    },
+    {
+      "group": 65624,
+      "live_members": []
+    },
+    {
+      "group": 65297,
+      "live_members": []
+    }
+  ]
+}
