@@ -89,6 +89,14 @@ to VIO. No truth enters estimation and all emitted outliers remain.
 
 ![Forward feature stages on actual RGB and retained uncertainty diagnostics](forward-inputs-20261029/feature-diagnosis.png)
 
+The integrating application's [world-gravity validation](world-gravity-20261029/README.md)
+passes actual 9.8 m/s² world calibration to IMU/DVL and native VIO. Five original-time
+ROS recovery cases retain ten full maps and all 14,116 assessed vertices. A fresh
+no-Ping native run exports 1,117/1,086 points with per-segment actual RGB and all-point
+assessment, while obstacle coverage and initialization remain unqualified. The
+pressure source retains its separate reference constant. The library's explicit
+gravity input is unchanged; no private application implementation is included.
+
 ## 한국어
 
 카메라·IMU 추정과 선택 센서 결합은 시각 특징점 생성 뒤 같은 최적화·관측
@@ -162,3 +170,10 @@ RGB는 수중 감쇠·입자·집광무늬·수면 파도를 포함하고, 전�
 기울기 오차는 0.115°지만 속도 오차는 0.144m/s입니다. 기존 IMU/DVL 초기화와 월드
 중력값 대조도 불확실성 한계를 보존하며 VIO에 초기값을 넘기지 않습니다. 정답은
 추정에 쓰지 않고 방출된 이상점을 모두 유지합니다.
+
+연동 앱의 [월드 중력 검증](world-gravity-20261029/README.md)은 실제 9.8m/s² 보정값을
+IMU/DVL과 네이티브 VIO에 전달합니다. 원래 속도의 ROS 복구 다섯 사례에서 전체 지도
+열 개와 평가한 14,116점을 모두 보존합니다. Ping 없는 새 네이티브 주행은 1,117/1,086점과
+각 구간의 실제 RGB·모든 점 평가를 남깁니다. 장애물 관측 범위·초기화는 미검증이고,
+압력 센서는 별도 기준 상수를 유지합니다. 라이브러리의 명시적 중력 입력은 동일하며
+비공개 앱 구현은 포함하지 않습니다.
