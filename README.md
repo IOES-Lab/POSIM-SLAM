@@ -1,5 +1,7 @@
 # POSIM-SLAM
 
+[Status publication and VIO input recovery / 상태 발행과 VIO 입력 복구](docs/validation/status-publication-vio-20261028/README.md) retains six complete maps, matched RGB/cloud overviews and actual GUI switching evidence.
+
 [Default-budget reference tracking](docs/validation/default-reference-vio-20261028/README.md) compares equal-input native frontends and measured application ROS/managed maps.
 
 [Measured pressure and IMU-delivery comparisons](docs/validation/pressure-event-imu-20261028/README.md) retain full maps, default-budget failures and source-hashed recovery evidence.

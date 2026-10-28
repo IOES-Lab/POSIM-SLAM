@@ -1,0 +1,6 @@
+{
+  "http": 200,
+  "bytes": 1899,
+  "observation": "The new segment had already produced a fresh map before this observation; immediate unavailability was not sampled",
+  "header": "ply\nformat binary_little_endian 1.0\ncomment session_nonce f7ec468f38414b0abd05a26e04097258\ncomment frame_id vehicle/vio_f7ec468f38414b0abd05a26e04097258_segment_3\ncomment units m\ncomment library basalt\ncomment navigation_ready false\ncomment scope accumulated_local_vio_landmarks\ncomment request_id 3\ncomment stamp_ns 412500000000\nelement vertex 124\nproperty float x\nproperty float y\nproperty float z\n"
+}
