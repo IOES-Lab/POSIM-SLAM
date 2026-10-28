@@ -1,5 +1,7 @@
 # POSIM-SLAM
 
+[상태 시각에 맞춘 IMU 전송](docs/diagnostics/event-imu.md)은 카메라·소나 상태의 네이티브 응답을 기다리는 동안 이후 원본 샘플을 제한된 이력에 보존합니다.
+
 [시각 지도의 고정 특징 대응](docs/diagnostics/visual-static-tracks.md)은 시각 트랙과
 지도 검사의 물리적 동일성 가정을 설명합니다.
 

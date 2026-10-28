@@ -1,5 +1,7 @@
 # POSIM-SLAM
 
+[IMU delivery at state events / 상태 시각에 맞춘 IMU 전송](docs/diagnostics/event-imu.md) keeps future raw samples in bounded history while a camera or sonar state awaits its native acknowledgement.
+
 [Static visual-map correspondence / 시각 지도의 고정 특징 대응](docs/diagnostics/visual-static-tracks.md)
 describes the physical-identity assumptions behind visual track and map checks.
 시각 트랙과 지도 검사의 물리적 동일성 가정을 설명합니다.

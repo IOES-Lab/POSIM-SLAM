@@ -72,6 +72,20 @@ class SonarSessionTests(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError, 'failed'):
             self.session.tick()
 
+    def test_raw_imu_waits_with_the_pending_state_instead_of_filling_native_queue(self):
+        self.feed(); self.session.tick()
+        worker = self.session.client
+        initial = list(worker.imus)
+        for t in range(2_020_000_000, 5_000_000_000, 10_000_000):
+            self.session.imu(t, [0, 0, 0], [0, 0, 9.80665], [0]*9)
+        image = frame(0); image['stamp'] = np.array([2, 500_000_000])
+        self.session.sonar(image); self.session.tick()
+        self.assertEqual(worker.imus, initial)
+        worker.outputs = [self.state()]
+        self.session.tick()
+        self.assertEqual(worker.ticks, [2_000_000_000, 2_500_000_000])
+        self.assertEqual(worker.imus, list(range(1_800_000_000, 2_520_000_000, 10_000_000)))
+
     def test_camera_output_cannot_enter_the_sonar_clock(self):
         self.feed(); self.session.tick()
         self.session.client.outputs = [dict(type='map', state_clock='camera')]
