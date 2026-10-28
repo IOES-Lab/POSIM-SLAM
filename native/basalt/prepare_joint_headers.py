@@ -187,7 +187,10 @@ def prepare(source,destination):
             IntegratedImuMeasurement<Scalar>(last_state_t_ns, bg, ba);''',
         '        // No completed IMU interval at the initial state.')
     text=replace_once(text,'  optimize();\n  marginalize(num_points_connected, lost_landmaks);',
-        '  if (!posim_joint_started && posim_sonar_factors && lmdb.numLandmarks() > 0) {\n'
+        # Camera/IMU also needs the complete factor-ownership path: a lost
+        # landmark may be hosted by a still-retained inertial state. The
+        # upstream short-window marginal order omits such younger hosts.
+        '  if (!posim_joint_started && lmdb.numLandmarks() > 0) {\n'
         '    posim_joint_started = true; opt_started = true;\n'
         '  }\n'
         '  if (posim_joint_started) posim_optimize_joint(); else optimize();\n'
@@ -258,7 +261,7 @@ def prepare(source,destination):
     text=replace_once(text,'template <class Scalar_>\nvoid SqrtKeypointVioEstimator<Scalar_>::debug_finalize()', '''template <class Scalar_>
 void SqrtKeypointVioEstimator<Scalar_>::posim_optimize_joint() {
   if (!posim_ping_factors) {
-    if (!posim_sonar_factors && !posim_dvl_factors && !posim_pressure_factors) throw std::logic_error("missing_joint_factor_store");
+    // An empty auxiliary-factor store is valid for camera/IMU estimation.
     posim_ping_factors = std::make_shared<posim_slam::PingFactorStore>(
         static_cast<BundleAdjustmentBase<double>&>(*this));
   }
