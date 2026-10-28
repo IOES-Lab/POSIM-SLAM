@@ -77,6 +77,18 @@ pose, active points and point uncertainty; no archive point passes their unchang
 gate, so they do not certify map accuracy. Keep the downward preference and inspect
 forward static-feature support and initialization uncertainty before a larger suite.
 
+The [original forward-input diagnosis](forward-inputs-20261029/README.md)
+retains a complete 48-point failed map, exact input-frame hashes, native feature
+traces and actual RGB. Box/wall pixels are tracked, but conditional depth and
+joint world-position uncertainty remain large; upward optical rays are common.
+The independent 1.4–60 s input audit is distinct from the recorder’s failed
+whole-capture boundary check. A camera/IMU seed has only 0.115° tilt error but
+0.144 m/s velocity error. An existing IMU/DVL initialization control and a
+world-gravity comparison retain their uncertainty limits; neither hands a seed
+to VIO. No truth enters estimation and all emitted outliers remain.
+
+![Forward feature stages on actual RGB and retained uncertainty diagnostics](forward-inputs-20261029/feature-diagnosis.png)
+
 ## 한국어
 
 카메라·IMU 추정과 선택 센서 결합은 시각 특징점 생성 뒤 같은 최적화·관측
@@ -142,3 +154,11 @@ RGB는 수중 감쇠·입자·집광무늬·수면 파도를 포함하고, 전�
 점·점 불확실성이 일치하지만, 유지한 기준을 통과한 보존점이 없으므로 지도 정확도는
 검증하지 않습니다. 하향 카메라 우선을 유지하고 전방의 정적 특징 지지와 초기화
 불확실성을 진단한 뒤 시험을 확장합니다.
+
+[전방 원본 입력 진단](forward-inputs-20261029/README.md)은 전체 48점 실패 지도와
+원본 영상 해시, 네이티브 특징 이력·실제 RGB를 보존합니다. 상자·벽 픽셀도 추적하지만
+조건부 깊이와 공동 세계 위치 불확실성이 크며 위쪽 광선이 많습니다. 1.4~60초의 독립
+입력 구간 검사는 전체 캡처의 기록 도구 경계 실패와 구분합니다. 카메라·IMU 초기값의
+기울기 오차는 0.115°지만 속도 오차는 0.144m/s입니다. 기존 IMU/DVL 초기화와 월드
+중력값 대조도 불확실성 한계를 보존하며 VIO에 초기값을 넘기지 않습니다. 정답은
+추정에 쓰지 않고 방출된 이상점을 모두 유지합니다.

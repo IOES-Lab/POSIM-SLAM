@@ -1,0 +1,10 @@
+{
+  "stamp_ns": 25000000000,
+  "frame": "vehicle/camera",
+  "storage": "estimator-gray8",
+  "source_encoding": "rgb8",
+  "source_step": 1920,
+  "source_sha256": "da8314e16b280a913dffffcda3f72fe83a3502adcf7dac7fc252626871c8d7bf",
+  "input_gray8_sha256": "ef36fa578b85fc0c9a00244c85d9bab85afa211a3435e726cf19eff7b5ea62d2",
+  "file": "camera-0125.npz"
+}

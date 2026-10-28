@@ -1,0 +1,154 @@
+{
+  "phase": "initial",
+  "total_points": 48,
+  "points_in_view": 46,
+  "marker_area_pt2": 64,
+  "colormap": "turbo",
+  "colour_entries": [
+    32,
+    255
+  ],
+  "height_limits_m": [
+    -4.0,
+    -1.5
+  ],
+  "measured_height_bounds_m": [
+    -3.6440222134769216,
+    0.04865582082865083
+  ],
+  "range_policy": "explicit shared comparison height limits",
+  "colour_saturated_points": 2,
+  "coordinates_filtered": false,
+  "camera": {
+    "eye": [
+      0.0,
+      -4.0,
+      -0.15
+    ],
+    "camera_to_world": [
+      [
+        0.5773502691896258,
+        -0.7071067811865475,
+        0.408248290463863
+      ],
+      [
+        0.5773502691896257,
+        0.7071067811865476,
+        0.40824829046386296
+      ],
+      [
+        -0.5773502691896257,
+        0,
+        0.816496580927726
+      ]
+    ],
+    "horizontal_fov": 1.35,
+    "width": 1000,
+    "height": 800,
+    "stamp_ns": 25000000000,
+    "projection": "perspective",
+    "viewpoint": "isometric direction; positive X forward, Y left, Z up",
+    "partition": "slam-cold-e7f8efb4d6cb4621b83015d8e729b196",
+    "topic": "/validation/slam/isometric_rgb"
+  },
+  "metrics": {
+    "evaluated": true,
+    "states": 413,
+    "duration_s": 82.4,
+    "evaluation_alignment": {
+      "rotation": [
+        [
+          -0.9998826572804597,
+          -0.015318997022221574,
+          0.0
+        ],
+        [
+          0.015318997022221574,
+          -0.9998826572804597,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "translation": [
+        -0.06273425022672743,
+        0.015565999893713323,
+        -0.6739225259006277
+      ],
+      "scale": 1.0
+    },
+    "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+    "position_rmse_m": 0.05244942176182751,
+    "position_max_m": 0.12802037465192861,
+    "rotation_rmse_rad": 0.019350331236214793,
+    "rotation_max_rad": 0.04729167953771923,
+    "truth_distance_m": 24.45879179574514,
+    "estimated_distance_m": 24.883116420836775,
+    "rpe_1s_pairs": 408,
+    "rpe_1s_position_rmse_m": 0.02996391513295525,
+    "rpe_1s_rotation_rmse_rad": 0.008275205697791355,
+    "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+  },
+  "reference_capture": {
+    "reference_stamp_ns": 25000000000,
+    "mapping_stamp_ns": 25000000000,
+    "vehicle_truth": [
+      25000000000,
+      0.7206335141666919,
+      0.6606607465625263,
+      -1.5577169650608744,
+      0.0030708456396044185,
+      -0.0313126907456042,
+      -0.004478919635238832,
+      0.9994948847213921
+    ],
+    "frame": "vehicle/vio_6c52d833f2094446afb44fbbf345f902_segment_0",
+    "truth_bracket_ns": [
+      24970000000,
+      25010000000
+    ],
+    "mapping_topic": "/vehicle/sensors/camera",
+    "mapping_frame_id": "vehicle/camera",
+    "scope": "Same exposure within this map segment; truth is assessment-only"
+  },
+  "mapping_camera": {
+    "topic": "/vehicle/sensors/camera",
+    "frame": "vehicle/camera",
+    "role": "forward"
+  },
+  "reference_provenance": {
+    "reference_kind": "same_segment_input",
+    "frame": "vehicle/vio_6c52d833f2094446afb44fbbf345f902_segment_0",
+    "exposure_ns": 25000000000,
+    "state_interval_ns": [
+      4600000000,
+      87000000000
+    ],
+    "export_stamp_ns": 87000000000
+  },
+  "camera_optical_origin_world": [
+    1.126095203568014,
+    0.6575883050956826,
+    -1.63249248599693
+  ],
+  "camera_optical_direction_world": [
+    0.9979989093543424,
+    -0.009145627408679672,
+    0.06256624031252453
+  ],
+  "source_sha256": {
+    ".local/forward-original-inputs-20261029/forward-run/demo-runtime/6c52d833f2094446afb44fbbf345f902/orca5-seafloor.dae": "277c49dd9c3b2ec1c9d3c3754be9d076c7b0438ccd29e9ae11355869849fbeb2",
+    ".local/vertical-pressure-default-patch-20261028/physical-targets.sdf": "d4795f6c127d739cc1fa4e75eb0329ed55ac3f67d4e593555ae033e06e0bebf6",
+    ".local/vertical-pressure-default-patch-20261028/demo-runtime/8114b37d2a684ee5a7c9a0fe30ba46fe/world-waves-underwater-sonar.sdf": "74e5108a6667112d0c87734d1c2f3371209486c19ab7faccc45088d9741a26f3",
+    ".local/vertical-pressure-default-patch-20261028/demo-runtime/8114b37d2a684ee5a7c9a0fe30ba46fe/orca5-seafloor.dae": "277c49dd9c3b2ec1c9d3c3754be9d076c7b0438ccd29e9ae11355869849fbeb2",
+    ".local/forward-original-inputs-20261029/forward-run/case/initial/isometric-rgb.png": "71ca4d3ec5d7e771d1db615f33da498478bac90c9bfa494956b5162802722110",
+    ".local/forward-original-inputs-20261029/forward-run/case/initial/mapping-camera-rgb.png": "74c36fa98d4fbb983fc3f5f5272b55b8a4980860a22e26f13a88ef12f8ba4ed6",
+    ".local/forward-original-inputs-20261029/forward-run/case/initial/capture.json": "172c8f0a99ace8e11494316f15ff2533d2f7f098313c2681c1cd1ff9b1456721",
+    ".local/forward-original-inputs-20261029/forward-run/case/initial/map.ply": "dbf8b98d7a86a13670311d63bb459e23feee6a66b11fff3368200e27c68bfb96",
+    "scripts/render_native_slam_comparison.py": "6a679ed124a507cd9b20c1486dc9bf71084ae8b17f33bce38f22dcbc39c05719",
+    "scripts/pointcloud_figure.py": "45737b995528c7cb71633a07d26e387b5bcb9ddfd0d1e2921ccf5e3611ecc662"
+  }
+}

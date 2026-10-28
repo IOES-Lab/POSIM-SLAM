@@ -1,0 +1,108 @@
+{
+  "rows": [
+    {
+      "category": "acoustic_validation_target_0",
+      "observations": 4401,
+      "unique_ids": 960,
+      "triangulated_ids": 184,
+      "archived_ids": 21,
+      "full_weight_observations": 1686,
+      "joint_sigma_observations": 1900,
+      "three_sigma_within_10cm": 276,
+      "median_three_sigma_m": 0.28064121613964116,
+      "median_conditional_host_three_sigma_m": 0.14884536776220683,
+      "p95_three_sigma_m": 1.1205334952966037,
+      "median_track_lifetime_s": 0.0
+    },
+    {
+      "category": "acoustic_validation_target_1",
+      "observations": 4796,
+      "unique_ids": 527,
+      "triangulated_ids": 226,
+      "archived_ids": 9,
+      "full_weight_observations": 2242,
+      "joint_sigma_observations": 2537,
+      "three_sigma_within_10cm": 192,
+      "median_three_sigma_m": 0.25619443500091427,
+      "median_conditional_host_three_sigma_m": 0.19568849555619205,
+      "p95_three_sigma_m": 2.6452437567461122,
+      "median_track_lifetime_s": 0.6
+    },
+    {
+      "category": "acoustic_validation_target_2",
+      "observations": 3293,
+      "unique_ids": 138,
+      "triangulated_ids": 96,
+      "archived_ids": 12,
+      "full_weight_observations": 2262,
+      "joint_sigma_observations": 2391,
+      "three_sigma_within_10cm": 354,
+      "median_three_sigma_m": 0.3230315428664569,
+      "median_conditional_host_three_sigma_m": 0.21676337031276055,
+      "p95_three_sigma_m": 2.5294969887234284,
+      "median_track_lifetime_s": 4.1
+    },
+    {
+      "category": "acoustic_validation_wall_0",
+      "observations": 3826,
+      "unique_ids": 239,
+      "triangulated_ids": 169,
+      "archived_ids": 1,
+      "full_weight_observations": 1974,
+      "joint_sigma_observations": 2341,
+      "three_sigma_within_10cm": 20,
+      "median_three_sigma_m": 0.7275758063218969,
+      "median_conditional_host_three_sigma_m": 0.6914097776833343,
+      "p95_three_sigma_m": 5.00611108600836,
+      "median_track_lifetime_s": 2.8
+    },
+    {
+      "category": "acoustic_validation_wall_1",
+      "observations": 3548,
+      "unique_ids": 278,
+      "triangulated_ids": 106,
+      "archived_ids": 0,
+      "full_weight_observations": 2137,
+      "joint_sigma_observations": 2269,
+      "three_sigma_within_10cm": 0,
+      "median_three_sigma_m": 0.5724880105843458,
+      "median_conditional_host_three_sigma_m": 0.40545363652230904,
+      "p95_three_sigma_m": 3.3709204525996244,
+      "median_track_lifetime_s": 0.2
+    },
+    {
+      "category": "upward_unboxed",
+      "observations": 27758,
+      "unique_ids": 4298,
+      "triangulated_ids": 1218,
+      "archived_ids": 6,
+      "full_weight_observations": 9672,
+      "joint_sigma_observations": 12078,
+      "three_sigma_within_10cm": 40,
+      "median_three_sigma_m": 0.8404576917187621,
+      "median_conditional_host_three_sigma_m": 0.8055932915211651,
+      "p95_three_sigma_m": 10.809644699684211,
+      "median_track_lifetime_s": 0.2
+    },
+    {
+      "category": "other_unboxed",
+      "observations": 13811,
+      "unique_ids": 3702,
+      "triangulated_ids": 469,
+      "archived_ids": 1,
+      "full_weight_observations": 5066,
+      "joint_sigma_observations": 5951,
+      "three_sigma_within_10cm": 15,
+      "median_three_sigma_m": 0.6148775079115754,
+      "median_conditional_host_three_sigma_m": 0.5339525789630769,
+      "p95_three_sigma_m": 8.954616036420479,
+      "median_track_lifetime_s": 0.0
+    }
+  ],
+  "frames": 278,
+  "interval_ns": [
+    4600000000,
+    60000000000
+  ],
+  "scope": "Post-estimation ray/known-box candidates or upward optical rays. Excludes terrain/wave/hull occlusion and photometry. IDs may cross categories; upward means a ray direction, not verified water-feature identity. Joint sigma diagnostics are not an independently calibrated confidence certificate."
+}
