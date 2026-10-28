@@ -1,5 +1,7 @@
 # POSIM-SLAM
 
+[기본 예산의 기준 패치 추적](docs/validation/default-reference-vio-20261028/README.md)에 같은 입력의 추적 방식 대조와 실제 ROS·시뮬레이터 지도를 정리합니다.
+
 [압력 융합·IMU 전송 비교](docs/validation/pressure-event-imu-20261028/README.md)에 전체 지도·기본 예산의 이상점·복구 검증 근거를 보존합니다.
 
 [상태 시각에 맞춘 IMU 전송](docs/diagnostics/event-imu.md)은 카메라·소나 상태의 네이티브 응답을 기다리는 동안 이후 원본 샘플을 제한된 이력에 보존합니다.

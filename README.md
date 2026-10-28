@@ -1,5 +1,7 @@
 # POSIM-SLAM
 
+[Default-budget reference tracking](docs/validation/default-reference-vio-20261028/README.md) compares equal-input native frontends and measured application ROS/managed maps.
+
 [Measured pressure and IMU-delivery comparisons](docs/validation/pressure-event-imu-20261028/README.md) retain full maps, default-budget failures and source-hashed recovery evidence.
 
 [IMU delivery at state events / 상태 시각에 맞춘 IMU 전송](docs/diagnostics/event-imu.md) keeps future raw samples in bounded history while a camera or sonar state awaits its native acknowledgement.
