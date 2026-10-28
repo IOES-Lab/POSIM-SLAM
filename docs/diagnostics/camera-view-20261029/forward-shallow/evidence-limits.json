@@ -1,0 +1,9 @@
+{
+  "mission_completed": true,
+  "complete_export_retained": false,
+  "final_operating_status_retained": false,
+  "last_status_is_post_shutdown": true,
+  "independent_late_observer_captured_status": false,
+  "export_http_status_retained": false,
+  "scope": "Original harness asserted qualification before saving final operating status; preserve this missing evidence. No zero-point PLY is synthesized."
+}

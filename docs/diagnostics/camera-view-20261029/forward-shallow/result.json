@@ -1,0 +1,18 @@
+{
+  "passed": false,
+  "error": "AssertionError()",
+  "session_nonce": "c0693be457184beeaedb69a05605eba0",
+  "minimum_observed_clearance": {
+    "clear": true,
+    "minimum_centerline_clearance_m": 0.833091222217255,
+    "required_body_margin_m": 0.5,
+    "closest": {
+      "actor": "acoustic_validation_target_1/body/collision",
+      "segment": 2183
+    },
+    "segments": 3077,
+    "collision_boxes": 5,
+    "method": "exact segment-to-oriented-box distance; spherical body envelope",
+    "scope": "authored targets only; terrain checked separately by mission planner"
+  }
+}

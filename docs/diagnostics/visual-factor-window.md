@@ -68,6 +68,15 @@ this library. The next implicit forward survey changes geographic field, so
 its recovered cloud does not establish obstacle reconstruction. Initialization
 uncertainty and installed navigation remain unqualified.
 
+The [fixed-field camera comparison](camera-view-20261029/README.md) preserves
+1,211/1,395-point downward maps and a forward-camera failure on the same requested
+geographic route. A deeper fixed-heading forward inspection produces only 29/40
+points and does not reconstruct the walls. All 2,675 exported vertices and actual
+per-segment field/mapping RGB remain. Six synthetic IMU-basis controls agree for
+pose, active points and point uncertainty; no archive point passes their unchanged
+gate, so they do not certify map accuracy. Keep the downward preference and inspect
+forward static-feature support and initialization uncertainty before a larger suite.
+
 ## 한국어
 
 카메라·IMU 추정과 선택 센서 결합은 시각 특징점 생성 뒤 같은 최적화·관측
@@ -125,3 +134,11 @@ RGB는 수중 감쇠·입자·집광무늬·수면 파도를 포함하고, 전�
 보존합니다. 잠수·대기 때 방위각을 유지하는 제어 구현은 이 라이브러리에 포함하지
 않습니다. 다음 전진 임무의 조사 영역도 바뀌어 복구 점군으로 장애물 재구성을
 입증할 수는 없습니다. 초기화 불확실성·설치형 항법 승인은 별도입니다.
+
+[고정 구역 카메라 비교](camera-view-20261029/README.md)는 같은 요청 지리 경로의
+하향 지도 1,211/1,395점과 전방 카메라 실패를 보존합니다. 더 깊은 고정 방위각
+전방 관측도 29/40점에 그치고 벽을 복원하지 못합니다. 내보낸 2,675점과 각 구간의
+실제 시험장·입력 RGB를 모두 유지합니다. 합성 IMU 좌표축 대조 여섯 개는 자세·활성
+점·점 불확실성이 일치하지만, 유지한 기준을 통과한 보존점이 없으므로 지도 정확도는
+검증하지 않습니다. 하향 카메라 우선을 유지하고 전방의 정적 특징 지지와 초기화
+불확실성을 진단한 뒤 시험을 확장합니다.

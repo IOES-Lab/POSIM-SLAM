@@ -1,0 +1,14 @@
+[
+  "/model/bluerov2/slam/visual/status",
+  "/model/bluerov2/slam/visual_dvl/status",
+  "/model/bluerov2/slam/visual_ping/status",
+  "/vehicle/sensors/camera",
+  "/vehicle/sensors/camera/camera_info",
+  "/vehicle/sensors/camera/compressed",
+  "/vehicle/sensors/dvl/status",
+  "/vehicle/sensors/dvl/velocity",
+  "/vehicle/sensors/imu",
+  "/vehicle/sensors/imu/status",
+  "/vehicle/sensors/pressure",
+  "/vehicle/sensors/surface_imu"
+]
