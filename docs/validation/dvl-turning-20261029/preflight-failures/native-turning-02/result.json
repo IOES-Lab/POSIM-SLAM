@@ -1,0 +1,18 @@
+{
+  "passed": false,
+  "error": "TimeoutError('navigation_ready_for_survey')",
+  "session_nonce": "6986248f78994256b15e3a42de6c38ed",
+  "minimum_observed_clearance": {
+    "clear": true,
+    "minimum_centerline_clearance_m": 4.001904208700089,
+    "required_body_margin_m": 0.5,
+    "closest": {
+      "actor": "acoustic_validation_target_0/body/collision",
+      "segment": 1582
+    },
+    "segments": 4461,
+    "collision_boxes": 5,
+    "method": "exact segment-to-oriented-box distance; spherical body envelope",
+    "scope": "authored targets only; terrain checked separately by mission planner"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "reference_stamp_ns": 147000000000,
+  "mapping_stamp_ns": 147000000000,
+  "vehicle_truth": [
+    147000000000,
+    1.3697939215062536,
+    1.864994488238347,
+    -0.6154882638064962,
+    -0.0011374318403964603,
+    -0.024171438481393866,
+    -0.040727451664094395,
+    0.9988772309405684
+  ],
+  "frame": "vehicle/vio_8436f99a53da45d8b1ee090f3b84fc4f_segment_1",
+  "truth_bracket_ns": [
+    146980000000,
+    147020000000
+  ],
+  "mapping_topic": "/vehicle/sensors/camera_down",
+  "scope": "Same exposure within this map segment; truth is assessment-only"
+}

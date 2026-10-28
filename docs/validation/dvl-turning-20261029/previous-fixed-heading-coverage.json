@@ -1,0 +1,648 @@
+{
+  "rows": [
+    {
+      "phase": "initial",
+      "states": 615,
+      "time_interval_ns": [
+        115200000000,
+        238000000000
+      ],
+      "cloud_vertices": 1855,
+      "camera_origin_span_m": [
+        7.549878339871106,
+        5.199707498009673,
+        1.1506197704336847
+      ],
+      "heading_span_deg": 2.282693412172228,
+      "capture_stamp_ns": 138000000000,
+      "capture_within_state_interval": true,
+      "targets": [
+        {
+          "name": "acoustic_validation_target_0/body/collision",
+          "faces": [
+            {
+              "face": "-x",
+              "samples": 126,
+              "ever_visible": 126,
+              "three_view_samples": 126,
+              "within_5cm_of_archive": 0,
+              "within_10cm_of_archive": 1,
+              "median_sample_to_cloud_m": 0.4355786846837384
+            },
+            {
+              "face": "+x",
+              "samples": 126,
+              "ever_visible": 126,
+              "three_view_samples": 126,
+              "within_5cm_of_archive": 0,
+              "within_10cm_of_archive": 2,
+              "median_sample_to_cloud_m": 0.44560325546634816
+            },
+            {
+              "face": "-y",
+              "samples": 84,
+              "ever_visible": 0,
+              "three_view_samples": 0,
+              "within_5cm_of_archive": 0,
+              "within_10cm_of_archive": 0,
+              "median_sample_to_cloud_m": null
+            },
+            {
+              "face": "+y",
+              "samples": 84,
+              "ever_visible": 34,
+              "three_view_samples": 16,
+              "within_5cm_of_archive": 0,
+              "within_10cm_of_archive": 0,
+              "median_sample_to_cloud_m": 0.5895145909241948
+            },
+            {
+              "face": "-z",
+              "samples": 54,
+              "ever_visible": 0,
+              "three_view_samples": 0,
+              "within_5cm_of_archive": 0,
+              "within_10cm_of_archive": 0,
+              "median_sample_to_cloud_m": null
+            },
+            {
+              "face": "+z",
+              "samples": 54,
+              "ever_visible": 54,
+              "three_view_samples": 54,
+              "within_5cm_of_archive": 24,
+              "within_10cm_of_archive": 49,
+              "median_sample_to_cloud_m": 0.05531296622186753
+            }
+          ]
+        },
+        {
+          "name": "acoustic_validation_target_1/body/collision",
+          "faces": [
+            {
+              "face": "-x",
+              "samples": 108,
+              "ever_visible": 37,
+              "three_view_samples": 37,
+              "within_5cm_of_archive": 0,
+              "within_10cm_of_archive": 0,
+              "median_sample_to_cloud_m": 0.33351009191736447
+            },
+            {
+              "face": "+x",
+              "samples": 108,
+              "ever_visible": 93,
+              "three_view_samples": 90,
+              "within_5cm_of_archive": 1,
+              "within_10cm_of_archive": 9,
+              "median_sample_to_cloud_m": 0.6134749080158721
+            },
+            {
+              "face": "-y",
+              "samples": 198,
+              "ever_visible": 80,
+              "three_view_samples": 77,
+              "within_5cm_of_archive": 0,
+              "within_10cm_of_archive": 0,
+              "median_sample_to_cloud_m": 0.34595174884920027
+            },
+            {
+              "face": "+y",
+              "samples": 198,
+              "ever_visible": 115,
+              "three_view_samples": 112,
+              "within_5cm_of_archive": 3,
+              "within_10cm_of_archive": 8,
+              "median_sample_to_cloud_m": 0.47715245012228713
+            },
+            {
+              "face": "-z",
+              "samples": 66,
+              "ever_visible": 0,
+              "three_view_samples": 0,
+              "within_5cm_of_archive": 0,
+              "within_10cm_of_archive": 0,
+              "median_sample_to_cloud_m": null
+            },
+            {
+              "face": "+z",
+              "samples": 66,
+              "ever_visible": 0,
+              "three_view_samples": 0,
+              "within_5cm_of_archive": 0,
+              "within_10cm_of_archive": 0,
+              "median_sample_to_cloud_m": null
+            }
+          ]
+        },
+        {
+          "name": "acoustic_validation_target_2/body/collision",
+          "faces": [
+            {
+              "face": "-x",
+              "samples": 156,
+              "ever_visible": 156,
+              "three_view_samples": 156,
+              "within_5cm_of_archive": 0,
+              "within_10cm_of_archive": 0,
+              "median_sample_to_cloud_m": 0.47120176684854287
+            },
+            {
+              "face": "+x",
+              "samples": 156,
+              "ever_visible": 156,
+              "three_view_samples": 156,
+              "within_5cm_of_archive": 0,
+              "within_10cm_of_archive": 3,
+              "median_sample_to_cloud_m": 0.3840658358014344
+            },
+            {
+              "face": "-y",
+              "samples": 65,
+              "ever_visible": 11,
+              "three_view_samples": 8,
+              "within_5cm_of_archive": 0,
+              "within_10cm_of_archive": 0,
+              "median_sample_to_cloud_m": 0.48799927072649796
+            },
+            {
+              "face": "+y",
+              "samples": 65,
+              "ever_visible": 65,
+              "three_view_samples": 65,
+              "within_5cm_of_archive": 1,
+              "within_10cm_of_archive": 5,
+              "median_sample_to_cloud_m": 0.3279756483579564
+            },
+            {
+              "face": "-z",
+              "samples": 60,
+              "ever_visible": 0,
+              "three_view_samples": 0,
+              "within_5cm_of_archive": 0,
+              "within_10cm_of_archive": 0,
+              "median_sample_to_cloud_m": null
+            },
+            {
+              "face": "+z",
+              "samples": 60,
+              "ever_visible": 60,
+              "three_view_samples": 60,
+              "within_5cm_of_archive": 14,
+              "within_10cm_of_archive": 33,
+              "median_sample_to_cloud_m": 0.0903837585705186
+            }
+          ]
+        },
+        {
+          "name": "acoustic_validation_wall_0/body/collision",
+          "faces": [
+            {
+              "face": "-x",
+              "samples": 960,
+              "ever_visible": 497,
+              "three_view_samples": 478,
+              "within_5cm_of_archive": 2,
+              "within_10cm_of_archive": 9,
+              "median_sample_to_cloud_m": 0.6758731395020718
+            },
+            {
+              "face": "+x",
+              "samples": 960,
+              "ever_visible": 0,
+              "three_view_samples": 0,
+              "within_5cm_of_archive": 0,
+              "within_10cm_of_archive": 0,
+              "median_sample_to_cloud_m": null
+            },
+            {
+              "face": "-y",
+              "samples": 48,
+              "ever_visible": 0,
+              "three_view_samples": 0,
+              "within_5cm_of_archive": 0,
+              "within_10cm_of_archive": 0,
+              "median_sample_to_cloud_m": null
+            },
+            {
+              "face": "+y",
+              "samples": 48,
+              "ever_visible": 0,
+              "three_view_samples": 0,
+              "within_5cm_of_archive": 0,
+              "within_10cm_of_archive": 0,
+              "median_sample_to_cloud_m": null
+            },
+            {
+              "face": "-z",
+              "samples": 180,
+              "ever_visible": 0,
+              "three_view_samples": 0,
+              "within_5cm_of_archive": 0,
+              "within_10cm_of_archive": 0,
+              "median_sample_to_cloud_m": null
+            },
+            {
+              "face": "+z",
+              "samples": 180,
+              "ever_visible": 0,
+              "three_view_samples": 0,
+              "within_5cm_of_archive": 0,
+              "within_10cm_of_archive": 0,
+              "median_sample_to_cloud_m": null
+            }
+          ]
+        },
+        {
+          "name": "acoustic_validation_wall_1/body/collision",
+          "faces": [
+            {
+              "face": "-x",
+              "samples": 48,
+              "ever_visible": 48,
+              "three_view_samples": 48,
+              "within_5cm_of_archive": 0,
+              "within_10cm_of_archive": 0,
+              "median_sample_to_cloud_m": 0.7313802254196595
+            },
+            {
+              "face": "+x",
+              "samples": 48,
+              "ever_visible": 0,
+              "three_view_samples": 0,
+              "within_5cm_of_archive": 0,
+              "within_10cm_of_archive": 0,
+              "median_sample_to_cloud_m": null
+            },
+            {
+              "face": "-y",
+              "samples": 432,
+              "ever_visible": 350,
+              "three_view_samples": 347,
+              "within_5cm_of_archive": 7,
+              "within_10cm_of_archive": 12,
+              "median_sample_to_cloud_m": 0.5285381557902482
+            },
+            {
+              "face": "+y",
+              "samples": 432,
+              "ever_visible": 0,
+              "three_view_samples": 0,
+              "within_5cm_of_archive": 0,
+              "within_10cm_of_archive": 0,
+              "median_sample_to_cloud_m": null
+            },
+            {
+              "face": "-z",
+              "samples": 81,
+              "ever_visible": 0,
+              "three_view_samples": 0,
+              "within_5cm_of_archive": 0,
+              "within_10cm_of_archive": 0,
+              "median_sample_to_cloud_m": null
+            },
+            {
+              "face": "+z",
+              "samples": 81,
+              "ever_visible": 47,
+              "three_view_samples": 46,
+              "within_5cm_of_archive": 1,
+              "within_10cm_of_archive": 5,
+              "median_sample_to_cloud_m": 0.3720310643126644
+            }
+          ]
+        }
+      ],
+      "scope": "Diagnostic geometric upper bound at output-state times; box occlusion included, terrain/self hull/particles/photometry not tested. Sample proximity does not prove physical feature identity or dense surface coverage."
+    },
+    {
+      "phase": "recovered",
+      "states": 577,
+      "time_interval_ns": [
+        245800000000,
+        361000000000
+      ],
+      "cloud_vertices": 1808,
+      "camera_origin_span_m": [
+        7.579311492663179,
+        5.319112612870977,
+        1.1285803325089856
+      ],
+      "heading_span_deg": 1.1160906215105515,
+      "capture_stamp_ns": 138000000000,
+      "capture_within_state_interval": false,
+      "targets": [
+        {
+          "name": "acoustic_validation_target_0/body/collision",
+          "faces": [
+            {
+              "face": "-x",
+              "samples": 126,
+              "ever_visible": 126,
+              "three_view_samples": 126,
+              "within_5cm_of_archive": 0,
+              "within_10cm_of_archive": 5,
+              "median_sample_to_cloud_m": 0.45372996874426696
+            },
+            {
+              "face": "+x",
+              "samples": 126,
+              "ever_visible": 126,
+              "three_view_samples": 126,
+              "within_5cm_of_archive": 1,
+              "within_10cm_of_archive": 4,
+              "median_sample_to_cloud_m": 0.4400825339757386
+            },
+            {
+              "face": "-y",
+              "samples": 84,
+              "ever_visible": 0,
+              "three_view_samples": 0,
+              "within_5cm_of_archive": 0,
+              "within_10cm_of_archive": 0,
+              "median_sample_to_cloud_m": null
+            },
+            {
+              "face": "+y",
+              "samples": 84,
+              "ever_visible": 73,
+              "three_view_samples": 63,
+              "within_5cm_of_archive": 0,
+              "within_10cm_of_archive": 0,
+              "median_sample_to_cloud_m": 0.5434402812179397
+            },
+            {
+              "face": "-z",
+              "samples": 54,
+              "ever_visible": 0,
+              "three_view_samples": 0,
+              "within_5cm_of_archive": 0,
+              "within_10cm_of_archive": 0,
+              "median_sample_to_cloud_m": null
+            },
+            {
+              "face": "+z",
+              "samples": 54,
+              "ever_visible": 54,
+              "three_view_samples": 54,
+              "within_5cm_of_archive": 23,
+              "within_10cm_of_archive": 38,
+              "median_sample_to_cloud_m": 0.05679111054546028
+            }
+          ]
+        },
+        {
+          "name": "acoustic_validation_target_1/body/collision",
+          "faces": [
+            {
+              "face": "-x",
+              "samples": 108,
+              "ever_visible": 33,
+              "three_view_samples": 32,
+              "within_5cm_of_archive": 0,
+              "within_10cm_of_archive": 0,
+              "median_sample_to_cloud_m": 0.26465254216752226
+            },
+            {
+              "face": "+x",
+              "samples": 108,
+              "ever_visible": 93,
+              "three_view_samples": 92,
+              "within_5cm_of_archive": 1,
+              "within_10cm_of_archive": 2,
+              "median_sample_to_cloud_m": 0.6633254279240148
+            },
+            {
+              "face": "-y",
+              "samples": 198,
+              "ever_visible": 86,
+              "three_view_samples": 82,
+              "within_5cm_of_archive": 4,
+              "within_10cm_of_archive": 14,
+              "median_sample_to_cloud_m": 0.2551170694446988
+            },
+            {
+              "face": "+y",
+              "samples": 198,
+              "ever_visible": 115,
+              "three_view_samples": 113,
+              "within_5cm_of_archive": 5,
+              "within_10cm_of_archive": 17,
+              "median_sample_to_cloud_m": 0.36732046845220934
+            },
+            {
+              "face": "-z",
+              "samples": 66,
+              "ever_visible": 0,
+              "three_view_samples": 0,
+              "within_5cm_of_archive": 0,
+              "within_10cm_of_archive": 0,
+              "median_sample_to_cloud_m": null
+            },
+            {
+              "face": "+z",
+              "samples": 66,
+              "ever_visible": 0,
+              "three_view_samples": 0,
+              "within_5cm_of_archive": 0,
+              "within_10cm_of_archive": 0,
+              "median_sample_to_cloud_m": null
+            }
+          ]
+        },
+        {
+          "name": "acoustic_validation_target_2/body/collision",
+          "faces": [
+            {
+              "face": "-x",
+              "samples": 156,
+              "ever_visible": 156,
+              "three_view_samples": 156,
+              "within_5cm_of_archive": 0,
+              "within_10cm_of_archive": 0,
+              "median_sample_to_cloud_m": 0.4983305168711809
+            },
+            {
+              "face": "+x",
+              "samples": 156,
+              "ever_visible": 156,
+              "three_view_samples": 156,
+              "within_5cm_of_archive": 0,
+              "within_10cm_of_archive": 0,
+              "median_sample_to_cloud_m": 0.5215326712247945
+            },
+            {
+              "face": "-y",
+              "samples": 65,
+              "ever_visible": 0,
+              "three_view_samples": 0,
+              "within_5cm_of_archive": 0,
+              "within_10cm_of_archive": 0,
+              "median_sample_to_cloud_m": null
+            },
+            {
+              "face": "+y",
+              "samples": 65,
+              "ever_visible": 65,
+              "three_view_samples": 65,
+              "within_5cm_of_archive": 0,
+              "within_10cm_of_archive": 2,
+              "median_sample_to_cloud_m": 0.3325985532321337
+            },
+            {
+              "face": "-z",
+              "samples": 60,
+              "ever_visible": 0,
+              "three_view_samples": 0,
+              "within_5cm_of_archive": 0,
+              "within_10cm_of_archive": 0,
+              "median_sample_to_cloud_m": null
+            },
+            {
+              "face": "+z",
+              "samples": 60,
+              "ever_visible": 60,
+              "three_view_samples": 60,
+              "within_5cm_of_archive": 12,
+              "within_10cm_of_archive": 39,
+              "median_sample_to_cloud_m": 0.07901908342383027
+            }
+          ]
+        },
+        {
+          "name": "acoustic_validation_wall_0/body/collision",
+          "faces": [
+            {
+              "face": "-x",
+              "samples": 960,
+              "ever_visible": 424,
+              "three_view_samples": 412,
+              "within_5cm_of_archive": 0,
+              "within_10cm_of_archive": 4,
+              "median_sample_to_cloud_m": 0.8012370211360338
+            },
+            {
+              "face": "+x",
+              "samples": 960,
+              "ever_visible": 0,
+              "three_view_samples": 0,
+              "within_5cm_of_archive": 0,
+              "within_10cm_of_archive": 0,
+              "median_sample_to_cloud_m": null
+            },
+            {
+              "face": "-y",
+              "samples": 48,
+              "ever_visible": 0,
+              "three_view_samples": 0,
+              "within_5cm_of_archive": 0,
+              "within_10cm_of_archive": 0,
+              "median_sample_to_cloud_m": null
+            },
+            {
+              "face": "+y",
+              "samples": 48,
+              "ever_visible": 0,
+              "three_view_samples": 0,
+              "within_5cm_of_archive": 0,
+              "within_10cm_of_archive": 0,
+              "median_sample_to_cloud_m": null
+            },
+            {
+              "face": "-z",
+              "samples": 180,
+              "ever_visible": 0,
+              "three_view_samples": 0,
+              "within_5cm_of_archive": 0,
+              "within_10cm_of_archive": 0,
+              "median_sample_to_cloud_m": null
+            },
+            {
+              "face": "+z",
+              "samples": 180,
+              "ever_visible": 0,
+              "three_view_samples": 0,
+              "within_5cm_of_archive": 0,
+              "within_10cm_of_archive": 0,
+              "median_sample_to_cloud_m": null
+            }
+          ]
+        },
+        {
+          "name": "acoustic_validation_wall_1/body/collision",
+          "faces": [
+            {
+              "face": "-x",
+              "samples": 48,
+              "ever_visible": 48,
+              "three_view_samples": 48,
+              "within_5cm_of_archive": 0,
+              "within_10cm_of_archive": 0,
+              "median_sample_to_cloud_m": 0.7831104867202487
+            },
+            {
+              "face": "+x",
+              "samples": 48,
+              "ever_visible": 0,
+              "three_view_samples": 0,
+              "within_5cm_of_archive": 0,
+              "within_10cm_of_archive": 0,
+              "median_sample_to_cloud_m": null
+            },
+            {
+              "face": "-y",
+              "samples": 432,
+              "ever_visible": 331,
+              "three_view_samples": 328,
+              "within_5cm_of_archive": 4,
+              "within_10cm_of_archive": 11,
+              "median_sample_to_cloud_m": 0.6593610982243354
+            },
+            {
+              "face": "+y",
+              "samples": 432,
+              "ever_visible": 0,
+              "three_view_samples": 0,
+              "within_5cm_of_archive": 0,
+              "within_10cm_of_archive": 0,
+              "median_sample_to_cloud_m": null
+            },
+            {
+              "face": "-z",
+              "samples": 81,
+              "ever_visible": 0,
+              "three_view_samples": 0,
+              "within_5cm_of_archive": 0,
+              "within_10cm_of_archive": 0,
+              "median_sample_to_cloud_m": null
+            },
+            {
+              "face": "+z",
+              "samples": 81,
+              "ever_visible": 43,
+              "three_view_samples": 42,
+              "within_5cm_of_archive": 0,
+              "within_10cm_of_archive": 0,
+              "median_sample_to_cloud_m": 1.550134889005134
+            }
+          ]
+        }
+      ],
+      "scope": "Diagnostic geometric upper bound at output-state times; box occlusion included, terrain/self hull/particles/photometry not tested. Sample proximity does not prove physical feature identity or dense surface coverage."
+    }
+  ],
+  "source_sha256": {
+    ".local/native-dvl-coverage-20261029/audit.py": "d7d7d234252702596f6f8b3b94deaa17a1037ea9ee7ceb7c12a9011da9a223fb",
+    ".local/dvl-without-ping-20261029/native-dvl-02/case/sensor-model.sdf": "4f00b0976ca8124060a1fd501143a08dbbd8fbc527a8fb0979c78e0316045197",
+    ".local/dvl-without-ping-20261029/native-dvl-02/case/calibration.json": "c6495a08161db0c72ccf78cea4bdf3876b49cbeeae70e5cf449ceb1defdd79ac",
+    ".local/dvl-without-ping-20261029/native-dvl-02/case/physical-targets.sdf": "d4795f6c127d739cc1fa4e75eb0329ed55ac3f67d4e593555ae033e06e0bebf6",
+    ".local/dvl-without-ping-20261029/native-dvl-02/case/initial/map.ply": "0cf71eab9ca7f8b57559836136a92e294d7b173360a964dda53ba1a490190bbb",
+    ".local/dvl-without-ping-20261029/native-dvl-02/case/initial/comparison.json": "5acd8e880cc5037d5b91bca722ebda9b17f0580a41115b3a9b5e3624ca3c9d32",
+    ".local/dvl-without-ping-20261029/native-dvl-02/case/initial/evaluation-inputs/truth.csv": "05bdc9ece57f195b7a5d010a0cde767f197d8df3c5ba9b0d8833139ca63e96f4",
+    ".local/dvl-without-ping-20261029/native-dvl-02/case/initial/evaluation-inputs/states.csv": "af1aa66d4d5197de6a789e56578294f5b5f1dc46bed99fe844558ab5d1b0a3ce",
+    ".local/dvl-without-ping-20261029/native-dvl-02/case/recovered/map.ply": "9867cfb957c287d2df93cf452bfd496208855fe7ce29412c04162e40c4e8c888",
+    ".local/dvl-without-ping-20261029/native-dvl-02/case/recovered/comparison.json": "ed20751886f0db475e2795922b98e06d4d9ad72af076f61bd6ed8af7e6e09cde",
+    ".local/dvl-without-ping-20261029/native-dvl-02/case/recovered/evaluation-inputs/truth.csv": "c7afb92aa120621979780d5dbec08e081ca2ecb4e6f789184aa502377bae0f28",
+    ".local/dvl-without-ping-20261029/native-dvl-02/case/recovered/evaluation-inputs/states.csv": "b12da1b96d26d5d0e34025ddefbf10e6e4629c763f2e0ca8aadf7dba707c1367"
+  }
+}

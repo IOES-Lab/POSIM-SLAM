@@ -46,10 +46,19 @@ exclusion is the integrating application's selected-payload policy.
 ![DVL/IMU/pressure map with actual isometric field and downward RGB](../validation/dvl-without-ping-20261029/native-second/recovered/rgb-pcl.png)
 
 Both isometric panels use the same actual camera pose and perspective. The third
-panel is simultaneous downward-camera RGB; arrows mark the vehicle and optical
-axis. RGB includes underwater attenuation, particles, caustics and wave surface.
+panel is simultaneous with the field RGB. Its 138 s exposure precedes the
+recovered 245.8–361 s segment and is static scene context; arrows mark the vehicle and optical axis. RGB includes underwater attenuation, particles, caustics and wave surface.
 All emitted points remain; 64 pt² markers use Turbo from −4 to −1.5 m. Evaluation
 uses initial yaw/translation only, scale 1; reference truth never enters estimation.
+
+The [turning survey](../validation/dvl-turning-20261029/README.md) retains a fresh
+native cold start, two complete maps (863/938 points) and per-segment synchronized
+field/mapping RGB. Surface RMSE is 1.27/1.30 cm; all 1,801 emitted points remain.
+DVL silence creates exactly one new frame and all owned groups stop normally.
+Repeated turns still leave sparse obstacle support and unqualified initialization.
+The geometric coverage audit is an upper bound, not object recognition.
+
+![Returned DVL map and RGB from that same segment](../validation/dvl-turning-20261029/recovered/rgb-pcl.png)
 
 ## 한국어
 
@@ -90,7 +99,15 @@ DVL 생명주기 시험을 통과합니다.
 독립 라이브러리의 센서 결합은 유지하며 상호 배제는 앱의 장착 선택 정책입니다.
 
 위 그림의 등각 패널은 같은 실제 카메라 위치·자세와 원근 투영을 사용합니다.
-세 번째는 같은 노출 시각의 하향 RGB이며 화살표는 차량·광축을 표시합니다.
+세 번째는 시험장과 같은 노출 시각의 하향 RGB입니다. 138초 영상은 복구 구간
+245.8~361초보다 앞선 정적 장면 참고이며, 화살표는 차량·광축을 표시합니다.
 RGB는 수중 감쇠·입자·집광무늬·수면 파도를 포함하고, 전체 점은 64 pt²와
 −4~−1.5m Turbo로 표시합니다. 평가는 초기 방위각·위치만 정렬하고 축척 1을
 유지하며 참조 정답은 추정기에 입력하지 않습니다.
+
+[회전 조사 기록](../validation/dvl-turning-20261029/README.md)은 새 네이티브 시작과
+전체 지도 두 개(863/938점), 각 구간 안에서 동기화한 시험장·지도 입력 RGB를
+보존합니다. 표면 RMSE는 1.27/1.30cm이고 1,801점을 모두 평가합니다. DVL 통신
+단절은 예상한 새 구간 한 번을 만들며 소유 프로세스는 모두 정상 종료합니다.
+반복 회전 뒤에도 장애물 지지는 드물고 초기화는 미검증입니다. 기하학적 관측
+범위 진단을 물체 인식으로 해석하지 않습니다.

@@ -115,5 +115,15 @@
     ".local/dvl-without-ping-20261029/native-dvl/case/mapping-camera-rgb.png": "87139aa326700149c1d4b618580b9929d08a853b7d21a3ab263a14475437b087",
     ".local/dvl-without-ping-20261029/native-dvl/case/recovered/map.ply": "f8a7cb395741d57008469ee62293f031b82e8bcacf7ce1e7949c1fd5c7912538"
   },
-  "scope": "Native generated selected-sensor model; independent assessment only; single Ping physically absent"
+  "scope": "Native generated selected-sensor model; independent assessment only; single Ping physically absent",
+  "reference_provenance": {
+    "reference_kind": "same_recording_scene_reference",
+    "exposure_ns": 241000000000,
+    "state_interval_ns": [
+      346800000000,
+      462000000000
+    ],
+    "within_exported_segment": false,
+    "scope": "Original one-capture-per-start observer; no separately recorded reset-segment identity. Outside-interval RGB is scene context, not input to the exported segment."
+  }
 }

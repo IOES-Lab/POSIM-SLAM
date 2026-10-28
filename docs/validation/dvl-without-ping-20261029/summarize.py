@@ -1,6 +1,6 @@
 """Verify retained artifacts; does not rerun the simulator or certify navigation."""
 from pathlib import Path
-import gzip,hashlib,json,math,struct
+import csv,gzip,hashlib,json,math,struct
 
 BASE=Path(__file__).resolve().parent
 
@@ -86,6 +86,11 @@ def main():
             c=read(p+'/comparison.json');assert c['total_points']==count and not c['coordinates_filtered'] and c['marker_area_pt2']==64
             assert c['height_limits_m']==[-4,-1.5]
             capture=c['reference_capture'];assert capture['reference_stamp_ns']==capture['mapping_stamp_ns']
+            stamps=[int(row['stamp_ns']) for row in csv.DictReader(gzip.decompress((BASE/p/'evaluation-states.csv.gz').read_bytes()).decode().splitlines())]
+            reference=c['reference_provenance'];assert reference['reference_kind']=='same_recording_scene_reference'
+            assert reference['state_interval_ns']==[stamps[0],stamps[-1]]
+            assert reference['exposure_ns']==capture['mapping_stamp_ns']
+            assert reference['within_exported_segment']==(stamps[0]<=reference['exposure_ns']<=stamps[-1])
             rows.append(dict(case=name,phase=phase,**a))
     assert sum(r['points'] for r in rows if r['case'].startswith('ros/'))==14038
     assert native_points==7430 and native_assessed==5533

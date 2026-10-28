@@ -1,0 +1,20 @@
+{
+  "status": 409,
+  "detail": "{\"detail\":\"route_start_unsafe\"}",
+  "request": {
+    "depth_m": 0.3,
+    "distance_m": 1,
+    "hold_seconds": 3,
+    "session_nonce": "6986248f78994256b15e3a42de6c38ed",
+    "return_home": false,
+    "waypoints": [
+      {
+        "latitude": 47.6302,
+        "longitude": -122.3982391,
+        "depth_m": 0.3,
+        "hold_seconds": 3
+      }
+    ]
+  },
+  "wall": 1793223984.593513
+}
