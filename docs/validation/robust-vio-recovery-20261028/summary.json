@@ -1,0 +1,344 @@
+{
+  "schema": "posim-robust-vio-recovery-review-1",
+  "scope": "Recorded ROS initialization and IMU-loss recovery; no release/platform qualification",
+  "universal_marine_threshold": false,
+  "points_removed": false,
+  "cases": {
+    "camera-imu-ping-robust": {
+      "ros_passed": true,
+      "error": null,
+      "replay_speed": 0.5,
+      "source_frozen": true,
+      "initialization": {
+        "first_image_stamp_ns": 73600000000,
+        "direction_imu": [
+          0.09081459767252502,
+          0.00290629404494212,
+          -0.9958635761511225
+        ],
+        "velocity_seed_imu_m_s": [
+          0.7948510204262168,
+          0.018673543397075977,
+          0.07450712967720498
+        ],
+        "last_measurement_ns": 73600000000,
+        "bootstrap_first_ns": 70400000000,
+        "bootstrap_last_ns": 73400000000,
+        "frames": 16,
+        "selected_tracks": 112,
+        "seed_method": "bearing_imu_ransac_fixed_gravity",
+        "inlier_tracks": 45,
+        "rejected_tracks": 67,
+        "pixel_sigma": 0.5,
+        "inlier_radius_px": 1.5,
+        "gravity_magnitude_m_s2": 9.80665,
+        "median_inlier_reprojection_px": 0.40762382154167454,
+        "covariance_estimated": false,
+        "observability_qualified": false,
+        "scope": "Measured robust bearing/IMU startup; uncertainty qualification pending"
+      },
+      "recovery": {
+        "resume_stamp_ns": 69220000000,
+        "old_frame": "vehicle/vio_joint-ros-replay_segment_0",
+        "empty_archive_before_resume": true,
+        "new_frame": "vehicle/vio_joint-ros-replay_segment_1",
+        "new_pose_count": 549,
+        "first_visual_map_stamp_ns": 76200000000,
+        "time_to_first_map_s": 6.98,
+        "export": {
+          "session_nonce": "joint-ros-replay",
+          "frame": "vehicle/vio_joint-ros-replay_segment_1",
+          "segment": 1,
+          "points": 1378,
+          "stamp_ns": 129100000000,
+          "request_id": 2
+        }
+      },
+      "cleanup": [
+        {
+          "pid": 12084,
+          "returncode": -15,
+          "threads_stopped": true
+        },
+        {
+          "pid": 12974,
+          "returncode": -15,
+          "threads_stopped": true
+        }
+      ],
+      "maps": {
+        "initial": {
+          "points": 3790,
+          "surface_rmse_m": 0.010000178689526533,
+          "median_m": 0.004850853352492671,
+          "p95_m": 0.018950185434066343,
+          "p99_m": 0.028888875750180176,
+          "maximum_m": 0.12948896520603628,
+          "outside_10cm": 1,
+          "outside_10cm_percent": 0.026385224274406333,
+          "trajectory_rmse_m": 0.015929365542683854,
+          "rpe_1s_position_rmse_m": 0.009349472697296753,
+          "surface_support_within_10cm": {
+            "acoustic_validation_target_0": 69,
+            "acoustic_validation_target_1": 267,
+            "acoustic_validation_target_2": 86,
+            "acoustic_validation_wall_0": 81,
+            "acoustic_validation_wall_1": 116,
+            "seabed": 3170
+          }
+        },
+        "recovered": {
+          "points": 1378,
+          "surface_rmse_m": 0.006467065965010202,
+          "median_m": 0.0034499531536131703,
+          "p95_m": 0.010614850096135438,
+          "p99_m": 0.017865479587319103,
+          "maximum_m": 0.11644547912421022,
+          "outside_10cm": 1,
+          "outside_10cm_percent": 0.07256894049346879,
+          "trajectory_rmse_m": 0.0240194153861613,
+          "rpe_1s_position_rmse_m": 0.004920886888573451,
+          "surface_support_within_10cm": {
+            "acoustic_validation_target_0": 54,
+            "acoustic_validation_target_1": 0,
+            "acoustic_validation_target_2": 11,
+            "acoustic_validation_wall_0": 1,
+            "acoustic_validation_wall_1": 0,
+            "seabed": 1311
+          }
+        }
+      }
+    },
+    "camera-imu-ping-robust-1x": {
+      "ros_passed": true,
+      "error": null,
+      "replay_speed": 1.0,
+      "source_frozen": true,
+      "initialization": {
+        "first_image_stamp_ns": 73700000000,
+        "direction_imu": [
+          0.10395175222805898,
+          0.002790848059246461,
+          -0.994578425452627
+        ],
+        "velocity_seed_imu_m_s": [
+          0.8014641613512121,
+          0.023996330356721884,
+          0.08992348394831534
+        ],
+        "last_measurement_ns": 73700000000,
+        "bootstrap_first_ns": 70500000000,
+        "bootstrap_last_ns": 73500000000,
+        "frames": 16,
+        "selected_tracks": 159,
+        "seed_method": "bearing_imu_ransac_fixed_gravity",
+        "inlier_tracks": 73,
+        "rejected_tracks": 86,
+        "pixel_sigma": 0.5,
+        "inlier_radius_px": 1.5,
+        "gravity_magnitude_m_s2": 9.80665,
+        "median_inlier_reprojection_px": 0.21851987198793937,
+        "covariance_estimated": false,
+        "observability_qualified": false,
+        "scope": "Measured robust bearing/IMU startup; uncertainty qualification pending"
+      },
+      "recovery": {
+        "resume_stamp_ns": 69220000000,
+        "old_frame": "vehicle/vio_joint-ros-replay_segment_0",
+        "empty_archive_before_resume": true,
+        "new_frame": "vehicle/vio_joint-ros-replay_segment_1",
+        "new_pose_count": 548,
+        "first_visual_map_stamp_ns": 76200000000,
+        "time_to_first_map_s": 6.98,
+        "export": {
+          "session_nonce": "joint-ros-replay",
+          "frame": "vehicle/vio_joint-ros-replay_segment_1",
+          "segment": 1,
+          "points": 1364,
+          "stamp_ns": 129100000000,
+          "request_id": 2
+        }
+      },
+      "cleanup": [
+        {
+          "pid": 16508,
+          "returncode": -15,
+          "threads_stopped": true
+        },
+        {
+          "pid": 16903,
+          "returncode": -15,
+          "threads_stopped": true
+        }
+      ],
+      "maps": {
+        "initial": {
+          "points": 3859,
+          "surface_rmse_m": 0.012661363783650867,
+          "median_m": 0.006002432611204034,
+          "p95_m": 0.015063738786137426,
+          "p99_m": 0.02840096651517038,
+          "maximum_m": 0.46905917072766456,
+          "outside_10cm": 6,
+          "outside_10cm_percent": 0.15548069448043533,
+          "trajectory_rmse_m": 0.015233903836471763,
+          "rpe_1s_position_rmse_m": 0.007676460020171676,
+          "surface_support_within_10cm": {
+            "acoustic_validation_target_0": 78,
+            "acoustic_validation_target_1": 296,
+            "acoustic_validation_target_2": 87,
+            "acoustic_validation_wall_0": 80,
+            "acoustic_validation_wall_1": 117,
+            "seabed": 3195
+          }
+        },
+        "recovered": {
+          "points": 1364,
+          "surface_rmse_m": 0.0061261140032003265,
+          "median_m": 0.0038570536815751844,
+          "p95_m": 0.010933775918940711,
+          "p99_m": 0.021153900051733444,
+          "maximum_m": 0.049561744959561324,
+          "outside_10cm": 0,
+          "outside_10cm_percent": 0.0,
+          "trajectory_rmse_m": 0.020836589535352033,
+          "rpe_1s_position_rmse_m": 0.004977768898412233,
+          "surface_support_within_10cm": {
+            "acoustic_validation_target_0": 64,
+            "acoustic_validation_target_1": 0,
+            "acoustic_validation_target_2": 11,
+            "acoustic_validation_wall_0": 1,
+            "acoustic_validation_wall_1": 0,
+            "seabed": 1288
+          }
+        }
+      }
+    },
+    "camera-imu-ping-v2": {
+      "ros_passed": false,
+      "error": "ValueError('vio_map_unavailable_or_busy')",
+      "replay_speed": 0.5,
+      "source_frozen": true,
+      "initialization": {
+        "first_image_stamp_ns": 73600000000,
+        "direction_imu": [
+          0.09537770290570873,
+          0.003602413295497224,
+          -0.9954346369334753
+        ],
+        "velocity_seed_imu_m_s": [
+          0.20598798780202499,
+          -0.00723323216144954,
+          -0.004816278284061852
+        ],
+        "last_measurement_ns": 73600000000,
+        "bootstrap_first_ns": 70400000000,
+        "bootstrap_last_ns": 73400000000,
+        "frames": 16,
+        "selected_tracks": 112,
+        "covariance_estimated": false,
+        "observability_qualified": false,
+        "scope": "Measured linear startup; robust uncertainty qualification pending"
+      },
+      "recovery": {
+        "resume_stamp_ns": 69220000000,
+        "old_frame": "vehicle/vio_joint-ros-replay_segment_0",
+        "empty_archive_before_resume": true,
+        "new_frame": "vehicle/vio_joint-ros-replay_segment_1",
+        "new_pose_count": 530,
+        "first_visual_map_stamp_ns": null,
+        "time_to_first_map_s": null
+      },
+      "cleanup": [
+        {
+          "pid": 3120,
+          "returncode": -15,
+          "threads_stopped": true
+        },
+        {
+          "pid": 3923,
+          "returncode": -15,
+          "threads_stopped": true
+        }
+      ],
+      "maps": {}
+    },
+    "camera-imu-robust": {
+      "ros_passed": false,
+      "error": "ValueError('vio_map_unavailable_or_busy')",
+      "replay_speed": 0.5,
+      "source_frozen": true,
+      "initialization": {
+        "first_image_stamp_ns": 73600000000,
+        "direction_imu": [
+          0.09081459767252502,
+          0.00290629404494212,
+          -0.9958635761511225
+        ],
+        "velocity_seed_imu_m_s": [
+          0.7948510204262168,
+          0.018673543397075977,
+          0.07450712967720498
+        ],
+        "last_measurement_ns": 73600000000,
+        "bootstrap_first_ns": 70400000000,
+        "bootstrap_last_ns": 73400000000,
+        "frames": 16,
+        "selected_tracks": 112,
+        "seed_method": "bearing_imu_ransac_fixed_gravity",
+        "inlier_tracks": 45,
+        "rejected_tracks": 67,
+        "pixel_sigma": 0.5,
+        "inlier_radius_px": 1.5,
+        "gravity_magnitude_m_s2": 9.80665,
+        "median_inlier_reprojection_px": 0.40762382154167454,
+        "covariance_estimated": false,
+        "observability_qualified": false,
+        "scope": "Measured robust bearing/IMU startup; uncertainty qualification pending"
+      },
+      "recovery": {
+        "resume_stamp_ns": 69220000000,
+        "old_frame": "vehicle/vio_joint-ros-replay_segment_0",
+        "empty_archive_before_resume": true,
+        "new_frame": "vehicle/vio_joint-ros-replay_segment_1",
+        "new_pose_count": 549,
+        "first_visual_map_stamp_ns": null,
+        "time_to_first_map_s": null
+      },
+      "cleanup": [
+        {
+          "pid": 13964,
+          "returncode": -15,
+          "threads_stopped": true
+        },
+        {
+          "pid": 14805,
+          "returncode": -15,
+          "threads_stopped": true
+        }
+      ],
+      "maps": {
+        "initial": {
+          "points": 832,
+          "surface_rmse_m": 0.008770354839964852,
+          "median_m": 0.005829751409619317,
+          "p95_m": 0.015538372390500956,
+          "p99_m": 0.022382697570522945,
+          "maximum_m": 0.06468284458062705,
+          "outside_10cm": 0,
+          "outside_10cm_percent": 0.0,
+          "trajectory_rmse_m": 0.03046711868363885,
+          "rpe_1s_position_rmse_m": 0.020746007274522506,
+          "surface_support_within_10cm": {
+            "acoustic_validation_target_0": 0,
+            "acoustic_validation_target_1": 0,
+            "acoustic_validation_target_2": 0,
+            "acoustic_validation_wall_0": 0,
+            "acoustic_validation_wall_1": 0,
+            "seabed": 832
+          }
+        }
+      }
+    }
+  }
+}

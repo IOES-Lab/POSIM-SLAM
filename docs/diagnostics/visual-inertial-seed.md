@@ -15,12 +15,27 @@ metric visual trajectory is an input. Constant-velocity and zero-parallax
 degeneracies are rejected. Input bounds are 4–32 frames, 8–256 tracks and at
 most 10 seconds; each track needs at least three observations.
 
+The unweighted linear mode leaves gravity magnitude unconstrained. Supplying
+`gravity_magnitude`, `pixel_sigma` and processed `focal_lengths` to
+`bearing_imu_seed` selects `visual_seed_consensus.py`. `tracked_imu_seed` derives
+the focal lengths from its calibrated processed intrinsics. The consensus mode
+tests 256 deterministic three-track RANSAC hypotheses, checks rank, refines known
+gravity magnitude on its tangent plane and refits agreeing tracks. A track needs
+positive depth in every view and median reprojection within three pixel sigmas;
+at least eight tracks must agree. The result reports retained/rejected counts.
+
 This calculation conditions on supplied gyro/accelerometer biases and relative
-rotations. It reports numerical conditioning, residuals and positive depths;
-these are not a calibrated covariance or an observability certificate. Gravity
-magnitude is unconstrained in this linear seed. Robust feature selection,
-gravity-magnitude-constrained nonlinear refinement, bias uncertainty and live
-worker integration remain required. Do not enable navigation from this result.
+rotations. Numerical conditioning, consensus, residuals and positive depths do
+not establish calibrated covariance or observability. Bias uncertainty,
+initialization qualification and operational recovery still require evaluation.
+The optional ROS moving mode uses the native gravity magnitude 9.80665 m/s² and
+the pinned Basalt pixel-noise model of 0.5 pixels. These are explicit model
+settings, not measured sensor calibration. The GUI default is separate.
+
+Known-magnitude tangent refinement follows the established method described in
+[VINS-Mono, section V-B-3](https://arxiv.org/pdf/1708.03852). Track consensus and
+this bearing-system implementation are independent project code; no VINS-Mono
+implementation or additional dependency is included.
 
 The moving BlueROV recording starting at 69.2 s uses actual native optical-flow
 pixels, including tracks not yet triangulated by the failing VIO worker. Only
@@ -65,7 +80,7 @@ This figure does not qualify map geometry. Twenty-six native regression tests
 and sixteen client-input tests pass, including flipped-IMU velocity rotation,
 sensor bias preservation and invalid/duplicate seed rejection.
 
-Default/GUI integration, robust refinement and uncertainty evaluation remain
+Default/GUI integration and uncertainty evaluation remain
 required. The two-pass recording experiment is not live automatic initialization,
 mixed sonar recovery, installed application acceptance, or navigation readiness.
 
@@ -81,8 +96,9 @@ state estimation starts on a subsequent camera frame after a measured seed.
 
 `tracked_imu_seed` validates timestamps, feature identities and image dimensions,
 converts processed pixels to bearings, composes raw-IMU intervals and returns a
-provisional endpoint seed. Its conditioning diagnostics are not calibrated
-uncertainty or an outlier-robust acceptance decision.
+provisional endpoint seed. With explicit gravity and pixel-noise settings it
+uses the consensus mode described above. Its diagnostics do not certify
+initialization uncertainty or map accuracy.
 
 A single-pass native packet replay collects 16 frames from 66.2–69.2 s, then
 propagates the seed using measured IMU to the next image at 69.4 s. It reads no
@@ -109,10 +125,23 @@ rejection and enforcement of the 32-frame bound.
 정답은 계산 후 평가에만 사용했습니다. 합성 검사 5개에는 원시 IMU 적분,
 카메라 외부 보정, 일정 속도·시차 부족 거부가 포함됩니다.
 
-현재는 실시간 실행 경로에 연결하지 않은 독립 초기값 계산입니다.
-바이어스와 상대 회전은 주어진 값으로 취급하며 중력 크기는 아직 제약하지
-않습니다. 이상 특징점 처리, 중력 크기를 제약한 비선형 보정, 바이어스
-불확실성과 공분산 평가, 실제 재시작 연결·궤적 검증이 남아 있습니다.
+가중치 없는 선형 모드는 중력 크기를 제약하지 않습니다. `bearing_imu_seed`에
+`gravity_magnitude`·`pixel_sigma`·처리 영상의 `focal_lengths`를 전달하면
+`visual_seed_consensus.py`의 강건 추정을 사용합니다. `tracked_imu_seed`는
+보정된 처리 영상 내부 파라미터에서 초점 거리를 구합니다. 특징점 세 개씩
+선택하는 재현 가능한 RANSAC 가설 256개를 검사하고, 중력 크기를 유지하며
+접평면에서 방향을 보정한 뒤 일치하는 특징점으로 다시 계산합니다.
+각 특징점은 모든 관측에서 카메라 앞에 있고 재투영 오차 중앙값이 픽셀 잡음의
+3배 이내여야 하며, 최소 8개 특징점이 일치해야 합니다. 결과에는 채택·제외
+특징점 수가 포함됩니다.
+
+바이어스와 상대 회전은 주어진 값으로 취급합니다. 바이어스 불확실성·공분산,
+초기화와 실제 복구의 운용 검증이 남아 있습니다. 선택형 ROS 이동 초기화는
+네이티브 중력 크기 9.80665m/s²와 고정된 Basalt 픽셀 잡음 모델 0.5픽셀을
+사용합니다. 이는 명시적인 모델 설정이며 센서를 실측한 보정값은 아닙니다.
+GUI 기본 초기화 경로는 별도입니다. 중력 크기를 유지하는 접평면 보정은
+위 VINS-Mono 논문 V-B-3절에 설명된 기존 방법입니다. 해당 구현 코드를
+포함하지 않으며 별도 의존성을 추가하지 않습니다.
 수치 조건과 잔차가 좋다는 이유만으로 관측 가능성이나 항법 준비 완료를
 인정하지 않습니다. 기존 시각·관성 초기화 방법에 해당하며 연구 신규성을
 주장하지 않습니다.
@@ -136,7 +165,7 @@ Turbo 높이 색상과 지름 4배 표시를 유지합니다. 지도 형상은 �
 않았습니다. 네이티브 회귀 검사 26개와 클라이언트 입력 검사 16개가 통과했습니다.
 뒤집힌 IMU의 속도 회전, 바이어스 유지, 잘못된 초기값 거부를 확인합니다.
 
-기본값·GUI 연결, 강건한 보정과 불확실성 평가가 남아 있습니다.
+기본값·GUI 연결과 불확실성 평가가 남아 있습니다.
 현재 결과를 실시간 자동 초기화·혼합 소나 복구·설치형 앱·항법 준비 완료의
 검증으로 확대하지 않습니다.
 

@@ -304,6 +304,14 @@ with DVL/pressure updates, with no truth observation updates or scale alignment.
 It does not qualify native sensor initialization, field accuracy, acoustic map
 integration or application defaults.
 
+## Moving camera/IMU startup
+
+`visual_inertial_seed.tracked_imu_seed` forms a provisional metric velocity and
+gravity seed from calibrated multi-view image tracks and raw IMU. Explicit
+gravity magnitude and pixel-noise inputs enable bounded RANSAC track consensus
+and tangent-plane gravity refinement. Biases remain conditioned inputs and
+initialization uncertainty needs qualification. [Inputs and method](docs/diagnostics/visual-inertial-seed.md).
+
 ## Moving IMU/DVL initialization
 
 `posim_slam.inertial_alignment.moving_initialize`, algorithm **0.1.0**, fits a

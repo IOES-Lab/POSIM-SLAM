@@ -28,17 +28,24 @@ class MapQualityTests(unittest.TestCase):
             with self.subTest(key=key),self.assertRaisesRegex(ValueError,'information_contract'):
                 validate_ready(dict(value,**{key:invalid}))
 
-    def test_relative_uncertainty_damping_unknown_errors_and_bad_counts_cannot_pass(self):
+    def test_relative_uncertainty_damping_and_bad_counts_cannot_pass(self):
         for key,invalid in [('admission_coordinate','host_camera'),('pose_uncertainty_included',False),
                 ('damping_included',True),('calibration_uncertainty_included',True),('map_qualified',True),
                 ('active_joint_observed',8),('active_eligible',True),('active_unqualified',6),
                 ('observed_outliers_withdrawn',-1),('metric_three_sigma_limit_m',.2),('pixel_sigma',float('inf'))]:
             with self.subTest(key=key),self.assertRaisesRegex(ValueError,'geometry_report'):
                 validate_geometry(dict(geometry(),**{key:invalid}),7)
+    def test_unavailable_information_is_reported_without_a_point_certificate(self):
         value=geometry();value['error']='unavailable_factor_information'
-        with self.assertRaisesRegex(ValueError,'information_unavailable'):validate_geometry(value,7)
+        accepted=validate_geometry(value,7)
+        self.assertEqual(accepted['error'],value['error'])
+        self.assertEqual((accepted['active_eligible'],accepted['active_joint_observed']),(0,0))
+        for changes in ({'error':True},{'error':''},{'error':'x'*1025},
+                {'active_joint_observed':1},{'active_joint_observed':1,'active_eligible':1,'active_unqualified':6}):
+            with self.subTest(changes=changes),self.assertRaisesRegex(ValueError,'geometry_report'):
+                validate_geometry(dict(value,**changes),7)
         del value['error']
-        with self.assertRaisesRegex(ValueError,'information_unavailable'):validate_geometry(value,7)
+        with self.assertRaisesRegex(ValueError,'geometry_report'):validate_geometry(value,7)
 
 
 if __name__=='__main__':unittest.main()

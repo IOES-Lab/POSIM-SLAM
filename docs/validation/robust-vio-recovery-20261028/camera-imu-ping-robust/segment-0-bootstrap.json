@@ -1,0 +1,28 @@
+{
+  "first_image_stamp_ns": 13600000000,
+  "direction_imu": [
+    0.01438834868657244,
+    -0.0023834544806206363,
+    -0.9998936416273551
+  ],
+  "velocity_seed_imu_m_s": [
+    0.012205700568782642,
+    0.02972075529115232,
+    -0.018614940578722615
+  ],
+  "last_measurement_ns": 13600000000,
+  "bootstrap_first_ns": 10400000000,
+  "bootstrap_last_ns": 13400000000,
+  "frames": 16,
+  "selected_tracks": 256,
+  "seed_method": "bearing_imu_ransac_fixed_gravity",
+  "inlier_tracks": 208,
+  "rejected_tracks": 48,
+  "pixel_sigma": 0.5,
+  "inlier_radius_px": 1.5,
+  "gravity_magnitude_m_s2": 9.80665,
+  "median_inlier_reprojection_px": 0.35810243746102033,
+  "covariance_estimated": false,
+  "observability_qualified": false,
+  "scope": "Measured robust bearing/IMU startup; uncertainty qualification pending"
+}

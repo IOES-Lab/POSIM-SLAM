@@ -277,6 +277,14 @@ raw gyro 보정을 사용합니다. 정답 관측 갱신이나 축척 정렬 없
 DVL·수압 갱신을 비교합니다. 네이티브 초기화·현장 정확도·음향 지도 연결·앱 기본값의
 승인 시험은 아닙니다.
 
+## 움직이는 상태의 카메라/IMU 초기값
+
+`visual_inertial_seed.tracked_imu_seed`는 보정된 다중 시점 영상 특징점과
+원시 IMU로 미터 단위 속도·중력의 임시 초기값을 구합니다. 중력 크기와 픽셀
+잡음을 명시하면 제한된 RANSAC 특징점 일치 검사와 중력 접평면 보정을
+사용합니다. 바이어스는 주어진 입력값으로 취급하며 초기화 불확실성 검증이
+필요합니다. [입력과 방법](docs/diagnostics/visual-inertial-seed.md).
+
 ## 움직이는 상태의 IMU/DVL 초기화
 
 `posim_slam.inertial_alignment.moving_initialize` 알고리즘 **0.1.0**은 7–30초

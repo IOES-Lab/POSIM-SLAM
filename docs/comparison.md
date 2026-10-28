@@ -1,5 +1,57 @@
 # Method comparison protocol / 방법 비교 규약
 
+### Moving initialization and IMU-loss recovery
+
+![Camera/IMU/Ping initial map and matched RGB](validation/robust-vio-recovery-20261028/initial-rgb-pcl.png)
+
+![Camera/IMU/Ping recovered map and matched RGB](validation/robust-vio-recovery-20261028/recovered-rgb-pcl.png)
+
+This 1× ROS replay uses POSIM-SLAM 0.1.0, Basalt
+`0f3b2b52c807f70ff4e2973ce253c73329eea7bc`, patch tracking and the
+RANSAC/known-gravity moving seed. Camera/raw-IMU/single-Ping recovery exports
+1,364 points with 6.13 mm surface RMSE and 2.08 cm trajectory RMSE. The initial
+3,859-point map has six errors beyond 10 cm, including a 46.91 cm maximum.
+Every point is retained. This does not certify obstacle recognition, area
+coverage or installed-app operation.
+
+The figures share an isometric perspective camera, metre extent and −4 to
+−1.5 m Turbo limits, with 64 pt² markers and visible/total counts. RGB includes
+attenuation, particles and seabed caustics. Evaluation aligns initial
+yaw/translation with scale one. Segments remain separate, so recovery cannot
+show objects observed only before the outage.
+
+![Camera/IMU-only failed recovery: initial map only](validation/robust-vio-recovery-20261028/camera-imu-failed-initial.png)
+
+Without Ping, the initial 832 points cover only seabed; recovery exports no
+admitted map despite 549 visual poses. This combination remains unqualified.
+[Initialization method and limits](https://github.com/IOES-Lab/POSIM-SLAM/blob/main/docs/diagnostics/visual-inertial-seed.md).
+
+### 이동 초기화와 IMU 유실 복구
+
+![카메라·IMU·Ping 초기 지도와 같은 방향의 RGB](validation/robust-vio-recovery-20261028/initial-rgb-pcl.png)
+
+![카메라·IMU·Ping 복구 지도와 같은 방향의 RGB](validation/robust-vio-recovery-20261028/recovered-rgb-pcl.png)
+
+이 1배속 ROS 기록 예시는 POSIM-SLAM 0.1.0, Basalt
+`0f3b2b52c807f70ff4e2973ce253c73329eea7bc`, 패치 추적과 RANSAC·중력 크기
+보정 초기값을 사용합니다. 카메라·원본 IMU·단일 Ping은 복구 후 1,364점을
+내보내며 표면 RMSE 6.13mm, 경로 RMSE 2.08cm입니다. 초기 3,859점에는
+10cm 초과점 6개와 최대 46.91cm 오차가 있어 그대로 보존합니다. 장애물
+인식·면적 관측 범위·설치형 앱의 합격을 뜻하지 않습니다.
+
+그림은 같은 등각 방향의 원근 카메라·미터 범위와 −4~−1.5m Turbo 높이
+범위, 64 pt² 점을 사용하며 화면 안 점과 전체 점 수를 표시합니다. RGB는
+감쇠·입자·해저 집광무늬를 포함합니다. 평가는 초기 방위각·위치만 정렬하고
+축척은 1로 유지합니다. 각 구간은 별도이므로 복구 지도에는 유실 전에만
+관측한 물체가 나타나지 않습니다.
+
+![Ping 없는 카메라·IMU: 복구 실패 기록의 초기 지도](validation/robust-vio-recovery-20261028/camera-imu-failed-initial.png)
+
+Ping 없이는 초기 지도 832점이 해저에만 있고, 복구 후 시각 자세 549개를
+추적해도 채택된 지도를 내보내지 못합니다. 이 조합은 미검증입니다.
+[초기화 방법과 한계](https://github.com/IOES-Lab/POSIM-SLAM/blob/main/docs/diagnostics/visual-inertial-seed.md)를 참고하세요.
+
+
 ## Camera + IMU + single Ping: measured coverage
 
 ![Measured SLAM landmarks beside the actual RGB field](images/camera-imu-ping-isometric.png)

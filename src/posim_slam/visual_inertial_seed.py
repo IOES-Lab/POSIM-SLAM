@@ -1,18 +1,21 @@
-"""Experimental bearing/IMU linear startup seed, in the first IMU frame.
+"""Experimental bearing/IMU startup seed, in the first IMU frame.
 
 Eliminate each unknown landmark from bearing constraints, then solve initial
 velocity and gravity using measured preintegrated motion. No scene depth,
 simulator pose, stationary assumption or guessed metric scale is supplied.
 Biases and relative rotations are conditioned inputs, not estimated here.
-This seed requires nonlinear refinement and uncertainty qualification before
-use in a live estimator. It does not claim robust outlier rejection.
+Explicit gravity magnitude and pixel noise enable bounded track consensus and
+tangent refinement. The seed still needs joint estimator refinement and
+uncertainty qualification; consensus does not establish observability.
 """
 import numpy as np
 from .dvl_scale import rotation, vector
+from .visual_seed_consensus import linear_solution, consensus_solution
 
 
 def tracked_imu_seed(frames, window, *, intrinsics, camera_to_imu,
-                     camera_origin_imu, gyro_bias, accel_bias, noise_density):
+                     camera_origin_imu, gyro_bias, accel_bias, noise_density,
+                     gravity_magnitude=None, pixel_sigma=None):
     """Form an endpoint seed from bounded live frontend replies and raw IMU.
 
     Intrinsics (fx, fy, cx, cy) describe the processed pinhole image, including
@@ -63,7 +66,9 @@ def tracked_imu_seed(frames, window, *, intrinsics, camera_to_imu,
         dv += rotations[-1] @ delta['delta_velocity']
         rotations.append(rotations[-1] @ delta['rotation'])
     result = bearing_imu_seed(times, rotations, alpha, tracks,
-        camera_to_imu=camera_to_imu, camera_origin_imu=camera_origin_imu)
+        camera_to_imu=camera_to_imu, camera_origin_imu=camera_origin_imu,
+        gravity_magnitude=gravity_magnitude, pixel_sigma=pixel_sigma,
+        focal_lengths=k[:2] if gravity_magnitude is not None or pixel_sigma is not None else None)
     gravity = result['gravity_initial']; magnitude = np.linalg.norm(gravity)
     if not np.isfinite(magnitude) or magnitude < 1:
         raise ValueError('visual_seed_gravity_degenerate')
@@ -76,7 +81,8 @@ def tracked_imu_seed(frames, window, *, intrinsics, camera_to_imu,
 
 
 def bearing_imu_seed(times, rotations, delta_positions, tracks, *, camera_to_imu,
-                     camera_origin_imu):
+                     camera_origin_imu, gravity_magnitude=None, pixel_sigma=None,
+                     focal_lengths=None):
     """Solve v(0), g from 4–32 frames and 8–256 multi-view bearing tracks.
 
     times are seconds relative to the first frame. rotations and delta_positions
@@ -85,6 +91,10 @@ def bearing_imu_seed(times, rotations, delta_positions, tracks, *, camera_to_imu
     Camera extrinsics map camera coordinates into IMU coordinates. All rays
     must already be undistorted. Returned gravity points down; do not pass it
     directly to a specific-force/up-direction seed protocol.
+
+    Supplying gravity_magnitude, pixel_sigma and focal_lengths selects bounded
+    track consensus with fixed-magnitude refinement. Omit all three for the
+    experimental unweighted linear diagnostic.
     """
     t = np.asarray(times, dtype=float)
     if (t.ndim != 1 or not 4 <= len(t) <= 32 or not np.isfinite(t).all()
@@ -125,14 +135,12 @@ def bearing_imu_seed(times, rotations, delta_positions, tracks, *, camera_to_imu
         blocks.append(null @ a); targets.append(null @ b)
         landmarks.append((observations, h, a, b))
     a, b = np.vstack(blocks), np.concatenate(targets)
-    scales = np.linalg.norm(a, axis=0)
-    if np.any(scales < 1e-12):
-        raise ValueError('visual_seed_unobservable')
-    normalized = a/scales
-    u, singular, vt = np.linalg.svd(normalized, full_matrices=False)
-    if singular[-1] <= singular[0]*1e-6:
-        raise ValueError('visual_seed_unobservable')
-    solution = (vt.T @ ((u.T @ b)/singular))/scales
+    solution, singular = linear_solution(a, b)
+    diagnostic = dict(seed_method='bearing_imu_linear')
+    if any(value is not None for value in (gravity_magnitude, pixel_sigma, focal_lengths)):
+        solution, singular, diagnostic = consensus_solution(t, r, alpha, mount, lever,
+            blocks, targets, landmarks, gravity_magnitude=gravity_magnitude,
+            pixel_sigma=pixel_sigma, focal_lengths=focal_lengths)
     residual = a @ solution-b
     positive, total = 0, 0
     for observations, h, state, rhs in landmarks:
@@ -146,4 +154,4 @@ def bearing_imu_seed(times, rotations, delta_positions, tracks, *, camera_to_imu
                 reduced_residual_rms_m=float(np.sqrt(np.mean(residual**2))),
                 positive_depth_observations=positive, observations=total,
                 bias_estimated=False, covariance_estimated=False,
-                observability_qualified=False, scope='linear_seed_requires_refinement')
+                observability_qualified=False, scope='numerical_seed_requires_qualification', **diagnostic)
