@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "heartbeat_ticks": 3,
+  "child_returncode": 0,
+  "watchdog_forced": false,
+  "elapsed_s": 0.17136274999938905,
+  "python": "3.14.7",
+  "asyncio_source": "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/dvl-without-ping-20261029/python-asyncio-upstream-overlay/asyncio/__init__.py",
+  "process_exit_code": 0
+}

@@ -38,8 +38,9 @@ native run exports 1,855/1,808 initial/returned points; every point is assessed.
 Its recovered surface RMSE is 1.02 cm, maximum 9.94 cm. Sparse obstacle coverage,
 initialization uncertainty and general navigation remain unqualified. The first
 initial map has incomplete reference coverage and is retained unassessed. Both
-native DVL receiver children require forced shutdown; fourteen isolated signal
-controls do not reproduce it. The independent library remains composable; mutual
+native launch logs escalate DVL termination; phase tracing later identifies a
+CPython/macOS child-reaping issue. The official upstream correction passes four
+launch controls and a separate actual native DVL lifecycle probe. The independent library remains composable; mutual
 exclusion is the integrating application's selected-payload policy.
 
 ![DVL/IMU/pressure map with actual isometric field and downward RGB](../validation/dvl-without-ping-20261029/native-second/recovered/rgb-pcl.png)
@@ -82,8 +83,10 @@ DVL만 사용하는 원래 속도 ROS 상실 시험 두 개와 수압 대조군 
 물리적으로 제거한 BlueROV 네이티브 시작 두 번을 추가합니다. 두 번째 초기·복구
 지도 1,855/1,808점은 모두 평가하며 복구 표면 RMSE는 1.02cm, 최대 거리는
 9.94cm입니다. 장애물 관측 범위·초기화 불확실성·일반 항법은 미검증입니다.
-첫 초기 지도는 참조 기록이 부족해 평가하지 못한 채 보존합니다. 두 네이티브
-DVL 자식 수신기는 강제 종료가 필요했고 독립 신호 재현 14개는 정상 종료합니다.
+첫 초기 지도는 참조 기록이 부족해 평가하지 못한 채 보존합니다. 두 네이티브 실행의
+launch 종료 로그는 DVL 강제 종료를 기록하지만, 후속 추적으로 CPython/macOS의
+자식 회수 문제를 확인합니다. 공식 수정은 launch 대조 네 개와 실제 네이티브
+DVL 생명주기 시험을 통과합니다.
 독립 라이브러리의 센서 결합은 유지하며 상호 배제는 앱의 장착 선택 정책입니다.
 
 위 그림의 등각 패널은 같은 실제 카메라 위치·자세와 원근 투영을 사용합니다.

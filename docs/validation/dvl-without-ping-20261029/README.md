@@ -43,11 +43,15 @@ The cloud and field RGB share the actual isometric camera pose and perspective; 
 
 The actual browser selects camera + IMU + DVL + pressure, has no Ping-fusion selector, shows green 4/4 DVL lock and retains the 1,000 / 2,000 / 5,000 / all viewport choices. `ui/demo-choice.jpg` shows the default demo sensor description. EN/KO guide/specification pages fit 1,280 px desktop and 390 px mobile widths; snapshots are under `ui/`.
 
-## Unresolved shutdown evidence
+## Shutdown investigation and SDK correction
 
-Both operating trials stop and leave every owned process group empty. The second parent exits 0 without its supervisor's forced stop; **the DVL receiver child still requires ROS launch SIGKILL** after SIGINT/SIGTERM. The first parent also reaches its forced-stop deadline. These are not clean child-shutdown qualifications. `shutdown-diagnostic.json` preserves bounded log evidence and the source-log/sample hashes. The second sample's main thread waits in `rcl_wait`, so an unsubscribe deadlock is not established.
+Both original operating trials leave all owned groups empty. ROS launch logs SIGKILL escalation for the DVL child, and the first supervisor reaches its forced-stop deadline. These logs alone do not prove the child stayed alive. A later ROS-only launch probe records normal main/atexit completion and a zombie child while launch continues logging termination deadlines. The earlier native sample was scheduled from shutdown intent, without a captured signal-delivery timestamp; its `rcl_wait` stack cannot establish post-signal behavior.
 
-Fourteen isolated controls test ROS alone, ROS/Gazebo initialization orders, the actual receiver, native SDK environment, active valid Gazebo packets and SIGSTOP/SIGCONT. All exit normally after SIGINT. Initialization-order and pause-only workarounds are unsupported; no production shutdown patch or deadline increase is added. Reproduce the full launch/lifecycle signal context before choosing a fix. This remains a separate follow-up, not a reason to label communication recovery failed or general lifecycle passed.
+Fourteen initial isolated controls exit normally. A narrower launch/pause/group-signal comparison reproduces the failure with both ROS alone and the DVL bridge; signaling the child alone succeeds. The SDK's CPython 3.14.7 lacks upstream [gh-158287, correction 23dc7c9](https://github.com/python/cpython/commit/23dc7c9f05c6e85033dba4ca7a0c807cbede2a8f): Darwin can report a stopped child to `waitid(WEXITED)`, blocking asyncio's reaping path. A separate source-only asyncio overlay applies that correction. The ordinary SDK remains unchanged; no DVL or estimator workaround is added.
+
+The unchanged SDK fails a bounded actual-child heartbeat probe (watchdog rescue at three seconds); the corrected overlay completes all three heartbeat ticks and exits normally. All four corrected ROS-launch controls exit 0 without forced termination. A further actual BlueROV native start receives valid physical DVL, pauses/returns the receiver for a measured 4.10-second receipt gap, then stops with parent exit 0, no termination escalation and every owned group empty. The DVL child is logged as finished cleanly. This is lifecycle evidence only; it does not rerun or requalify the original maps. An earlier attempt's observer starts before the final model file exists; its failed helper result and clean cleanup are preserved separately.
+
+`shutdown-followup/` retains both sides of the comparison, phase/zombie evidence, exact source hashes, the real native lifecycle and Python's original license. The build-time correction is guarded and idempotent, and the SDK assembler, archive override checks and relocation acceptance verify the corrected source and actual heartbeat. Fresh archive/installed acceptance remains pending; a development overlay is not a qualified release.
 
 ## 한국어
 
@@ -57,4 +61,4 @@ DVL과 단일 Ping은 앱의 대체 장착 옵션입니다. 선택 화면·서�
 
 실제 모델로 두 번 시작해 물리 조사와 통신 복구를 실행합니다. 첫 초기 지도는 참조 기록이 부족해 평가하지 못했으며, 나머지 세 지도 5,533점은 모두 평가합니다. 두 번째 복구 지도의 1,808점은 표면 RMSE 1.02cm, 최대 9.94cm입니다. 초기 지도에는 큰 오차가 남습니다. 상자·벽 관측 범위, 초기화 불확실성, 일반 항법·설치형 앱의 검증은 별도입니다. 그림은 같은 등각 카메라와 실제 하향 RGB, 기체·광축, 수중 감쇠·입자·집광무늬·파도를 보여줍니다.
 
-종료 후 소유 프로세스는 남지 않지만 두 번 모두 DVL 자식 수신기에 강제 종료가 필요했습니다. 두 번째 부모의 정상 종료와 구분합니다. 독립적인 초기화 순서·실측 메시지·일시정지 재현 열네 사례는 정상 종료해 원인이 확인되지 않았습니다. 근거 없는 종료 우회 패치는 추가하지 않습니다. 해저 및 RGB 원본에는 Orca5 MIT 고지가 적용되며 비공개 앱 구현은 이 공개 기록에 포함하지 않습니다.
+초기 종료 로그의 강제 종료 메시지만으로 DVL 수신기가 살아 있었다고 단정할 수는 없습니다. 이후 ROS만 사용하는 최소 재현에서는 정상 종료한 자식이 좀비 상태로 남고 launch가 회수하지 못했습니다. CPython의 macOS 대기 처리 문제 gh-158287과 공식 수정 23dc7c9를 확인했습니다. 별도 asyncio 소스 오버레이에서 네 재현과 실제 BlueROV DVL 일시정지·복귀 후 종료가 정상 완료됩니다. DVL 추정 코드는 바꾸지 않습니다. SDK 조립·압축·재배치에 소스 해시와 실제 자식 heartbeat 검사를 연결하며, 새 설치 파일의 승인은 아직 별도입니다. 해저 및 RGB 원본에는 Orca5 MIT 고지가 적용되며 비공개 앱 구현은 이 공개 기록에 포함하지 않습니다.

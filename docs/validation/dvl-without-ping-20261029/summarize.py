@@ -93,7 +93,19 @@ def main():
     assert read('native-first/lifecycle.json')['forced_stop']
     controls=[read('shutdown-controls/'+name+'.json') for name in ['signal-controls','signal-pause-controls','signal-native-env-controls','signal-active-controls']]
     assert all(not row['forced'] and row['exit_code']==0 for group in controls for row in group)
+    unpatched=read('shutdown-followup/heartbeat-unpatched.json');corrected=read('shutdown-followup/heartbeat-corrected.json')
+    assert not unpatched['passed'] and unpatched['watchdog_forced']
+    assert corrected['passed'] and not corrected['watchdog_forced'] and corrected['heartbeat_ticks']==3 and corrected['child_returncode']==0
+    assert all(row['exit_code']==0 and not row['parent_forced'] and not row['child_sigkill'] for row in read('shutdown-followup/launch-corrected.json'))
+    assert sum(row['parent_forced'] for row in read('shutdown-followup/launch-unpatched.json'))==3
+    phase=(BASE/'shutdown-followup/ros-only-paused.phases.jsonl').read_text();assert '"main-exit"' in phase and '"atexit"' in phase
+    assert ' Z ' in (BASE/'shutdown-followup/ros-only-paused.ps.txt').read_text()
+    native=read('shutdown-followup/native-corrected/result.json');assert native['passed'] and native['ping_physically_absent'] and native['valid_dvl_messages']>=3 and native['max_receipt_gap_s']>=4
+    lifecycle=read('shutdown-followup/native-corrected/lifecycle.json');assert lifecycle['exit_code']==0 and not lifecycle['forced_stop']
+    assert all(not g['live_members'] for g in read('shutdown-followup/native-corrected/owned-process-check.json'))
+    shutdown=read('shutdown-followup/native-corrected/shutdown.json');assert not shutdown['sigkill_logged'] and not shutdown['termination_deadline_logged']
+    assert any('process has finished cleanly' in line for line in shutdown['dvl_process_lines'])
     print(json.dumps(dict(artifact_checks_passed=True,ros_maps=10,ros_vertices=14038,native_maps=4,native_vertices=native_points,
-                         assessed_native_vertices=native_assessed,native_shutdown_issue_open=True,scope=__doc__),indent=2))
+                         assessed_native_vertices=native_assessed,development_child_wait_fix_passed=True,installed_qualification=False,scope=__doc__),indent=2))
 
 if __name__=='__main__':main()

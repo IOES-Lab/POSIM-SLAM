@@ -1,0 +1,10 @@
+{
+  "passed": false,
+  "heartbeat_ticks": 1,
+  "child_returncode": -9,
+  "watchdog_forced": true,
+  "elapsed_s": 3.020903625001665,
+  "python": "3.14.7",
+  "asyncio_source": "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/posim332f629-sdk/lib/python3.14/asyncio/__init__.py",
+  "process_exit_code": 1
+}
