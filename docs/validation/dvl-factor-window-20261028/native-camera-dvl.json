@@ -1,0 +1,22 @@
+{
+  "passed": true,
+  "test": "native/basalt/test_dvl_native.py:DvlNativeTests.test_camera_with_multiple_original_dvl_states_between_images",
+  "source_sha256": "877de2ff162a2e2be580031c9f02afca1ec22c08897163b26515047139a661a1",
+  "width_height": [
+    [
+      32,
+      32
+    ],
+    [
+      320,
+      240
+    ]
+  ],
+  "recent_states": [
+    3,
+    16
+  ],
+  "subcases": 4,
+  "binary_sha256": "cb5cbc7c254b668ea0b0e3c7ac0f2fe8dac0d4f07810bab2e8d3237ca18d1d87",
+  "scope": "Synthetic timestamp/factor-retirement check; not field geometry qualification"
+}

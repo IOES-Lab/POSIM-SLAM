@@ -10,6 +10,14 @@ DVL and pressure stores can be empty; an empty store supplies no measurement.
 Native `max_recent_states` accepts 3–64 and is acknowledged in the ready event.
 The ordinary camera default is three states. Increasing this number consumes
 more computation and memory and does not ensure an informative map.
+Adding single-time DVL or pressure measurements preserves that default. Their
+retired factors enter the common correlated prior; their original measurement
+timestamps do not require the longer window used to initialize multiview
+acoustic tracks. The native camera/DVL regression covers both three and sixteen
+recent states, including several velocity observations between images.
+The [DVL window evidence](../validation/dvl-factor-window-20261028/README.md)
+retains paired computation controls, seven original-time ROS loss/recovery cases
+and all-point evaluations of fourteen complete maps.
 `native/basalt/test_visual_window_native.py` checks young lost-feature hosts,
 121 translated-texture images and bounded retirement in a 16-state window
 with no auxiliary sensors. It is an ownership regression, not a map-accuracy
@@ -33,7 +41,14 @@ remain separate.
 
 네이티브 `max_recent_states`는 3~64를 허용하고 ready 이벤트로 실제 값을
 확인합니다. 일반 카메라 기본값은 3입니다. 큰 값은 계산량·메모리를 늘리며
-충분한 지도 정보를 보장하지 않습니다. 위 회귀시험은 선택 센서 없이 영상
+충분한 지도 정보를 보장하지 않습니다. 단일 시각의 DVL·수압 측정을 추가해도
+이 기본값을 유지합니다. 정리된 요인은 공통 주변화 사전정보로 전달되며,
+여러 시점의 음향 트랙 초기화와 같은 긴 이력을 요구하지 않습니다. 카메라·DVL
+회귀시험은 영상 사이의 여러 속도 관측을 포함해 이력 3개와 16개를 확인합니다.
+[DVL 상태 창 검증 기록](../validation/dvl-factor-window-20261028/README.md)은
+계산량 비교와 원래 속도의 ROS 상실·복귀 일곱 사례, 전체 지도 14개의 점별
+평가를 보존합니다.
+위 시각 회귀시험은 선택 센서 없이 영상
 121장과 이력 16개의 특징점 소유·정리를 검증합니다. 지도 정확도나 IMU
 관측가능성을 인증하는 시험은 아닙니다.
 

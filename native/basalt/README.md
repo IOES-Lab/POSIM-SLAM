@@ -1350,7 +1350,9 @@ IMU, 해당 시각의 트랙 스냅샷(있을 때), `LiveClient.sonar_tick(stamp
 
 
 `max_recent_states` in the calibration file sets the recent full IMU-state budget
-(integer, 3–64). Defaults are three without auxiliary events and six with them.
+(integer, 3–64). The default is three; `enable_auxiliary_sonar: true` selects six
+when no explicit budget is supplied. DVL and pressure factors do not raise this
+default. Their single-time measurements retire into the common correlated prior.
 The ready response reports the applied value. Count camera and auxiliary events
 across track initialization, with room for the next event. Three 2 Hz sonar
 observations span one second; six states cannot cover a 10 Hz camera stream.
@@ -1363,7 +1365,9 @@ before marginalization. State and nuisance column bounds derive from these
 budgets. Sensor observation-count limits remain separate.
 
 보정 파일의 `max_recent_states`로 최근 IMU 전체 상태 보관 개수를 지정합니다
-(정수 3–64). 기본값은 보조 이벤트가 없으면 3개, 있으면 6개이며, 준비 응답에서
+(정수 3–64). 기본값은 3개이며, 명시적 예산이 없을 때
+`enable_auxiliary_sonar: true`는 6개를 선택합니다. 단일 시각의 DVL·수압 측정은
+공통 주변화 사전정보로 전달하므로 이 기본값을 늘리지 않습니다. 준비 응답에서
 적용값을 확인합니다. 트랙 초기화 구간의 카메라·보조 이벤트를 모두 세고 다음
 이벤트를 위한 여유를 둡니다. 2Hz 소나 관측 3개는 1초에 걸치므로 카메라
 10Hz에서 상태 6개로는 부족합니다. 카메라 키프레임 보관은 보조 자세의 보관을

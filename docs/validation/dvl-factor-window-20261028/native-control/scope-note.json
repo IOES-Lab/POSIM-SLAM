@@ -1,0 +1,9 @@
+{
+  "native_only": true,
+  "bootstrap_seed": "Frozen measured submitted seed from the first failing ROS segment",
+  "frontend": "Starts at the first post-bootstrap image; original pre-seed tracking warmup is not replayed",
+  "same_inputs_across_windows": true,
+  "background_services": "Unrelated LIVE and its terrain generator remain running; current-head CI is terminal before the paired timings",
+  "raw_record_not_duplicated": true,
+  "accuracy_claim": false
+}
