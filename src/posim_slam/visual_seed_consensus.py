@@ -7,6 +7,33 @@ our bearing-eliminated system and contains no VINS-Mono source code.
 import numpy as np
 
 
+def _track_groups(parts, rotations):
+    """Batch equal-length tracks without padding or changing their observations."""
+    lengths = {}
+    for i, part in enumerate(parts):
+        lengths.setdefault(len(part[3]), []).append(i)
+    groups = []
+    for ids in lengths.values():
+        pinv, state, rhs, indices, pixels = map(np.stack, zip(*(parts[i] for i in ids)))
+        groups.append((np.array(ids), pinv, state, rhs, indices, pixels, rotations[indices]))
+    return groups
+
+
+def _reprojection_errors(groups, origins, solution, mount, focal, radius, count):
+    errors = np.full(count, radius)
+    for ids, pinv, state, rhs, indices, pixels, rotations in groups:
+        point = (pinv @ (rhs-(state @ solution))[..., None])[..., 0]
+        camera = np.einsum('nlji,nlj->nli', rotations, point[:, None, :]-origins[indices]) @ mount
+        front = np.all(camera[:, :, 2] > 0, axis=1)
+        # Back-facing tracks keep the same capped error as the scalar rule.
+        valid = np.flatnonzero(front)
+        projected = camera[valid]
+        residual = (projected[:, :, :2]/projected[:, :, 2, None]-pixels[valid])*focal
+        finite = np.isfinite(residual).all(axis=(1, 2))
+        errors[ids[valid[finite]]] = np.median(np.linalg.norm(residual[finite], axis=2), axis=1)
+    return errors
+
+
 def linear_solution(a, b):
     scales = np.linalg.norm(a, axis=0)
     if np.any(scales < 1e-12):
@@ -62,6 +89,7 @@ def consensus_solution(t, rotations, alpha, mount, lever, blocks, targets, landm
         if np.any(rays[:, 2] <= 0):
             raise ValueError('visual_seed_forward_bearing')
         parts.append((np.linalg.pinv(h), state, rhs, indices, rays[:, :2]/rays[:, 2, None]))
+    groups = _track_groups(parts, rotations)
     radius = 3*pixel_sigma
 
     def solve(indices):
@@ -72,15 +100,7 @@ def consensus_solution(t, rotations, alpha, mount, lever, blocks, targets, landm
     def score(solution):
         origins = (t[:, None]*solution[:3]+.5*t[:, None]**2*solution[3:]+alpha
                    + np.einsum('nij,j->ni', rotations, lever))
-        errors = np.full(len(parts), radius)
-        for i, (pinv, state, rhs, indices, pixels) in enumerate(parts):
-            point = pinv @ (rhs-state @ solution)
-            camera = np.einsum('nji,nj->ni', rotations[indices], point-origins[indices]) @ mount
-            if np.any(camera[:, 2] <= 0):
-                continue
-            residual = (camera[:, :2]/camera[:, 2, None]-pixels)*focal
-            if np.isfinite(residual).all():
-                errors[i] = float(np.median(np.linalg.norm(residual, axis=1)))
+        errors = _reprojection_errors(groups, origins, solution, mount, focal, radius, len(parts))
         mask = errors < radius
         return (int(mask.sum()), -float(np.minimum(errors, radius).sum())), mask, errors
 
