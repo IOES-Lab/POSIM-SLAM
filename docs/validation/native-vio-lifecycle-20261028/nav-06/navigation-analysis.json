@@ -1,0 +1,46 @@
+{
+  "direct_counts": {
+    "mavlink_0": 1303,
+    "mavlink_30": 12782,
+    "mavlink_33": 3838,
+    "mavlink_193": 1283,
+    "mavlink_32": 25504,
+    "local_pose": 25503
+  },
+  "direct_max_gap_s": {
+    "mavlink_0": 1.1280124170007184,
+    "mavlink_30": 0.42113495897501707,
+    "mavlink_33": 0.849738791002892,
+    "mavlink_193": 1.5615965420147404,
+    "mavlink_32": 0.2115899159689434,
+    "local_pose": 0.21053583401953802
+  },
+  "api_samples": 5944,
+  "active_api_samples": 5903,
+  "max_api_pose_age_s": 0.12390212499303743,
+  "max_active_api_pose_age_s": 0.12390212499303743,
+  "same_header_comparisons": 5944,
+  "max_same_header_app_minus_probe_s": 0.017262250010389835,
+  "high_rate_gaps_over_200ms": [
+    {
+      "topic": "mavlink_32",
+      "start": 279944.90309475,
+      "end": 279945.114684666,
+      "gap_s": 0.2115899159689434
+    },
+    {
+      "topic": "local_pose",
+      "start": 279944.903359541,
+      "end": 279945.113895375,
+      "gap_s": 0.21053583401953802
+    },
+    {
+      "topic": "mavlink_32",
+      "start": 279945.114684666,
+      "end": 279945.315704083,
+      "gap_s": 0.20101941702887416
+    }
+  ],
+  "active_api_delays_over_200ms": [],
+  "scope": "Receipt comparison; HTTP response processing can contribute to inferred app receipt delay; 200ms is diagnostic, not a changed timeout"
+}

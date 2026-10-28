@@ -1,5 +1,7 @@
 # POSIM-SLAM
 
+[Native VIO duration and mode lifecycle](docs/validation/native-vio-lifecycle-20261028/README.md) preserves complete long-run maps, sensor-combination transitions and independent navigation receipts.
+
 [Measured startup scoring controls](docs/validation/seed-scoring-20261028/README.md) preserve sensor-only numerical comparisons and complete source-bound recovery maps.
 
 [Status publication and VIO input recovery / 상태 발행과 VIO 입력 복구](docs/validation/status-publication-vio-20261028/README.md) retains six complete maps, matched RGB/cloud overviews and actual GUI switching evidence.

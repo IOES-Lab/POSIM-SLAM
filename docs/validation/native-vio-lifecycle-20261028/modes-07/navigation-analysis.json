@@ -1,0 +1,65 @@
+{
+  "direct_counts": {
+    "mavlink_0": 837,
+    "mavlink_30": 8200,
+    "mavlink_33": 2463,
+    "mavlink_193": 825,
+    "mavlink_32": 16341,
+    "local_pose": 16340
+  },
+  "direct_max_gap_s": {
+    "mavlink_0": 1.1553453750093468,
+    "mavlink_30": 0.42038037499878556,
+    "mavlink_33": 0.7490137910353951,
+    "mavlink_193": 1.4886972910026088,
+    "mavlink_32": 0.20174687501275912,
+    "local_pose": 0.20183170802192762
+  },
+  "api_samples": 3792,
+  "active_api_samples": 3758,
+  "max_api_pose_age_s": 0.8148625420290045,
+  "max_active_api_pose_age_s": 0.8148625420290045,
+  "same_header_comparisons": 3792,
+  "max_same_header_app_minus_probe_s": 0.04884220799431205,
+  "high_rate_gaps_over_200ms": [
+    {
+      "topic": "local_pose",
+      "start": 281874.849868125,
+      "end": 281875.051699833,
+      "gap_s": 0.20183170802192762
+    },
+    {
+      "topic": "mavlink_32",
+      "start": 281874.450494916,
+      "end": 281874.652241791,
+      "gap_s": 0.20174687501275912
+    },
+    {
+      "topic": "local_pose",
+      "start": 281874.450820166,
+      "end": 281874.652488291,
+      "gap_s": 0.20166812499519438
+    },
+    {
+      "topic": "mavlink_32",
+      "start": 281874.850057541,
+      "end": 281875.051181041,
+      "gap_s": 0.20112350000999868
+    }
+  ],
+  "active_api_delays_over_200ms": [
+    {
+      "wall": 282220.061512291,
+      "elapsed_s": 371.0758533750195,
+      "pose_age_s": 0.7766824160353281,
+      "same_header_app_minus_probe_s": 0.0016189169837161899
+    },
+    {
+      "wall": 282353.844014166,
+      "elapsed_s": 504.8347269590013,
+      "pose_age_s": 0.8148625420290045,
+      "same_header_app_minus_probe_s": 0.0014108329778537154
+    }
+  ],
+  "scope": "Receipt comparison; HTTP response processing can contribute to inferred app receipt delay; 200ms is diagnostic, not a changed timeout"
+}

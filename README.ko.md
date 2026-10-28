@@ -1,5 +1,7 @@
 # POSIM-SLAM
 
+[네이티브 VIO 장시간 운용과 모드 전환](docs/validation/native-vio-lifecycle-20261028/README.md)에 장시간 운용의 전체 지도, 센서 조합 전환과 독립 항법 수신 기록을 보존합니다.
+
 [초기화 계산 대조](docs/validation/seed-scoring-20261028/README.md)에 센서 원본만 사용하는 수치 비교와 소스가 연결된 복구 지도 전체를 보존합니다.
 
 [상태 발행과 VIO 입력 복구](docs/validation/status-publication-vio-20261028/README.md)에 전체 지도 여섯 개, RGB·점군 비교와 실제 GUI 전환 검증을 정리합니다.
