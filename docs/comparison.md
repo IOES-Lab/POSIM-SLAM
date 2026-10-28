@@ -2,16 +2,16 @@
 
 ### Moving initialization and IMU-loss recovery
 
-![Camera/IMU/Ping initial map and matched RGB](validation/common-visual-window-20261028/initial-rgb-pcl.png)
+![Camera/IMU/Ping initial map and matched RGB](validation/ordered-camera-inputs-20261028/initial-rgb-pcl.png)
 
-![Camera/IMU/Ping recovered map and matched RGB](validation/common-visual-window-20261028/recovered-rgb-pcl.png)
+![Camera/IMU/Ping recovered map and matched RGB](validation/ordered-camera-inputs-20261028/recovered-rgb-pcl.png)
 
 This 1× ROS replay uses POSIM-SLAM 0.1.0, Basalt
 `0f3b2b52c807f70ff4e2973ce253c73329eea7bc`, patch tracking and the
 RANSAC/known-gravity moving seed. Camera/raw-IMU/single-Ping recovery exports
-1,382 points with 8.08 mm surface RMSE and 1.65 cm trajectory RMSE. The initial
-3,594-point map has eight errors beyond 10 cm, including a 47.19 cm maximum.
-Recovery retains one point beyond 10 cm, maximum 13.15 cm. Every point is retained. This does not certify obstacle recognition, area
+1,380 points with 7.67 mm surface RMSE and 2.71 cm trajectory RMSE. The initial
+3,650-point map has six errors beyond 10 cm, including a 47.03 cm maximum.
+Recovery retains one point beyond 10 cm, maximum 11.97 cm. Every point is retained. This does not certify obstacle recognition, area
 coverage or installed-app operation.
 
 The figures share an isometric perspective camera, metre extent and −4 to
@@ -19,6 +19,11 @@ The figures share an isometric perspective camera, metre extent and −4 to
 attenuation, particles and seabed caustics. Evaluation aligns initial
 yaw/translation with scale one. Segments remain separate, so recovery cannot
 show objects observed only before the outage.
+
+[Input ownership and fresh-field evidence](validation/ordered-camera-inputs-20261028/README.md)
+separates this recorded integration proof from native field acceptance. The
+two-depth field tracks 112.5 s with 2.36 cm position RMSE, but its map remains
+unavailable because no point meets the joint world-position uncertainty budget.
 
 ![Camera/IMU-only 16-state numerical control and matched RGB](validation/common-visual-window-20261028/camera-imu-window16-rgb-pcl.png)
 
@@ -31,16 +36,16 @@ states. [Factor-window method and limits](https://github.com/IOES-Lab/POSIM-SLAM
 
 ### 이동 초기화와 IMU 유실 복구
 
-![카메라·IMU·Ping 초기 지도와 같은 방향의 RGB](validation/common-visual-window-20261028/initial-rgb-pcl.png)
+![카메라·IMU·Ping 초기 지도와 같은 방향의 RGB](validation/ordered-camera-inputs-20261028/initial-rgb-pcl.png)
 
-![카메라·IMU·Ping 복구 지도와 같은 방향의 RGB](validation/common-visual-window-20261028/recovered-rgb-pcl.png)
+![카메라·IMU·Ping 복구 지도와 같은 방향의 RGB](validation/ordered-camera-inputs-20261028/recovered-rgb-pcl.png)
 
 이 1배속 ROS 기록 예시는 POSIM-SLAM 0.1.0, Basalt
 `0f3b2b52c807f70ff4e2973ce253c73329eea7bc`, 패치 추적과 RANSAC·중력 크기
-보정 초기값을 사용합니다. 카메라·원본 IMU·단일 Ping은 복구 후 1,382점을
-내보내며 표면 RMSE 8.08mm, 경로 RMSE 1.65cm입니다. 초기 3,594점에는
-10cm 초과점 8개와 최대 47.19cm 오차가 있습니다. 복구 지도에도 10cm 초과점
-1개와 최대 13.15cm 오차를 그대로 보존합니다. 장애물
+보정 초기값을 사용합니다. 카메라·원본 IMU·단일 Ping은 복구 후 1,380점을
+내보내며 표면 RMSE 7.67mm, 경로 RMSE 2.71cm입니다. 초기 3,650점에는
+10cm 초과점 6개와 최대 47.03cm 오차가 있습니다. 복구 지도에도 10cm 초과점
+1개와 최대 11.97cm 오차를 그대로 보존합니다. 장애물
 인식·면적 관측 범위·설치형 앱의 합격을 뜻하지 않습니다.
 
 그림은 같은 등각 방향의 원근 카메라·미터 범위와 −4~−1.5m Turbo 높이
@@ -48,6 +53,11 @@ states. [Factor-window method and limits](https://github.com/IOES-Lab/POSIM-SLAM
 감쇠·입자·해저 집광무늬를 포함합니다. 평가는 초기 방위각·위치만 정렬하고
 축척은 1로 유지합니다. 각 구간은 별도이므로 복구 지도에는 유실 전에만
 관측한 물체가 나타나지 않습니다.
+
+[입력 순서와 새 현장 검증](validation/ordered-camera-inputs-20261028/README.md)은
+이 기록 통합 시험과 네이티브 현장 합격을 구분합니다. 두 수심 현장은 112.5초를
+추적하고 위치 RMSE 2.36cm를 기록하지만, 공동 세계 좌표 불확실성 한도를 통과한
+점이 없어 지도를 제공하지 못합니다.
 
 ![카메라·IMU 이력 16개 수치 대조 시험과 같은 방향의 RGB](validation/common-visual-window-20261028/camera-imu-window16-rgb-pcl.png)
 
