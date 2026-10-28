@@ -1,0 +1,113 @@
+[
+  {
+    "mode": "ros-only",
+    "exit_code": 0,
+    "forced": false,
+    "elapsed_s": 0.040279500011820346,
+    "state": {
+      "ros": {
+        "rmw": "rmw_cyclonedds_cpp",
+        "domain": 151,
+        "executable": "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/posim332f629-sdk/bin/python3",
+        "blocked_signals": [],
+        "python_sigint": "<built-in function default_int_handler>",
+        "python_sigterm": "0",
+        "ros_handlers": "SignalHandlerOptions.ALL"
+      },
+      "ready": {
+        "rmw": "rmw_cyclonedds_cpp",
+        "domain": 151,
+        "executable": "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/posim332f629-sdk/bin/python3",
+        "blocked_signals": [],
+        "python_sigint": "<built-in function default_int_handler>",
+        "python_sigterm": "0",
+        "ros_handlers": "SignalHandlerOptions.ALL"
+      }
+    }
+  },
+  {
+    "mode": "ros-first",
+    "exit_code": 0,
+    "forced": false,
+    "elapsed_s": 0.07519379199948162,
+    "state": {
+      "ros": {
+        "rmw": "rmw_cyclonedds_cpp",
+        "domain": 152,
+        "executable": "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/posim332f629-sdk/bin/python3",
+        "blocked_signals": [],
+        "python_sigint": "<built-in function default_int_handler>",
+        "python_sigterm": "0",
+        "ros_handlers": "SignalHandlerOptions.ALL"
+      },
+      "gz": {
+        "rmw": "rmw_cyclonedds_cpp",
+        "domain": 152,
+        "executable": "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/posim332f629-sdk/bin/python3",
+        "blocked_signals": [],
+        "python_sigint": "<built-in function default_int_handler>",
+        "python_sigterm": "0",
+        "ros_handlers": "SignalHandlerOptions.ALL"
+      },
+      "ready": {
+        "rmw": "rmw_cyclonedds_cpp",
+        "domain": 152,
+        "executable": "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/posim332f629-sdk/bin/python3",
+        "blocked_signals": [],
+        "python_sigint": "<built-in function default_int_handler>",
+        "python_sigterm": "0",
+        "ros_handlers": "SignalHandlerOptions.ALL"
+      }
+    }
+  },
+  {
+    "mode": "gz-first",
+    "exit_code": 0,
+    "forced": false,
+    "elapsed_s": 0.17980766599066556,
+    "state": {
+      "gz": {
+        "rmw": "rmw_cyclonedds_cpp",
+        "domain": null,
+        "executable": "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/posim332f629-sdk/bin/python3",
+        "blocked_signals": [],
+        "python_sigint": "<built-in function default_int_handler>",
+        "python_sigterm": "0",
+        "ros_handlers": "SignalHandlerOptions.NO"
+      },
+      "ros": {
+        "rmw": "rmw_cyclonedds_cpp",
+        "domain": 153,
+        "executable": "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/posim332f629-sdk/bin/python3",
+        "blocked_signals": [],
+        "python_sigint": "<built-in function default_int_handler>",
+        "python_sigterm": "0",
+        "ros_handlers": "SignalHandlerOptions.ALL"
+      },
+      "ready": {
+        "rmw": "rmw_cyclonedds_cpp",
+        "domain": 153,
+        "executable": "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/posim332f629-sdk/bin/python3",
+        "blocked_signals": [],
+        "python_sigint": "<built-in function default_int_handler>",
+        "python_sigterm": "0",
+        "ros_handlers": "SignalHandlerOptions.ALL"
+      }
+    }
+  },
+  {
+    "mode": "bridge",
+    "exit_code": 0,
+    "forced": false,
+    "elapsed_s": 0.0742924579535611,
+    "state": {
+      "rmw": "rmw_cyclonedds_cpp",
+      "domain": 154,
+      "executable": "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/posim332f629-sdk/bin/python3",
+      "blocked_signals": [],
+      "python_sigint": "<built-in function default_int_handler>",
+      "python_sigterm": "0",
+      "ros_handlers": "SignalHandlerOptions.ALL"
+    }
+  }
+]

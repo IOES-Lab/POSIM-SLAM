@@ -1,0 +1,24 @@
+{
+  "initial_points": 1855,
+  "recovered_points": 1808,
+  "ping_input": false,
+  "dvl_fused": true,
+  "pressure_fused": true,
+  "all_map_points_retained": true,
+  "passed": true,
+  "error": null,
+  "session_nonce": "dac71360aeaa4e83b58411db30371bc3",
+  "minimum_observed_clearance": {
+    "clear": true,
+    "minimum_centerline_clearance_m": 0.8693996249630289,
+    "required_body_margin_m": 0.5,
+    "closest": {
+      "actor": "acoustic_validation_wall_1/body/collision",
+      "segment": 5377
+    },
+    "segments": 6206,
+    "collision_boxes": 5,
+    "method": "exact segment-to-oriented-box distance; spherical body envelope",
+    "scope": "authored targets only; terrain checked separately by mission planner"
+  }
+}
