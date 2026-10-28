@@ -60,6 +60,14 @@ The geometric coverage audit is an upper bound, not object recognition.
 
 ![Returned DVL map and RGB from that same segment](../validation/dvl-turning-20261029/recovered/rgb-pcl.png)
 
+The integrating application's [vertical-heading validation](../validation/mission-heading-20261029/README.md)
+retains a fresh DVL/no-Ping run with all 42 actual MAVROS targets, two full maps
+(1,063/1,710 points), per-point assessments and per-segment RGB. Its controller
+retains yaw during dives/holds; that controller implementation is not part of
+this library. The next implicit forward survey changes geographic field, so
+its recovered cloud does not establish obstacle reconstruction. Initialization
+uncertainty and installed navigation remain unqualified.
+
 ## 한국어
 
 카메라·IMU 추정과 선택 센서 결합은 시각 특징점 생성 뒤 같은 최적화·관측
@@ -111,3 +119,9 @@ RGB는 수중 감쇠·입자·집광무늬·수면 파도를 포함하고, 전�
 단절은 예상한 새 구간 한 번을 만들며 소유 프로세스는 모두 정상 종료합니다.
 반복 회전 뒤에도 장애물 지지는 드물고 초기화는 미검증입니다. 기하학적 관측
 범위 진단을 물체 인식으로 해석하지 않습니다.
+
+연동 앱의 [수직 방위각 검증](../validation/mission-heading-20261029/README.md)은
+실제 MAVROS 목표 42개와 전체 지도 1,063/1,710점, 모든 점의 평가와 구간별 RGB를
+보존합니다. 잠수·대기 때 방위각을 유지하는 제어 구현은 이 라이브러리에 포함하지
+않습니다. 다음 전진 임무의 조사 영역도 바뀌어 복구 점군으로 장애물 재구성을
+입증할 수는 없습니다. 초기화 불확실성·설치형 항법 승인은 별도입니다.
