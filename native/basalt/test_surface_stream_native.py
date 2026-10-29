@@ -107,6 +107,28 @@ class NativeSurfaceStreamTests(unittest.TestCase):
         np.testing.assert_allclose(traces[0], traces[1], atol=1e-9, rtol=1e-9)
         self.metrics['no_range_max_trajectory_difference']=float(np.max(np.abs(np.asarray(traces[0])-traces[1])))
 
+    def test_snapshot_information_includes_live_uncertainty_without_changing_the_owner(self):
+        with tempfile.TemporaryDirectory() as folder:
+            client=self.worker(Path(folder));self.addCleanup(client.close)
+            self.advance(client)
+            first,_=self.capture(client,1);second,_=self.capture(client,2)
+            self.assertEqual((first.owner_revision,first.prior_revision,first.stamp_ns),
+                             (second.owner_revision,second.prior_revision,second.stamp_ns))
+            np.testing.assert_array_equal(first._information.jacobian,second._information.jacobian)
+            np.testing.assert_array_equal(first._information.residual,second._information.residual)
+            self.assertEqual(first._archive.root,second._archive.root)
+            reference=first.reference('state',self.initial)
+            query=(Variable('state',self.initial,6,reference.reference[:12]),first.order[-1])
+            got=first.joint_marginal(query)
+            conditioned=first.recover([self.initial])['observable_conditional_covariance']
+            added=got['observable_covariance'][:6,:6]-conditioned
+            self.assertGreater(np.linalg.norm(added),1e-7)
+            self.assertGreaterEqual(np.linalg.eigvalsh(added).min(),-1e-7)
+            self.assertGreater(got['active_native_counts']['imu_intervals'],0)
+            self.assertGreater(got['active_native_counts']['pressure_observations'],0)
+            self.assertFalse(got['live_coordinates_treated_as_known']);self.assertFalse(got['map_qualified'])
+            self.assertEqual(client.poll(),[])
+
     def test_successive_delayed_updates_use_fresh_native_snapshots_and_retire(self):
         with tempfile.TemporaryDirectory() as folder:
             client=self.worker(Path(folder));self.advance(client)

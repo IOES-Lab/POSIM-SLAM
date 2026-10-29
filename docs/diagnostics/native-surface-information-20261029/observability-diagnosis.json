@@ -1,0 +1,74 @@
+{
+  "current_position_m": {
+    "three_sigma_axes": [
+      0.015332199306978433,
+      0.1114534290110773,
+      5.424483801181102
+    ],
+    "diagonal_stddev": [
+      1.8016216275450627,
+      0.15807240659617727,
+      0.005110787752439272
+    ]
+  },
+  "current_rotation_rad": {
+    "three_sigma_axes": [
+      0.011005434167044222,
+      0.015259044514469168,
+      1.215606197395497
+    ],
+    "diagonal_stddev": [
+      0.003789195383477507,
+      0.0050058566504528135,
+      0.4052019572927537
+    ]
+  },
+  "velocity_m_s": {
+    "three_sigma_axes": [
+      0.004708016188180466,
+      0.008456289957114393,
+      0.35255173244314736
+    ],
+    "diagonal_stddev": [
+      0.11248928072051832,
+      0.03412318586147283,
+      0.0015750658443298374
+    ]
+  },
+  "gyro_bias_rad_s": {
+    "three_sigma_axes": [
+      0.0010534586745758016,
+      0.0010536904829840528,
+      0.03986272190942966
+    ],
+    "diagonal_stddev": [
+      0.000421622173628637,
+      0.00035138911697870094,
+      0.013285520441953401
+    ]
+  },
+  "accel_bias_m_s2": {
+    "three_sigma_axes": [
+      0.014172908451551332,
+      0.09614499770824561,
+      0.1410035878429725
+    ],
+    "diagonal_stddev": [
+      0.03207844825143103,
+      0.046979510765483616,
+      0.004735589098988054
+    ]
+  },
+  "relative_translation_three_sigma_axes_m": [
+    0.016128077963597918,
+    0.11082766548225786,
+    5.4243845629740965
+  ],
+  "root_rank": 228,
+  "root_columns": 229,
+  "workspace_bound_bytes": 28690432,
+  "origin_yaw_prior_information": 100000000.0,
+  "configured_initial_gyro_bias_information": 100.0,
+  "configured_initial_accel_bias_information": 10.0,
+  "scope": "Read-only local native Gaussian information; fixed origin/yaw reference is already present. No covariance, weight, input or prior changed."
+}

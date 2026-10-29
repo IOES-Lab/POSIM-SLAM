@@ -223,7 +223,8 @@ int main(int argc,char** argv) {
           auto& base=static_cast<basalt::BundleAdjustmentBase<double>&>(estimator);
           const auto order=posim_slam::planPingMarginalLayout(base,{},{},{},{}).source;
           emit(surface_controller->handle(*estimator.posim_ping_factors->surfaceOwner(),base,order,marginal,
-            *estimator.posim_pressure_factors,command,[&] {estimator.posim_optimize_joint();}));
+            *estimator.posim_pressure_factors,command,[&] {estimator.posim_optimize_joint();},
+            [&] {return estimator.posim_surface_information();}));
         } catch(const std::exception& error) {
           emit({{"type","surface_control"},{"request_id",request},{"op",command.at("op")},
             {"accepted",false},{"reason",error.what()},{"map_qualified",false}});

@@ -1,0 +1,1 @@
+The scratch filename inspect.py shadowed Python inspect while importing NumPy. Renamed only this scratch script to analyze-joint.py; no library/runtime change. Initial attempt exited before reading snapshots.

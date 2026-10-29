@@ -3,6 +3,7 @@
 #include "surface_owner.hpp"
 #include "surface_prior_probe_io.hpp"
 #include "ping_optimizer.hpp"
+#include "surface_protocol.hpp"
 #include <iostream>
 namespace io=posim_slam::surface_prior_probe;
 namespace sp=posim_slam::surface_prior;
@@ -68,12 +69,15 @@ int main() {
     j.bottomLeftCorner(ji.rows(),ji.cols())=ji;
     r<<marginal.residual,depth.residual,velocity.residual,ri;
     Json nodes=Json::array();for(const auto& [id,n]:surface.state().nodes)nodes.push_back(node(*n));
-    return Json{{"prior",io::write(surface.state().prior)},{"order",variables(coordinates.order)},
+    Json data={{"prior",io::write(surface.state().prior)},{"order",variables(coordinates.order)},
       {"delta",io::probe::jsonVector(coordinates.delta)},{"joint_jacobian",io::probe::jsonMatrix(j)},
       {"joint_residual",io::probe::jsonVector(r)},{"conditionals",nodes},
       {"pressure_count",pressure->size()},{"dvl_count",dvl.size()},{"imu_count",measurements.size()},
       {"legacy_zero",legacy.H.isZero(0) && legacy.b.isZero(0) && !pressure->prior().active},
       {"owner_revision",owner.posim_ping_state_revision}};
+    try {data["information"]=surface_protocol::information(nativeSurfaceInformation(owner,current,legacy,active_imu,&dvl,*pressure,surface));}
+    catch(const std::exception& error) {data["information_error"]=error.what();}
+    return data;
   };
   Json input;while(std::cin>>input) {
     Json out;

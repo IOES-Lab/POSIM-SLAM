@@ -126,6 +126,23 @@ class NativeSurfaceOwnerTests(unittest.TestCase):
             self.metrics[key]=max(self.metrics[key],float(np.max(np.abs(left-right))))
             np.testing.assert_allclose(left,right,atol=3e-8,rtol=2e-9)
 
+    def test_complete_native_information_preserves_all_rows_and_read_only_identity(self):
+        args=fixture(15);args['imu_intervals']=[[10**9,2*10**9],[2*10**9,3*10**9]]
+        args['dvl']=[dict(stamp=v.ident,velocity=[.1,0,0]) for v in args['states']]
+        owner,before=self.owner(args)
+        for value in (before,owner.call(dict(op='snapshot'))['state'],
+                      owner.call(dict(op='retire',removed=[10**9]))['state']):
+            rows=value['information'];j=np.array(rows['jacobian']);r=np.array(rows['residual'])
+            raw=np.array(value['joint_jacobian']);residual=np.array(value['joint_residual'])
+            for a,b in ((j.T@j,raw.T@raw),(j.T@r,raw.T@residual),(r@r,residual@residual)):
+                np.testing.assert_allclose(a,b,atol=2e-8,rtol=2e-10)
+            self.assertLessEqual(len(j),j.shape[1]+1)
+            self.assertEqual(rows['dvl_observations'],value['dvl_count'])
+            self.assertEqual(rows['pressure_observations'],value['pressure_count'])
+            self.assertEqual(rows['imu_intervals'],value['imu_count'])
+        same=owner.call(dict(op='snapshot'))['state'];again=owner.call(dict(op='snapshot'))['state']
+        self.assertEqual(same,again)
+
     def assertMarginal(self,before,after):
         old_columns=coordinates(variables(before));keep=[old_columns.index(k) for k in coordinates(variables(after))]
         removed=[i for i in range(len(old_columns)) if i not in keep]

@@ -20,6 +20,12 @@
 방향을 보존하고 비선형 거리식을 다시 평가합니다.
 [원본 초기화 검사와 거부된 대응](docs/diagnostics/native-surface-ranges-20261029/README.md).
 
+`NativeSurfaceSnapshot.joint_marginal`은 같은 네이티브 소유자의 수치 감쇠 없는
+정보를 읽고, 공유된 과거 상태의 조건부 관계에 현재 상태의 불확실성을 전파합니다.
+Householder QR과 유효 정보 방향을 구분하는 SVD로 자세·평면·압력 기준값의 상관관계와
+관측 불가능한 방향을 유지합니다. 강건 가중치와 지정된 센서 잡음에 따른 국소 근사입니다.
+[결합 불확실성과 원본 입력 검사](docs/diagnostics/native-surface-information-20261029/README.md).
+
 `retired_pose_archive`는 네이티브 조건부 식에서 과거 자세를 함께 복원하고,
 공유 잡음과 관측 불가능한 방향을 보존합니다. 현재 좌표를 알고 있다는 조건의
 읽기 전용 진단이며, 기록 기능의 기본값은 꺼짐입니다.

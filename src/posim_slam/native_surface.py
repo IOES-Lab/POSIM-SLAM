@@ -12,6 +12,7 @@ import stat
 
 from .delayed_surface_update import _prepare_range_likelihood
 from .retired_pose_archive import RetiredPoseArchive
+from .native_surface_information import NativeSurfaceInformation,joint_surface_marginal
 from .surface_prior import RangeLedger,Variable,layout
 
 MAX_SNAPSHOT_BYTES=128*1024*1024
@@ -33,6 +34,7 @@ class NativeSurfaceSnapshot:
     prior_revision: int
     _archive: RetiredPoseArchive
     ledger: RangeLedger
+    _information: object=None
 
     @property
     def epoch(self):return self._archive.epoch
@@ -46,6 +48,9 @@ class NativeSurfaceSnapshot:
     def reference(self,kind,ident):return self._archive.references[(kind,ident)]
 
     def recover(self,stamps):return self._archive.recover(stamps)
+
+    def joint_marginal(self,order,*,relative_tolerance=1e-10):
+        return joint_surface_marginal(self,order,relative_tolerance=relative_tolerance)
 
     @classmethod
     def read(cls,packet):
@@ -65,7 +70,8 @@ class NativeSurfaceSnapshot:
         data=packet['range_ledger'];ledger=RangeLedger(data['recent'],data['closed_through_ns'])
         if ledger.closed_through_ns>stamp or any(k[0]>stamp for k in ledger.recent):
             raise ValueError('native_surface_ledger_clock_mismatch')
-        return cls(identity,owner,prior,archive,ledger)
+        information=None if 'information' not in packet else NativeSurfaceInformation.read(packet['information'],len(archive.root))
+        return cls(identity,owner,prior,archive,ledger,information)
 
     @classmethod
     def read_file(cls,metadata,directory):

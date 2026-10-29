@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 #pragma once
 #include "surface_owner.hpp"
+#include "surface_information.hpp"
 #include <nlohmann/json.hpp>
 #include <filesystem>
 #include <fstream>
@@ -27,6 +28,12 @@ inline Json matrix(const Eigen::MatrixXd& value) {
 inline Json variables(const std::vector<sp::Variable>& order) {
   Json out=Json::array();for(const auto& v:order)out.push_back({{"kind",v.kind==sp::Kind::State ? "state" : (v.kind==sp::Kind::Plane ? "plane" : "pressure")},
     {"ident",v.id},{"size",v.size},{"reference",vector(v.reference)}});return out;
+}
+inline Json information(const NativeSurfaceInformation& rows) {
+  return {{"schema","posim-slam-native-surface-information-1"},
+    {"scope","local_frozen_weight_gauss_newton"},{"jacobian",matrix(rows.jacobian)},
+    {"residual",vector(rows.residual)},{"imu_intervals",rows.imu_intervals},
+    {"dvl_observations",rows.dvl_observations},{"pressure_observations",rows.pressure_observations}};
 }
 struct Decoder {
   uint64_t numeric_bytes=0;
@@ -104,9 +111,9 @@ class Controller {
         directory_.filename().string().rfind("worker-surface-",0)!=0 || !fs::is_directory(directory_))
       throw std::invalid_argument("owned_surface_directory_required");
   }
-  template<class Optimize> Json handle(SurfaceMarginalOwner& surface,basalt::BundleAdjustmentBase<double>& owner,
+  template<class Optimize,class Information> Json handle(SurfaceMarginalOwner& surface,basalt::BundleAdjustmentBase<double>& owner,
       const basalt::AbsOrderMap& order,basalt::MargLinData<double>& legacy,PressureFactorStore& pressure,
-      const Json& command,Optimize optimize) {
+      const Json& command,Optimize optimize,Information current_information) {
     const auto request=integer(command.at("request_id"),1);const auto op=command.at("op").get<std::string>();
     Json reply={{"type","surface_control"},{"request_id",request},{"op",op},{"accepted",false},{"map_qualified",false}};
     try {
@@ -122,7 +129,8 @@ class Controller {
           {"owner_revision",s.owner_revision},{"prior_revision",state.prior.revision},{"epoch",state.prior.epoch},
           {"stamp_ns",order.abs_order_map.rbegin()->first},{"variables",variables(s.coordinates.order)},{"delta",vector(s.coordinates.delta)},
           {"conditionals",nodes},{"archive_closed_through_ns",state.archive_closed_through},{"protected_states",state.protected_states},
-          {"range_ledger",{{"recent",keys},{"closed_through_ns",state.prior.ledger.closed_through}}}};
+          {"range_ledger",{{"recent",keys},{"closed_through_ns",state.prior.ledger.closed_through}}},
+          {"information",information(current_information())}};
         snapshot_file_=directory_/("worker-surface-snapshot-"+std::to_string(pending_id_)+".json");
         const auto temporary=fs::path(snapshot_file_.string()+".tmp");
         if(fs::exists(snapshot_file_) || fs::exists(temporary))throw std::invalid_argument("surface_snapshot_path_exists");

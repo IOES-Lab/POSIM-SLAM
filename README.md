@@ -22,6 +22,13 @@ Support-only range seeds add no likelihood. Read-only inspection preserves
 unbounded plane modes and reevaluates the nonlinear range equations.
 [Original-input initialization and rejected correspondence](docs/diagnostics/native-surface-ranges-20261029/README.md).
 
+`NativeSurfaceSnapshot.joint_marginal` reads the same native owner's undamped
+information and propagates live-state uncertainty through shared retiring-state
+conditionals. Householder QR and rank-aware SVD retain pose/plane/pressure cross
+terms and explicit unbounded directions. The result is a local approximation
+with frozen robust weights and declared sensor noise.
+[Joint uncertainty and original-input checks](docs/diagnostics/native-surface-information-20261029/README.md).
+
 `retired_pose_archive` jointly recovers old poses from native Gaussian
 conditionals, preserving shared noise and unbounded directions. It is a read-only
 diagnostic that conditions on known live coordinates; capture is off by default.
