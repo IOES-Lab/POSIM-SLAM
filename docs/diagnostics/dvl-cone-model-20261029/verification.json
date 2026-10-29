@@ -1,0 +1,18 @@
+{
+  "test_source_tree": "8824484256003eb52d85abdeabb42291a07a551a",
+  "library_tests": 443,
+  "skipped": 16,
+  "failures": 0,
+  "errors": 0,
+  "new_geometry_tests": 6,
+  "affected_check_scripts": 4,
+  "source_export_excludes_protected_work": true,
+  "source_files_sha256": {
+    "src/posim_slam/dvl_surface.py": "74acf0bd3c74261b39aaaaafea89a77def0b144aa6f644eb77f5123e827067e4",
+    "src/posim_slam/surface_support.py": "05516b9910f15d4300ca30ccb7c95dcc9891462217b7491c863b8293cfea0665",
+    "tests/test_dvl_surface.py": "3377a2310d0c6bded7bb2e2da72c6a597cf7dbf48ca1431ea881c0876a2c627e",
+    "tools/evaluate_dvl_cone_geometry.py": "7ce576a90626f4bfbd082d6fc5d78a0532ed27ba9168ad064631aaac649f0e74"
+  },
+  "native_acoustic_backend_sha256": "a40a796a9ff2c416a497e8e79ce988811e8fb6b517b3fc0d6ae32f7e6e552ddc",
+  "scope": "Clean-source Python library suite with existing SDK native OpenCV ABI; skipped optional native/runtime checks do not establish package acceptance"
+}

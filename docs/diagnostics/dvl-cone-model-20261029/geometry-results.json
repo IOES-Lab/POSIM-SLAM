@@ -1,0 +1,520 @@
+{
+  "scope": "Re-evaluate retained native flat-floor ranges without application imports.\n\nThis is a controlled geometric test using the authored floor, not SLAM or a\nterrain prior supplied to an estimator. The explicit covariance is a diagnostic\nassumption; native bottom range variance is unreported. No simulator is run.\n",
+  "recorded_samples": 9,
+  "locked_returns": 24,
+  "unlocked_beams": 12,
+  "rows": [
+    {
+      "case": "stationary",
+      "stamp": {
+        "sec": "2"
+      },
+      "beam_id": 1,
+      "locked": true,
+      "measured_range_m": 1.5840002298355103,
+      "range_variance_reported": null,
+      "continuous_prediction_m": 1.5778286136651813,
+      "continuous_residual_m": 0.0061716161703289085,
+      "centre_prediction_m": 1.5934867429633668,
+      "centre_residual_m": -0.009486513127856533
+    },
+    {
+      "case": "stationary",
+      "stamp": {
+        "sec": "2"
+      },
+      "beam_id": 2,
+      "locked": true,
+      "measured_range_m": 1.5840002298355103,
+      "range_variance_reported": null,
+      "continuous_prediction_m": 1.5778286136651813,
+      "continuous_residual_m": 0.0061716161703289085,
+      "centre_prediction_m": 1.5934867429633668,
+      "centre_residual_m": -0.009486513127856533
+    },
+    {
+      "case": "stationary",
+      "stamp": {
+        "sec": "2"
+      },
+      "beam_id": 3,
+      "locked": true,
+      "measured_range_m": 1.5840001106262207,
+      "range_variance_reported": null,
+      "continuous_prediction_m": 1.5778286136651813,
+      "continuous_residual_m": 0.006171496961039358,
+      "centre_prediction_m": 1.5934867429633668,
+      "centre_residual_m": -0.009486632337146084
+    },
+    {
+      "case": "stationary",
+      "stamp": {
+        "sec": "2"
+      },
+      "beam_id": 4,
+      "locked": true,
+      "measured_range_m": 1.5840002298355103,
+      "range_variance_reported": null,
+      "continuous_prediction_m": 1.5778286136651813,
+      "continuous_residual_m": 0.0061716161703289085,
+      "centre_prediction_m": 1.5934867429633668,
+      "centre_residual_m": -0.009486513127856533
+    },
+    {
+      "case": "stationary",
+      "stamp": {
+        "sec": "3"
+      },
+      "beam_id": 1,
+      "locked": true,
+      "measured_range_m": 1.5840002298355103,
+      "range_variance_reported": null,
+      "continuous_prediction_m": 1.5778286136651813,
+      "continuous_residual_m": 0.0061716161703289085,
+      "centre_prediction_m": 1.5934867429633668,
+      "centre_residual_m": -0.009486513127856533
+    },
+    {
+      "case": "stationary",
+      "stamp": {
+        "sec": "3"
+      },
+      "beam_id": 2,
+      "locked": true,
+      "measured_range_m": 1.5840002298355103,
+      "range_variance_reported": null,
+      "continuous_prediction_m": 1.5778286136651813,
+      "continuous_residual_m": 0.0061716161703289085,
+      "centre_prediction_m": 1.5934867429633668,
+      "centre_residual_m": -0.009486513127856533
+    },
+    {
+      "case": "stationary",
+      "stamp": {
+        "sec": "3"
+      },
+      "beam_id": 3,
+      "locked": true,
+      "measured_range_m": 1.5840001106262207,
+      "range_variance_reported": null,
+      "continuous_prediction_m": 1.5778286136651813,
+      "continuous_residual_m": 0.006171496961039358,
+      "centre_prediction_m": 1.5934867429633668,
+      "centre_residual_m": -0.009486632337146084
+    },
+    {
+      "case": "stationary",
+      "stamp": {
+        "sec": "3"
+      },
+      "beam_id": 4,
+      "locked": true,
+      "measured_range_m": 1.5840002298355103,
+      "range_variance_reported": null,
+      "continuous_prediction_m": 1.5778286136651813,
+      "continuous_residual_m": 0.0061716161703289085,
+      "centre_prediction_m": 1.5934867429633668,
+      "centre_residual_m": -0.009486513127856533
+    },
+    {
+      "case": "stationary",
+      "stamp": {
+        "sec": "4"
+      },
+      "beam_id": 1,
+      "locked": true,
+      "measured_range_m": 1.5840002298355103,
+      "range_variance_reported": null,
+      "continuous_prediction_m": 1.5778286136651813,
+      "continuous_residual_m": 0.0061716161703289085,
+      "centre_prediction_m": 1.5934867429633668,
+      "centre_residual_m": -0.009486513127856533
+    },
+    {
+      "case": "stationary",
+      "stamp": {
+        "sec": "4"
+      },
+      "beam_id": 2,
+      "locked": true,
+      "measured_range_m": 1.5840002298355103,
+      "range_variance_reported": null,
+      "continuous_prediction_m": 1.5778286136651813,
+      "continuous_residual_m": 0.0061716161703289085,
+      "centre_prediction_m": 1.5934867429633668,
+      "centre_residual_m": -0.009486513127856533
+    },
+    {
+      "case": "stationary",
+      "stamp": {
+        "sec": "4"
+      },
+      "beam_id": 3,
+      "locked": true,
+      "measured_range_m": 1.5840001106262207,
+      "range_variance_reported": null,
+      "continuous_prediction_m": 1.5778286136651813,
+      "continuous_residual_m": 0.006171496961039358,
+      "centre_prediction_m": 1.5934867429633668,
+      "centre_residual_m": -0.009486632337146084
+    },
+    {
+      "case": "stationary",
+      "stamp": {
+        "sec": "4"
+      },
+      "beam_id": 4,
+      "locked": true,
+      "measured_range_m": 1.5840002298355103,
+      "range_variance_reported": null,
+      "continuous_prediction_m": 1.5778286136651813,
+      "continuous_residual_m": 0.0061716161703289085,
+      "centre_prediction_m": 1.5934867429633668,
+      "centre_residual_m": -0.009486513127856533
+    },
+    {
+      "case": "moving",
+      "stamp": {
+        "sec": "2"
+      },
+      "beam_id": 1,
+      "locked": true,
+      "measured_range_m": 1.5840002298355103,
+      "range_variance_reported": null,
+      "continuous_prediction_m": 1.5778286136651813,
+      "continuous_residual_m": 0.0061716161703289085,
+      "centre_prediction_m": 1.5934867429633668,
+      "centre_residual_m": -0.009486513127856533
+    },
+    {
+      "case": "moving",
+      "stamp": {
+        "sec": "2"
+      },
+      "beam_id": 2,
+      "locked": true,
+      "measured_range_m": 1.5840002298355103,
+      "range_variance_reported": null,
+      "continuous_prediction_m": 1.5778286136651813,
+      "continuous_residual_m": 0.0061716161703289085,
+      "centre_prediction_m": 1.5934867429633668,
+      "centre_residual_m": -0.009486513127856533
+    },
+    {
+      "case": "moving",
+      "stamp": {
+        "sec": "2"
+      },
+      "beam_id": 3,
+      "locked": true,
+      "measured_range_m": 1.5840002298355103,
+      "range_variance_reported": null,
+      "continuous_prediction_m": 1.5778286136651813,
+      "continuous_residual_m": 0.0061716161703289085,
+      "centre_prediction_m": 1.5934867429633668,
+      "centre_residual_m": -0.009486513127856533
+    },
+    {
+      "case": "moving",
+      "stamp": {
+        "sec": "2"
+      },
+      "beam_id": 4,
+      "locked": true,
+      "measured_range_m": 1.5840002298355103,
+      "range_variance_reported": null,
+      "continuous_prediction_m": 1.5778286136651813,
+      "continuous_residual_m": 0.0061716161703289085,
+      "centre_prediction_m": 1.5934867429633668,
+      "centre_residual_m": -0.009486513127856533
+    },
+    {
+      "case": "moving",
+      "stamp": {
+        "sec": "3"
+      },
+      "beam_id": 1,
+      "locked": true,
+      "measured_range_m": 1.5840001106262207,
+      "range_variance_reported": null,
+      "continuous_prediction_m": 1.5778286136651813,
+      "continuous_residual_m": 0.006171496961039358,
+      "centre_prediction_m": 1.5934867429633668,
+      "centre_residual_m": -0.009486632337146084
+    },
+    {
+      "case": "moving",
+      "stamp": {
+        "sec": "3"
+      },
+      "beam_id": 2,
+      "locked": true,
+      "measured_range_m": 1.5840002298355103,
+      "range_variance_reported": null,
+      "continuous_prediction_m": 1.5778286136651813,
+      "continuous_residual_m": 0.0061716161703289085,
+      "centre_prediction_m": 1.5934867429633668,
+      "centre_residual_m": -0.009486513127856533
+    },
+    {
+      "case": "moving",
+      "stamp": {
+        "sec": "3"
+      },
+      "beam_id": 3,
+      "locked": true,
+      "measured_range_m": 1.5839999914169312,
+      "range_variance_reported": null,
+      "continuous_prediction_m": 1.5778286136651813,
+      "continuous_residual_m": 0.006171377751749807,
+      "centre_prediction_m": 1.5934867429633668,
+      "centre_residual_m": -0.009486751546435634
+    },
+    {
+      "case": "moving",
+      "stamp": {
+        "sec": "3"
+      },
+      "beam_id": 4,
+      "locked": true,
+      "measured_range_m": 1.5840001106262207,
+      "range_variance_reported": null,
+      "continuous_prediction_m": 1.5778286136651813,
+      "continuous_residual_m": 0.006171496961039358,
+      "centre_prediction_m": 1.5934867429633668,
+      "centre_residual_m": -0.009486632337146084
+    },
+    {
+      "case": "moving",
+      "stamp": {
+        "sec": "4"
+      },
+      "beam_id": 1,
+      "locked": true,
+      "measured_range_m": 1.5840001106262207,
+      "range_variance_reported": null,
+      "continuous_prediction_m": 1.5778286136651813,
+      "continuous_residual_m": 0.006171496961039358,
+      "centre_prediction_m": 1.5934867429633668,
+      "centre_residual_m": -0.009486632337146084
+    },
+    {
+      "case": "moving",
+      "stamp": {
+        "sec": "4"
+      },
+      "beam_id": 2,
+      "locked": true,
+      "measured_range_m": 1.5840002298355103,
+      "range_variance_reported": null,
+      "continuous_prediction_m": 1.5778286136651813,
+      "continuous_residual_m": 0.0061716161703289085,
+      "centre_prediction_m": 1.5934867429633668,
+      "centre_residual_m": -0.009486513127856533
+    },
+    {
+      "case": "moving",
+      "stamp": {
+        "sec": "4"
+      },
+      "beam_id": 3,
+      "locked": true,
+      "measured_range_m": 1.5839999914169312,
+      "range_variance_reported": null,
+      "continuous_prediction_m": 1.5778286136651813,
+      "continuous_residual_m": 0.006171377751749807,
+      "centre_prediction_m": 1.5934867429633668,
+      "centre_residual_m": -0.009486751546435634
+    },
+    {
+      "case": "moving",
+      "stamp": {
+        "sec": "4"
+      },
+      "beam_id": 4,
+      "locked": true,
+      "measured_range_m": 1.5840003490447998,
+      "range_variance_reported": null,
+      "continuous_prediction_m": 1.5778286136651813,
+      "continuous_residual_m": 0.006171735379618459,
+      "centre_prediction_m": 1.5934867429633668,
+      "centre_residual_m": -0.009486393918566982
+    },
+    {
+      "case": "out_of_range",
+      "stamp": {
+        "sec": "2"
+      },
+      "beam_id": 1,
+      "locked": false
+    },
+    {
+      "case": "out_of_range",
+      "stamp": {
+        "sec": "2"
+      },
+      "beam_id": 2,
+      "locked": false
+    },
+    {
+      "case": "out_of_range",
+      "stamp": {
+        "sec": "2"
+      },
+      "beam_id": 3,
+      "locked": false
+    },
+    {
+      "case": "out_of_range",
+      "stamp": {
+        "sec": "2"
+      },
+      "beam_id": 4,
+      "locked": false
+    },
+    {
+      "case": "out_of_range",
+      "stamp": {
+        "sec": "3"
+      },
+      "beam_id": 1,
+      "locked": false
+    },
+    {
+      "case": "out_of_range",
+      "stamp": {
+        "sec": "3"
+      },
+      "beam_id": 2,
+      "locked": false
+    },
+    {
+      "case": "out_of_range",
+      "stamp": {
+        "sec": "3"
+      },
+      "beam_id": 3,
+      "locked": false
+    },
+    {
+      "case": "out_of_range",
+      "stamp": {
+        "sec": "3"
+      },
+      "beam_id": 4,
+      "locked": false
+    },
+    {
+      "case": "out_of_range",
+      "stamp": {
+        "sec": "4"
+      },
+      "beam_id": 1,
+      "locked": false
+    },
+    {
+      "case": "out_of_range",
+      "stamp": {
+        "sec": "4"
+      },
+      "beam_id": 2,
+      "locked": false
+    },
+    {
+      "case": "out_of_range",
+      "stamp": {
+        "sec": "4"
+      },
+      "beam_id": 3,
+      "locked": false
+    },
+    {
+      "case": "out_of_range",
+      "stamp": {
+        "sec": "4"
+      },
+      "beam_id": 4,
+      "locked": false
+    }
+  ],
+  "frames": [
+    {
+      "case": "stationary",
+      "stamp": {
+        "sec": "2"
+      },
+      "conditional_pose_rank": 3,
+      "horizontal_and_yaw_column_norm": 0.0,
+      "all_beams_retained": 4
+    },
+    {
+      "case": "stationary",
+      "stamp": {
+        "sec": "3"
+      },
+      "conditional_pose_rank": 3,
+      "horizontal_and_yaw_column_norm": 0.0,
+      "all_beams_retained": 4
+    },
+    {
+      "case": "stationary",
+      "stamp": {
+        "sec": "4"
+      },
+      "conditional_pose_rank": 3,
+      "horizontal_and_yaw_column_norm": 0.0,
+      "all_beams_retained": 4
+    },
+    {
+      "case": "moving",
+      "stamp": {
+        "sec": "2"
+      },
+      "conditional_pose_rank": 3,
+      "horizontal_and_yaw_column_norm": 0.0,
+      "all_beams_retained": 4
+    },
+    {
+      "case": "moving",
+      "stamp": {
+        "sec": "3"
+      },
+      "conditional_pose_rank": 3,
+      "horizontal_and_yaw_column_norm": 0.0,
+      "all_beams_retained": 4
+    },
+    {
+      "case": "moving",
+      "stamp": {
+        "sec": "4"
+      },
+      "conditional_pose_rank": 3,
+      "horizontal_and_yaw_column_norm": 0.0,
+      "all_beams_retained": 4
+    }
+  ],
+  "continuous_absolute_error_m": {
+    "median": 0.0061716161703289085,
+    "maximum": 0.006171735379618459
+  },
+  "centre_absolute_error_m": {
+    "median": 0.009486513127856533,
+    "maximum": 0.009486751546435634
+  },
+  "uncertainty": {
+    "independent_sigma_m": 0.02,
+    "shared_sigma_m": 0.01,
+    "calibrated": false
+  },
+  "full_native_reexecution": false,
+  "continuous_is_discrete_renderer": false,
+  "truth_is_estimator_input": false,
+  "map_qualified": false,
+  "source_sha256": {
+    "fixture/engine.json": "d8d596868b44b9da6d985e1e8f7dac6840c66ca76c3c18e183594bb58a991e78",
+    "fixture/moving.sdf": "6b1ed9dfeaae3ed57027464b32726e88cbba0e439449df460a325058f27712ff",
+    "fixture/native.json": "a77be1336d97596c4c8e2f8614be4459f23f8e5c7f8fd0afd65345dd52ecde0f",
+    "fixture/out_of_range.sdf": "6d65fa1bb24d94412b18fff3205cc626b4cbb757f16c49d6d8a483c3f6cfe845",
+    "fixture/stationary.sdf": "dfc6e609ecc0e0f38d0e2f4260e2510bd32df7a0278c668fba563ca3e619f1b6"
+  }
+}
