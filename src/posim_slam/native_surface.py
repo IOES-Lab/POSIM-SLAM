@@ -116,8 +116,10 @@ class NativeSurfaceIncrement:
         nodes=[]
         for ident in update.changed_conditionals:
             n=update.archive.nodes[ident]
-            nodes.append(dict(id=n.ident,variables=[_variable(v) for v in n.variables],kept_indices=list(n.kept),removed_indices=list(n.removed),
-                regression=n.regression.tolist(),offset=n.offset.tolist(),noise_factor=n.noise.tolist(),unbounded_basis=n.unbounded.tolist()))
+            value=dict(id=n.ident,variables=[_variable(v) for v in n.variables],kept_indices=list(n.kept),removed_indices=list(n.removed),
+                regression=n.regression.tolist(),offset=n.offset.tolist(),noise_factor=n.noise.tolist(),unbounded_basis=n.unbounded.tolist())
+            if n.deterministic.shape[1]:value['deterministic_basis']=n.deterministic.tolist()
+            nodes.append(value)
         return dict(schema='posim-slam-native-surface-increment-1',epoch=s.epoch,snapshot_id=s.snapshot_id,
             owner_revision=s.owner_revision,prior_revision=s.prior_revision,stamp_ns=s.stamp_ns,
             source_order=[_variable(v) for v in self.source_order],

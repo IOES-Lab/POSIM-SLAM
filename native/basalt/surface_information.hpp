@@ -8,6 +8,7 @@ namespace posim_slam {
 struct NativeSurfaceInformation {
   Eigen::MatrixXd jacobian;
   Eigen::VectorXd residual;
+  Eigen::MatrixXd constraint_jacobian;Eigen::VectorXd constraint_residual;
   size_t imu_intervals=0,dvl_observations=0,pressure_observations=0;
 };
 
@@ -51,6 +52,7 @@ inline NativeSurfaceInformation nativeSurfaceInformation(
     augmented=qr.matrixQR().topRows(columns+1).triangularView<Eigen::Upper>();
   }
   out.jacobian=augmented.leftCols(columns);out.residual=augmented.col(columns);
+  out.constraint_jacobian=marginal.constraint_jacobian;out.constraint_residual=marginal.constraint_residual;
   out.imu_intervals=imu.imu_meas.size();out.dvl_observations=dvl ? dvl->size() : 0;
   out.pressure_observations=pressure.size();return out;
 }

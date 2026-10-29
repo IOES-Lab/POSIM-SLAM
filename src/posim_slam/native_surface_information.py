@@ -10,6 +10,7 @@ import numpy as np
 
 from .retired_pose_archive import coordinates,merge_reference
 from .surface_prior import MAX_COLUMNS,layout
+from .constrained_information import constraint_support
 
 
 @dataclass(frozen=True)
@@ -17,10 +18,12 @@ class NativeSurfaceInformation:
     jacobian: np.ndarray
     residual: np.ndarray
     counts: tuple
+    constraint_jacobian: object=None
+    constraint_residual: object=None
 
     @classmethod
     def read(cls,value,columns):
-        if (not isinstance(value,dict) or value.get('schema')!='posim-slam-native-surface-information-1'
+        if (not isinstance(value,dict) or value.get('schema') not in ('posim-slam-native-surface-information-1','posim-slam-native-surface-information-2')
                 or value.get('scope')!='local_frozen_weight_gauss_newton'):
             raise ValueError('native_joint_information_schema_required')
         if not 1<=columns<=MAX_COLUMNS:raise ValueError('native_joint_information_column_budget')
@@ -31,7 +34,14 @@ class NativeSurfaceInformation:
                 or any(type(n) is not int or not 0<=n<=73 for n in counts)):
             raise ValueError('finite_bounded_native_joint_information_required')
         j=j.copy();r=r.copy();j.flags.writeable=False;r.flags.writeable=False
-        return cls(j,r,counts)
+        if ('constraint_jacobian' in value)!=('constraint_residual' in value):raise ValueError('complete_native_exact_support_required')
+        if (('constraint_jacobian' in value)!=(value['schema']=='posim-slam-native-surface-information-2')):
+            raise ValueError('native_exact_support_schema_required')
+        c=np.asarray(value.get('constraint_jacobian',np.zeros((0,columns))),dtype=float)
+        d=np.asarray(value.get('constraint_residual',np.zeros(0)),dtype=float)
+        constraint_support(c,-d,columns)
+        c=c.copy();d=d.copy();c.flags.writeable=False;d.flags.writeable=False
+        return cls(j,r,counts,c,d)
 
 
 def joint_surface_marginal(snapshot,order,*,relative_tolerance=1e-10):
@@ -72,14 +82,15 @@ def joint_surface_marginal(snapshot,order,*,relative_tolerance=1e-10):
     noise_columns=n+sum(archive.nodes[i].noise.shape[1]+archive.nodes[i].unbounded.shape[1] for i in needed)
     dependency_rows=sum(len(archive.nodes[i].removed) for i in needed)
     max_separator=max((len(archive.nodes[i].kept) for i in needed),default=0)
-    bound=8*((dependency_rows+3*count+4*max_separator)*noise_columns+count*count+8*n*n+4*n)
+    bound=8*((dependency_rows+3*count+4*max_separator)*noise_columns+count*count+12*n*n+4*n)
     if bound>archive.max_recovery_bytes:raise ValueError('joint_recovery_workspace_capacity')
-    u,s,vt=np.linalg.svd(information.jacobian,full_matrices=True)
+    point,z,hard=constraint_support(information.constraint_jacobian,-information.constraint_residual,n)
+    u,s,vt=np.linalg.svd(information.jacobian@z,full_matrices=True)
     cutoff=relative_tolerance*(s[0] if len(s) else 0.)
     rank=int(np.count_nonzero(s>cutoff))
-    root_noise=vt[:rank].T/s[:rank] if rank else np.zeros((n,0))
-    root_free=vt[rank:].T
-    root_shift=-root_noise@(u[:,:rank].T@information.residual)
+    root_noise=z@(vt[:rank].T/s[:rank]) if rank else np.zeros((n,0))
+    root_free=z@vt[rank:].T
+    root_shift=point-root_noise@(u[:,:rank].T@(information.residual+information.jacobian@point))
     root_delta=np.array([archive.root[k] for k in root_keys]);resolved={}
 
     def collect(keys):
@@ -113,7 +124,8 @@ def joint_surface_marginal(snapshot,order,*,relative_tolerance=1e-10):
     for coefficient in value['noise'].values():covariance+=coefficient@coefficient.T
     unbounded=np.column_stack(list(value['free'].values())) if value['free'] else np.zeros((count,0))
     return dict(order=order,deltas=value['mean'],linearized_mode=value['mean']+value['shift'],
-        observable_covariance=covariance,unbounded_basis=unbounded,root_rank=rank,root_columns=n,
+        observable_covariance=covariance,unbounded_basis=unbounded,root_rank=rank+hard.shape[1],root_columns=n,
+        root_constraint_rank=hard.shape[1],
         root_singular_values=s,relative_rank_tolerance=relative_tolerance,workspace_bound_bytes=bound,
         live_coordinates_treated_as_known=False,independent_pose_observations=False,map_qualified=False,
         information_scope='local_frozen_weight_gauss_newton',

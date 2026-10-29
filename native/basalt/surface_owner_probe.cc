@@ -14,17 +14,19 @@ Json variables(const std::vector<sp::Variable>& order) {
     {"ident",v.id},{"size",v.size},{"reference",io::probe::jsonVector(v.reference)}});return out;
 }
 Json node(const RetiredPoseConditional& n) {
-  return {{"id",n.id},{"variables",variables(n.variables)},{"kept_indices",n.kept},{"removed_indices",n.removed},
+  Json out={{"id",n.id},{"variables",variables(n.variables)},{"kept_indices",n.kept},{"removed_indices",n.removed},
     {"regression",io::probe::jsonMatrix(n.regression)},{"offset",io::probe::jsonVector(n.offset)},
     {"noise_factor",io::probe::jsonMatrix(n.noise)},{"unbounded_basis",io::probe::jsonMatrix(n.unbounded)},
     {"marginal_information_relative_error",n.marginal_information_relative_error},
     {"marginal_gradient_relative_error",n.marginal_gradient_relative_error}};
+  if(n.deterministic.cols())out["deterministic_basis"]=io::probe::jsonMatrix(n.deterministic);return out;
 }
 RetiredPoseConditional readNode(const Json& v) {
   RetiredPoseConditional n;n.id=v.at("id");n.variables=io::order(v.at("variables"),true);
   n.kept=v.at("kept_indices").get<std::vector<int>>();n.removed=v.at("removed_indices").get<std::vector<int>>();
   n.regression=io::rows(v.at("regression"),n.kept.size());n.offset=io::vector(v.at("offset"));
-  n.noise=io::probe::matrix(v.at("noise_factor"));n.unbounded=io::probe::matrix(v.at("unbounded_basis"));return n;
+  n.noise=io::probe::matrix(v.at("noise_factor"));n.unbounded=io::probe::matrix(v.at("unbounded_basis"));
+  n.deterministic=v.contains("deterministic_basis") ? io::probe::matrix(v.at("deterministic_basis")) : Eigen::MatrixXd::Zero(n.removed.size(),0);return n;
 }
 void addState(basalt::BundleAdjustmentBase<double>& owner,const sp::Variable& v) {
   if(v.kind!=sp::Kind::State)throw std::invalid_argument("probe_state_required");
@@ -99,6 +101,7 @@ int main() {
           prior.b=p.at("b");prior.reference=p.at("reference");prior.active=true;
           pressure->retireWith(pressure->planRetirement({}),prior,[]{});
         }
+        if(input.contains("initial_bias"))surface.configureInitialBias(InitialImuBiasCalibration::read(input.at("initial_bias")));
         surface.adopt(owner,current,legacy,*pressure,"native-surface-owner");
       } else if(operation=="snapshot")saved=surface.snapshot(owner,order(),legacy,*pressure);
       else if(operation=="append") {

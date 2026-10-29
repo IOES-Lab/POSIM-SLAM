@@ -122,6 +122,7 @@ int main(int argc,char** argv) {
     const bool pressure_enabled=input_settings.value("enable_joint_pressure",false);
     const bool capture_pose_conditionals=input_settings.value("capture_retired_pose_conditionals",false);
     const bool surface_enabled=input_settings.value("enable_surface_owner",false);
+    if(c.initial_bias && !surface_enabled)fail("initial_bias_calibration_requires_surface_owner_profile");
     const std::string surface_epoch=input_settings.value("surface_owner_epoch",std::string());
     if(surface_enabled && (!sonar_clock || !sonar_enabled || !pressure_enabled || capture_pose_conditionals ||
         surface_epoch.empty() || surface_epoch.size()>128 || config.vio_enforce_realtime ||
@@ -213,6 +214,7 @@ int main(int argc,char** argv) {
     if(capture_pose_conditionals)owner->posim_ping_factors->enablePoseConditionalCapture();
     if(surface_enabled) {
       owner->posim_ping_factors->enableSurfaceOwner(surface_epoch);
+      if(c.initial_bias)owner->posim_ping_factors->surfaceOwner()->configureInitialBias(*c.initial_bias);
       owner->posim_joint_started=true;
       owner->posim_owner_control=[&](auto& estimator,uint64_t request,auto& marginal) {
         Json command;
@@ -642,10 +644,17 @@ int main(int argc,char** argv) {
               {"observations",data->opt_flow_res && !data->opt_flow_res->observations.empty() ? data->opt_flow_res->observations[0].size() : 0}});
       }
     });
-    if(!require_gravity_seed)vio->initialize(Vec3::Zero(),Vec3::Zero());
+    if(!require_gravity_seed)vio->initialize(c.initial_bias ? Vec3(c.initial_bias->mean.head<3>()) : Vec3::Zero(),
+                                           c.initial_bias ? Vec3(c.initial_bias->mean.tail<3>()) : Vec3::Zero());
     int64_t gravity_stamp=0;Vec3 gravity_direction=Vec3::Zero();
     Vec3 initial_velocity_imu=Vec3::Zero(),initial_gyro_bias=Vec3::Zero(),initial_accel_bias=Vec3::Zero();
+    if(c.initial_bias) {initial_gyro_bias=c.initial_bias->mean.head<3>();initial_accel_bias=c.initial_bias->mean.tail<3>();}
     const auto initialize_seed=[&](int64_t stamp) {
+      if(c.initial_bias) {
+        Eigen::Matrix<double,6,1> bias;bias<<initial_gyro_bias,initial_accel_bias;
+        if((c.initial_bias->hard*(bias-c.initial_bias->mean)).norm()>2e-9)
+          fail("initial_seed_conflicts_with_exact_bias_calibration");
+      }
       const Eigen::Quaterniond q=Eigen::Quaterniond::FromTwoVectors(gravity_direction,Vec3::UnitZ());
       // Seed velocity is expressed in this first IMU frame, not the arbitrary
       // gravity-aligned world frame. Biases remain in IMU sensor coordinates.
@@ -658,6 +667,9 @@ int main(int argc,char** argv) {
           {"map_information_enabled",joint_map_information},{"map_point_three_sigma_m",map_point_three_sigma_m},
           {"sonar_clock_transport",sonar_clock ? Json("ordered_sonar_state_v1") : Json(nullptr)},
           {"imu_noise_model","continuous_white_midpoint_acceleration_bridge_v1"},
+          {"initial_imu_bias_calibration",c.initial_bias ? Json({{"source",c.initial_bias->source},{"scope","first_state"},
+            {"finite_modes",c.initial_bias->white.rows()},{"exact_modes",c.initial_bias->hard.rows()},
+            {"stochastic_evolution_unchanged",true},{"generic_initial_bias_prior_replaced",true}}) : Json(nullptr)},
           {"dvl_measurement_transport",dvl_enabled ? Json("body_velocity_gyro_covariance_v1") : Json(nullptr)},
           {"pressure_measurement_transport",pressure_enabled ? Json("height_unknown_datum_v1") : Json(nullptr)},
           {"sensor_state_transport",ordered_auxiliary ? Json("ordered_camera_auxiliary_states_v1") : Json(nullptr)},

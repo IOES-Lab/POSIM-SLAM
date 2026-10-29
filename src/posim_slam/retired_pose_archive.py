@@ -36,6 +36,7 @@ class Conditional:
     offset: np.ndarray
     noise: np.ndarray
     unbounded: np.ndarray
+    deterministic: object=None
 
     @classmethod
     def read(cls,value):
@@ -48,22 +49,24 @@ class Conditional:
             raise ValueError('unique_complete_conditional_partition_required')
         m=np.asarray(value['regression'],dtype=float);offset=np.asarray(value['offset'],dtype=float)
         noise=np.asarray(value['noise_factor'],dtype=float);free=np.asarray(value['unbounded_basis'],dtype=float);n=len(removed)
+        exact=np.asarray(value.get('deterministic_basis',np.zeros((n,0))),dtype=float)
         if (m.shape!=(n,len(keep)) or offset.shape!=(n,) or noise.ndim!=2 or free.ndim!=2
-                or noise.shape[0]!=n or free.shape[0]!=n or noise.shape[1]+free.shape[1]!=n
-                or any(not x.all() for x in (np.isfinite(m),np.isfinite(offset),np.isfinite(noise),np.isfinite(free)))):
+                or noise.shape[0]!=n or free.shape[0]!=n or exact.ndim!=2 or exact.shape[0]!=n
+                or noise.shape[1]+free.shape[1]+exact.shape[1]!=n
+                or any(not x.all() for x in (np.isfinite(m),np.isfinite(offset),np.isfinite(noise),np.isfinite(free),np.isfinite(exact)))):
             raise ValueError('finite_complete_conditional_geometry_required')
         # Normalize only to validate the observable/null subspaces. Noise scales
         # themselves stay exactly as emitted; no variance is guessed or changed.
         norms=np.linalg.norm(noise,axis=0)
         if np.any(norms<=0):raise ValueError('nonzero_conditional_noise_columns_required')
-        basis=np.column_stack((noise/norms,free))
+        basis=np.column_stack((noise/norms,free,exact))
         if not np.allclose(basis.T@basis,np.eye(n),atol=2e-7,rtol=0):
             raise ValueError('conditional_observable_and_null_spaces_required')
         for name in ('marginal_information_relative_error','marginal_gradient_relative_error'):
             if name in value and (not np.isfinite(value[name]) or value[name]>1e-7):
                 raise ValueError('native_conditional_marginal_mismatch')
         arrays=[]
-        for a in (m,offset,noise,free):
+        for a in (m,offset,noise,free,exact):
             a=a.copy();a.flags.writeable=False;arrays.append(a)
         return cls(ident,variables,keep,removed,*arrays)
 
@@ -71,7 +74,7 @@ class Conditional:
     def source_coordinates(self):return coordinates(self.variables)
 
     @property
-    def matrix_bytes(self):return sum(x.nbytes for x in (self.regression,self.offset,self.noise,self.unbounded))
+    def matrix_bytes(self):return sum(x.nbytes for x in (self.regression,self.offset,self.noise,self.unbounded,self.deterministic))
 
 
 class RetiredPoseArchive:

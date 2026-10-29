@@ -148,8 +148,17 @@ inline PingOptimizationReport optimizePingGroups(basalt::BundleAdjustmentBase<do
         b.noalias()+=surface_rows->jacobian.transpose()*surface_rows->residual;
       }
       h.diagonal().array()+=(h.diagonal().array().abs()*damping).max(1e-9);
-      Eigen::LDLT<Eigen::MatrixXd> solve(h);const Eigen::VectorXd full_increment=solve.solve(-b);
-      if(solve.info()!=Eigen::Success || !full_increment.allFinite()) {
+      Eigen::VectorXd full_increment;bool solved=false;
+      if(surface_rows && surface_rows->constraint_jacobian.rows()) {
+        const auto support=affineSupport(surface_rows->constraint_jacobian,-surface_rows->constraint_residual,h.cols());
+        const Eigen::MatrixXd reduced=support.free.transpose()*h*support.free;
+        Eigen::LDLT<Eigen::MatrixXd> solve(reduced);
+        full_increment=support.point+support.free*solve.solve(-support.free.transpose()*(b+h*support.point));
+        solved=solve.info()==Eigen::Success;
+      } else {
+        Eigen::LDLT<Eigen::MatrixXd> solve(h);full_increment=solve.solve(-b);solved=solve.info()==Eigen::Success;
+      }
+      if(!solved || !full_increment.allFinite()) {
         ++report.rejected;damping=std::min(1e12,damping*10.);continue;
       }
       const Eigen::VectorXd increment=full_increment.head(order.total_size);
@@ -202,7 +211,10 @@ inline PingOptimizationReport optimizePingGroups(basalt::BundleAdjustmentBase<do
           if(sonar_rows)after+=sonar->cost(sonar_poses());
           if(dvl)after+=dvl->linearize(owner,order).cost;
           if(pressure)after+=pressure->linearize(owner,order).cost;
-          if(surface)after+=.5*surface->linearize(owner,order,*pressure).residual.squaredNorm();
+          if(surface) {
+            const auto rows=surface->linearize(owner,order,*pressure);after+=.5*rows.residual.squaredNorm();
+            if(rows.constraint_residual.norm()>2e-9)valid=false;
+          }
           if(!preservesVisualProjectionSupport(visual_support,visualProjectionSupport(owner,order))) {
             valid=false;++report.projection_rejections;
           }

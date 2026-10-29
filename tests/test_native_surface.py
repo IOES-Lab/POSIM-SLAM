@@ -14,8 +14,10 @@ from test_delayed_surface_update import physical_case,descriptor
 
 
 def node(n):
-    return dict(id=n.ident,variables=[descriptor(v) for v in n.variables],kept_indices=n.kept,removed_indices=n.removed,
+    value=dict(id=n.ident,variables=[descriptor(v) for v in n.variables],kept_indices=n.kept,removed_indices=n.removed,
         regression=n.regression.tolist(),offset=n.offset.tolist(),noise_factor=n.noise.tolist(),unbounded_basis=n.unbounded.tolist())
+    if n.deterministic.shape[1]:value['deterministic_basis']=n.deterministic.tolist()
+    return value
 
 
 def snapshot(archive,*,ledger=(),identity=1,owner=8,prior=9,stamp=None,delta=None):

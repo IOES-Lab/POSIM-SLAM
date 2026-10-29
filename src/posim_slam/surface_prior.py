@@ -13,6 +13,7 @@ import numpy as np
 
 from .dvl_scale import rotation
 from .ping_joint import eliminate_patch
+from .constrained_information import constraint_support,split_constrained_information
 
 MAX_COLUMNS=265  # Sixteen inertial states, eight planes and one pressure datum.
 MAX_RETIREMENT_COLUMNS=1024  # Existing native source order, including incoming/KF blocks.
@@ -103,6 +104,8 @@ class SurfacePrior:
     ledger: RangeLedger
     epoch: str
     revision: int=0
+    constraint_jacobian: object=None
+    constraint_offset: object=None
 
     def __post_init__(self):
         order,_,columns=layout(self.order);j=np.asarray(self.jacobian,dtype=float);b=np.asarray(self.offset,dtype=float)
@@ -113,6 +116,11 @@ class SurfacePrior:
             raise ValueError('finite_bounded_surface_prior_required')
         j=j.copy();b=b.copy();j.flags.writeable=False;b.flags.writeable=False
         object.__setattr__(self,'order',order);object.__setattr__(self,'jacobian',j);object.__setattr__(self,'offset',b)
+        c=np.zeros((0,columns)) if self.constraint_jacobian is None else np.asarray(self.constraint_jacobian,dtype=float)
+        d=np.zeros(0) if self.constraint_offset is None else np.asarray(self.constraint_offset,dtype=float)
+        constraint_support(c,-d,columns)
+        c=c.copy();d=d.copy();c.flags.writeable=False;d.flags.writeable=False
+        object.__setattr__(self,'constraint_jacobian',c);object.__setattr__(self,'constraint_offset',d)
 
 
 def linearize_prior(prior,*,order,delta,epoch):
@@ -125,12 +133,13 @@ def linearize_prior(prior,*,order,delta,epoch):
     _,columns,count=layout(order);delta=np.asarray(delta,dtype=float)
     if epoch!=prior.epoch:raise ValueError('surface_prior_epoch_mismatch')
     if delta.shape!=(count,) or not np.isfinite(delta).all():raise ValueError('finite_owner_delta_required')
-    j=np.zeros((len(prior.offset),count));source=0
+    j=np.zeros((len(prior.offset),count));c=np.zeros((len(prior.constraint_offset),count));source=0
     for variable in prior.order:
         found=columns.get(variable.key)
         if found is None or found[1]!=variable:raise ValueError('changed_or_missing_surface_prior_reference')
-        target=found[0];j[:,target:target+variable.size]=prior.jacobian[:,source:source+variable.size];source+=variable.size
-    return dict(jacobian=j,residual=j@delta+prior.offset)
+        target=found[0];j[:,target:target+variable.size]=prior.jacobian[:,source:source+variable.size]
+        c[:,target:target+variable.size]=prior.constraint_jacobian[:,source:source+variable.size];source+=variable.size
+    return dict(jacobian=j,residual=j@delta+prior.offset,constraint_jacobian=c,constraint_residual=c@delta+prior.constraint_offset)
 
 
 def marginalize_surface(*,order,delta,jacobian,residual,retain,epoch,
@@ -158,11 +167,13 @@ def marginalize_surface(*,order,delta,jacobian,residual,retain,epoch,
         raise ValueError('finite_new_surface_rows_required')
     if any(('state',key[0]) not in columns for key in keys):
         raise ValueError('new_range_requires_resident_measurement_pose')
+    c=np.zeros((0,count));d=np.zeros(0)
     if previous is None:
         ledger=RangeLedger();revision=0
     else:
         old=linearize_prior(previous,order=order,delta=delta,epoch=epoch)
         j=np.vstack((j,old['jacobian']));r=np.r_[r,old['residual']]
+        c=old['constraint_jacobian'];d=old['constraint_residual']
         ledger=previous.ledger;revision=previous.revision+1
     ledger=ledger.admit(keys,close_through_ns=close_through_ns)
     keep=[];retained=[];seen=set()
@@ -182,7 +193,12 @@ def marginalize_surface(*,order,delta,jacobian,residual,retain,epoch,
     if len(j)>count+1:
         _,compact=np.linalg.qr(np.column_stack((ordered,r)),mode='reduced')
         ordered=compact[:,:count];r=compact[:,count]
-    if remaining:
+    if len(c):
+        reduced=split_constrained_information(ordered,r,retained_columns=len(keep),
+            constraint_jacobian=c[:,keep+remaining],constraint_target=-d)
+        a=reduced['jacobian'];b=reduced['residual'];c=reduced['constraint_jacobian']
+        d=-reduced['constraint_target']-c@delta[keep]
+    elif remaining:
         reduced=eliminate_patch(ordered,r,retained_columns=len(keep));a=reduced['jacobian'];b=reduced['residual']
     else:a=ordered;b=r
     if not len(a):a=np.zeros((1,len(keep)));b=np.zeros(1)
@@ -191,4 +207,5 @@ def marginalize_surface(*,order,delta,jacobian,residual,retain,epoch,
     if len(a)>len(keep)+1:
         _,compact=np.linalg.qr(np.column_stack((a,offset)),mode='reduced')
         a=compact[:,:len(keep)];offset=compact[:,len(keep)]
-    return SurfacePrior(tuple(retained),a,offset,ledger,epoch,revision)
+    if not len(c):c=np.zeros((0,len(keep)))
+    return SurfacePrior(tuple(retained),a,offset,ledger,epoch,revision,c,d)

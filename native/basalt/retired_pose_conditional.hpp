@@ -7,7 +7,7 @@ struct RetiredPoseConditional {
   uint64_t id=0;
   std::vector<surface_prior::Variable> variables;
   std::vector<int> kept,removed;
-  Eigen::MatrixXd regression,noise,unbounded;
+  Eigen::MatrixXd regression,noise,unbounded,deterministic;
   Eigen::VectorXd offset;
   double marginal_information_relative_error=0.,marginal_gradient_relative_error=0.;
 };
@@ -17,7 +17,8 @@ struct RetiredPoseConditional {
 inline std::optional<RetiredPoseConditional> captureRetiringConditional(
     const surface_prior::Coordinates& coordinates,const std::vector<int>& kept,
     const Eigen::MatrixXd& jacobian,const Eigen::VectorXd& residual,
-    const Eigen::MatrixXd& actual_prior_j,const Eigen::VectorXd& actual_prior_b) {
+    const Eigen::MatrixXd& actual_prior_j,const Eigen::VectorXd& actual_prior_b,
+    const surface_prior::Rows* exact=nullptr) {
   if(jacobian.cols()!=surface_prior::layout(coordinates.order,true).count ||
       jacobian.cols()!=coordinates.delta.size() || jacobian.rows()!=residual.size() || !jacobian.rows() ||
       !jacobian.allFinite() || !residual.allFinite() || !coordinates.delta.allFinite())
@@ -40,9 +41,16 @@ inline std::optional<RetiredPoseConditional> captureRetiringConditional(
     const Eigen::MatrixXd compact=qr.matrixQR().topRows(augmented.cols()).template triangularView<Eigen::Upper>();
     ordered=compact.leftCols(jacobian.cols());b=compact.col(jacobian.cols());
   }
-  const auto split=splitJointInformation(ordered,b,out.kept.size());
+  Eigen::MatrixXd c=Eigen::MatrixXd::Zero(0,ordered.cols());Eigen::VectorXd target;
+  if(exact && exact->constraint_jacobian.rows()) {
+    c.resize(exact->constraint_jacobian.rows(),ordered.cols());Eigen::Index col=0;
+    for(int i:out.kept)c.col(col++)=exact->constraint_jacobian.col(i);
+    for(int i:out.removed)c.col(col++)=exact->constraint_jacobian.col(i);
+    target=exact->constraint_jacobian*coordinates.delta-exact->constraint_residual;
+  }
+  const auto split=splitConstrainedInformation(ordered,b,out.kept.size(),c,target);
   out.regression=split.reduced.backsub_matrix;out.offset=split.reduced.backsub_offset;
-  out.noise=split.observable_noise_factor;out.unbounded=split.unobservable_basis;
+  out.noise=split.noise;out.unbounded=split.unbounded;out.deterministic=split.deterministic;
   if(actual_prior_j.cols()!=Eigen::Index(out.kept.size()) || actual_prior_j.rows()!=actual_prior_b.size())
     throw std::invalid_argument("pose_conditional_actual_prior_layout");
   const Eigen::MatrixXd expected_h=split.reduced.jacobian.transpose()*split.reduced.jacobian;

@@ -30,10 +30,13 @@ inline Json variables(const std::vector<sp::Variable>& order) {
     {"ident",v.id},{"size",v.size},{"reference",vector(v.reference)}});return out;
 }
 inline Json information(const NativeSurfaceInformation& rows) {
-  return {{"schema","posim-slam-native-surface-information-1"},
+  Json out={{"schema","posim-slam-native-surface-information-1"},
     {"scope","local_frozen_weight_gauss_newton"},{"jacobian",matrix(rows.jacobian)},
     {"residual",vector(rows.residual)},{"imu_intervals",rows.imu_intervals},
     {"dvl_observations",rows.dvl_observations},{"pressure_observations",rows.pressure_observations}};
+  if(rows.constraint_jacobian.rows()) {out["schema"]="posim-slam-native-surface-information-2";
+    out["constraint_jacobian"]=matrix(rows.constraint_jacobian);out["constraint_residual"]=vector(rows.constraint_residual);}
+  return out;
 }
 struct Decoder {
   uint64_t numeric_bytes=0;
@@ -80,7 +83,9 @@ struct Decoder {
       RetiredPoseConditional n;n.id=integer(v.at("id"),1);n.variables=variables(v.at("variables"),true);
       n.kept=indices(v.at("kept_indices"));n.removed=indices(v.at("removed_indices"));
       n.regression=rows(v.at("regression"),n.kept.size(),1024);n.offset=vector(v.at("offset"));
-      n.noise=matrix(v.at("noise_factor"));n.unbounded=matrix(v.at("unbounded_basis"));out.push_back(std::move(n));
+      n.noise=matrix(v.at("noise_factor"));n.unbounded=matrix(v.at("unbounded_basis"));
+      n.deterministic=v.contains("deterministic_basis") ? matrix(v.at("deterministic_basis")) : Eigen::MatrixXd::Zero(n.removed.size(),0);
+      out.push_back(std::move(n));
     }
     return out;
   }
@@ -97,9 +102,10 @@ struct Decoder {
   }
 };
 inline Json conditional(const RetiredPoseConditional& n) {
-  return {{"id",n.id},{"variables",variables(n.variables)},{"kept_indices",n.kept},{"removed_indices",n.removed},
+  Json out={{"id",n.id},{"variables",variables(n.variables)},{"kept_indices",n.kept},{"removed_indices",n.removed},
     {"regression",matrix(n.regression)},{"offset",vector(n.offset)},{"noise_factor",matrix(n.noise)},{"unbounded_basis",matrix(n.unbounded)},
     {"marginal_information_relative_error",n.marginal_information_relative_error},{"marginal_gradient_relative_error",n.marginal_gradient_relative_error}};
+  if(n.deterministic.cols())out["deterministic_basis"]=matrix(n.deterministic);return out;
 }
 
 // One pending snapshot and one per-process directory. Bulk matrices never pass

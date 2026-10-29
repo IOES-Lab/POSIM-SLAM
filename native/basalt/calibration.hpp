@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 #pragma once
 #include "estimator_budget.hpp"
+#include "imu_bias_calibration.hpp"
 #include <basalt/vi_estimator/vio_estimator.h>
 #include <nlohmann/json.hpp>
 #include <filesystem>
@@ -41,6 +42,7 @@ struct InputCalibration {
  int feature_grid;
  int max_recent_states;
  std::string optical_flow_type;
+ std::optional<posim_slam::InitialImuBiasCalibration> initial_bias;
 };
 inline InputCalibration input_calibration(const fs::path& file) {
     auto c = read_json(file);
@@ -109,7 +111,9 @@ inline InputCalibration input_calibration(const fs::path& file) {
     if((optical_flow_type!="frame_to_frame" && optical_flow_type!="patch") ||
        (sonar_clock && c.contains("optical_flow_type")))
       throw std::runtime_error("invalid_optical_flow_type");
-    return {width,height,processed_width,processed_height,cal,gravity,max_gap,feature_grid,max_recent_states,optical_flow_type};
+    std::optional<posim_slam::InitialImuBiasCalibration> initial_bias;
+    if(c.contains("initial_imu_bias_calibration"))initial_bias=posim_slam::InitialImuBiasCalibration::read(c.at("initial_imu_bias_calibration"));
+    return {width,height,processed_width,processed_height,cal,gravity,max_gap,feature_grid,max_recent_states,optical_flow_type,initial_bias};
 }
 
 inline basalt::VioConfig processing_config(const InputCalibration& c) {
@@ -117,6 +121,9 @@ inline basalt::VioConfig processing_config(const InputCalibration& c) {
   config.optical_flow_type=c.optical_flow_type;
   config.vio_max_states=c.max_recent_states;
   config.vio_max_kfs=posim_slam::kMaxKeyframes;
+  // The explicit calibrated prior replaces the constructor's generic bias
+  // prior. Position/yaw gauge and stochastic IMU evolution remain unchanged.
+  if(c.initial_bias)config.vio_init_bg_weight=config.vio_init_ba_weight=0.;
   if(c.feature_grid)config.optical_flow_detection_grid_size=c.feature_grid;
   else if(c.processed_width>0 && c.processed_height>0)
     config.optical_flow_detection_grid_size=std::min(config.optical_flow_detection_grid_size,

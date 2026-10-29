@@ -16,6 +16,7 @@ import json
 import numpy as np
 
 from .ping_joint import split_patch_information
+from .constrained_information import split_constrained_information
 from .retired_pose_archive import (Conditional,RetiredPoseArchive,coordinates,
                                     merge_reference)
 from .surface_prior import SurfacePrior,RangeLedger,Variable,layout,_keys
@@ -55,7 +56,7 @@ def _prior_digest(prior):
         keys=sorted(prior.ledger.recent),cutoff=prior.ledger.closed_through_ns,
         shape=prior.jacobian.shape)
     digest=hashlib.sha256(json.dumps(fields,sort_keys=True,separators=(',',':')).encode())
-    for value in (prior.jacobian,prior.offset):digest.update(np.asarray(value,dtype='<f8').tobytes())
+    for value in (prior.jacobian,prior.offset,prior.constraint_jacobian,prior.constraint_offset):digest.update(np.asarray(value,dtype='<f8').tobytes())
     return digest.hexdigest()
 
 
@@ -224,12 +225,19 @@ def _prepare_range_likelihood(archive,ledger,*,order,delta,jacobian,residual,ran
         cols=coordinates(factor.order);positions={key:i for i,key in enumerate(cols)}
         removed=[positions[old.source_coordinates[i]] for i in old.removed];removed_set=set(removed)
         kept=[i for i in range(len(cols)) if i not in removed_set]
-        split=split_patch_information(factor.jacobian[:,kept+removed],factor.offset,retained_columns=len(kept))
+        exact=old.deterministic
+        hard=np.zeros((exact.shape[1],len(cols)));target=exact.T@old.offset
+        if exact.shape[1]:
+            reserve(exact.shape[1],len(cols))
+            hard[:,removed]=exact.T
+            hard[:,[positions[old.source_coordinates[i]] for i in old.kept]]=-exact.T@old.regression
+        split=split_constrained_information(factor.jacobian[:,kept+removed],factor.offset,retained_columns=len(kept),
+            constraint_jacobian=hard[:,kept+removed],constraint_target=target)
         nodes[ident]=Conditional.read(dict(id=ident,
             variables=[dict(kind=v.kind,ident=v.ident,size=v.size,reference=v.reference) for v in factor.order],
             kept_indices=kept,removed_indices=removed,regression=split['backsub_matrix'],
             offset=split['backsub_offset'],noise_factor=split['observable_noise_factor'],
-            unbounded_basis=split['unobservable_basis']))
+            unbounded_basis=split['unobservable_basis'],deterministic_basis=split['deterministic_basis']))
         new_node_bytes+=nodes[ident].matrix_bytes;changed.append(ident)
         dispatch(_propagate_incoming(incoming,old,factor.order,kept,removed,reserve))
     if pending:raise ValueError('late_range_unprocessed_conditional_parent')
@@ -293,7 +301,8 @@ def prepare_delayed_ranges(prior,archive,*,order,delta,jacobian,residual,range_k
     if not len(j):j=np.zeros((1,count));b=np.zeros(1)
     if len(j)>count+1:
         compact=np.linalg.qr(np.column_stack((j,b)),mode='r');j=compact[:,:count];b=compact[:,count]
-    folded=SurfacePrior(rows.order,j,b,result.ledger,prior.epoch,prior.revision+1)
+    hard=np.pad(prior.constraint_jacobian,((0,0),(0,count-prior.jacobian.shape[1])))
+    folded=SurfacePrior(rows.order,j,b,result.ledger,prior.epoch,prior.revision+1,hard,prior.constraint_offset)
     result.archive._delayed_live_prior_digest=_prior_digest(folded)
     return DelayedSurfaceUpdate(folded,result.archive,rows,result.changed_conditionals,
         result.peak_front_columns,max(result.workspace_bound_bytes,bound))

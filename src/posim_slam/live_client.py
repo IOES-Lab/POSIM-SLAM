@@ -134,6 +134,14 @@ class LiveClient:
 
     def _check_processing_ready(self,value):
         request=self.processing_request
+        if 'initial_imu_bias_calibration' in request:
+            from .imu_bias_calibration import InitialImuBiasCalibration
+            calibration=InitialImuBiasCalibration.read(request['initial_imu_bias_calibration']);rows=calibration.rows()
+            report=value.get('initial_imu_bias_calibration')
+            expected=dict(source=calibration.source,scope='first_state',finite_modes=len(rows['jacobian']),
+                exact_modes=len(rows['constraint_jacobian']),stochastic_evolution_unchanged=True,generic_initial_bias_prior_replaced=True)
+            if (not isinstance(report,dict) or any(type(report.get(k)) is not type(v) or report[k]!=v for k,v in expected.items())):
+                raise ValueError('worker_initial_bias_calibration_contract')
         if 'optical_flow_type' in request and value.get('optical_flow_type')!=request['optical_flow_type']:
             raise ValueError('worker_optical_flow_type')
         pixels=request.get('max_image_pixels');cells=request.get('max_feature_cells')

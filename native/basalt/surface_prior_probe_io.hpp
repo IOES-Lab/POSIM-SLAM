@@ -43,6 +43,10 @@ inline sp::Prior prior(const Json& value) {
   sp::Prior out;out.order=order(value.at("order"));out.jacobian=rows(value.at("jacobian"),sp::layout(out.order).count);
   out.offset=vector(value.at("offset"));out.ledger.recent=sp::keys(keys(value.at("ledger").at("recent")));
   out.ledger.closed_through=probe::integer(value.at("ledger").at("closed_through_ns"));
+  if(value.contains("constraint_jacobian")) {
+    out.constraint_jacobian=rows(value.at("constraint_jacobian"),sp::layout(out.order).count);
+    out.constraint_offset=vector(value.at("constraint_offset"));
+  }
   out.epoch=value.at("epoch").get<std::string>();out.revision=probe::integer(value.at("revision"));out.requireValid();return out;
 }
 inline Json write(const sp::Prior& p) {
@@ -50,8 +54,10 @@ inline Json write(const sp::Prior& p) {
   for(const auto& v:p.order)variables.push_back({{"kind",v.kind==sp::Kind::State ? "state" : (v.kind==sp::Kind::Plane ? "plane" : "pressure")},
     {"ident",v.id},{"size",v.size},{"reference",probe::jsonVector(v.reference)}});
   for(const auto& k:p.ledger.recent)measurements.push_back({std::get<0>(k),std::get<1>(k),std::get<2>(k)});
-  return {{"order",variables},{"jacobian",probe::jsonMatrix(p.jacobian)},{"offset",probe::jsonVector(p.offset)},
+  Json out={{"order",variables},{"jacobian",probe::jsonMatrix(p.jacobian)},{"offset",probe::jsonVector(p.offset)},
     {"ledger",{{"recent",measurements},{"closed_through_ns",p.ledger.closed_through}}},
     {"epoch",p.epoch},{"revision",p.revision}};
+  if(p.constraint_jacobian.rows()) {out["constraint_jacobian"]=probe::jsonMatrix(p.constraint_jacobian);out["constraint_offset"]=probe::jsonVector(p.constraint_offset);}
+  return out;
 }
 }  // namespace posim_slam::surface_prior_probe

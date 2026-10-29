@@ -26,6 +26,12 @@ Householder QR과 유효 정보 방향을 구분하는 SVD로 자세·평면·�
 관측 불가능한 방향을 유지합니다. 강건 가중치와 지정된 센서 잡음에 따른 국소 근사입니다.
 [결합 불확실성과 원본 입력 검사](docs/diagnostics/native-surface-information-20261029/README.md).
 
+선택형 네이티브 표면 추정기는 첫 IMU 상태에 `InitialImuBiasCalibration`을
+적용합니다. 전체 공분산의 유한 분산 방향은 사전 제약으로, 분산 0인 방향은 정확한
+등식으로 처리하며 최적화·주변화·지연 갱신에서도 유지합니다. IMU 잡음과 이후의
+바이어스 랜덤워크는 별도로 유지합니다. 일치하는 워커의 보정 적용 확인이 필요합니다.
+[보정 입력·원본 재생·한계](docs/diagnostics/native-imu-bias-calibration-20261029/README.md).
+
 `retired_pose_archive`는 네이티브 조건부 식에서 과거 자세를 함께 복원하고,
 공유 잡음과 관측 불가능한 방향을 보존합니다. 현재 좌표를 알고 있다는 조건의
 읽기 전용 진단이며, 기록 기능의 기본값은 꺼짐입니다.

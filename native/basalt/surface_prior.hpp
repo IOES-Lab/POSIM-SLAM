@@ -2,6 +2,7 @@
 #pragma once
 #include "range_surface.hpp"
 #include "ping_joint.hpp"
+#include "constrained_information.hpp"
 #include <optional>
 
 // Persistent *joint* Gaussian information. It replaces consumed rows and keeps
@@ -80,21 +81,25 @@ struct Ledger {
 inline bool label(const std::string& s) {return s.find_first_not_of(" \t\r\n")!=std::string::npos;}
 struct Prior {
   std::vector<Variable> order;Eigen::MatrixXd jacobian;Eigen::VectorXd offset;
+  Eigen::MatrixXd constraint_jacobian;Eigen::VectorXd constraint_offset;
   Ledger ledger;std::string epoch;int64_t revision=0;
   void requireValid() const {
     const auto shape=layout(order);ledger.requireValid();
+    if(constraint_jacobian.rows())affineSupport(constraint_jacobian,-constraint_offset,shape.count);
+    else if(constraint_offset.size())throw std::invalid_argument("surface_constraint_shape");
     if(jacobian.cols()!=shape.count || jacobian.rows()<1 || jacobian.rows()>shape.count+1 ||
        offset.size()!=jacobian.rows() || !jacobian.allFinite() || !offset.allFinite() || !label(epoch) || revision<0)
       throw std::invalid_argument("finite_bounded_surface_prior_required");
   }
 };
-struct Rows {Eigen::MatrixXd jacobian;Eigen::VectorXd residual;};
+struct Rows {Eigen::MatrixXd jacobian;Eigen::VectorXd residual;Eigen::MatrixXd constraint_jacobian;Eigen::VectorXd constraint_residual;};
 inline Rows linearize(const Prior& prior,const std::vector<Variable>& order,const Eigen::VectorXd& delta,const std::string& epoch,
     bool retirement_source=false) {
   prior.requireValid();const auto target=layout(order,retirement_source);
   if(epoch!=prior.epoch)throw std::invalid_argument("surface_prior_epoch_mismatch");
   if(delta.size()!=target.count || !delta.allFinite())throw std::invalid_argument("finite_owner_delta_required");
   Rows out;out.jacobian=Eigen::MatrixXd::Zero(prior.jacobian.rows(),target.count);Eigen::Index source=0;
+  out.constraint_jacobian=Eigen::MatrixXd::Zero(prior.constraint_jacobian.rows(),target.count);
   for(const auto& v:prior.order) {
     const auto found=target.columns.find(v.key());
     if(found==target.columns.end())throw std::invalid_argument("changed_or_missing_surface_prior_reference");
@@ -102,9 +107,12 @@ inline Rows linearize(const Prior& prior,const std::vector<Variable>& order,cons
     if(v.size!=current.size || v.reference.size()!=current.reference.size() ||
        !(v.reference.array()==current.reference.array()).all())
       throw std::invalid_argument("changed_or_missing_surface_prior_reference");
-    out.jacobian.middleCols(found->second.first,v.size)=prior.jacobian.middleCols(source,v.size);source+=v.size;
+    out.jacobian.middleCols(found->second.first,v.size)=prior.jacobian.middleCols(source,v.size);
+    if(prior.constraint_jacobian.rows())out.constraint_jacobian.middleCols(found->second.first,v.size)=prior.constraint_jacobian.middleCols(source,v.size);
+    source+=v.size;
   }
-  out.residual=out.jacobian*delta+prior.offset;return out;
+  out.residual=out.jacobian*delta+prior.offset;
+  out.constraint_residual=out.constraint_jacobian*delta+prior.constraint_offset;return out;
 }
 struct Retain {Kind kind;int64_t id;Eigen::Index size;};
 inline Prior marginalize(const std::vector<Variable>& order,const Eigen::VectorXd& delta,
@@ -118,9 +126,10 @@ inline Prior marginalize(const std::vector<Variable>& order,const Eigen::VectorX
     throw std::invalid_argument("finite_new_surface_rows_required");
   for(const auto& k:originals)
     if(!source.columns.count({Kind::State,std::get<0>(k)}))throw std::invalid_argument("new_range_requires_resident_measurement_pose");
-  Eigen::MatrixXd j=jacobian;Eigen::VectorXd r=residual;Prior out;out.epoch=epoch;
+  Eigen::MatrixXd j=jacobian,c=Eigen::MatrixXd::Zero(0,source.count);Eigen::VectorXd r=residual,d;Prior out;out.epoch=epoch;
   if(previous) {
     const auto old=linearize(*previous,order,delta,epoch,retirement_source);const auto rows=j.rows();
+    c=old.constraint_jacobian;d=old.constraint_residual;
     j.conservativeResize(rows+old.jacobian.rows(),Eigen::NoChange);j.bottomRows(old.jacobian.rows())=old.jacobian;
     r.conservativeResize(rows+old.residual.size());r.tail(old.residual.size())=old.residual;
     out.ledger=previous->ledger;
@@ -152,7 +161,16 @@ inline Prior marginalize(const std::vector<Variable>& order,const Eigen::VectorX
     ordered=compact.leftCols(source.count);r=compact.col(source.count);
   }
   Eigen::MatrixXd reduced_j=ordered;Eigen::VectorXd reduced_r=r;
-  if(keep.size()<size_t(source.count)) {
+  if(c.rows()) {
+    Eigen::MatrixXd ordered_c(c.rows(),source.count);Eigen::Index col=0;
+    for(auto i:keep)ordered_c.col(col++)=c.col(i);
+    for(Eigen::Index i=0;i<source.count;++i)if(!used[i])ordered_c.col(col++)=c.col(i);
+    const auto split=splitConstrainedInformation(ordered,r,keep.size(),ordered_c,-d);
+    reduced_j=split.reduced.jacobian;reduced_r=split.reduced.residual;
+    out.constraint_jacobian=split.constraint_jacobian;
+    Eigen::VectorXd retained_delta(keep.size());for(size_t i=0;i<keep.size();++i)retained_delta[i]=delta[keep[i]];
+    out.constraint_offset=-split.constraint_target-out.constraint_jacobian*retained_delta;
+  } else if(keep.size()<size_t(source.count)) {
     const auto reduced=eliminateJointPatch(ordered,r,keep.size());reduced_j=reduced.jacobian;reduced_r=reduced.residual;
   }
   out.jacobian=std::move(reduced_j);Eigen::VectorXd changed(keep.size());

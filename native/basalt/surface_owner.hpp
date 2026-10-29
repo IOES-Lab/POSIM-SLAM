@@ -3,6 +3,7 @@
 #include "retired_pose_conditional.hpp"
 #include "ping_prior.hpp"
 #include "ping_commit.hpp"
+#include "imu_bias_calibration.hpp"
 #include <memory>
 
 namespace posim_slam {
@@ -54,17 +55,19 @@ inline void validateArchive(const Nodes& nodes,const std::vector<sp::Variable>& 
     for(int i=0;i<count;++i)if(partition[i]!=i)throw std::invalid_argument("native_conditional_partition");
     const auto rows=Eigen::Index(n.removed.size());
     if(n.regression.rows()!=rows || n.regression.cols()!=Eigen::Index(n.kept.size()) || n.offset.size()!=rows ||
-        n.noise.rows()!=rows || n.unbounded.rows()!=rows || n.noise.cols()+n.unbounded.cols()!=rows ||
-        !n.regression.allFinite() || !n.offset.allFinite() || !n.noise.allFinite() || !n.unbounded.allFinite())
+        n.noise.rows()!=rows || n.unbounded.rows()!=rows || (n.deterministic.cols() && n.deterministic.rows()!=rows) ||
+        n.noise.cols()+n.unbounded.cols()+n.deterministic.cols()!=rows ||
+        !n.regression.allFinite() || !n.offset.allFinite() || !n.noise.allFinite() || !n.unbounded.allFinite() || !n.deterministic.allFinite())
       throw std::invalid_argument("native_conditional_geometry");
-    Eigen::MatrixXd basis(rows,rows);basis.rightCols(n.unbounded.cols())=n.unbounded;
+    Eigen::MatrixXd basis(rows,rows);basis.middleCols(n.noise.cols(),n.unbounded.cols())=n.unbounded;
+    if(n.deterministic.cols())basis.rightCols(n.deterministic.cols())=n.deterministic;
     for(Eigen::Index i=0;i<n.noise.cols();++i) {
       const double norm=n.noise.col(i).norm();if(!(norm>0))throw std::invalid_argument("native_conditional_noise");
       basis.col(i)=n.noise.col(i)/norm;
     }
     if((basis.transpose()*basis-Eigen::MatrixXd::Identity(rows,rows)).cwiseAbs().maxCoeff()>2e-7)
       throw std::invalid_argument("native_conditional_nullspace");
-    bytes+=8*size_t(n.regression.size()+n.offset.size()+n.noise.size()+n.unbounded.size());
+    bytes+=8*size_t(n.regression.size()+n.offset.size()+n.noise.size()+n.unbounded.size()+n.deterministic.size());
     if(bytes>32*1024*1024)throw std::invalid_argument("native_conditional_archive_capacity");
     const auto cols=coordinates(n.variables);for(const auto& v:n.variables)reference(v);
     for(int i:n.removed)if(roots.count(cols[i]) || !producers.emplace(cols[i],id).second)
@@ -113,6 +116,10 @@ class SurfaceMarginalOwner {
     Prepared(Prepared&&)=default;Prepared& operator=(Prepared&&)=default;
   };
   bool active() const {return bool(state_);}
+  void configureInitialBias(const InitialImuBiasCalibration& calibration) {
+    if(active() || bias_calibration_)throw std::invalid_argument("initial_bias_calibration_must_precede_owner_adoption");
+    bias_calibration_=calibration;
+  }
   const State& state() const {if(!state_)throw std::logic_error("surface_owner_not_adopted");return *state_;}
   static basalt::MargLinData<double> zeroPrior(const basalt::AbsOrderMap& order) {
     requireStateOrder(order);basalt::MargLinData<double> out;out.is_sqrt=true;out.order=order;
@@ -170,6 +177,23 @@ class SurfaceMarginalOwner {
         prior.jacobian.block(row,found.first,1,block.second)=datum.states.segment(block.first,block.second);
       }
       prior.jacobian(row,order.total_size)=datum.datum;prior.offset[row]=datum.b-datum.datum*datum.reference;
+    }
+    if(bias_calibration_) {
+      const auto& initial=current.order.front();const auto& calibration=*bias_calibration_;
+      if(initial.kind!=surface_prior::Kind::State || initial.size!=15)
+        throw std::invalid_argument("initial_bias_requires_first_inertial_state");
+      const auto bias_column=order.abs_order_map.at(initial.id).first+9;
+      const Eigen::VectorXd reference=initial.reference.segment<6>(15);
+      const Eigen::VectorXd difference=reference+current.delta.segment<6>(bias_column)-calibration.mean;
+      if((calibration.hard*difference).norm()>2e-9)
+        throw std::invalid_argument("initial_seed_conflicts_with_exact_bias_calibration");
+      const auto start=prior.jacobian.rows(),rows=calibration.white.rows();
+      prior.jacobian.conservativeResize(start+rows,Eigen::NoChange);prior.jacobian.bottomRows(rows).setZero();
+      prior.jacobian.block(start,bias_column,rows,6)=calibration.white;
+      prior.offset.conservativeResize(start+rows);prior.offset.tail(rows)=calibration.white*(reference-calibration.mean);
+      prior.constraint_jacobian=Eigen::MatrixXd::Zero(calibration.hard.rows(),count);
+      prior.constraint_jacobian.middleCols(bias_column,6)=calibration.hard;
+      prior.constraint_offset=calibration.hard*(reference-calibration.mean);
     }
     surface_owner_detail::compact(prior);
     auto states=owner.frame_states;auto poses=owner.frame_poses;freeze(states,poses);
@@ -245,6 +269,21 @@ class SurfaceMarginalOwner {
       std::vector<surface_owner_detail::Coordinate> original,changed;
       for(int i:old.removed)original.push_back(a.at(i));for(int i:node.removed)changed.push_back(b.at(i));
       if(original!=changed)throw std::invalid_argument("late_conditional_removed_ownership_changed");
+      if(old.deterministic.cols()!=node.deterministic.cols())throw std::invalid_argument("late_conditional_exact_support_changed");
+      if(old.deterministic.cols()) {
+        const Eigen::MatrixXd projector=old.deterministic*old.deterministic.transpose();
+        if((projector-node.deterministic*node.deterministic.transpose()).norm()>2e-8 ||
+            (projector*(old.offset-node.offset)).norm()>2e-8*std::max(1.,old.offset.norm()))
+          throw std::invalid_argument("late_conditional_exact_support_changed");
+        std::map<surface_owner_detail::Coordinate,Eigen::VectorXd> difference;
+        for(size_t i=0;i<old.kept.size();++i)difference[a.at(old.kept[i])]=-old.regression.col(i);
+        for(size_t i=0;i<node.kept.size();++i) {
+          const auto key=b.at(node.kept[i]);if(!difference.count(key))difference.emplace(key,Eigen::VectorXd::Zero(node.removed.size()));
+          difference.at(key)+=node.regression.col(i);
+        }
+        for(const auto& [key,value]:difference)if((projector*value).norm()>2e-8*std::max(1.,value.norm()))
+          throw std::invalid_argument("late_conditional_exact_support_changed");
+      }
       next->nodes[node.id]=std::make_shared<RetiredPoseConditional>(node);
     }
     if(replaced!=required)throw std::invalid_argument("complete_late_conditional_closure_required");
@@ -255,6 +294,8 @@ class SurfaceMarginalOwner {
     next->prior.jacobian<<old.jacobian,increment;
     next->prior.offset.resize(old.residual.size()+offset.size());
     next->prior.offset<<old.residual-old.jacobian*delta,offset;
+    next->prior.constraint_jacobian=old.constraint_jacobian;
+    next->prior.constraint_offset=old.constraint_residual-old.constraint_jacobian*delta;
     if(next->prior.revision==std::numeric_limits<int64_t>::max())throw std::invalid_argument("surface_owner_revision_overflow");
     ++next->prior.revision;surface_owner_detail::compact(next->prior);
     Prepared out{expected,std::move(next),owner.frame_states,owner.frame_poses,std::move(planes),zeroPrior(order)};
@@ -353,7 +394,7 @@ class SurfaceMarginalOwner {
     for(const auto& v:next->prior.order) {
       const auto start=source.columns.at(v.key()).first;for(int i=0;i<v.size;++i)kept.push_back(start+i);
     }
-    auto conditional=captureRetiringConditional(current,kept,j,r,next->prior.jacobian,next->prior.offset);
+    auto conditional=captureRetiringConditional(current,kept,j,r,next->prior.jacobian,next->prior.offset,&previous);
     if(conditional) {
       if(next->highest_id==std::numeric_limits<uint64_t>::max())throw std::invalid_argument("native_conditional_id_overflow");
       conditional->id=++next->highest_id;
@@ -374,6 +415,7 @@ class SurfaceMarginalOwner {
   }
  private:
   std::shared_ptr<const State> state_;
+  std::optional<InitialImuBiasCalibration> bias_calibration_;
   template<class States,class Poses> static void freeze(States& states,Poses& poses) {
     for(auto& [stamp,s]:states)if(!s.isLinearized())s.setLinTrue();
     for(auto& [stamp,s]:poses)if(!s.isLinearized())s.setLinTrue();

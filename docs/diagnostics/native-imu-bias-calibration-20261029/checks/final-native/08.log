@@ -1,0 +1,7 @@
+.{"camera_packets": 0, "dvl_enabled": true, "states": 61, "acoustic_states": 55, "max_retained_states": 15, "max_position_error_m": 5.3995162156895124e-05, "scope": "analytic sensor/ownership fixture; no image or terrain acceptance"}
+.{"states": 101, "dvl_reports": 81, "camera_packets": 0, "acoustic_tracks": 0, "bottom_lock_loss_s": 4, "max_position_error_m": 1.885763398943971e-10, "final_velocity_error_m_s": 9.428950340362872e-12, "scope": "analytic raw velocity ownership and marginalization; no map acceptance"}
+..
+----------------------------------------------------------------------
+Ran 4 tests in 3.897s
+
+OK
