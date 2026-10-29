@@ -15,6 +15,13 @@ require qualification. [Streaming API and recorded controls](docs/diagnostics/na
 [native owner API](docs/diagnostics/native-surface-owner-20261029/README.md),
 [reference method](docs/diagnostics/delayed-surface-update-20261029/README.md).
 
+`native_surface_ranges` forms joint original cone/fan rows at native-owned
+coordinates. It initializes new unknown planes with the actual correlated
+factor rows and rechecks their complete support before preparing an update.
+Support-only range seeds add no likelihood. Read-only inspection preserves
+unbounded plane modes and reevaluates the nonlinear range equations.
+[Original-input initialization and rejected correspondence](docs/diagnostics/native-surface-ranges-20261029/README.md).
+
 `retired_pose_archive` jointly recovers old poses from native Gaussian
 conditionals, preserving shared noise and unbounded directions. It is a read-only
 diagnostic that conditions on known live coordinates; capture is off by default.

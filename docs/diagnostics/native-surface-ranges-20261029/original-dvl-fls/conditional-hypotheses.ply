@@ -1,0 +1,11 @@
+ply
+format ascii 1.0
+comment Conditional measured-range hypotheses; map unqualified
+element vertex 3
+property float x
+property float y
+property float z
+end_header
+4.94987143946135 -2.3545021568340685 -3.6707556877514014
+4.833399382357905 -2.5086380939944317 -3.671301325026537
+3.7594105718866895 -1.7969195837511385 -1.783438496168307
