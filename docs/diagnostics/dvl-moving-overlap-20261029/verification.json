@@ -1,0 +1,15 @@
+{
+  "source_tests": 448,
+  "source_skipped": 16,
+  "wheel_tests": 448,
+  "wheel_skipped": 16,
+  "failures": 0,
+  "errors": 0,
+  "clean_source_export": true,
+  "protected_work_excluded": true,
+  "source_files_sha256": {
+    "src/posim_slam/sonar_plane_intersection.py": "1792d4c512f73fa9d86210b9e9355256f1dff75ba1a17e1967ef97a539618213",
+    "tools/diagnose_dvl_sonar_overlap.py": "436601498f555617105883f4c048137ad62a5719853a1021ff4bf9062fd2b9fb"
+  },
+  "scope": "Independent mathematical/source/wheel checks and synthetic overlap control; not native range fusion or installed application acceptance"
+}

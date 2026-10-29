@@ -1,0 +1,75 @@
+{
+  "scope": "Offline overlap of conditional DVL planes and measured FLS ground onsets.\n\nUses fixed estimated poses and a recorded spatial-plane diagnostic. Earlier\nsonar frames can be revisited when DVL support arrives, or earlier DVL support\ncan be compared with later sonar. This tests geometry, not physical echo/plane\nidentity. Five range/azimuth bin samples do not bound the entire uncertain cell.\nNo simulator truth, terrain prior or native estimator update is accepted.\n",
+  "history_s": 30.0,
+  "pose_covered_sonar_frames": 1,
+  "all_ground_onsets": 32,
+  "patch_count": 1,
+  "strict_dvl_patch_count": 1,
+  "totals": {
+    "contemporaneous": {
+      "patch_frame_pairs": 1,
+      "onsets_tested": 32,
+      "unique_centre": 0,
+      "patch_pairs_with_support_sample_in_fan": 0,
+      "centre_supported": 0,
+      "five_samples_supported": 0,
+      "strict_dvl_supported": 0,
+      "minimum_onset_to_support_sample_m": null,
+      "distinct_sonar_onsets": 0,
+      "patches_with_overlap": 0
+    },
+    "sonar_first": {
+      "patch_frame_pairs": 0,
+      "onsets_tested": 0,
+      "unique_centre": 0,
+      "patch_pairs_with_support_sample_in_fan": 0,
+      "centre_supported": 0,
+      "five_samples_supported": 0,
+      "strict_dvl_supported": 0,
+      "minimum_onset_to_support_sample_m": null,
+      "distinct_sonar_onsets": 0,
+      "patches_with_overlap": 0
+    },
+    "dvl_first": {
+      "patch_frame_pairs": 0,
+      "onsets_tested": 0,
+      "unique_centre": 0,
+      "patch_pairs_with_support_sample_in_fan": 0,
+      "centre_supported": 0,
+      "five_samples_supported": 0,
+      "strict_dvl_supported": 0,
+      "minimum_onset_to_support_sample_m": null,
+      "distinct_sonar_onsets": 0,
+      "patches_with_overlap": 0
+    }
+  },
+  "patches": [
+    {
+      "id": "2000000000:1",
+      "strict_dvl_support": true,
+      "dvl_rejection": null,
+      "matches": {
+        "contemporaneous": 0,
+        "sonar_first": 0,
+        "dvl_first": 0
+      }
+    }
+  ],
+  "events": [],
+  "truth_is_estimator_input": false,
+  "native_state_updated": false,
+  "map_qualified": false,
+  "physical_identity_verified": false,
+  "joint_pose_plane_uncertainty_available": false,
+  "bin_support_is_sampled_not_certified": true,
+  "ground_onset_is_not_identified_seabed": true,
+  "source_sha256": {
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/dvl-cone-overlap-20261029/library/tools/diagnose_dvl_sonar_overlap.py": "436601498f555617105883f4c048137ad62a5719853a1021ff4bf9062fd2b9fb",
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/dvl-cone-overlap-20261029/control-lf/states.csv": "f3cf9174ab1a8637bfe3d7427534a837aba30d89229b0d743769fd693324ef09",
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/dvl-cone-overlap-20261029/control-lf/calibration.json": "26dee30bb2218b4b1b332240b3c6098c0b3275360b20e67fc85eee21e58d7420",
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/dvl-cone-overlap-20261029/control-lf/outside-spatial.json": "83f6ba4642718a5311e5675a1d349c2d8ec1cf1035a934a99cb5cc32d51514f8"
+  },
+  "raw_sonar_sha256": {
+    "frame.npz": "d6b599e54c9c165b5cf051ddd95c407f2ae59c10075523a126277f62b58bd7b8"
+  }
+}

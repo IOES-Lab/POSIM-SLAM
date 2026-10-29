@@ -5,6 +5,10 @@
 연결된 평면과 명시적인 불확실성이 필요하며, 앱은 아직 DVL 속도만 융합합니다.
 [모델·제어된 측정과 한계](docs/diagnostics/dvl-cone-model-20261029/README.md).
 
+`sonar_plane_intersection`은 측정된 거리·방위각과 주어진 평면이 허용하는
+모든 고각 해를 보존합니다. [이동 입력과 관측 중첩 진단](docs/diagnostics/dvl-moving-overlap-20261029/README.md)에
+관측 대응과 공간적 지지 범위의 조건을 정리합니다.
+
 [네이티브 VIO 장시간 운용과 모드 전환](docs/validation/native-vio-lifecycle-20261028/README.md)에 장시간 운용의 전체 지도, 센서 조합 전환과 독립 항법 수신 기록을 보존합니다.
 
 [초기화 계산 대조](docs/validation/seed-scoring-20261028/README.md)에 센서 원본만 사용하는 수치 비교와 소스가 연결된 복구 지도 전체를 보존합니다.

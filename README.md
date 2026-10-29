@@ -5,6 +5,10 @@ pose/plane Jacobians, full covariance whitening and local support checks.
 It requires an associated plane and explicit uncertainty; the application still
 fuses DVL velocity. [Model, controlled measurements and limits](docs/diagnostics/dvl-cone-model-20261029/README.md).
 
+`sonar_plane_intersection` retains every elevation branch allowed by measured
+range/azimuth and a supplied plane. [Moving inputs and overlap diagnosis](docs/diagnostics/dvl-moving-overlap-20261029/README.md)
+describe the correspondence and spatial-support requirements.
+
 [Native VIO duration and mode lifecycle](docs/validation/native-vio-lifecycle-20261028/README.md) preserves complete long-run maps, sensor-combination transitions and independent navigation receipts.
 
 [Measured startup scoring controls](docs/validation/seed-scoring-20261028/README.md) preserve sensor-only numerical comparisons and complete source-bound recovery maps.

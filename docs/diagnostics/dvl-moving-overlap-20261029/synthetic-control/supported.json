@@ -1,0 +1,362 @@
+{
+  "scope": "Offline overlap of conditional DVL planes and measured FLS ground onsets.\n\nUses fixed estimated poses and a recorded spatial-plane diagnostic. Earlier\nsonar frames can be revisited when DVL support arrives, or earlier DVL support\ncan be compared with later sonar. This tests geometry, not physical echo/plane\nidentity. Five range/azimuth bin samples do not bound the entire uncertain cell.\nNo simulator truth, terrain prior or native estimator update is accepted.\n",
+  "history_s": 30.0,
+  "pose_covered_sonar_frames": 1,
+  "all_ground_onsets": 32,
+  "patch_count": 1,
+  "strict_dvl_patch_count": 1,
+  "totals": {
+    "contemporaneous": {
+      "patch_frame_pairs": 1,
+      "onsets_tested": 32,
+      "unique_centre": 28,
+      "patch_pairs_with_support_sample_in_fan": 1,
+      "centre_supported": 22,
+      "five_samples_supported": 22,
+      "strict_dvl_supported": 22,
+      "minimum_onset_to_support_sample_m": 0.018725757669210683,
+      "distinct_sonar_onsets": 22,
+      "patches_with_overlap": 1
+    },
+    "sonar_first": {
+      "patch_frame_pairs": 0,
+      "onsets_tested": 0,
+      "unique_centre": 0,
+      "patch_pairs_with_support_sample_in_fan": 0,
+      "centre_supported": 0,
+      "five_samples_supported": 0,
+      "strict_dvl_supported": 0,
+      "minimum_onset_to_support_sample_m": null,
+      "distinct_sonar_onsets": 0,
+      "patches_with_overlap": 0
+    },
+    "dvl_first": {
+      "patch_frame_pairs": 0,
+      "onsets_tested": 0,
+      "unique_centre": 0,
+      "patch_pairs_with_support_sample_in_fan": 0,
+      "centre_supported": 0,
+      "five_samples_supported": 0,
+      "strict_dvl_supported": 0,
+      "minimum_onset_to_support_sample_m": null,
+      "distinct_sonar_onsets": 0,
+      "patches_with_overlap": 0
+    }
+  },
+  "patches": [
+    {
+      "id": "2000000000:1",
+      "strict_dvl_support": true,
+      "dvl_rejection": null,
+      "matches": {
+        "contemporaneous": 22,
+        "sonar_first": 0,
+        "dvl_first": 0
+      }
+    }
+  ],
+  "events": [
+    {
+      "patch": "2000000000:1",
+      "sonar_stamp_ns": 2000000000,
+      "beam_id": 5,
+      "lag_s": 0.0,
+      "group": "contemporaneous",
+      "strict_dvl_support": true,
+      "conditional_point": [
+        1.8841695350793564,
+        -1.8138095718897402,
+        -0.9999999999999993
+      ]
+    },
+    {
+      "patch": "2000000000:1",
+      "sonar_stamp_ns": 2000000000,
+      "beam_id": 6,
+      "lag_s": 0.0,
+      "group": "contemporaneous",
+      "strict_dvl_support": true,
+      "conditional_point": [
+        2.013058448179147,
+        -1.6696094406221358,
+        -1.0000000000000002
+      ]
+    },
+    {
+      "patch": "2000000000:1",
+      "sonar_stamp_ns": 2000000000,
+      "beam_id": 7,
+      "lag_s": 0.0,
+      "group": "contemporaneous",
+      "strict_dvl_support": true,
+      "conditional_point": [
+        2.130577649171322,
+        -1.5167857069644355,
+        -1.0000000000000002
+      ]
+    },
+    {
+      "patch": "2000000000:1",
+      "sonar_stamp_ns": 2000000000,
+      "beam_id": 8,
+      "lag_s": 0.0,
+      "group": "contemporaneous",
+      "strict_dvl_support": true,
+      "conditional_point": [
+        2.2361918874770175,
+        -1.356261716034916,
+        -0.9999999999999997
+      ]
+    },
+    {
+      "patch": "2000000000:1",
+      "sonar_stamp_ns": 2000000000,
+      "beam_id": 9,
+      "lag_s": 0.0,
+      "group": "contemporaneous",
+      "strict_dvl_support": true,
+      "conditional_point": [
+        2.3294537773454818,
+        -1.1889680816619363,
+        -1.0000000000000007
+      ]
+    },
+    {
+      "patch": "2000000000:1",
+      "sonar_stamp_ns": 2000000000,
+      "beam_id": 10,
+      "lag_s": 0.0,
+      "group": "contemporaneous",
+      "strict_dvl_support": true,
+      "conditional_point": [
+        2.409995825348911,
+        -1.0158346921624695,
+        -1.0000000000000009
+      ]
+    },
+    {
+      "patch": "2000000000:1",
+      "sonar_stamp_ns": 2000000000,
+      "beam_id": 11,
+      "lag_s": 0.0,
+      "group": "contemporaneous",
+      "strict_dvl_support": true,
+      "conditional_point": [
+        2.4775221394182245,
+        -0.8377852043886556,
+        -1.0000000000000002
+      ]
+    },
+    {
+      "patch": "2000000000:1",
+      "sonar_stamp_ns": 2000000000,
+      "beam_id": 12,
+      "lag_s": 0.0,
+      "group": "contemporaneous",
+      "strict_dvl_support": true,
+      "conditional_point": [
+        2.5318003730346352,
+        -0.6557338416626695,
+        -0.9999999999999992
+      ]
+    },
+    {
+      "patch": "2000000000:1",
+      "sonar_stamp_ns": 2000000000,
+      "beam_id": 13,
+      "lag_s": 0.0,
+      "group": "contemporaneous",
+      "strict_dvl_support": true,
+      "conditional_point": [
+        2.5726543656226126,
+        -0.47058422736308586,
+        -0.9999999999999993
+      ]
+    },
+    {
+      "patch": "2000000000:1",
+      "sonar_stamp_ns": 2000000000,
+      "beam_id": 14,
+      "lag_s": 0.0,
+      "group": "contemporaneous",
+      "strict_dvl_support": true,
+      "conditional_point": [
+        2.5999578471337155,
+        -0.28322992978817413,
+        -1.0000000000000002
+      ]
+    },
+    {
+      "patch": "2000000000:1",
+      "sonar_stamp_ns": 2000000000,
+      "beam_id": 15,
+      "lag_s": 0.0,
+      "group": "contemporaneous",
+      "strict_dvl_support": true,
+      "conditional_point": [
+        2.613629486919192,
+        -0.09455635941869718,
+        -1.0000000000000002
+      ]
+    },
+    {
+      "patch": "2000000000:1",
+      "sonar_stamp_ns": 2000000000,
+      "beam_id": 16,
+      "lag_s": 0.0,
+      "group": "contemporaneous",
+      "strict_dvl_support": true,
+      "conditional_point": [
+        2.613629486919192,
+        0.09455635941869779,
+        -1.0000000000000002
+      ]
+    },
+    {
+      "patch": "2000000000:1",
+      "sonar_stamp_ns": 2000000000,
+      "beam_id": 17,
+      "lag_s": 0.0,
+      "group": "contemporaneous",
+      "strict_dvl_support": true,
+      "conditional_point": [
+        2.5999578471337155,
+        0.28322992978817413,
+        -1.0000000000000002
+      ]
+    },
+    {
+      "patch": "2000000000:1",
+      "sonar_stamp_ns": 2000000000,
+      "beam_id": 18,
+      "lag_s": 0.0,
+      "group": "contemporaneous",
+      "strict_dvl_support": true,
+      "conditional_point": [
+        2.5726543656226126,
+        0.47058422736308647,
+        -0.9999999999999993
+      ]
+    },
+    {
+      "patch": "2000000000:1",
+      "sonar_stamp_ns": 2000000000,
+      "beam_id": 19,
+      "lag_s": 0.0,
+      "group": "contemporaneous",
+      "strict_dvl_support": true,
+      "conditional_point": [
+        2.531800373034635,
+        0.6557338416626698,
+        -0.999999999999999
+      ]
+    },
+    {
+      "patch": "2000000000:1",
+      "sonar_stamp_ns": 2000000000,
+      "beam_id": 20,
+      "lag_s": 0.0,
+      "group": "contemporaneous",
+      "strict_dvl_support": true,
+      "conditional_point": [
+        2.4775221394182245,
+        0.8377852043886562,
+        -1.0000000000000002
+      ]
+    },
+    {
+      "patch": "2000000000:1",
+      "sonar_stamp_ns": 2000000000,
+      "beam_id": 21,
+      "lag_s": 0.0,
+      "group": "contemporaneous",
+      "strict_dvl_support": true,
+      "conditional_point": [
+        2.4099958253489104,
+        1.0158346921624701,
+        -1.0000000000000007
+      ]
+    },
+    {
+      "patch": "2000000000:1",
+      "sonar_stamp_ns": 2000000000,
+      "beam_id": 22,
+      "lag_s": 0.0,
+      "group": "contemporaneous",
+      "strict_dvl_support": true,
+      "conditional_point": [
+        2.3294537773454818,
+        1.1889680816619366,
+        -1.0000000000000004
+      ]
+    },
+    {
+      "patch": "2000000000:1",
+      "sonar_stamp_ns": 2000000000,
+      "beam_id": 23,
+      "lag_s": 0.0,
+      "group": "contemporaneous",
+      "strict_dvl_support": true,
+      "conditional_point": [
+        2.236191887477017,
+        1.3562617160349164,
+        -0.9999999999999997
+      ]
+    },
+    {
+      "patch": "2000000000:1",
+      "sonar_stamp_ns": 2000000000,
+      "beam_id": 24,
+      "lag_s": 0.0,
+      "group": "contemporaneous",
+      "strict_dvl_support": true,
+      "conditional_point": [
+        2.1305776491713218,
+        1.516785706964436,
+        -1.0000000000000002
+      ]
+    },
+    {
+      "patch": "2000000000:1",
+      "sonar_stamp_ns": 2000000000,
+      "beam_id": 25,
+      "lag_s": 0.0,
+      "group": "contemporaneous",
+      "strict_dvl_support": true,
+      "conditional_point": [
+        2.013058448179147,
+        1.6696094406221358,
+        -1.0000000000000002
+      ]
+    },
+    {
+      "patch": "2000000000:1",
+      "sonar_stamp_ns": 2000000000,
+      "beam_id": 26,
+      "lag_s": 0.0,
+      "group": "contemporaneous",
+      "strict_dvl_support": true,
+      "conditional_point": [
+        1.8841695350793561,
+        1.8138095718897405,
+        -0.9999999999999993
+      ]
+    }
+  ],
+  "truth_is_estimator_input": false,
+  "native_state_updated": false,
+  "map_qualified": false,
+  "physical_identity_verified": false,
+  "joint_pose_plane_uncertainty_available": false,
+  "bin_support_is_sampled_not_certified": true,
+  "ground_onset_is_not_identified_seabed": true,
+  "source_sha256": {
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/dvl-cone-overlap-20261029/library/tools/diagnose_dvl_sonar_overlap.py": "436601498f555617105883f4c048137ad62a5719853a1021ff4bf9062fd2b9fb",
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/dvl-cone-overlap-20261029/control-lf/states.csv": "f3cf9174ab1a8637bfe3d7427534a837aba30d89229b0d743769fd693324ef09",
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/dvl-cone-overlap-20261029/control-lf/calibration.json": "26dee30bb2218b4b1b332240b3c6098c0b3275360b20e67fc85eee21e58d7420",
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/dvl-cone-overlap-20261029/control-lf/supported-spatial.json": "fa11e227047f9efbd3aa2ce906b601c7b3784a6a00a775352b4398d313d9e2a4"
+  },
+  "raw_sonar_sha256": {
+    "frame.npz": "d6b599e54c9c165b5cf051ddd95c407f2ae59c10075523a126277f62b58bd7b8"
+  }
+}
