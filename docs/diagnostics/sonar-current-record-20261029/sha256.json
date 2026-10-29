@@ -1,6 +1,6 @@
 {
   "ORCA5-LICENSE.txt": "e4da13b8ee8adf3c184f3cfaa765c1b002efd9e1b7a200fe7c507a30391f8fb9",
-  "README.md": "6b151ed227dc41de5319bc3b9f1a30f39fa53881104354bb997a5b9a398b3ee0",
+  "README.md": "468ae800e14c71301351a20e769ff02c1c2be2b817dd86dc05567000340b024e",
   "appearance.json": "9cd140e077315a16550003ed4160ca9225c18102a06e04496b581e342b4a1bfe",
   "assessment-truth.json.gz": "ff051d31d7b453627b194eb2b05042f12045619299ab1c034fd291d88105d244",
   "audit.json": "ab6b09f7295878e5b6a2e4bbfbff8cd397a897e943a2399cb5c685413f4b2548",
@@ -20,13 +20,17 @@
   "boundary/receipt.json": "aba753a607a7bacfd7f5ccb794fc03f2fc72f92b6d753240b74fdc2eb4692952",
   "boundary/states.csv": "f77a75a8822781a494e42e57899a48d7cac25ae920a4cb192c54edba61845353",
   "boundary/submitted-snapshots.json.gz": "4f6047ac51094d11964f2dd49472db8a60a3c2698df3ab3856ea3c35589d4d0a",
+  "bridge-schema-example.json": "b768bbebba7e5c5036ab72a251e4b1c3d00c423e7942ba528c2329e26e4fba02",
   "capture.tar.gz": "6d5f2b336011834e46d870d48c7443042fd6556864290b57bfca1f5e060ab511",
   "comparison-baseline.json": "0a2e18ebc60aea3c6f31035b0fab6f4f78a92e6e054857c71b2e02152f4ea5f4",
   "comparison-baseline.png": "7142fb14f942f470cecd0ad90d9adbb09a20464d0085f43cec29734e8fa06b79",
   "comparison-boundary.json": "b92b0b8add5d5965eba07a5fa176913e4a3b243d2c114b2f7051da0f505e8b69",
   "comparison-boundary.png": "ed57744d6dbfefca978131e59ba5dc31b72bbd0806612e20549f8dbb8a68561d",
+  "conditional-fit-full-history.json": "34fb14b3961aaed80b8d98a84234b1ffeccc231f6e14812be1f57611c7f4c048",
+  "conditional-fit.json": "df999caeb2606b0ac6ff7181ec0b0217609c0e7e00c8611c5f63a0a0c94a7e80",
   "context-receipt.json": "0b41bdabeb342b533b8ee231bb1af8b6918e3ce5703574a91b28d8cecdd55c45",
   "coverage.json": "b8313f7a34fb5da9e703d40eda5c082467a874de5e954c70a228a2b3c9757f29",
+  "dvl-minimum-range-assessment.json": "2eeefee1b028f6d9513055b23b5ae24987f0f00e51b415ef7e9d681a8fca5177",
   "isometric-context.png": "694418ab06066505c1b4213a8ec87a23f070954a7eefb85f2cf2bc152ee2a19b",
   "isometric-observed.png": "3026477ef916c281720a7cae45e75ee2ae3cb1fd874d066fd75628234e37d1ce",
   "mission-final.json": "ce68b3b9b5f807bd06f4314ce01d8282a05b0b16a1ac072bdaceb98879ada278",
@@ -34,10 +38,11 @@
   "native-lifecycle.json": "0ea75b232afed35e0c32e71aea6658fcacd203ced9c950134224f5e05b5f784b",
   "optical-profile.json": "5945d28d0dec554b548eb8384f529c4810d3f809027b95c14c741db49e59d238",
   "physical-targets.sdf": "d4795f6c127d739cc1fa4e75eb0329ed55ac3f67d4e593555ae033e06e0bebf6",
+  "range-calibration-example.json": "53348ce19b49dcc438eff22828ff495232de6b002b7611045c2a570ff70558a7",
   "replay-calibration.json": "86ffaa102a05c8aad04e461f765d6d4e38e779314140d6d659647ca95eadc596",
   "replay-source.json": "94b2a44863076e82d92fac2665e90fc70f984574ee248633e1f488f5dbd31718",
   "seabed.dae": "277c49dd9c3b2ec1c9d3c3754be9d076c7b0438ccd29e9ae11355869849fbeb2",
   "sensor-calibration.json": "21c729203846b69db5ae6d3cc53eed27fad1d6f2d842700a3fccfcc51764de05",
   "source.json": "3c72fff406fe73fd06bb8a6559a6cda77238a9b9eb89d89e07229bdf7abbba62",
-  "verify.py": "53a9290eaf91c05ef393809d636d8a373c8919b69f5899df65e6d2e9704d7515"
+  "verify.py": "7eacd620d14f821fe8578ebf03a0b896da06f641dd9eebd351ca19f4389716d1"
 }

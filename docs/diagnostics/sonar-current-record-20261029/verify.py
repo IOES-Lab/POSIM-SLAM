@@ -69,4 +69,23 @@ assert read('native-lifecycle.json')['exit']==0 and not read('native-lifecycle.j
 assert all(not r['live_members'] for r in read('native-lifecycle.json')['groups'])
 assert read('context-receipt.json')['recorded_pose_stamp_ns']==36_000_000_000
 assert read('context-receipt.json')['exit']==0 and not read('context-receipt.json')['forced']
+for name,total,outside in (('conditional-fit.json',890,12),('conditional-fit-full-history.json',1133,17)):
+    fitted=read(name)
+    assert fitted['truth_is_estimator_input'] is False
+    assert fitted['source_points']==fitted['fitted']==len(fitted['rows'])==96
+    assert sum(row['observations'] for row in fitted['rows'])==total
+    assert sum(row['outside_vertical_fan'] for row in fitted['rows'])==outside
+    assert all(row['optimistic_three_sigma_major_m']>.1 for row in fitted['rows'])
+    assert 'no calibrated confidence claim' in fitted['scope']
+ranges=read('dvl-minimum-range-assessment.json')
+assert ranges['recorded_samples']==len(ranges['rows'])==66
+assert ranges['truth_is_estimator_input'] is False and ranges['native_fusion_range_used'] is False
+assert ranges['per_beam_measurements_retained'] is False
+assert [(r['stamp_ns'],r['minimum_slant_range_m']) for r in ranges['rows']]==[(r['stamp_ns'],r['range_m']) for r in timeline['raw_dvl']]
+example=read('bridge-schema-example.json')['bottom_ranges']
+assert all(b['locked'] and b['variance_m2'] is None for b in example['beams'])
+assert example['minimum_slant_range_m']==min(b['range_m'] for b in example['beams'])
+geometry=read('range-calibration-example.json')
+assert geometry['range_variance_m2'] is None
+assert all(abs(sum(v*v for v in b['axis'])-1)<1e-12 for b in geometry['beams'])
 print('PASS: original raw input and complete failed hypothesis comparisons; mapping/package acceptance remains open')

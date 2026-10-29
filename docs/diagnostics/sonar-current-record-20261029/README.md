@@ -74,6 +74,33 @@ Library, OpenCV, Basalt and other component notices remain in the repository's
 existing license/notice records. Data capture and mapping quality are separate
 from SDK/package qualification.
 
+## Measurement-model diagnosis
+
+Independent assessment-pose controls fit all 96 original point histories. With
+explicit independent one-bin noise, every optimistic local three-sigma major
+axis exceeds 10 cm. Extending 31 histories from 890 to 1,133 observations leaves
+all 96 above 10 cm (minimum 14.72 cm); surface-error p90 is 41.82/45.90 cm for
+submitted/full history. Twelve/seventeen unconstrained fits leave the vertical
+fan. These pose-conditioned diagnostics are not calibrated or joint confidence
+and do not modify any map or estimator input.
+
+The 66 raw DVL reports contain aggregate ranges but not individual beam ranges.
+Installed gz-sensors 10.1.1 reports the shortest beam slant range, as shown in
+its [source](https://github.com/gazebosim/gz-sensors/blob/gz-sensors10_10.1.1/src/DopplerVelocityLog.cc).
+The measured minimum differs from the assessment-only vertical surface distance
+by median 31.27 cm / absolute p90 72.71 cm. The centre-beam approximation has
+absolute p90 error 4.05 cm; finite-cone sampling prevents treating this as a
+calibration bound. Individual ranges cannot be reconstructed from the minimum.
+
+The accompanying schema/calibration examples describe retained beam IDs,
+locks, slant distances, apertures and reference axes. They are decoded from
+a separate native fixture, not added to these 66 original reports. Missing or
+default-zero range variance stays unknown. The application bridge preserves
+these fields; this library's current native DVL factor still consumes velocity.
+The next model must check local surface support, finite-cone returns, uncertainty
+and informative viewpoints before enabling any range constraint. DVL does not
+replace all forward-sonar landmark geometry.
+
 ## 한국어
 
 최신 소나 커널로 실제 제어기의 이동을 기록했습니다. 소나·IMU·압력·DVL을
@@ -89,3 +116,16 @@ from SDK/package qualification.
 판단하지 않습니다. 아직 신뢰할 수 있는 물체 복원으로 인정하지 않습니다.
 다음 진단은 동일 특징의 물리적 지속성과 다중 시점의 3차원 제약입니다.
 허용 오차·신선도·잡음을 바꾸지 않습니다.
+
+평가 전용 자세로 96개 트랙을 다시 맞춰도 고도 제약이 약합니다. 관측 이력을
+890개에서 1,133개로 늘린 뒤에도 모든 점의 낙관적 조건부 3시그마 장축이
+10 cm를 넘습니다. 이는 보정된 신뢰구간이나 자세·점의 결합 불확실성이 아닙니다.
+
+DVL 원본 66개에 있는 최솟값은 빔의 비스듬한 거리이며 수직 고도가 아닙니다.
+수직 표면 거리와의 차이는 중앙값 31.27 cm, 절댓값 p90 72.71 cm입니다.
+중심 빔 근사는 절댓값 p90 4.05 cm이지만 실제 반환은 유한한 원뿔 안의
+최단 거리이므로 보정 오차 한도로 삼지 않습니다. 별도 네이티브 자료에서
+해석한 빔별 거리·잠금·방향·개구각 예시를 보존합니다. 이 값을 기존 66개
+측정에 만들어 넣지 않으며, 제공되지 않은 거리 분산은 미상으로 둡니다.
+현재 네이티브 추정기는 DVL 속도만 사용합니다. 다음은 국소 표면 지지와
+원뿔 반환값·불확실성 모델을 검증하는 단계입니다.
