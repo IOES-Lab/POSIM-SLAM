@@ -1,4 +1,6 @@
 import io,json,queue,struct,threading,unittest
+from pathlib import Path
+import tempfile
 import numpy as np
 from posim_slam.image_input import gray8
 from posim_slam.live_client import LiveClient,WorkerNotReady
@@ -11,7 +13,33 @@ class LiveInputTests(unittest.TestCase):
         c.input=queue.Queue(maxsize=256);c.output=queue.Queue(maxsize=8)
         c.budget_lock=threading.Lock();c.pending_bytes=0
         c.ready=threading.Event();c.ready.set()
+        c.surface_transport=False;c.surface_directory=None;c._surface_files={};c._surface_request_id=0
+        c._surface_lock=threading.Lock()
         return c
+
+    def test_surface_file_conflicts_preserve_existing_files_and_queue_only_metadata(self):
+        from posim_slam.native_surface import NativeSurfaceSnapshot,prepare_native_ranges
+        from test_delayed_surface_update import physical_case
+        from test_native_surface import snapshot,arguments
+        _,archive,kwargs,*_=physical_case()
+        increment=prepare_native_ranges(NativeSurfaceSnapshot.read(snapshot(archive)),**arguments(kwargs))
+        c=self.client();c.surface_transport=True
+        with tempfile.TemporaryDirectory() as folder:
+            c.surface_directory=Path(folder).resolve()
+            for request,suffix in ((1,'.json'),(2,'.tmp')):
+                existing=c.surface_directory/('worker-surface-update-'+str(request)+suffix)
+                existing.write_bytes(b'preserve existing file')
+                with self.assertRaises((ValueError,FileExistsError)):c.surface_update(request,increment)
+                self.assertEqual(existing.read_bytes(),b'preserve existing file')
+                self.assertEqual(c._surface_files,{});self.assertEqual(c.pending_bytes,0)
+            c.surface_update(3,increment)
+            packet=c.input.get_nowait();kind,size=struct.unpack('<II',packet[:8])
+            self.assertEqual(kind,15);self.assertLess(size,4096)
+            metadata=json.loads(packet[8:]);self.assertEqual(metadata['op'],'update')
+            self.assertNotIn('jacobian',metadata)
+            proposal=c._surface_files[3]
+            self.assertEqual(metadata['bytes'],proposal.stat().st_size)
+            self.assertNotIn('prior',json.loads(proposal.read_text()))
 
     def test_sonar_transport_requires_capability_and_preserves_payload(self):
         from posim_slam.sonar_packet import encode_snapshot

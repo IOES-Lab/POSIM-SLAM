@@ -18,7 +18,7 @@ import numpy as np
 from .ping_joint import split_patch_information
 from .retired_pose_archive import (Conditional,RetiredPoseArchive,coordinates,
                                     merge_reference)
-from .surface_prior import SurfacePrior,Variable,layout,_keys
+from .surface_prior import SurfacePrior,RangeLedger,Variable,layout,_keys
 
 
 @dataclass(frozen=True)
@@ -150,37 +150,23 @@ def _propagate_incoming(incoming,node,front,kept,removed,reserve):
     return _Factor(_remaining_order(front,remaining),j,b)
 
 
-def prepare_delayed_ranges(prior,archive,*,order,delta,jacobian,residual,range_keys,
-                           source_stamp_ns,expected_revision,max_workspace_bytes=32*1024*1024):
-    """Replace live marginal AND affected conditional rows in one pure result.
+@dataclass(frozen=True)
+class _Likelihood:
+    archive: RetiredPoseArchive
+    new_live_rows: LiveRangeRows
+    ledger: RangeLedger
+    changed_conditionals: tuple
+    peak_front_columns: int
+    workspace_bound_bytes: int
 
-    New J/r are jointly whitened raw-range rows, evaluated at delta in immutable
-    owner references. Correlations within that block must already be present.
-    The rows must exclude old prior/conditional rows, damping and fitted-pose or
-    fitted-plane priors. New unknown planes may be appended with zero prior
-    information. Original range identities enter the persistent ledger once.
 
-    The archive's current coordinates and complete live prior must describe the
-    same snapshot. The first consumed live prior has revision zero and no
-    previously fused raw ranges. Later calls consume the paired result, whose
-    prior identity is bound to its updated conditionals. All input objects
-    remain unchanged on success or failure.
-    Publish neither returned part without its companion. A native owner retains
-    its active nonlinear rows and installs only new_live_rows, with the updated
-    conditionals and ledger. Alternatively replace the consumed whole linear
-    system by prior. Installing both duplicates the late information.
-    """
-    if not isinstance(prior,SurfacePrior) or not isinstance(archive,RetiredPoseArchive):
-        raise ValueError('owned_live_prior_and_conditionals_required')
-    if (prior.epoch!=archive.epoch or type(source_stamp_ns) is not int
-            or source_stamp_ns!=archive.stamp_ns or source_stamp_ns<=0
-            or type(expected_revision) is not int or expected_revision!=prior.revision):
+def _prepare_range_likelihood(archive,ledger,*,order,delta,jacobian,residual,range_keys,
+                              source_stamp_ns,max_workspace_bytes):
+    """Eliminate only a new likelihood; existing live rows are never consumed."""
+    if not isinstance(archive,RetiredPoseArchive) or not isinstance(ledger,RangeLedger):
+        raise ValueError('owned_archive_and_range_ledger_required')
+    if type(source_stamp_ns) is not int or source_stamp_ns<=0 or source_stamp_ns!=archive.stamp_ns:
         raise ValueError('late_range_snapshot_or_revision_mismatch')
-    if prior.order!=archive.root_variables:raise ValueError('complete_matching_live_prior_order_required')
-    bound=getattr(archive,'_delayed_live_prior_digest',None)
-    if ((bound is None and (prior.revision!=0 or prior.ledger.recent or prior.ledger.closed_through_ns))
-            or (bound is not None and bound!=_prior_digest(prior))):
-        raise ValueError('late_range_prior_and_conditionals_must_be_published_together')
     if (type(max_workspace_bytes) is not int or not 1024<=max_workspace_bytes<=128*1024*1024):
         raise ValueError('bounded_late_range_workspace_required')
     order,_,count=layout(order,retirement_source=True)
@@ -192,7 +178,7 @@ def prepare_delayed_ranges(prior,archive,*,order,delta,jacobian,residual,range_k
         raise ValueError('finite_new_delayed_raw_range_rows_required')
     if any(key[0]>source_stamp_ns or ('state',key[0]) not in {v.key for v in order} for key in keys):
         raise ValueError('late_range_original_measurement_pose_required')
-    ledger=prior.ledger.admit(keys)
+    ledger=ledger.admit(keys)
     new_planes=[];block_cols=coordinates(order);block_values=dict(zip(block_cols,delta))
     for v in order:
         if v.key not in archive.references:
@@ -206,7 +192,7 @@ def prepare_delayed_ranges(prior,archive,*,order,delta,jacobian,residual,range_k
     for key,value in block_values.items():
         if key in archive.root and not np.isclose(value,archive.root[key],rtol=0,atol=1e-12):
             raise ValueError('late_range_live_linearization_snapshot_mismatch')
-    live_order=prior.order+tuple(new_planes);_,_,live_count=layout(live_order)
+    live_order=archive.root_variables+tuple(new_planes);_,_,live_count=layout(live_order)
     added=set(coordinates(new_planes))
     needed=_closure(archive,[key for key in block_cols if key not in added])
     live_keys=set(archive.root)|added;pending={};root_factors=[];nodes=dict(archive.nodes)
@@ -253,16 +239,6 @@ def prepare_delayed_ranges(prior,archive,*,order,delta,jacobian,residual,range_k
     increment_j=np.zeros((len(increment.jacobian),live_count))
     increment_j[:,[live_positions[k] for k in coordinates(increment.order)]]=increment.jacobian
     live_rows=LiveRangeRows(live_order,increment_j,increment.offset)
-    result=_stack((_Factor(prior.order,prior.jacobian,prior.offset),
-                   _Factor(live_order,live_rows.jacobian,live_rows.offset)),reserve)
-    final_cols=coordinates(result.order);positions={key:i for i,key in enumerate(final_cols)}
-    if set(final_cols)!=set(coordinates(live_order)):raise ValueError('late_range_final_live_order_mismatch')
-    assembled=result.jacobian[:,[positions[k] for k in coordinates(live_order)]];offset=result.offset
-    if not len(assembled):assembled=np.zeros((1,live_count));offset=np.zeros(1)
-    if len(assembled)>live_count+1:
-        compact=np.linalg.qr(np.column_stack((assembled,offset)),mode='r')
-        assembled=compact[:,:live_count];offset=compact[:,live_count]
-    result_prior=SurfacePrior(live_order,assembled,offset,ledger,prior.epoch,prior.revision+1)
     if sum(n.matrix_bytes for n in nodes.values())>archive.max_matrix_bytes:
         raise ValueError('updated_conditional_archive_capacity')
     live=dict(archive.root)
@@ -271,5 +247,53 @@ def prepare_delayed_ranges(prior,archive,*,order,delta,jacobian,residual,range_k
     result_archive=copy.copy(archive)
     result_archive.nodes=nodes;result_archive.root=live;result_archive.root_variables=live_order
     result_archive.producers=producers;result_archive.references=references;result_archive._memo={}
-    result_archive._delayed_live_prior_digest=_prior_digest(result_prior)
-    return DelayedSurfaceUpdate(result_prior,result_archive,live_rows,tuple(changed),peak_columns,workspace)
+    return _Likelihood(result_archive,live_rows,ledger,tuple(changed),peak_columns,workspace)
+
+
+def prepare_delayed_ranges(prior,archive,*,order,delta,jacobian,residual,range_keys,
+                           source_stamp_ns,expected_revision,max_workspace_bytes=32*1024*1024):
+    """Replace live marginal AND affected conditional rows in one pure result.
+
+    New J/r are jointly whitened raw-range rows, evaluated at delta in immutable
+    owner references. Correlations within that block must already be present.
+    The rows must exclude old prior/conditional rows, damping and fitted-pose or
+    fitted-plane priors. New unknown planes may be appended with zero prior
+    information. Original range identities enter the persistent ledger once.
+
+    The archive's current coordinates and complete live prior must describe the
+    same snapshot. The first consumed live prior has revision zero and no
+    previously fused raw ranges. Later calls consume the paired result, whose
+    prior identity is bound to its updated conditionals. All input objects
+    remain unchanged on success or failure.
+    Publish neither returned part without its companion. A native owner retains
+    its active nonlinear rows and installs only new_live_rows, with the updated
+    conditionals and ledger. Alternatively replace the consumed whole linear
+    system by prior. Installing both duplicates the late information.
+    """
+    if not isinstance(prior,SurfacePrior) or not isinstance(archive,RetiredPoseArchive):
+        raise ValueError('owned_live_prior_and_conditionals_required')
+    if (prior.epoch!=archive.epoch or type(source_stamp_ns) is not int
+            or source_stamp_ns!=archive.stamp_ns or source_stamp_ns<=0
+            or type(expected_revision) is not int or expected_revision!=prior.revision):
+        raise ValueError('late_range_snapshot_or_revision_mismatch')
+    if prior.order!=archive.root_variables:raise ValueError('complete_matching_live_prior_order_required')
+    bound=getattr(archive,'_delayed_live_prior_digest',None)
+    if ((bound is None and (prior.revision!=0 or prior.ledger.recent or prior.ledger.closed_through_ns))
+            or (bound is not None and bound!=_prior_digest(prior))):
+        raise ValueError('late_range_prior_and_conditionals_must_be_published_together')
+    result=_prepare_range_likelihood(archive,prior.ledger,order=order,delta=delta,jacobian=jacobian,
+        residual=residual,range_keys=range_keys,source_stamp_ns=source_stamp_ns,max_workspace_bytes=max_workspace_bytes)
+    rows=result.new_live_rows;count=rows.jacobian.shape[1]
+    old=np.pad(prior.jacobian,((0,0),(0,count-prior.jacobian.shape[1])))
+    n=len(old)+len(rows.jacobian)
+    changed_bytes=sum(result.archive.nodes[i].matrix_bytes for i in result.changed_conditionals)
+    bound=changed_bytes+2*(rows.jacobian.nbytes+rows.offset.nbytes)+3*(n+1)*(count+1)*8+6*(count+1)**2*8
+    if bound>min(max_workspace_bytes,archive.max_recovery_bytes):raise ValueError('late_range_workspace_capacity')
+    j=np.vstack((old,rows.jacobian));b=np.r_[prior.offset,rows.offset]
+    if not len(j):j=np.zeros((1,count));b=np.zeros(1)
+    if len(j)>count+1:
+        compact=np.linalg.qr(np.column_stack((j,b)),mode='r');j=compact[:,:count];b=compact[:,count]
+    folded=SurfacePrior(rows.order,j,b,result.ledger,prior.epoch,prior.revision+1)
+    result.archive._delayed_live_prior_digest=_prior_digest(folded)
+    return DelayedSurfaceUpdate(folded,result.archive,rows,result.changed_conditionals,
+        result.peak_front_columns,max(result.workspace_bound_bytes,bound))

@@ -6,10 +6,13 @@ old estimates on a fault; restarting a worker never stitches trajectories.
 import json
 import math
 import numbers
+import os
 from pathlib import Path
 import queue
 import struct
 import subprocess
+import shutil
+import tempfile
 import threading
 
 
@@ -38,8 +41,18 @@ class LiveClient:
         self.ping_transport=False;self.gravity_seed_transport=False;self.sonar_transport=False;self.sonar_auxiliary_transport=False
         self.sonar_clock_transport=False;self.dvl_transport=False;self.sensor_state_transport=False;self.pressure_transport=False;self.terrain_ping_transport=False
         self.ground_transport=False
-        self.process=subprocess.Popen([str(Path(binary).resolve()),str(Path(calibration).resolve())],
-            stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=log,bufsize=65536)
+        self.surface_transport=False;self.surface_directory=None;self._surface_files={};self._surface_request_id=0
+        self._surface_lock=threading.Lock();options={}
+        if self.processing_request.get('enable_surface_owner',False):
+            self.surface_directory=Path(tempfile.mkdtemp(prefix='worker-surface-',dir=Path(calibration).resolve().parent))
+            info=self.surface_directory.stat();self._surface_directory_identity=(info.st_dev,info.st_ino)
+            options['env']={**os.environ,'POSIM_SLAM_SURFACE_DIRECTORY':str(self.surface_directory)}
+        try:
+            self.process=subprocess.Popen([str(Path(binary).resolve()),str(Path(calibration).resolve())],
+                stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=log,bufsize=65536,**options)
+        except BaseException:
+            if self.surface_directory is not None:shutil.rmtree(self.surface_directory)
+            raise
         self.writer=threading.Thread(target=self._write,daemon=True)
         self.reader=threading.Thread(target=self._read,daemon=True)
         self.writer.start();self.reader.start()
@@ -69,7 +82,7 @@ class LiveClient:
                 value=json.loads(line)
                 if not isinstance(value,dict):raise ValueError('worker_output_object')
                 if value.get('type')=='error':raise ValueError('worker:'+str(value.get('reason')))
-                if value.get('type') not in ('ready','state','map','export','startup_tracks'):raise ValueError('worker_output_type')
+                if value.get('type') not in ('ready','state','map','export','startup_tracks','surface_control'):raise ValueError('worker_output_type')
                 if value['type']=='ready':
                     if self.ready.is_set() or value.get('protocol')!=1 or value.get('inertial_fused') is not True:
                         raise ValueError('worker_protocol')
@@ -91,6 +104,9 @@ class LiveClient:
                     self.dvl_transport=value.get('dvl_measurement_transport')=='body_velocity_gyro_covariance_v1'
                     self.terrain_ping_transport=value.get('terrain_ping_transport')=='exact_sensor_range_v1'
                     self.ground_transport=value.get('ground_transport')=='exact_beam_entries_v1'
+                    self.surface_transport=value.get('native_surface_transport')=='snapshot_increment_owner_queue_v1'
+                    if self.processing_request.get('enable_surface_owner',False) and not self.surface_transport:
+                        raise ValueError('worker_surface_owner_unsupported')
                     if self.processing_request.get('enable_sonar_ground',False) and not self.ground_transport:
                         raise ValueError('worker_ground_unsupported')
                     if self.processing_request.get('enable_terrain_ping',False) and not self.terrain_ping_transport:
@@ -105,6 +121,11 @@ class LiveClient:
                         raise ValueError('worker_pressure_unsupported')
                 elif not self.ready.is_set():
                     raise ValueError('worker_output_before_ready')
+                if value['type']=='surface_control':
+                    if not self.surface_transport or type(value.get('request_id')) is not int or type(value.get('accepted')) is not bool:
+                        raise ValueError('worker_surface_control_response')
+                    with self._surface_lock:path=self._surface_files.pop(value['request_id'],None)
+                    if path is not None:path.unlink(missing_ok=True)
                 # Never silently drop poses/maps while calling the segment live.
                 self.output.put_nowait(value)
                 if value['type']=='ready':self.ready.set()
@@ -256,6 +277,60 @@ class LiveClient:
             raise ValueError('invalid_snapshot_request_id')
         self.send(4,struct.pack('<Q',request_id))
 
+    def _surface_request(self,request_id):
+        if not self.ready.is_set():raise WorkerNotReady('worker_not_ready')
+        if not self.surface_transport or self.surface_directory is None:raise ValueError('worker_surface_owner_unsupported')
+        with self._surface_lock:
+            if type(request_id) is not int or not self._surface_request_id<request_id<2**63:
+                raise ValueError('ordered_surface_request_id_required')
+            self._surface_request_id=request_id
+
+    def surface_snapshot(self,request_id):
+        self._surface_request(request_id)
+        self.send(15,json.dumps(dict(op='snapshot',request_id=request_id)).encode())
+
+    def read_surface_snapshot(self,response):
+        from .native_surface import NativeSurfaceSnapshot
+        if response.get('type')!='surface_control' or response.get('op')!='snapshot' or response.get('accepted') is not True:
+            raise ValueError('accepted_native_surface_snapshot_required')
+        return NativeSurfaceSnapshot.read_file(response['file'],self.surface_directory)
+
+    def surface_update(self,request_id,increment):
+        from .native_surface import NativeSurfaceIncrement,MAX_SNAPSHOT_BYTES
+        if not isinstance(increment,NativeSurfaceIncrement):raise ValueError('prepared_native_surface_increment_required')
+        self._surface_request(request_id)
+        data=json.dumps(increment.as_packet(),allow_nan=False,separators=(',',':')).encode()
+        if len(data)>MAX_SNAPSHOT_BYTES:raise ValueError('native_surface_update_file_capacity')
+        path=self.surface_directory/('worker-surface-update-'+str(request_id)+'.json')
+        temporary=path.with_suffix('.tmp')
+        with self._surface_lock:
+            if self._surface_files:raise RuntimeError('native_surface_update_pending')
+            self._surface_files[request_id]=None
+        created=False;temporary_created=False
+        try:
+            with temporary.open('xb') as stream:
+                temporary_created=True;stream.write(data)
+            if path.exists() or path.is_symlink():raise ValueError('native_surface_update_path_exists')
+            temporary.rename(path);created=True;temporary_created=False
+            with self._surface_lock:self._surface_files[request_id]=path
+            self.send(15,json.dumps(dict(op='update',request_id=request_id,path=str(path),bytes=len(data))).encode())
+        except BaseException:
+            with self._surface_lock:self._surface_files.pop(request_id,None)
+            if created:path.unlink(missing_ok=True)
+            if temporary_created:temporary.unlink(missing_ok=True)
+            raise
+
+    def surface_expire(self,request_id,closed_through_ns,*,protect=()):
+        protect=list(protect)
+        if (type(closed_through_ns) is not int or not 0<=closed_through_ns<2**63 or len(protect)>73
+                or any(type(t) is not int or not 0<t<2**63 for t in protect) or len(set(protect))!=len(protect)):
+            raise ValueError('bounded_native_surface_expiry_required')
+        self._surface_request(request_id)
+        self.send(15,json.dumps(dict(op='expire',request_id=request_id,closed_through_ns=closed_through_ns,protected_states=protect)).encode())
+
+    def surface_release(self,request_id):
+        self._surface_request(request_id);self.send(15,json.dumps(dict(op='release',request_id=request_id)).encode())
+
     def poll(self):
         if self.fault:raise RuntimeError(self.fault)
         result=[]
@@ -278,4 +353,9 @@ class LiveClient:
         finally:self.process.stdout.close()
         while not self.input.empty():self.input.get_nowait()
         if self.writer.is_alive() or self.reader.is_alive():raise RuntimeError('worker_thread_cleanup_failed')
+        if self.surface_directory is not None and self.surface_directory.exists():
+            info=self.surface_directory.lstat()
+            if self.surface_directory.is_symlink() or (info.st_dev,info.st_ino)!=self._surface_directory_identity:
+                raise RuntimeError('native_surface_directory_identity_changed')
+            shutil.rmtree(self.surface_directory)
         return self.process.returncode

@@ -4,9 +4,13 @@
 관측을 준비합니다. 과거 자세를 확정값으로 고정하지 않고 조건부 관계와 현재 상태의
 불확실성을 유지합니다. 선택형 네이티브 `SurfaceMarginalOwner`는 새 현재 상태 제약,
 조건부 관계와 원본 관측 기록을 함께 설치합니다. 활성 IMU·DVL·압력 제약은 각자의
-관측을 유지하며, 미지 평면은 최적화와 상태 주변화를 거쳐 보존합니다. 스트리밍
-프런트엔드 연결과 실제 소나 지도 검증은 아직 필요합니다.
-[네이티브 API와 적용 범위](docs/diagnostics/native-surface-owner-20261029/README.md),
+관측을 유지하며, 미지 평면은 최적화와 상태 주변화를 거쳐 보존합니다.
+`native_surface.prepare_native_ranges`는 네이티브 상태 사본에서 새 제약만 준비하고,
+`LiveClient`는 이를 추정기 스레드의 큐로 전달합니다. 네이티브 소유자는 상태 사본의
+식별자, 원본 관측의 중복 사용과 명시적인 기록 만료를 검사합니다. 이 선택 기능의
+기본값은 꺼짐이며, 실제 반사면 대응·불확실성 보정·유용한 소나 지도 검증이 필요합니다.
+[스트리밍 API와 원본 재생 검사](docs/diagnostics/native-surface-transport-20261029/README.md),
+[네이티브 소유자 API](docs/diagnostics/native-surface-owner-20261029/README.md),
 [참조 계산 방법](docs/diagnostics/delayed-surface-update-20261029/README.md).
 
 `retired_pose_archive`는 네이티브 조건부 식에서 과거 자세를 함께 복원하고,

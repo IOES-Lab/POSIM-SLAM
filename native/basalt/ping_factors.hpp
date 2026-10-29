@@ -4,6 +4,7 @@
 #include "ping_prior.hpp"
 #include "ping_commit.hpp"
 #include "sonar_ground_store.hpp"
+#include "surface_owner.hpp"
 
 namespace posim_slam {
 // One store per estimator stream, used exclusively by its owner thread. Keep
@@ -24,9 +25,18 @@ class PingFactorStore {
   GroundFactorStore& ground() {return ground_;}
   int64_t lastObservation() const {return std::max(last_observation_,ground_.lastObservation());}
   void enablePoseConditionalCapture() {
-    if(capture_pose_conditionals_ || lastObservation()>0 || owner_.posim_ping_trial_active)
+    if(capture_pose_conditionals_ || surface_ || lastObservation()>0 || owner_.posim_ping_trial_active)
       throw std::logic_error("pose_conditional_capture_must_start_before_observations");
     capture_pose_conditionals_=true;
+  }
+  void enableSurfaceOwner(const std::string& epoch) {
+    if(surface_ || capture_pose_conditionals_ || lastObservation()>0 || owner_.posim_ping_trial_active ||
+        !surface_prior::label(epoch) || epoch.size()>128)throw std::invalid_argument("exclusive_native_surface_owner_required");
+    auto next=std::make_unique<SurfaceMarginalOwner>();surface_epoch_=epoch;surface_.swap(next);
+  }
+  SurfaceMarginalOwner* surfaceOwner() {return surface_.get();}
+  void adoptSurfaceOwner(const basalt::AbsOrderMap& order,basalt::MargLinData<double>& prior,PressureFactorStore& pressure) {
+    if(surface_ && !surface_->active())surface_->adopt(owner_,order,prior,pressure,surface_epoch_);
   }
   std::vector<RetiredPoseConditional> takePoseConditionals() {
     std::vector<RetiredPoseConditional> result;result.swap(pose_conditionals_);return result;
@@ -98,6 +108,11 @@ class PingFactorStore {
       const basalt::ImuLinData<double>& imu,const std::set<int64_t>& removed,
       const std::set<int64_t>& pose_only,const std::unordered_set<basalt::KeypointId>& lost,
       SonarFactorStore* sonar=nullptr,DvlFactorStore* dvl=nullptr,PressureFactorStore* pressure=nullptr) {
+    if(surface_) {
+      if(!pressure || !definitions_.empty() || ground_.size() || (sonar && sonar->size()) || !lost.empty())
+        throw std::invalid_argument("exclusive_native_surface_retirement_required");
+      return surface_->marginalize(owner_,order,prior,measurements,imu,removed,pose_only,dvl,*pressure);
+    }
     if(imu.imu_meas.size()!=measurements.size())throw std::invalid_argument("changed_ping_factor_imu_owner");
     for(const auto& [stamp,measurement]:measurements)
       if(!imu.imu_meas.count(stamp) || imu.imu_meas.at(stamp)!=&measurement)
@@ -122,9 +137,11 @@ class PingFactorStore {
   }
  private:
   bool capture_pose_conditionals_=false;
+  std::unique_ptr<SurfaceMarginalOwner> surface_;std::string surface_epoch_;
   uint64_t next_pose_conditional_id_=1;
   std::vector<RetiredPoseConditional> pose_conditionals_;
   void requireNewObservation(int64_t stamp) const {
+    if(surface_)throw std::invalid_argument("native_surface_and_ping_factors_are_exclusive");
     if(owner_.posim_ping_trial_active)throw std::logic_error("ping_factors_during_trial");
     if(stamp<=last_observation_)throw std::invalid_argument("replayed_or_reordered_ping_observation");
   }

@@ -88,7 +88,10 @@ inline void validateArchive(const Nodes& nodes,const std::vector<sp::Variable>& 
 class SurfaceMarginalOwner {
  public:
   using Variable=surface_prior::Variable;using RangeKey=surface_prior::RangeKey;
-  struct State {surface_prior::Prior prior;surface_owner_detail::Nodes nodes;uint64_t highest_id=0;};
+  struct State {
+    surface_prior::Prior prior;surface_owner_detail::Nodes nodes;uint64_t highest_id=0;
+    int64_t archive_closed_through=0;std::set<int64_t> protected_states;
+  };
   struct Snapshot {
     std::shared_ptr<const State> state;
     surface_prior::Coordinates coordinates;
@@ -218,6 +221,9 @@ class SurfaceMarginalOwner {
       const auto found=references.find(v.key());
       if(found==references.end() || found->second.size<v.size)throw std::invalid_argument("late_surface_source_not_owned");
       surface_owner_detail::sameReference(found->second,v);
+      if(v.kind==surface_prior::Kind::State && v.id<=state_->archive_closed_through &&
+          !state_->protected_states.count(v.id) && !root.count({v.kind,v.id,0}))
+        throw std::invalid_argument("late_range_pose_admission_closed");
       if(v.kind==surface_prior::Kind::State)stamps.insert(v.id);
     }
     for(const auto& k:keys)if(!stamps.count(std::get<0>(k)))throw std::invalid_argument("late_range_pose_not_owned");
@@ -262,6 +268,42 @@ class SurfaceMarginalOwner {
     owner.frame_states.swap(prepared.states);owner.frame_poses.swap(prepared.poses);
     std::swap(owner.posim_ping_planes,prepared.planes);swapPrior(legacy,prepared.zero);
     state_.swap(prepared.next);++owner.posim_ping_state_revision;
+  }
+  void expireThrough(basalt::BundleAdjustmentBase<double>& owner,const basalt::AbsOrderMap& order,
+      const basalt::MargLinData<double>& legacy,const PressureFactorStore& pressure,int64_t cutoff,
+      const std::set<int64_t>& protect={}) {
+    requireStateOrder(order);requireZero(legacy,pressure);state();
+    if(owner.posim_ping_trial_active || cutoff<state_->archive_closed_through || cutoff<0 ||
+        cutoff>order.abs_order_map.rbegin()->first)throw std::invalid_argument("monotonic_native_surface_cutoff_required");
+    const auto current=coordinates(owner,order,pressure);const auto root_vector=surface_owner_detail::coordinates(current.order);
+    const std::set<surface_owner_detail::Coordinate> root(root_vector.begin(),root_vector.end());
+    std::map<surface_owner_detail::Coordinate,uint64_t> producers;std::set<int64_t> states;
+    for(const auto& v:current.order)if(v.kind==surface_prior::Kind::State)states.insert(v.id);
+    std::set<uint64_t> needed;std::vector<uint64_t> pending;
+    for(const auto& [id,node]:state_->nodes) {
+      const auto columns=surface_owner_detail::coordinates(node->variables);bool keep=false;
+      for(const auto& v:node->variables)if(v.kind==surface_prior::Kind::State)states.insert(v.id);
+      for(int i:node->removed) {
+        producers.emplace(columns[i],id);const auto [kind,stamp,component]=columns[i];
+        keep=keep || kind!=surface_prior::Kind::State || stamp>cutoff || protect.count(stamp);
+      }
+      if(keep){needed.insert(id);pending.push_back(id);}
+    }
+    for(int64_t stamp:protect)if(stamp<=0 || !states.count(stamp))throw std::invalid_argument("protected_native_surface_pose_not_owned");
+    while(!pending.empty()) {
+      const auto& node=*state_->nodes.at(pending.back());pending.pop_back();
+      const auto columns=surface_owner_detail::coordinates(node.variables);
+      for(int i:node.kept)if(!root.count(columns[i])) {
+        const auto id=producers.at(columns[i]);if(needed.insert(id).second)pending.push_back(id);
+      }
+    }
+    auto next=std::make_shared<State>(*state_);
+    for(auto it=next->nodes.begin();it!=next->nodes.end();)if(!needed.count(it->first))it=next->nodes.erase(it);else ++it;
+    next->archive_closed_through=cutoff;next->protected_states=protect;
+    next->prior.ledger=next->prior.ledger.admit({},cutoff);
+    if(next->prior.revision==std::numeric_limits<int64_t>::max())throw std::invalid_argument("surface_owner_revision_overflow");
+    ++next->prior.revision;surface_owner_detail::validateArchive(next->nodes,current.order);
+    std::shared_ptr<const State> publish=std::move(next);state_.swap(publish);++owner.posim_ping_state_revision;
   }
   template<class ImuMap> PingRetirementPlan marginalize(basalt::BundleAdjustmentBase<double>& owner,
       const basalt::AbsOrderMap& order,basalt::MargLinData<double>& legacy,ImuMap& measurements,

@@ -1,0 +1,127 @@
+{
+  "head": "2bafda522d2aa9e5988130379b168cfd73d1dec5",
+  "checks": [
+    {
+      "name": "Vercel Preview Comments",
+      "status": "completed",
+      "conclusion": "success",
+      "details_url": "https://vercel.com/github"
+    },
+    {
+      "name": "external-dev-port",
+      "status": "completed",
+      "conclusion": "skipped",
+      "details_url": "https://github.com/IOES-Lab/WWW-POSIM/actions/runs/40846026681/job/123353613395"
+    },
+    {
+      "name": "linux",
+      "status": "completed",
+      "conclusion": "success",
+      "details_url": "https://github.com/IOES-Lab/WWW-POSIM/actions/runs/40846026696/job/123353612680"
+    },
+    {
+      "name": "mac",
+      "status": "completed",
+      "conclusion": "success",
+      "details_url": "https://github.com/IOES-Lab/WWW-POSIM/actions/runs/40846026696/job/123353612315"
+    },
+    {
+      "name": "public-demo-policy",
+      "status": "completed",
+      "conclusion": "success",
+      "details_url": "https://github.com/IOES-Lab/WWW-POSIM/actions/runs/40846026681/job/123353612224"
+    },
+    {
+      "name": "storage-retention",
+      "status": "completed",
+      "conclusion": "success",
+      "details_url": "https://github.com/IOES-Lab/WWW-POSIM/actions/runs/40846026681/job/123353612136"
+    },
+    {
+      "name": "direct-control",
+      "status": "completed",
+      "conclusion": "success",
+      "details_url": "https://github.com/IOES-Lab/WWW-POSIM/actions/runs/40846026681/job/123353612112"
+    },
+    {
+      "name": "transport",
+      "status": "completed",
+      "conclusion": "success",
+      "details_url": "https://github.com/IOES-Lab/WWW-POSIM/actions/runs/40846026681/job/123353612088"
+    },
+    {
+      "name": "gnss-contract",
+      "status": "completed",
+      "conclusion": "success",
+      "details_url": "https://github.com/IOES-Lab/WWW-POSIM/actions/runs/40846026681/job/123353612040"
+    },
+    {
+      "name": "scenic-arrivals",
+      "status": "completed",
+      "conclusion": "success",
+      "details_url": "https://github.com/IOES-Lab/WWW-POSIM/actions/runs/40846026681/job/123353612030"
+    },
+    {
+      "name": "native-assets",
+      "status": "completed",
+      "conclusion": "success",
+      "details_url": "https://github.com/IOES-Lab/WWW-POSIM/actions/runs/40846026681/job/123353612009"
+    },
+    {
+      "name": "ros-viewer",
+      "status": "completed",
+      "conclusion": "success",
+      "details_url": "https://github.com/IOES-Lab/WWW-POSIM/actions/runs/40846026681/job/123353612000"
+    },
+    {
+      "name": "mesa-backport",
+      "status": "completed",
+      "conclusion": "success",
+      "details_url": "https://github.com/IOES-Lab/WWW-POSIM/actions/runs/40846026681/job/123353611986"
+    },
+    {
+      "name": "standalone-preparation",
+      "status": "completed",
+      "conclusion": "success",
+      "details_url": "https://github.com/IOES-Lab/WWW-POSIM/actions/runs/40846026681/job/123353611980"
+    },
+    {
+      "name": "regression-fixtures (Windows, self-hosted, windows, x64)",
+      "status": "queued",
+      "conclusion": null,
+      "details_url": "https://github.com/IOES-Lab/WWW-POSIM/actions/runs/40846026683/job/123353611677"
+    },
+    {
+      "name": "competition-submissions",
+      "status": "completed",
+      "conclusion": "success",
+      "details_url": "https://github.com/IOES-Lab/WWW-POSIM/actions/runs/40846026681/job/123353611566"
+    },
+    {
+      "name": "regression-fixtures (Linux, self-hosted, linux, x64)",
+      "status": "completed",
+      "conclusion": "success",
+      "details_url": "https://github.com/IOES-Lab/WWW-POSIM/actions/runs/40846026683/job/123353611333"
+    },
+    {
+      "name": "wording",
+      "status": "completed",
+      "conclusion": "success",
+      "details_url": "https://github.com/IOES-Lab/WWW-POSIM/actions/runs/40846026676/job/123353611306"
+    },
+    {
+      "name": "navigation",
+      "status": "completed",
+      "conclusion": "success",
+      "details_url": "https://github.com/IOES-Lab/WWW-POSIM/actions/runs/40846026676/job/123353610789"
+    }
+  ],
+  "statuses": [
+    {
+      "context": "Vercel",
+      "state": "success",
+      "description": "Deployment has completed",
+      "target_url": "https://vercel.com/ioes-lab/www-posim/Fb5hmSki47euLwZd7JiRX4Rvxu8z"
+    }
+  ]
+}

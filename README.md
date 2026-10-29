@@ -6,8 +6,13 @@ uncertainty without freezing recovered poses. The optional native
 `SurfaceMarginalOwner` installs new live rows, conditional replacements and the
 original-reading ledger together, while active IMU/DVL/pressure factors retain
 their own observations. It keeps unknown planes through optimization and state
-retirement. Streaming-frontend activation and physical sonar-map qualification
-remain required. [Native owner API and scope](docs/diagnostics/native-surface-owner-20261029/README.md),
+retirement. `native_surface.prepare_native_ranges` prepares only new rows from
+a native snapshot; `LiveClient` queues their installation on the estimator
+thread. Snapshot identity, original-reading reuse and explicit archive expiry
+are checked by the native owner. This optional transport is off by default;
+physical correspondence, calibrated uncertainty and useful sonar maps still
+require qualification. [Streaming API and recorded controls](docs/diagnostics/native-surface-transport-20261029/README.md),
+[native owner API](docs/diagnostics/native-surface-owner-20261029/README.md),
 [reference method](docs/diagnostics/delayed-surface-update-20261029/README.md).
 
 `retired_pose_archive` jointly recovers old poses from native Gaussian

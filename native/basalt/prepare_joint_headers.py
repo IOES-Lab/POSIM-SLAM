@@ -69,7 +69,7 @@ def prepare(source,destination):
         text=raw.decode()
         if name=='optical_flow/optical_flow.h':
             text=replace_once(text,'  int64_t t_ns;\n  std::vector<Eigen::aligned_map<KeypointId, Eigen::AffineCompact2f>>',
-                '  int64_t t_ns;\n  size_t reference_patch_count = 0;\n  size_t reference_patch_peak = 0;\n  std::vector<Eigen::aligned_map<KeypointId, Eigen::AffineCompact2f>>')
+                '  int64_t t_ns;\n  uint64_t posim_owner_control_id = 0;\n  size_t reference_patch_count = 0;\n  size_t reference_patch_peak = 0;\n  std::vector<Eigen::aligned_map<KeypointId, Eigen::AffineCompact2f>>')
         elif name=='optical_flow/patch_optical_flow.h':
             text=replace_once(text,'#include <basalt/optical_flow/optical_flow.h>',
                 '#include <basalt/optical_flow/optical_flow.h>\n#include "reference_patches.hpp"')
@@ -93,6 +93,7 @@ def prepare(source,destination):
   std::function<void(SqrtKeypointVioEstimator&, int64_t)> posim_before_marginalization;
   std::function<void(SqrtKeypointVioEstimator&, int64_t)> posim_after_joint;
   std::function<void(SqrtKeypointVioEstimator&, int64_t)> posim_after_marginalization;
+  std::function<void(SqrtKeypointVioEstimator&, uint64_t, MargLinData<Scalar>&)> posim_owner_control;
   std::shared_ptr<posim_slam::PingFactorStore> posim_ping_factors;
   std::shared_ptr<posim_slam::SonarFactorStore> posim_sonar_factors;
   std::shared_ptr<posim_slam::DvlFactorStore> posim_dvl_factors;
@@ -167,6 +168,15 @@ def prepare(source,destination):
     text=replace_once(raw.decode(),'''  imu_meas[t_ns] = IntegratedImuMeasurement<Scalar>(t_ns, bg.cast<Scalar>(),
                                                     ba.cast<Scalar>());''',
         '  // No completed IMU interval at the initial state.')
+    text=replace_once(text,'      // Correct camera time offset', '''      // Control events execute on this same estimator thread and do not
+      // consume IMU samples, create a pose or advance the camera/sonar clock.
+      if (curr_frame->posim_owner_control_id) {
+        if (config.vio_enforce_realtime || !posim_owner_control)
+          throw std::invalid_argument("owner_control_requires_ordered_processing");
+        posim_owner_control(*this, curr_frame->posim_owner_control_id, marg_data);
+        continue;
+      }
+      // Correct camera time offset''')
     # PoseVelBiasState::applyInc stores gyro at 9:12 and accel at 12:15.
     # The pinned constructor applies the named initial weights in reverse.
     # Correct both square-root and Hessian branches without changing weights.
@@ -274,8 +284,12 @@ void SqrtKeypointVioEstimator<Scalar_>::posim_optimize_joint() {
       << " bias " << frame_states.at(last_state_t_ns).getState().bias_accel.transpose()
       << " prior " << marg_data.H.norm() << " " << marg_data.b.norm()
       << " sonar " << (posim_sonar_factors ? posim_sonar_factors->size() : 0) << std::endl;
+  if (posim_ping_factors->surfaceOwner()) {
+    if (!posim_pressure_factors) throw std::invalid_argument("surface_owner_requires_pressure");
+    posim_ping_factors->adoptSurfaceOwner(order, marg_data, *posim_pressure_factors);
+  }
   const auto report = posim_slam::optimizePingGroups(base, order,
-      posim_ping_factors->specs(order), marg_data, imu, {}, posim_sonar_factors.get(), posim_dvl_factors.get(), posim_pressure_factors.get());
+      posim_ping_factors->specs(order), marg_data, imu, {}, posim_sonar_factors.get(), posim_dvl_factors.get(), posim_pressure_factors.get(), posim_ping_factors->surfaceOwner());
   if (trace_joint) std::cerr << "POSIM_JOINT after " << last_state_t_ns
       << " bias " << frame_states.at(last_state_t_ns).getState().bias_accel.transpose()
       << " cost " << report.initial_cost << " " << report.final_cost

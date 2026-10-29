@@ -1,0 +1,17 @@
+.....................................................................................................s.......................................................................E...........................................................................................................................sssssssss.................................s..................sssss..................................................................................................................................
+======================================================================
+ERROR: test_dead_worker_cleanup_closes_both_pipes_even_with_buffered_input (test_live_input.LiveInputTests.test_dead_worker_cleanup_closes_both_pipes_even_with_buffered_input)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/native-surface-transport-20261029/library/tests/test_live_input.py", line 46, in test_dead_worker_cleanup_closes_both_pipes_even_with_buffered_input
+    self.assertEqual(c.close(),2)
+                     ~~~~~~~^^
+  File "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/native-surface-transport-20261029/library/src/posim_slam/live_client.py", line 356, in close
+    if self.surface_directory is not None and self.surface_directory.exists():
+       ^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'LiveClient' object has no attribute 'surface_directory'
+
+----------------------------------------------------------------------
+Ran 493 tests in 15.123s
+
+FAILED (errors=1, skipped=16)
