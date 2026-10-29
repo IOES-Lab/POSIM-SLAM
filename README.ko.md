@@ -2,8 +2,12 @@
 
 `delayed_surface_update`는 상태 블록을 순서대로 제거해 상관관계가 있는 지연 거리
 관측을 준비합니다. 과거 자세를 확정값으로 고정하지 않고 조건부 관계와 현재 상태의
-불확실성을 유지합니다. 네이티브 추정기에서 결과 전체를 함께 적용하는 경로는 아직
-필요합니다. [방법·원본 의존 관계·검사](docs/diagnostics/delayed-surface-update-20261029/README.md).
+불확실성을 유지합니다. 선택형 네이티브 `SurfaceMarginalOwner`는 새 현재 상태 제약,
+조건부 관계와 원본 관측 기록을 함께 설치합니다. 활성 IMU·DVL·압력 제약은 각자의
+관측을 유지하며, 미지 평면은 최적화와 상태 주변화를 거쳐 보존합니다. 스트리밍
+프런트엔드 연결과 실제 소나 지도 검증은 아직 필요합니다.
+[네이티브 API와 적용 범위](docs/diagnostics/native-surface-owner-20261029/README.md),
+[참조 계산 방법](docs/diagnostics/delayed-surface-update-20261029/README.md).
 
 `retired_pose_archive`는 네이티브 조건부 식에서 과거 자세를 함께 복원하고,
 공유 잡음과 관측 불가능한 방향을 보존합니다. 현재 좌표를 알고 있다는 조건의

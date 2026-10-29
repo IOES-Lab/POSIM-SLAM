@@ -1,0 +1,54 @@
+{
+  "library_base": "ce6e4ec011ff0968b991e00d8487524897893f3c",
+  "native_owner_controls": 10,
+  "persistent_prior_controls": 5,
+  "native_metrics": {
+    "max_covariance_error": 1.2212453270876722e-15,
+    "max_gradient_error": 1.616484723854228e-13,
+    "max_information_error": 6.110667527536862e-13,
+    "max_solution_error": 6.701927068863966e-10,
+    "max_squared_residual_error": 2.842170943040401e-14,
+    "scope": "Synthetic real-owner algebra and lifecycle; no physical sonar map"
+  },
+  "source_sha256": {
+    "README.md": "0dcc73262c5332167989d37c8283008e1dd1014e6f7abdfa428c0e00ea9a9c88",
+    "README.ko.md": "db0c3776917c55f98564e4bb89d93fed5e8a488cbaba9251ffbbc827e2fef80b",
+    "tools/build_basalt.py": "6b6ae0be995e284c68d14c229d2b71323795af2ce431effef8d745c2d7cdbc5f",
+    "native/basalt/CMakeLists.txt": "40ae15e3e4154b1914dbb0ec115c665e68474b8ff7326edcee641d5545ac556f",
+    "native/basalt/surface_prior.hpp": "b2099b115bb15159805020a3b03a7664710b51bb67733716b5e4b882b0c8bbfc",
+    "native/basalt/surface_prior_probe_io.hpp": "0f416bceea2311fcce9c59cde84590546d08599a48b54e84fc7d8c9224610016",
+    "native/basalt/retired_pose_conditional.hpp": "503d3407873e9846fb341a4862ab5527bf49f6203d9ab82bff08ec43dd435d07",
+    "native/basalt/ping_optimizer.hpp": "1efca336f6c1518415c5ffc0173c3d5c85de8777833d88323d3cfb40b779f29b",
+    "native/basalt/surface_owner.hpp": "368fc62ea99631d5b78e23fb5ab14d1175075be20b179070c32440e98b8e085c",
+    "native/basalt/surface_owner_probe.cc": "5ac7f7fe3dcb0d846aa62b550a3d82760568b18e9c680097e5e18c2601b5aa44",
+    "native/basalt/test_surface_owner.py": "9cb3006c2995879c2ba430eabc6f0328bc531d6acf7b4a2bc7abf035eacb5aae"
+  },
+  "binary_sha256": {
+    "surface_owner_probe": "f46af7cded73245fed104ec9d6e2f0b0d077ffae7c1685e2fff2e1325e1c7495",
+    "surface_prior_probe": "3e09f21eb59dcecc41a6d178029cf37ece302f6272d5212b77aa30bb1ac56537",
+    "pressure_factor_probe": "bfa4c8fe1e59bae53650b6ea3692b78617c19f628a8c8ccb778e52a40b5ee185",
+    "dvl_factor_probe": "c61cea45b99f68807707dd13b29acbec1f0b5c3bed080d0cee10cadc09fe76c3"
+  },
+  "linked_libraries_sha256": {
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/retained-startup-20261028/shared-factor-build/libbasalt_core.a": "86f7cd7e7dc0c6f21042e1e315aa3803f3b5a61e36550b05be62651b5d6c7f8f",
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/posim332f629-sdk/lib/libtbb.12.19.dylib": "52720ffa2562fce4bd048c1365b8b7ce40667d9e2bea2dae85660848d483622d",
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/posim332f629-sdk/lib/libfmt.12.1.0.dylib": "4ad358bea879a784e1e0b8b63a124911a324cef804670b4aab0b72acdb0117c0",
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/retained-startup-20261028/shared-factor-build/lib/libopengv.a": "ef8b77b128a6967c9979cf331e496d27bf2c8c4637b94b36b7e9769723a81c2d",
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/posim332f629-sdk/lib/libopencv_calib3d.4.13.0.dylib": "9b4e07e05a396523b12a5b513ead5b62c5d9f7a89909319999a58c1ba28d63e3",
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/posim332f629-sdk/lib/libopencv_features2d.4.13.0.dylib": "6e667061d42e8422cfc5104e4318dbf27250ccca2e50628db74f860935a6bbd1",
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/posim332f629-sdk/lib/libopencv_flann.4.13.0.dylib": "f3d784317d59487ce3532be7105a9d69c113100e1ea5902889d491aa0fd05d20",
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/posim332f629-sdk/lib/libopencv_imgcodecs.4.13.0.dylib": "026420bc676be9da0df3ef1db2e7475361628503ee23e359b9da23a580ae5e9c",
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/posim332f629-sdk/lib/libopencv_imgproc.4.13.0.dylib": "99b98fc01560f8ab33ffa7c7fde16052bbfe31d8332897337d17efa4a4c096fc",
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/posim332f629-sdk/lib/libopencv_core.4.13.0.dylib": "b9a4109ace32df68c12bc4005a372abb0de439077499e997532650116a592064"
+  },
+  "source_test_cases": 487,
+  "wheel_test_cases": 487,
+  "all_16_user_files_unchanged": true,
+  "synthetic_native_owner_updated": true,
+  "full_sdk_build_repeated": false,
+  "installed_sdk_modified": false,
+  "live_worker_updated": false,
+  "new_sensor_capture": false,
+  "physical_sonar_map": false,
+  "full_goal_complete": false
+}

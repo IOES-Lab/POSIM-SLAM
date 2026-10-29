@@ -15,12 +15,12 @@ inline Eigen::VectorXd vector(const Json& value) {
   if(!value.is_array() || value.size()>4096)throw std::invalid_argument("bounded_vector_required");
   Eigen::VectorXd out(value.size());for(Eigen::Index i=0;i<out.size();++i)out[i]=value.at(i).get<double>();return out;
 }
-inline std::vector<sp::Variable> order(const Json& value) {
-  if(!value.is_array() || value.size()>25)throw std::invalid_argument("bounded_order_required");
+inline std::vector<sp::Variable> order(const Json& value,bool retirement_source=false) {
+  if(!value.is_array() || value.size()>(retirement_source ? kMaxLivePoseBlocks+9 : 25))throw std::invalid_argument("bounded_order_required");
   std::vector<sp::Variable> out;
   for(const auto& v:value)out.push_back({kind(v.at("kind").get<std::string>()),probe::integer(v.at("ident")),
     probe::integer(v.at("size")),vector(v.at("reference"))});
-  sp::layout(out);return out;
+  sp::layout(out,retirement_source);return out;
 }
 inline std::vector<sp::RangeKey> keys(const Json& value) {
   if(!value.is_array() || value.size()>sp::maxRecentKeys)throw std::invalid_argument("bounded_range_keys_required");

@@ -12,26 +12,22 @@ struct RetiredPoseConditional {
   double marginal_information_relative_error=0.,marginal_gradient_relative_error=0.;
 };
 
-// Capture exact retiring-state information BEFORE those state columns disappear.
-// The pressure coordinate uses a fixed zero reference; its live datum may move.
-// The input is the same undamped, consumed system used for marginalization.
-inline std::optional<RetiredPoseConditional> captureRetiredPoseConditional(
-    const basalt::BundleAdjustmentBase<double>& owner,const basalt::AbsOrderMap& source,
-    const basalt::AbsOrderMap& retained,const Eigen::MatrixXd& jacobian,const Eigen::VectorXd& residual,
-    const std::optional<double>& pressure_datum,const Eigen::MatrixXd& actual_prior_j,const Eigen::VectorXd& actual_prior_b) {
-  if(!owner.lmdb.getLandmarks().empty())throw std::invalid_argument("pose_conditional_capture_requires_no_visual_landmarks");
-  const auto pressure=pressure_datum ? std::optional<surface_prior::ScalarCoordinate>(surface_prior::ScalarCoordinate{0,0.,*pressure_datum}) : std::nullopt;
-  const auto coordinates=surface_prior::ownedRetirementCoordinates(owner,source,pressure);
-  if(jacobian.cols()!=coordinates.delta.size() || jacobian.rows()!=residual.size() || !jacobian.rows())
+// One elimination for pose, plane and pressure coordinates. Callers supply the
+// same complete, undamped rows consumed by their marginal-prior installation.
+inline std::optional<RetiredPoseConditional> captureRetiringConditional(
+    const surface_prior::Coordinates& coordinates,const std::vector<int>& kept,
+    const Eigen::MatrixXd& jacobian,const Eigen::VectorXd& residual,
+    const Eigen::MatrixXd& actual_prior_j,const Eigen::VectorXd& actual_prior_b) {
+  if(jacobian.cols()!=surface_prior::layout(coordinates.order,true).count ||
+      jacobian.cols()!=coordinates.delta.size() || jacobian.rows()!=residual.size() || !jacobian.rows() ||
+      !jacobian.allFinite() || !residual.allFinite() || !coordinates.delta.allFinite())
     throw std::invalid_argument("pose_conditional_source_layout");
-  RetiredPoseConditional out;out.variables=coordinates.order;
-  std::vector<bool> used(jacobian.cols(),false);std::map<int,int64_t> by_column;
-  for(const auto& [stamp,block]:retained.abs_order_map)by_column.emplace(block.first,stamp);
-  for(const auto& [column,stamp]:by_column) {
-    const auto from=source.abs_order_map.at(stamp),to=retained.abs_order_map.at(stamp);
-    for(int i=0;i<to.second;++i){out.kept.push_back(from.first+i);used[from.first+i]=true;}
+  RetiredPoseConditional out;out.variables=coordinates.order;out.kept=kept;
+  std::vector<bool> used(jacobian.cols(),false);
+  for(int i:kept) {
+    if(i<0 || i>=jacobian.cols() || used[i])throw std::invalid_argument("unique_conditional_retained_coordinates_required");
+    used[i]=true;
   }
-  if(pressure_datum){out.kept.push_back(source.total_size);used[source.total_size]=true;}
   for(Eigen::Index i=0;i<jacobian.cols();++i)if(!used[i])out.removed.push_back(i);
   if(out.removed.empty())return std::nullopt;
   Eigen::MatrixXd ordered(jacobian.rows(),jacobian.cols());Eigen::Index column=0;
@@ -58,5 +54,23 @@ inline std::optional<RetiredPoseConditional> captureRetiredPoseConditional(
   if(!std::isfinite(out.marginal_information_relative_error) || !std::isfinite(out.marginal_gradient_relative_error))
     throw std::invalid_argument("nonfinite_pose_conditional_check");
   return out;
+}
+
+// Legacy state-only marginalization shares the complete conditional operation.
+inline std::optional<RetiredPoseConditional> captureRetiredPoseConditional(
+    const basalt::BundleAdjustmentBase<double>& owner,const basalt::AbsOrderMap& source,
+    const basalt::AbsOrderMap& retained,const Eigen::MatrixXd& jacobian,const Eigen::VectorXd& residual,
+    const std::optional<double>& pressure_datum,const Eigen::MatrixXd& actual_prior_j,const Eigen::VectorXd& actual_prior_b) {
+  if(!owner.lmdb.getLandmarks().empty())throw std::invalid_argument("pose_conditional_capture_requires_no_visual_landmarks");
+  const auto pressure=pressure_datum ? std::optional<surface_prior::ScalarCoordinate>(surface_prior::ScalarCoordinate{0,0.,*pressure_datum}) : std::nullopt;
+  const auto coordinates=surface_prior::ownedRetirementCoordinates(owner,source,pressure);
+  std::vector<int> kept;std::map<int,int64_t> by_column;
+  for(const auto& [stamp,block]:retained.abs_order_map)by_column.emplace(block.first,stamp);
+  for(const auto& [column,stamp]:by_column) {
+    const auto from=source.abs_order_map.at(stamp),to=retained.abs_order_map.at(stamp);
+    for(int i=0;i<to.second;++i)kept.push_back(from.first+i);
+  }
+  if(pressure_datum)kept.push_back(source.total_size);
+  return captureRetiringConditional(coordinates,kept,jacobian,residual,actual_prior_j,actual_prior_b);
 }
 }  // namespace posim_slam

@@ -1,0 +1,15 @@
+{
+  "README.md": "5e3dc65feab90ce110bb49e2abbad21b2daab6bc63892d36b164204aec44d10d",
+  "build-command.json": "295eee1e0a7acb54fc5fa70744903e29c20d049982cb4ac15c3d94800f1dc5d7",
+  "frozen-source.json": "f8baa7e00cebda891a2332d0fa6b3227dda6f8ae43252b721cc48e1c666ef731",
+  "group-logs.tar.gz": "a87fc70d8cd3ac34d67715deca34b9eecaf46019f4903675d7e649c2b71ea07c",
+  "qualification.json": "8a360fffd5208c9e5abe0424aea5d9f1d2040b38984fe7c3dd225f15fcc81e43",
+  "regression-build-commands.json": "a499e570c5d0b99886870155e9c56588602191e35f4adec045572d27ae70d3ac",
+  "source-receipt.json": "a60abce31d016ffb0984a445d36cd172c2d8a00d10cc36b826bbdee4983f3968",
+  "source-tests.log": "3cf68ea47a70fa989229444eeea47c554a23048bff419600d6ae40a2054a0a0c",
+  "traces/test_delayed_native_install_optimization_and_second_retirement_match_dense_system.json.gz": "5c7e325a2edc9e22f9a5ed8e0c773b3d89d4da668150302dc1fe0e2694992022",
+  "traces/test_dvl_and_pressure_retire_only_their_consumed_readings.json.gz": "f1ca9d6e7de8171ee556dd0fa960ad9a00ef01cc365d2dbb4aaca94a032a251a",
+  "verify.py": "de8f87cfa4efede852c62c7a09318f40804408d1bcc0640afd519d320c43c7d2",
+  "wheel-receipt.json": "4d4d6f0b59c1e81a1296a84f5d263495a86c38a7a24460ec64caaf890632d3de",
+  "wheel-tests.log": "4497b6c0a514e634614e192153098a431a5866c8d8462b57bb8f416f6ff9837d"
+}

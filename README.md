@@ -2,8 +2,13 @@
 
 `delayed_surface_update` prepares correlated late-range rows with sequential
 block elimination. It updates retiring-state conditionals and retains live-state
-uncertainty without freezing recovered poses. The native owner still needs an
-atomic installation path. [Method, original-data widths and controls](docs/diagnostics/delayed-surface-update-20261029/README.md).
+uncertainty without freezing recovered poses. The optional native
+`SurfaceMarginalOwner` installs new live rows, conditional replacements and the
+original-reading ledger together, while active IMU/DVL/pressure factors retain
+their own observations. It keeps unknown planes through optimization and state
+retirement. Streaming-frontend activation and physical sonar-map qualification
+remain required. [Native owner API and scope](docs/diagnostics/native-surface-owner-20261029/README.md),
+[reference method](docs/diagnostics/delayed-surface-update-20261029/README.md).
 
 `retired_pose_archive` jointly recovers old poses from native Gaussian
 conditionals, preserving shared noise and unbounded directions. It is a read-only

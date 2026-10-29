@@ -89,8 +89,9 @@ struct Prior {
   }
 };
 struct Rows {Eigen::MatrixXd jacobian;Eigen::VectorXd residual;};
-inline Rows linearize(const Prior& prior,const std::vector<Variable>& order,const Eigen::VectorXd& delta,const std::string& epoch) {
-  prior.requireValid();const auto target=layout(order);
+inline Rows linearize(const Prior& prior,const std::vector<Variable>& order,const Eigen::VectorXd& delta,const std::string& epoch,
+    bool retirement_source=false) {
+  prior.requireValid();const auto target=layout(order,retirement_source);
   if(epoch!=prior.epoch)throw std::invalid_argument("surface_prior_epoch_mismatch");
   if(delta.size()!=target.count || !delta.allFinite())throw std::invalid_argument("finite_owner_delta_required");
   Rows out;out.jacobian=Eigen::MatrixXd::Zero(prior.jacobian.rows(),target.count);Eigen::Index source=0;
@@ -109,8 +110,8 @@ struct Retain {Kind kind;int64_t id;Eigen::Index size;};
 inline Prior marginalize(const std::vector<Variable>& order,const Eigen::VectorXd& delta,
     const Eigen::MatrixXd& jacobian,const Eigen::VectorXd& residual,const std::vector<Retain>& retain,
     const std::string& epoch,const std::vector<RangeKey>& range_keys={},const Prior* previous=nullptr,
-    std::optional<int64_t> close_through=std::nullopt) {
-  const auto source=layout(order);const auto originals=keys(range_keys);
+    std::optional<int64_t> close_through=std::nullopt,bool retirement_source=false) {
+  const auto source=layout(order,retirement_source);const auto originals=keys(range_keys);
   if(delta.size()!=source.count || !delta.allFinite() || jacobian.cols()!=source.count ||
      jacobian.rows()>4096 || residual.size()!=jacobian.rows() || originals.size()>size_t(jacobian.rows()) ||
      !jacobian.allFinite() || !residual.allFinite() || !label(epoch))
@@ -119,7 +120,7 @@ inline Prior marginalize(const std::vector<Variable>& order,const Eigen::VectorX
     if(!source.columns.count({Kind::State,std::get<0>(k)}))throw std::invalid_argument("new_range_requires_resident_measurement_pose");
   Eigen::MatrixXd j=jacobian;Eigen::VectorXd r=residual;Prior out;out.epoch=epoch;
   if(previous) {
-    const auto old=linearize(*previous,order,delta,epoch);const auto rows=j.rows();
+    const auto old=linearize(*previous,order,delta,epoch,retirement_source);const auto rows=j.rows();
     j.conservativeResize(rows+old.jacobian.rows(),Eigen::NoChange);j.bottomRows(old.jacobian.rows())=old.jacobian;
     r.conservativeResize(rows+old.residual.size());r.tail(old.residual.size())=old.residual;
     out.ledger=previous->ledger;
