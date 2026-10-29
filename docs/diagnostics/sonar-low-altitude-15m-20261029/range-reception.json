@@ -1,0 +1,15 @@
+{
+  "file": ".local/sonar-low-altitude-15m-20261029/record/inputs/sonar-0000.npz",
+  "shape": [
+    598,
+    256
+  ],
+  "first_range_m": 0.0,
+  "last_range_m": 14.974916458129883,
+  "range_bin_spacing_m": 0.025083541870117188,
+  "stamp": [
+    1,
+    500000000
+  ],
+  "sha256": "76b0e5c92e7307badad30fb85e7beadb0218ee619609fc6c247729a8a7ec7452"
+}

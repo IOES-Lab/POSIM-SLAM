@@ -9,6 +9,10 @@
 모든 고각 해를 보존합니다. [이동 입력과 관측 중첩 진단](docs/diagnostics/dvl-moving-overlap-20261029/README.md)에
 관측 대응과 공간적 지지 범위의 조건을 정리합니다.
 
+`evaluate_dvl_sonar_prediction.py`는 음향 제약을 제외한 자세와 DVL 평면으로
+전방 소나의 기하학적 거리를 예측합니다. 관측된 경계 거리를 지지 범위 선택에
+사용하지 않습니다. [입력·전체 오차·데이터 위치](docs/diagnostics/sonar-low-altitude-15m-20261029/README.md).
+
 [네이티브 VIO 장시간 운용과 모드 전환](docs/validation/native-vio-lifecycle-20261028/README.md)에 장시간 운용의 전체 지도, 센서 조합 전환과 독립 항법 수신 기록을 보존합니다.
 
 [초기화 계산 대조](docs/validation/seed-scoring-20261028/README.md)에 센서 원본만 사용하는 수치 비교와 소스가 연결된 복구 지도 전체를 보존합니다.
