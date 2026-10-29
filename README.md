@@ -1,5 +1,10 @@
 # POSIM-SLAM
 
+`retired_pose_archive` jointly recovers old poses from native Gaussian
+conditionals, preserving shared noise and unbounded directions. It is a read-only
+diagnostic that conditions on known live coordinates; capture is off by default.
+[Delayed-state recovery and its covariance limits](docs/diagnostics/retired-pose-conditionals-20261029/README.md).
+
 `surface_prior` retains joint pose, unknown-plane and pressure-datum information
 when source states retire. It preserves cross terms and fixed owner references,
 with a bounded original-range ledger. The native owner bridge reads actual

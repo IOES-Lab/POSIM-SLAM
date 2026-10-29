@@ -15,6 +15,7 @@ from .dvl_scale import rotation
 from .ping_joint import eliminate_patch
 
 MAX_COLUMNS=265  # Sixteen inertial states, eight planes and one pressure datum.
+MAX_RETIREMENT_COLUMNS=1024  # Existing native source order, including incoming/KF blocks.
 MAX_RECENT_KEYS=32768
 
 
@@ -43,16 +44,18 @@ class Variable:
     def key(self):return self.kind,self.ident
 
 
-def layout(order):
+def layout(order,*,retirement_source=False):
     order=tuple(order)
-    if (not order or len(order)>25 or any(not isinstance(v,Variable) for v in order)
-            or sum(v.kind=='state' for v in order)>16 or sum(v.kind=='plane' for v in order)>8
+    if type(retirement_source) is not bool:raise ValueError('explicit_surface_order_role_required')
+    state_limit=73 if retirement_source else 16
+    if (not order or len(order)>state_limit+9 or any(not isinstance(v,Variable) for v in order)
+            or sum(v.kind=='state' for v in order)>state_limit or sum(v.kind=='plane' for v in order)>8
             or sum(v.kind=='pressure' for v in order)>1
             or len({v.key for v in order})!=len(order)):
         raise ValueError('bounded_unique_surface_prior_order_required')
     columns={};offset=0
     for variable in order:columns[variable.key]=(offset,variable);offset+=variable.size
-    if offset>MAX_COLUMNS:raise ValueError('surface_prior_column_budget')
+    if offset>(MAX_RETIREMENT_COLUMNS if retirement_source else MAX_COLUMNS):raise ValueError('surface_prior_column_budget')
     return order,columns,offset
 
 

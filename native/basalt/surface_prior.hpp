@@ -18,8 +18,9 @@ struct Variable {
   VariableKey key() const {return {kind,id};}
 };
 struct Layout {std::map<VariableKey,std::pair<Eigen::Index,size_t>> columns;Eigen::Index count=0;};
-inline Layout layout(const std::vector<Variable>& order) {
-  if(order.empty() || order.size()>25)throw std::invalid_argument("bounded_unique_surface_prior_order_required");
+inline Layout layout(const std::vector<Variable>& order,bool retirement_source=false) {
+  const size_t state_limit=retirement_source ? kMaxLivePoseBlocks : 16;
+  if(order.empty() || order.size()>state_limit+9)throw std::invalid_argument("bounded_unique_surface_prior_order_required");
   Layout out;size_t states=0,planes=0,pressure=0;
   for(size_t i=0;i<order.size();++i) {
     const auto& v=order[i];Eigen::Index reference_size=0;
@@ -43,7 +44,8 @@ inline Layout layout(const std::vector<Variable>& order) {
       throw std::invalid_argument("bounded_unique_surface_prior_order_required");
     out.count+=v.size;
   }
-  if(states>16 || planes>8 || pressure>1 || out.count>maxColumns)throw std::invalid_argument("surface_prior_column_budget");
+  if(states>state_limit || planes>8 || pressure>1 || out.count>(retirement_source ? kMaxStateColumns+1 : maxColumns))
+    throw std::invalid_argument("surface_prior_column_budget");
   return out;
 }
 inline std::set<RangeKey> keys(const std::vector<RangeKey>& input) {

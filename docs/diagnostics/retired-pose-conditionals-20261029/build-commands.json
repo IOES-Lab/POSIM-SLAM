@@ -1,0 +1,26 @@
+[
+  [
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/posim332f629-sdk/bin/cmake",
+    "-S",
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/conditional-surface-20261029/library/native/basalt",
+    "-B",
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/conditional-surface-20261029/native-build",
+    "-DCMAKE_BUILD_TYPE=Release",
+    "-DCMAKE_POLICY_VERSION_MINIMUM=3.5",
+    "-DCMAKE_PREFIX_PATH=/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/posim332f629-sdk",
+    "-DSOURCE_ROOT=/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/basalt-vio",
+    "-DPython3_EXECUTABLE=/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/posim332f629-sdk/bin/python3"
+  ],
+  [
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/posim332f629-sdk/bin/cmake",
+    "--build",
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/conditional-surface-20261029/native-build",
+    "--parallel",
+    "2",
+    "--target",
+    "basalt_stream",
+    "basalt_joint_information_probe",
+    "basalt_pressure_factor_probe",
+    "basalt_ping_joint_probe"
+  ]
+]

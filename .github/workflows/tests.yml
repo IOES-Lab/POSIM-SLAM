@@ -19,6 +19,13 @@ jobs:
           -o "$RUNNER_TEMP/ping_joint_probe"
       - name: Compare native and reference solutions
         run: POSIM_SLAM_PING_PROBE="$RUNNER_TEMP/ping_joint_probe" python native/basalt/test_ping_joint_native.py
+      - name: Compare rank-aware conditional information splits
+        run: |
+          c++ -std=c++17 -O2 -DEIGEN_MPL2_ONLY -DEIGEN_DONT_PARALLELIZE \
+            -I/usr/include/eigen3 native/basalt/joint_information_probe.cc \
+            -o "$RUNNER_TEMP/joint_information_probe"
+          POSIM_SLAM_JOINT_INFORMATION_PROBE="$RUNNER_TEMP/joint_information_probe" \
+            python native/basalt/test_joint_information_native.py
       - name: Check joint map covariance against dense and coordinate controls
         run: |
           c++ -std=c++17 -O2 -DEIGEN_MPL2_ONLY -DEIGEN_DONT_PARALLELIZE \

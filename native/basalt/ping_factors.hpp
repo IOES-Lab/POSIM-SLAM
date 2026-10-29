@@ -23,6 +23,14 @@ class PingFactorStore {
   size_t size() const {return definitions_.size()+ground_.size();}
   GroundFactorStore& ground() {return ground_;}
   int64_t lastObservation() const {return std::max(last_observation_,ground_.lastObservation());}
+  void enablePoseConditionalCapture() {
+    if(capture_pose_conditionals_ || lastObservation()>0 || owner_.posim_ping_trial_active)
+      throw std::logic_error("pose_conditional_capture_must_start_before_observations");
+    capture_pose_conditionals_=true;
+  }
+  std::vector<RetiredPoseConditional> takePoseConditionals() {
+    std::vector<RetiredPoseConditional> result;result.swap(pose_conditionals_);return result;
+  }
 
   void add(const basalt::AbsOrderMap& order,int plane_id,const Vec3& normal,double distance,
       const std::set<basalt::KeypointId>& ids,const OwnedPingObservation& observation,
@@ -95,7 +103,12 @@ class PingFactorStore {
       if(!imu.imu_meas.count(stamp) || imu.imu_meas.at(stamp)!=&measurement)
         throw std::invalid_argument("changed_ping_factor_imu_owner");
     auto groups=specs(order);
-    auto prepared=preparePingPrior(owner_,order,groups,prior,imu,removed,pose_only,lost,sonar,dvl,pressure);
+    auto prepared=preparePingPrior(owner_,order,groups,prior,imu,removed,pose_only,lost,sonar,dvl,pressure,capture_pose_conditionals_);
+    auto pending=pose_conditionals_;auto next_id=next_pose_conditional_id_;
+    if(prepared.pose_conditional) {
+      if(pending.size()>=16)throw std::invalid_argument("pose_conditional_capture_backlog");
+      prepared.pose_conditional->id=next_id++;pending.push_back(std::move(*prepared.pose_conditional));
+    }
     auto install=[&] {
       installPingMarginalPrior(owner_,prior,groups,measurements,prepared.retirement,
         prepared.layout,removed,pose_only,prepared.prior);
@@ -103,10 +116,14 @@ class PingFactorStore {
     auto with_acoustic=[&] {if(sonar)sonar->retireWith(*prepared.acoustic,install);else install();};
     auto with_velocity=[&] {if(dvl)dvl->retireWith(*prepared.dvl,with_acoustic);else with_acoustic();};
     if(pressure)pressure->retireWith(*prepared.pressure,prepared.pressure_prior,with_velocity);else with_velocity();
+    pose_conditionals_.swap(pending);next_pose_conditional_id_=next_id;
     for(int id:prepared.retirement.planes){definitions_.erase(id);ground_.erase(id);}
     return std::move(prepared.retirement);
   }
  private:
+  bool capture_pose_conditionals_=false;
+  uint64_t next_pose_conditional_id_=1;
+  std::vector<RetiredPoseConditional> pose_conditionals_;
   void requireNewObservation(int64_t stamp) const {
     if(owner_.posim_ping_trial_active)throw std::logic_error("ping_factors_during_trial");
     if(stamp<=last_observation_)throw std::invalid_argument("replayed_or_reordered_ping_observation");

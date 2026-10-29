@@ -26,6 +26,60 @@ struct JointPatchReduction {
   }
 };
 
+struct JointInformationSplit {
+  JointPatchReduction reduced;
+  Eigen::MatrixXd conditional_jacobian,observable_noise_factor,unobservable_basis;
+  Eigen::VectorXd conditional_residual;
+};
+
+// The marginal and conditional squared norms sum to the original norm for
+// every retained/retiring coordinate. Conditional noise has unit independent
+// latent coefficients; null columns are unbounded, never zero-variance poses.
+inline JointInformationSplit splitJointInformation(const Eigen::MatrixXd& j,
+    const Eigen::VectorXd& residual,Eigen::Index retained,bool include_conditional=true) {
+  if(j.rows()>4096 || j.cols()>kMaxJointColumns || residual.size()!=j.rows() ||
+     !j.allFinite() || !residual.allFinite() || retained<0 || retained>j.cols())
+    throw std::invalid_argument("invalid_joint_information_split");
+  const Eigen::Index count=j.cols()-retained;JointInformationSplit out;
+  if(!count || !j.rows()) {
+    out.reduced={j.leftCols(retained),residual,Eigen::MatrixXd::Zero(count,retained),Eigen::VectorXd::Zero(count),0,count};
+    if(include_conditional) {
+      out.conditional_jacobian=Eigen::MatrixXd::Zero(0,j.cols());out.conditional_residual.resize(0);
+      out.observable_noise_factor=Eigen::MatrixXd::Zero(count,0);out.unobservable_basis=Eigen::MatrixXd::Identity(count,count);
+    }
+    return out;
+  }
+  const Eigen::MatrixXd nuisance=j.rightCols(count);
+  const unsigned options=Eigen::ComputeThinU|(include_conditional ? Eigen::ComputeFullV : Eigen::ComputeThinV);
+  Eigen::JacobiSVD<Eigen::MatrixXd> svd(nuisance,options);
+  if(svd.info()!=Eigen::Success)throw std::runtime_error("joint_patch_svd_failed");
+  const auto& singular=svd.singularValues();
+  const double tolerance=std::max(nuisance.rows(),nuisance.cols())*
+      std::numeric_limits<double>::epsilon()*singular[0];
+  const Eigen::Index rank=(singular.array()>tolerance).count();
+  Eigen::MatrixXd combined(j.rows(),retained+1);combined.leftCols(retained)=j.leftCols(retained);combined.col(retained)=residual;
+  Eigen::MatrixXd backsub=Eigen::MatrixXd::Zero(count,retained+1);
+  if(include_conditional) {
+    const Eigen::MatrixXd observed=svd.matrixU().leftCols(rank);
+    out.conditional_jacobian=observed.transpose()*j;out.conditional_residual=observed.transpose()*residual;
+    out.observable_noise_factor=svd.matrixV().leftCols(rank)*singular.head(rank).cwiseInverse().asDiagonal();
+    out.unobservable_basis=svd.matrixV().rightCols(count-rank);
+  }
+  if(rank) {
+    const Eigen::MatrixXd observed=svd.matrixU().leftCols(rank);
+    backsub.noalias()=-(svd.matrixV().leftCols(rank)*singular.head(rank).cwiseInverse().asDiagonal())*
+        (observed.transpose()*combined);
+    if(rank<j.rows()) {
+      Eigen::HouseholderQR<Eigen::MatrixXd> qr(observed);
+      combined=(qr.householderQ().adjoint()*combined).eval();
+    }
+  }
+  const auto remaining=j.rows()-rank;
+  out.reduced={combined.bottomRows(remaining).leftCols(retained),combined.col(retained).tail(remaining),
+               backsub.leftCols(retained),backsub.col(retained),rank,count-rank};
+  return out;
+}
+
 inline JointPatchReduction eliminateJointPatch(
     const Eigen::MatrixXd& j,const Eigen::VectorXd& residual,Eigen::Index retained,double damping=0.) {
   if (j.rows()<1 || j.rows()>4096 || j.cols()<2 || j.cols()>kMaxJointColumns ||
@@ -65,31 +119,6 @@ inline JointPatchReduction eliminateJointPatch(
     }
     return eliminateJointPatch(augmented,values,retained);
   }
-  const Eigen::MatrixXd nuisance=j.rightCols(j.cols()-retained);
-  Eigen::JacobiSVD<Eigen::MatrixXd> svd(nuisance,Eigen::ComputeThinU|Eigen::ComputeThinV);
-  if (svd.info()!=Eigen::Success)throw std::runtime_error("joint_patch_svd_failed");
-  const auto& singular=svd.singularValues();
-  const double tolerance=std::max(nuisance.rows(),nuisance.cols())*
-      std::numeric_limits<double>::epsilon()*singular[0];
-  const Eigen::Index rank=(singular.array()>tolerance).count();
-  // Only the observed nuisance span is needed. Forming full U (rows x rows)
-  // and its explicit nullspace makes tall groups unnecessarily quadratic in
-  // observation count. Apply the orthogonal complement through reflectors.
-  // SVD still decides rank with the identical cutoff and minimum-norm solve.
-  Eigen::MatrixXd combined(j.rows(),retained+1);
-  combined.leftCols(retained)=j.leftCols(retained);combined.col(retained)=residual;
-  Eigen::MatrixXd backsub=Eigen::MatrixXd::Zero(nuisance.cols(),retained+1);
-  if(rank) {
-    const Eigen::MatrixXd observed=svd.matrixU().leftCols(rank);
-    backsub.noalias()=-(svd.matrixV().leftCols(rank)*singular.head(rank).cwiseInverse().asDiagonal())*
-        (observed.transpose()*combined);
-    if(rank<j.rows()) {
-      Eigen::HouseholderQR<Eigen::MatrixXd> qr(observed);
-      combined=(qr.householderQ().adjoint()*combined).eval();
-    }
-  }
-  const auto remaining=j.rows()-rank;
-  return {combined.bottomRows(remaining).leftCols(retained),combined.col(retained).tail(remaining),
-          backsub.leftCols(retained),backsub.col(retained),rank,nuisance.cols()-rank};
+  return splitJointInformation(j,residual,retained,false).reduced;
 }
 }  // namespace posim_slam

@@ -37,6 +37,18 @@ double number(const char* p) {
 Json vector3(const Vec3& value) {
   return {value.x(),value.y(),value.z()};
 }
+Json conditionalVector(const Eigen::VectorXd& value) {
+  Json result=Json::array();for(Eigen::Index i=0;i<value.size();++i)result.push_back(value[i]);return result;
+}
+Json conditionalMatrix(const Eigen::MatrixXd& value) {
+  Json result=Json::array();for(Eigen::Index i=0;i<value.rows();++i)result.push_back(conditionalVector(value.row(i).transpose()));return result;
+}
+Json conditionalVariables(const std::vector<posim_slam::surface_prior::Variable>& variables) {
+  Json result=Json::array();
+  for(const auto& v:variables)result.push_back({{"kind",v.kind==posim_slam::surface_prior::Kind::State ? "state" : "pressure"},
+    {"ident",v.id},{"size",v.size},{"reference",conditionalVector(v.reference)}});
+  return result;
+}
 
 int main(int argc,char** argv) {
   if(argc!=2)return 2;
@@ -106,8 +118,14 @@ int main(int argc,char** argv) {
     owner->posim_map_point_three_sigma_m=map_point_three_sigma_m;
     const bool dvl_enabled=input_settings.value("enable_joint_dvl",false);
     const bool pressure_enabled=input_settings.value("enable_joint_pressure",false);
+    const bool capture_pose_conditionals=input_settings.value("capture_retired_pose_conditionals",false);
+    const std::string conditional_epoch=input_settings.value("conditional_archive_epoch",std::string());
+    if(capture_pose_conditionals && (!sonar_clock || !sonar_enabled || !pressure_enabled ||
+        conditional_epoch.empty() || conditional_epoch.size()>128))fail("pose_conditional_capture_requires_sonar_pressure_epoch");
     const bool terrain_enabled=input_settings.value("enable_terrain_ping",false);
     const bool ground_enabled=input_settings.value("enable_sonar_ground",false);
+    if(capture_pose_conditionals && (terrain_enabled || ground_enabled || input_settings.value("enable_joint_ping",false)))
+      fail("pose_conditional_capture_requires_no_ping_or_ground_factors");
     if(ground_enabled && (!sonar_clock || terrain_enabled || input_settings.value("enable_joint_ping",false)))
       fail("ground_requires_exclusive_sonar_clock");
     if(terrain_enabled && input_settings.value("enable_joint_ping",false))fail("conflicting_ping_surface_modes");
@@ -176,8 +194,9 @@ int main(int argc,char** argv) {
       ping_ray_sigma=positive(settings,"per_ray_noise_stddev");
       if(!std::isfinite(ping_bias))throw std::runtime_error("invalid_ping_bias");
     }
-    if(joint_enabled || terrain_enabled || ground_enabled)
+    if(joint_enabled || terrain_enabled || ground_enabled || capture_pose_conditionals)
       owner->posim_ping_factors=std::make_shared<posim_slam::PingFactorStore>(static_cast<basalt::BundleAdjustmentBase<double>&>(*owner));
+    if(capture_pose_conditionals)owner->posim_ping_factors->enablePoseConditionalCapture();
     owner->posim_after_joint=[&](auto& estimator,int64_t stamp) {
       std::lock_guard<std::mutex> lock(ping_mutex);
       // Copy on the estimator thread before marginalization. Output threads
@@ -277,6 +296,21 @@ int main(int argc,char** argv) {
       for(const auto& entry:base.frame_poses)retained.insert(entry.first);
       for(const auto& entry:base.frame_states)retained.insert(entry.first);
       report["retained_pose_stamps_ns"]=retained;
+      if(capture_pose_conditionals) {
+        const auto order=posim_slam::planPingMarginalLayout(base,{},{},{},{}).source;
+        const auto coordinates=posim_slam::surface_prior::ownedRetirementCoordinates(base,order,
+          posim_slam::surface_prior::ScalarCoordinate{0,0.,estimator.posim_pressure_factors->datum()});
+        Json nodes=Json::array();
+        for(const auto& node:estimator.posim_ping_factors->takePoseConditionals())
+          nodes.push_back({{"id",node.id},{"variables",conditionalVariables(node.variables)},
+            {"kept_indices",node.kept},{"removed_indices",node.removed},
+            {"regression",conditionalMatrix(node.regression)},{"offset",conditionalVector(node.offset)},
+            {"noise_factor",conditionalMatrix(node.noise)},{"unbounded_basis",conditionalMatrix(node.unbounded)},
+            {"marginal_information_relative_error",node.marginal_information_relative_error},
+            {"marginal_gradient_relative_error",node.marginal_gradient_relative_error}});
+        report["pose_archive"]={{"epoch",conditional_epoch},{"stamp_ns",stamp},
+          {"variables",conditionalVariables(coordinates.order)},{"delta",conditionalVector(coordinates.delta)},{"conditionals",nodes}};
+      }
       report["visual_projection_rejections_total"]=estimator.posim_projection_rejections;
       if(report.value("owner_received",false))report["accepted_steps"]=estimator.posim_joint_last_accepted;
       report["map_qualified"]=false;

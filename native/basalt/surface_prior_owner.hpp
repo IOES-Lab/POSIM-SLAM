@@ -2,25 +2,26 @@
 #pragma once
 #include "surface_prior.hpp"
 #include "ping_linearization.hpp"
+#include "ping_marginal.hpp"
 
 namespace posim_slam::surface_prior {
 struct ScalarCoordinate {int64_t id;double reference,value;};
 struct Coordinates {std::vector<Variable> order;Eigen::VectorXd delta;};
+inline Eigen::VectorXd poseReference(const Sophus::SE3d& pose,Eigen::Index size) {
+  Eigen::VectorXd reference(size);reference.head<3>()=pose.translation();const auto r=pose.rotationMatrix();
+  for(int i=0;i<3;++i)for(int j=0;j<3;++j)reference[3+3*i+j]=r(i,j);
+  return reference;
+}
 
 // Read-only bridge to actual Basalt owner coordinates. The fixed references
 // belong to the owner, not to a caller's fitted world-plane snapshot. A pressure
 // datum remains an explicit scalar with the caller-owned reference and value.
 // This does not retire transport factors or install a production marginal prior.
 inline Coordinates ownedCoordinates(const basalt::BundleAdjustmentBase<double>& owner,
-    const std::vector<Variable>& expected,const std::optional<ScalarCoordinate>& pressure=std::nullopt) {
-  const auto shape=layout(expected);Coordinates out;out.delta=Eigen::VectorXd::Zero(shape.count);
+    const std::vector<Variable>& expected,const std::optional<ScalarCoordinate>& pressure=std::nullopt,
+    bool retirement_source=false) {
+  const auto shape=layout(expected,retirement_source);Coordinates out;out.delta=Eigen::VectorXd::Zero(shape.count);
   size_t states=0,planes=0,datums=0;Eigen::Index column=0;
-  auto poseReference=[](const Sophus::SE3d& pose,Eigen::Index size) {
-    Eigen::VectorXd reference(size);reference.head<3>()=pose.translation();
-    const auto r=pose.rotationMatrix();
-    for(int i=0;i<3;++i)for(int j=0;j<3;++j)reference[3+3*i+j]=r(i,j);
-    return reference;
-  };
   for(const auto& v:expected) {
     Variable current=v;
     if(v.kind==Kind::State) {
@@ -54,6 +55,32 @@ inline Coordinates ownedCoordinates(const basalt::BundleAdjustmentBase<double>& 
   }
   if(states!=owner.frame_poses.size()+owner.frame_states.size() || planes!=owner.posim_ping_planes.size() ||
      datums!=size_t(pressure.has_value()))throw std::invalid_argument("complete_persistent_owner_order_required");
-  layout(out.order);return out;
+  layout(out.order,retirement_source);return out;
+}
+
+// Read the complete state source order before retirement, including its
+// incoming state. Plane/visual elimination must not precede this pose capture.
+inline Coordinates ownedRetirementCoordinates(const basalt::BundleAdjustmentBase<double>& owner,
+    const basalt::AbsOrderMap& order,const std::optional<ScalarCoordinate>& pressure=std::nullopt) {
+  requireStateOrder(order);
+  if(owner.posim_ping_planes.size())throw std::invalid_argument("pose_conditional_capture_has_plane_variables");
+  std::map<int,int64_t> by_column;for(const auto& [stamp,block]:order.abs_order_map)by_column.emplace(block.first,stamp);
+  std::vector<Variable> descriptors;
+  for(const auto& [column,stamp]:by_column) {
+    const auto size=order.abs_order_map.at(stamp).second;Variable v{Kind::State,stamp,size,{}};
+    if(size==6) {
+      const auto found=owner.frame_poses.find(stamp);
+      if(found==owner.frame_poses.end())throw std::invalid_argument("persistent_owner_pose_missing_or_wrong_size");
+      v.reference=poseReference(found->second.getPoseLin(),12);
+    } else {
+      const auto found=owner.frame_states.find(stamp);
+      if(found==owner.frame_states.end())throw std::invalid_argument("persistent_owner_inertial_state_missing");
+      const auto& state=found->second.getStateLin();v.reference=poseReference(state.T_w_i,21);
+      v.reference.segment<3>(12)=state.vel_w_i;v.reference.segment<3>(15)=state.bias_gyro;v.reference.segment<3>(18)=state.bias_accel;
+    }
+    descriptors.push_back(v);
+  }
+  if(pressure)descriptors.push_back({Kind::Pressure,pressure->id,1,Eigen::VectorXd::Constant(1,pressure->reference)});
+  return ownedCoordinates(owner,descriptors,pressure,true);
 }
 }  // namespace posim_slam::surface_prior
