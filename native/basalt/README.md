@@ -1558,3 +1558,20 @@ association, loop closure or terrain mesh export is provided by this mode.
 점과 평면의 연결, 루프 폐쇄, 지형 메시 내보내기가 없습니다.
 
 [Matched replay evidence / 같은 입력의 비교 검증](../../docs/diagnostics/terrain-ping.md).
+## Joint per-beam surfaces / 빔별 평면 제약
+
+`range_surface.hpp` provides an Eigen-only finite-cone/vertical-fan model with
+explicit full range covariance and state-dependent raw support. The
+`range_surface_group.hpp` owner adapter uses the existing grouped elimination,
+trial rollback and marginal-prior installation. The portable JSON probe checks
+Python parity; `basalt_range_surface_owner_probe` additionally exercises actual
+Basalt state increments, optimization and whole-group retirement. These
+diagnostics require supplied echo/plane membership; no live range transport or
+surface map is enabled. [Controls and retention audit](../../docs/diagnostics/joint-surface-ranges-20261029/README.md).
+
+`range_surface.hpp`는 Eigen만 사용하는 유한 원뿔·수직 팬 모델이며, 전체 거리
+공분산과 현재 상태에서 계산한 원본 관측 범위를 사용합니다. 소유자 어댑터는
+기존 묶음 소거·시험 갱신 복원·주변화 사전정보 설치를 사용합니다. 이식형
+JSON 검사기는 Python 계산을 대조하고, 소유자 검사기는 실제 Basalt 상태 갱신,
+최적화와 전체 관측 그룹 폐기를 검증합니다. 에코·평면 대응은 호출자가 제공하며,
+라이브 거리 전송과 표면 지도는 아직 활성화하지 않습니다.

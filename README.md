@@ -1,5 +1,11 @@
 # POSIM-SLAM
 
+`range_surface_joint` and the native `makeOwnedRangeSurfaces` adapter keep
+per-beam DVL cones, sonar fans, current poses and unknown planes in one
+correlated block. Original range keys identify every factor and support source.
+They require explicit surface hypotheses and uncertainty; live surface fusion
+is not enabled. [Geometry, native-owner checks and retention limits](docs/diagnostics/joint-surface-ranges-20261029/README.md).
+
 `dvl_surface` provides independent finite-cone/local-plane range residuals,
 pose/plane Jacobians, full covariance whitening and local support checks.
 It requires an associated plane and explicit uncertainty; the application still

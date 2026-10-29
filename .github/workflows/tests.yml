@@ -10,7 +10,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - run: sudo apt-get update -qq && sudo apt-get install -y libeigen3-dev
+      - run: sudo apt-get update -qq && sudo apt-get install -y libeigen3-dev nlohmann-json3-dev
       - run: python -m pip install -e .
       - name: Compile grouped Ping elimination probe
         run: >-
@@ -25,6 +25,13 @@ jobs:
             -I/usr/include/eigen3 native/basalt/map_information_probe.cc \
             -o "$RUNNER_TEMP/map_information_probe"
           "$RUNNER_TEMP/map_information_probe"
+      - name: Compare native finite-cone and sonar-fan joint surface ranges
+        run: |
+          c++ -std=c++17 -O2 -DEIGEN_MPL2_ONLY -DEIGEN_DONT_PARALLELIZE \
+            -I/usr/include/eigen3 native/basalt/range_surface_probe.cc \
+            -o "$RUNNER_TEMP/range_surface_probe"
+          POSIM_SLAM_RANGE_SURFACE_PROBE="$RUNNER_TEMP/range_surface_probe" \
+            python native/basalt/test_range_surface_native.py
   independent-python:
     runs-on: ubuntu-latest
     strategy:

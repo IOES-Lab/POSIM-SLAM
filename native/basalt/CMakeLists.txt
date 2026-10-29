@@ -159,6 +159,12 @@ target_link_libraries(basalt_terrain_ping_probe PRIVATE basalt_core)
 add_executable(basalt_sonar_ground_probe sonar_ground_probe.cc)
 target_link_libraries(basalt_sonar_ground_probe PRIVATE basalt_core)
 
+add_executable(basalt_range_surface_probe range_surface_probe.cc)
+target_link_libraries(basalt_range_surface_probe PRIVATE Eigen3::Eigen)
+target_include_directories(basalt_range_surface_probe PRIVATE ${SOURCE_ROOT}/json/single_include)
+add_executable(basalt_range_surface_owner_probe range_surface_owner_probe.cc)
+target_link_libraries(basalt_range_surface_owner_probe PRIVATE basalt_core)
+
 add_executable(basalt_ping_joint_probe ping_joint_probe.cc)
 target_link_libraries(basalt_ping_joint_probe PRIVATE Eigen3::Eigen)
 
