@@ -1575,3 +1575,17 @@ surface map is enabled. [Controls and retention audit](../../docs/diagnostics/jo
 JSON 검사기는 Python 계산을 대조하고, 소유자 검사기는 실제 Basalt 상태 갱신,
 최적화와 전체 관측 그룹 폐기를 검증합니다. 에코·평면 대응은 호출자가 제공하며,
 라이브 거리 전송과 표면 지도는 아직 활성화하지 않습니다.
+
+## Persistent surface information / 평면 정보의 지속 보존
+
+`surface_prior.hpp` keeps correlated pose, plane and pressure-datum square-root
+information across source-state retirement. `surface_prior_owner.hpp` reads
+actual 6/15-state references and accumulated coordinates, including planes and
+an explicit caller-owned pressure datum. The bridge is read-only. Production
+factor retirement, archived support and live installation require the complete
+owner transaction. [Source/native and delayed-owner controls](../../docs/diagnostics/persistent-surface-prior-20261029/README.md).
+
+원본 자세를 폐기한 뒤에도 자세·평면·압력 기준값의 상관된 정보를 보존합니다.
+실제 Basalt의 6/15차원 상태 참조와 누적 좌표를 읽는 연결부는 읽기 전용입니다.
+라이브 적용에는 모든 원본 제약의 폐기·보관된 지원 관측·사전정보 설치를 묶는
+완전한 소유자 처리가 필요합니다.

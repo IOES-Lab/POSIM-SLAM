@@ -1,5 +1,10 @@
 # POSIM-SLAM
 
+`surface_prior`는 원본 자세를 폐기할 때 자세·미지 평면·압력 기준값의 정보를
+함께 보존합니다. 변수 간 상관과 소유자의 고정 참조 좌표를 유지하고, 제한된
+원본 거리 기록으로 중복 사용을 막습니다. 네이티브 연결부는 실제 Basalt 좌표를
+읽습니다. [지연 갱신 검사와 남은 라이브 통합 조건](docs/diagnostics/persistent-surface-prior-20261029/README.md).
+
 `range_surface_joint`와 네이티브 `makeOwnedRangeSurfaces` 어댑터는 빔별
 DVL 원뿔·소나 팬, 현재 자세와 미지 평면을 하나의 상관된 계산 블록에 둡니다.
 원본 거리 식별자로 각 제약과 관측 범위의 출처를 추적합니다. 명시적인 평면 대응

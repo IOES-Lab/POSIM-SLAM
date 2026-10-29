@@ -1,5 +1,10 @@
 # POSIM-SLAM
 
+`surface_prior` retains joint pose, unknown-plane and pressure-datum information
+when source states retire. It preserves cross terms and fixed owner references,
+with a bounded original-range ledger. The native owner bridge reads actual
+Basalt coordinates. [Delayed-update controls and remaining live-integration requirements](docs/diagnostics/persistent-surface-prior-20261029/README.md).
+
 `range_surface_joint` and the native `makeOwnedRangeSurfaces` adapter keep
 per-beam DVL cones, sonar fans, current poses and unknown planes in one
 correlated block. Original range keys identify every factor and support source.

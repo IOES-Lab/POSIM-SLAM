@@ -32,6 +32,13 @@ jobs:
             -o "$RUNNER_TEMP/range_surface_probe"
           POSIM_SLAM_RANGE_SURFACE_PROBE="$RUNNER_TEMP/range_surface_probe" \
             python native/basalt/test_range_surface_native.py
+      - name: Compare persistent joint surface priors and original-reading ownership
+        run: |
+          c++ -std=c++17 -O2 -DEIGEN_MPL2_ONLY -DEIGEN_DONT_PARALLELIZE \
+            -I/usr/include/eigen3 native/basalt/surface_prior_probe.cc \
+            -o "$RUNNER_TEMP/surface_prior_probe"
+          POSIM_SLAM_SURFACE_PRIOR_PROBE="$RUNNER_TEMP/surface_prior_probe" \
+            python native/basalt/test_surface_prior_native.py
   independent-python:
     runs-on: ubuntu-latest
     strategy:
