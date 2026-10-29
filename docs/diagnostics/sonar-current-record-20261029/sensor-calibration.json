@@ -1,0 +1,298 @@
+{
+  "imu": {
+    "schema_version": 1,
+    "vehicle": "bluerov2",
+    "input_topic": "/model/bluerov2/imu",
+    "output_topic": "/vehicle/sensors/imu",
+    "frame": "vehicle/imu",
+    "input_frames": [
+      "bluerov2/base_link/imu_sensor"
+    ],
+    "mount": {
+      "parent": "vehicle/base_link",
+      "child": "vehicle/imu",
+      "translation": [
+        0.0,
+        0.0,
+        -0.1
+      ],
+      "rotation": [
+        1.0,
+        0.0,
+        0.0,
+        6.123233995736766e-17
+      ]
+    },
+    "declared_rate_hz": 1000.0,
+    "orientation_used": false,
+    "simulated_bias_calibration": {
+      "available": true,
+      "source": "generated_sdf_noiseless_imu",
+      "gyro_bias": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "accel_bias": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "gyro_bias_covariance": [
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ]
+      ],
+      "accel_bias_covariance": [
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ]
+      ]
+    },
+    "specific_force_includes_gravity": true,
+    "gravity_m_s2": 9.8
+  },
+  "camera": {
+    "camera_frame": "vehicle/camera",
+    "camera_mount": {
+      "translation": [
+        0.24,
+        0.0,
+        -0.1
+      ],
+      "rotation": [
+        -0.5794173382492647,
+        0.5794173382492647,
+        -0.4053092006556688,
+        0.4053092006556688
+      ]
+    },
+    "imu_mount": {
+      "parent": "vehicle/base_link",
+      "child": "vehicle/imu",
+      "translation": [
+        0.0,
+        0.0,
+        -0.1
+      ],
+      "rotation": [
+        1.0,
+        0.0,
+        0.0,
+        6.123233995736766e-17
+      ]
+    },
+    "T_i_c_q_xyzw": [
+      -0.40530920065566883,
+      -0.4053092006556687,
+      -0.5794173382492647,
+      -0.5794173382492647
+    ],
+    "T_i_c_translation_m": [
+      0.24,
+      0.0,
+      0.0
+    ]
+  },
+  "dvl": {
+    "schema": "posim-inertial-dvl-1",
+    "calibration_source": "generated_sdf_noiseless_imu",
+    "available": true,
+    "reason": null,
+    "imu_frame": "vehicle/imu",
+    "dvl_frame": "vehicle/dvl",
+    "imu_mount": {
+      "parent": "vehicle/base_link",
+      "child": "vehicle/imu",
+      "translation": [
+        0.0,
+        0.0,
+        -0.1
+      ],
+      "rotation": [
+        1.0,
+        0.0,
+        0.0,
+        6.123233995736766e-17
+      ]
+    },
+    "estimator": {
+      "dvl_to_imu": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          -1.0,
+          1.2246467991473532e-16
+        ],
+        [
+          0.0,
+          -1.2246467991473532e-16,
+          -1.0
+        ]
+      ],
+      "imu_to_dvl": [
+        0.0,
+        -2.4492935982947052e-18,
+        0.01999999999999999
+      ],
+      "noise_density": [
+        0.001,
+        0.02,
+        0.0001,
+        0.001
+      ],
+      "gravity_m_s2": 9.8,
+      "gyro_bias": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "gyro_bias_covariance": [
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ]
+      ],
+      "accel_bias": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "accel_bias_covariance": [
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ]
+      ]
+    },
+    "noise_profile": "simulation_integration_model_error_v1"
+  },
+  "pressure": {
+    "topic": "/vehicle/sensors/pressure",
+    "frame": "vehicle/pressure",
+    "reference_pa": 101325.0,
+    "density_kg_m3": 1025.0,
+    "gravity_m_s2": 9.80665,
+    "model": "hydrostatic_mean_surface_no_wave_dynamic_pressure",
+    "native": {
+      "schema": "posim-slam-pressure-calibration-1",
+      "imu_to_pressure": [
+        0.0,
+        1.2246467991473533e-17,
+        -0.1
+      ]
+    }
+  },
+  "sonar": {
+    "schema": "posim-slam-sonar-calibration-1",
+    "sensor_topic": "/vehicle/sensors/multibeam_forward",
+    "topic": "/vehicle/sensors/multibeam_forward/sonar_image_raw",
+    "frame": "vehicle/multibeam_forward",
+    "rate_hz": 2.0,
+    "beams": 256,
+    "range_min": 0.2,
+    "range_max": 10.0,
+    "horizontal_fov": 2.0943951023931953,
+    "vertical_fov": 0.3490658503988659,
+    "imu_to_sonar": [
+      0.24,
+      0.0,
+      0.0
+    ],
+    "sonar_to_imu": [
+      [
+        0.9393727128473789,
+        -3.0814879110195774e-33,
+        0.34289780745545134
+      ],
+      [
+        -4.199287023349639e-17,
+        -0.9999999999999999,
+        1.1503997859949083e-16
+      ],
+      [
+        0.34289780745545134,
+        -1.2246467991473532e-16,
+        -0.9393727128473789
+      ]
+    ],
+    "sonar_mount": {
+      "translation": [
+        0.24,
+        0.0,
+        -0.1
+      ],
+      "rotation": [
+        0.0,
+        0.17410813759359595,
+        0.0,
+        0.9847265389049334
+      ]
+    },
+    "imu_mount": {
+      "parent": "vehicle/base_link",
+      "child": "vehicle/imu",
+      "translation": [
+        0.0,
+        0.0,
+        -0.1
+      ],
+      "rotation": [
+        1.0,
+        0.0,
+        0.0,
+        6.123233995736766e-17
+      ]
+    }
+  }
+}
