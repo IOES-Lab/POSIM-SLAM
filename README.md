@@ -1,5 +1,10 @@
 # POSIM-SLAM
 
+`delayed_surface_update` prepares correlated late-range rows with sequential
+block elimination. It updates retiring-state conditionals and retains live-state
+uncertainty without freezing recovered poses. The native owner still needs an
+atomic installation path. [Method, original-data widths and controls](docs/diagnostics/delayed-surface-update-20261029/README.md).
+
 `retired_pose_archive` jointly recovers old poses from native Gaussian
 conditionals, preserving shared noise and unbounded directions. It is a read-only
 diagnostic that conditions on known live coordinates; capture is off by default.

@@ -1,0 +1,31 @@
+{
+  "base_library_commit": "95bce8e65a8449acd238495c85e32095ec9625ec",
+  "source_sha256": {
+    "src/posim_slam/delayed_surface_update.py": "7ce6897bc4dc83527dec9940cdcdb028f6b90c6b973f60fcbc041f32c627c5c4",
+    "tests/test_delayed_surface_update.py": "d95d0d2747ce2fac047e923cd66ced8e1c2060f08d07f02248fe07c322ddc058",
+    "tools/audit_delayed_surface_width.py": "172ebf0dbd5da121078fb98f1904b7e82d4a98ca90d422e40776956ed71751b7"
+  },
+  "input_sha256": {
+    "docs/diagnostics/retired-pose-conditionals-20261029/archive-packets.json.gz": "6e21bc90a61beb435c6d46379c1324368a742768aab4816f8b5cc37aa1377776",
+    "docs/diagnostics/joint-surface-ranges-20261029/surface-pose-retention.json": "a0e5bc44eede2308f48261c1f6beb233939f5cdea2daf685fff68cfc7d0e5068"
+  },
+  "source_tests": 487,
+  "source_passed": 471,
+  "source_skipped": 16,
+  "wheel_tests": 487,
+  "wheel_passed": 471,
+  "wheel_skipped": 16,
+  "new_controls": 10,
+  "new_physical_range_measurements": 0,
+  "live_complete_prior_recorded": false,
+  "native_worker_updated": false,
+  "default_live_surface_fusion_enabled": false,
+  "map_qualified": false,
+  "installed_application_qualified": false,
+  "protected_user_edits_included": false,
+  "new_dependencies": [],
+  "numerical_method": "Sequential conditional block elimination; propagate the new likelihood through conditional noise/free modes with innovation covariance, retaining live state and plane variables",
+  "initial_dense_prototype_rejected": true,
+  "initial_projection_roundoff_rejected": true,
+  "full_goal_complete": false
+}
