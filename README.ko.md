@@ -32,6 +32,8 @@ Householder QR과 유효 정보 방향을 구분하는 SVD로 자세·평면·�
 바이어스 랜덤워크는 별도로 유지합니다. 일치하는 워커의 보정 적용 확인이 필요합니다.
 [보정 입력·원본 재생·한계](docs/diagnostics/native-imu-bias-calibration-20261029/README.md).
 
+[벽·모서리 관측 대조](docs/diagnostics/sonar-wall-corner-20261030/README.md)에 한 주행 기록의 전체 항법·음향 출력과 같은 시각의 RGB·소나, 동일 투영의 현장·점군 비교를 보존합니다.
+
 `retired_pose_archive`는 네이티브 조건부 식에서 과거 자세를 함께 복원하고,
 공유 잡음과 관측 불가능한 방향을 보존합니다. 현재 좌표를 알고 있다는 조건의
 읽기 전용 진단이며, 기록 기능의 기본값은 꺼짐입니다.

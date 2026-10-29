@@ -1,0 +1,9 @@
+{
+  "physical_floor_top_m": -4.0,
+  "navigation_floor_top_m": -4.0,
+  "original_sha256": "5807153b5d642ed5625a761038c1914a79f8c0953deddd79183784953484f6c8",
+  "current_sha256": "1423ca64059c5de8b3d2939dfa8a2de0f4edacf73772d246db667c017ec4a511",
+  "source": "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/sonar-wall-corner-20261030c/capture/demo-runtime/1ac6a52821ef44469448dcead96b94e2/projected.npz",
+  "outside_floor": "unknown",
+  "production_policy_changed": false
+}

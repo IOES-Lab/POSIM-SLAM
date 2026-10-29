@@ -1,0 +1,1 @@
+{"path": "/vehicle/mission/preview", "code": 422, "body": "{\"detail\":[{\"type\":\"greater_than_equal\",\"loc\":[\"body\",\"hold_seconds\"],\"msg\":\"Input should be greater than or equal to 3\",\"input\":2,\"ctx\":{\"ge\":3.0}}]}"}

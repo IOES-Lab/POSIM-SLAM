@@ -36,6 +36,8 @@ delayed updates. IMU noise and later bias random walks remain separate. A
 matching worker must acknowledge this calibration.
 [Calibration input, original replay and limits](docs/diagnostics/native-imu-bias-calibration-20261029/README.md).
 
+[Wall/corner geometry control](docs/diagnostics/sonar-wall-corner-20261030/README.md) compares complete navigation and acoustic outputs on one moving recording, with matched RGB/sonar and identically projected field/cloud views.
+
 `retired_pose_archive` jointly recovers old poses from native Gaussian
 conditionals, preserving shared noise and unbounded directions. It is a read-only
 diagnostic that conditions on known live coordinates; capture is off by default.
