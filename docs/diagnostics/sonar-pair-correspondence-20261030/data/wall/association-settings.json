@@ -1,0 +1,12 @@
+{
+  "akaze": "OpenCV defaults, MLDB descriptors",
+  "maximum_features": 300,
+  "ratio": 0.8,
+  "matching": "global mutual nearest neighbours passing 0.8 ratio in both directions; source masks screen endpoints after matching",
+  "preprocessing": "unchanged acoustic_flow raw 20..90 dB mapping and 5x5 Gaussian",
+  "source_mask": "existing calibrated positive/contrast masks; no geometry or elevation prior",
+  "phase_mask": "endpoint nearest raw pixel support only; not point identity",
+  "opencv": "4.13.0",
+  "baseline_backend": "NativeOpenCV",
+  "baseline_opencv": "4.13.0"
+}

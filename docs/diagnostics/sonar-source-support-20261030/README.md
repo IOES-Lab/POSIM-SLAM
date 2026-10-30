@@ -94,3 +94,6 @@ explicit optional skips. The native implementation is unchanged.
 Next compare sensor-only correspondence and degeneracy-aware sonar-pair motion
 constraints before further optimizer expansion or point promotion. The useful
 3D map, navigation benefit, recovery and package requirements remain open.
+
+[Sensor-only correspondence and finite-object comparison](../sonar-pair-correspondence-20261030/README.md)
+retains third-view losses and six LK/A-KAZE variants before any new pose factor.

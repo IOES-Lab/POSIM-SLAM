@@ -1,0 +1,11 @@
+{
+  "application_head": "ef3bb9b7f01ef8926deeaf53492a87187d7b2ed2",
+  "public_library_head": "bc0ae38d74a8f1500ce5a7d204a09abb0e3fb90f",
+  "native_library_source": "44aa93edb8a1fc8b914b762c67639f14ffdf23f8",
+  "native_worker_sha256": "a5dd4a904bfc29718803a9b851e30f3308f11218e0d49628e711e9123b0c4ece",
+  "sdk_base_engine": "332f629",
+  "acoustic_integration": "867d214",
+  "defaults_changed": false,
+  "native_code_changed": false,
+  "raw_input_duplicated": false
+}
