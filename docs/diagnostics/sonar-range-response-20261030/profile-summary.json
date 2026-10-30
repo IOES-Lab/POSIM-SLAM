@@ -1,0 +1,30 @@
+{
+  "orca5": {
+    "frames": 95,
+    "beams": 256,
+    "all_profiles": 24320,
+    "nonempty_profiles": 24320,
+    "normalized_power_residual_quantiles": {
+      "0": 0.11878912130150829,
+      "0.1": 0.648997287101688,
+      "0.5": 0.8125919199387183,
+      "0.9": 0.8906379971799311,
+      "1": 0.9511318295552784
+    },
+    "scope": "Best single-return power-profile explanation, not correspondence, confidence or map admission"
+  },
+  "panel": {
+    "frames": 192,
+    "beams": 32,
+    "all_profiles": 6144,
+    "nonempty_profiles": 2624,
+    "normalized_power_residual_quantiles": {
+      "0": 0.030514745805417878,
+      "0.1": 0.12431908740829173,
+      "0.5": 0.27155221502522786,
+      "0.9": 0.5772482178485606,
+      "1": 0.8909001014099639
+    },
+    "scope": "Best single-return power-profile explanation, not correspondence, confidence or map admission"
+  }
+}

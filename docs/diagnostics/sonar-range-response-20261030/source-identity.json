@@ -1,0 +1,9 @@
+{
+  "baseline": "8d80dd5f562f566f4ea971dd36823cf4b4a7d888",
+  "owned_files": {
+    "src/posim_slam/sonar_range_response.py": "92c34059c7641352a419ace78b67ed7c0b20c63fe7c429b0a00a9622deb337a6",
+    "tests/test_sonar_range_response.py": "7ad60d073f1813fa12784843a17da3bc433b803f2d7969d01c69d88500b759f9"
+  },
+  "protected_user_sources_included": false,
+  "native_changed": false
+}

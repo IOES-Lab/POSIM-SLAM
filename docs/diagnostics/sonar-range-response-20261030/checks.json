@@ -1,0 +1,12 @@
+{
+  "full_sdk": {
+    "run": 549,
+    "passed": 527,
+    "skipped": 22,
+    "log": "www-posim-checks-ygy05l8k/01.log"
+  },
+  "new_numerical_tests": 6,
+  "native_source_changed": false,
+  "installed_sdk_changed": false,
+  "new_provider_ABI": false
+}

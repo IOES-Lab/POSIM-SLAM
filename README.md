@@ -45,6 +45,11 @@ physical range grid from bandwidth and sound speed. Feature candidates require
 measured echo support; image working values never replace raw observations.
 [Input contract and native continuity controls](docs/diagnostics/sonar-input-contract-20261030/README.md).
 
+`sonar_range_response.PosimRangeResponse` evaluates the source-specific frequency
+aperture and conditional diffuse-return power moments. Explicit scattering
+geometry, variances and beam mixing preserve dependence between range/beam
+pixels. [Assumptions and calibration controls](docs/diagnostics/sonar-range-response-20261030/README.md).
+
 [Conditional sonar-row diagnostics](docs/diagnostics/sonar-structureless-update-20261030/README.md)
 provide a public numerical reproduction of single-posterior conditioning,
 retained weak-height modes and identical-clock DVL omission controls.

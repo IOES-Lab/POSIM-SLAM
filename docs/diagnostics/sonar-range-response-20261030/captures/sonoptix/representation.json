@@ -1,0 +1,9 @@
+{
+  "scope": "All-pixel sufficient statistics for the fixed 25-frame mean/power-moment diagnostic plus one complete representative input frame",
+  "whole_capture_reencoded": false,
+  "complete_capture_retained_externally": true,
+  "all_pixel_resolution_retained": true,
+  "original_stamp_ns": 1000000000,
+  "raw_payload_sha256": "76de7c161ec24c6228ad7190051e3573db125ea7e1c77f2ba7b9a9549fcd9d81",
+  "no_SLAM_cloud_created_or_trimmed": true
+}

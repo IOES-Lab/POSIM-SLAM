@@ -1,0 +1,76 @@
+{
+  "scope": "Default demo intrinsics only; static forward fixture; no vehicle/environment/SLAM qualification",
+  "range_samples": 599,
+  "beams": 256,
+  "vertical_rays": 256,
+  "frequency_hz": 700000,
+  "rate_hz": 2,
+  "range_max_m": 15,
+  "ray_skips": 1,
+  "original_counts": {
+    "raw": 52,
+    "normal": 52,
+    "depth": 25
+  },
+  "matched_triplets": 25,
+  "all_observed_stamp_sets_equal": false,
+  "geometry_static": true,
+  "rendered_wall_x_error_rmse_m": 0.004963502269877182,
+  "rendered_wall_x_error_quantiles_m": {
+    "0": -0.01658177375793457,
+    "0.1": -0.006728768348693848,
+    "0.5": -0.0005280971527099609,
+    "0.9": 0.00465846061706543,
+    "1": 0.018675804138183594
+  },
+  "ideal_geometry_same_record_relative_l2": 0.20814670919013695,
+  "rendered_input_mean_relative_l2": 0.1904751877383124,
+  "selected_power_queries": [
+    [
+      128,
+      160
+    ],
+    [
+      128,
+      161
+    ],
+    [
+      129,
+      160
+    ]
+  ],
+  "selected_power_correlation": [
+    [
+      1.0,
+      0.42453878238230136,
+      0.1023708344170677
+    ],
+    [
+      0.42453878238230136,
+      1.0,
+      0.04480753706169078
+    ],
+    [
+      0.1023708344170677,
+      0.04480753706169078,
+      1.0
+    ]
+  ],
+  "normal_input": "Captured nz/255 with existing RGB8 quantization",
+  "source_geometry_is_estimator_input": false,
+  "cleanup": [
+    {
+      "name": "point-cloud-bridge",
+      "pid": 45184,
+      "exit": 0,
+      "forced": false
+    },
+    {
+      "name": "gazebo",
+      "pid": 45183,
+      "exit": 0,
+      "forced": false
+    }
+  ],
+  "SDK_changed": false
+}

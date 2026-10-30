@@ -1,0 +1,122 @@
+{
+  "scope": "Source/renderer diagnostic, never geometry input to SLAM",
+  "all_rows": [
+    {
+      "actual_wall_distance_m": 4.0,
+      "frames": 25,
+      "geometry_static": true,
+      "rendered_wall_x_error_rmse_m": 0.014542870758118075,
+      "rendered_wall_x_error_quantiles_m": {
+        "0": -0.022774457931518555,
+        "0.1": -0.012926673889160157,
+        "0.5": -0.0038870573043823242,
+        "0.9": 0.022083282470703125,
+        "1": 0.04056072235107422
+      },
+      "rendered_input_mean_relative_l2": 0.2035074857568105,
+      "ideal_geometry_same_record_relative_l2": 0.3087891548019321,
+      "selected_power_correlation": [
+        [
+          1.0,
+          0.6997446267648716,
+          0.09858122903402432
+        ],
+        [
+          0.6997446267648716,
+          1.0,
+          0.1387036644202848
+        ],
+        [
+          0.09858122903402432,
+          0.1387036644202848,
+          1.0
+        ]
+      ],
+      "selected_power_queries": [
+        [
+          16,
+          160
+        ],
+        [
+          16,
+          161
+        ],
+        [
+          17,
+          160
+        ]
+      ],
+      "ideal_single_pixel_mean_relative_sampling_rms": 0.2,
+      "normal_input": "Captured nz/255 with existing RGB8 quantization; not a full-precision normal dump",
+      "power_model": "Actual rendered ranges and ray-incidence values; source angular mixing and FFT aperture; fitted common positive scale only",
+      "source_poses_used": false,
+      "geometry_used_for_estimation": false
+    },
+    {
+      "actual_wall_distance_m": 4.001,
+      "frames": 25,
+      "geometry_static": true,
+      "rendered_wall_x_error_rmse_m": 0.014498303394626957,
+      "rendered_wall_x_error_quantiles_m": {
+        "0": -0.02295978164672885,
+        "0.1": -0.013057232856750822,
+        "0.5": -0.003888202667236662,
+        "0.9": 0.021845745086669588,
+        "1": 0.04024832153320279
+      },
+      "rendered_input_mean_relative_l2": 0.2285493227416625,
+      "ideal_geometry_same_record_relative_l2": 0.3373182181384618,
+      "selected_power_correlation": [
+        [
+          1.0,
+          0.6980804663745398,
+          0.10275735288339176
+        ],
+        [
+          0.6980804663745398,
+          1.0,
+          0.13967417056330853
+        ],
+        [
+          0.10275735288339176,
+          0.13967417056330853,
+          1.0
+        ]
+      ],
+      "selected_power_queries": [
+        [
+          16,
+          160
+        ],
+        [
+          16,
+          161
+        ],
+        [
+          17,
+          160
+        ]
+      ],
+      "ideal_single_pixel_mean_relative_sampling_rms": 0.2,
+      "normal_input": "Captured nz/255 with existing RGB8 quantization; not a full-precision normal dump",
+      "power_model": "Actual rendered ranges and ray-incidence values; source angular mixing and FFT aperture; fitted common positive scale only",
+      "source_poses_used": false,
+      "geometry_used_for_estimation": false
+    }
+  ],
+  "source": "7afd71e7b7a1a13eca8c4b8deb9c6e8461285cd5",
+  "paired_display_checks": 125,
+  "raw_frames": 180,
+  "normal_frames": 180,
+  "depth_frames": 180,
+  "server_exit": 0,
+  "measured_equal_stamp_triplets": 180,
+  "bridge_cleanup": [
+    {
+      "pid": 16313,
+      "exit": 0,
+      "forced": false
+    }
+  ],
+  "SDK_modified": false
+}

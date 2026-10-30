@@ -41,6 +41,11 @@ Householder QR과 유효 정보 방향을 구분하는 SVD로 자세·평면·�
 영상 처리용 값으로 원본 관측을 바꾸지 않습니다.
 [입력 계약과 네이티브 연속 처리 대조](docs/diagnostics/sonar-input-contract-20261030/README.ko.md).
 
+`sonar_range_response.PosimRangeResponse`는 소스별 주파수 창 응답과 조건부 산란
+파워 모멘트를 계산합니다. 명시적으로 입력한 산란 기하·분산·빔 혼합값으로
+거리·빔 픽셀의 의존 관계를 유지합니다.
+[가정과 보정 대조](docs/diagnostics/sonar-range-response-20261030/README.ko.md).
+
 [소나 관측식의 조건부 결합 진단](docs/diagnostics/sonar-structureless-update-20261030/README.ko.md)은
 하나의 추정 분포에 관측을 결합하는 수치 계산, 높이가 불확실한 모드와
 같은 시각을 유지한 DVL 생략 대조군을 공개 코드로 재현합니다.
