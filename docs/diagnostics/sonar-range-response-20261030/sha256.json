@@ -1,7 +1,6 @@
 {
-  "README.ko.md": "8edcf80aa827b58b55b7fa0e065625bb3fff9a6b8bff56e42c02ae0de7c6cd9e",
-  "README.md": "29bc56b48c15cec263255a9b7e8d00bfabb238df825e51c4e908a3e826f10b00",
-  "__pycache__/verify.cpython-314.pyc": "fd3457b5071ea13233af38bdd1f8b2f23db453f6f5e4d41c83c6d389a375bb77",
+  "README.ko.md": "6c6598a88dd5aeac143bfd7fd18dc4337d139195bda3a429c41008e76665a8f7",
+  "README.md": "8cf562ecb9f6fff849dd5bd7b421ea23757b3ab18530f4debfda2ef1909be502",
   "all-profile-fits.npz": "725abc646af1ab57e2a56e209d01f18f8a033bd7e23a5c3b63ae8907fcc07498",
   "blind-native-control.json": "4bd5fbdf0a6814b0f6e1dd7c266e72d9ff477957a0d2a16de3fcbc40b5586014",
   "captures/panel/aliases.json": "1c298e788fd1264d314b3896cd78d776dcf5c70ef1db32388b77b7fdbaf0b946",
