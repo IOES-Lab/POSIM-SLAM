@@ -1,0 +1,12 @@
+{
+  "repository": "https://github.com/clydemcqueen/orca5",
+  "revision": "5f7cdc1f044926ebd56f2ce8a1fc4a82990cfa5e",
+  "license": "MIT",
+  "derived_data": "Scene-assessment-only triangles: source heightmap scaled to 60 m; native RGB includes source textures/model. Added boxes use original runtime geometry.",
+  "source_files_sha256": {
+    "LICENSE": "e4da13b8ee8adf3c184f3cfaa765c1b002efd9e1b7a200fe7c507a30391f8fb9",
+    "orca_bringup/models/orca5/meshes/bluerov2.dae": "0d16c219a2f5707df0b1c11b114977c9980abf684ade102403f35dbc018cf29a",
+    "orca_bringup/models/seafloor/heightmap.png": "fdf31f31fad0884aea91b056507c4edaf62d9a0ef14e486d102023b1ef4dbca1",
+    "orca_bringup/models/seafloor/materials/textures/2024_10_08_11-40-27.jpg": "61da2365edb9329d8e84b895ad145b9c5e9562c04c27c63e2897a722f5c4586e"
+  }
+}

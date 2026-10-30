@@ -40,6 +40,8 @@ matching worker must acknowledge this calibration.
 
 [Sonar input diagnostics](docs/diagnostics/sonar-pr31-36-20261030/README.md) check empty-frame recovery, the maximum-range grid and synchronized RGB/sonar input on Orca5 terrain. Saved complex operator outputs have an independent NumPy verifier.
 
+[Inspection-scene point controls](docs/diagnostics/sonar-inspection-scene-20261031/README.md) retain full clouds, matched native RGB and exact-pose comparisons using the corrected #31–36 integration. Point-map usefulness remains unqualified.
+
 `sonar_input` preserves zero-power `-inf` bins and validates the broadband source's
 physical range grid from bandwidth and sound speed. Feature candidates require
 measured echo support; image working values never replace raw observations.

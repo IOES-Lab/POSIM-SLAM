@@ -1,0 +1,418 @@
+{
+  "states": 139,
+  "trajectory": {
+    "evaluated": true,
+    "states": 139,
+    "duration_s": 46.0,
+    "evaluation_alignment": {
+      "rotation": [
+        [
+          -0.21227886514559952,
+          0.9772091298245715,
+          0.0
+        ],
+        [
+          -0.9772091298245715,
+          -0.21227886514559952,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "translation": [
+        -0.036531427322592167,
+        0.013857316050316931,
+        -1.4457896905308298
+      ],
+      "scale": 1.0
+    },
+    "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+    "position_rmse_m": 0.054921396477927834,
+    "position_max_m": 0.08065685042007849,
+    "rotation_rmse_rad": 0.02242796077330378,
+    "rotation_max_rad": 0.043232921613716765,
+    "truth_distance_m": 12.12858592038513,
+    "estimated_distance_m": 12.236372728370815,
+    "rpe_1s_pairs": 135,
+    "rpe_1s_position_rmse_m": 0.011032026780239254,
+    "rpe_1s_rotation_rmse_rad": 0.004118590884829247,
+    "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+  },
+  "all_states_assessed": true,
+  "truth_is_estimator_input": false,
+  "map_qualified": false,
+  "initial_bias_profile": "Matched existing native unknown-bias default",
+  "point_count": 32,
+  "all_emitted_points_assessed": true,
+  "physical_identity_verified": false,
+  "joint_uncertainty_available": false,
+  "surface_error_m": {
+    "rmse": 0.8261716620983619,
+    "median": 0.38059990332810933,
+    "p90": 1.357374736196436,
+    "maximum": 2.2594086482544875
+  },
+  "diagnostic_counts": {
+    "0.05": {
+      "within": 3,
+      "outside": 29,
+      "nearest_surface": {
+        "seabed": 2,
+        "inspection_block_0": 0,
+        "inspection_block_1": 0,
+        "inspection_block_2": 1,
+        "inspection_wall_0": 0,
+        "inspection_wall_1": 0
+      }
+    },
+    "0.1": {
+      "within": 5,
+      "outside": 27,
+      "nearest_surface": {
+        "seabed": 2,
+        "inspection_block_0": 0,
+        "inspection_block_1": 0,
+        "inspection_block_2": 3,
+        "inspection_wall_0": 0,
+        "inspection_wall_1": 0
+      }
+    },
+    "0.2": {
+      "within": 7,
+      "outside": 25,
+      "nearest_surface": {
+        "seabed": 2,
+        "inspection_block_0": 0,
+        "inspection_block_1": 0,
+        "inspection_block_2": 4,
+        "inspection_wall_0": 1,
+        "inspection_wall_1": 0
+      }
+    }
+  },
+  "per_point": [
+    {
+      "source_id": 520,
+      "world": [
+        7.613770901695988,
+        -1.3309651344996807,
+        -3.879317916733336
+      ],
+      "error_m": 0.20988397177190676,
+      "nearest_surface": "seabed"
+    },
+    {
+      "source_id": 1,
+      "world": [
+        8.798337933556288,
+        -2.3934314534741232,
+        -4.574572559516835
+      ],
+      "error_m": 0.9122749504981901,
+      "nearest_surface": "seabed"
+    },
+    {
+      "source_id": 55,
+      "world": [
+        7.357078929471467,
+        0.16729535307651708,
+        -4.127504626616524
+      ],
+      "error_m": 0.47201648675472135,
+      "nearest_surface": "seabed"
+    },
+    {
+      "source_id": 78,
+      "world": [
+        9.225341413680358,
+        -1.037234807225733,
+        -3.355800350698696
+      ],
+      "error_m": 0.2990996493013039,
+      "nearest_surface": "seabed"
+    },
+    {
+      "source_id": 605,
+      "world": [
+        12.605133110868932,
+        -3.8206710649696696,
+        -5.334638993885589
+      ],
+      "error_m": 1.675818993885589,
+      "nearest_surface": "seabed"
+    },
+    {
+      "source_id": 649,
+      "world": [
+        8.634689191381504,
+        1.2710561509197194,
+        -3.6839453735911794
+      ],
+      "error_m": 0.033839336965763474,
+      "nearest_surface": "seabed"
+    },
+    {
+      "source_id": 743,
+      "world": [
+        8.384965752787794,
+        1.338577675231489,
+        -4.007886646116314
+      ],
+      "error_m": 0.35984143046663786,
+      "nearest_surface": "seabed"
+    },
+    {
+      "source_id": 310,
+      "world": [
+        12.46602265432983,
+        -2.7732649334090826,
+        -5.872259336377754
+      ],
+      "error_m": 2.201941353845193,
+      "nearest_surface": "inspection_wall_0"
+    },
+    {
+      "source_id": 313,
+      "world": [
+        8.496306141717577,
+        -0.6274972296480212,
+        -2.946346638653487
+      ],
+      "error_m": 0.399966877929913,
+      "nearest_surface": "inspection_block_0"
+    },
+    {
+      "source_id": 318,
+      "world": [
+        8.5882634242206,
+        -2.1802920433707067,
+        -4.768662647704675
+      ],
+      "error_m": 1.1046142851707128,
+      "nearest_surface": "seabed"
+    },
+    {
+      "source_id": 335,
+      "world": [
+        13.23046122844396,
+        -3.2172591980064795,
+        -5.032053629782036
+      ],
+      "error_m": 1.3758916258673146,
+      "nearest_surface": "seabed"
+    },
+    {
+      "source_id": 534,
+      "world": [
+        8.550901711723792,
+        0.6621092656031485,
+        -4.1669450220582
+      ],
+      "error_m": 0.5159650220581997,
+      "nearest_surface": "seabed"
+    },
+    {
+      "source_id": 545,
+      "world": [
+        9.096894873197044,
+        -2.0603436349609727,
+        -2.447403313062786
+      ],
+      "error_m": 1.0251225609107735,
+      "nearest_surface": "inspection_block_0"
+    },
+    {
+      "source_id": 859,
+      "world": [
+        8.38079813525842,
+        -0.1782599145057874,
+        -4.027633349395659
+      ],
+      "error_m": 0.37320141801260087,
+      "nearest_surface": "seabed"
+    },
+    {
+      "source_id": 992,
+      "world": [
+        8.738590498642239,
+        1.9625245899292405,
+        -4.038978721783373
+      ],
+      "error_m": 0.38799838864361774,
+      "nearest_surface": "seabed"
+    },
+    {
+      "source_id": 1113,
+      "world": [
+        9.311907737349353,
+        0.7657304224181912,
+        -4.100368666995857
+      ],
+      "error_m": 0.4389035531520747,
+      "nearest_surface": "inspection_block_1"
+    },
+    {
+      "source_id": 4103,
+      "world": [
+        11.169783367685929,
+        0.6969028500988377,
+        -3.0875148940959463
+      ],
+      "error_m": 0.5433410026462088,
+      "nearest_surface": "inspection_block_2"
+    },
+    {
+      "source_id": 5028,
+      "world": [
+        9.309708003514228,
+        -1.0894205363485374,
+        -3.863986153168992
+      ],
+      "error_m": 0.20908615316899182,
+      "nearest_surface": "seabed"
+    },
+    {
+      "source_id": 6754,
+      "world": [
+        10.796659062350113,
+        0.6560237504328708,
+        -4.860323655598265
+      ],
+      "error_m": 1.1907227291585245,
+      "nearest_surface": "seabed"
+    },
+    {
+      "source_id": 7905,
+      "world": [
+        11.098828544606716,
+        0.16577979212618227,
+        -4.10383019267201
+      ],
+      "error_m": 0.4338240954144,
+      "nearest_surface": "seabed"
+    },
+    {
+      "source_id": 12789,
+      "world": [
+        10.364646939248583,
+        -0.05831802262550443,
+        -3.476957424787371
+      ],
+      "error_m": 0.08535306075141591,
+      "nearest_surface": "inspection_block_2"
+    },
+    {
+      "source_id": 12977,
+      "world": [
+        9.1167074095949,
+        3.0125332127651694,
+        -3.231615648625752
+      ],
+      "error_m": 0.24451687290608218,
+      "nearest_surface": "inspection_wall_1"
+    },
+    {
+      "source_id": 13067,
+      "world": [
+        10.316969522436615,
+        -0.30494874360296526,
+        -3.300683089719856
+      ],
+      "error_m": 0.13303047756338415,
+      "nearest_surface": "inspection_block_2"
+    },
+    {
+      "source_id": 17673,
+      "world": [
+        10.859342272219786,
+        -1.5595430934725267,
+        -3.456328740308859
+      ],
+      "error_m": 0.2024912596911408,
+      "nearest_surface": "seabed"
+    },
+    {
+      "source_id": 17733,
+      "world": [
+        10.928180410787473,
+        -1.9670393392638452,
+        -3.030549810122873
+      ],
+      "error_m": 0.6268033847885849,
+      "nearest_surface": "seabed"
+    },
+    {
+      "source_id": 17893,
+      "world": [
+        10.801943621482348,
+        0.010509076388689392,
+        -3.0690084964862727
+      ],
+      "error_m": 0.02001437933072081,
+      "nearest_surface": "inspection_block_2"
+    },
+    {
+      "source_id": 18121,
+      "world": [
+        10.525856333851587,
+        -1.4266751518699565,
+        -3.8641094697149505
+      ],
+      "error_m": 0.20614582633049805,
+      "nearest_surface": "seabed"
+    },
+    {
+      "source_id": 18265,
+      "world": [
+        12.985941993539338,
+        -3.81507498854034,
+        -5.9182286482544875
+      ],
+      "error_m": 2.2594086482544875,
+      "nearest_surface": "seabed"
+    },
+    {
+      "source_id": 18627,
+      "world": [
+        10.13968151525643,
+        -0.4123739227932752,
+        -3.693256166835487
+      ],
+      "error_m": 0.03458265667301746,
+      "nearest_surface": "seabed"
+    },
+    {
+      "source_id": 18453,
+      "world": [
+        10.543524914317883,
+        -0.12060886268596083,
+        -3.1601582995045057
+      ],
+      "error_m": 0.07113542368751213,
+      "nearest_surface": "inspection_block_2"
+    },
+    {
+      "source_id": 18536,
+      "world": [
+        10.895742287602339,
+        0.4220813085263718,
+        -2.789645406555553
+      ],
+      "error_m": 0.3727559210772786,
+      "nearest_surface": "inspection_block_2"
+    },
+    {
+      "source_id": 18802,
+      "world": [
+        11.684258124352729,
+        2.5834158111875682,
+        -3.160593994629921
+      ],
+      "error_m": 0.1907418756472712,
+      "nearest_surface": "inspection_wall_0"
+    }
+  ]
+}
