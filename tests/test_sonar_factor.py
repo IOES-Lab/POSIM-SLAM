@@ -49,12 +49,23 @@ class SonarFactorTests(unittest.TestCase):
         np.testing.assert_allclose(point_return_factor(**a)['prediction'],point_return_factor(**transformed)['prediction'],atol=1e-12)
 
     def test_rejects_invalid_or_unseen_geometry(self):
-        for change in ({'measured_range':float('nan')},{'measured_range':11.},
+        for change in ({'measured_range':float('nan')},{'measured_range':float('inf')},{'measured_range':0.},
                        {'measured_azimuth':2.},{'vertical_fov':0.},
                        {'landmark':[-3.,0.,0.]},{'landmark':[4.,0.,5.]},
                        {'landmark':[1.,8.,0.]},{'landmark':self.args['position']}):
             with self.subTest(change=change),self.assertRaises(ValueError):
                 point_return_factor(**dict(self.args,**change))
+
+    def test_range_limits_constrain_physical_point_instead_of_noisy_sample(self):
+        for minimum,actual,measured in ((.2,9.999,10.008360862731934),(.51,.510001,.5016722679138184)):
+            args=dict(position=np.zeros(3),attitude=np.eye(3),imu_to_sonar=np.zeros(3),sonar_to_imu=np.eye(3),
+                landmark=[actual,0,0],measured_range=measured,measured_azimuth=0.,range_min=minimum,
+                range_max=10.,horizontal_fov=2.1,vertical_fov=.35)
+            result=point_return_factor(**args)
+            np.testing.assert_allclose(result['residual'],[measured-actual,0.],atol=1e-14)
+            for unsupported in (minimum-.001,10.001):
+                with self.assertRaisesRegex(ValueError,'unsupported_sonar_point'):
+                    point_return_factor(**dict(args,landmark=[unsupported,0,0]))
 
 
 if __name__=='__main__':unittest.main()

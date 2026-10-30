@@ -2,6 +2,8 @@
 #include "sonar_geometry.hpp"
 #include <cassert>
 #include <iostream>
+#include <limits>
+#include <vector>
 
 int main() {
   using V=Eigen::Vector3d;using M=Eigen::Matrix3d;
@@ -38,5 +40,23 @@ int main() {
   assert(boundary.residual.norm()<1e-12);
   bool rejected=false;try{evaluate(position,r,position+r*(lever+mount*V(4,0,3)));}
   catch(const std::invalid_argument&){rejected=true;}assert(rejected);
+  for(const auto& test:std::vector<Eigen::Vector3d>{{.2,9.999,10.008360862731934},{.51,.510001,.5016722679138184}}) {
+    const auto sampled=posim_slam::sonarPointRows(V::Zero(),M::Identity(),V::Zero(),M::Identity(),
+      V(test[1],0,0),test[2],0.,test[0],10.,2.1,.35);
+    assert(std::abs(sampled.residual[0]-(test[1]-test[2]))<1e-14);
+    assert(sampled.pose_jacobian.allFinite() && sampled.point_jacobian.allFinite());
+    for(double outside:{test[0]-.001,10.001}) {
+      bool unsupported=false;
+      try {posim_slam::sonarPointRows(V::Zero(),M::Identity(),V::Zero(),M::Identity(),
+        V(outside,0,0),test[2],0.,test[0],10.,2.1,.35);}
+      catch(const posim_slam::SonarPointOutsideSupport&){unsupported=true;}
+      assert(unsupported);
+    }
+  }
+  for(double invalid:{0.,-1.,std::numeric_limits<double>::infinity(),std::numeric_limits<double>::quiet_NaN()}) {
+    bool malformed=false;
+    try {posim_slam::sonarPointRows(V::Zero(),M::Identity(),V::Zero(),M::Identity(),V(4,0,0),invalid,0.,.2,10.,2.1,.35);}
+    catch(const std::invalid_argument&){malformed=true;}assert(malformed);
+  }
   std::cout<<"PASS native sonar pose/point derivatives, exact residual and FOV rejection\n";
 }

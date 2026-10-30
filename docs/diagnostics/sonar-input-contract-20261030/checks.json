@@ -1,0 +1,25 @@
+{
+  "unit": {
+    "run": 543,
+    "passed": 521,
+    "skipped": 22,
+    "log": "final-unit/www-posim-checks-w6xiz1nq/01.log"
+  },
+  "research": {
+    "run": 21,
+    "passed": 21,
+    "skipped": 0,
+    "opencv": "4.10.0",
+    "log": "final-research/www-posim-checks-56fl7vv3/01.log"
+  },
+  "native_clock": {
+    "run": 7,
+    "passed": 7,
+    "log": "www-posim-checks-do7_jkw7/01.log"
+  },
+  "app_checks": [
+    "test_sonar_source.py",
+    "test_practice_sonar_inertial.py",
+    "test_practice_sonar.py"
+  ]
+}

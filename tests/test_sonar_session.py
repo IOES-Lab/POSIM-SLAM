@@ -176,6 +176,24 @@ class SonarSessionTests(unittest.TestCase):
         self.assertFalse(self.session.auxiliary_fresh('pressure'))
         self.assertEqual(self.session.optimized['pressure'],1)
 
+    def test_no_echo_continues_original_imu_pressure_and_native_state_clock(self):
+        worker=self.pressure_session()
+        state=self.state();state['pressure']=dict(owner_received=True,optimization_included=True)
+        worker.outputs=[state];self.session.tick()
+        for t in range(2_020_000_000,2_520_000_000,10_000_000):
+            self.session.imu(t,[0,0,0],[0,0,9.80665],[0]*9)
+        absent=frame(0);absent['stamp']=np.array([2,500_000_000]);absent['intensity_db'][:]=-np.inf
+        self.session.sonar(absent)
+        packet=dict(stamp_ns=2_500_000_000,height_m=-2.,variance_m2=.01)
+        self.session.auxiliary('pressure',2_500_000_000,dict(valid=True,packet=packet))
+        self.session.tick()
+        self.assertIsNone(self.session.fault)
+        self.assertEqual(worker.ticks,[2_000_000_000,2_500_000_000])
+        self.assertEqual(worker.pressures[-1],packet)
+        self.assertGreater(worker.imus[-1],worker.ticks[-1])
+        self.assertEqual(self.session.fusion.snapshot()['points'],[])
+        self.assertTrue(np.isneginf(absent['intensity_db']).all())
+
     def test_rejected_pressure_and_wrong_state_never_record_successful_fusion(self):
         worker=self.pressure_session()
         state=self.state();state['pressure']=dict(owner_received=True,optimization_included=False)

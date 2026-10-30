@@ -36,6 +36,11 @@ Householder QR과 유효 정보 방향을 구분하는 SVD로 자세·평면·�
 
 [소나 입력 진단](docs/diagnostics/sonar-pr31-36-20261030/README.ko.md)은 빈 영상 복구, 최대 거리 격자와 Orca5 지형의 시각이 맞는 RGB·소나를 검사합니다. 저장한 복소 연산 출력은 독립 NumPy 검사기로 확인합니다.
 
+`sonar_input`은 전력 0인 `-inf` 표본을 보존하고 대역폭·음속으로 광대역 소나의
+물리 거리 격자를 검사합니다. 특징점 후보에는 측정된 반사 지지가 필요하며,
+영상 처리용 값으로 원본 관측을 바꾸지 않습니다.
+[입력 계약과 네이티브 연속 처리 대조](docs/diagnostics/sonar-input-contract-20261030/README.ko.md).
+
 [소나 관측식의 조건부 결합 진단](docs/diagnostics/sonar-structureless-update-20261030/README.ko.md)은
 하나의 추정 분포에 관측을 결합하는 수치 계산, 높이가 불확실한 모드와
 같은 시각을 유지한 DVL 생략 대조군을 공개 코드로 재현합니다.

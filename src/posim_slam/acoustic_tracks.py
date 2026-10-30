@@ -35,6 +35,7 @@ class AcousticTracks:
     def push(self,frame,*,ground_entry_band_m=None):
         try:
             validate_frame(frame)
+            has_returns=bool(np.isfinite(frame['intensity_db']).any())
             edge=None;edge_rejected=0
             if self.frontend=='echo_boundary':
                 from .sonar_edges import echo_boundaries,near_edge
@@ -47,7 +48,7 @@ class AcousticTracks:
             retained=0;errors={};reference_rejected=0;reference_expired=0
             if self.previous is not None and len(self.pixels):
                 tracks=correspondences(self.previous,frame,seed_pixels=self.pixels,**flow_options)
-                if not tracks['matched']:return self.reset('acoustic_tracks_lost')
+                if not tracks['matched']:return self.reset('acoustic_tracks_lost' if has_returns else 'no_acoustic_returns')
                 moved=np.array(tracks['current_pixels'],dtype=np.float32)
                 # A shared one-pixel footprint cannot carry two independent IDs.
                 distance=np.linalg.norm(moved[:,None,:]-moved[None,:,:],axis=2)
@@ -113,6 +114,7 @@ class AcousticTracks:
                         frontend=self.frontend,edge_rejected=edge_rejected,
                         ground_excluded_pixels=0 if edge is None else edge['ground_excluded_pixels'],
                         ground_hypothesis_used=False if edge is None else edge['ground_hypothesis_used'],
-                        reference_rejected=reference_rejected,reference_expired=reference_expired)
+                        reference_rejected=reference_rejected,reference_expired=reference_expired,
+                        **({} if has_returns else dict(reason='no_acoustic_returns')))
         except (ValueError,KeyError,TypeError) as error:
             return self.reset(str(error))

@@ -7,7 +7,7 @@ calibrated constant-false-alarm detector.
 """
 from dataclasses import dataclass
 import numpy as np
-from .sonar_input import validate_frame
+from .sonar_input import validate_frame,log_image_values
 from .sonar_surface import _median
 
 
@@ -25,9 +25,12 @@ class EchoEdgeConfig:
 def echo_tracking_image(frame):
     """Fixed background-relative dB mapping; invariant to uniform gain shifts."""
     validate_frame(frame)
-    smooth=_median(_median(np.asarray(frame['intensity_db'],dtype=float),3,1),3,0)
-    relative=smooth-np.median(smooth,axis=1)[:,None]
-    return np.uint8(np.clip((relative+10.)*(255./40.),0,255)),smooth
+    work,support=log_image_values(frame['intensity_db'])
+    filtered=_median(_median(work,3,1),3,0)
+    relative=filtered-np.median(filtered,axis=1)[:,None]
+    image=np.uint8(np.clip((relative+10.)*(255./40.),0,255));image[~support]=0
+    smooth=filtered if support.all() else _median(_median(np.asarray(frame['intensity_db'],dtype=float),3,1),3,0)
+    return image,smooth
 
 
 def echo_boundaries(frame, *, ground_entry_band_m=None, config=EchoEdgeConfig()):
@@ -60,12 +63,16 @@ def echo_boundaries(frame, *, ground_entry_band_m=None, config=EchoEdgeConfig())
     before=np.searchsorted(ranges,ranges-config.rise_span_m/2,side='right')-1
     after=np.searchsorted(ranges,ranges+config.rise_span_m/2,side='left')
     interior=(before>=0)&(after<rows)
-    gradient=smooth[np.minimum(after,rows-1)]-smooth[np.maximum(before,0)]
     returned=smooth[np.minimum(after,rows-1)]
+    earlier=smooth[np.maximum(before,0)]
+    measured_gradient=np.isfinite(returned)&np.isfinite(earlier)
+    gradient=np.zeros_like(smooth)
+    np.subtract(returned,earlier,out=gradient,where=measured_gradient)
     # A dark shadow returning to ordinary seabed brightness is not a bright
     # object echo. Require excess over the same-range background as well.
     background=np.median(smooth,axis=1)[np.minimum(after,rows-1),None]
-    rise=((gradient>=config.rise_db)&(returned>=noise+config.return_margin_db)
+    rise=(measured_gradient&np.isfinite(background)&np.isfinite(noise)
+          &(gradient>=config.rise_db)&(returned>=noise+config.return_margin_db)
           &(returned>=background+config.background_margin_db))
     # Require adjacent angular support, then retain the centre beam only.
     windows=np.lib.stride_tricks.sliding_window_view(np.pad(rise,((0,0),(config.minimum_beams//2,)*2)),config.minimum_beams,axis=1)
@@ -80,9 +87,10 @@ def echo_boundaries(frame, *, ground_entry_band_m=None, config=EchoEdgeConfig())
     # range-gradient maximum. Use the same two-pixel support for seeding and
     # tracking; never extend it into the excluded ground band or image border.
     support=np.any(np.lib.stride_tricks.sliding_window_view(np.pad(eligible,2),(5,5)),axis=(-2,-1))
-    support&=~ground&interior[:,None]&(ranges[:,None]>config.minimum_range_m)
+    support&=~ground&interior[:,None]&(ranges[:,None]>config.minimum_range_m)&np.isfinite(a)
     support[:2]=False;support[-2:]=False;support[:,:2]=False;support[:,-2:]=False
-    return dict(image=image,edge_mask=eligible,tracking_mask=support,noise_db=noise,gradient_db=gradient,
+    return dict(image=image,edge_mask=eligible,tracking_mask=support,
+                noise_db=noise if np.isfinite(noise) else None,noise_available=bool(np.isfinite(noise)),gradient_db=gradient,
                 ground_excluded_pixels=int((coherent&peak&ground).sum()),
                 ground_hypothesis_used=ground_entry_band_m is not None,
                 scope='candidate echo boundaries; not physical identities or elevations')

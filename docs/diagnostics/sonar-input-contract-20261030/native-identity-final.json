@@ -1,0 +1,7 @@
+{
+  "binary": "/Volumes/ExternalHDD/POSIM/validation-data/posim-slam/sonar-input-contract-20261030/native-build/basalt_stream",
+  "binary_sha256": "38ec4ecc26aba87e55ee4abe60446196ed6bc6983fa335fb4461dac105e1e813",
+  "native_geometry_sha256": "c91a3ef3a56046095f8d2bf06862c9b56d17f4efc4e8d40491877ed959eeeb98",
+  "SDK_modified": false,
+  "source": "Public candidate sources; source visibility unchanged; no provider ABI change"
+}
