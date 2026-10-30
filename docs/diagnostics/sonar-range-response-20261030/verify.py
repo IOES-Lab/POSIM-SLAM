@@ -123,6 +123,26 @@ def verify_sonoptix():
         assert tail['weak_tail_calibration_complete'] is False
 
 
+def verify_fixed_point():
+    report = load('fixed-point-control.json')
+    row = next(value for value in report['rows'] if value['frame'] == 20)
+    with np.load(ROOT/'captures/sonoptix/summary.npz', allow_pickle=False) as data:
+        tail = data['ranges'] >= 10.
+    with np.load(ROOT/'fixed-point-frame20.npz', allow_pickle=False) as data:
+        assert data['native'].dtype == np.complex64
+        assert data['quantized'].dtype == data['floating'].dtype == np.complex128
+        actual, quantized, floating = [data[key].astype(complex) for key in ['native', 'quantized', 'floating']]
+    assert actual.shape == quantized.shape == floating.shape == (256, 599)
+    assert row['tail_cells'] == 256*int(tail.sum()) == 51200
+    for key, values in [('native', actual), ('quantized', quantized), ('floating', floating)]:
+        np.testing.assert_allclose(np.mean(abs(values[:, tail])**2), row[key+'_tail_mean_power'], rtol=2e-6)
+    for key, values in [('quantized', quantized), ('floating', floating)]:
+        for prefix, mask in [('whole', slice(None)), ('tail', tail)]:
+            error = np.linalg.norm(actual[:, mask]-values[:, mask])/np.linalg.norm(actual[:, mask])
+            np.testing.assert_allclose(error, row[prefix+'_complex_residual_'+key], rtol=2e-6)
+    assert report['limits']['new_shader_or_estimator_patch'] is False
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--operator-record', type=Path, default=ROOT.parent/'sonar-pr31-36-20261030')
@@ -133,6 +153,7 @@ def main():
     verify_operator(args.operator_record)
     verify_panel()
     verify_sonoptix()
+    verify_fixed_point()
     with np.load(ROOT/'all-profile-fits.npz', allow_pickle=False) as data:
         for label, report in load('profile-summary.json').items():
             scores = data[label+'_residual'][data[label+'_has_returns']]
@@ -140,7 +161,8 @@ def main():
             for q, expected in report['normalized_power_residual_quantiles'].items():
                 np.testing.assert_allclose(np.quantile(scores, float(q)), expected, atol=1e-12)
     print('PASS: 32 native transfer controls, 180 controlled raw frames and full-resolution '
-          '25-frame Sonoptix statistics/moments. Field raw extraction and native acquisition are not rerun.')
+          '25-frame Sonoptix statistics/moments, plus the complete matched arithmetic frame. '
+          'Field raw extraction and native acquisition are not rerun.')
 
 
 if __name__ == '__main__':

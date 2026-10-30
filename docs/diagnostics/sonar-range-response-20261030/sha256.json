@@ -1,6 +1,6 @@
 {
-  "README.ko.md": "6c6598a88dd5aeac143bfd7fd18dc4337d139195bda3a429c41008e76665a8f7",
-  "README.md": "8cf562ecb9f6fff849dd5bd7b421ea23757b3ab18530f4debfda2ef1909be502",
+  "README.ko.md": "904ed32706e9bc62a511a648c8433907832f62f9e92c9de0b135c6f2e0dce0ee",
+  "README.md": "c0f32f84a9b463e21d3da0c15c13f255a9a732fb7061da6df373edeee4d9dfea",
   "all-profile-fits.npz": "725abc646af1ab57e2a56e209d01f18f8a033bd7e23a5c3b63ae8907fcc07498",
   "blind-native-control.json": "4bd5fbdf0a6814b0f6e1dd7c266e72d9ff477957a0d2a16de3fcbc40b5586014",
   "captures/panel/aliases.json": "1c298e788fd1264d314b3896cd78d776dcf5c70ef1db32388b77b7fdbaf0b946",
@@ -11,14 +11,18 @@
   "captures/sonoptix/representation.json": "9266ee37fd6d3f4b49cd6b0947e7a4b67c9bedd343f880d6c090c692d85d511c",
   "captures/sonoptix/summary.npz": "9fd528be4213eb7b1c77099c50a2f270e91c41794b3ca27fdbcfc39462d9c1bf",
   "checks.json": "c3b1afcc3490e5bedd04ea7c478dcffb87570b337d17022a32d24a068c6854c8",
+  "fixed-point-control.json": "24c38080286d392837e487789b156e3a3628bf17c95cb50e5e047387f56a83cd",
+  "fixed-point-frame20.npz": "1a7908a3f88215e0718bdecf755ac6efbabc2a8307983e19e7a222bd851ef50a",
+  "fixed_point_reference.py": "92e3c7cb113111c95f8c797960e670d118ec05317b5bec7c1fd7b07dcf0eaa16",
   "native-identity.json": "6fb1155510957468fa3775b925a31d3962c97114e8b3f3922608766617a13352",
   "plot_response.py": "eb17383be6b053f957faa5ad425e362a77a946d66debb880d338e6bf8dc03be7",
+  "probe_fixed_point.py": "a48b99d462fd136465b5dbad3cd92ea8c0f667e4a9c1fe01904bc167773754a8",
   "profile-summary.json": "858a4db194b4bab41efd2c7c55ba98297cf08f52232ada2b4b4bda685dd0896a",
   "range-response-calibration.png": "79ade866f1e42d78750f83e500dbfcfcf958d481aefbff0a5d74edf5f4f45e63",
   "renderer-conditioned-panel.json": "3260492c7563ff10d2c5e7abf4c79be370307016b04a8cc39e33ddc4fa28555a",
   "sonoptix-conditioned-panel.json": "a2db5851db8b29a2089dcfe664a82913bc16ead3d4a9efa95a6b86df2a80d991",
   "sonoptix-profile.json": "d6012750c77e5f27cfbd00b588f9c5c2076fbc82b28289b96b2f150b12883d8d",
   "source-identity.json": "7c1ca1774d7074a9d4867f942d539afc5306c5572687fa016c56ca97fd64382c",
-  "verify.py": "ba30b2ebd2fbd6252340ae1affedb8190e65e76c20249580befa7de4840ab4f8",
+  "verify.py": "236961739ecbed2049f866aac7168c344db006d4b81eb51629622eeab54b2823",
   "weak-tail.json": "f7f11db7dd83295daab0f41af1b08576e1a53650766226e7586b6d8909518c69"
 }
