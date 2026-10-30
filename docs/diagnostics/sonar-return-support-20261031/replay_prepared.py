@@ -20,11 +20,13 @@ def descriptor_pairs(previous, current):
     return good
 
 
-def replay(root, mode='projective', samples=257):
+def replay(root, mode='projective', samples=257, *, calibration_path=None):
     root = Path(root)
     with np.load(root/'detected-features.npz',allow_pickle=False) as file:
         data = dict(file)
-    calibration = json.loads((root.parent/'sonar-inspection-scene-20261031/calibration.json').read_text())['sonar']
+    calibration_path = (root.parent/'sonar-inspection-scene-20261031/calibration.json'
+                        if calibration_path is None else Path(calibration_path))
+    calibration = json.loads(calibration_path.read_text())['sonar']
     geometry = {k:calibration[k] for k in ('imu_to_sonar','sonar_to_imu','range_min','range_max','horizontal_fov','vertical_fov')}
     geometry['imu_to_sonar'] = np.array(geometry['imu_to_sonar'])
     geometry['sonar_to_imu'] = np.array(geometry['sonar_to_imu'])

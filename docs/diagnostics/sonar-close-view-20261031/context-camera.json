@@ -1,0 +1,40 @@
+{
+  "recorded_pose_stamp_ns": 28010000000,
+  "render_stamp_ns": 2000000000,
+  "scope": "Clear-water context re-render; haze/absorption off; sunlight, caustics, particles and surface retained; never estimator input",
+  "input_record_untouched": true,
+  "exit": 0,
+  "forced": false,
+  "pid": 72054,
+  "body_position": [
+    5.970926738820423,
+    -1.340034820945122,
+    -1.4453374741082854
+  ],
+  "body_rotation": [
+    [
+      0.9999533157037597,
+      -0.009374004209594972,
+      -0.002344026052693241
+    ],
+    [
+      0.009383559157100874,
+      0.9999475718158599,
+      0.004099077592679952
+    ],
+    [
+      0.0023054783890544828,
+      -0.004120881537258536,
+      0.9999888514902321
+    ]
+  ],
+  "camera": {
+    "pose": "0 -5 -0.15 0 0.6154797086703875 0.7853981633974483",
+    "topic": "/validation/slam/isometric_rgb",
+    "width": 1000,
+    "height": 800,
+    "horizontal_fov": 1.35
+  },
+  "image_sha256": "159d0ac5f4a1187982a658e446a45216066603e004920e29c6fc7d3e8f459dc2",
+  "original_world_sha256": "795f04c5eb2e954ac9613311a229a5e9754fd56f4509000d95e287808b7af2a6"
+}

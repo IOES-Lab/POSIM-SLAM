@@ -1,0 +1,74 @@
+{
+  "verified_at": "2026-10-30 21:48:26 UTC",
+  "repository": "IOES-Lab/POSIM",
+  "main": "8c47601c7dd4729e3edeabef79665760268fdbc4",
+  "integration": "ffecee9be9976f68c9e883d6cf3bbd6d40eb7729",
+  "branch": "codex/sonar-slam-source-20261030",
+  "all_heads_ancestors": true,
+  "no_source_pr_merged": true,
+  "pull_requests": [
+    {
+      "pr": 6,
+      "head": "d51d7b85d7224d7b8420015a63e0f6896ddaa7a7",
+      "base": "487c92286c8230a90e78daf00430180cdfad3a10",
+      "title": "Migrate WGPU sonar backend from DAVE #44",
+      "state": "open",
+      "merged": false,
+      "url": "https://github.com/IOES-Lab/POSIM/pull/6"
+    },
+    {
+      "pr": 31,
+      "head": "7dc9602142cc66d043b53f9a275448867b5c665e",
+      "base": "d51d7b85d7224d7b8420015a63e0f6896ddaa7a7",
+      "title": "fix(sonar): create each sensor once with its configured mount pose",
+      "state": "open",
+      "merged": false,
+      "url": "https://github.com/IOES-Lab/POSIM/pull/31"
+    },
+    {
+      "pr": 32,
+      "head": "f1055f48ebe57d7ea12d9009ce9cd4d554f72364",
+      "base": "d51d7b85d7224d7b8420015a63e0f6896ddaa7a7",
+      "title": "fix(sonar): own ROS context lifetime and captured frame timestamps",
+      "state": "open",
+      "merged": false,
+      "url": "https://github.com/IOES-Lab/POSIM/pull/32"
+    },
+    {
+      "pr": 33,
+      "head": "5f327fd55d4301e4fed125b2a64bead6d5d4ceba",
+      "base": "a1786726bd77290f7fba40d8302dec385e6a5324",
+      "title": "fix(wgpu): correct shared input loads on partial matrix tiles",
+      "state": "open",
+      "merged": false,
+      "url": "https://github.com/IOES-Lab/POSIM/pull/33"
+    },
+    {
+      "pr": 34,
+      "head": "801f886605f138ff22b8d714a13885d84f36e577",
+      "base": "d51d7b85d7224d7b8420015a63e0f6896ddaa7a7",
+      "title": "fix(wgpu): preserve range transforms and weak acoustic returns",
+      "state": "open",
+      "merged": false,
+      "url": "https://github.com/IOES-Lab/POSIM/pull/34"
+    },
+    {
+      "pr": 35,
+      "head": "02f6dccd57eee0e0c2dd417317d4a06ee65b907f",
+      "base": "d51d7b85d7224d7b8420015a63e0f6896ddaa7a7",
+      "title": "fix(sonar): keep empty-return images black",
+      "state": "open",
+      "merged": false,
+      "url": "https://github.com/IOES-Lab/POSIM/pull/35"
+    },
+    {
+      "pr": 36,
+      "head": "fbfd000d094675fd301b51ccc29c07a40cc51c15",
+      "base": "d51d7b85d7224d7b8420015a63e0f6896ddaa7a7",
+      "title": "fix(sonar): include the maximum-range sample in the range grid",
+      "state": "open",
+      "merged": false,
+      "url": "https://github.com/IOES-Lab/POSIM/pull/36"
+    }
+  ]
+}

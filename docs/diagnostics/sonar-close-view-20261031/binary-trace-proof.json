@@ -1,0 +1,10 @@
+{
+  "libmultibeam_sonar.dylib": {
+    "sha256": "0090433756cb425eea803ce56a70c1af5adf844223054b2f1c25739bee0d8564",
+    "loaded_trace": true
+  },
+  "libmultibeam_sonar_system.dylib": {
+    "sha256": "94c6b56393afcbbe8d0343613d4d5af81f42e0a9525c3a07c4a257c500ccd66a",
+    "loaded_trace": true
+  }
+}

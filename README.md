@@ -44,6 +44,8 @@ matching worker must acknowledge this calibration.
 
 [Projective association and motion design](docs/diagnostics/sonar-return-support-20261031/README.md) compare the same detections with descriptor and full-elevation search, retaining every conditional point and unresolved observability.
 
+[Close-view support](docs/diagnostics/sonar-close-view-20261031/README.md) separates actual target visibility from persistent feature correspondence and preserves complete unqualified native and offline maps.
+
 `sonar_input` preserves zero-power `-inf` bins and validates the broadband source's
 physical range grid from bandwidth and sound speed. Feature candidates require
 measured echo support; image working values never replace raw observations.
