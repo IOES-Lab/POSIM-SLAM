@@ -38,6 +38,8 @@ matching worker must acknowledge this calibration.
 
 [Wall/corner geometry control](docs/diagnostics/sonar-wall-corner-20261030/README.md) compares complete navigation and acoustic outputs on one moving recording, with matched RGB/sonar and identically projected field/cloud views.
 
+[Sonar input diagnostics](docs/diagnostics/sonar-pr31-36-20261030/README.md) check empty-frame recovery, the maximum-range grid and synchronized RGB/sonar input on Orca5 terrain. Saved complex operator outputs have an independent NumPy verifier.
+
 [Conditional sonar-row diagnostics](docs/diagnostics/sonar-structureless-update-20261030/README.md)
 provide a public numerical reproduction of single-posterior conditioning,
 retained weak-height modes and identical-clock DVL omission controls.

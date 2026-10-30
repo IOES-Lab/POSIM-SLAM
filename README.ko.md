@@ -34,6 +34,8 @@ Householder QR과 유효 정보 방향을 구분하는 SVD로 자세·평면·�
 
 [벽·모서리 관측 대조](docs/diagnostics/sonar-wall-corner-20261030/README.md)에 한 주행 기록의 전체 항법·음향 출력과 같은 시각의 RGB·소나, 동일 투영의 현장·점군 비교를 보존합니다.
 
+[소나 입력 진단](docs/diagnostics/sonar-pr31-36-20261030/README.ko.md)은 빈 영상 복구, 최대 거리 격자와 Orca5 지형의 시각이 맞는 RGB·소나를 검사합니다. 저장한 복소 연산 출력은 독립 NumPy 검사기로 확인합니다.
+
 [소나 관측식의 조건부 결합 진단](docs/diagnostics/sonar-structureless-update-20261030/README.ko.md)은
 하나의 추정 분포에 관측을 결합하는 수치 계산, 높이가 불확실한 모드와
 같은 시각을 유지한 DVL 생략 대조군을 공개 코드로 재현합니다.

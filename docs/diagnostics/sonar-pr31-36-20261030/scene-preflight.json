@@ -1,0 +1,26 @@
+[
+  {
+    "case": "registered_terrain",
+    "expected_pass": true,
+    "passed": true,
+    "error": null
+  },
+  {
+    "case": "extra_far_box",
+    "expected_pass": true,
+    "passed": true,
+    "error": null
+  },
+  {
+    "case": "blocking_box",
+    "expected_pass": false,
+    "passed": false,
+    "error": "{'clear': False, 'minimum_centerline_clearance_m': 0.0, 'required_body_margin_m': 0.5, 'closest': {'actor': 'extra/body/shape', 'segment': 1}, 'segments': 8, 'collision_boxes': 1, 'method': 'exact segment-to-oriented-box distance; spherical body envelope', 'scope': 'authored targets only; terrain checked separately by mission planner'}"
+  },
+  {
+    "case": "unknown_mesh",
+    "expected_pass": false,
+    "passed": false,
+    "error": "unsupported_scene_collision_shape"
+  }
+]
