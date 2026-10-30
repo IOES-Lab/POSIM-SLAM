@@ -42,6 +42,8 @@ matching worker must acknowledge this calibration.
 
 [Inspection-scene point controls](docs/diagnostics/sonar-inspection-scene-20261031/README.md) retain full clouds, matched native RGB and exact-pose comparisons using the corrected #31–36 integration. Point-map usefulness remains unqualified.
 
+[Projective association and motion design](docs/diagnostics/sonar-return-support-20261031/README.md) compare the same detections with descriptor and full-elevation search, retaining every conditional point and unresolved observability.
+
 `sonar_input` preserves zero-power `-inf` bins and validates the broadband source's
 physical range grid from bandwidth and sound speed. Feature candidates require
 measured echo support; image working values never replace raw observations.
