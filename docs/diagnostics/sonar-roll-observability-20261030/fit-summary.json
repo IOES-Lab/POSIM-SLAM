@@ -1,0 +1,151 @@
+{
+  "settings": {
+    "windows": [
+      "two_training_views",
+      "eight_training_views",
+      "full_bounded_history"
+    ],
+    "pose_controls": [
+      "truth_assessment_only"
+    ],
+    "full_history": "Uniformly spaced at most16 original samples before the last; all remaining observations are held out",
+    "seeds": 9,
+    "iterations": 30,
+    "noise_sigma": [
+      0.025083611719310284,
+      0.008213314126139591
+    ],
+    "heldout_cost_cutoff": 9.0,
+    "original_track_admission_by_truth_or_cost": false,
+    "summary_mode": "First minimum-cost public solver mode; all other modes retained",
+    "all_original_chains_retained": true,
+    "native_or_product_update": false,
+    "scope": "Optimistic fixed-pose point-model capability, not a deployable estimator or map acceptance"
+  },
+  "results": [
+    {
+      "variant": "lk_source_positive",
+      "pose_control": "truth_assessment_only",
+      "window": "two_training_views",
+      "original_pairs": 35,
+      "eligible": 18,
+      "fitted": 18,
+      "no_feasible_seed": 0,
+      "stationary_best": 16,
+      "optimistic_below_10cm": 0,
+      "minimum_optimistic_three_sigma_m": 16.29052520347404,
+      "heldout_candidates": 91,
+      "heldout_compatible": 44,
+      "surface_error_p50_p90_max_m": [
+        0.0750150934507798,
+        0.3939288626096855,
+        0.9111253895830832
+      ],
+      "all_modes_retained": 144,
+      "qualified": false
+    },
+    {
+      "variant": "lk_source_positive",
+      "pose_control": "truth_assessment_only",
+      "window": "eight_training_views",
+      "original_pairs": 35,
+      "eligible": 5,
+      "fitted": 5,
+      "no_feasible_seed": 0,
+      "stationary_best": 5,
+      "optimistic_below_10cm": 0,
+      "minimum_optimistic_three_sigma_m": 0.6197845448660337,
+      "heldout_candidates": 30,
+      "heldout_compatible": 20,
+      "surface_error_p50_p90_max_m": [
+        0.022898987812254745,
+        0.037142996785524754,
+        0.03754453047674122
+      ],
+      "all_modes_retained": 26,
+      "qualified": false
+    },
+    {
+      "variant": "lk_source_positive",
+      "pose_control": "truth_assessment_only",
+      "window": "full_bounded_history",
+      "original_pairs": 35,
+      "eligible": 18,
+      "fitted": 18,
+      "no_feasible_seed": 0,
+      "stationary_best": 17,
+      "optimistic_below_10cm": 0,
+      "minimum_optimistic_three_sigma_m": 0.49329785004765286,
+      "heldout_candidates": 18,
+      "heldout_compatible": 15,
+      "surface_error_p50_p90_max_m": [
+        0.042592588831207034,
+        0.26248104358321145,
+        0.7074342433402053
+      ],
+      "all_modes_retained": 113,
+      "qualified": false
+    },
+    {
+      "variant": "lk_source_contrast",
+      "pose_control": "truth_assessment_only",
+      "window": "two_training_views",
+      "original_pairs": 5,
+      "eligible": 4,
+      "fitted": 4,
+      "no_feasible_seed": 0,
+      "stationary_best": 3,
+      "optimistic_below_10cm": 0,
+      "minimum_optimistic_three_sigma_m": 51.59796232830586,
+      "heldout_candidates": 15,
+      "heldout_compatible": 9,
+      "surface_error_p50_p90_max_m": [
+        0.16609236394643118,
+        0.24146957998749216,
+        0.2595694137251766
+      ],
+      "all_modes_retained": 32,
+      "qualified": false
+    },
+    {
+      "variant": "lk_source_contrast",
+      "pose_control": "truth_assessment_only",
+      "window": "eight_training_views",
+      "original_pairs": 5,
+      "eligible": 0,
+      "fitted": 0,
+      "no_feasible_seed": 0,
+      "stationary_best": 0,
+      "optimistic_below_10cm": 0,
+      "minimum_optimistic_three_sigma_m": null,
+      "heldout_candidates": 0,
+      "heldout_compatible": 0,
+      "surface_error_p50_p90_max_m": null,
+      "all_modes_retained": 0,
+      "qualified": false
+    },
+    {
+      "variant": "lk_source_contrast",
+      "pose_control": "truth_assessment_only",
+      "window": "full_bounded_history",
+      "original_pairs": 5,
+      "eligible": 4,
+      "fitted": 4,
+      "no_feasible_seed": 0,
+      "stationary_best": 4,
+      "optimistic_below_10cm": 0,
+      "minimum_optimistic_three_sigma_m": 0.8652180901659092,
+      "heldout_candidates": 4,
+      "heldout_compatible": 4,
+      "surface_error_p50_p90_max_m": [
+        0.1303230890393169,
+        0.20881946761225995,
+        0.22810841058224973
+      ],
+      "all_modes_retained": 23,
+      "qualified": false
+    }
+  ],
+  "all_original_chains_retained": true,
+  "qualified": false
+}

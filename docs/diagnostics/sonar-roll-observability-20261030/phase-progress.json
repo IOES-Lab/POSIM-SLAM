@@ -1,0 +1,67 @@
+[
+  {
+    "phase": "roll_positive",
+    "target_deg": 5.0,
+    "mean_deg": 3.533560292867055,
+    "std_deg": 0.19273294825518297,
+    "mean_error_deg": 1.466439707132945,
+    "limit_deg": 2.0,
+    "passed": true,
+    "arrival_elapsed_sim_s": 1.9800000000000002,
+    "feedback_span_s": 1.0,
+    "distinct_feedback_samples": 21,
+    "max_absolute_error_deg": 1.7552460640255187
+  },
+  {
+    "phase": "neutral_middle",
+    "target_deg": 0.0,
+    "mean_deg": 0.7380453221932709,
+    "std_deg": 0.11965108333890355,
+    "mean_error_deg": 0.7380453221932709,
+    "limit_deg": 1.0,
+    "passed": true,
+    "arrival_elapsed_sim_s": 2.1100000000000003,
+    "feedback_span_s": 1.0,
+    "distinct_feedback_samples": 21,
+    "max_absolute_error_deg": 0.9576900652748652
+  },
+  {
+    "phase": "roll_negative",
+    "target_deg": -5.0,
+    "mean_deg": -3.381616168854238,
+    "std_deg": 0.07272185315204927,
+    "mean_error_deg": 1.6183838311457621,
+    "limit_deg": 2.0,
+    "passed": true,
+    "arrival_elapsed_sim_s": 2.0,
+    "feedback_span_s": 1.0,
+    "distinct_feedback_samples": 21,
+    "max_absolute_error_deg": 1.7752766609836241
+  },
+  {
+    "phase": "neutral_end",
+    "target_deg": 0.0,
+    "mean_deg": -0.7393912645841881,
+    "std_deg": 0.2182617831428724,
+    "mean_error_deg": 0.7393912645841881,
+    "limit_deg": 1.0,
+    "passed": true,
+    "arrival_elapsed_sim_s": 2.0900000000000003,
+    "feedback_span_s": 1.0,
+    "distinct_feedback_samples": 21,
+    "max_absolute_error_deg": 0.9632726777043067
+  },
+  {
+    "phase": "sweep_negative",
+    "target_deg": -20.0,
+    "mean_deg": -18.45799696552,
+    "std_deg": 0.24008809542670526,
+    "mean_error_deg": 1.5420030344800004,
+    "limit_deg": 2.0,
+    "passed": true,
+    "arrival_elapsed_sim_s": 5.29,
+    "feedback_span_s": 1.0,
+    "distinct_feedback_samples": 21,
+    "max_absolute_error_deg": 1.9342572207956934
+  }
+]
