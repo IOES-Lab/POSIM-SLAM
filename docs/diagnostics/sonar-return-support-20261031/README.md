@@ -6,7 +6,7 @@ This offline control reuses the [physical inspection recording](../sonar-inspect
 
 ## Same detections, different association
 
-Default A-KAZE on the existing raw-image transform (20–90 dB, 5×5 Gaussian blur) produces 2,670 features over 93 replayable frames. Raw input and all earlier startup frames remain unchanged. Both methods use these exact stored pixels/descriptors and OpenCV 4.10.0 research detections:
+Default A-KAZE on the existing raw-image transform (20–90 dB, 5×5 Gaussian blur) produces 2,670 features over 93 replayable frames. Raw input and all earlier startup frames remain unchanged. Both methods use these exact stored pixels/descriptors and OpenCV 4.10.0 research detections. Prepared data also preserves the original float64 metre/radian observations consumed by fitting; pixel re-interpolation is only checked at floating-point precision, not substituted into replay:
 
 - **Descriptor:** mutual Hamming matching with the existing 0.8 nearest-neighbour ratio.
 - **Projective:** reuse `project_return_arc()` to project the birth observation's complete ±10° elevation arc using the causal navigation poses. Accept only mutually unique candidates within 2 pixels. Features farther than 5 pixels from every existing locus may start a track; ambiguous candidates remain unresolved. Keep unseen tracks for at most two seconds and bound the database to 300. These pixel choices are empirical diagnostic settings, not calibrated probability gates.

@@ -1,6 +1,6 @@
 {
-  "README.ko.md": "749e0024546ebef66f74d6aecfbca01e6812451ed820feea7c59731d5fcfdc00",
-  "README.md": "a982de6e6af0f53d005ad00aacd63a51b8df19ac95a7eded69de38db5b34b4a4",
+  "README.ko.md": "9a337197bf852cc0d8e9601236860fb03de11858f601821d6848d8221b2fb622",
+  "README.md": "74bbc34fe3b385dcebab66156790a46b0fe067424e6f53eea6f607907ee72b07",
   "ardusub-inspection.json": "89f750786929deeffe62c45438e7934fee67fada69a7b4ef4d3639e28d03f700",
   "assessment-summary.json": "bbd454ea95531863003fdd9509976f6b6541a0ab5fc7bef6cfcb57e2e95dd376",
   "association-summary.json": "ae73987b5b59f3f4076fcb9440a21da3ce29fb37c43de389f90dce8e1567886e",
@@ -8,7 +8,7 @@
   "descriptor-assessed-map.npz": "7ce076ca1afcd2150aba6019b54a3d949406f85d1bac35f2b2ed1dc9ef909063",
   "descriptor-complete.json.gz": "e410da151f9d081147652ebdd14deb22be127e746ca0cdcd097c34e71d35c7b7",
   "descriptor-map.ply": "ff64851a7cd842429e4cea9d8a7ae2cb5b753fde58b9745c92382bf46815a7e8",
-  "detected-features.npz": "ae04c92fac1cd872ea021e2365c57624c3c7707bc57fbf3214cbd77f5a273dd0",
+  "detected-features.npz": "dc00c4f9eee21aa71c54469b52282767304093b0c6f8a20ccdbcf7be0b1b2264",
   "full-cloud-comparison.png": "b2bfab2290959421a7d801b7c75972b4f05ed6d24eb906db7e5f9827f6df45d8",
   "input-hashes.json": "863d1f0d6324b843b2dd5190279b4e01632ed5df3f6a466995c0b45aaad105ef",
   "input-reference.json": "169dc5a8f5c80afa0a1ed5ff60701923b4c9415ce27ca25d5e74f338403c6863",
@@ -20,7 +20,7 @@
   "projective-map.ply": "4d564c2b71e8c178f370aecfe1869647ce00e0fa0c6e8b10eedb59d27795e329",
   "projective_assoc.py": "e8640ec1fce6d1159c03a9c44b48a55c226a67034199f35d48797746b76081aa",
   "protocol.json": "7210078706e5e0cc12866d54a666e7889a068d0fc81e455a4ddad9b8cd6e59f8",
-  "replay_prepared.py": "abac699e5c99a01213986c27163e7ef19e108c1bc38034605a8124c06bd049fa",
-  "test_projective_assoc.py": "1c1339d97f0593ccd099e5f5603801e6e16f2a89312a3eeadc1e0cfdb005ce71",
+  "replay_prepared.py": "e8c8b92d86bd7eedab3c64832496e09834a3a64ded91765713c59204f5855876",
+  "test_projective_assoc.py": "cfca755a495bdda463d5cdf742efb67010be0e5e6f5fd0fd048876bf8945a81f",
   "verify.py": "893a06409e74a6de6f5659c02775b9e9b38d0fd7a33074ba13d2961bd7c41021"
 }

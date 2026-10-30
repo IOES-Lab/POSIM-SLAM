@@ -1,6 +1,10 @@
 import unittest
+from pathlib import Path
+import json
+import tempfile
 import numpy as np
 from projective_assoc import arc_pixel_distance, unique_matches, project_pixels, ProjectiveTracks
+from replay_prepared import replay
 
 
 class AssociationTests(unittest.TestCase):
@@ -64,6 +68,30 @@ class AssociationTests(unittest.TestCase):
         for value in (np.array([[np.nan]]),np.array([[-1.]]),np.zeros((301,1))):
             with self.assertRaises(ValueError):unique_matches(value)
         with self.assertRaises(ValueError):unique_matches(np.zeros((1,1)),5,2)
+
+    def test_original_metric_values_survive_a_pixel_roundtrip_difference(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            parent=Path(temporary)
+            reference=parent/'sonar-inspection-scene-20261031'
+            reference.mkdir()
+            geometry=dict(imu_to_sonar=[0,0,0],sonar_to_imu=np.eye(3).tolist(),range_min=.2,
+                          range_max=10.,horizontal_fov=2.,vertical_fov=.35)
+            (reference/'calibration.json').write_text(json.dumps(dict(sonar=geometry)))
+            root=parent/'prepared';root.mkdir()
+            original=np.nextafter(3.,np.inf)
+            arrays=dict(stamps_ns=[1],offsets=[0,1],pixels=[[2.,3.]],
+                descriptors=np.zeros((1,61),dtype=np.uint8),ranges=np.arange(5.),
+                angles=np.linspace(-1,1,5),range_azimuth=[[original,0.]],
+                nav_stamps_ns=[1],nav_positions=np.zeros((1,3)),nav_attitudes=np.eye(3)[None,:,:])
+            np.savez(root/'detected-features.npz',**arrays)
+            for mode in ('descriptor','projective'):
+                _,tracks=replay(root,mode)
+                self.assertEqual(tracks[0]['observations'][0]['range_m'],original)
+                self.assertNotEqual(tracks[0]['observations'][0]['range_m'],3.)
+            arrays['range_azimuth']=[[3.01,0.]]
+            np.savez(root/'detected-features.npz',**arrays)
+            with self.assertRaisesRegex(ValueError,'prepared_metric_observations_changed'):
+                replay(root)
 
 
 if __name__ == '__main__':

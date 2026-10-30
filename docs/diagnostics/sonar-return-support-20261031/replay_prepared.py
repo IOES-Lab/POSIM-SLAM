@@ -35,8 +35,14 @@ def replay(root, mode='projective', samples=257):
         stamp = int(raw_stamp)
         begin,end = data['offsets'][index:index+2]
         pixels, descriptors = data['pixels'][begin:end],data['descriptors'][begin:end]
-        polar = np.column_stack((np.interp(pixels[:,1],np.arange(len(data['ranges'])),data['ranges']),
-                                 np.interp(pixels[:,0],np.arange(len(data['angles'])),data['angles'])))
+        # Replay the exact physical observations consumed in the experiment.
+        # Re-interpolating pixels is only a machine-precision consistency check.
+        polar = data['range_azimuth'][begin:end]
+        derived = np.column_stack((np.interp(pixels[:,1],np.arange(len(data['ranges'])),data['ranges']),
+                                   np.interp(pixels[:,0],np.arange(len(data['angles'])),data['angles'])))
+        tolerance = 16*np.finfo(np.float64).eps*np.maximum(1.,abs(derived))
+        if polar.shape!=derived.shape or not np.isfinite(polar).all() or np.any(abs(polar-derived)>tolerance):
+            raise ValueError('prepared_metric_observations_changed')
         observations = [dict(range_m=float(r),azimuth_rad=float(a)) for r,a in polar]
         if mode == 'projective':
             tracker.push(stamp,poses[stamp],pixels,observations,data['ranges'],data['angles'])
