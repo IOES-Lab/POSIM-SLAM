@@ -69,6 +69,8 @@ jobs:
         run: python docs/diagnostics/sonar-input-contract-20261030/verify.py
       - name: Check native range response and conditional power moments
         run: python docs/diagnostics/sonar-range-response-20261030/verify.py
+      - name: Verify corrected acoustic source and replacement sensor reference
+        run: python docs/diagnostics/sonar-floating-spectrum-20261031/verify.py
       - run: python tools/evaluate_inertial_filter.py --output "$RUNNER_TEMP/inertial-filter.json"
       - run: python tools/evaluate_stationary_initialization.py --output "$RUNNER_TEMP/inertial-initialization.json"
       - run: python tools/evaluate_moving_initialization.py --output "$RUNNER_TEMP/moving-initialization.json"

@@ -1,0 +1,79 @@
+{
+  "source_integration": "ffecee9be9976f68c9e883d6cf3bbd6d40eb7729",
+  "source_main": "8c47601c7dd4729e3edeabef79665760268fdbc4",
+  "source_pr34": "801f886605f138ff22b8d714a13885d84f36e577",
+  "source_scope": [
+    {
+      "number": 6,
+      "head": "d51d7b85d7224d7b8420015a63e0f6896ddaa7a7",
+      "branch": "port/dave-pr44-wgpu",
+      "repository": "IOES-Lab/POSIM",
+      "state": "open",
+      "merged": false,
+      "url": "https://github.com/IOES-Lab/POSIM/pull/6"
+    },
+    {
+      "number": 31,
+      "head": "7dc9602142cc66d043b53f9a275448867b5c665e",
+      "branch": "fix/sonar-create-once-20261028",
+      "repository": "yeseorizi/POSIM",
+      "state": "open",
+      "merged": false,
+      "url": "https://github.com/IOES-Lab/POSIM/pull/31"
+    },
+    {
+      "number": 32,
+      "head": "f1055f48ebe57d7ea12d9009ce9cd4d554f72364",
+      "branch": "fix/sonar-owned-context-20261028",
+      "repository": "yeseorizi/POSIM",
+      "state": "open",
+      "merged": false,
+      "url": "https://github.com/IOES-Lab/POSIM/pull/32"
+    },
+    {
+      "number": 33,
+      "head": "5f327fd55d4301e4fed125b2a64bead6d5d4ceba",
+      "branch": "fix/wgpu-matmul-partial-tiles-20261028",
+      "repository": "yeseorizi/POSIM",
+      "state": "open",
+      "merged": false,
+      "url": "https://github.com/IOES-Lab/POSIM/pull/33"
+    },
+    {
+      "number": 34,
+      "head": "801f886605f138ff22b8d714a13885d84f36e577",
+      "branch": "fix/wgpu-original-length-fft-20261028",
+      "repository": "yeseorizi/POSIM",
+      "state": "open",
+      "merged": false,
+      "url": "https://github.com/IOES-Lab/POSIM/pull/34"
+    },
+    {
+      "number": 35,
+      "head": "02f6dccd57eee0e0c2dd417317d4a06ee65b907f",
+      "branch": "fix/sonar-empty-return-display-20261029",
+      "repository": "yeseorizi/POSIM",
+      "state": "open",
+      "merged": false,
+      "url": "https://github.com/IOES-Lab/POSIM/pull/35"
+    },
+    {
+      "number": 36,
+      "head": "fbfd000d094675fd301b51ccc29c07a40cc51c15",
+      "branch": "fix/sonar-range-endpoint-20261029",
+      "repository": "yeseorizi/POSIM",
+      "state": "open",
+      "merged": false,
+      "url": "https://github.com/IOES-Lab/POSIM/pull/36"
+    }
+  ],
+  "rendering_library_sha256": "0090433756cb425eea803ce56a70c1af5adf844223054b2f1c25739bee0d8564",
+  "system_library_sha256": "94c6b56393afcbbe8d0343613d4d5af81f42e0a9525c3a07c4a257c500ccd66a",
+  "all_heads_are_ancestors": true,
+  "loaded_in_vehicle": true,
+  "adapter": "Apple M3 Pro / Metal",
+  "installed_sdk_changed": false,
+  "runtime_delta": "The previous clean capture runtime with only its qualified sonar integration revision updated.",
+  "mission_completed": true,
+  "estimator_started": false
+}
