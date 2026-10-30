@@ -1,5 +1,7 @@
 # Sonar source support and separated-view geometry
 
+[한국어](README.ko.md)
+
 This record contains complete **unqualified** reconstruction diagnostics from
 the [wall/corner input](../sonar-wall-corner-20261030/README.md). No method here
 installs sonar factors, admits a map or changes production defaults. The sensor

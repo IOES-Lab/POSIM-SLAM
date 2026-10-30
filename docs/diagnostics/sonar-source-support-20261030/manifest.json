@@ -5,8 +5,8 @@
   "application_base": "a5c8bd3f89d9f8adba294a34531d0b7b1f02f7a2",
   "raw_storage": "one external canonical wall/corner record; no raw duplication",
   "sha256": {
-    "README.ko.md": "315db515ed3f3ee8dfb0cb91bf5f725bfe73f2ede77285ed9f2e0aff79b735c6",
-    "README.md": "624497b0f71ce3219db6ff1664972af78e603b0598ca66151e2b9ce0264a9d6f",
+    "README.ko.md": "b6ec2ba2fe2728e3078d75806986a5d9e7651e9176f05f0c47ceb3b4a3e94deb",
+    "README.md": "ed55c43670346d6fce16451fc6399886e3ce9963c6d7ace3f29635e695b9a823",
     "comparison-heldout.json": "008c142e5ac495767a4403df9c9247491dfa47ba5152312539b9e9d86b9dd12c",
     "comparison-heldout.png": "aca61be28e0f6751cbd4aeb85d2ff79f74bd3cdc8dee21eed42884b56f792457",
     "controls/inputs.json": "d9406ec8570c779e9120951a196f1f2ed364df1f311615e5ade9fecef93f0ce9",
