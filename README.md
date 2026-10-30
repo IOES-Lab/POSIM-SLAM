@@ -38,6 +38,12 @@ matching worker must acknowledge this calibration.
 
 [Wall/corner geometry control](docs/diagnostics/sonar-wall-corner-20261030/README.md) compares complete navigation and acoustic outputs on one moving recording, with matched RGB/sonar and identically projected field/cloud views.
 
+`BeamPhaseBounds.query_image()` bounds source magnitudes across a raw acoustic
+image with at most 8 MiB of multiplication temporary storage. It retains unknown
+phase/elevation and does not turn source support into independent 3D points.
+[Separated-view geometry and complete candidate comparison](docs/diagnostics/sonar-source-support-20261030/README.md)
+includes joint pose uncertainty, original-pixel ownership and retained failures.
+
 `retired_pose_archive` jointly recovers old poses from native Gaussian
 conditionals, preserving shared noise and unbounded directions. It is a read-only
 diagnostic that conditions on known live coordinates; capture is off by default.

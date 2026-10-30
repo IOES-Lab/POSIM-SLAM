@@ -1,0 +1,16 @@
+[
+  {
+    "original_path": "src/posim_slam/sonar_echo_curves.py",
+    "original_sha256": "6dcb2b71a2d33ad783e03582410600079342681293a288dd77a2e4b8628b6749",
+    "archived_path": "curve_model.py",
+    "archived_sha256": "ed5b4c910e50fb0da456c041546695fbe7e42a83615abc89751dc99c44c0203f",
+    "change": "absolute public imports only; failed model excluded from installed API"
+  },
+  {
+    "original_path": "tests/test_sonar_echo_curves.py",
+    "original_sha256": "fab3b605f45bda58106e3a577b75d8737c049ee28658a3dc6108592a5f99e4a0",
+    "archived_path": "test_curve_model.py",
+    "archived_sha256": "cab15fcef9c728a9bb23a5bcf83bbe4a74f71389afb0c41899360664c1825e4c",
+    "change": "absolute public imports only; failed model excluded from installed API"
+  }
+]

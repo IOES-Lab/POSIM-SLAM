@@ -1,0 +1,33 @@
+{
+  "points": 353,
+  "all_selected_points_assessed": true,
+  "surface_rmse_m": 0.015018192745648444,
+  "nearest_assessment_surface": {
+    "acoustic_validation_wall_0": 0,
+    "acoustic_validation_wall_1": 353,
+    "acoustic_validation_floor": 0
+  },
+  "bounds_world_m": {
+    "minimum": [
+      5.1951111206485745,
+      3.2096365947519625,
+      -3.77078969053083
+    ],
+    "maximum": [
+      7.087859556882272,
+      3.27551567796258,
+      -2.62078969053083
+    ]
+  },
+  "positive_views_min_median_max": [
+    33.0,
+    56.0,
+    79.0
+  ],
+  "point_observation_assignments": 20104,
+  "distinct_stamp_pixel_keys": 8378,
+  "excess_assignments_sharing_a_raw_pixel": 11726,
+  "frames_with_shared_pixels": 103,
+  "maximum_points_sharing_one_raw_pixel": 12,
+  "scope": "assessment-only; all-frame nominal support selection; no held-out frames or pose/cross-landmark uncertainty; not an accepted map"
+}

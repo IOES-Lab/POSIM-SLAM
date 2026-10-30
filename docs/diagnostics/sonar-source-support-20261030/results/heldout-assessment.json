@@ -1,0 +1,187 @@
+{
+  "alignment": {
+    "rotation": [
+      [
+        -0.21227886514559952,
+        0.9772091298245715,
+        0.0
+      ],
+      [
+        -0.9772091298245715,
+        -0.21227886514559952,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "translation": [
+      -0.036531427322592167,
+      0.013857316050316931,
+      -1.4457896905308298
+    ],
+    "scale": 1.0
+  },
+  "boxes": [
+    {
+      "name": "acoustic_validation_wall_0",
+      "centre": [
+        8.0,
+        0.5,
+        -2.5
+      ],
+      "size": [
+        0.25,
+        6.0,
+        3.0
+      ]
+    },
+    {
+      "name": "acoustic_validation_wall_1",
+      "centre": [
+        6.525,
+        3.375,
+        -2.5
+      ],
+      "size": [
+        2.7,
+        0.25,
+        3.0
+      ]
+    },
+    {
+      "name": "acoustic_validation_floor",
+      "centre": [
+        0.0,
+        0.0,
+        -4.15
+      ],
+      "size": [
+        40.0,
+        40.0,
+        0.3
+      ]
+    }
+  ],
+  "folds": {
+    "chronological": {
+      "all_candidates": {
+        "points": 18074,
+        "surface_rmse_m": 0.438161013358621,
+        "surface_p50_p90_max_m": [
+          0.17921030946917052,
+          0.7792103094691706,
+          3.0707896905308307
+        ],
+        "outside_010_m": 12551,
+        "nearest_surface": {
+          "acoustic_validation_wall_0": 4449,
+          "acoustic_validation_wall_1": 2083,
+          "acoustic_validation_floor": 11542
+        }
+      },
+      "training_support_selected": {
+        "points": 1714,
+        "surface_rmse_m": 0.10328005757918392,
+        "surface_p50_p90_max_m": [
+          0.0694425113079935,
+          0.17501464383584686,
+          0.4292103094691705
+        ],
+        "outside_010_m": 574,
+        "nearest_surface": {
+          "acoustic_validation_wall_0": 896,
+          "acoustic_validation_wall_1": 451,
+          "acoustic_validation_floor": 367
+        }
+      },
+      "optimistic_selected": {
+        "points": 0,
+        "surface_rmse_m": null,
+        "surface_p50_p90_max_m": null,
+        "outside_010_m": 0,
+        "nearest_surface": {
+          "acoustic_validation_wall_0": 0,
+          "acoustic_validation_wall_1": 0,
+          "acoustic_validation_floor": 0
+        }
+      },
+      "exclusive_source_subset": {
+        "points": 391,
+        "surface_rmse_m": 0.09728486615354896,
+        "surface_p50_p90_max_m": [
+          0.054233595749299646,
+          0.1622052769116289,
+          0.4292103094691705
+        ],
+        "outside_010_m": 103,
+        "nearest_surface": {
+          "acoustic_validation_wall_0": 199,
+          "acoustic_validation_wall_1": 130,
+          "acoustic_validation_floor": 62
+        }
+      }
+    },
+    "blocked": {
+      "all_candidates": {
+        "points": 20860,
+        "surface_rmse_m": 0.5369406366318875,
+        "surface_p50_p90_max_m": [
+          0.22921030946917034,
+          0.8792103094691702,
+          4.42078969053083
+        ],
+        "outside_010_m": 15202,
+        "nearest_surface": {
+          "acoustic_validation_wall_0": 4532,
+          "acoustic_validation_wall_1": 2508,
+          "acoustic_validation_floor": 13820
+        }
+      },
+      "training_support_selected": {
+        "points": 1852,
+        "surface_rmse_m": 0.10188248380476674,
+        "surface_p50_p90_max_m": [
+          0.05518660830048905,
+          0.17057171751512135,
+          0.4707896905308292
+        ],
+        "outside_010_m": 546,
+        "nearest_surface": {
+          "acoustic_validation_wall_0": 821,
+          "acoustic_validation_wall_1": 623,
+          "acoustic_validation_floor": 408
+        }
+      },
+      "optimistic_selected": {
+        "points": 0,
+        "surface_rmse_m": null,
+        "surface_p50_p90_max_m": null,
+        "outside_010_m": 0,
+        "nearest_surface": {
+          "acoustic_validation_wall_0": 0,
+          "acoustic_validation_wall_1": 0,
+          "acoustic_validation_floor": 0
+        }
+      },
+      "exclusive_source_subset": {
+        "points": 399,
+        "surface_rmse_m": 0.09833319747668594,
+        "surface_p50_p90_max_m": [
+          0.05387042067189274,
+          0.15975563069050747,
+          0.42078969053083026
+        ],
+        "outside_010_m": 105,
+        "nearest_surface": {
+          "acoustic_validation_wall_0": 216,
+          "acoustic_validation_wall_1": 133,
+          "acoustic_validation_floor": 50
+        }
+      }
+    }
+  },
+  "scope": "post-estimation only; all declared subsets evaluated without error trimming"
+}
