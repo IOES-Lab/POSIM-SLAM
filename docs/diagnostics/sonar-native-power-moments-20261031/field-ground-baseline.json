@@ -1,0 +1,42 @@
+{
+  "frames": [
+    {
+      "index": 48,
+      "stamp_ns": 26010000000,
+      "plane_stamp_ns": 26010000000,
+      "gain": 3.148319425111994,
+      "normalized_residual_rms": 3.900749259068353,
+      "normalized_residual_max": 30.335107290208857,
+      "field_accuracy_accepted": false,
+      "ground_only": true
+    },
+    {
+      "index": 96,
+      "stamp_ns": 50010000000,
+      "plane_stamp_ns": 50010000000,
+      "gain": 1.3637422968143647,
+      "normalized_residual_rms": 1.6814987066527305,
+      "normalized_residual_max": 10.988092783589506,
+      "field_accuracy_accepted": false,
+      "ground_only": true
+    },
+    {
+      "index": 144,
+      "stamp_ns": 74000000000,
+      "plane_stamp_ns": 74000000000,
+      "gain": 1.9226126273557005,
+      "normalized_residual_rms": 3.3017293619354566,
+      "normalized_residual_max": 25.07202727894934,
+      "field_accuracy_accepted": false,
+      "ground_only": true
+    }
+  ],
+  "assessment_geometry_used": false,
+  "native_fusion": false,
+  "uncertainties_excluded": [
+    "DVL range/plane",
+    "navigation pose",
+    "reflectivity heterogeneity"
+  ],
+  "scope": "Ground-only power baseline from recorded sonar and causal DVL plane means.\n\nNo truth, assessment mesh, RGB or native map points are read. These already\ninspected frames are a development baseline, not independent validation.\n"
+}

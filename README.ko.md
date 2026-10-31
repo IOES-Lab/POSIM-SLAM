@@ -65,6 +65,10 @@ Householder QR과 유효 정보 방향을 구분하는 SVD로 자세·평면·�
 상관관계를 포함한 전력 모멘트를 유지합니다. 형상과 반사율은 호출자가 제공하는
 가설입니다. [소스와 수치 대조](docs/diagnostics/sonar-source-local-power-20261031/README.ko.md).
 
+`sonar_power_evidence`는 공통 반사율을 추정하고 조건부 점수 정보에서 픽셀
+상관관계와 배율 영공간을 유지합니다. [네이티브 전력 대조와 원본 영상의 기준 모델](docs/diagnostics/sonar-native-power-moments-20261031/README.ko.md)에서
+유한 형상 적합에 앞서 소스 모델을 확인합니다.
+
 [소나 관측식의 조건부 결합 진단](docs/diagnostics/sonar-structureless-update-20261030/README.ko.md)은
 하나의 추정 분포에 관측을 결합하는 수치 계산, 높이가 불확실한 모드와
 같은 시각을 유지한 DVL 생략 대조군을 공개 코드로 재현합니다.

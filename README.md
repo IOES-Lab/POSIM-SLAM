@@ -69,6 +69,11 @@ surfaces in the sonar frame, retaining opaque first-hit visibility, POSIM's
 range-derived ray normals and correlated power moments. Geometry and
 reflectivity remain caller-supplied hypotheses. [Source and numerical controls](docs/diagnostics/sonar-source-local-power-20261031/README.md).
 
+`sonar_power_evidence` profiles common reflectivity and preserves pixel
+correlations and gain nullspaces in conditional score information. [Native
+power controls and original-image baselines](docs/diagnostics/sonar-native-power-moments-20261031/README.md)
+qualify its source model before finite-geometry fitting.
+
 [Conditional sonar-row diagnostics](docs/diagnostics/sonar-structureless-update-20261030/README.md)
 provide a public numerical reproduction of single-posterior conditioning,
 retained weak-height modes and identical-clock DVL omission controls.
