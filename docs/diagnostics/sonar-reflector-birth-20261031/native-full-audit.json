@@ -1,0 +1,28 @@
+{
+  "conditional_native_only": true,
+  "new_kernel_or_renderer_execution": false,
+  "frames": 512,
+  "pixels": 153344,
+  "lower_ratio": 0.779239492045189,
+  "upper_ratio": 1.2574559575458875,
+  "failed_pixels": 0,
+  "minimum_ratio": 0.8329469322003229,
+  "maximum_ratio": 1.2216726053957334,
+  "maximum_standardized_mean_error": 5.015878479315608,
+  "worst_pixel": [
+    269,
+    184
+  ],
+  "worst_expected": 2.703125279482364,
+  "worst_observed": 3.3023341028962894,
+  "worst_observed_fraction_of_image_peak": 1.4245215313983564e-06,
+  "mixing_max_absolute_difference": 1.0379012149383526e-07,
+  "full_image_agreement_passed": true,
+  "map_accepted": false,
+  "references": {
+    "sonar-native-power-moments-20261031/inputs.npz": "e30624180b7021601f68d1279fd7f11c6cc1c1cb2a9e1c833ef964a291ad886e",
+    "sonar-native-power-moments-20261031/native-output.npz": "a4707d1a1113775f27398eec7a4748e0120697a1038f72d23a81153ddfed52f5",
+    "sonar-native-power-moments-20261031/protocol.json": "baacfd21bfe909761146b083f1903e47b695e7307eb1cf0a14081107617f425e"
+  },
+  "protocol_sha256": "753efbb6e0eaeda959b61ecea75bb9b787aadcea9d8ff071b5e60c962d445371"
+}

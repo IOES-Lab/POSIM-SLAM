@@ -74,6 +74,11 @@ scene hypotheses to original power. Exact source re-tracing checks every step;
 fixed navigation, unmeasured prior surfaces and residual echoes remain explicit.
 [Inverse operation and complete outputs](docs/diagnostics/sonar-partial-scene-fit-20261031/README.md).
 
+`sonar_birth` proposes finite reflecting surfaces from unexplained power and
+whole-elevation region overlap across distinct views. Its output remains search
+support until scene/pose/time agreement and joint uncertainty are established.
+[Failed birth and whole-image controls](docs/diagnostics/sonar-reflector-birth-20261031/README.md).
+
 `sonar_power_evidence` profiles common reflectivity and preserves pixel
 correlations and gain nullspaces in conditional score information. [Native
 power controls and original-image baselines](docs/diagnostics/sonar-native-power-moments-20261031/README.md)

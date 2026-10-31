@@ -1,0 +1,180 @@
+{
+  "adaptive_post_selection": true,
+  "selected_index_unchanged": 3,
+  "map_accepted": false,
+  "native_update": false,
+  "truth_scene_rgb_used": false,
+  "elapsed_s": 80.71877908299211,
+  "results": [
+    {
+      "index": 27,
+      "scene": 0,
+      "group": "train",
+      "pixels": 153344,
+      "zero_support_pixels": 0,
+      "score": 495979.3892162902,
+      "gain": 10.645892649080078,
+      "residual_rms": 31.144257617344522,
+      "all_pixel_discovery_error_envelope_ratio": 1.6459942528693537e-05
+    },
+    {
+      "index": 27,
+      "scene": 3,
+      "group": "train",
+      "pixels": 153344,
+      "zero_support_pixels": 0,
+      "score": 496589.81975296384,
+      "gain": 10.694433149148026,
+      "residual_rms": 31.006864331362905
+    },
+    {
+      "index": 49,
+      "scene": 0,
+      "group": "train",
+      "pixels": 153344,
+      "zero_support_pixels": 0,
+      "score": 381838.64100478834,
+      "gain": 3.6135401514647736,
+      "residual_rms": 36.646475226933916,
+      "all_pixel_discovery_error_envelope_ratio": 1.7691547495374006e-05
+    },
+    {
+      "index": 49,
+      "scene": 3,
+      "group": "train",
+      "pixels": 153344,
+      "zero_support_pixels": 0,
+      "score": 315194.1327284107,
+      "gain": 2.288593254248074,
+      "residual_rms": 22.267327180746268
+    },
+    {
+      "index": 81,
+      "scene": 0,
+      "group": "train",
+      "pixels": 153344,
+      "zero_support_pixels": 0,
+      "score": 463963.72069427423,
+      "gain": 5.9022612257676315,
+      "residual_rms": 37.44909438400074,
+      "all_pixel_discovery_error_envelope_ratio": 1.8319515218170423e-05
+    },
+    {
+      "index": 81,
+      "scene": 3,
+      "group": "train",
+      "pixels": 153344,
+      "zero_support_pixels": 0,
+      "score": 300691.85384745337,
+      "gain": 1.9643144035881028,
+      "residual_rms": 13.813521627272978
+    },
+    {
+      "index": 88,
+      "scene": 0,
+      "group": "train",
+      "pixels": 153344,
+      "zero_support_pixels": 0,
+      "score": 419398.3873204435,
+      "gain": 4.4187477776717135,
+      "residual_rms": 18.24339118965225,
+      "all_pixel_discovery_error_envelope_ratio": 1.789942950434848e-05
+    },
+    {
+      "index": 88,
+      "scene": 3,
+      "group": "train",
+      "pixels": 153344,
+      "zero_support_pixels": 0,
+      "score": 407450.16047291417,
+      "gain": 3.7793622899456043,
+      "residual_rms": 17.190669831876065
+    },
+    {
+      "index": 151,
+      "scene": 0,
+      "group": "train",
+      "pixels": 153344,
+      "zero_support_pixels": 0,
+      "score": 501272.8875754622,
+      "gain": 7.855858397712451,
+      "residual_rms": 52.08164972688314,
+      "all_pixel_discovery_error_envelope_ratio": 1.7226314489888193e-05
+    },
+    {
+      "index": 151,
+      "scene": 3,
+      "group": "train",
+      "pixels": 153344,
+      "zero_support_pixels": 0,
+      "score": 340336.5826058284,
+      "gain": 2.488295390247345,
+      "residual_rms": 30.13045063161188
+    },
+    {
+      "index": 51,
+      "scene": 0,
+      "group": "unused",
+      "pixels": 153344,
+      "zero_support_pixels": 0,
+      "score": 290893.167939387,
+      "gain": 2.0117234255042677,
+      "residual_rms": 18.680557024755398
+    },
+    {
+      "index": 51,
+      "scene": 3,
+      "group": "unused",
+      "pixels": 153344,
+      "zero_support_pixels": 0,
+      "score": 302625.1542996521,
+      "gain": 2.1588092387087108,
+      "residual_rms": 17.842643574367713
+    },
+    {
+      "index": 90,
+      "scene": 0,
+      "group": "unused",
+      "pixels": 153344,
+      "zero_support_pixels": 0,
+      "score": 444168.76033867046,
+      "gain": 4.975171530454916,
+      "residual_rms": 23.51749583519136
+    },
+    {
+      "index": 90,
+      "scene": 3,
+      "group": "unused",
+      "pixels": 153344,
+      "zero_support_pixels": 0,
+      "score": 409348.25575232256,
+      "gain": 3.658996753838483,
+      "residual_rms": 17.096600780909515
+    },
+    {
+      "index": 153,
+      "scene": 0,
+      "group": "unused",
+      "pixels": 153344,
+      "zero_support_pixels": 0,
+      "score": 684825.3393265409,
+      "gain": 21.37155360761675,
+      "residual_rms": 35.80027714860454
+    },
+    {
+      "index": 153,
+      "scene": 3,
+      "group": "unused",
+      "pixels": 153344,
+      "zero_support_pixels": 0,
+      "score": 409976.59845669137,
+      "gain": 3.438081715690513,
+      "residual_rms": 33.68574011106577
+    }
+  ],
+  "references": {
+    "construction-seal.json": "982f3bd3ccc611f6adfd6845782c2646e2490d048a2f39b037afb0f15fced0a0",
+    "full-image-protocol.json": "a908f89d93257df92269bb1f159e3632e7dd7f008e058d198c423e1b461407ad",
+    "full_image_audit.py": "b2c77228615d79977b4f76bf804310d70a7e7efcf15218263dfd5b9d3c8ac938"
+  }
+}

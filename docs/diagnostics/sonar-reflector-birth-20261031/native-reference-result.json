@@ -1,0 +1,13 @@
+{
+  "conditional_native_only": true,
+  "reference_grid_is_not_renderer_grid": true,
+  "new_renderer_or_sdk_mutation": false,
+  "frames": 64,
+  "lower_ratio": 0.4640033551193005,
+  "upper_ratio": 1.8281145467910922,
+  "failed_pixels": 0,
+  "minimum_ratio": 0.5712735810119689,
+  "maximum_ratio": 1.6010100103812719,
+  "full_image_agreement_passed": true,
+  "map_accepted": false
+}

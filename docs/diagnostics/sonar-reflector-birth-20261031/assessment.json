@@ -1,0 +1,144 @@
+{
+  "map_accepted": false,
+  "native_update": false,
+  "training_only_selection": 3,
+  "model_samples_are_not_measured_landmarks": true,
+  "prior_ground_is_not_verified": true,
+  "alignment": {
+    "rotation": [
+      [
+        -0.9903724594049796,
+        -0.13842829064946172,
+        0.0
+      ],
+      [
+        0.13842829064946172,
+        -0.9903724594049796,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "translation": [
+      -0.02274078061066737,
+      0.010448829452008833,
+      -1.2924615732501334
+    ],
+    "scale": 1.0
+  },
+  "references": {
+    "sonar-inspection-scene-20261031/verify.py": "bcde76abfff75d519f941921db46604566ef07c5d2ffc4c057549f1e4fd7192f",
+    "sonar-inspection-scene-20261031/scene-assessment-only.npz": "e47b848bd28c46911ee7b4a455343e786b1382737e937f6b8dba0b4e6a6e1678",
+    "sonar-translated-shadow-20261031/assessment-summary.json": "d731e1aa71f694d1b151739c267dd6e71cc6fbf92bffc6f561f8d8f0b4df9a27"
+  },
+  "families": {
+    "initial_multiple_reflectors": {
+      "all_surface_error_m": {
+        "available": true,
+        "points": 3939,
+        "rmse": 0.13085505349595278,
+        "median": 0.07602125675456728,
+        "p90": 0.23192318560812356,
+        "maximum": 0.3782497886673144,
+        "beyond_10cm": 1552
+      },
+      "prior_ground_error_m": {
+        "available": true,
+        "points": 3779,
+        "rmse": 0.13320694049458087,
+        "median": 0.07792982075558363,
+        "p90": 0.23441066445860725,
+        "maximum": 0.3782497886673144,
+        "beyond_10cm": 1538
+      },
+      "candidate_object_error_m": {
+        "available": true,
+        "points": 160,
+        "rmse": 0.04954556233635472,
+        "median": 0.025545908834250234,
+        "p90": 0.09223017460710113,
+        "maximum": 0.11788931253666841,
+        "beyond_10cm": 14
+      },
+      "existing_object_error_m": {
+        "available": true,
+        "points": 160,
+        "rmse": 0.04954556233635472,
+        "median": 0.025545908834250234,
+        "p90": 0.09223017460710113,
+        "maximum": 0.11788931253666841,
+        "beyond_10cm": 14
+      },
+      "born_object_error_m": {
+        "available": false,
+        "points": 0
+      },
+      "nearest_surface_counts": {
+        "seabed": 3830,
+        "inspection_block_0": 67,
+        "inspection_block_1": 0,
+        "inspection_block_2": 26,
+        "inspection_wall_0": 14,
+        "inspection_wall_1": 2
+      }
+    },
+    "fitted_partial_scene": {
+      "all_surface_error_m": {
+        "available": true,
+        "points": 4019,
+        "rmse": 0.1313178363106641,
+        "median": 0.0763628861378524,
+        "p90": 0.23305317829343916,
+        "maximum": 0.3782497886673144,
+        "beyond_10cm": 1596
+      },
+      "prior_ground_error_m": {
+        "available": true,
+        "points": 3779,
+        "rmse": 0.13320694049458087,
+        "median": 0.07792982075558363,
+        "p90": 0.23441066445860725,
+        "maximum": 0.3782497886673144,
+        "beyond_10cm": 1538
+      },
+      "candidate_object_error_m": {
+        "available": true,
+        "points": 240,
+        "rmse": 0.09682947481231778,
+        "median": 0.029666593409652834,
+        "p90": 0.12919868160699036,
+        "maximum": 0.27581601866921146,
+        "beyond_10cm": 58
+      },
+      "existing_object_error_m": {
+        "available": true,
+        "points": 160,
+        "rmse": 0.04954556233635472,
+        "median": 0.025545908834250234,
+        "p90": 0.09223017460710113,
+        "maximum": 0.11788931253666841,
+        "beyond_10cm": 14
+      },
+      "born_object_error_m": {
+        "available": true,
+        "points": 80,
+        "rmse": 0.1523755757424287,
+        "median": 0.11264118037627302,
+        "p90": 0.274507373916547,
+        "maximum": 0.27581601866921146,
+        "beyond_10cm": 44
+      },
+      "nearest_surface_counts": {
+        "seabed": 3891,
+        "inspection_block_0": 86,
+        "inspection_block_1": 0,
+        "inspection_block_2": 26,
+        "inspection_wall_0": 14,
+        "inspection_wall_1": 2
+      }
+    }
+  }
+}

@@ -1,0 +1,9366 @@
+{
+  "frames": [
+    {
+      "stamp_ns": 15510000000,
+      "plane_stamp_ns": 15010000000,
+      "file": "sonar-0027.npz",
+      "raw_sha256": "647e343d2cc97ad9ad809b016209f538100ad9a59463caeeffe9b8e2204bc1b2",
+      "origin": [
+        -0.1816194781814897,
+        -0.15059880436701067,
+        1.0240888564566741
+      ],
+      "rotation": [
+        [
+          -0.6288144909341749,
+          0.6084444824472982,
+          -0.48413598066104774
+        ],
+        [
+          -0.47941134129725366,
+          -0.7935887185186569,
+          -0.37467547514547056
+        ],
+        [
+          -0.6121740780421556,
+          -0.0035010883101449465,
+          0.790715271481386
+        ]
+      ],
+      "normal_sonar": [
+        0.6246513960222976,
+        0.024390935078003467,
+        -0.7805227195498002
+      ],
+      "plane_distance_m": 3.397725469008826,
+      "index": 27,
+      "raw_record": "sonar-height-diversity-fit-20261031",
+      "pixels": [
+        [
+          60,
+          16
+        ],
+        [
+          60,
+          48
+        ],
+        [
+          60,
+          80
+        ],
+        [
+          60,
+          112
+        ],
+        [
+          60,
+          143
+        ],
+        [
+          60,
+          175
+        ],
+        [
+          60,
+          207
+        ],
+        [
+          60,
+          239
+        ],
+        [
+          172,
+          147
+        ],
+        [
+          179,
+          185
+        ],
+        [
+          180,
+          16
+        ],
+        [
+          180,
+          48
+        ],
+        [
+          180,
+          80
+        ],
+        [
+          180,
+          112
+        ],
+        [
+          180,
+          143
+        ],
+        [
+          180,
+          175
+        ],
+        [
+          180,
+          207
+        ],
+        [
+          180,
+          239
+        ],
+        [
+          183,
+          54
+        ],
+        [
+          219,
+          45
+        ],
+        [
+          220,
+          46
+        ],
+        [
+          221,
+          46
+        ],
+        [
+          223,
+          45
+        ],
+        [
+          243,
+          231
+        ],
+        [
+          247,
+          25
+        ],
+        [
+          250,
+          26
+        ],
+        [
+          252,
+          26
+        ],
+        [
+          255,
+          23
+        ],
+        [
+          262,
+          242
+        ],
+        [
+          267,
+          14
+        ],
+        [
+          272,
+          247
+        ],
+        [
+          281,
+          10
+        ],
+        [
+          281,
+          151
+        ],
+        [
+          281,
+          250
+        ],
+        [
+          283,
+          152
+        ],
+        [
+          285,
+          151
+        ],
+        [
+          286,
+          157
+        ],
+        [
+          290,
+          254
+        ],
+        [
+          296,
+          3
+        ],
+        [
+          311,
+          0
+        ],
+        [
+          325,
+          53
+        ],
+        [
+          333,
+          47
+        ],
+        [
+          335,
+          53
+        ],
+        [
+          340,
+          41
+        ],
+        [
+          353,
+          51
+        ],
+        [
+          357,
+          52
+        ],
+        [
+          359,
+          58
+        ],
+        [
+          360,
+          16
+        ],
+        [
+          360,
+          48
+        ],
+        [
+          360,
+          80
+        ],
+        [
+          360,
+          112
+        ],
+        [
+          360,
+          143
+        ],
+        [
+          360,
+          175
+        ],
+        [
+          360,
+          207
+        ],
+        [
+          360,
+          239
+        ],
+        [
+          362,
+          57
+        ],
+        [
+          540,
+          16
+        ],
+        [
+          540,
+          48
+        ],
+        [
+          540,
+          80
+        ],
+        [
+          540,
+          112
+        ],
+        [
+          540,
+          143
+        ],
+        [
+          540,
+          175
+        ],
+        [
+          540,
+          207
+        ],
+        [
+          540,
+          239
+        ]
+      ],
+      "proposal_gain": 1.067865182232513,
+      "all_regions": [
+        {
+          "label": 1,
+          "pixels": 5,
+          "beams": 3,
+          "first": [
+            0,
+            241
+          ],
+          "last": [
+            1,
+            243
+          ],
+          "excess_power": 0.023964055524448503,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 2,
+          "pixels": 2571,
+          "beams": 256,
+          "first": [
+            172,
+            0
+          ],
+          "last": [
+            243,
+            255
+          ],
+          "excess_power": 6236543.976086619,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 3,
+          "pixels": 5,
+          "beams": 2,
+          "first": [
+            215,
+            49
+          ],
+          "last": [
+            217,
+            50
+          ],
+          "excess_power": 2110.593031283902,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 4,
+          "pixels": 12,
+          "beams": 4,
+          "first": [
+            219,
+            44
+          ],
+          "last": [
+            223,
+            47
+          ],
+          "excess_power": 11720.685071379528,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 5,
+          "pixels": 4,
+          "beams": 2,
+          "first": [
+            223,
+            42
+          ],
+          "last": [
+            225,
+            43
+          ],
+          "excess_power": 389.58365411732217,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 6,
+          "pixels": 8,
+          "beams": 3,
+          "first": [
+            227,
+            38
+          ],
+          "last": [
+            230,
+            40
+          ],
+          "excess_power": 3821.0982722869294,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 7,
+          "pixels": 1,
+          "beams": 1,
+          "first": [
+            232,
+            36
+          ],
+          "last": [
+            232,
+            36
+          ],
+          "excess_power": 43.15919289087719,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 8,
+          "pixels": 4,
+          "beams": 2,
+          "first": [
+            233,
+            34
+          ],
+          "last": [
+            235,
+            35
+          ],
+          "excess_power": 1500.6306700609807,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 9,
+          "pixels": 2,
+          "beams": 1,
+          "first": [
+            237,
+            33
+          ],
+          "last": [
+            238,
+            33
+          ],
+          "excess_power": 625.7715260498454,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 10,
+          "pixels": 9,
+          "beams": 4,
+          "first": [
+            239,
+            29
+          ],
+          "last": [
+            244,
+            32
+          ],
+          "excess_power": 1197.6922449828658,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 11,
+          "pixels": 25,
+          "beams": 6,
+          "first": [
+            244,
+            232
+          ],
+          "last": [
+            254,
+            237
+          ],
+          "excess_power": 8063.949377513617,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 12,
+          "pixels": 28,
+          "beams": 5,
+          "first": [
+            247,
+            22
+          ],
+          "last": [
+            255,
+            26
+          ],
+          "excess_power": 19147.55080413402,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 13,
+          "pixels": 2,
+          "beams": 1,
+          "first": [
+            259,
+            241
+          ],
+          "last": [
+            260,
+            241
+          ],
+          "excess_power": 136.05108658974132,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 14,
+          "pixels": 12,
+          "beams": 3,
+          "first": [
+            260,
+            17
+          ],
+          "last": [
+            265,
+            19
+          ],
+          "excess_power": 2218.5627910527583,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 15,
+          "pixels": 66,
+          "beams": 14,
+          "first": [
+            262,
+            242
+          ],
+          "last": [
+            290,
+            255
+          ],
+          "excess_power": 13868.000300822403,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 16,
+          "pixels": 140,
+          "beams": 17,
+          "first": [
+            267,
+            0
+          ],
+          "last": [
+            311,
+            16
+          ],
+          "excess_power": 32739.645871342815,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 17,
+          "pixels": 4,
+          "beams": 3,
+          "first": [
+            270,
+            143
+          ],
+          "last": [
+            271,
+            145
+          ],
+          "excess_power": 1946.8425518893036,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 18,
+          "pixels": 4,
+          "beams": 4,
+          "first": [
+            273,
+            141
+          ],
+          "last": [
+            273,
+            144
+          ],
+          "excess_power": 2201.4547924101616,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 19,
+          "pixels": 6,
+          "beams": 4,
+          "first": [
+            275,
+            151
+          ],
+          "last": [
+            277,
+            154
+          ],
+          "excess_power": 1701.5040246987664,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 20,
+          "pixels": 8,
+          "beams": 2,
+          "first": [
+            279,
+            100
+          ],
+          "last": [
+            282,
+            101
+          ],
+          "excess_power": 6427.720669868062,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 21,
+          "pixels": 4,
+          "beams": 1,
+          "first": [
+            279,
+            104
+          ],
+          "last": [
+            282,
+            104
+          ],
+          "excess_power": 4862.031177146346,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 22,
+          "pixels": 1,
+          "beams": 1,
+          "first": [
+            279,
+            132
+          ],
+          "last": [
+            279,
+            132
+          ],
+          "excess_power": 107.54363609895154,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 23,
+          "pixels": 35,
+          "beams": 7,
+          "first": [
+            281,
+            151
+          ],
+          "last": [
+            286,
+            157
+          ],
+          "excess_power": 77688.15392878352,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 24,
+          "pixels": 6,
+          "beams": 1,
+          "first": [
+            292,
+            255
+          ],
+          "last": [
+            297,
+            255
+          ],
+          "excess_power": 1173.089477750821,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 25,
+          "pixels": 6,
+          "beams": 3,
+          "first": [
+            299,
+            166
+          ],
+          "last": [
+            301,
+            168
+          ],
+          "excess_power": 968.5345905442596,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 26,
+          "pixels": 6,
+          "beams": 2,
+          "first": [
+            306,
+            80
+          ],
+          "last": [
+            309,
+            81
+          ],
+          "excess_power": 1049.9716204503247,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 27,
+          "pixels": 1,
+          "beams": 1,
+          "first": [
+            306,
+            83
+          ],
+          "last": [
+            306,
+            83
+          ],
+          "excess_power": 114.95152213978508,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 28,
+          "pixels": 114,
+          "beams": 19,
+          "first": [
+            325,
+            39
+          ],
+          "last": [
+            340,
+            57
+          ],
+          "excess_power": 192959.4464241158,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 29,
+          "pixels": 1,
+          "beams": 1,
+          "first": [
+            334,
+            183
+          ],
+          "last": [
+            334,
+            183
+          ],
+          "excess_power": 10.15210444619084,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 30,
+          "pixels": 4,
+          "beams": 2,
+          "first": [
+            335,
+            185
+          ],
+          "last": [
+            337,
+            186
+          ],
+          "excess_power": 274.7674428463486,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 31,
+          "pixels": 1,
+          "beams": 1,
+          "first": [
+            337,
+            183
+          ],
+          "last": [
+            337,
+            183
+          ],
+          "excess_power": 0.5073635959776901,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 32,
+          "pixels": 81,
+          "beams": 11,
+          "first": [
+            353,
+            49
+          ],
+          "last": [
+            362,
+            59
+          ],
+          "excess_power": 18048.760315624742,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 33,
+          "pixels": 3,
+          "beams": 3,
+          "first": [
+            356,
+            40
+          ],
+          "last": [
+            356,
+            42
+          ],
+          "excess_power": 254.6076194492823,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 34,
+          "pixels": 5,
+          "beams": 2,
+          "first": [
+            356,
+            195
+          ],
+          "last": [
+            358,
+            196
+          ],
+          "excess_power": 283.4006406438501,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 35,
+          "pixels": 4,
+          "beams": 2,
+          "first": [
+            360,
+            69
+          ],
+          "last": [
+            361,
+            70
+          ],
+          "excess_power": 0.6707900679213683,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 36,
+          "pixels": 38,
+          "beams": 5,
+          "first": [
+            361,
+            39
+          ],
+          "last": [
+            370,
+            43
+          ],
+          "excess_power": 5665.093695766283,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 37,
+          "pixels": 8,
+          "beams": 2,
+          "first": [
+            366,
+            199
+          ],
+          "last": [
+            370,
+            200
+          ],
+          "excess_power": 447.90656364263225,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 38,
+          "pixels": 3,
+          "beams": 2,
+          "first": [
+            368,
+            45
+          ],
+          "last": [
+            369,
+            46
+          ],
+          "excess_power": 3.8647654293703972,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 39,
+          "pixels": 5,
+          "beams": 1,
+          "first": [
+            371,
+            52
+          ],
+          "last": [
+            375,
+            52
+          ],
+          "excess_power": 122.45176785376387,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 40,
+          "pixels": 8,
+          "beams": 2,
+          "first": [
+            382,
+            204
+          ],
+          "last": [
+            387,
+            205
+          ],
+          "excess_power": 160.7159477073348,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 41,
+          "pixels": 2,
+          "beams": 1,
+          "first": [
+            389,
+            206
+          ],
+          "last": [
+            390,
+            206
+          ],
+          "excess_power": 16.931177119730012,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 42,
+          "pixels": 15,
+          "beams": 3,
+          "first": [
+            408,
+            43
+          ],
+          "last": [
+            414,
+            45
+          ],
+          "excess_power": 52.35685598698467,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 43,
+          "pixels": 2,
+          "beams": 1,
+          "first": [
+            411,
+            212
+          ],
+          "last": [
+            412,
+            212
+          ],
+          "excess_power": 7.097334059230832,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 44,
+          "pixels": 3,
+          "beams": 1,
+          "first": [
+            427,
+            216
+          ],
+          "last": [
+            429,
+            216
+          ],
+          "excess_power": 23.09386467792552,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 45,
+          "pixels": 2,
+          "beams": 1,
+          "first": [
+            438,
+            0
+          ],
+          "last": [
+            439,
+            0
+          ],
+          "excess_power": 26.688773407528913,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 46,
+          "pixels": 5,
+          "beams": 1,
+          "first": [
+            441,
+            219
+          ],
+          "last": [
+            445,
+            219
+          ],
+          "excess_power": 17.53200046301875,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 47,
+          "pixels": 4,
+          "beams": 1,
+          "first": [
+            462,
+            223
+          ],
+          "last": [
+            465,
+            223
+          ],
+          "excess_power": 9.340666815709284,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 48,
+          "pixels": 8,
+          "beams": 2,
+          "first": [
+            469,
+            224
+          ],
+          "last": [
+            473,
+            225
+          ],
+          "excess_power": 29.200050350176603,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 49,
+          "pixels": 13,
+          "beams": 3,
+          "first": [
+            481,
+            253
+          ],
+          "last": [
+            485,
+            255
+          ],
+          "excess_power": 1187.1038705604612,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 50,
+          "pixels": 5,
+          "beams": 1,
+          "first": [
+            486,
+            227
+          ],
+          "last": [
+            490,
+            227
+          ],
+          "excess_power": 3.428869011822906,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 51,
+          "pixels": 42,
+          "beams": 10,
+          "first": [
+            496,
+            225
+          ],
+          "last": [
+            500,
+            234
+          ],
+          "excess_power": 368.87872167532805,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 52,
+          "pixels": 125,
+          "beams": 32,
+          "first": [
+            503,
+            203
+          ],
+          "last": [
+            510,
+            234
+          ],
+          "excess_power": 1377.8465521419266,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 53,
+          "pixels": 33,
+          "beams": 7,
+          "first": [
+            515,
+            227
+          ],
+          "last": [
+            521,
+            233
+          ],
+          "excess_power": 108.86851398909634,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 54,
+          "pixels": 41,
+          "beams": 10,
+          "first": [
+            523,
+            227
+          ],
+          "last": [
+            527,
+            236
+          ],
+          "excess_power": 160.63175247419747,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 55,
+          "pixels": 8,
+          "beams": 4,
+          "first": [
+            524,
+            221
+          ],
+          "last": [
+            526,
+            224
+          ],
+          "excess_power": 0.07513258872708842,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 56,
+          "pixels": 1,
+          "beams": 1,
+          "first": [
+            532,
+            0
+          ],
+          "last": [
+            532,
+            0
+          ],
+          "excess_power": 5.077729509947055,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 57,
+          "pixels": 2,
+          "beams": 2,
+          "first": [
+            534,
+            18
+          ],
+          "last": [
+            534,
+            19
+          ],
+          "excess_power": 2.0066828286679765,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 58,
+          "pixels": 8,
+          "beams": 2,
+          "first": [
+            534,
+            233
+          ],
+          "last": [
+            539,
+            234
+          ],
+          "excess_power": 28.614812052271795,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 59,
+          "pixels": 16,
+          "beams": 3,
+          "first": [
+            546,
+            234
+          ],
+          "last": [
+            552,
+            236
+          ],
+          "excess_power": 42.09805448828942,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 60,
+          "pixels": 29,
+          "beams": 7,
+          "first": [
+            554,
+            232
+          ],
+          "last": [
+            560,
+            238
+          ],
+          "excess_power": 80.31881256499403,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 61,
+          "pixels": 8,
+          "beams": 4,
+          "first": [
+            567,
+            14
+          ],
+          "last": [
+            568,
+            17
+          ],
+          "excess_power": 15.378443159083119,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 62,
+          "pixels": 37,
+          "beams": 7,
+          "first": [
+            567,
+            233
+          ],
+          "last": [
+            574,
+            239
+          ],
+          "excess_power": 103.43331253588349,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 63,
+          "pixels": 5,
+          "beams": 1,
+          "first": [
+            568,
+            241
+          ],
+          "last": [
+            572,
+            241
+          ],
+          "excess_power": 15.849290232069226,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 64,
+          "pixels": 20,
+          "beams": 4,
+          "first": [
+            575,
+            0
+          ],
+          "last": [
+            579,
+            3
+          ],
+          "excess_power": 320.2444174283448,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 65,
+          "pixels": 43,
+          "beams": 7,
+          "first": [
+            577,
+            236
+          ],
+          "last": [
+            588,
+            242
+          ],
+          "excess_power": 100.7884243565889,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 66,
+          "pixels": 3,
+          "beams": 1,
+          "first": [
+            588,
+            12
+          ],
+          "last": [
+            590,
+            12
+          ],
+          "excess_power": 8.594223228092343,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 67,
+          "pixels": 15,
+          "beams": 5,
+          "first": [
+            593,
+            2
+          ],
+          "last": [
+            597,
+            6
+          ],
+          "excess_power": 66.2287380120061,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 68,
+          "pixels": 10,
+          "beams": 3,
+          "first": [
+            593,
+            239
+          ],
+          "last": [
+            598,
+            241
+          ],
+          "excess_power": 13.269469199211978,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 69,
+          "pixels": 1,
+          "beams": 1,
+          "first": [
+            596,
+            0
+          ],
+          "last": [
+            596,
+            0
+          ],
+          "excess_power": 1.1304048614634201,
+          "selected": false,
+          "physical_identity_verified": false
+        }
+      ],
+      "birth_regions": [
+        {
+          "label": 2,
+          "pixels": 2571,
+          "beams": 256,
+          "first": [
+            172,
+            0
+          ],
+          "last": [
+            243,
+            255
+          ],
+          "excess_power": 6236543.976086619,
+          "selected": true,
+          "physical_identity_verified": false,
+          "physical_pixels": 2571,
+          "search_cells": 1461
+        },
+        {
+          "label": 28,
+          "pixels": 114,
+          "beams": 19,
+          "first": [
+            325,
+            39
+          ],
+          "last": [
+            340,
+            57
+          ],
+          "excess_power": 192959.4464241158,
+          "selected": true,
+          "physical_identity_verified": false,
+          "physical_pixels": 114,
+          "search_cells": 240
+        },
+        {
+          "label": 23,
+          "pixels": 35,
+          "beams": 7,
+          "first": [
+            281,
+            151
+          ],
+          "last": [
+            286,
+            157
+          ],
+          "excess_power": 77688.15392878352,
+          "selected": true,
+          "physical_identity_verified": false,
+          "physical_pixels": 35,
+          "search_cells": 72
+        },
+        {
+          "label": 16,
+          "pixels": 140,
+          "beams": 17,
+          "first": [
+            267,
+            0
+          ],
+          "last": [
+            311,
+            16
+          ],
+          "excess_power": 32739.645871342815,
+          "selected": true,
+          "physical_identity_verified": false,
+          "physical_pixels": 140,
+          "search_cells": 237
+        },
+        {
+          "label": 12,
+          "pixels": 28,
+          "beams": 5,
+          "first": [
+            247,
+            22
+          ],
+          "last": [
+            255,
+            26
+          ],
+          "excess_power": 19147.55080413402,
+          "selected": true,
+          "physical_identity_verified": false,
+          "physical_pixels": 28,
+          "search_cells": 56
+        },
+        {
+          "label": 32,
+          "pixels": 81,
+          "beams": 11,
+          "first": [
+            353,
+            49
+          ],
+          "last": [
+            362,
+            59
+          ],
+          "excess_power": 18048.760315624742,
+          "selected": true,
+          "physical_identity_verified": false,
+          "physical_pixels": 81,
+          "search_cells": 173
+        },
+        {
+          "label": 15,
+          "pixels": 66,
+          "beams": 14,
+          "first": [
+            262,
+            242
+          ],
+          "last": [
+            290,
+            255
+          ],
+          "excess_power": 13868.000300822403,
+          "selected": true,
+          "physical_identity_verified": false,
+          "physical_pixels": 66,
+          "search_cells": 145
+        },
+        {
+          "label": 4,
+          "pixels": 12,
+          "beams": 4,
+          "first": [
+            219,
+            44
+          ],
+          "last": [
+            223,
+            47
+          ],
+          "excess_power": 11720.685071379528,
+          "selected": true,
+          "physical_identity_verified": false,
+          "physical_pixels": 12,
+          "search_cells": 33
+        }
+      ],
+      "exact_query_check_max_absolute_error": 3.463150599625209e-11,
+      "exact_query_check_max_envelope_ratio": 2.251096874183097e-06
+    },
+    {
+      "index": 49,
+      "stamp_ns": 26500000000,
+      "plane_stamp_ns": 26010000000,
+      "file": "sonar-0049.npz",
+      "raw_sha256": "dffa1e49286baeed0b3ced6da73b9653205b38bf0cdd5292bf676b691e5a1a80",
+      "origin": [
+        -5.6452749174759065,
+        1.8783277735593384,
+        -0.09237177383310514
+      ],
+      "rotation": [
+        [
+          -0.6655102502110053,
+          0.6001944037164144,
+          -0.44369221833561945
+        ],
+        [
+          -0.5095856166125255,
+          -0.7997166384392305,
+          -0.3174520397557549
+        ],
+        [
+          -0.5453609870587715,
+          0.014831586258889539,
+          0.8380700554508124
+        ]
+      ],
+      "normal_sonar": [
+        0.548887113352862,
+        -0.016896919679525706,
+        -0.8357256911813266
+      ],
+      "plane_distance_m": 2.3171558320801195,
+      "pixels": [
+        [
+          60,
+          16
+        ],
+        [
+          60,
+          48
+        ],
+        [
+          60,
+          80
+        ],
+        [
+          60,
+          112
+        ],
+        [
+          60,
+          143
+        ],
+        [
+          60,
+          175
+        ],
+        [
+          60,
+          207
+        ],
+        [
+          60,
+          239
+        ],
+        [
+          128,
+          104
+        ],
+        [
+          131,
+          208
+        ],
+        [
+          134,
+          51
+        ],
+        [
+          139,
+          170
+        ],
+        [
+          148,
+          58
+        ],
+        [
+          172,
+          26
+        ],
+        [
+          180,
+          16
+        ],
+        [
+          180,
+          48
+        ],
+        [
+          180,
+          80
+        ],
+        [
+          180,
+          112
+        ],
+        [
+          180,
+          143
+        ],
+        [
+          180,
+          175
+        ],
+        [
+          180,
+          207
+        ],
+        [
+          180,
+          239
+        ],
+        [
+          184,
+          101
+        ],
+        [
+          188,
+          114
+        ],
+        [
+          193,
+          115
+        ],
+        [
+          194,
+          8
+        ],
+        [
+          198,
+          122
+        ],
+        [
+          207,
+          145
+        ],
+        [
+          207,
+          154
+        ],
+        [
+          210,
+          140
+        ],
+        [
+          211,
+          150
+        ],
+        [
+          213,
+          158
+        ],
+        [
+          214,
+          145
+        ],
+        [
+          216,
+          0
+        ],
+        [
+          216,
+          140
+        ],
+        [
+          217,
+          160
+        ],
+        [
+          218,
+          145
+        ],
+        [
+          220,
+          143
+        ],
+        [
+          221,
+          158
+        ],
+        [
+          221,
+          161
+        ],
+        [
+          222,
+          150
+        ],
+        [
+          226,
+          166
+        ],
+        [
+          227,
+          105
+        ],
+        [
+          230,
+          167
+        ],
+        [
+          233,
+          120
+        ],
+        [
+          235,
+          127
+        ],
+        [
+          237,
+          169
+        ],
+        [
+          238,
+          145
+        ],
+        [
+          360,
+          16
+        ],
+        [
+          360,
+          48
+        ],
+        [
+          360,
+          80
+        ],
+        [
+          360,
+          112
+        ],
+        [
+          360,
+          143
+        ],
+        [
+          360,
+          175
+        ],
+        [
+          360,
+          207
+        ],
+        [
+          360,
+          239
+        ],
+        [
+          540,
+          16
+        ],
+        [
+          540,
+          48
+        ],
+        [
+          540,
+          80
+        ],
+        [
+          540,
+          112
+        ],
+        [
+          540,
+          143
+        ],
+        [
+          540,
+          175
+        ],
+        [
+          540,
+          207
+        ],
+        [
+          540,
+          239
+        ]
+      ],
+      "raw_record": "sonar-finite-geometry-fit-20261031",
+      "proposal_gain": 1.2992239506844445,
+      "all_regions": [
+        {
+          "label": 1,
+          "pixels": 1759,
+          "beams": 256,
+          "first": [
+            128,
+            0
+          ],
+          "last": [
+            139,
+            255
+          ],
+          "excess_power": 7628977.149734651,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 2,
+          "pixels": 2,
+          "beams": 2,
+          "first": [
+            139,
+            76
+          ],
+          "last": [
+            139,
+            77
+          ],
+          "excess_power": 1265.565749319821,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 3,
+          "pixels": 19,
+          "beams": 10,
+          "first": [
+            140,
+            173
+          ],
+          "last": [
+            144,
+            182
+          ],
+          "excess_power": 72557.58434129167,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 4,
+          "pixels": 19,
+          "beams": 11,
+          "first": [
+            142,
+            61
+          ],
+          "last": [
+            147,
+            71
+          ],
+          "excess_power": 40217.54917933125,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 5,
+          "pixels": 2,
+          "beams": 2,
+          "first": [
+            144,
+            183
+          ],
+          "last": [
+            144,
+            184
+          ],
+          "excess_power": 5833.419159614288,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 6,
+          "pixels": 308,
+          "beams": 61,
+          "first": [
+            148,
+            0
+          ],
+          "last": [
+            216,
+            60
+          ],
+          "excess_power": 462186.48692249774,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 7,
+          "pixels": 2,
+          "beams": 2,
+          "first": [
+            148,
+            192
+          ],
+          "last": [
+            148,
+            193
+          ],
+          "excess_power": 1049.0437102052647,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 8,
+          "pixels": 2,
+          "beams": 1,
+          "first": [
+            156,
+            206
+          ],
+          "last": [
+            157,
+            206
+          ],
+          "excess_power": 193.83470432752983,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 9,
+          "pixels": 2,
+          "beams": 2,
+          "first": [
+            158,
+            208
+          ],
+          "last": [
+            158,
+            209
+          ],
+          "excess_power": 890.8485842468299,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 10,
+          "pixels": 5,
+          "beams": 3,
+          "first": [
+            161,
+            212
+          ],
+          "last": [
+            162,
+            214
+          ],
+          "excess_power": 6107.78219032619,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 11,
+          "pixels": 3,
+          "beams": 1,
+          "first": [
+            163,
+            102
+          ],
+          "last": [
+            165,
+            102
+          ],
+          "excess_power": 7966.338614586222,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 12,
+          "pixels": 1,
+          "beams": 1,
+          "first": [
+            171,
+            223
+          ],
+          "last": [
+            171,
+            223
+          ],
+          "excess_power": 128.89578926903664,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 13,
+          "pixels": 3,
+          "beams": 2,
+          "first": [
+            172,
+            224
+          ],
+          "last": [
+            173,
+            225
+          ],
+          "excess_power": 1205.0936187828,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 14,
+          "pixels": 10,
+          "beams": 2,
+          "first": [
+            173,
+            100
+          ],
+          "last": [
+            179,
+            101
+          ],
+          "excess_power": 25060.427613485383,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 15,
+          "pixels": 1,
+          "beams": 1,
+          "first": [
+            181,
+            130
+          ],
+          "last": [
+            181,
+            130
+          ],
+          "excess_power": 411.65623058009805,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 16,
+          "pixels": 1,
+          "beams": 1,
+          "first": [
+            181,
+            232
+          ],
+          "last": [
+            181,
+            232
+          ],
+          "excess_power": 22.88753169395079,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 17,
+          "pixels": 134,
+          "beams": 25,
+          "first": [
+            184,
+            101
+          ],
+          "last": [
+            198,
+            125
+          ],
+          "excess_power": 490237.42764128133,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 18,
+          "pixels": 1,
+          "beams": 1,
+          "first": [
+            186,
+            235
+          ],
+          "last": [
+            186,
+            235
+          ],
+          "excess_power": 112.75987185381064,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 19,
+          "pixels": 19,
+          "beams": 8,
+          "first": [
+            187,
+            236
+          ],
+          "last": [
+            195,
+            243
+          ],
+          "excess_power": 7291.516556285693,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 20,
+          "pixels": 1,
+          "beams": 1,
+          "first": [
+            195,
+            126
+          ],
+          "last": [
+            195,
+            126
+          ],
+          "excess_power": 360.08370506110623,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 21,
+          "pixels": 2,
+          "beams": 1,
+          "first": [
+            195,
+            135
+          ],
+          "last": [
+            196,
+            135
+          ],
+          "excess_power": 4403.842715903145,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 22,
+          "pixels": 1,
+          "beams": 1,
+          "first": [
+            196,
+            138
+          ],
+          "last": [
+            196,
+            138
+          ],
+          "excess_power": 18.70456925232429,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 23,
+          "pixels": 2,
+          "beams": 2,
+          "first": [
+            198,
+            132
+          ],
+          "last": [
+            198,
+            133
+          ],
+          "excess_power": 2420.676840113367,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 24,
+          "pixels": 1,
+          "beams": 1,
+          "first": [
+            198,
+            244
+          ],
+          "last": [
+            198,
+            244
+          ],
+          "excess_power": 71.94557241963241,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 25,
+          "pixels": 15,
+          "beams": 4,
+          "first": [
+            199,
+            246
+          ],
+          "last": [
+            207,
+            249
+          ],
+          "excess_power": 4062.460031742702,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 26,
+          "pixels": 7,
+          "beams": 4,
+          "first": [
+            201,
+            99
+          ],
+          "last": [
+            202,
+            102
+          ],
+          "excess_power": 13197.460065312825,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 27,
+          "pixels": 6,
+          "beams": 4,
+          "first": [
+            204,
+            98
+          ],
+          "last": [
+            205,
+            101
+          ],
+          "excess_power": 9661.503350670813,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 28,
+          "pixels": 1,
+          "beams": 1,
+          "first": [
+            205,
+            112
+          ],
+          "last": [
+            205,
+            112
+          ],
+          "excess_power": 1141.876501875664,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 29,
+          "pixels": 62,
+          "beams": 14,
+          "first": [
+            207,
+            137
+          ],
+          "last": [
+            214,
+            150
+          ],
+          "excess_power": 349754.60023951065,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 30,
+          "pixels": 73,
+          "beams": 8,
+          "first": [
+            207,
+            153
+          ],
+          "last": [
+            221,
+            160
+          ],
+          "excess_power": 543817.4886356284,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 31,
+          "pixels": 1,
+          "beams": 1,
+          "first": [
+            208,
+            250
+          ],
+          "last": [
+            208,
+            250
+          ],
+          "excess_power": 89.90715452499546,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 32,
+          "pixels": 2,
+          "beams": 1,
+          "first": [
+            209,
+            251
+          ],
+          "last": [
+            210,
+            251
+          ],
+          "excess_power": 308.9264229921304,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 33,
+          "pixels": 60,
+          "beams": 13,
+          "first": [
+            210,
+            100
+          ],
+          "last": [
+            220,
+            112
+          ],
+          "excess_power": 112135.28372203304,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 34,
+          "pixels": 1,
+          "beams": 1,
+          "first": [
+            211,
+            131
+          ],
+          "last": [
+            211,
+            131
+          ],
+          "excess_power": 803.9995954746337,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 35,
+          "pixels": 1,
+          "beams": 1,
+          "first": [
+            212,
+            252
+          ],
+          "last": [
+            212,
+            252
+          ],
+          "excess_power": 28.665953553974305,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 36,
+          "pixels": 13,
+          "beams": 4,
+          "first": [
+            213,
+            94
+          ],
+          "last": [
+            216,
+            97
+          ],
+          "excess_power": 9992.623122287625,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 37,
+          "pixels": 1,
+          "beams": 1,
+          "first": [
+            214,
+            131
+          ],
+          "last": [
+            214,
+            131
+          ],
+          "excess_power": 564.5512781093475,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 38,
+          "pixels": 5,
+          "beams": 3,
+          "first": [
+            214,
+            147
+          ],
+          "last": [
+            215,
+            149
+          ],
+          "excess_power": 6920.734423035477,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 39,
+          "pixels": 11,
+          "beams": 3,
+          "first": [
+            215,
+            253
+          ],
+          "last": [
+            221,
+            255
+          ],
+          "excess_power": 4038.375103209908,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 40,
+          "pixels": 55,
+          "beams": 11,
+          "first": [
+            216,
+            140
+          ],
+          "last": [
+            222,
+            150
+          ],
+          "excess_power": 204202.20312339967,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 41,
+          "pixels": 36,
+          "beams": 7,
+          "first": [
+            218,
+            97
+          ],
+          "last": [
+            226,
+            103
+          ],
+          "excess_power": 59974.936338456624,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 42,
+          "pixels": 79,
+          "beams": 10,
+          "first": [
+            221,
+            161
+          ],
+          "last": [
+            237,
+            170
+          ],
+          "excess_power": 210278.07581767978,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 43,
+          "pixels": 24,
+          "beams": 6,
+          "first": [
+            222,
+            108
+          ],
+          "last": [
+            227,
+            113
+          ],
+          "excess_power": 60048.728139960265,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 44,
+          "pixels": 1,
+          "beams": 1,
+          "first": [
+            223,
+            106
+          ],
+          "last": [
+            223,
+            106
+          ],
+          "excess_power": 1132.198682994066,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 45,
+          "pixels": 20,
+          "beams": 5,
+          "first": [
+            223,
+            149
+          ],
+          "last": [
+            228,
+            153
+          ],
+          "excess_power": 45632.18571627857,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 46,
+          "pixels": 1,
+          "beams": 1,
+          "first": [
+            224,
+            86
+          ],
+          "last": [
+            224,
+            86
+          ],
+          "excess_power": 243.34539939867955,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 47,
+          "pixels": 1,
+          "beams": 1,
+          "first": [
+            224,
+            105
+          ],
+          "last": [
+            224,
+            105
+          ],
+          "excess_power": 1088.9226198483939,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 48,
+          "pixels": 259,
+          "beams": 51,
+          "first": [
+            227,
+            95
+          ],
+          "last": [
+            238,
+            145
+          ],
+          "excess_power": 587481.1531766128,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 49,
+          "pixels": 1,
+          "beams": 1,
+          "first": [
+            233,
+            148
+          ],
+          "last": [
+            233,
+            148
+          ],
+          "excess_power": 276.8997018925802,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 50,
+          "pixels": 1,
+          "beams": 1,
+          "first": [
+            236,
+            147
+          ],
+          "last": [
+            236,
+            147
+          ],
+          "excess_power": 224.20400109729462,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 51,
+          "pixels": 14,
+          "beams": 7,
+          "first": [
+            240,
+            96
+          ],
+          "last": [
+            244,
+            102
+          ],
+          "excess_power": 623.2083439709752,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 52,
+          "pixels": 4,
+          "beams": 2,
+          "first": [
+            245,
+            93
+          ],
+          "last": [
+            246,
+            94
+          ],
+          "excess_power": 263.22794785538514,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 53,
+          "pixels": 11,
+          "beams": 3,
+          "first": [
+            246,
+            167
+          ],
+          "last": [
+            250,
+            169
+          ],
+          "excess_power": 5114.589711441894,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 54,
+          "pixels": 1,
+          "beams": 1,
+          "first": [
+            247,
+            90
+          ],
+          "last": [
+            247,
+            90
+          ],
+          "excess_power": 57.58084416146551,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 55,
+          "pixels": 8,
+          "beams": 3,
+          "first": [
+            252,
+            165
+          ],
+          "last": [
+            254,
+            167
+          ],
+          "excess_power": 3534.969853639203,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 56,
+          "pixels": 1,
+          "beams": 1,
+          "first": [
+            254,
+            86
+          ],
+          "last": [
+            254,
+            86
+          ],
+          "excess_power": 1.5264424588914096,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 57,
+          "pixels": 3,
+          "beams": 2,
+          "first": [
+            261,
+            170
+          ],
+          "last": [
+            262,
+            171
+          ],
+          "excess_power": 24.517325067529555,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 58,
+          "pixels": 31,
+          "beams": 8,
+          "first": [
+            266,
+            173
+          ],
+          "last": [
+            271,
+            180
+          ],
+          "excess_power": 5079.758337293841,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 59,
+          "pixels": 1,
+          "beams": 1,
+          "first": [
+            273,
+            181
+          ],
+          "last": [
+            273,
+            181
+          ],
+          "excess_power": 16.051997590793462,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 60,
+          "pixels": 28,
+          "beams": 5,
+          "first": [
+            275,
+            181
+          ],
+          "last": [
+            284,
+            185
+          ],
+          "excess_power": 1211.2619870169697,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 61,
+          "pixels": 5,
+          "beams": 3,
+          "first": [
+            285,
+            253
+          ],
+          "last": [
+            286,
+            255
+          ],
+          "excess_power": 294.5132751672329,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 62,
+          "pixels": 2,
+          "beams": 1,
+          "first": [
+            287,
+            188
+          ],
+          "last": [
+            288,
+            188
+          ],
+          "excess_power": 45.63557886655631,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 63,
+          "pixels": 20,
+          "beams": 4,
+          "first": [
+            294,
+            190
+          ],
+          "last": [
+            299,
+            193
+          ],
+          "excess_power": 921.5563992718787,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 64,
+          "pixels": 73,
+          "beams": 10,
+          "first": [
+            302,
+            195
+          ],
+          "last": [
+            326,
+            204
+          ],
+          "excess_power": 2397.43906086749,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 65,
+          "pixels": 99,
+          "beams": 13,
+          "first": [
+            329,
+            202
+          ],
+          "last": [
+            363,
+            214
+          ],
+          "excess_power": 2059.618268261899,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 66,
+          "pixels": 49,
+          "beams": 7,
+          "first": [
+            365,
+            213
+          ],
+          "last": [
+            385,
+            219
+          ],
+          "excess_power": 750.1788935141064,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 67,
+          "pixels": 16,
+          "beams": 3,
+          "first": [
+            388,
+            218
+          ],
+          "last": [
+            393,
+            220
+          ],
+          "excess_power": 51.40645041464324,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 68,
+          "pixels": 9,
+          "beams": 3,
+          "first": [
+            398,
+            220
+          ],
+          "last": [
+            402,
+            222
+          ],
+          "excess_power": 15.347594323214683,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 69,
+          "pixels": 19,
+          "beams": 4,
+          "first": [
+            400,
+            252
+          ],
+          "last": [
+            404,
+            255
+          ],
+          "excess_power": 2219.964650839685,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 70,
+          "pixels": 1,
+          "beams": 1,
+          "first": [
+            405,
+            222
+          ],
+          "last": [
+            405,
+            222
+          ],
+          "excess_power": 0.13655542969167866,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 71,
+          "pixels": 3,
+          "beams": 1,
+          "first": [
+            412,
+            224
+          ],
+          "last": [
+            414,
+            224
+          ],
+          "excess_power": 0.7725146244492485,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 72,
+          "pixels": 11,
+          "beams": 3,
+          "first": [
+            419,
+            224
+          ],
+          "last": [
+            423,
+            226
+          ],
+          "excess_power": 28.784879673737755,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 73,
+          "pixels": 9,
+          "beams": 3,
+          "first": [
+            424,
+            15
+          ],
+          "last": [
+            426,
+            17
+          ],
+          "excess_power": 64.96866371297806,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 74,
+          "pixels": 11,
+          "beams": 2,
+          "first": [
+            426,
+            226
+          ],
+          "last": [
+            431,
+            227
+          ],
+          "excess_power": 53.60611328134278,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 75,
+          "pixels": 9,
+          "beams": 2,
+          "first": [
+            435,
+            227
+          ],
+          "last": [
+            439,
+            228
+          ],
+          "excess_power": 14.887755101597703,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 76,
+          "pixels": 8,
+          "beams": 2,
+          "first": [
+            440,
+            2
+          ],
+          "last": [
+            443,
+            3
+          ],
+          "excess_power": 70.70215791095437,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 77,
+          "pixels": 24,
+          "beams": 5,
+          "first": [
+            444,
+            226
+          ],
+          "last": [
+            449,
+            230
+          ],
+          "excess_power": 81.0085341047058,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 78,
+          "pixels": 13,
+          "beams": 3,
+          "first": [
+            445,
+            253
+          ],
+          "last": [
+            449,
+            255
+          ],
+          "excess_power": 308.95197811104947,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 79,
+          "pixels": 57,
+          "beams": 9,
+          "first": [
+            453,
+            226
+          ],
+          "last": [
+            462,
+            234
+          ],
+          "excess_power": 317.03796266802556,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 80,
+          "pixels": 4,
+          "beams": 2,
+          "first": [
+            457,
+            220
+          ],
+          "last": [
+            458,
+            221
+          ],
+          "excess_power": 0.05189779475255263,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 81,
+          "pixels": 17,
+          "beams": 5,
+          "first": [
+            457,
+            239
+          ],
+          "last": [
+            460,
+            243
+          ],
+          "excess_power": 353.7568754636385,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 82,
+          "pixels": 17,
+          "beams": 4,
+          "first": [
+            457,
+            252
+          ],
+          "last": [
+            461,
+            255
+          ],
+          "excess_power": 235.65012475095128,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 83,
+          "pixels": 16,
+          "beams": 3,
+          "first": [
+            464,
+            231
+          ],
+          "last": [
+            469,
+            233
+          ],
+          "excess_power": 77.95045499703731,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 84,
+          "pixels": 2,
+          "beams": 2,
+          "first": [
+            465,
+            238
+          ],
+          "last": [
+            465,
+            239
+          ],
+          "excess_power": 2.829401377848761,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 85,
+          "pixels": 10,
+          "beams": 3,
+          "first": [
+            466,
+            0
+          ],
+          "last": [
+            470,
+            2
+          ],
+          "excess_power": 153.41489305250477,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 86,
+          "pixels": 3,
+          "beams": 3,
+          "first": [
+            467,
+            238
+          ],
+          "last": [
+            467,
+            240
+          ],
+          "excess_power": 4.114517998680263,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 87,
+          "pixels": 19,
+          "beams": 6,
+          "first": [
+            469,
+            244
+          ],
+          "last": [
+            473,
+            249
+          ],
+          "excess_power": 181.75283026871568,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 88,
+          "pixels": 17,
+          "beams": 4,
+          "first": [
+            470,
+            252
+          ],
+          "last": [
+            474,
+            255
+          ],
+          "excess_power": 313.5738297559616,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 89,
+          "pixels": 1,
+          "beams": 1,
+          "first": [
+            474,
+            233
+          ],
+          "last": [
+            474,
+            233
+          ],
+          "excess_power": 2.82251550771257,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 90,
+          "pixels": 14,
+          "beams": 3,
+          "first": [
+            481,
+            0
+          ],
+          "last": [
+            485,
+            2
+          ],
+          "excess_power": 485.3038621921791,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 91,
+          "pixels": 6,
+          "beams": 2,
+          "first": [
+            483,
+            234
+          ],
+          "last": [
+            487,
+            235
+          ],
+          "excess_power": 22.425103108015946,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 92,
+          "pixels": 4,
+          "beams": 2,
+          "first": [
+            486,
+            254
+          ],
+          "last": [
+            488,
+            255
+          ],
+          "excess_power": 27.319372704188183,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 93,
+          "pixels": 13,
+          "beams": 3,
+          "first": [
+            496,
+            0
+          ],
+          "last": [
+            500,
+            2
+          ],
+          "excess_power": 326.4563345079063,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 94,
+          "pixels": 7,
+          "beams": 2,
+          "first": [
+            496,
+            235
+          ],
+          "last": [
+            501,
+            236
+          ],
+          "excess_power": 10.448657203566679,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 95,
+          "pixels": 12,
+          "beams": 3,
+          "first": [
+            503,
+            236
+          ],
+          "last": [
+            508,
+            238
+          ],
+          "excess_power": 36.22392743079767,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 96,
+          "pixels": 27,
+          "beams": 5,
+          "first": [
+            506,
+            10
+          ],
+          "last": [
+            511,
+            14
+          ],
+          "excess_power": 783.3163834254217,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 97,
+          "pixels": 48,
+          "beams": 12,
+          "first": [
+            507,
+            16
+          ],
+          "last": [
+            511,
+            27
+          ],
+          "excess_power": 11.497547472853977,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 98,
+          "pixels": 3,
+          "beams": 2,
+          "first": [
+            509,
+            32
+          ],
+          "last": [
+            510,
+            33
+          ],
+          "excess_power": 0.006096870893197534,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 99,
+          "pixels": 5,
+          "beams": 2,
+          "first": [
+            512,
+            2
+          ],
+          "last": [
+            514,
+            3
+          ],
+          "excess_power": 11.83857790638983,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 100,
+          "pixels": 3,
+          "beams": 1,
+          "first": [
+            513,
+            0
+          ],
+          "last": [
+            515,
+            0
+          ],
+          "excess_power": 7.112146394789839,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 101,
+          "pixels": 14,
+          "beams": 3,
+          "first": [
+            517,
+            253
+          ],
+          "last": [
+            521,
+            255
+          ],
+          "excess_power": 327.95028588140696,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 102,
+          "pixels": 43,
+          "beams": 11,
+          "first": [
+            518,
+            232
+          ],
+          "last": [
+            523,
+            242
+          ],
+          "excess_power": 168.155589313294,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 103,
+          "pixels": 52,
+          "beams": 11,
+          "first": [
+            526,
+            234
+          ],
+          "last": [
+            531,
+            244
+          ],
+          "excess_power": 245.70575800042272,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 104,
+          "pixels": 9,
+          "beams": 3,
+          "first": [
+            528,
+            228
+          ],
+          "last": [
+            530,
+            230
+          ],
+          "excess_power": 0.06947388129542068,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 105,
+          "pixels": 3,
+          "beams": 1,
+          "first": [
+            530,
+            248
+          ],
+          "last": [
+            532,
+            248
+          ],
+          "excess_power": 8.247236987314633,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 106,
+          "pixels": 16,
+          "beams": 4,
+          "first": [
+            533,
+            252
+          ],
+          "last": [
+            538,
+            255
+          ],
+          "excess_power": 240.27106232686327,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 107,
+          "pixels": 18,
+          "beams": 3,
+          "first": [
+            534,
+            238
+          ],
+          "last": [
+            540,
+            240
+          ],
+          "excess_power": 50.10120757939373,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 108,
+          "pixels": 30,
+          "beams": 5,
+          "first": [
+            539,
+            7
+          ],
+          "last": [
+            544,
+            11
+          ],
+          "excess_power": 1018.1264954517154,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 109,
+          "pixels": 61,
+          "beams": 12,
+          "first": [
+            539,
+            13
+          ],
+          "last": [
+            544,
+            24
+          ],
+          "excess_power": 16.449176549163877,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 110,
+          "pixels": 8,
+          "beams": 2,
+          "first": [
+            540,
+            29
+          ],
+          "last": [
+            543,
+            30
+          ],
+          "excess_power": 0.03453226667243214,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 111,
+          "pixels": 62,
+          "beams": 11,
+          "first": [
+            543,
+            234
+          ],
+          "last": [
+            549,
+            244
+          ],
+          "excess_power": 383.3090107041941,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 112,
+          "pixels": 11,
+          "beams": 3,
+          "first": [
+            544,
+            228
+          ],
+          "last": [
+            547,
+            230
+          ],
+          "excess_power": 0.060413181600542466,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 113,
+          "pixels": 10,
+          "beams": 2,
+          "first": [
+            553,
+            254
+          ],
+          "last": [
+            557,
+            255
+          ],
+          "excess_power": 119.06925704457461,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 114,
+          "pixels": 31,
+          "beams": 7,
+          "first": [
+            554,
+            238
+          ],
+          "last": [
+            558,
+            244
+          ],
+          "excess_power": 24.050991290217716,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 115,
+          "pixels": 18,
+          "beams": 6,
+          "first": [
+            563,
+            238
+          ],
+          "last": [
+            568,
+            243
+          ],
+          "excess_power": 24.578926032290553,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 116,
+          "pixels": 17,
+          "beams": 3,
+          "first": [
+            565,
+            0
+          ],
+          "last": [
+            570,
+            2
+          ],
+          "excess_power": 583.3194554121258,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 117,
+          "pixels": 2,
+          "beams": 1,
+          "first": [
+            565,
+            21
+          ],
+          "last": [
+            566,
+            21
+          ],
+          "excess_power": 0.002723784983007675,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 118,
+          "pixels": 1,
+          "beams": 1,
+          "first": [
+            569,
+            21
+          ],
+          "last": [
+            569,
+            21
+          ],
+          "excess_power": 0.0008978178026418718,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 119,
+          "pixels": 20,
+          "beams": 5,
+          "first": [
+            572,
+            1
+          ],
+          "last": [
+            575,
+            5
+          ],
+          "excess_power": 27.43863625783039,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 120,
+          "pixels": 8,
+          "beams": 2,
+          "first": [
+            573,
+            242
+          ],
+          "last": [
+            577,
+            243
+          ],
+          "excess_power": 1.7400480726102554,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 121,
+          "pixels": 3,
+          "beams": 2,
+          "first": [
+            577,
+            246
+          ],
+          "last": [
+            578,
+            247
+          ],
+          "excess_power": 2.7465649065388247,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 122,
+          "pixels": 24,
+          "beams": 4,
+          "first": [
+            583,
+            0
+          ],
+          "last": [
+            589,
+            3
+          ],
+          "excess_power": 803.529804029989,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 123,
+          "pixels": 2,
+          "beams": 1,
+          "first": [
+            585,
+            21
+          ],
+          "last": [
+            586,
+            21
+          ],
+          "excess_power": 0.0005231368260707747,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 124,
+          "pixels": 14,
+          "beams": 5,
+          "first": [
+            589,
+            248
+          ],
+          "last": [
+            592,
+            252
+          ],
+          "excess_power": 19.230293656540702,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 125,
+          "pixels": 13,
+          "beams": 7,
+          "first": [
+            595,
+            240
+          ],
+          "last": [
+            598,
+            246
+          ],
+          "excess_power": 3.525924175861424,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 126,
+          "pixels": 10,
+          "beams": 3,
+          "first": [
+            595,
+            253
+          ],
+          "last": [
+            598,
+            255
+          ],
+          "excess_power": 66.58942787783798,
+          "selected": true,
+          "physical_identity_verified": false
+        }
+      ],
+      "birth_regions": [
+        {
+          "label": 1,
+          "pixels": 1759,
+          "beams": 256,
+          "first": [
+            128,
+            0
+          ],
+          "last": [
+            139,
+            255
+          ],
+          "excess_power": 7628977.149734651,
+          "selected": true,
+          "physical_identity_verified": false,
+          "physical_pixels": 1759,
+          "search_cells": 554
+        },
+        {
+          "label": 48,
+          "pixels": 259,
+          "beams": 51,
+          "first": [
+            227,
+            95
+          ],
+          "last": [
+            238,
+            145
+          ],
+          "excess_power": 587481.1531766128,
+          "selected": true,
+          "physical_identity_verified": false,
+          "physical_pixels": 259,
+          "search_cells": 310
+        },
+        {
+          "label": 30,
+          "pixels": 73,
+          "beams": 8,
+          "first": [
+            207,
+            153
+          ],
+          "last": [
+            221,
+            160
+          ],
+          "excess_power": 543817.4886356284,
+          "selected": true,
+          "physical_identity_verified": false,
+          "physical_pixels": 73,
+          "search_cells": 74
+        },
+        {
+          "label": 17,
+          "pixels": 134,
+          "beams": 25,
+          "first": [
+            184,
+            101
+          ],
+          "last": [
+            198,
+            125
+          ],
+          "excess_power": 490237.42764128133,
+          "selected": true,
+          "physical_identity_verified": false,
+          "physical_pixels": 134,
+          "search_cells": 113
+        },
+        {
+          "label": 6,
+          "pixels": 308,
+          "beams": 61,
+          "first": [
+            148,
+            0
+          ],
+          "last": [
+            216,
+            60
+          ],
+          "excess_power": 462186.48692249774,
+          "selected": true,
+          "physical_identity_verified": false,
+          "physical_pixels": 308,
+          "search_cells": 250
+        },
+        {
+          "label": 29,
+          "pixels": 62,
+          "beams": 14,
+          "first": [
+            207,
+            137
+          ],
+          "last": [
+            214,
+            150
+          ],
+          "excess_power": 349754.60023951065,
+          "selected": true,
+          "physical_identity_verified": false,
+          "physical_pixels": 62,
+          "search_cells": 78
+        },
+        {
+          "label": 42,
+          "pixels": 79,
+          "beams": 10,
+          "first": [
+            221,
+            161
+          ],
+          "last": [
+            237,
+            170
+          ],
+          "excess_power": 210278.07581767978,
+          "selected": true,
+          "physical_identity_verified": false,
+          "physical_pixels": 79,
+          "search_cells": 95
+        },
+        {
+          "label": 40,
+          "pixels": 55,
+          "beams": 11,
+          "first": [
+            216,
+            140
+          ],
+          "last": [
+            222,
+            150
+          ],
+          "excess_power": 204202.20312339967,
+          "selected": true,
+          "physical_identity_verified": false,
+          "physical_pixels": 55,
+          "search_cells": 75
+        }
+      ],
+      "exact_query_check_max_absolute_error": 1.3278622645884752e-10,
+      "exact_query_check_max_envelope_ratio": 2.3211747198028286e-06
+    },
+    {
+      "stamp_ns": 42510000000,
+      "plane_stamp_ns": 42010000000,
+      "file": "sonar-0081.npz",
+      "raw_sha256": "cc8b7ba0e90276d09380359c1e370171ad54c26ae2dff748810d9a29fc0293bd",
+      "origin": [
+        -6.115975175702814,
+        0.5546964161972059,
+        -0.28520374411819444
+      ],
+      "rotation": [
+        [
+          -0.7883594591893285,
+          -0.07820949241777692,
+          -0.6102234331803917
+        ],
+        [
+          0.06121094714896765,
+          -0.9969364089301124,
+          0.048693084710850286
+        ],
+        [
+          -0.6121622195593555,
+          0.001035299611439547,
+          0.7907315252972268
+        ]
+      ],
+      "normal_sonar": [
+        0.6118824065244418,
+        0.012252042686395702,
+        -0.7908538474559438
+      ],
+      "plane_distance_m": 2.1092922042813633,
+      "index": 81,
+      "raw_record": "sonar-height-diversity-fit-20261031",
+      "pixels": [
+        [
+          60,
+          16
+        ],
+        [
+          60,
+          48
+        ],
+        [
+          60,
+          80
+        ],
+        [
+          60,
+          112
+        ],
+        [
+          60,
+          143
+        ],
+        [
+          60,
+          175
+        ],
+        [
+          60,
+          207
+        ],
+        [
+          60,
+          239
+        ],
+        [
+          82,
+          125
+        ],
+        [
+          101,
+          45
+        ],
+        [
+          102,
+          210
+        ],
+        [
+          119,
+          83
+        ],
+        [
+          120,
+          71
+        ],
+        [
+          122,
+          71
+        ],
+        [
+          124,
+          65
+        ],
+        [
+          126,
+          62
+        ],
+        [
+          130,
+          51
+        ],
+        [
+          131,
+          165
+        ],
+        [
+          140,
+          165
+        ],
+        [
+          148,
+          165
+        ],
+        [
+          151,
+          27
+        ],
+        [
+          152,
+          165
+        ],
+        [
+          159,
+          225
+        ],
+        [
+          166,
+          217
+        ],
+        [
+          169,
+          11
+        ],
+        [
+          170,
+          223
+        ],
+        [
+          175,
+          215
+        ],
+        [
+          176,
+          227
+        ],
+        [
+          179,
+          213
+        ],
+        [
+          180,
+          16
+        ],
+        [
+          180,
+          48
+        ],
+        [
+          180,
+          80
+        ],
+        [
+          180,
+          112
+        ],
+        [
+          180,
+          143
+        ],
+        [
+          180,
+          145
+        ],
+        [
+          180,
+          175
+        ],
+        [
+          180,
+          207
+        ],
+        [
+          180,
+          239
+        ],
+        [
+          183,
+          211
+        ],
+        [
+          187,
+          209
+        ],
+        [
+          193,
+          0
+        ],
+        [
+          202,
+          171
+        ],
+        [
+          216,
+          187
+        ],
+        [
+          235,
+          253
+        ],
+        [
+          252,
+          206
+        ],
+        [
+          264,
+          242
+        ],
+        [
+          298,
+          220
+        ],
+        [
+          312,
+          229
+        ],
+        [
+          360,
+          16
+        ],
+        [
+          360,
+          48
+        ],
+        [
+          360,
+          80
+        ],
+        [
+          360,
+          112
+        ],
+        [
+          360,
+          143
+        ],
+        [
+          360,
+          175
+        ],
+        [
+          360,
+          207
+        ],
+        [
+          360,
+          239
+        ],
+        [
+          540,
+          16
+        ],
+        [
+          540,
+          48
+        ],
+        [
+          540,
+          80
+        ],
+        [
+          540,
+          112
+        ],
+        [
+          540,
+          143
+        ],
+        [
+          540,
+          175
+        ],
+        [
+          540,
+          207
+        ],
+        [
+          540,
+          239
+        ]
+      ],
+      "proposal_gain": 1.217873567821597,
+      "all_regions": [
+        {
+          "label": 1,
+          "pixels": 262,
+          "beams": 3,
+          "first": [
+            0,
+            223
+          ],
+          "last": [
+            89,
+            225
+          ],
+          "excess_power": 3.9370143034092324,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 2,
+          "pixels": 1264,
+          "beams": 256,
+          "first": [
+            82,
+            0
+          ],
+          "last": [
+            119,
+            255
+          ],
+          "excess_power": 31247831.153245464,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 3,
+          "pixels": 2,
+          "beams": 2,
+          "first": [
+            119,
+            77
+          ],
+          "last": [
+            119,
+            78
+          ],
+          "excess_power": 3083.9511779427894,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 4,
+          "pixels": 3,
+          "beams": 3,
+          "first": [
+            119,
+            179
+          ],
+          "last": [
+            119,
+            181
+          ],
+          "excess_power": 17456.872736907982,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 5,
+          "pixels": 46,
+          "beams": 16,
+          "first": [
+            120,
+            61
+          ],
+          "last": [
+            126,
+            76
+          ],
+          "excess_power": 619392.3720472542,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 6,
+          "pixels": 1,
+          "beams": 1,
+          "first": [
+            120,
+            183
+          ],
+          "last": [
+            120,
+            183
+          ],
+          "excess_power": 778.4800558132256,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 7,
+          "pixels": 8,
+          "beams": 4,
+          "first": [
+            123,
+            130
+          ],
+          "last": [
+            124,
+            133
+          ],
+          "excess_power": 55247.08555822886,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 8,
+          "pixels": 1,
+          "beams": 1,
+          "first": [
+            125,
+            194
+          ],
+          "last": [
+            125,
+            194
+          ],
+          "excess_power": 682.9074382036742,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 9,
+          "pixels": 9,
+          "beams": 6,
+          "first": [
+            127,
+            56
+          ],
+          "last": [
+            129,
+            61
+          ],
+          "excess_power": 26347.417785869264,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 10,
+          "pixels": 370,
+          "beams": 56,
+          "first": [
+            130,
+            0
+          ],
+          "last": [
+            193,
+            55
+          ],
+          "excess_power": 1685337.0085110972,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 11,
+          "pixels": 60,
+          "beams": 9,
+          "first": [
+            131,
+            159
+          ],
+          "last": [
+            152,
+            167
+          ],
+          "excess_power": 975198.5216421962,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 12,
+          "pixels": 1,
+          "beams": 1,
+          "first": [
+            134,
+            210
+          ],
+          "last": [
+            134,
+            210
+          ],
+          "excess_power": 1092.035139090106,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 13,
+          "pixels": 85,
+          "beams": 24,
+          "first": [
+            150,
+            133
+          ],
+          "last": [
+            156,
+            156
+          ],
+          "excess_power": 602179.5511115048,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 14,
+          "pixels": 2,
+          "beams": 2,
+          "first": [
+            153,
+            232
+          ],
+          "last": [
+            153,
+            233
+          ],
+          "excess_power": 1582.8543693870147,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 15,
+          "pixels": 186,
+          "beams": 22,
+          "first": [
+            159,
+            214
+          ],
+          "last": [
+            176,
+            235
+          ],
+          "excess_power": 5578306.106268719,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 16,
+          "pixels": 20,
+          "beams": 7,
+          "first": [
+            162,
+            2
+          ],
+          "last": [
+            165,
+            8
+          ],
+          "excess_power": 685.2075194140298,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 17,
+          "pixels": 1,
+          "beams": 1,
+          "first": [
+            163,
+            0
+          ],
+          "last": [
+            163,
+            0
+          ],
+          "excess_power": 3.6720422593588182,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 18,
+          "pixels": 4,
+          "beams": 1,
+          "first": [
+            171,
+            248
+          ],
+          "last": [
+            174,
+            248
+          ],
+          "excess_power": 2405.766041385955,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 19,
+          "pixels": 2,
+          "beams": 1,
+          "first": [
+            173,
+            250
+          ],
+          "last": [
+            174,
+            250
+          ],
+          "excess_power": 372.59456291175775,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 20,
+          "pixels": 60,
+          "beams": 9,
+          "first": [
+            175,
+            207
+          ],
+          "last": [
+            187,
+            215
+          ],
+          "excess_power": 843210.6596341009,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 21,
+          "pixels": 2,
+          "beams": 2,
+          "first": [
+            180,
+            105
+          ],
+          "last": [
+            180,
+            106
+          ],
+          "excess_power": 1319.5126873386434,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 22,
+          "pixels": 661,
+          "beams": 79,
+          "first": [
+            180,
+            131
+          ],
+          "last": [
+            252,
+            209
+          ],
+          "excess_power": 1098036.976983136,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 23,
+          "pixels": 3,
+          "beams": 1,
+          "first": [
+            192,
+            206
+          ],
+          "last": [
+            194,
+            206
+          ],
+          "excess_power": 4314.741826439975,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 24,
+          "pixels": 1,
+          "beams": 1,
+          "first": [
+            195,
+            205
+          ],
+          "last": [
+            195,
+            205
+          ],
+          "excess_power": 236.54797980134754,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 25,
+          "pixels": 6,
+          "beams": 4,
+          "first": [
+            207,
+            156
+          ],
+          "last": [
+            208,
+            159
+          ],
+          "excess_power": 11.403187732414601,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 26,
+          "pixels": 808,
+          "beams": 49,
+          "first": [
+            235,
+            207
+          ],
+          "last": [
+            312,
+            255
+          ],
+          "excess_power": 5716769.860910923,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 27,
+          "pixels": 193,
+          "beams": 50,
+          "first": [
+            248,
+            149
+          ],
+          "last": [
+            253,
+            198
+          ],
+          "excess_power": 161.46315380620632,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 28,
+          "pixels": 6,
+          "beams": 6,
+          "first": [
+            251,
+            132
+          ],
+          "last": [
+            251,
+            137
+          ],
+          "excess_power": 1.2938907298016433,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 29,
+          "pixels": 3,
+          "beams": 1,
+          "first": [
+            259,
+            239
+          ],
+          "last": [
+            261,
+            239
+          ],
+          "excess_power": 1035.67966026955,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 30,
+          "pixels": 10,
+          "beams": 3,
+          "first": [
+            272,
+            204
+          ],
+          "last": [
+            275,
+            206
+          ],
+          "excess_power": 6.308159872048048,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 31,
+          "pixels": 11,
+          "beams": 7,
+          "first": [
+            273,
+            188
+          ],
+          "last": [
+            274,
+            194
+          ],
+          "excess_power": 1.361736850565003,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 32,
+          "pixels": 8,
+          "beams": 3,
+          "first": [
+            273,
+            198
+          ],
+          "last": [
+            275,
+            200
+          ],
+          "excess_power": 2.0361883985254847,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 33,
+          "pixels": 2,
+          "beams": 1,
+          "first": [
+            273,
+            212
+          ],
+          "last": [
+            274,
+            212
+          ],
+          "excess_power": 0.41224487749739147,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 34,
+          "pixels": 17,
+          "beams": 4,
+          "first": [
+            289,
+            203
+          ],
+          "last": [
+            293,
+            206
+          ],
+          "excess_power": 6.64695786205878,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 35,
+          "pixels": 24,
+          "beams": 5,
+          "first": [
+            289,
+            210
+          ],
+          "last": [
+            294,
+            214
+          ],
+          "excess_power": 27.7941624786451,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 36,
+          "pixels": 7,
+          "beams": 3,
+          "first": [
+            290,
+            197
+          ],
+          "last": [
+            293,
+            199
+          ],
+          "excess_power": 0.8264201928915986,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 37,
+          "pixels": 15,
+          "beams": 4,
+          "first": [
+            290,
+            218
+          ],
+          "last": [
+            294,
+            221
+          ],
+          "excess_power": 42.64137361321676,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 38,
+          "pixels": 19,
+          "beams": 5,
+          "first": [
+            298,
+            201
+          ],
+          "last": [
+            303,
+            205
+          ],
+          "excess_power": 5.451134562192479,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 39,
+          "pixels": 2,
+          "beams": 1,
+          "first": [
+            299,
+            0
+          ],
+          "last": [
+            300,
+            0
+          ],
+          "excess_power": 71.73171023366262,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 40,
+          "pixels": 1,
+          "beams": 1,
+          "first": [
+            299,
+            190
+          ],
+          "last": [
+            299,
+            190
+          ],
+          "excess_power": 0.006182725237623421,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 41,
+          "pixels": 7,
+          "beams": 3,
+          "first": [
+            299,
+            195
+          ],
+          "last": [
+            301,
+            197
+          ],
+          "excess_power": 0.6442223925125212,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 42,
+          "pixels": 2,
+          "beams": 2,
+          "first": [
+            305,
+            0
+          ],
+          "last": [
+            305,
+            1
+          ],
+          "excess_power": 26.045205819977014,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 43,
+          "pixels": 8,
+          "beams": 4,
+          "first": [
+            306,
+            206
+          ],
+          "last": [
+            308,
+            209
+          ],
+          "excess_power": 0.9960942777854926,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 44,
+          "pixels": 4,
+          "beams": 1,
+          "first": [
+            309,
+            0
+          ],
+          "last": [
+            312,
+            0
+          ],
+          "excess_power": 133.1769377852478,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 45,
+          "pixels": 10,
+          "beams": 2,
+          "first": [
+            372,
+            0
+          ],
+          "last": [
+            376,
+            1
+          ],
+          "excess_power": 1066.5125202537024,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 46,
+          "pixels": 11,
+          "beams": 3,
+          "first": [
+            382,
+            0
+          ],
+          "last": [
+            385,
+            2
+          ],
+          "excess_power": 561.3425718025339,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 47,
+          "pixels": 1,
+          "beams": 1,
+          "first": [
+            394,
+            0
+          ],
+          "last": [
+            394,
+            0
+          ],
+          "excess_power": 8.1774420809313,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 48,
+          "pixels": 4,
+          "beams": 1,
+          "first": [
+            438,
+            0
+          ],
+          "last": [
+            441,
+            0
+          ],
+          "excess_power": 16.45205800982596,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 49,
+          "pixels": 10,
+          "beams": 2,
+          "first": [
+            450,
+            0
+          ],
+          "last": [
+            454,
+            1
+          ],
+          "excess_power": 177.41938474257995,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 50,
+          "pixels": 1,
+          "beams": 1,
+          "first": [
+            464,
+            0
+          ],
+          "last": [
+            464,
+            0
+          ],
+          "excess_power": 4.9585192778907015,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 51,
+          "pixels": 1,
+          "beams": 1,
+          "first": [
+            466,
+            0
+          ],
+          "last": [
+            466,
+            0
+          ],
+          "excess_power": 3.0278248270114076,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 52,
+          "pixels": 1,
+          "beams": 1,
+          "first": [
+            467,
+            223
+          ],
+          "last": [
+            467,
+            223
+          ],
+          "excess_power": 0.0007516852619464109,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 53,
+          "pixels": 2,
+          "beams": 1,
+          "first": [
+            469,
+            223
+          ],
+          "last": [
+            470,
+            223
+          ],
+          "excess_power": 0.0004506942638026479,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 54,
+          "pixels": 354,
+          "beams": 3,
+          "first": [
+            472,
+            223
+          ],
+          "last": [
+            598,
+            225
+          ],
+          "excess_power": 1.9071387612991846,
+          "selected": true,
+          "physical_identity_verified": false
+        }
+      ],
+      "birth_regions": [
+        {
+          "label": 2,
+          "pixels": 1264,
+          "beams": 256,
+          "first": [
+            82,
+            0
+          ],
+          "last": [
+            119,
+            255
+          ],
+          "excess_power": 31247831.153245464,
+          "selected": true,
+          "physical_identity_verified": false,
+          "physical_pixels": 1264,
+          "search_cells": 363
+        },
+        {
+          "label": 26,
+          "pixels": 808,
+          "beams": 49,
+          "first": [
+            235,
+            207
+          ],
+          "last": [
+            312,
+            255
+          ],
+          "excess_power": 5716769.860910923,
+          "selected": true,
+          "physical_identity_verified": false,
+          "physical_pixels": 808,
+          "search_cells": 743
+        },
+        {
+          "label": 15,
+          "pixels": 186,
+          "beams": 22,
+          "first": [
+            159,
+            214
+          ],
+          "last": [
+            176,
+            235
+          ],
+          "excess_power": 5578306.106268719,
+          "selected": true,
+          "physical_identity_verified": false,
+          "physical_pixels": 186,
+          "search_cells": 105
+        },
+        {
+          "label": 10,
+          "pixels": 370,
+          "beams": 56,
+          "first": [
+            130,
+            0
+          ],
+          "last": [
+            193,
+            55
+          ],
+          "excess_power": 1685337.0085110972,
+          "selected": true,
+          "physical_identity_verified": false,
+          "physical_pixels": 370,
+          "search_cells": 213
+        },
+        {
+          "label": 22,
+          "pixels": 661,
+          "beams": 79,
+          "first": [
+            180,
+            131
+          ],
+          "last": [
+            252,
+            209
+          ],
+          "excess_power": 1098036.976983136,
+          "selected": true,
+          "physical_identity_verified": false,
+          "physical_pixels": 661,
+          "search_cells": 517
+        },
+        {
+          "label": 11,
+          "pixels": 60,
+          "beams": 9,
+          "first": [
+            131,
+            159
+          ],
+          "last": [
+            152,
+            167
+          ],
+          "excess_power": 975198.5216421962,
+          "selected": true,
+          "physical_identity_verified": false,
+          "physical_pixels": 60,
+          "search_cells": 46
+        },
+        {
+          "label": 20,
+          "pixels": 60,
+          "beams": 9,
+          "first": [
+            175,
+            207
+          ],
+          "last": [
+            187,
+            215
+          ],
+          "excess_power": 843210.6596341009,
+          "selected": true,
+          "physical_identity_verified": false,
+          "physical_pixels": 60,
+          "search_cells": 47
+        },
+        {
+          "label": 5,
+          "pixels": 46,
+          "beams": 16,
+          "first": [
+            120,
+            61
+          ],
+          "last": [
+            126,
+            76
+          ],
+          "excess_power": 619392.3720472542,
+          "selected": true,
+          "physical_identity_verified": false,
+          "physical_pixels": 46,
+          "search_cells": 31
+        }
+      ],
+      "exact_query_check_max_absolute_error": 2.4977819812477264e-10,
+      "exact_query_check_max_envelope_ratio": 8.492356843663821e-07
+    },
+    {
+      "index": 88,
+      "stamp_ns": 46010000000,
+      "plane_stamp_ns": 46010000000,
+      "file": "sonar-0088.npz",
+      "raw_sha256": "f3bffab60f995c2cc9c8280c569a7e835360ea661963f4b70515acf4ec3dc40f",
+      "origin": [
+        -5.938190063454041,
+        -0.5815381845337502,
+        -0.2621004918422163
+      ],
+      "rotation": [
+        [
+          -0.7541041290210847,
+          -0.36928581664539106,
+          -0.543097549449359
+        ],
+        [
+          0.3002838361088155,
+          -0.929315342035797,
+          0.21494793050565447
+        ],
+        [
+          -0.5840861069783515,
+          -0.00099029361109937,
+          0.8116910982346909
+        ]
+      ],
+      "normal_sonar": [
+        0.577234487991913,
+        0.02310971108932996,
+        -0.8162513627100924
+      ],
+      "plane_distance_m": 2.118171326296823,
+      "pixels": [
+        [
+          8,
+          209
+        ],
+        [
+          60,
+          16
+        ],
+        [
+          60,
+          48
+        ],
+        [
+          60,
+          80
+        ],
+        [
+          60,
+          112
+        ],
+        [
+          60,
+          143
+        ],
+        [
+          60,
+          175
+        ],
+        [
+          60,
+          207
+        ],
+        [
+          60,
+          239
+        ],
+        [
+          65,
+          238
+        ],
+        [
+          106,
+          14
+        ],
+        [
+          117,
+          153
+        ],
+        [
+          119,
+          165
+        ],
+        [
+          120,
+          94
+        ],
+        [
+          123,
+          180
+        ],
+        [
+          129,
+          194
+        ],
+        [
+          134,
+          220
+        ],
+        [
+          143,
+          251
+        ],
+        [
+          149,
+          253
+        ],
+        [
+          157,
+          115
+        ],
+        [
+          162,
+          237
+        ],
+        [
+          165,
+          117
+        ],
+        [
+          169,
+          121
+        ],
+        [
+          175,
+          123
+        ],
+        [
+          180,
+          16
+        ],
+        [
+          180,
+          48
+        ],
+        [
+          180,
+          80
+        ],
+        [
+          180,
+          112
+        ],
+        [
+          180,
+          143
+        ],
+        [
+          180,
+          175
+        ],
+        [
+          180,
+          207
+        ],
+        [
+          180,
+          239
+        ],
+        [
+          188,
+          173
+        ],
+        [
+          189,
+          177
+        ],
+        [
+          191,
+          167
+        ],
+        [
+          191,
+          176
+        ],
+        [
+          192,
+          189
+        ],
+        [
+          193,
+          175
+        ],
+        [
+          193,
+          196
+        ],
+        [
+          195,
+          186
+        ],
+        [
+          197,
+          167
+        ],
+        [
+          197,
+          195
+        ],
+        [
+          200,
+          165
+        ],
+        [
+          202,
+          172
+        ],
+        [
+          244,
+          201
+        ],
+        [
+          262,
+          188
+        ],
+        [
+          269,
+          157
+        ],
+        [
+          288,
+          247
+        ],
+        [
+          360,
+          16
+        ],
+        [
+          360,
+          48
+        ],
+        [
+          360,
+          80
+        ],
+        [
+          360,
+          112
+        ],
+        [
+          360,
+          143
+        ],
+        [
+          360,
+          175
+        ],
+        [
+          360,
+          207
+        ],
+        [
+          360,
+          239
+        ],
+        [
+          540,
+          16
+        ],
+        [
+          540,
+          48
+        ],
+        [
+          540,
+          80
+        ],
+        [
+          540,
+          112
+        ],
+        [
+          540,
+          143
+        ],
+        [
+          540,
+          175
+        ],
+        [
+          540,
+          207
+        ],
+        [
+          540,
+          239
+        ]
+      ],
+      "raw_record": "sonar-finite-geometry-fit-20261031",
+      "proposal_gain": 1.5009490030751687,
+      "all_regions": [
+        {
+          "label": 1,
+          "pixels": 3164,
+          "beams": 256,
+          "first": [
+            0,
+            0
+          ],
+          "last": [
+            120,
+            255
+          ],
+          "excess_power": 16074091.284065725,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 2,
+          "pixels": 19,
+          "beams": 1,
+          "first": [
+            0,
+            255
+          ],
+          "last": [
+            18,
+            255
+          ],
+          "excess_power": 0.013858951326673082,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 3,
+          "pixels": 2,
+          "beams": 1,
+          "first": [
+            103,
+            137
+          ],
+          "last": [
+            104,
+            137
+          ],
+          "excess_power": 4.81063554992096,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 4,
+          "pixels": 83,
+          "beams": 43,
+          "first": [
+            117,
+            152
+          ],
+          "last": [
+            129,
+            194
+          ],
+          "excess_power": 707209.1840795927,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 5,
+          "pixels": 8,
+          "beams": 5,
+          "first": [
+            123,
+            78
+          ],
+          "last": [
+            124,
+            82
+          ],
+          "excess_power": 41767.39902851885,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 6,
+          "pixels": 4,
+          "beams": 3,
+          "first": [
+            125,
+            75
+          ],
+          "last": [
+            126,
+            77
+          ],
+          "excess_power": 14347.348888168919,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 7,
+          "pixels": 6,
+          "beams": 4,
+          "first": [
+            128,
+            67
+          ],
+          "last": [
+            129,
+            70
+          ],
+          "excess_power": 34035.46159347955,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 8,
+          "pixels": 1,
+          "beams": 1,
+          "first": [
+            130,
+            64
+          ],
+          "last": [
+            130,
+            64
+          ],
+          "excess_power": 3.550752623515109,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 9,
+          "pixels": 13,
+          "beams": 7,
+          "first": [
+            130,
+            196
+          ],
+          "last": [
+            133,
+            202
+          ],
+          "excess_power": 50789.508899020984,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 10,
+          "pixels": 1,
+          "beams": 1,
+          "first": [
+            132,
+            60
+          ],
+          "last": [
+            132,
+            60
+          ],
+          "excess_power": 2864.460160329625,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 11,
+          "pixels": 1,
+          "beams": 1,
+          "first": [
+            134,
+            58
+          ],
+          "last": [
+            134,
+            58
+          ],
+          "excess_power": 415.2754078553626,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 12,
+          "pixels": 1,
+          "beams": 1,
+          "first": [
+            134,
+            203
+          ],
+          "last": [
+            134,
+            203
+          ],
+          "excess_power": 509.8634590800393,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 13,
+          "pixels": 743,
+          "beams": 43,
+          "first": [
+            134,
+            213
+          ],
+          "last": [
+            162,
+            255
+          ],
+          "excess_power": 48459375.19255439,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 14,
+          "pixels": 7,
+          "beams": 5,
+          "first": [
+            135,
+            204
+          ],
+          "last": [
+            137,
+            208
+          ],
+          "excess_power": 17007.508445583884,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 15,
+          "pixels": 10,
+          "beams": 2,
+          "first": [
+            138,
+            149
+          ],
+          "last": [
+            143,
+            150
+          ],
+          "excess_power": 85923.02269623049,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 16,
+          "pixels": 2,
+          "beams": 2,
+          "first": [
+            138,
+            209
+          ],
+          "last": [
+            138,
+            210
+          ],
+          "excess_power": 3355.5789769697953,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 17,
+          "pixels": 1,
+          "beams": 1,
+          "first": [
+            144,
+            42
+          ],
+          "last": [
+            144,
+            42
+          ],
+          "excess_power": 335.1387662364418,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 18,
+          "pixels": 16,
+          "beams": 4,
+          "first": [
+            149,
+            149
+          ],
+          "last": [
+            156,
+            152
+          ],
+          "excess_power": 145138.70111623761,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 19,
+          "pixels": 2,
+          "beams": 1,
+          "first": [
+            155,
+            29
+          ],
+          "last": [
+            156,
+            29
+          ],
+          "excess_power": 1457.7475732686394,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 20,
+          "pixels": 154,
+          "beams": 26,
+          "first": [
+            157,
+            115
+          ],
+          "last": [
+            175,
+            140
+          ],
+          "excess_power": 941896.4201821453,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 21,
+          "pixels": 2,
+          "beams": 2,
+          "first": [
+            157,
+            145
+          ],
+          "last": [
+            157,
+            146
+          ],
+          "excess_power": 848.6466895576359,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 22,
+          "pixels": 3,
+          "beams": 1,
+          "first": [
+            159,
+            25
+          ],
+          "last": [
+            161,
+            25
+          ],
+          "excess_power": 1642.7862915118292,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 23,
+          "pixels": 2,
+          "beams": 1,
+          "first": [
+            162,
+            23
+          ],
+          "last": [
+            163,
+            23
+          ],
+          "excess_power": 693.6827659950156,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 24,
+          "pixels": 2,
+          "beams": 1,
+          "first": [
+            166,
+            241
+          ],
+          "last": [
+            167,
+            241
+          ],
+          "excess_power": 2315.2996051418168,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 25,
+          "pixels": 5,
+          "beams": 2,
+          "first": [
+            168,
+            18
+          ],
+          "last": [
+            170,
+            19
+          ],
+          "excess_power": 11143.832556350655,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 26,
+          "pixels": 3,
+          "beams": 2,
+          "first": [
+            171,
+            15
+          ],
+          "last": [
+            172,
+            16
+          ],
+          "excess_power": 489.8746452642092,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 27,
+          "pixels": 2,
+          "beams": 1,
+          "first": [
+            177,
+            11
+          ],
+          "last": [
+            178,
+            11
+          ],
+          "excess_power": 408.64608123565165,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 28,
+          "pixels": 7,
+          "beams": 3,
+          "first": [
+            179,
+            8
+          ],
+          "last": [
+            183,
+            10
+          ],
+          "excess_power": 2440.8881880118006,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 29,
+          "pixels": 33,
+          "beams": 7,
+          "first": [
+            188,
+            0
+          ],
+          "last": [
+            196,
+            6
+          ],
+          "excess_power": 54430.63506956048,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 30,
+          "pixels": 1,
+          "beams": 1,
+          "first": [
+            188,
+            152
+          ],
+          "last": [
+            188,
+            152
+          ],
+          "excess_power": 818.1618698469138,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 31,
+          "pixels": 28,
+          "beams": 7,
+          "first": [
+            188,
+            173
+          ],
+          "last": [
+            193,
+            179
+          ],
+          "excess_power": 176243.1304899003,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 32,
+          "pixels": 65,
+          "beams": 10,
+          "first": [
+            191,
+            165
+          ],
+          "last": [
+            202,
+            174
+          ],
+          "excess_power": 447491.9091613574,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 33,
+          "pixels": 54,
+          "beams": 15,
+          "first": [
+            192,
+            183
+          ],
+          "last": [
+            197,
+            197
+          ],
+          "excess_power": 1507947.8919483866,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 34,
+          "pixels": 10,
+          "beams": 6,
+          "first": [
+            194,
+            175
+          ],
+          "last": [
+            196,
+            180
+          ],
+          "excess_power": 86680.52212624087,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 35,
+          "pixels": 1,
+          "beams": 1,
+          "first": [
+            196,
+            151
+          ],
+          "last": [
+            196,
+            151
+          ],
+          "excess_power": 646.7125055405068,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 36,
+          "pixels": 1,
+          "beams": 1,
+          "first": [
+            202,
+            155
+          ],
+          "last": [
+            202,
+            155
+          ],
+          "excess_power": 4.9609775560869025,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 37,
+          "pixels": 3,
+          "beams": 3,
+          "first": [
+            205,
+            161
+          ],
+          "last": [
+            205,
+            163
+          ],
+          "excess_power": 369.0569905561155,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 38,
+          "pixels": 21,
+          "beams": 5,
+          "first": [
+            206,
+            193
+          ],
+          "last": [
+            210,
+            197
+          ],
+          "excess_power": 29269.39902832277,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 39,
+          "pixels": 8,
+          "beams": 3,
+          "first": [
+            208,
+            189
+          ],
+          "last": [
+            210,
+            191
+          ],
+          "excess_power": 718.1955503139844,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 40,
+          "pixels": 1,
+          "beams": 1,
+          "first": [
+            213,
+            193
+          ],
+          "last": [
+            213,
+            193
+          ],
+          "excess_power": 14.489015520926841,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 41,
+          "pixels": 5,
+          "beams": 1,
+          "first": [
+            238,
+            255
+          ],
+          "last": [
+            242,
+            255
+          ],
+          "excess_power": 3973.9992791934155,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 42,
+          "pixels": 2245,
+          "beams": 154,
+          "first": [
+            244,
+            102
+          ],
+          "last": [
+            288,
+            255
+          ],
+          "excess_power": 7917057.49986304,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 43,
+          "pixels": 5,
+          "beams": 2,
+          "first": [
+            255,
+            135
+          ],
+          "last": [
+            258,
+            136
+          ],
+          "excess_power": 0.6720584309487716,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 44,
+          "pixels": 12,
+          "beams": 3,
+          "first": [
+            255,
+            138
+          ],
+          "last": [
+            259,
+            140
+          ],
+          "excess_power": 4.809492954655057,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 45,
+          "pixels": 5,
+          "beams": 1,
+          "first": [
+            255,
+            142
+          ],
+          "last": [
+            259,
+            142
+          ],
+          "excess_power": 2.7695217814062083,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 46,
+          "pixels": 1,
+          "beams": 1,
+          "first": [
+            270,
+            109
+          ],
+          "last": [
+            270,
+            109
+          ],
+          "excess_power": 0.17593102053785614,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 47,
+          "pixels": 74,
+          "beams": 20,
+          "first": [
+            274,
+            141
+          ],
+          "last": [
+            278,
+            160
+          ],
+          "excess_power": 30.97046063389235,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 48,
+          "pixels": 6,
+          "beams": 2,
+          "first": [
+            274,
+            162
+          ],
+          "last": [
+            276,
+            163
+          ],
+          "excess_power": 2.180900262127504,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 49,
+          "pixels": 1,
+          "beams": 1,
+          "first": [
+            275,
+            139
+          ],
+          "last": [
+            275,
+            139
+          ],
+          "excess_power": 0.013852281453987647,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 50,
+          "pixels": 5,
+          "beams": 3,
+          "first": [
+            277,
+            137
+          ],
+          "last": [
+            278,
+            139
+          ],
+          "excess_power": 0.5875577263305929,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 51,
+          "pixels": 1,
+          "beams": 1,
+          "first": [
+            281,
+            178
+          ],
+          "last": [
+            281,
+            178
+          ],
+          "excess_power": 0.09492152904839557,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 52,
+          "pixels": 1,
+          "beams": 1,
+          "first": [
+            281,
+            182
+          ],
+          "last": [
+            281,
+            182
+          ],
+          "excess_power": 0.146979204934353,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 53,
+          "pixels": 2,
+          "beams": 2,
+          "first": [
+            281,
+            191
+          ],
+          "last": [
+            281,
+            192
+          ],
+          "excess_power": 0.07936878752416776,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 54,
+          "pixels": 15,
+          "beams": 4,
+          "first": [
+            347,
+            21
+          ],
+          "last": [
+            350,
+            24
+          ],
+          "excess_power": 713.5237503835197,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 55,
+          "pixels": 2,
+          "beams": 1,
+          "first": [
+            414,
+            0
+          ],
+          "last": [
+            415,
+            0
+          ],
+          "excess_power": 27.89257381652652,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 56,
+          "pixels": 4,
+          "beams": 1,
+          "first": [
+            426,
+            0
+          ],
+          "last": [
+            429,
+            0
+          ],
+          "excess_power": 87.18077222992734,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 57,
+          "pixels": 3,
+          "beams": 1,
+          "first": [
+            428,
+            10
+          ],
+          "last": [
+            430,
+            10
+          ],
+          "excess_power": 27.874950297782846,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 58,
+          "pixels": 5,
+          "beams": 2,
+          "first": [
+            430,
+            6
+          ],
+          "last": [
+            432,
+            7
+          ],
+          "excess_power": 107.93245067209318,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 59,
+          "pixels": 890,
+          "beams": 9,
+          "first": [
+            460,
+            219
+          ],
+          "last": [
+            598,
+            227
+          ],
+          "excess_power": 25.25407471330538,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 60,
+          "pixels": 1,
+          "beams": 1,
+          "first": [
+            483,
+            211
+          ],
+          "last": [
+            483,
+            211
+          ],
+          "excess_power": 0.001151443758464099,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 61,
+          "pixels": 1,
+          "beams": 1,
+          "first": [
+            486,
+            211
+          ],
+          "last": [
+            486,
+            211
+          ],
+          "excess_power": 0.0016491264583566312,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 62,
+          "pixels": 202,
+          "beams": 3,
+          "first": [
+            488,
+            209
+          ],
+          "last": [
+            598,
+            211
+          ],
+          "excess_power": 1.9541705039863162,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 63,
+          "pixels": 8,
+          "beams": 2,
+          "first": [
+            499,
+            0
+          ],
+          "last": [
+            503,
+            1
+          ],
+          "excess_power": 51.13710735948157,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 64,
+          "pixels": 31,
+          "beams": 5,
+          "first": [
+            517,
+            0
+          ],
+          "last": [
+            525,
+            4
+          ],
+          "excess_power": 402.3149025278458,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 65,
+          "pixels": 1,
+          "beams": 1,
+          "first": [
+            517,
+            209
+          ],
+          "last": [
+            517,
+            209
+          ],
+          "excess_power": 0.0017970094171115003,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 66,
+          "pixels": 2,
+          "beams": 1,
+          "first": [
+            519,
+            209
+          ],
+          "last": [
+            520,
+            209
+          ],
+          "excess_power": 0.0010241152802869247,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 67,
+          "pixels": 2,
+          "beams": 1,
+          "first": [
+            523,
+            209
+          ],
+          "last": [
+            524,
+            209
+          ],
+          "excess_power": 0.00028060891346504135,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 68,
+          "pixels": 1,
+          "beams": 1,
+          "first": [
+            526,
+            209
+          ],
+          "last": [
+            526,
+            209
+          ],
+          "excess_power": 0.003946241184010685,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 69,
+          "pixels": 10,
+          "beams": 1,
+          "first": [
+            528,
+            209
+          ],
+          "last": [
+            537,
+            209
+          ],
+          "excess_power": 0.012800830489484188,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 70,
+          "pixels": 1,
+          "beams": 1,
+          "first": [
+            537,
+            0
+          ],
+          "last": [
+            537,
+            0
+          ],
+          "excess_power": 0.851145569512628,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 71,
+          "pixels": 52,
+          "beams": 2,
+          "first": [
+            548,
+            254
+          ],
+          "last": [
+            598,
+            255
+          ],
+          "excess_power": 0.093042903754889,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 72,
+          "pixels": 9,
+          "beams": 2,
+          "first": [
+            561,
+            0
+          ],
+          "last": [
+            565,
+            1
+          ],
+          "excess_power": 50.858576184148454,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 73,
+          "pixels": 28,
+          "beams": 1,
+          "first": [
+            571,
+            237
+          ],
+          "last": [
+            598,
+            237
+          ],
+          "excess_power": 0.08496984484841595,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 74,
+          "pixels": 24,
+          "beams": 1,
+          "first": [
+            575,
+            233
+          ],
+          "last": [
+            598,
+            233
+          ],
+          "excess_power": 0.04807930480700985,
+          "selected": false,
+          "physical_identity_verified": false
+        }
+      ],
+      "birth_regions": [
+        {
+          "label": 13,
+          "pixels": 743,
+          "beams": 43,
+          "first": [
+            134,
+            213
+          ],
+          "last": [
+            162,
+            255
+          ],
+          "excess_power": 48459375.19255439,
+          "selected": true,
+          "physical_identity_verified": false,
+          "physical_pixels": 743,
+          "search_cells": 205
+        },
+        {
+          "label": 1,
+          "pixels": 3164,
+          "beams": 256,
+          "first": [
+            0,
+            0
+          ],
+          "last": [
+            120,
+            255
+          ],
+          "excess_power": 16074091.284065725,
+          "selected": true,
+          "physical_identity_verified": false,
+          "physical_pixels": 3052,
+          "search_cells": 486
+        },
+        {
+          "label": 42,
+          "pixels": 2245,
+          "beams": 154,
+          "first": [
+            244,
+            102
+          ],
+          "last": [
+            288,
+            255
+          ],
+          "excess_power": 7917057.49986304,
+          "selected": true,
+          "physical_identity_verified": false,
+          "physical_pixels": 2245,
+          "search_cells": 1914
+        },
+        {
+          "label": 33,
+          "pixels": 54,
+          "beams": 15,
+          "first": [
+            192,
+            183
+          ],
+          "last": [
+            197,
+            197
+          ],
+          "excess_power": 1507947.8919483866,
+          "selected": true,
+          "physical_identity_verified": false,
+          "physical_pixels": 54,
+          "search_cells": 65
+        },
+        {
+          "label": 20,
+          "pixels": 154,
+          "beams": 26,
+          "first": [
+            157,
+            115
+          ],
+          "last": [
+            175,
+            140
+          ],
+          "excess_power": 941896.4201821453,
+          "selected": true,
+          "physical_identity_verified": false,
+          "physical_pixels": 154,
+          "search_cells": 107
+        },
+        {
+          "label": 4,
+          "pixels": 83,
+          "beams": 43,
+          "first": [
+            117,
+            152
+          ],
+          "last": [
+            129,
+            194
+          ],
+          "excess_power": 707209.1840795927,
+          "selected": true,
+          "physical_identity_verified": false,
+          "physical_pixels": 83,
+          "search_cells": 63
+        },
+        {
+          "label": 32,
+          "pixels": 65,
+          "beams": 10,
+          "first": [
+            191,
+            165
+          ],
+          "last": [
+            202,
+            174
+          ],
+          "excess_power": 447491.9091613574,
+          "selected": true,
+          "physical_identity_verified": false,
+          "physical_pixels": 65,
+          "search_cells": 64
+        },
+        {
+          "label": 31,
+          "pixels": 28,
+          "beams": 7,
+          "first": [
+            188,
+            173
+          ],
+          "last": [
+            193,
+            179
+          ],
+          "excess_power": 176243.1304899003,
+          "selected": true,
+          "physical_identity_verified": false,
+          "physical_pixels": 28,
+          "search_cells": 37
+        }
+      ],
+      "exact_query_check_max_absolute_error": 3.6547564974398483e-10,
+      "exact_query_check_max_envelope_ratio": 1.3274379720891704e-06
+    },
+    {
+      "index": 151,
+      "stamp_ns": 77500000000,
+      "plane_stamp_ns": 77000000000,
+      "file": "sonar-0151.npz",
+      "raw_sha256": "073492b3e8f8b5e9f2ccc6f9094a374589fe2141d30f2f8de72235e4ea6bc765",
+      "origin": [
+        -5.924587464377898,
+        0.6080099028297526,
+        -0.2723473877409672
+      ],
+      "rotation": [
+        [
+          -0.7945967026273222,
+          0.11688367002480912,
+          -0.5957804023760086
+        ],
+        [
+          -0.09356679835030274,
+          -0.9931456090187567,
+          -0.07005036426198326
+        ],
+        [
+          -0.5998844342206765,
+          8.347630976353034e-05,
+          0.8000866569387627
+        ]
+      ],
+      "normal_sonar": [
+        0.6010306085884987,
+        0.012708016026629177,
+        -0.7991249676167093
+      ],
+      "plane_distance_m": 2.1265583535056525,
+      "pixels": [
+        [
+          60,
+          16
+        ],
+        [
+          60,
+          48
+        ],
+        [
+          60,
+          80
+        ],
+        [
+          60,
+          112
+        ],
+        [
+          60,
+          143
+        ],
+        [
+          60,
+          175
+        ],
+        [
+          60,
+          207
+        ],
+        [
+          60,
+          239
+        ],
+        [
+          99,
+          109
+        ],
+        [
+          107,
+          187
+        ],
+        [
+          109,
+          65
+        ],
+        [
+          115,
+          153
+        ],
+        [
+          115,
+          161
+        ],
+        [
+          116,
+          163
+        ],
+        [
+          117,
+          166
+        ],
+        [
+          118,
+          167
+        ],
+        [
+          122,
+          185
+        ],
+        [
+          130,
+          197
+        ],
+        [
+          131,
+          58
+        ],
+        [
+          132,
+          53
+        ],
+        [
+          133,
+          146
+        ],
+        [
+          135,
+          209
+        ],
+        [
+          140,
+          149
+        ],
+        [
+          152,
+          27
+        ],
+        [
+          152,
+          145
+        ],
+        [
+          162,
+          146
+        ],
+        [
+          168,
+          197
+        ],
+        [
+          173,
+          196
+        ],
+        [
+          173,
+          208
+        ],
+        [
+          174,
+          10
+        ],
+        [
+          176,
+          189
+        ],
+        [
+          177,
+          204
+        ],
+        [
+          180,
+          16
+        ],
+        [
+          180,
+          48
+        ],
+        [
+          180,
+          80
+        ],
+        [
+          180,
+          112
+        ],
+        [
+          180,
+          143
+        ],
+        [
+          180,
+          175
+        ],
+        [
+          180,
+          202
+        ],
+        [
+          180,
+          207
+        ],
+        [
+          180,
+          239
+        ],
+        [
+          181,
+          192
+        ],
+        [
+          184,
+          207
+        ],
+        [
+          195,
+          0
+        ],
+        [
+          235,
+          238
+        ],
+        [
+          251,
+          231
+        ],
+        [
+          266,
+          221
+        ],
+        [
+          281,
+          215
+        ],
+        [
+          360,
+          16
+        ],
+        [
+          360,
+          48
+        ],
+        [
+          360,
+          80
+        ],
+        [
+          360,
+          112
+        ],
+        [
+          360,
+          143
+        ],
+        [
+          360,
+          175
+        ],
+        [
+          360,
+          207
+        ],
+        [
+          360,
+          239
+        ],
+        [
+          540,
+          16
+        ],
+        [
+          540,
+          48
+        ],
+        [
+          540,
+          80
+        ],
+        [
+          540,
+          112
+        ],
+        [
+          540,
+          143
+        ],
+        [
+          540,
+          175
+        ],
+        [
+          540,
+          207
+        ],
+        [
+          540,
+          239
+        ]
+      ],
+      "raw_record": "sonar-finite-geometry-fit-20261031",
+      "proposal_gain": 1.311694787399311,
+      "all_regions": [
+        {
+          "label": 1,
+          "pixels": 1168,
+          "beams": 256,
+          "first": [
+            99,
+            0
+          ],
+          "last": [
+            131,
+            255
+          ],
+          "excess_power": 40243827.6032773,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 2,
+          "pixels": 24,
+          "beams": 14,
+          "first": [
+            115,
+            153
+          ],
+          "last": [
+            117,
+            166
+          ],
+          "excess_power": 318535.9943594999,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 3,
+          "pixels": 94,
+          "beams": 43,
+          "first": [
+            118,
+            167
+          ],
+          "last": [
+            135,
+            209
+          ],
+          "excess_power": 663573.4203915971,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 4,
+          "pixels": 2,
+          "beams": 1,
+          "first": [
+            128,
+            146
+          ],
+          "last": [
+            129,
+            146
+          ],
+          "excess_power": 63431.31170115863,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 5,
+          "pixels": 358,
+          "beams": 57,
+          "first": [
+            132,
+            0
+          ],
+          "last": [
+            195,
+            56
+          ],
+          "excess_power": 1385138.9560699353,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 6,
+          "pixels": 116,
+          "beams": 10,
+          "first": [
+            133,
+            141
+          ],
+          "last": [
+            162,
+            150
+          ],
+          "excess_power": 2392570.2852238324,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 7,
+          "pixels": 1,
+          "beams": 1,
+          "first": [
+            136,
+            210
+          ],
+          "last": [
+            136,
+            210
+          ],
+          "excess_power": 80.94390967103391,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 8,
+          "pixels": 1,
+          "beams": 1,
+          "first": [
+            137,
+            211
+          ],
+          "last": [
+            137,
+            211
+          ],
+          "excess_power": 1400.159933422291,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 9,
+          "pixels": 3,
+          "beams": 2,
+          "first": [
+            138,
+            213
+          ],
+          "last": [
+            139,
+            214
+          ],
+          "excess_power": 5701.639578439437,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 10,
+          "pixels": 10,
+          "beams": 4,
+          "first": [
+            143,
+            220
+          ],
+          "last": [
+            145,
+            223
+          ],
+          "excess_power": 24407.18148035463,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 11,
+          "pixels": 1,
+          "beams": 1,
+          "first": [
+            146,
+            224
+          ],
+          "last": [
+            146,
+            224
+          ],
+          "excess_power": 21.827668242633536,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 12,
+          "pixels": 2,
+          "beams": 1,
+          "first": [
+            149,
+            227
+          ],
+          "last": [
+            150,
+            227
+          ],
+          "excess_power": 2455.709101313312,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 13,
+          "pixels": 1,
+          "beams": 1,
+          "first": [
+            155,
+            233
+          ],
+          "last": [
+            155,
+            233
+          ],
+          "excess_power": 52.66931188264971,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 14,
+          "pixels": 48,
+          "beams": 21,
+          "first": [
+            159,
+            116
+          ],
+          "last": [
+            162,
+            136
+          ],
+          "excess_power": 130793.52874959765,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 15,
+          "pixels": 4,
+          "beams": 4,
+          "first": [
+            160,
+            137
+          ],
+          "last": [
+            160,
+            140
+          ],
+          "excess_power": 4844.828163611516,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 16,
+          "pixels": 89,
+          "beams": 15,
+          "first": [
+            168,
+            186
+          ],
+          "last": [
+            181,
+            200
+          ],
+          "excess_power": 3885752.2400698243,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 17,
+          "pixels": 1,
+          "beams": 1,
+          "first": [
+            171,
+            200
+          ],
+          "last": [
+            171,
+            200
+          ],
+          "excess_power": 854.1174515103921,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 18,
+          "pixels": 64,
+          "beams": 11,
+          "first": [
+            173,
+            202
+          ],
+          "last": [
+            184,
+            212
+          ],
+          "excess_power": 504636.48365727044,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 19,
+          "pixels": 1,
+          "beams": 1,
+          "first": [
+            175,
+            202
+          ],
+          "last": [
+            175,
+            202
+          ],
+          "excess_power": 161.69703591534926,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 20,
+          "pixels": 34,
+          "beams": 20,
+          "first": [
+            185,
+            127
+          ],
+          "last": [
+            188,
+            146
+          ],
+          "excess_power": 43153.17552376973,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 21,
+          "pixels": 42,
+          "beams": 9,
+          "first": [
+            187,
+            181
+          ],
+          "last": [
+            197,
+            189
+          ],
+          "excess_power": 279164.2948490907,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 22,
+          "pixels": 6,
+          "beams": 4,
+          "first": [
+            192,
+            154
+          ],
+          "last": [
+            194,
+            157
+          ],
+          "excess_power": 1642.6447885244045,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 23,
+          "pixels": 2,
+          "beams": 2,
+          "first": [
+            199,
+            167
+          ],
+          "last": [
+            199,
+            168
+          ],
+          "excess_power": 666.1168127509322,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 24,
+          "pixels": 4,
+          "beams": 2,
+          "first": [
+            204,
+            171
+          ],
+          "last": [
+            206,
+            172
+          ],
+          "excess_power": 373.4700645446994,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 25,
+          "pixels": 2,
+          "beams": 1,
+          "first": [
+            210,
+            179
+          ],
+          "last": [
+            211,
+            179
+          ],
+          "excess_power": 425.92365515524807,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 26,
+          "pixels": 526,
+          "beams": 52,
+          "first": [
+            235,
+            191
+          ],
+          "last": [
+            281,
+            242
+          ],
+          "excess_power": 2905627.0796061503,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 27,
+          "pixels": 1,
+          "beams": 1,
+          "first": [
+            241,
+            154
+          ],
+          "last": [
+            241,
+            154
+          ],
+          "excess_power": 0.15282788607584585,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 28,
+          "pixels": 2,
+          "beams": 2,
+          "first": [
+            241,
+            157
+          ],
+          "last": [
+            241,
+            158
+          ],
+          "excess_power": 1.0206542055610166,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 29,
+          "pixels": 2,
+          "beams": 2,
+          "first": [
+            241,
+            161
+          ],
+          "last": [
+            241,
+            162
+          ],
+          "excess_power": 0.22413602363552432,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 30,
+          "pixels": 1,
+          "beams": 1,
+          "first": [
+            241,
+            165
+          ],
+          "last": [
+            241,
+            165
+          ],
+          "excess_power": 0.5632921797268997,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 31,
+          "pixels": 3,
+          "beams": 3,
+          "first": [
+            241,
+            225
+          ],
+          "last": [
+            241,
+            227
+          ],
+          "excess_power": 653.9969567509406,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 32,
+          "pixels": 3,
+          "beams": 2,
+          "first": [
+            243,
+            157
+          ],
+          "last": [
+            244,
+            158
+          ],
+          "excess_power": 1.7525356549347073,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 33,
+          "pixels": 1,
+          "beams": 1,
+          "first": [
+            244,
+            154
+          ],
+          "last": [
+            244,
+            154
+          ],
+          "excess_power": 0.028158059553701875,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 34,
+          "pixels": 2,
+          "beams": 2,
+          "first": [
+            244,
+            161
+          ],
+          "last": [
+            244,
+            162
+          ],
+          "excess_power": 0.9596865234996876,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 35,
+          "pixels": 2,
+          "beams": 2,
+          "first": [
+            244,
+            165
+          ],
+          "last": [
+            244,
+            166
+          ],
+          "excess_power": 1.0855430249315337,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 36,
+          "pixels": 1,
+          "beams": 1,
+          "first": [
+            244,
+            169
+          ],
+          "last": [
+            244,
+            169
+          ],
+          "excess_power": 0.15728912400666673,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 37,
+          "pixels": 2,
+          "beams": 2,
+          "first": [
+            244,
+            173
+          ],
+          "last": [
+            244,
+            174
+          ],
+          "excess_power": 0.5111984129506792,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 38,
+          "pixels": 2,
+          "beams": 2,
+          "first": [
+            244,
+            179
+          ],
+          "last": [
+            244,
+            180
+          ],
+          "excess_power": 0.18629425884081918,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 39,
+          "pixels": 1,
+          "beams": 1,
+          "first": [
+            244,
+            186
+          ],
+          "last": [
+            244,
+            186
+          ],
+          "excess_power": 0.07545647801046051,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 40,
+          "pixels": 4,
+          "beams": 1,
+          "first": [
+            252,
+            216
+          ],
+          "last": [
+            255,
+            216
+          ],
+          "excess_power": 1255.6195344408861,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 41,
+          "pixels": 2,
+          "beams": 2,
+          "first": [
+            253,
+            192
+          ],
+          "last": [
+            253,
+            193
+          ],
+          "excess_power": 0.25082788419845947,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 42,
+          "pixels": 1,
+          "beams": 1,
+          "first": [
+            253,
+            200
+          ],
+          "last": [
+            253,
+            200
+          ],
+          "excess_power": 0.12332452378306158,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 43,
+          "pixels": 4,
+          "beams": 3,
+          "first": [
+            258,
+            188
+          ],
+          "last": [
+            259,
+            190
+          ],
+          "excess_power": 1.143983397467415,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 44,
+          "pixels": 6,
+          "beams": 3,
+          "first": [
+            258,
+            195
+          ],
+          "last": [
+            259,
+            197
+          ],
+          "excess_power": 5.563919600141247,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 45,
+          "pixels": 4,
+          "beams": 2,
+          "first": [
+            258,
+            203
+          ],
+          "last": [
+            259,
+            204
+          ],
+          "excess_power": 2.5280808749338277,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 46,
+          "pixels": 2,
+          "beams": 2,
+          "first": [
+            268,
+            186
+          ],
+          "last": [
+            268,
+            187
+          ],
+          "excess_power": 0.09424787186489425,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 47,
+          "pixels": 1,
+          "beams": 1,
+          "first": [
+            299,
+            241
+          ],
+          "last": [
+            299,
+            241
+          ],
+          "excess_power": 42.496290214042574,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 48,
+          "pixels": 4,
+          "beams": 1,
+          "first": [
+            317,
+            255
+          ],
+          "last": [
+            320,
+            255
+          ],
+          "excess_power": 295.215438571934,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 49,
+          "pixels": 16,
+          "beams": 3,
+          "first": [
+            323,
+            253
+          ],
+          "last": [
+            328,
+            255
+          ],
+          "excess_power": 11037.86583286724,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 50,
+          "pixels": 37,
+          "beams": 10,
+          "first": [
+            384,
+            236
+          ],
+          "last": [
+            389,
+            245
+          ],
+          "excess_power": 1001.534419521536,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 51,
+          "pixels": 17,
+          "beams": 4,
+          "first": [
+            386,
+            252
+          ],
+          "last": [
+            390,
+            255
+          ],
+          "excess_power": 576.2984392034112,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 52,
+          "pixels": 13,
+          "beams": 3,
+          "first": [
+            390,
+            0
+          ],
+          "last": [
+            395,
+            2
+          ],
+          "excess_power": 951.5628224720576,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 53,
+          "pixels": 4,
+          "beams": 1,
+          "first": [
+            391,
+            243
+          ],
+          "last": [
+            394,
+            243
+          ],
+          "excess_power": 59.990539871513704,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 54,
+          "pixels": 9,
+          "beams": 2,
+          "first": [
+            397,
+            254
+          ],
+          "last": [
+            401,
+            255
+          ],
+          "excess_power": 503.2279774939137,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 55,
+          "pixels": 75,
+          "beams": 10,
+          "first": [
+            402,
+            237
+          ],
+          "last": [
+            414,
+            246
+          ],
+          "excess_power": 1654.8262070165017,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 56,
+          "pixels": 8,
+          "beams": 2,
+          "first": [
+            408,
+            254
+          ],
+          "last": [
+            411,
+            255
+          ],
+          "excess_power": 334.97059865285433,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 57,
+          "pixels": 15,
+          "beams": 3,
+          "first": [
+            411,
+            0
+          ],
+          "last": [
+            415,
+            2
+          ],
+          "excess_power": 1394.332321987553,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 58,
+          "pixels": 3,
+          "beams": 2,
+          "first": [
+            411,
+            231
+          ],
+          "last": [
+            412,
+            232
+          ],
+          "excess_power": 0.04776059096241564,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 59,
+          "pixels": 79,
+          "beams": 9,
+          "first": [
+            417,
+            239
+          ],
+          "last": [
+            433,
+            247
+          ],
+          "excess_power": 293.1828094020162,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 60,
+          "pixels": 23,
+          "beams": 7,
+          "first": [
+            434,
+            242
+          ],
+          "last": [
+            439,
+            248
+          ],
+          "excess_power": 111.39472817977948,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 61,
+          "pixels": 158,
+          "beams": 24,
+          "first": [
+            447,
+            232
+          ],
+          "last": [
+            463,
+            255
+          ],
+          "excess_power": 1994.4064359666868,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 62,
+          "pixels": 14,
+          "beams": 3,
+          "first": [
+            457,
+            0
+          ],
+          "last": [
+            461,
+            2
+          ],
+          "excess_power": 511.6675927467125,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 63,
+          "pixels": 10,
+          "beams": 2,
+          "first": [
+            471,
+            249
+          ],
+          "last": [
+            476,
+            250
+          ],
+          "excess_power": 17.05859901900915,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 64,
+          "pixels": 101,
+          "beams": 18,
+          "first": [
+            480,
+            238
+          ],
+          "last": [
+            488,
+            255
+          ],
+          "excess_power": 1179.940692826275,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 65,
+          "pixels": 12,
+          "beams": 4,
+          "first": [
+            483,
+            233
+          ],
+          "last": [
+            485,
+            236
+          ],
+          "excess_power": 0.12808551094277182,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 66,
+          "pixels": 8,
+          "beams": 2,
+          "first": [
+            484,
+            0
+          ],
+          "last": [
+            487,
+            1
+          ],
+          "excess_power": 77.63388565135801,
+          "selected": false,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 67,
+          "pixels": 175,
+          "beams": 17,
+          "first": [
+            492,
+            239
+          ],
+          "last": [
+            503,
+            255
+          ],
+          "excess_power": 941.2109922242653,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 68,
+          "pixels": 45,
+          "beams": 7,
+          "first": [
+            512,
+            249
+          ],
+          "last": [
+            518,
+            255
+          ],
+          "excess_power": 89.66266509983352,
+          "selected": true,
+          "physical_identity_verified": false
+        },
+        {
+          "label": 69,
+          "pixels": 8,
+          "beams": 2,
+          "first": [
+            531,
+            254
+          ],
+          "last": [
+            534,
+            255
+          ],
+          "excess_power": 0.04515958852170967,
+          "selected": false,
+          "physical_identity_verified": false
+        }
+      ],
+      "birth_regions": [
+        {
+          "label": 1,
+          "pixels": 1168,
+          "beams": 256,
+          "first": [
+            99,
+            0
+          ],
+          "last": [
+            131,
+            255
+          ],
+          "excess_power": 40243827.6032773,
+          "selected": true,
+          "physical_identity_verified": false,
+          "physical_pixels": 1168,
+          "search_cells": 390
+        },
+        {
+          "label": 16,
+          "pixels": 89,
+          "beams": 15,
+          "first": [
+            168,
+            186
+          ],
+          "last": [
+            181,
+            200
+          ],
+          "excess_power": 3885752.2400698243,
+          "selected": true,
+          "physical_identity_verified": false,
+          "physical_pixels": 89,
+          "search_cells": 67
+        },
+        {
+          "label": 26,
+          "pixels": 526,
+          "beams": 52,
+          "first": [
+            235,
+            191
+          ],
+          "last": [
+            281,
+            242
+          ],
+          "excess_power": 2905627.0796061503,
+          "selected": true,
+          "physical_identity_verified": false,
+          "physical_pixels": 526,
+          "search_cells": 511
+        },
+        {
+          "label": 6,
+          "pixels": 116,
+          "beams": 10,
+          "first": [
+            133,
+            141
+          ],
+          "last": [
+            162,
+            150
+          ],
+          "excess_power": 2392570.2852238324,
+          "selected": true,
+          "physical_identity_verified": false,
+          "physical_pixels": 116,
+          "search_cells": 67
+        },
+        {
+          "label": 5,
+          "pixels": 358,
+          "beams": 57,
+          "first": [
+            132,
+            0
+          ],
+          "last": [
+            195,
+            56
+          ],
+          "excess_power": 1385138.9560699353,
+          "selected": true,
+          "physical_identity_verified": false,
+          "physical_pixels": 358,
+          "search_cells": 205
+        },
+        {
+          "label": 3,
+          "pixels": 94,
+          "beams": 43,
+          "first": [
+            118,
+            167
+          ],
+          "last": [
+            135,
+            209
+          ],
+          "excess_power": 663573.4203915971,
+          "selected": true,
+          "physical_identity_verified": false,
+          "physical_pixels": 94,
+          "search_cells": 67
+        },
+        {
+          "label": 18,
+          "pixels": 64,
+          "beams": 11,
+          "first": [
+            173,
+            202
+          ],
+          "last": [
+            184,
+            212
+          ],
+          "excess_power": 504636.48365727044,
+          "selected": true,
+          "physical_identity_verified": false,
+          "physical_pixels": 64,
+          "search_cells": 54
+        },
+        {
+          "label": 2,
+          "pixels": 24,
+          "beams": 14,
+          "first": [
+            115,
+            153
+          ],
+          "last": [
+            117,
+            166
+          ],
+          "excess_power": 318535.9943594999,
+          "selected": true,
+          "physical_identity_verified": false,
+          "physical_pixels": 24,
+          "search_cells": 18
+        }
+      ],
+      "exact_query_check_max_absolute_error": 2.625888395613174e-10,
+      "exact_query_check_max_envelope_ratio": 1.2256735319198056e-06
+    }
+  ],
+  "unused_frames": [
+    {
+      "index": 51,
+      "stamp_ns": 27500000000,
+      "plane_stamp_ns": 27010000000,
+      "file": "sonar-0051.npz",
+      "raw_sha256": "25023e908ca977ac32f382a1d22cba58d7c0440be4c66fe5943da340fac2f9fa",
+      "origin": [
+        -6.02381083299152,
+        1.9669340042638561,
+        -0.22444799750195915
+      ],
+      "rotation": [
+        [
+          -0.6591020339075245,
+          0.6000006536454421,
+          -0.4534134145832114
+        ],
+        [
+          -0.4968680589532053,
+          -0.7999914400222042,
+          -0.33635669739619317
+        ],
+        [
+          -0.564541088753546,
+          0.0035932598350565436,
+          0.8253971453747094
+        ]
+      ],
+      "normal_sonar": [
+        0.567119138442801,
+        -0.008715951607650244,
+        -0.8235896520716303
+      ],
+      "plane_distance_m": 2.1819749546392333,
+      "pixels": [
+        [
+          80,
+          32
+        ],
+        [
+          80,
+          96
+        ],
+        [
+          80,
+          160
+        ],
+        [
+          80,
+          224
+        ],
+        [
+          100,
+          90
+        ],
+        [
+          100,
+          114
+        ],
+        [
+          100,
+          137
+        ],
+        [
+          100,
+          161
+        ],
+        [
+          112,
+          90
+        ],
+        [
+          112,
+          114
+        ],
+        [
+          112,
+          137
+        ],
+        [
+          112,
+          161
+        ],
+        [
+          124,
+          90
+        ],
+        [
+          124,
+          114
+        ],
+        [
+          124,
+          137
+        ],
+        [
+          124,
+          161
+        ],
+        [
+          136,
+          90
+        ],
+        [
+          136,
+          114
+        ],
+        [
+          136,
+          137
+        ],
+        [
+          136,
+          161
+        ],
+        [
+          140,
+          32
+        ],
+        [
+          140,
+          96
+        ],
+        [
+          140,
+          160
+        ],
+        [
+          140,
+          224
+        ],
+        [
+          148,
+          90
+        ],
+        [
+          148,
+          114
+        ],
+        [
+          148,
+          137
+        ],
+        [
+          148,
+          161
+        ],
+        [
+          160,
+          90
+        ],
+        [
+          160,
+          114
+        ],
+        [
+          160,
+          137
+        ],
+        [
+          160,
+          161
+        ],
+        [
+          173,
+          90
+        ],
+        [
+          173,
+          114
+        ],
+        [
+          173,
+          137
+        ],
+        [
+          173,
+          161
+        ],
+        [
+          185,
+          90
+        ],
+        [
+          185,
+          114
+        ],
+        [
+          185,
+          137
+        ],
+        [
+          185,
+          161
+        ],
+        [
+          200,
+          32
+        ],
+        [
+          200,
+          96
+        ],
+        [
+          200,
+          160
+        ],
+        [
+          200,
+          224
+        ],
+        [
+          300,
+          32
+        ],
+        [
+          300,
+          96
+        ],
+        [
+          300,
+          160
+        ],
+        [
+          300,
+          224
+        ]
+      ],
+      "raw_record": "sonar-finite-geometry-fit-20261031"
+    },
+    {
+      "index": 90,
+      "stamp_ns": 47010000000,
+      "plane_stamp_ns": 47010000000,
+      "file": "sonar-0090.npz",
+      "raw_sha256": "edff493c6ed14984498778a22abf126e000c59bb69fa874eca3cb3667ab51f91",
+      "origin": [
+        -5.867884379184307,
+        -0.6868299013988145,
+        -0.2600683123214188
+      ],
+      "rotation": [
+        [
+          -0.764313085123659,
+          -0.3768600422841537,
+          -0.5232609448815586
+        ],
+        [
+          0.3146980334651386,
+          -0.9262499322746824,
+          0.20742760350136782
+        ],
+        [
+          -0.562841590184956,
+          -0.006129558771399164,
+          0.826542057530855
+        ]
+      ],
+      "normal_sonar": [
+        0.5520774106428855,
+        0.024163510437301864,
+        -0.8334426539487851
+      ],
+      "plane_distance_m": 2.1131230937636984,
+      "pixels": [
+        [
+          80,
+          32
+        ],
+        [
+          80,
+          96
+        ],
+        [
+          80,
+          160
+        ],
+        [
+          80,
+          224
+        ],
+        [
+          91,
+          95
+        ],
+        [
+          91,
+          119
+        ],
+        [
+          91,
+          144
+        ],
+        [
+          91,
+          168
+        ],
+        [
+          103,
+          95
+        ],
+        [
+          103,
+          119
+        ],
+        [
+          103,
+          144
+        ],
+        [
+          103,
+          168
+        ],
+        [
+          115,
+          95
+        ],
+        [
+          115,
+          119
+        ],
+        [
+          115,
+          144
+        ],
+        [
+          115,
+          168
+        ],
+        [
+          127,
+          95
+        ],
+        [
+          127,
+          119
+        ],
+        [
+          127,
+          144
+        ],
+        [
+          127,
+          168
+        ],
+        [
+          140,
+          32
+        ],
+        [
+          140,
+          95
+        ],
+        [
+          140,
+          96
+        ],
+        [
+          140,
+          119
+        ],
+        [
+          140,
+          144
+        ],
+        [
+          140,
+          160
+        ],
+        [
+          140,
+          168
+        ],
+        [
+          140,
+          224
+        ],
+        [
+          152,
+          95
+        ],
+        [
+          152,
+          119
+        ],
+        [
+          152,
+          144
+        ],
+        [
+          152,
+          168
+        ],
+        [
+          164,
+          95
+        ],
+        [
+          164,
+          119
+        ],
+        [
+          164,
+          144
+        ],
+        [
+          164,
+          168
+        ],
+        [
+          176,
+          95
+        ],
+        [
+          176,
+          119
+        ],
+        [
+          176,
+          144
+        ],
+        [
+          176,
+          168
+        ],
+        [
+          200,
+          32
+        ],
+        [
+          200,
+          96
+        ],
+        [
+          200,
+          160
+        ],
+        [
+          200,
+          224
+        ],
+        [
+          300,
+          32
+        ],
+        [
+          300,
+          96
+        ],
+        [
+          300,
+          160
+        ],
+        [
+          300,
+          224
+        ]
+      ],
+      "raw_record": "sonar-finite-geometry-fit-20261031"
+    },
+    {
+      "index": 153,
+      "stamp_ns": 78500000000,
+      "plane_stamp_ns": 78010000000,
+      "file": "sonar-0153.npz",
+      "raw_sha256": "c0778df2acce8fa8b9785478dce65dd047e3b90fa7619873b9fa04935729d160",
+      "origin": [
+        -5.910229992298266,
+        0.5886669484871276,
+        -0.25383695968889897
+      ],
+      "rotation": [
+        [
+          -0.8315219187238588,
+          0.11898099298700711,
+          -0.5426000571227562
+        ],
+        [
+          -0.09303054347216153,
+          -0.9928240012470183,
+          -0.07513867532193241
+        ],
+        [
+          -0.5476464339910074,
+          -0.012001077271906392,
+          0.8366237849124584
+        ]
+      ],
+      "normal_sonar": [
+        0.5527955164809025,
+        0.023881149801272174,
+        -0.8329746740704558
+      ],
+      "plane_distance_m": 2.142533923055524,
+      "pixels": [
+        [
+          80,
+          32
+        ],
+        [
+          80,
+          96
+        ],
+        [
+          80,
+          160
+        ],
+        [
+          80,
+          224
+        ],
+        [
+          92,
+          94
+        ],
+        [
+          92,
+          118
+        ],
+        [
+          92,
+          142
+        ],
+        [
+          92,
+          166
+        ],
+        [
+          102,
+          94
+        ],
+        [
+          102,
+          118
+        ],
+        [
+          102,
+          142
+        ],
+        [
+          102,
+          166
+        ],
+        [
+          113,
+          94
+        ],
+        [
+          113,
+          118
+        ],
+        [
+          113,
+          142
+        ],
+        [
+          113,
+          166
+        ],
+        [
+          123,
+          94
+        ],
+        [
+          123,
+          118
+        ],
+        [
+          123,
+          142
+        ],
+        [
+          123,
+          166
+        ],
+        [
+          134,
+          94
+        ],
+        [
+          134,
+          118
+        ],
+        [
+          134,
+          142
+        ],
+        [
+          134,
+          166
+        ],
+        [
+          140,
+          32
+        ],
+        [
+          140,
+          96
+        ],
+        [
+          140,
+          160
+        ],
+        [
+          140,
+          224
+        ],
+        [
+          144,
+          94
+        ],
+        [
+          144,
+          118
+        ],
+        [
+          144,
+          142
+        ],
+        [
+          144,
+          166
+        ],
+        [
+          155,
+          94
+        ],
+        [
+          155,
+          118
+        ],
+        [
+          155,
+          142
+        ],
+        [
+          155,
+          166
+        ],
+        [
+          165,
+          94
+        ],
+        [
+          165,
+          118
+        ],
+        [
+          165,
+          142
+        ],
+        [
+          165,
+          166
+        ],
+        [
+          200,
+          32
+        ],
+        [
+          200,
+          96
+        ],
+        [
+          200,
+          160
+        ],
+        [
+          200,
+          224
+        ],
+        [
+          300,
+          32
+        ],
+        [
+          300,
+          96
+        ],
+        [
+          300,
+          160
+        ],
+        [
+          300,
+          224
+        ]
+      ],
+      "raw_record": "sonar-finite-geometry-fit-20261031"
+    }
+  ],
+  "modes": [
+    {
+      "cell": [
+        -39,
+        -1,
+        -11
+      ],
+      "centre": [
+        -7.7,
+        -0.1,
+        -2.1
+      ],
+      "distinct_views": 5,
+      "rank_score": 54874.62562798723,
+      "ground_prior_z": -2.3906373913560346,
+      "memberships": {
+        "0": [
+          1
+        ],
+        "1": [
+          0
+        ],
+        "2": [
+          0
+        ],
+        "3": [
+          1
+        ],
+        "4": [
+          0
+        ]
+      }
+    },
+    {
+      "cell": [
+        -45,
+        -10,
+        -11
+      ],
+      "centre": [
+        -8.9,
+        -1.9000000000000001,
+        -2.1
+      ],
+      "distinct_views": 4,
+      "rank_score": 108563.89766042428,
+      "ground_prior_z": -2.3668242668836417,
+      "memberships": {
+        "1": [
+          5,
+          7
+        ],
+        "2": [
+          2
+        ],
+        "3": [
+          0
+        ],
+        "4": [
+          1
+        ]
+      }
+    },
+    {
+      "cell": [
+        -39,
+        3,
+        -11
+      ],
+      "centre": [
+        -7.7,
+        0.7000000000000001,
+        -2.1
+      ],
+      "distinct_views": 4,
+      "rank_score": 53289.569057943525,
+      "ground_prior_z": -2.4009409858374036,
+      "memberships": {
+        "1": [
+          0
+        ],
+        "2": [
+          0
+        ],
+        "3": [
+          1
+        ],
+        "4": [
+          0
+        ]
+      }
+    }
+  ],
+  "baseline_initialization": {
+    "clusters": [
+      {
+        "label": 1,
+        "candidates": 11,
+        "parameters": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.7719330816028706,
+          0.2,
+          0.1226156929721749,
+          -1.430322437901765,
+          0.0
+        ],
+        "seed": {
+          "ground": [
+            -0.0005250307410938236,
+            -0.01287949310171135,
+            -2.394230240562661
+          ],
+          "reference_xy": [
+            -8.637955594364339,
+            0.21719452739222697
+          ],
+          "center_xy": [
+            -10.532913678504464,
+            -1.1806307884179483
+          ]
+        }
+      },
+      {
+        "label": 2,
+        "candidates": 62,
+        "parameters": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.9060717079407222,
+          0.5267140348184154,
+          0.36868381366914327,
+          -1.4333662393773814,
+          0.0
+        ],
+        "seed": {
+          "ground": [
+            -0.0005250307410938236,
+            -0.01287949310171135,
+            -2.394230240562661
+          ],
+          "reference_xy": [
+            -8.637955594364339,
+            0.21719452739222697
+          ],
+          "center_xy": [
+            -8.411641456005256,
+            0.24133968917766407
+          ]
+        }
+      }
+    ],
+    "grid_vertices": 323,
+    "grid_faces": 576,
+    "grid_spacing_m": 2.0,
+    "plane_extrapolation_is_prior": true,
+    "measured_ground_support": false
+  },
+  "truth_scene_rgb_used": false,
+  "unused_raw_power_opened": false,
+  "references": {
+    "sonar-partial-scene-fit-20261031/inputs.json": "937effa92b43469893853557fb05ebce35c2c82bf19b43088f0a80a70293db6f",
+    "sonar-partial-scene-fit-20261031/fit-output.npz": "f694753641eced5004166d7a0c4073e20e0780b3c870c487ac16661a55dbfaa1",
+    "sonar-partial-scene-fit-20261031/construction-seal.json": "cec89bff77e709e0a6f93f9cc9364fdba49d9535bddfc7cd0f6927b9a49b341b",
+    "sonar-finite-geometry-fit-20261031/fit.py": "68e91f7a10ee768769ec7e7db86228f7cf1681524c4d62bd950531ee8461c759",
+    "sonar-finite-geometry-fit-20261031/inputs.json": "aa29a6a7c0c8094e1ac3d7b10958974c10693f4682a9025d1d3ca26e8be8089d"
+  }
+}

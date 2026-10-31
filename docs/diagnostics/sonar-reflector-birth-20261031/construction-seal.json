@@ -1,0 +1,9 @@
+{
+  "truth_scene_rgb_used": false,
+  "unused_power_used": false,
+  "files": {
+    "discovery-seal.json": "263648651bcc0fc3a0351fcfd505c1564a2ab36ed63c80e32c61fbfe6f14153a",
+    "fit-output.json": "3b7952d639dc8208abc7d5c62fb42c95b6657860bb52e11cd0c0930a6bd4c55e",
+    "fit-output.npz": "33013cbd0d95e5caf9ca44ac402b8e8e4391d48c79b8fa9a2b1144ee558be4b3"
+  }
+}

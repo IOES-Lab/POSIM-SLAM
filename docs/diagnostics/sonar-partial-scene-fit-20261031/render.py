@@ -13,16 +13,18 @@ from scipy.spatial.transform import Rotation
 from run_fit import ROOT, FAMILIES, sha, write
 
 
-def main(records):
-    seal = json.loads((ROOT/'construction-seal.json').read_text())
+def main(records, *, root=None, families=None, labels=None, title=None):
+    root = ROOT if root is None else Path(root)
+    families = FAMILIES if families is None else families
+    seal = json.loads((root/'construction-seal.json').read_text())
     for name,digest in seal['files'].items():
-        assert sha(ROOT/name)==digest
+        assert sha(root/name)==digest
     context = records/'sonar-translated-view-20261031'
     image = np.asarray(Image.open(context/'context-isometric-rgb.png'))
     receipt = json.loads((context/'context-receipt.json').read_text())
     calibration = json.loads((context/'calibration.json').read_text())
-    assessment = json.loads((ROOT/'assessment.json').read_text())
-    clouds = np.load(ROOT/'assessed-clouds.npz',allow_pickle=False)
+    assessment = json.loads((root/'assessment.json').read_text())
+    clouds = np.load(root/'assessed-clouds.npz',allow_pickle=False)
     camera = np.fromstring(receipt['camera']['pose'],sep=' ')
     camera_r = Rotation.from_euler('xyz',camera[3:]).as_matrix()
     body, attitude = np.array(receipt['body_position']), np.array(receipt['body_rotation'])
@@ -32,14 +34,14 @@ def main(records):
         origin = body+attitude@mount['translation']
         direction = attitude@Rotation.from_quat(mount['rotation']).as_matrix()[:,0 if kind=='sonar' else 2]
         arrows.append((origin,origin+1.5*direction,colour))
-    allpoints = np.vstack([clouds[n+'_world'] for n in FAMILIES])
+    allpoints = np.vstack([clouds[n+'_world'] for n in families])
     colours = ListedColormap(plt.get_cmap('turbo')(np.linspace(.10,.95,256)))
     norm = Normalize(allpoints[:,2].min(),allpoints[:,2].max())
     fig = plt.figure(figsize=(21,8),layout='constrained')
     ax = fig.add_subplot(131);ax.imshow(image);ax.axis('off')
     ax.set_title('Retained native field RGB\nRecorded isometric perspective; full capture')
     axes = []
-    for k,name in enumerate(FAMILIES):
+    for k,name in enumerate(families):
         ax = fig.add_subplot(1,3,k+2,projection='3d');axes.append(ax)
         points = clouds[name+'_world'];ground = clouds[name+'_ground_mask']
         for mask,alpha in [(ground,.25),(~ground,.9)]:
@@ -55,18 +57,20 @@ def main(records):
         ax.set_zticks([])  # Physical aspect makes sub-metre height ticks overlap.
         ax.set_box_aspect(np.maximum(high-low,.5))
         stats = assessment['families'][name]
-        label = 'Initial two-reflector scene' if k==0 else 'Fitted partial scene'
+        label = ('Initial two-reflector scene' if k==0 else 'Fitted partial scene') if labels is None else labels[k]
         ax.set_title(f'{label}: all {len(points)} samples\n'
                      f'Object-hypothesis RMSE {stats["candidate_object_error_m"]["rmse"]*100:.2f} cm')
     fig.colorbar(plt.cm.ScalarMappable(norm=norm,cmap=colours),ax=axes,orientation='horizontal',
                  shrink=.8,pad=.02,label='Common complete-mesh height scale: blue low → red high (m)')
-    fig.suptitle('Original sonar → finite multiple-reflector / ground hypotheses\n'
-                 'No accepted SLAM cloud or acoustic pose update',fontsize=17)
-    fig.supxlabel('All 3,939 samples per mesh remain, including unmeasured ground and hidden faces; markers 64 pt². Faint points: extrapolated ground prior.\n'
+    fig.suptitle(('Original sonar → finite multiple-reflector / ground hypotheses\n'
+                 'No accepted SLAM cloud or acoustic pose update') if title is None else title,fontsize=17)
+    counts = [len(clouds[name+'_world']) for name in families]
+    count_text = f'All {counts[0]:,} samples per mesh remain' if len(set(counts))==1 else 'All '+' / '.join(f'{n:,}' for n in counts)+' samples remain'
+    fig.supxlabel(count_text+', including unmeasured ground and hidden faces; markers 64 pt². Faint points: extrapolated ground prior.\n'
         'Whole-mesh clouds are orthographic, with the recorded camera viewing direction; they are not the RGB perspective projection.\n'
         'Orange: sonar / same-mount RGB direction (35° down); blue: vehicle RGB direction; black: vehicle position.\n'
         'RGB inspection context has haze/absorption off; lighting, caustics, particles and waves are from another phase. Actual estimator RGB retains 2 m visibility.',fontsize=10)
-    fig.savefig(ROOT/'complete-scene-comparison.png',dpi=135,bbox_inches='tight',pad_inches=.12)
+    fig.savefig(root/'complete-scene-comparison.png',dpi=135,bbox_inches='tight',pad_inches=.12)
     plt.close(fig)
     focal = image.shape[1]/(2*np.tan(receipt['camera']['horizontal_fov']/2))
     def project(points):
@@ -76,7 +80,7 @@ def main(records):
                               image.shape[0]/2-focal*local[:,2]/local[:,0]))
         return xy,valid
     object_xy = []
-    for name in FAMILIES:
+    for name in families:
         xy,valid = project(clouds[name+'_world'][~clouds[name+'_ground_mask']])
         object_xy.append(xy[valid])
     bounds = np.vstack(object_xy+[project(np.array([body]+[b for a,b,c in arrows]))[0]])
@@ -85,7 +89,7 @@ def main(records):
     fig,axes = plt.subplots(1,3,figsize=(18,8),layout='constrained')
     axes[0].imshow(image);axes[0].set_title('Native field RGB: same camera crop')
     visibility = {}
-    for ax,name in zip(axes[1:],FAMILIES):
+    for k,(ax,name) in enumerate(zip(axes[1:],families)):
         points = clouds[name+'_world'][~clouds[name+'_ground_mask']]
         xy,valid = project(points)
         onscreen = valid & (xy[:,0]>=xlim[0]) & (xy[:,0]<=xlim[1]) & (xy[:,1]>=ylim[1]) & (xy[:,1]<=ylim[0])
@@ -93,7 +97,8 @@ def main(records):
                                behind_camera=int(sum(~valid)),complete_mesh_samples=len(clouds[name+'_world']))
         ax.scatter(*xy[valid].T,c=points[valid,2],cmap=colours,norm=norm,s=64,edgecolors='none',alpha=.7)
         ax.set_facecolor('#f5f7f8')
-        ax.set_title(name.replace('_',' ')+f'\nAll {len(points)} object-hypothesis samples in crop')
+        label = name.replace('_',' ') if labels is None else labels[k]
+        ax.set_title(label+f'\nAll {len(points)} object-hypothesis samples in crop')
     for ax in axes:
         for start,end,colour in arrows:
             xy,_ = project(np.array([start,end]))
@@ -106,9 +111,9 @@ def main(records):
     fig.supxlabel('Ground-prior samples are shown in the separate whole-mesh figure and remain in both complete PLYs; no error/visibility trimming.\n'
         'The native RGB and candidate objects use identical recorded intrinsics/extrinsics. These are synthetic shape samples, not verified sonar landmarks.\n'
         'Environment: haze/absorption off in inspection RGB; lighting/caustics/particles/waves remain at another phase. Estimator camera: 2 m visibility.',fontsize=10)
-    fig.savefig(ROOT/'object-camera-comparison.png',dpi=135,bbox_inches='tight',pad_inches=.12)
+    fig.savefig(root/'object-camera-comparison.png',dpi=135,bbox_inches='tight',pad_inches=.12)
     plt.close(fig)
-    write(ROOT/'render-receipt.json',dict(visibility=visibility,projection='recorded camera and separate whole-mesh orthographic view',
+    write(root/'render-receipt.json',dict(visibility=visibility,projection='recorded camera and separate whole-mesh orthographic view',
           references={str(p.relative_to(records)):sha(p) for p in [context/'context-isometric-rgb.png',
               context/'context-receipt.json',context/'calibration.json']},markers_pt_squared=64))
 
