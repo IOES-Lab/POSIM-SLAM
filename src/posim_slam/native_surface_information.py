@@ -76,13 +76,16 @@ def joint_surface_marginal(snapshot,order,*,relative_tolerance=1e-10):
         if ident in needed:continue
         needed.add(ident);node=archive.nodes[ident];cols=node.source_coordinates
         pending.extend(archive.producers[cols[i]][0] for i in node.kept if cols[i] not in root_columns)
-    # Bound the entire linear recovery workspace before SVD/propagation. Reserve
-    # root factors, all dependency rows, final factors/covariance and SVD copies.
+    # Propagate query coefficients back through each conditional, rather than
+    # constructing every ancestor's coefficients for every noise source. The
+    # retained separator may be wide even when only a few poses are requested.
+    # Reserve numeric coefficient workspaces, free columns and root SVD copies.
     n=len(root_keys)
     noise_columns=n+sum(archive.nodes[i].noise.shape[1]+archive.nodes[i].unbounded.shape[1] for i in needed)
     dependency_rows=sum(len(archive.nodes[i].removed) for i in needed)
     max_separator=max((len(archive.nodes[i].kept) for i in needed),default=0)
-    bound=8*((dependency_rows+3*count+4*max_separator)*noise_columns+count*count+12*n*n+4*n)
+    bound=8*(4*count*(n+dependency_rows+max_separator+noise_columns)
+             +4*count*count+16*n*n+8*n)
     if bound>archive.max_recovery_bytes:raise ValueError('joint_recovery_workspace_capacity')
     point,z,hard=constraint_support(information.constraint_jacobian,-information.constraint_residual,n)
     u,s,vt=np.linalg.svd(information.jacobian@z,full_matrices=True)
@@ -91,39 +94,35 @@ def joint_surface_marginal(snapshot,order,*,relative_tolerance=1e-10):
     root_noise=z@(vt[:rank].T/s[:rank]) if rank else np.zeros((n,0))
     root_free=z@vt[rank:].T
     root_shift=point-root_noise@(u[:,:rank].T@(information.residual+information.jacobian@point))
-    root_delta=np.array([archive.root[k] for k in root_keys]);resolved={}
-
-    def collect(keys):
-        mean=np.empty(len(keys));shift=np.zeros(len(keys));noise={};free={}
-        for row,key in enumerate(keys):
-            if key in root_columns:
-                column=root_columns[key];mean[row]=root_delta[column];shift[row]=root_shift[column]
-                sources=((noise,{0:root_noise[column:column+1]}),(free,{0:root_free[column:column+1]}))
-                local=0
-            else:
-                ident,local=archive.producers[key];value=resolved[ident]
-                mean[row]=value['mean'][local];shift[row]=value['shift'][local]
-                sources=((noise,value['noise']),(free,value['free']))
-            for target,source in sources:
-                for ident,coefficient in source.items():
-                    if not coefficient.shape[1]:continue
-                    if ident not in target:target[ident]=np.zeros((len(keys),coefficient.shape[1]))
-                    target[ident][row]=coefficient[local]
-        return dict(mean=mean,shift=shift,noise=noise,free=free)
-
-    for ident in sorted(needed,reverse=True):
+    root_delta=np.array([archive.root[k] for k in root_keys])
+    coefficients={};zero=np.zeros(count)
+    for row,key in enumerate(query):
+        if key not in coefficients:coefficients[key]=np.zeros(count)
+        coefficients[key][row]+=1.
+    offset=np.zeros(count);covariance=np.zeros((count,count));free={}
+    # Older removed coordinates depend on newer separators. Accumulate all
+    # query paths before adding a conditional's shared noise, preserving the
+    # cross-covariance between requested poses.
+    for ident in sorted(needed):
         node=archive.nodes[ident];cols=node.source_coordinates
-        parents=collect([cols[i] for i in node.kept])
-        value=dict(mean=node.offset+node.regression@parents['mean'],shift=node.regression@parents['shift'],
-            noise={i:node.regression@c for i,c in parents['noise'].items()},
-            free={i:node.regression@c for i,c in parents['free'].items()})
-        if node.noise.shape[1]:value['noise'][ident]=node.noise
-        if node.unbounded.shape[1]:value['free'][ident]=node.unbounded
-        resolved[ident]=value
-    value=collect(query);covariance=np.zeros((count,count))
-    for coefficient in value['noise'].values():covariance+=coefficient@coefficient.T
-    unbounded=np.column_stack(list(value['free'].values())) if value['free'] else np.zeros((count,0))
-    return dict(order=order,deltas=value['mean'],linearized_mode=value['mean']+value['shift'],
+        adjoint=np.column_stack([coefficients.pop(cols[i],zero) for i in node.removed])
+        offset+=adjoint@node.offset
+        parents=adjoint@node.regression
+        for column,i in enumerate(node.kept):
+            key=cols[i]
+            if key in coefficients:coefficients[key]+=parents[:,column]
+            else:coefficients[key]=parents[:,column].copy()
+        if node.noise.shape[1]:
+            noise=adjoint@node.noise;covariance+=noise@noise.T
+        if node.unbounded.shape[1]:free[ident]=adjoint@node.unbounded
+    if any(key not in root_columns for key in coefficients):
+        raise ValueError('native_joint_recovery_graph')
+    root_adjoint=np.column_stack([coefficients.get(key,zero) for key in root_keys])
+    mean=offset+root_adjoint@root_delta
+    noise=root_adjoint@root_noise;covariance+=noise@noise.T
+    if count and root_free.shape[1]:free[0]=root_adjoint@root_free
+    unbounded=np.column_stack([free[i] for i in sorted(free)]) if free else np.zeros((count,0))
+    return dict(order=order,deltas=mean,linearized_mode=mean+root_adjoint@root_shift,
         observable_covariance=covariance,unbounded_basis=unbounded,root_rank=rank+hard.shape[1],root_columns=n,
         root_constraint_rank=hard.shape[1],
         root_singular_values=s,relative_rank_tolerance=relative_tolerance,workspace_bound_bytes=bound,

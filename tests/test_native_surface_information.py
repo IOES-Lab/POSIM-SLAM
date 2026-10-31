@@ -79,6 +79,41 @@ class JointNativeInformationTests(unittest.TestCase):
         got=native.joint_marginal((Variable(**old),Variable(**pressure)))
         np.testing.assert_allclose(got['observable_covariance'],np.linalg.inv(j.T@j),atol=1e-13)
 
+    def test_sparse_query_in_long_wide_archive_retains_shared_noise_with_default_budget(self):
+        # Analytic affine Markov chain with 250 retired poses and a realistic
+        # inertial separator. Each pose depends on its successor and one shared
+        # nuisance pose. The joint covariance includes both common root noise
+        # and every conditional noise source shared by two queried histories.
+        count=250;pressure=dict(kind='pressure',ident=0,size=1,reference=[0.])
+        nuisance=[state(1000+i,15) for i in range(15)]
+        root=[state(count+1),*nuisance,pressure];columns=232
+        regression=np.zeros((6,columns));regression[:,:6]=np.eye(6)
+        regression[:,6:12]=.001*np.eye(6)
+        nodes=[]
+        for i in range(1,count+1):
+            nodes.append(dict(id=i,variables=[state(i),state(i+1),*nuisance,pressure],
+                kept_indices=list(range(6,columns+6)),removed_indices=list(range(6)),
+                regression=regression.tolist(),offset=[0.]*6,
+                noise_factor=(.05*np.eye(6)).tolist(),unbounded_basis=np.zeros((6,0)).tolist()))
+        delta=np.linspace(-.2,.2,columns);residual=np.linspace(-.03,.03,columns)
+        archive=RetiredPoseArchive('control')
+        archive.ingest(packet(count+2,root,delta,nodes))
+        value=snapshot(archive);value['information']=information(np.eye(columns),residual)
+        native=NativeSurfaceSnapshot.read(value)
+        stamps=[1,84,167,count+1];remaining=np.array([count+1-t for t in stamps])
+        got=native.joint_marginal(tuple(Variable(**state(t)) for t in stamps))
+        weights=(np.ones((4,4))+.001**2*remaining[:,None]*remaining[None,:]
+                 +.05**2*np.minimum(remaining[:,None],remaining[None,:]))
+        np.testing.assert_allclose(got['observable_covariance'],np.kron(weights,np.eye(6)),atol=2e-12)
+        expected=np.concatenate([delta[:6]+n*.001*delta[6:12] for n in remaining])
+        mode=np.concatenate([(delta-residual)[:6]+n*.001*(delta-residual)[6:12] for n in remaining])
+        np.testing.assert_allclose(got['deltas'],expected,atol=2e-12)
+        np.testing.assert_allclose(got['linearized_mode'],mode,atol=2e-12)
+        self.assertLess(got['workspace_bound_bytes'],16*1024*1024)
+        self.assertEqual(native._archive.max_recovery_bytes,32*1024*1024)
+        self.assertGreater(got['observable_covariance'][0,6],1.)
+        self.assertEqual(got['unbounded_basis'].shape,(24,0))
+
     def test_old_snapshots_remain_preparable_but_cannot_claim_complete_uncertainty(self):
         native,_,_,_,value=self.case();value.pop('information')
         old=NativeSurfaceSnapshot.read(value)
