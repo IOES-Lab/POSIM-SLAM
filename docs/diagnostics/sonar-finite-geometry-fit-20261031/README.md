@@ -114,3 +114,10 @@ Finite-ray rendering, shape priors, material profiling and coordinate search
 are established ingredients, not a new research claim. Independent public
 NumPy/SciPy code imports no WWW-POSIM implementation. Existing component and
 third-party notices remain in force.
+
+The initial Linux verifier rejected two recomputed triangle coordinates differing
+by 2.22e-16 m because it used exact equality. Computed geometry now has a scaled
+32-epsilon arithmetic budget; a one-nanometre negative control still fails.
+Serialized raw/record hashes and PLY-versus-NPZ values remain exact. The
+[original failure/control](floating-geometry-control.json) is preserved; no
+sealed fit, scientific output, noise or map-admission threshold changes.

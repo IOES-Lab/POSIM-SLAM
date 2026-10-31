@@ -1,0 +1,15 @@
+{
+  "initial_library_head": "551b3b56b5365e19d652af1c19f6eae432d4143f",
+  "initial_linux_job": 124478253775,
+  "url": "https://github.com/IOES-Lab/POSIM-SLAM/actions/runs/41181017906",
+  "failure": "exact comparison of recomputed geometry, 2/126 coordinates differ by 2.22044605e-16m",
+  "source_moments_before_failure": "causal/shared plane and initial prism full moments pass",
+  "correction": "distinguish serialized identities (exact hashes/PLY values) from derived geometry (32-epsilon scaled arithmetic budget)",
+  "controls": [
+    "old exact check rejects one ULP; computed-geometry check accepts it",
+    "one-nanometre displacement remains rejected"
+  ],
+  "sealed_fit_or_scientific_output_changed": false,
+  "noise_or_map_admission_changed": false,
+  "matrix_312_cancelled_by_github_fail_fast": true
+}

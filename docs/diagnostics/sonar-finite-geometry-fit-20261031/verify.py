@@ -12,7 +12,40 @@ from fit import Fit, geometry, sha
 ROOT = Path(__file__).resolve().parent
 
 
+def derived_geometry_equal(actual, expected):
+    """Bound arithmetic roundoff; serialized inputs still require exact hashes.
+
+    Up to 32 double-precision operations cover these short affine/trigonometric
+    constructions. Scale includes the largest coordinate (100 m plane support).
+    This is an arithmetic reproduction bound, not geometric/map uncertainty.
+    """
+    expected = np.asarray(expected)
+    scale = max(1.,float(np.max(abs(expected),initial=0.)))
+    gamma = 32*np.finfo(float).eps/(1-32*np.finfo(float).eps)
+    np.testing.assert_allclose(actual,expected,rtol=gamma,atol=gamma*scale)
+
+
+def geometry_comparison_controls():
+    expected = np.array([[100.,-100.,1.]])
+    one_ulp = expected.copy();one_ulp[0,2] = np.nextafter(expected[0,2],np.inf)
+    try:
+        np.testing.assert_array_equal(one_ulp,expected)
+    except AssertionError:
+        pass
+    else:
+        raise AssertionError('old exact comparison must reject computed one-ULP control')
+    derived_geometry_equal(one_ulp,expected)
+    displaced = expected.copy();displaced[0,2] += 1e-9
+    try:
+        derived_geometry_equal(displaced,expected)
+    except AssertionError:
+        pass
+    else:
+        raise AssertionError('one-nanometre geometric change must exceed arithmetic budget')
+
+
 def main(records):
+    geometry_comparison_controls()
     seal = json.loads((ROOT/'construction-seal.json').read_text())
     assert seal['truth_scene_rgb_used'] is False
     for name,digest in seal['files'].items():
@@ -37,9 +70,9 @@ def main(records):
             prism,causal = 'prism' in label,label=='causal_plane'
             p = np.asarray(case['parameters'])
             _,vertices = geometry(p,f.seed,prism)
-            np.testing.assert_array_equal(vertices,recorded[label+'_vertices'])
+            derived_geometry_equal(vertices,recorded[label+'_vertices'])
             value,details,arrays,triangles,_ = f.evaluate(p,prism,f.frames,True,causal)
-            np.testing.assert_allclose(triangles,recorded[label+'_triangles'],rtol=0,atol=0)
+            derived_geometry_equal(triangles,recorded[label+'_triangles'])
             for key,a in arrays.items():
                 expected = recorded[label+'_'+key]
                 # Same cross-platform source-normal/power reproduction budget
@@ -72,13 +105,16 @@ def main(records):
             for key in ['rmse','median','p90','maximum']:
                 np.testing.assert_allclose(case[kind][key],expected[kind][key],rtol=1e-10,atol=1e-12)
     with np.load(ROOT/'assessed-clouds.npz',allow_pickle=False) as z:
-        for name,array in arrays.items():np.testing.assert_allclose(array,z[name],rtol=1e-12,atol=1e-12)
-    for name in ['initial_prism','fitted_prism']:
-        ply = (ROOT/(name+'-complete.ply')).read_text().splitlines()
-        count = original['families'][name]['points']
-        assert f'element vertex {count}' in ply
-        points = np.array([list(map(float,row.split())) for row in ply[ply.index('end_header')+1:]])
-        np.testing.assert_array_equal(points,arrays[name+'_points'])
+        for name,array in arrays.items():
+            if name.endswith(('_points','_world')):derived_geometry_equal(array,z[name])
+            else:np.testing.assert_allclose(array,z[name],rtol=1e-12,atol=1e-12)
+        for name in ['initial_prism','fitted_prism']:
+            ply = (ROOT/(name+'-complete.ply')).read_text().splitlines()
+            count = original['families'][name]['points']
+            assert f'element vertex {count}' in ply
+            points = np.array([list(map(float,row.split())) for row in ply[ply.index('end_header')+1:]])
+            # PLY and NPZ are both serialized input: their values stay exact.
+            np.testing.assert_array_equal(points,z[name+'_points'])
     print('Sealed fit, original raw hashes, complete traces and conditional moments verified; map unqualified')
 
 
