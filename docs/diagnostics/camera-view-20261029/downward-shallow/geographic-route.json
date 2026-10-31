@@ -1,0 +1,129 @@
+{
+  "waypoints": [
+    {
+      "latitude": 47.63020014578648,
+      "longitude": -122.39824024659926,
+      "depth_m": 1.2,
+      "hold_seconds": 3
+    },
+    {
+      "latitude": 47.63020014578648,
+      "longitude": -122.39824024659926,
+      "depth_m": 0.6,
+      "hold_seconds": 0
+    },
+    {
+      "latitude": 47.630218134111225,
+      "longitude": -122.39824021048673,
+      "depth_m": 0.6,
+      "hold_seconds": 0
+    },
+    {
+      "latitude": 47.63021809138219,
+      "longitude": -122.39819364140911,
+      "depth_m": 0.6,
+      "hold_seconds": 0
+    },
+    {
+      "latitude": 47.63021809138219,
+      "longitude": -122.39819364140911,
+      "depth_m": 1.2,
+      "hold_seconds": 3
+    },
+    {
+      "latitude": 47.63021804863426,
+      "longitude": -122.39814707233157,
+      "depth_m": 1.2,
+      "hold_seconds": 0
+    },
+    {
+      "latitude": 47.630182071984734,
+      "longitude": -122.3981471445566,
+      "depth_m": 1.2,
+      "hold_seconds": 0
+    },
+    {
+      "latitude": 47.630182114732676,
+      "longitude": -122.39819371363414,
+      "depth_m": 1.2,
+      "hold_seconds": 0
+    },
+    {
+      "latitude": 47.630182114732676,
+      "longitude": -122.39819371363414,
+      "depth_m": 0.6,
+      "hold_seconds": 3
+    },
+    {
+      "latitude": 47.6301821574617,
+      "longitude": -122.39824028271177,
+      "depth_m": 0.6,
+      "hold_seconds": 0
+    },
+    {
+      "latitude": 47.63020014578648,
+      "longitude": -122.39824024659926,
+      "depth_m": 0.6,
+      "hold_seconds": 0
+    },
+    {
+      "latitude": 47.630218134111225,
+      "longitude": -122.39824021048673,
+      "depth_m": 0.6,
+      "hold_seconds": 0
+    },
+    {
+      "latitude": 47.63021809138219,
+      "longitude": -122.39819364140911,
+      "depth_m": 0.6,
+      "hold_seconds": 0
+    },
+    {
+      "latitude": 47.63021809138219,
+      "longitude": -122.39819364140911,
+      "depth_m": 1.2,
+      "hold_seconds": 3
+    },
+    {
+      "latitude": 47.63021804863426,
+      "longitude": -122.39814707233157,
+      "depth_m": 1.2,
+      "hold_seconds": 0
+    },
+    {
+      "latitude": 47.630182071984734,
+      "longitude": -122.3981471445566,
+      "depth_m": 1.2,
+      "hold_seconds": 0
+    },
+    {
+      "latitude": 47.630182114732676,
+      "longitude": -122.39819371363414,
+      "depth_m": 1.2,
+      "hold_seconds": 0
+    },
+    {
+      "latitude": 47.630182114732676,
+      "longitude": -122.39819371363414,
+      "depth_m": 0.6,
+      "hold_seconds": 3
+    },
+    {
+      "latitude": 47.6301821574617,
+      "longitude": -122.39824028271177,
+      "depth_m": 0.6,
+      "hold_seconds": 0
+    },
+    {
+      "latitude": 47.63020014578648,
+      "longitude": -122.39824024659926,
+      "depth_m": 0.6,
+      "hold_seconds": 0
+    }
+  ],
+  "origin": [
+    47.6302,
+    -122.3982391
+  ],
+  "scope": "Explicit geographic route only; current session nonce and route safety are revalidated"
+}

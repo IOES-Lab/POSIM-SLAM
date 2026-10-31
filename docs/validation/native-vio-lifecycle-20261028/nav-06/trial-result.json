@@ -1,0 +1,13 @@
+{
+  "passed": true,
+  "error": null,
+  "session_nonce": "7a7e329b0860490d9081e5db5f746fb5",
+  "harness_sha256": "c4d10d135ba77519237705ea454215ac1355d692280000a31cef3fa67a643e37",
+  "elapsed_s": 1301.492670000007,
+  "operating_s": 1279.2390816669795,
+  "completed_missions": 11,
+  "exports": 12,
+  "points": 6312,
+  "failures": [],
+  "max_tick_ms": 355.6524579762481
+}

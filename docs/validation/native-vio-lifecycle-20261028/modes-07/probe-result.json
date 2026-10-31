@@ -1,0 +1,24 @@
+{
+  "counts": {
+    "mavlink_0": 837,
+    "mavlink_30": 8200,
+    "mavlink_33": 2463,
+    "mavlink_193": 825,
+    "mavlink_32": 16341,
+    "local_pose": 16340
+  },
+  "max_receipt_gap_s": {
+    "mavlink_0": 1.1553453750093468,
+    "mavlink_30": 0.42038037499878556,
+    "mavlink_33": 0.7490137910353951,
+    "mavlink_193": 1.4886972910026088,
+    "mavlink_32": 0.20174687501275912,
+    "local_pose": 0.20183170802192762
+  },
+  "written": 45006,
+  "pending": 0,
+  "peak_pending": 3,
+  "writer_stopped": true,
+  "faults": [],
+  "elapsed_s": 842.5354143749573
+}

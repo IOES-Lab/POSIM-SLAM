@@ -45,6 +45,45 @@ bounded, one-state-at-a-time acknowledgement contract.
 `SensorEvents(state_clock="sonar")`는 소나와 이후 IMU를 정렬하고, 한 상태의
 응답을 확인한 뒤 다음 상태를 전달합니다.
 
+## Visual reference patches / 시각 참조 패치
+
+[Optional native patch diagnostics](diagnostics/README.md) inspect conditioning,
+birth-reference residuals and local warp models without changing estimation.
+[선택형 네이티브 패치 진단](diagnostics/README.md)은 추정을 바꾸지 않고
+패치 조건·최초 참조 잔차·국소 변형 모델을 검사합니다.
+
+Camera calibration accepts `optical_flow_type: "frame_to_frame"` (default) or
+`"patch"`. These select the pinned Basalt previous-frame and birth-frame
+reference trackers. The worker acknowledges the selected value in `ready`;
+`LiveClient` rejects a mismatch. Camera-free sonar calibration rejects this
+camera setting. Both trackers retain Basalt's image pyramids, SE2 patch
+alignment and forward/backward consistency test.
+
+The build-local patch tracker retires a reference only after its identity is
+absent from every camera view. Retirement runs on the frontend owner after
+parallel tracking and filtering finish. `reference_patches` reports retained
+references; `reference_patch_peak` includes new and retiring references. Storage
+therefore follows live observations rather than all historical detections.
+This is not a fixed byte or process-memory limit. The 400-frame native probe
+checks identity retention, repeated blank-frame release and cross-camera
+ownership. Map accuracy, startup and recovery require separate measurements.
+
+카메라 보정 설정은 `optical_flow_type: "frame_to_frame"`(기본값) 또는
+`"patch"`를 받습니다. 고정한 Basalt의 이전 프레임 참조 또는 최초 프레임
+참조 추적기를 선택합니다. 워커는 `ready`에 실제 선택값을 보고하며,
+`LiveClient`는 요청과 다르면 거부합니다. 카메라 없는 소나 보정 설정에서는
+이 옵션을 거부합니다. 두 방식 모두 Basalt의 영상 피라미드, SE2 패치 정합,
+왕복 추적 일관성 검사를 사용합니다.
+
+빌드 사본의 패치 추적기는 모든 카메라에서 사라진 특징점의 참조만 해제합니다.
+병렬 추적과 필터링이 끝난 뒤 추적기 소유 스레드가 해제합니다.
+`reference_patches`는 남은 참조 수, `reference_patch_peak`는 새 참조와 해제될
+참조를 포함한 최대 수입니다. 저장량은 전체 과거 검출 수 대신 현재 관측에
+따릅니다. 고정 바이트 수나 프로세스 메모리 상한을 뜻하지 않습니다.
+400프레임 네이티브 시험은 특징점 ID 유지, 반복되는 빈 영상에서의 해제,
+여러 카메라의 소유 관계를 검사합니다. 지도 정확도·초기화·복구는 별도로
+측정해야 합니다.
+
 ## Joint nuisance elimination / 공동 보조변수 소거
 
 `ping_joint.hpp` uses thin SVD to determine nuisance rank and minimum-norm back-substitution. For LM-damped trials, the smallest regularization diagonal bounds the smallest singular value from below. When it exceeds 16 times the SVD cutoff's Frobenius upper bound, full numerical rank is certified and Householder QR performs the same elimination and back-substitution. Other systems retain SVD. Marginalization remains undamped. Neither route forms a full left-singular-vector matrix. The independent NumPy full-SVD reference checks reduced information, gradient, residual cost and back-substitution for tall, wide, deficient, damped and extreme-scale systems.
@@ -1311,7 +1350,9 @@ IMU, 해당 시각의 트랙 스냅샷(있을 때), `LiveClient.sonar_tick(stamp
 
 
 `max_recent_states` in the calibration file sets the recent full IMU-state budget
-(integer, 3–64). Defaults are three without auxiliary events and six with them.
+(integer, 3–64). The default is three; `enable_auxiliary_sonar: true` selects six
+when no explicit budget is supplied. DVL and pressure factors do not raise this
+default. Their single-time measurements retire into the common correlated prior.
 The ready response reports the applied value. Count camera and auxiliary events
 across track initialization, with room for the next event. Three 2 Hz sonar
 observations span one second; six states cannot cover a 10 Hz camera stream.
@@ -1324,7 +1365,9 @@ before marginalization. State and nuisance column bounds derive from these
 budgets. Sensor observation-count limits remain separate.
 
 보정 파일의 `max_recent_states`로 최근 IMU 전체 상태 보관 개수를 지정합니다
-(정수 3–64). 기본값은 보조 이벤트가 없으면 3개, 있으면 6개이며, 준비 응답에서
+(정수 3–64). 기본값은 3개이며, 명시적 예산이 없을 때
+`enable_auxiliary_sonar: true`는 6개를 선택합니다. 단일 시각의 DVL·수압 측정은
+공통 주변화 사전정보로 전달하므로 이 기본값을 늘리지 않습니다. 준비 응답에서
 적용값을 확인합니다. 트랙 초기화 구간의 카메라·보조 이벤트를 모두 세고 다음
 이벤트를 위한 여유를 둡니다. 2Hz 소나 관측 3개는 1초에 걸치므로 카메라
 10Hz에서 상태 6개로는 부족합니다. 카메라 키프레임 보관은 보조 자세의 보관을
@@ -1515,3 +1558,34 @@ association, loop closure or terrain mesh export is provided by this mode.
 점과 평면의 연결, 루프 폐쇄, 지형 메시 내보내기가 없습니다.
 
 [Matched replay evidence / 같은 입력의 비교 검증](../../docs/diagnostics/terrain-ping.md).
+## Joint per-beam surfaces / 빔별 평면 제약
+
+`range_surface.hpp` provides an Eigen-only finite-cone/vertical-fan model with
+explicit full range covariance and state-dependent raw support. The
+`range_surface_group.hpp` owner adapter uses the existing grouped elimination,
+trial rollback and marginal-prior installation. The portable JSON probe checks
+Python parity; `basalt_range_surface_owner_probe` additionally exercises actual
+Basalt state increments, optimization and whole-group retirement. These
+diagnostics require supplied echo/plane membership; no live range transport or
+surface map is enabled. [Controls and retention audit](../../docs/diagnostics/joint-surface-ranges-20261029/README.md).
+
+`range_surface.hpp`는 Eigen만 사용하는 유한 원뿔·수직 팬 모델이며, 전체 거리
+공분산과 현재 상태에서 계산한 원본 관측 범위를 사용합니다. 소유자 어댑터는
+기존 묶음 소거·시험 갱신 복원·주변화 사전정보 설치를 사용합니다. 이식형
+JSON 검사기는 Python 계산을 대조하고, 소유자 검사기는 실제 Basalt 상태 갱신,
+최적화와 전체 관측 그룹 폐기를 검증합니다. 에코·평면 대응은 호출자가 제공하며,
+라이브 거리 전송과 표면 지도는 아직 활성화하지 않습니다.
+
+## Persistent surface information / 평면 정보의 지속 보존
+
+`surface_prior.hpp` keeps correlated pose, plane and pressure-datum square-root
+information across source-state retirement. `surface_prior_owner.hpp` reads
+actual 6/15-state references and accumulated coordinates, including planes and
+an explicit caller-owned pressure datum. The bridge is read-only. Production
+factor retirement, archived support and live installation require the complete
+owner transaction. [Source/native and delayed-owner controls](../../docs/diagnostics/persistent-surface-prior-20261029/README.md).
+
+원본 자세를 폐기한 뒤에도 자세·평면·압력 기준값의 상관된 정보를 보존합니다.
+실제 Basalt의 6/15차원 상태 참조와 누적 좌표를 읽는 연결부는 읽기 전용입니다.
+라이브 적용에는 모든 원본 제약의 폐기·보관된 지원 관측·사전정보 설치를 묶는
+완전한 소유자 처리가 필요합니다.

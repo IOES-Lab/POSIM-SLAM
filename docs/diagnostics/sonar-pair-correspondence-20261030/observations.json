@@ -1,0 +1,16 @@
+{
+  "sonar_stamps_ns": [
+    35010000000,
+    35500000000
+  ],
+  "camera_stamp_ns": 35000000000,
+  "field_stamp_ns": 35000000000,
+  "contrast_lk_pairs": 8,
+  "actual_rgb": true,
+  "actual_field_rgb_retained": true,
+  "field_context_rerender": true,
+  "point_markers_pt2": 64,
+  "estimator_truth_input": false,
+  "map_qualified": false,
+  "selection": "fixed nearest 35 s frame, as in the preceding wall record; no match-count selection"
+}

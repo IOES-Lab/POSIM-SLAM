@@ -1,0 +1,61 @@
+{
+  "models": [
+    {
+      "actor": "gebco_terrain",
+      "checker": "native mission terrain grid",
+      "collision": "orca5_seafloor_collision"
+    },
+    {
+      "actor": "inspection_block_0",
+      "checker": "continuous rigid box distance"
+    },
+    {
+      "actor": "inspection_block_1",
+      "checker": "continuous rigid box distance"
+    },
+    {
+      "actor": "inspection_block_2",
+      "checker": "continuous rigid box distance"
+    },
+    {
+      "actor": "inspection_wall_0",
+      "checker": "continuous rigid box distance"
+    },
+    {
+      "actor": "inspection_wall_1",
+      "checker": "continuous rigid box distance"
+    },
+    {
+      "actor": "waves",
+      "checker": "no rigid collision geometry"
+    }
+  ],
+  "terrain_routing": {
+    "algorithm": "buffered-terrain-a-star",
+    "detoured_legs": 0,
+    "transit_points": 0,
+    "grid_step_m": 4.0,
+    "maximum_radius_m": 600.0,
+    "maximum_length_m": 2000.0,
+    "hull_radius_m": 0.5,
+    "tracking_margin_m": 2.0,
+    "search_nodes": 0,
+    "minimum_clearance_m": 1.7391191503267973,
+    "route_length_m": 21.20606421029059,
+    "scope": "confirmed static terrain only; no AIS or unrepresented obstacles"
+  },
+  "terrain_minimum_m": 1.7391191503267973,
+  "additional_targets": {
+    "clear": true,
+    "minimum_centerline_clearance_m": 2.9638716942713934,
+    "required_body_margin_m": 0.5,
+    "closest": {
+      "actor": "inspection_block_0/body/collision",
+      "segment": 2
+    },
+    "segments": 9,
+    "collision_boxes": 5,
+    "method": "exact segment-to-oriented-box distance; spherical body envelope",
+    "scope": "authored targets only; terrain checked separately by mission planner"
+  }
+}

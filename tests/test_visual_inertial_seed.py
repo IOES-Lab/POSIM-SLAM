@@ -80,6 +80,12 @@ class VisualInertialSeedTests(unittest.TestCase):
         np.testing.assert_allclose(endpoint['up_direction_imu'],
                                    -rotations[-1].T @ gravity/np.linalg.norm(gravity),atol=1e-5)
         self.assertEqual(endpoint['last_measurement_ns'],frames[-1]['stamp_ns'])
+        robust = tracked_imu_seed(frames,shifted,**options,
+            gravity_magnitude=float(np.linalg.norm(gravity)),pixel_sigma=.5)
+        np.testing.assert_allclose(robust['velocity_imu'],rotations[-1].T @
+                                   (velocity+acceleration_velocity),atol=4e-5)
+        self.assertEqual(robust['seed_method'],'bearing_imu_ransac_fixed_gravity')
+        self.assertEqual(robust['inlier_tracks'],24)
         frames[1]['tracks'].append(frames[1]['tracks'][0])
         with self.assertRaisesRegex(ValueError,'pixel_identity'):
             tracked_imu_seed(frames,shifted,**options)
@@ -100,6 +106,52 @@ class VisualInertialSeedTests(unittest.TestCase):
             for i in observations:observations[i] = observations[0]
         with self.assertRaisesRegex(ValueError, 'no_parallax'):
             bearing_imu_seed(*args, **kwargs)
+
+    def test_robust_seed_rejects_moving_tracks_without_losing_metric_motion(self):
+        args, kwargs, velocity, gravity = self.scene()
+        focal = np.array([320., 300.]);rng = np.random.default_rng(42)
+        for ident, observations in args[3].items():
+            for i, ray in observations.items():
+                pixel = ray[:2]/ray[2]*focal+rng.normal(0, .08, 2)
+                if ident < 9:
+                    pixel += np.array([9*np.sin(i*.8+ident), 7*np.cos(i*.6+ident)])
+                ray = np.r_[pixel/focal, 1.]
+                observations[i] = ray/np.linalg.norm(ray)
+        options = dict(gravity_magnitude=float(np.linalg.norm(gravity)), pixel_sigma=.5,
+                       focal_lengths=focal)
+        result = bearing_imu_seed(*args, **kwargs, **options)
+        repeated = bearing_imu_seed(*args, **kwargs, **options)
+        np.testing.assert_allclose(result['velocity_initial'], velocity, atol=.015)
+        np.testing.assert_allclose(result['gravity_initial'], gravity, atol=.01)
+        np.testing.assert_array_equal(result['velocity_initial'], repeated['velocity_initial'])
+        self.assertAlmostEqual(np.linalg.norm(result['gravity_initial']), options['gravity_magnitude'])
+        self.assertGreaterEqual(result['inlier_tracks'], 14)
+        self.assertGreaterEqual(result['rejected_tracks'], 8)
+        self.assertFalse(result['covariance_estimated'])
+        self.assertFalse(result['observability_qualified'])
+
+    def test_known_gravity_does_not_invent_constant_velocity_scale(self):
+        args, kwargs, _, gravity = self.scene(moving=False)
+        with self.assertRaisesRegex(ValueError, 'unobservable'):
+            bearing_imu_seed(*args, **kwargs, gravity_magnitude=float(np.linalg.norm(gravity)),
+                             pixel_sigma=.5, focal_lengths=[300,300])
+
+    def test_robust_seed_requires_consensus_and_explicit_calibration(self):
+        args, kwargs, _, gravity = self.scene()
+        options = dict(gravity_magnitude=float(np.linalg.norm(gravity)), pixel_sigma=.5,
+                       focal_lengths=[300,300])
+        for field, value in (('gravity_magnitude', True), ('gravity_magnitude', -1),
+                             ('pixel_sigma', 0), ('pixel_sigma', float('nan')),
+                             ('focal_lengths', [0,300]), ('focal_lengths', None)):
+            with self.subTest(field=field, value=value), self.assertRaisesRegex(ValueError, 'robust_calibration'):
+                bearing_imu_seed(*args, **kwargs, **dict(options, **{field:value}))
+        rng = np.random.default_rng(17)
+        for observations in args[3].values():
+            for i in observations:
+                ray = np.r_[rng.uniform(-.5,.5,2),1.]
+                observations[i] = ray/np.linalg.norm(ray)
+        with self.assertRaisesRegex(ValueError, 'no_consensus'):
+            bearing_imu_seed(*args, **kwargs, **options)
 
 
 if __name__ == '__main__':unittest.main()

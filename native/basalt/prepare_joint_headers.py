@@ -8,6 +8,8 @@ from pathlib import Path
 import sys
 
 HASHES={
+    'optical_flow/optical_flow.h':'8510a2b64f05c5ee2870b1fbf7763e47dbeb8978e8c87c23fc037d33d4589696',
+    'optical_flow/patch_optical_flow.h':'b862f0931aab5c89ddadb92346a2a22aca219a630cf83a4776985f61f97f96ef',
     'vi_estimator/vio_estimator.h':'48ca1e3bc8fabc7378ddd8c3b913dca93ea12cba104192145b019c16599ac754',
     'vi_estimator/sqrt_keypoint_vio.h':'1c98d1cb3efeab33d6df6371f4294880678ae854c18a8cd496abf0d0e14522b3',
     'linearization/landmark_block.hpp':'491cbd5cb633f13923b8c440364e2b72db1ea8abf5b88c604a348367fa57115e',
@@ -65,16 +67,33 @@ def prepare(source,destination):
         raw=(Path(source)/'include/basalt'/name).read_bytes()
         if hashlib.sha256(raw).hexdigest()!=checksum:raise ValueError('pinned_basalt_joint_header_changed:'+name)
         text=raw.decode()
-        if name.endswith('/vio_estimator.h'):
+        if name=='optical_flow/optical_flow.h':
+            text=replace_once(text,'  int64_t t_ns;\n  std::vector<Eigen::aligned_map<KeypointId, Eigen::AffineCompact2f>>',
+                '  int64_t t_ns;\n  uint64_t posim_owner_control_id = 0;\n  size_t reference_patch_count = 0;\n  size_t reference_patch_peak = 0;\n  std::vector<Eigen::aligned_map<KeypointId, Eigen::AffineCompact2f>>')
+        elif name=='optical_flow/patch_optical_flow.h':
+            text=replace_once(text,'#include <basalt/optical_flow/optical_flow.h>',
+                '#include <basalt/optical_flow/optical_flow.h>\n#include "reference_patches.hpp"')
+            text=replace_once(text,'// TODO: patches are currently never erased, so over time memory consumption\n// increases',
+                '// POSIM: reference patches retire after their final camera observation.')
+            text=replace_once(text,'    if (output_queue && frame_counter % config.optical_flow_skip_frames == 0) {',
+                '''    reference_patch_peak = std::max(reference_patch_peak, patches.size());
+    posim_slam::retain_observed_references(patches, transforms->observations);
+    transforms->reference_patch_count = patches.size();
+    transforms->reference_patch_peak = reference_patch_peak;
+    if (output_queue && frame_counter % config.optical_flow_skip_frames == 0) {''')
+            text=replace_once(text,'  size_t frame_counter;',
+                '  size_t frame_counter;\n  size_t reference_patch_peak = 0;')
+        elif name.endswith('/vio_estimator.h'):
             text=replace_once(text,'#pragma once','#pragma once\n#include <map>\n#include "visual_geometry.hpp"')
             text=replace_once(text,'  std::vector<int> point_ids;','  std::vector<int> point_ids;\n  std::map<int,posim_slam::VisualPointSupport> map_quality;\n  std::string map_information_error;')
         elif name.endswith('/sqrt_keypoint_vio.h'):
-            text=replace_once(text,'#pragma once','#pragma once\n#include <functional>\nnamespace posim_slam { class PingFactorStore; class SonarFactorStore; class DvlFactorStore; class PressureFactorStore; }')
+            text=replace_once(text,'#pragma once','#pragma once\n#include <functional>\nnamespace posim_slam { class PingFactorStore; class SonarFactorStore; class DvlFactorStore; class PressureFactorStore; struct NativeSurfaceInformation; }')
             text=replace_once(text,'  using Scalar = Scalar_;','''  using Scalar = Scalar_;
   // Configured before input is submitted; called only by the estimator thread.
   std::function<void(SqrtKeypointVioEstimator&, int64_t)> posim_before_marginalization;
   std::function<void(SqrtKeypointVioEstimator&, int64_t)> posim_after_joint;
   std::function<void(SqrtKeypointVioEstimator&, int64_t)> posim_after_marginalization;
+  std::function<void(SqrtKeypointVioEstimator&, uint64_t, MargLinData<Scalar>&)> posim_owner_control;
   std::shared_ptr<posim_slam::PingFactorStore> posim_ping_factors;
   std::shared_ptr<posim_slam::SonarFactorStore> posim_sonar_factors;
   std::shared_ptr<posim_slam::DvlFactorStore> posim_dvl_factors;
@@ -84,6 +103,7 @@ def prepare(source,destination):
   int posim_joint_last_accepted = 0;
   uint64_t posim_projection_rejections = 0;
   void posim_optimize_joint();
+  posim_slam::NativeSurfaceInformation posim_surface_information();
   void posim_update_map_information();''')
         elif name.endswith('/ba_base.h'):
             text=replace_once(text,'#pragma once','#pragma once\n#include "ping_state.hpp"\n#include "consumed_visual.hpp"\n#include "visual_geometry.hpp"\n#include "map_information.hpp"')
@@ -149,6 +169,15 @@ def prepare(source,destination):
     text=replace_once(raw.decode(),'''  imu_meas[t_ns] = IntegratedImuMeasurement<Scalar>(t_ns, bg.cast<Scalar>(),
                                                     ba.cast<Scalar>());''',
         '  // No completed IMU interval at the initial state.')
+    text=replace_once(text,'      // Correct camera time offset', '''      // Control events execute on this same estimator thread and do not
+      // consume IMU samples, create a pose or advance the camera/sonar clock.
+      if (curr_frame->posim_owner_control_id) {
+        if (config.vio_enforce_realtime || !posim_owner_control)
+          throw std::invalid_argument("owner_control_requires_ordered_processing");
+        posim_owner_control(*this, curr_frame->posim_owner_control_id, marg_data);
+        continue;
+      }
+      // Correct camera time offset''')
     # PoseVelBiasState::applyInc stores gyro at 9:12 and accel at 12:15.
     # The pinned constructor applies the named initial weights in reverse.
     # Correct both square-root and Hessian branches without changing weights.
@@ -169,7 +198,10 @@ def prepare(source,destination):
             IntegratedImuMeasurement<Scalar>(last_state_t_ns, bg, ba);''',
         '        // No completed IMU interval at the initial state.')
     text=replace_once(text,'  optimize();\n  marginalize(num_points_connected, lost_landmaks);',
-        '  if (!posim_joint_started && posim_sonar_factors && lmdb.numLandmarks() > 0) {\n'
+        # Camera/IMU also needs the complete factor-ownership path: a lost
+        # landmark may be hosted by a still-retained inertial state. The
+        # upstream short-window marginal order omits such younger hosts.
+        '  if (!posim_joint_started && lmdb.numLandmarks() > 0) {\n'
         '    posim_joint_started = true; opt_started = true;\n'
         '  }\n'
         '  if (posim_joint_started) posim_optimize_joint(); else optimize();\n'
@@ -197,7 +229,7 @@ def prepare(source,destination):
     text=replace_once(text,'    frames_after_kf++;', '    if (!posim_auxiliary) frames_after_kf++;')
     text=replace_once(text,'  std::unordered_set<KeypointId> lost_landmaks;\n  if (config.vio_marg_lost_landmarks) {',
         '  std::unordered_set<KeypointId> lost_landmaks;\n  if (!posim_auxiliary && config.vio_marg_lost_landmarks) {')
-    text='#include "ping_factors.hpp"\n#include "ping_optimizer.hpp"\n#include "joint_map_information.hpp"\n#include <cstdlib>\n'+text
+    text='#include "ping_factors.hpp"\n#include "ping_optimizer.hpp"\n#include "joint_map_information.hpp"\n#include "surface_information.hpp"\n#include <cstdlib>\n'+text
     text=replace_once(text,'      if (kv.first > last_state_to_marg) break;',
         '      if (!posim_joint_started && kv.first > last_state_to_marg) break;')
     text=replace_once(text,'      if (kv.first != last_state_to_marg) {',
@@ -238,9 +270,23 @@ def prepare(source,destination):
     }
     Timer t_actual_marg;''')
     text=replace_once(text,'template <class Scalar_>\nvoid SqrtKeypointVioEstimator<Scalar_>::debug_finalize()', '''template <class Scalar_>
+posim_slam::NativeSurfaceInformation SqrtKeypointVioEstimator<Scalar_>::posim_surface_information() {
+  auto& base = static_cast<BundleAdjustmentBase<double>&>(*this);
+  const auto order = posim_slam::planPingMarginalLayout(base, {}, {}, {}, {}).source;
+  if (!posim_ping_factors || !posim_ping_factors->surfaceOwner() || !posim_pressure_factors ||
+      !posim_ping_factors->specs(order).empty() ||
+      (posim_sonar_factors && posim_sonar_factors->size()))
+    throw std::invalid_argument("exclusive_surface_information_required");
+  ImuLinData<double> imu = {g, gyro_bias_sqrt_weight, accel_bias_sqrt_weight, {}};
+  for (const auto& [stamp, measurement] : imu_meas) imu.imu_meas[stamp] = &measurement;
+  return posim_slam::nativeSurfaceInformation(base, order, marg_data, imu, posim_dvl_factors.get(),
+      *posim_pressure_factors, *posim_ping_factors->surfaceOwner());
+}
+
+template <class Scalar_>
 void SqrtKeypointVioEstimator<Scalar_>::posim_optimize_joint() {
   if (!posim_ping_factors) {
-    if (!posim_sonar_factors && !posim_dvl_factors && !posim_pressure_factors) throw std::logic_error("missing_joint_factor_store");
+    // An empty auxiliary-factor store is valid for camera/IMU estimation.
     posim_ping_factors = std::make_shared<posim_slam::PingFactorStore>(
         static_cast<BundleAdjustmentBase<double>&>(*this));
   }
@@ -253,8 +299,12 @@ void SqrtKeypointVioEstimator<Scalar_>::posim_optimize_joint() {
       << " bias " << frame_states.at(last_state_t_ns).getState().bias_accel.transpose()
       << " prior " << marg_data.H.norm() << " " << marg_data.b.norm()
       << " sonar " << (posim_sonar_factors ? posim_sonar_factors->size() : 0) << std::endl;
+  if (posim_ping_factors->surfaceOwner()) {
+    if (!posim_pressure_factors) throw std::invalid_argument("surface_owner_requires_pressure");
+    posim_ping_factors->adoptSurfaceOwner(order, marg_data, *posim_pressure_factors);
+  }
   const auto report = posim_slam::optimizePingGroups(base, order,
-      posim_ping_factors->specs(order), marg_data, imu, {}, posim_sonar_factors.get(), posim_dvl_factors.get(), posim_pressure_factors.get());
+      posim_ping_factors->specs(order), marg_data, imu, {}, posim_sonar_factors.get(), posim_dvl_factors.get(), posim_pressure_factors.get(), posim_ping_factors->surfaceOwner());
   if (trace_joint) std::cerr << "POSIM_JOINT after " << last_state_t_ns
       << " bias " << frame_states.at(last_state_t_ns).getState().bias_accel.transpose()
       << " cost " << report.initial_cost << " " << report.final_cost

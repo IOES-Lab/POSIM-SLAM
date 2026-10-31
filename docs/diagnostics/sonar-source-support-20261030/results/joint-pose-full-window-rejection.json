@@ -1,0 +1,6 @@
+{
+  "requested_poses": 61,
+  "first_ns": 22500000000,
+  "last_ns": 52500000000,
+  "rejection": "joint_recovery_workspace_capacity"
+}

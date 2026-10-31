@@ -1,0 +1,39 @@
+{
+  "ping_link_present": false,
+  "ping_joint_present": false,
+  "sensors": [
+    {
+      "name": "imu_sensor",
+      "type": "imu",
+      "topic": null
+    },
+    {
+      "name": "wwos_magnetometer",
+      "type": "magnetometer",
+      "topic": "/model/bluerov2/magnetometer"
+    },
+    {
+      "name": "payload_camera",
+      "type": "camera",
+      "topic": "/vehicle/sensors/camera"
+    },
+    {
+      "name": "payload_dvl",
+      "type": "custom",
+      "topic": "/vehicle/sensors/dvl"
+    },
+    {
+      "name": "surface_imu",
+      "type": "imu",
+      "topic": "/vehicle/sensors/surface_imu"
+    },
+    {
+      "name": "gnss",
+      "type": "custom",
+      "topic": "/model/bluerov2/gnss"
+    }
+  ],
+  "autopilot_sonar_inputs": 0,
+  "generated_model_sha256": "fe62871d7869fc6f5d2a139c7b9d1048d96e999170daf16a4a01e527100986a3",
+  "physical_targets_sha256": "d4795f6c127d739cc1fa4e75eb0329ed55ac3f67d4e593555ae033e06e0bebf6"
+}

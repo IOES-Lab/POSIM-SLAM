@@ -1,0 +1,173 @@
+{
+  "status_sequence": 2172,
+  "stamp_ns": 0,
+  "landmarks": 0,
+  "ready": false,
+  "state": "waiting_inputs",
+  "reason": "waiting_dvl",
+  "session_nonce": "dac71360aeaa4e83b58411db30371bc3",
+  "segment": 1,
+  "frame": "vehicle/vio_dac71360aeaa4e83b58411db30371bc3_segment_1",
+  "mode": "vio",
+  "version": "0.1.0",
+  "library": "basalt",
+  "revision": "0f3b2b52c807f70ff4e2973ce253c73329eea7bc",
+  "units": "m",
+  "scope": "experimental_accumulated_vio_landmarks",
+  "imu_orientation_used": false,
+  "inertial_fused": false,
+  "navigation_ready": false,
+  "initialization": "provisional_observability_not_qualified",
+  "mapping": {
+    "loop_closure": false,
+    "dense": false,
+    "requested_world_three_sigma_limit_m": 0.1
+  },
+  "gravity_seed": {
+    "method": "camera_imu_projective_linear_seed",
+    "duration_s": 3.0,
+    "observability_qualified": false,
+    "frames": 0,
+    "submitted": null
+  },
+  "noise_profile": "explicit_research_assumption_not_sensor_calibration",
+  "states": 0,
+  "published_points": 0,
+  "worker_pid": null,
+  "failures": [
+    {
+      "reason": "dvl_stale",
+      "segment": 1,
+      "wall": 289839.537256833,
+      "visual_support": {
+        "full_weight_reprojections": 291,
+        "huber_threshold_px": 1.0,
+        "observability_qualified": false,
+        "reprojected_landmarks": 295,
+        "reprojection_rmse_px": 0.2255368895555011,
+        "visual_measurements_present": true
+      }
+    }
+  ],
+  "visual_support": {},
+  "ping": {
+    "enabled": false,
+    "joint_enabled": false,
+    "fused": false,
+    "fused_states": 0,
+    "received": 0,
+    "sent": 0,
+    "matched": 0,
+    "unpaired": 0,
+    "late": 0
+  },
+  "pressure": {
+    "enabled": true,
+    "fused": false,
+    "fused_states": 0,
+    "received": 21,
+    "queued": 0,
+    "last_fused_stamp_ns": 0,
+    "native_stamp_ns": 0
+  },
+  "dvl": {
+    "enabled": true,
+    "received": 0,
+    "valid": false,
+    "fused": false,
+    "fused_states": 0,
+    "last_fused_stamp_ns": 0
+  },
+  "sonar": {
+    "enabled": false,
+    "received": 0,
+    "processed": 0,
+    "published_points": 0,
+    "frontend_opencv": null,
+    "map_qualified": false
+  },
+  "processing_ms": null,
+  "max_processing_ms": 172.61829203926027,
+  "camera_reliability": "reliable",
+  "inputs": {
+    "counts": {
+      "imu": 24204,
+      "image": 1210,
+      "camera_info": 1210
+    },
+    "stamp_ns": {
+      "imu": 242150000000,
+      "image": 242000000000
+    },
+    "imu_age_s": 0.0008366660331375897,
+    "image_age_s": 0.15872391598531976,
+    "ingress": {
+      "pending": 0,
+      "payload_bytes": 0,
+      "max_messages": 4096,
+      "max_payload_bytes": 67108864,
+      "peak_messages": 72,
+      "peak_payload_bytes": 4467456,
+      "received": 29574,
+      "rejected": 0,
+      "discarded_on_reset": 10,
+      "fault": null,
+      "running": true
+    },
+    "image_imu_sync": {
+      "pending": 0,
+      "payload_bytes": 0,
+      "received": 1210,
+      "released": 1210,
+      "discarded_on_reset": 0,
+      "peak_pending": 1,
+      "peak_payload_bytes": 1442048,
+      "imu_watermark_ns": 242150000000
+    },
+    "imu_dispatch": {
+      "stamp_ns": 0,
+      "event_ns": 0,
+      "sent_samples": 0
+    },
+    "sensor_events": {
+      "pending": 0,
+      "capacity": 34,
+      "peak_pending": 0,
+      "last_stamp_ns": 0,
+      "awaiting_stamp_ns": null
+    }
+  },
+  "processing_profile": {
+    "optical_flow_type": "patch",
+    "max_image_pixels": 120000,
+    "max_feature_cells": 200,
+    "max_image_rate_hz": 10.0,
+    "native_frontend_ack": null,
+    "max_status_write_ms": 1082.829374994617,
+    "max_tick_ms": 605.0900829723105,
+    "max_input_handler_ms": {
+      "dvl": 4.727833031211048,
+      "imu_status": 0.5692910053767264,
+      "pressure": 1.1343330261297524,
+      "imu": 3.4282499691471457,
+      "camera_info": 0.45145797776058316,
+      "image": 25.06483398610726
+    }
+  },
+  "max_stream_points": 1000,
+  "display_point_limits": [
+    1000,
+    2000,
+    5000,
+    0
+  ],
+  "status_file": {
+    "submitted": 2171,
+    "written": 2158,
+    "coalesced": 13,
+    "pending": false,
+    "running": true,
+    "max_write_ms": 1082.829374994617,
+    "error": null
+  }
+}

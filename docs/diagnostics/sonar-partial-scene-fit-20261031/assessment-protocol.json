@@ -1,0 +1,7 @@
+{
+  "fixed_before_assessment": true,
+  "sampling": "Every mesh vertex plus every triangle's complete 2-division barycentric grid (6 samples/face), retaining edge/vertex duplicates. No visibility/error pruning. Same topology/sampling for initial and final. Report all surfaces and prior-ground/object groups separately.",
+  "references": "Read full retained scene and the existing fixed evaluation gauge only after the construction seal. Reference geometry never enters the fit. Use nearest-surface distances and preserve every error. The 10cm count is a historical diagnostic, not a universal marine acceptance standard.",
+  "display": "All samples in common-scale isometric plots, 64pt squared markers and blue-to-red Turbo. Retained native field RGB shown alongside; clouds use an orthographic whole-mesh view with the same viewing direction, not the RGB's perspective projection. Explicitly identify unmeasured extrapolated ground/hidden faces. Retain a separate exact-native-camera crop for visible object samples with off-frame counts; complete samples/PLY unchanged.",
+  "acceptance": "No accepted SLAM map regardless of image score or conditional geometric error: fixed poses, unverified association, finite shape priors and unavailable shared uncertainty remain."
+}

@@ -1,0 +1,46 @@
+F
+======================================================================
+FAIL: test_young_lost_hosts_survive_full_inertial_window (__main__.VisualWindowTests.test_young_lost_hosts_survive_full_inertial_window)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/posim-slam-reference-20261028/native/basalt/test_visual_window_native.py", line 66, in test_young_lost_hosts_survive_full_inertial_window
+    rows=self.receive(client,stamp);state=rows['state']
+  File "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/posim-slam-reference-20261028/native/basalt/test_visual_window_native.py", line 21, in receive
+    for row in client.poll():
+               ~~~~~~~~~~~^^
+  File "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/posim-slam-reference-20261028/src/posim_slam/live_client.py", line 260, in poll
+    if self.fault:raise RuntimeError(self.fault)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: worker_closed
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/posim-slam-reference-20261028/native/basalt/test_visual_window_native.py", line 78, in test_young_lost_hosts_survive_full_inertial_window
+    self.fail(str(error)+'\n'+(root/'worker.log').read_text()[-2500:])
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: worker_closed
+marg_H (sqrt:1)
+  10000       0       0       0       0       0       0       0       0       0       0       0       0       0       0
+      0   10000       0       0       0       0       0       0       0       0       0       0       0       0       0
+      0       0   10000       0       0       0       0       0       0       0       0       0       0       0       0
+      0       0       0       0       0       0       0       0       0       0       0       0       0       0       0
+      0       0       0       0       0       0       0       0       0       0       0       0       0       0       0
+      0       0       0       0       0   10000       0       0       0       0       0       0       0       0       0
+      0       0       0       0       0       0       0       0       0       0       0       0       0       0       0
+      0       0       0       0       0       0       0       0       0       0       0       0       0       0       0
+      0       0       0       0       0       0       0       0       0       0       0       0       0       0       0
+      0       0       0       0       0       0       0       0       0      10       0       0       0       0       0
+      0       0       0       0       0       0       0       0       0       0      10       0       0       0       0
+      0       0       0       0       0       0       0       0       0       0       0      10       0       0       0
+      0       0       0       0       0       0       0       0       0       0       0       0 3.16228       0       0
+      0       0       0       0       0       0       0       0       0       0       0       0       0 3.16228       0
+      0       0       0       0       0       0       0       0       0       0       0       0       0       0 3.16228
+***** Assertion (aom.abs_order_map.count(lm.host_kf_id.frame_id) > 0) failed in virtual void basalt::LandmarkBlockAbsDynamic<double, 6>::allocateLandmark(Keypoint<Scalar> &, const Eigen::aligned_unordered_map<std::pair<TimeCamId, TimeCamId>, RelPoseLin<Scalar>> &, const Calibration<Scalar> &, const AbsOrderMap &, const Options &, const std::map<TimeCamId, size_t> *) [Scalar = double, POSE_SIZE = 6]:
+/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/birth-live-ros-20261028/build/joint_include/basalt/linearization/landmark_block_abs_dynamic.hpp:94:
+
+
+----------------------------------------------------------------------
+Ran 1 test in 1.276s
+
+FAILED (failures=1)

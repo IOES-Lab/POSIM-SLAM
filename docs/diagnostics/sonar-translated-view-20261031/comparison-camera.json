@@ -1,0 +1,11 @@
+{
+  "topic": "/validation/slam/sonar_reference_rgb",
+  "pose": "0.24 0.0 -0.1 0.0 0.6108652381980153 0.0",
+  "source_sonar_pose": "0.24 0.0 -0.1 0.0 0.6108652381980153 0.0",
+  "same_link": "base_link",
+  "assessment_only": true,
+  "estimator_input": false,
+  "horizontal_fov_rad": 2.0943951023931953,
+  "width": 1000,
+  "height": 600
+}

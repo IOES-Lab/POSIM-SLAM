@@ -1,0 +1,5 @@
+{"pid": 16121, "phase": "spin-exit"}
+{"pid": 16121, "phase": "destroy-enter"}
+{"pid": 16121, "phase": "destroy-exit"}
+{"pid": 16121, "phase": "main-exit"}
+{"pid": 16121, "phase": "atexit"}

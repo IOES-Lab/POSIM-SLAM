@@ -1,0 +1,7 @@
+{
+  "camera_pose": ".4 0 -.1 0 0 0",
+  "sonar_pose": ".24 0 -.1 0 .35 0",
+  "reference_rgb_topic": "/validation/slam/sonar_reference_rgb",
+  "reference_rgb_pose": ".24 0 -.1 0 .35 0",
+  "reference_is_estimator_input": false
+}

@@ -1,0 +1,18 @@
+F.
+======================================================================
+FAIL: test_accumulated_coordinates_dense_prior_optimization_and_retirement (__main__.RangeSurfaceOwnerTests.test_accumulated_coordinates_dense_prior_optimization_and_retirement)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/joint-surface-ranges-20261029/library/native/basalt/test_range_surface_owner.py", line 52, in test_accumulated_coordinates_dense_prior_optimization_and_retirement
+    self.compare(fixture(),prior=True)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/joint-surface-ranges-20261029/library/native/basalt/test_range_surface_owner.py", line 25, in compare
+    self.assertEqual(result.returncode,0,result.stderr);actual=json.loads(result.stdout)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: -6 != 0 : Could not find pose 1
+
+
+----------------------------------------------------------------------
+Ran 2 tests in 1.154s
+
+FAILED (failures=1)

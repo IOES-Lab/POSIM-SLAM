@@ -1,0 +1,86 @@
+[
+  {
+    "mode": "ros-only",
+    "exit_code": 0,
+    "forced": false,
+    "elapsed_s": 0.04328962496947497,
+    "state": {
+      "ros": {
+        "blocked_signals": [],
+        "python_sigint": "<built-in function default_int_handler>",
+        "python_sigterm": "0",
+        "ros_handlers": "SignalHandlerOptions.ALL"
+      },
+      "ready": {
+        "blocked_signals": [],
+        "python_sigint": "<built-in function default_int_handler>",
+        "python_sigterm": "0",
+        "ros_handlers": "SignalHandlerOptions.ALL"
+      }
+    }
+  },
+  {
+    "mode": "ros-first",
+    "exit_code": 0,
+    "forced": false,
+    "elapsed_s": 0.04125700000440702,
+    "state": {
+      "ros": {
+        "blocked_signals": [],
+        "python_sigint": "<built-in function default_int_handler>",
+        "python_sigterm": "0",
+        "ros_handlers": "SignalHandlerOptions.ALL"
+      },
+      "gz": {
+        "blocked_signals": [],
+        "python_sigint": "<built-in function default_int_handler>",
+        "python_sigterm": "0",
+        "ros_handlers": "SignalHandlerOptions.ALL"
+      },
+      "ready": {
+        "blocked_signals": [],
+        "python_sigint": "<built-in function default_int_handler>",
+        "python_sigterm": "0",
+        "ros_handlers": "SignalHandlerOptions.ALL"
+      }
+    }
+  },
+  {
+    "mode": "gz-first",
+    "exit_code": 0,
+    "forced": false,
+    "elapsed_s": 0.07044845796190202,
+    "state": {
+      "gz": {
+        "blocked_signals": [],
+        "python_sigint": "<built-in function default_int_handler>",
+        "python_sigterm": "0",
+        "ros_handlers": "SignalHandlerOptions.NO"
+      },
+      "ros": {
+        "blocked_signals": [],
+        "python_sigint": "<built-in function default_int_handler>",
+        "python_sigterm": "0",
+        "ros_handlers": "SignalHandlerOptions.ALL"
+      },
+      "ready": {
+        "blocked_signals": [],
+        "python_sigint": "<built-in function default_int_handler>",
+        "python_sigterm": "0",
+        "ros_handlers": "SignalHandlerOptions.ALL"
+      }
+    }
+  },
+  {
+    "mode": "bridge",
+    "exit_code": 0,
+    "forced": false,
+    "elapsed_s": 0.039639458002056926,
+    "state": {
+      "blocked_signals": [],
+      "python_sigint": "<built-in function default_int_handler>",
+      "python_sigterm": "0",
+      "ros_handlers": "SignalHandlerOptions.ALL"
+    }
+  }
+]

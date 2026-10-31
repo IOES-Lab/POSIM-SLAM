@@ -1,0 +1,80 @@
+{
+  "descriptor": {
+    "frames": 93,
+    "detections": 2670,
+    "unique_tracks": 1578,
+    "repeated_tracks": 208,
+    "fitted": 208,
+    "fit_unavailable": 0,
+    "matched": 1092,
+    "ambiguous": 0,
+    "association_seconds": 0.00569983400000007,
+    "total_seconds": 6.562055959,
+    "opencv_version": "4.10.0",
+    "pose_uncertainty_used": false,
+    "physical_identity_verified": false,
+    "map_qualified": false,
+    "native_fusion": false,
+    "all_fitted_points_assessed": true,
+    "point_count": 208,
+    "surface_error_m": {
+      "rmse": 0.5715217229595745,
+      "median": 0.09837034366937569,
+      "p90": 0.9782000523384919,
+      "maximum": 2.3671333289064775
+    },
+    "beyond_10cm": 104,
+    "median_fixed_pose_measurement_position_3sigma_m": 5.675427804945831,
+    "measurement_only_3sigma_at_most_10cm": 0,
+    "median_whitened_fit_residual": 0.7842006086211732,
+    "finite_seed_oracle_near_surface_but_cost_selected_outside_10cm": 4,
+    "median_seed_spatial_spread_m": 7.375656403690798e-08,
+    "validation": {
+      "tracks_with_heldout": 9,
+      "observations": 70,
+      "geometry_valid": 62,
+      "geometry_invalid": 8,
+      "range_rmse_m": 0.027022190844818713,
+      "azimuth_rmse_rad": 0.014126818909863434
+    }
+  },
+  "projective": {
+    "frames": 93,
+    "detections": 2670,
+    "unique_tracks": 636,
+    "repeated_tracks": 63,
+    "fitted": 63,
+    "fit_unavailable": 0,
+    "matched": 344,
+    "ambiguous": 1690,
+    "association_seconds": 1.2388192080000007,
+    "total_seconds": 2.9114439579999996,
+    "opencv_version": "4.10.0",
+    "pose_uncertainty_used": false,
+    "physical_identity_verified": false,
+    "map_qualified": false,
+    "native_fusion": false,
+    "all_fitted_points_assessed": true,
+    "point_count": 63,
+    "surface_error_m": {
+      "rmse": 0.37265444431521255,
+      "median": 0.05980212933372453,
+      "p90": 0.40874179570017,
+      "maximum": 1.7907298617964447
+    },
+    "beyond_10cm": 22,
+    "median_fixed_pose_measurement_position_3sigma_m": 1.780224764812346,
+    "measurement_only_3sigma_at_most_10cm": 0,
+    "median_whitened_fit_residual": 0.6363331694630072,
+    "finite_seed_oracle_near_surface_but_cost_selected_outside_10cm": 1,
+    "median_seed_spatial_spread_m": 3.127086418729401e-08,
+    "validation": {
+      "tracks_with_heldout": 9,
+      "observations": 22,
+      "geometry_valid": 21,
+      "geometry_invalid": 1,
+      "range_rmse_m": 0.03178053762373489,
+      "azimuth_rmse_rad": 0.03438292188758228
+    }
+  }
+}

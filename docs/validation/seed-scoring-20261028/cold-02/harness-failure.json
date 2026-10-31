@@ -1,0 +1,8 @@
+{
+  "phase": "physical_mission_start",
+  "http_status": 409,
+  "error_body_retained": false,
+  "estimator_reset_observed": false,
+  "result": "incomplete",
+  "note": "Do not infer the rejection reason. Repeat after checking fresh vehicle/navigation state and retain HTTP error bodies."
+}

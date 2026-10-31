@@ -82,13 +82,15 @@ class DvlNativeTests(unittest.TestCase):
 
     def test_camera_with_multiple_original_dvl_states_between_images(self):
         for width,height in ((32,32),(320,240)):
-            with self.subTest(width=width,height=height):self.camera_case(width,height)
+            for recent in (3,16):
+                with self.subTest(width=width,height=height,recent_states=recent):
+                    self.camera_case(width,height,recent)
 
-    def camera_case(self,width,height):
+    def camera_case(self,width,height,recent):
         with tempfile.TemporaryDirectory() as folder:
             root=Path(folder);config=root/'calibration.json'
             config.write_text(json.dumps(dict(schema='posim-slam-vio-recording-1',orientation_used=False,
-                enable_joint_dvl=True,require_gravity_seed=True,max_recent_states=16,
+                enable_joint_dvl=True,require_gravity_seed=True,max_recent_states=recent,
                 width=width,height=height,fx=.8*width,fy=.8*width,cx=width/2,cy=height/2,T_i_c_q_xyzw=[0,0,0,1],T_i_c_translation_m=[0,0,0],
                 imu_rate_hz=100,gyro_noise_density=.001,accel_noise_density=.02,
                 gyro_bias_random_walk=.0001,accel_bias_random_walk=.001,gravity_m_s2=9.80665,max_imu_gap_s=.02)))
@@ -116,7 +118,7 @@ class DvlNativeTests(unittest.TestCase):
                     time.sleep(.002)
                 self.assertIsNotNone(state);self.assertEqual(state['stamp_ns'],stamp)
                 self.assertTrue(state['dvl']['optimization_included'])
-                self.assertLessEqual(state['initialization_window']['states'],17)
+                self.assertLessEqual(state['initialization_window']['states'],recent+1)
             np.testing.assert_allclose(state['position'],[.15*3.2,.04*3.2,0],atol=1e-4)
 
 

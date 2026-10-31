@@ -1,0 +1,45 @@
+{
+  "waypoints_xyz_depth_yaw": [
+    [
+      6.0,
+      -1.35,
+      1.5,
+      0.0
+    ],
+    [
+      6.0,
+      -1.35,
+      1.5,
+      -0.7853981633974483
+    ],
+    [
+      6.0,
+      -1.35,
+      1.5,
+      0.7853981633974483
+    ],
+    [
+      6.0,
+      -1.35,
+      1.5,
+      -0.7853981633974483
+    ],
+    [
+      6.0,
+      -1.35,
+      1.5,
+      0.7853981633974483
+    ],
+    [
+      6.0,
+      -1.35,
+      1.5,
+      0.0
+    ]
+  ],
+  "depth_m": 1.5,
+  "hold_seconds": 6.0,
+  "waypoint_hold_seconds": 6.0,
+  "return_home": true,
+  "reason": "Safe close inspection with explicit 45-degree sonar mount and existing heading targets; preserve planner clearance, raw model, noise and admission"
+}

@@ -1,0 +1,20 @@
+[
+  "/model/bluerov2/slam/visual/status",
+  "/model/bluerov2/slam/visual_dvl/status",
+  "/model/bluerov2/slam/visual_ping/status",
+  "/vehicle/sensors/camera",
+  "/vehicle/sensors/camera/camera_info",
+  "/vehicle/sensors/camera/compressed",
+  "/vehicle/sensors/camera_down",
+  "/vehicle/sensors/camera_down/camera_info",
+  "/vehicle/sensors/camera_down/compressed",
+  "/vehicle/sensors/dvl/status",
+  "/vehicle/sensors/dvl/velocity",
+  "/vehicle/sensors/imu",
+  "/vehicle/sensors/imu/status",
+  "/vehicle/sensors/multibeam_forward/normal_image",
+  "/vehicle/sensors/multibeam_forward/sonar_image",
+  "/vehicle/sensors/multibeam_forward/sonar_image_raw",
+  "/vehicle/sensors/pressure",
+  "/vehicle/sensors/surface_imu"
+]

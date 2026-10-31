@@ -1,0 +1,15 @@
+{
+  "base_record": "sonar-finite-geometry-fit-20261031",
+  "modules": {
+    "fit.py": "68e91f7a10ee768769ec7e7db86228f7cf1681524c4d62bd950531ee8461c759",
+    "assess.py": "bf2d428a0c8f7dd7adc66f13d8e76d39f56050a87e9ea684eb95ad897a9dc4a4",
+    "render.py": "63a32530fa981deae764dccac0ec037db4d0acf6ae2387bae517fe556c9699bb"
+  },
+  "package": {
+    "sonar_surface_power.py": "78bfd8443431788dcf64b4fcc5fa2f9643b3b290bd15b17775ce19587b6e972f",
+    "sonar_source_normals.py": "87647c8abf5baa386a9aabda194f08cb5a37af81cfeb57d1c5ba888aa8324ee5",
+    "sonar_source_surface.py": "99b3a3cfbf2bd40a93b54b7c8c0216dfe4110236752167ff77313aac2557fb4e",
+    "sonar_speckle.py": "28e4a325659b62997bfcb36442c15d31a295746ce9df109bfc5958c0dc1dbc94",
+    "sonar_power_evidence.py": "cfc22d5585a725e0810e695fcc847c937a393d47e95485ad5c2884b323d3350c"
+  }
+}

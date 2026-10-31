@@ -1,0 +1,21 @@
+{
+  "README.md": "6e1722ab97819a3dfe2fac50582ce377b248234a932d55e37aedc73f17933afd",
+  "authored-owner-reference-fixture-failure.log": "d16108946b29c84715d35cee420844ddb64d846901b78c0f91c1fee7d9ce0b28",
+  "batch-input.json": "370fe0a2992578b515d95b15751ca7837be891b60c421a86868c3e30efda85f2",
+  "build-commands.json": "2d1d1124936222448e3c0c7dceea4ed8a8bb17f0731c42ec2d69085a64a8f9ad",
+  "delayed-first-input.json": "672742642f2a21c3aeeeee5275222925e4d1d11cc33397e8468e00833874ed90",
+  "delayed-first-output.json": "43a5e92cf1fb3d286700322ebc345d140ce42463dd4f820dbcfbd1882fd0b7d8",
+  "delayed-next-input.json": "c340d862142898baad8d6e46e114282882e15b1b92dea6d205691dba996be21a",
+  "delayed-next-output.json": "08b7a98c1c7173625ac5f44aca1680e935c589f72aeda0e684cf145ed41668ba",
+  "delayed-source-paths.json": "bf33080aacca1e695e6fdf684dc510f3fb73fddb53b7c861e15e418b96834207",
+  "native-tests.log": "dcb52a5be67fc78e686b702bb82ac75aa380e9e18da63ba03c74b67846227585",
+  "owner-first-input.json": "672742642f2a21c3aeeeee5275222925e4d1d11cc33397e8468e00833874ed90",
+  "owner-first-output.json": "18d3d50bacfd2e98f1e19afe64bc003a1d247e462ea6317c5c6c55d03e850142",
+  "owner-next-input.json": "3b6cd744d8247ce27d6ee128c7d1396233ef5d6ed8b87378aa845cc943db20ee",
+  "owner-next-output.json": "b1d6250a78e70fb0c39ef0c546f2de4485252801401ae83d6a9439047f5ca338",
+  "qualification.json": "67c47c61b8b090737f7649f659441ff1878f831c640cbaa4fc0c51c72c67b53d",
+  "source-tests.log": "f6614de3714f5ad0810814166428e0ce92f6a6b248eb9367c14834171e3534db",
+  "verify.py": "e5e33bc3e0dcf7a82ef351490cbbbc156fb826ca4bfc022220af7fc92eebcf4d",
+  "wheel-receipt.json": "1be3ba033f22950d3748a56de9919a5d5442ea24c2825597cc4f6b662eb83b7e",
+  "wheel-tests.log": "03cb94086b7a0b35e35602b0adc27800418a0fe0e6aa03d3250670bc04983b0a"
+}

@@ -1,0 +1,20 @@
+{
+  "scope": "Ideal supplied box/plane/pose conditional mean; surface distance, not median height as object-height error",
+  "statistics": {
+    "all": {
+      "points": 74,
+      "surface_rmse_m": 0.1217568751710515,
+      "surface_maximum_m": 0.6615306664176792,
+      "beyond_10cm": 10
+    },
+    "paired": {
+      "points": 13,
+      "surface_rmse_m": 0.06185664018253826,
+      "surface_maximum_m": 0.11405935932744304,
+      "beyond_10cm": 2
+    }
+  },
+  "geometric_corner_witnesses": 12,
+  "geometric_corner_maximum_error_m": 1.336885555457667e-15,
+  "interpretation": "Intensity boundary ranges do not establish true corresponding edge rays. These controls do not isolate every image formation stage or qualify a real map."
+}

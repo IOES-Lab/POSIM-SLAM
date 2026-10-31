@@ -1,0 +1,128 @@
+{
+  "results": {
+    "angular_median": {
+      "all": {
+        "count": 3911,
+        "surface_rmse_m": 0.05533192634006449,
+        "median_m": 0.030820579399495483,
+        "p90_m": 0.09049153543783284,
+        "maximum_m": 0.21497845389289078,
+        "beyond_10cm": 319,
+        "height_quantiles_m": [
+          0.005098610789032125,
+          0.011446388601175786,
+          0.03992614958192595,
+          0.3763200240176757,
+          0.41654857958141905
+        ],
+        "near_surfaces": {
+          "seabed": 2677,
+          "inspection_block_0": 915,
+          "inspection_block_1": 0,
+          "inspection_block_2": 0,
+          "inspection_wall_0": 0,
+          "inspection_wall_1": 0
+        }
+      },
+      "paired": {
+        "count": 547,
+        "surface_rmse_m": 0.03243443197746267,
+        "median_m": 0.01832935367230526,
+        "p90_m": 0.05313454861526523,
+        "maximum_m": 0.12506337829906178,
+        "beyond_10cm": 9,
+        "height_quantiles_m": [
+          0.007271284970545227,
+          0.32652489389273925,
+          0.37820499627122045,
+          0.39750204618479434,
+          0.41654857958141905
+        ],
+        "near_surfaces": {
+          "seabed": 15,
+          "inspection_block_0": 523,
+          "inspection_block_1": 0,
+          "inspection_block_2": 0,
+          "inspection_wall_0": 0,
+          "inspection_wall_1": 0
+        }
+      }
+    },
+    "physical_plane": {
+      "all": {
+        "count": 1428,
+        "surface_rmse_m": 0.09700617159310237,
+        "median_m": 0.02171364448722124,
+        "p90_m": 0.21947400856241822,
+        "maximum_m": 0.32360077547272437,
+        "beyond_10cm": 286,
+        "height_quantiles_m": [
+          0.005234120277214398,
+          0.019308052093186798,
+          0.4038332808235957,
+          0.42335810351692216,
+          0.45414476880908594
+        ],
+        "near_surfaces": {
+          "seabed": 238,
+          "inspection_block_0": 904,
+          "inspection_block_1": 0,
+          "inspection_block_2": 0,
+          "inspection_wall_0": 0,
+          "inspection_wall_1": 0
+        }
+      },
+      "paired": {
+        "count": 325,
+        "surface_rmse_m": 0.02594371763206607,
+        "median_m": 0.011777251527110622,
+        "p90_m": 0.03185302809119552,
+        "maximum_m": 0.12938531455792623,
+        "beyond_10cm": 5,
+        "height_quantiles_m": [
+          0.047247231329563544,
+          0.3894751510557178,
+          0.41561089783094757,
+          0.4312139499724481,
+          0.45414476880908594
+        ],
+        "near_surfaces": {
+          "seabed": 0,
+          "inspection_block_0": 320,
+          "inspection_block_1": 0,
+          "inspection_block_2": 0,
+          "inspection_wall_0": 0,
+          "inspection_wall_1": 0
+        }
+      }
+    }
+  },
+  "alignment": {
+    "rotation": [
+      [
+        -0.2244889510756544,
+        0.9744766343247807,
+        0.0
+      ],
+      [
+        -0.9744766343247807,
+        -0.2244889510756544,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "translation": [
+      -0.036388892140565926,
+      0.013443116543257461,
+      -1.4421189257276719
+    ],
+    "scale": 1.0
+  },
+  "all_points_assessed": true,
+  "truth_and_scene_only_used_here": true,
+  "map_accepted": false
+}

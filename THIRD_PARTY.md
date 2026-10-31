@@ -25,6 +25,21 @@ depth-support comparison figures.
 라이선스, 원본 소스 리비전을 위 고지 파일에 보존합니다. 시각 지도의 깊이 지지
 비교 그림에도 같은 고지가 적용됩니다.
 
+## POSIM acoustic-model adaptation / POSIM 음향 모델 이식
+
+`sonar_source_normals.py` adapts
+[POSIM RaySurfaceNormals.hh](https://github.com/IOES-Lab/POSIM/blob/ffecee9be9976f68c9e883d6cf3bbd6d40eb7729/gazebo/posim_gz_multibeam_sonar/multibeam_sonar/RaySurfaceNormals.hh),
+revision `ffecee9be9976f68c9e883d6cf3bbd6d40eb7729`, under Apache-2.0.
+The NumPy adaptation preserves the spherical range geometry, one-sided
+tangents, 1.5° support and local plane-fit rule. The source SPDX notice and
+[Apache-2.0 license](LICENSE) are retained. This utility adds no native POSIM or
+OpenCV binary to the Python wheel.
+
+`sonar_source_normals.py`는 위 POSIM 고정 리비전의 Apache-2.0 함수를 NumPy로
+이식합니다. 구면 거리 격자, 한쪽 접선 선택, 1.5° 이웃 범위와 국소 평면 적합
+규칙을 유지합니다. 원본 SPDX 고지와 Apache-2.0 라이선스를 보존합니다.
+이 유틸리티는 Python wheel에 네이티브 POSIM·OpenCV 바이너리를 추가하지 않습니다.
+
 ## Estimator dependencies / 추정기 의존성
 
 The offline [CPU depth reference](docs/validation/visual-dense-reference-20261027/README.md)
@@ -144,6 +159,12 @@ BSD-3-Clause notice. Its source and preparation script are included under
 `native/basalt/imu_continuous.inc` and `prepare_joint_headers.py`; it introduces
 no additional dependency.
 
+The build-local optical-flow overlays preserve Basalt's BSD-3-Clause headers.
+`prepare_joint_headers.py` verifies their pinned hashes, adds reference-count
+diagnostics and retires unobserved birth-frame patches using the Apache-2.0
+`reference_patches.hpp`. The original dependency checkout remains unchanged.
+Both tracking algorithms originate in Basalt; this adds no dependency.
+
 선택형 연구 대상의 고정 버전과 고지는 위 파일에서 관리합니다. 외부 소스는 Python
 wheel에 포함하지 않으며 빌더가 정확한 원본 체크아웃을 검사하고 고지를 보존합니다.
 SDK의 Eigen 5.0.1·OpenCV·TBB·fmt 고지와 해당 소스 의무는 별도로 적용됩니다.
@@ -152,3 +173,9 @@ Stella용 Eigen 3.4.0 고지를 이 연구 대상에 대신 적용하지 않습�
 
 빌드 사본의 IMU 구간 확장은 고정 Basalt 헤더의 BSD-3-Clause 고지를 보존합니다.
 확장 소스와 생성 스크립트를 위 경로로 제공하며 추가 의존성은 없습니다.
+
+빌드 사본의 광학 흐름 변경은 Basalt의 BSD-3-Clause 헤더를 보존합니다.
+`prepare_joint_headers.py`가 고정한 원본 해시를 검사하고 참조 수 진단값과
+관측이 끝난 최초 프레임 패치의 해제를 추가합니다. 해제 함수
+`reference_patches.hpp`는 Apache-2.0 코드입니다. 원본 의존성 체크아웃은
+바꾸지 않습니다. 두 추적 알고리즘은 Basalt에서 제공하며 새 의존성은 없습니다.

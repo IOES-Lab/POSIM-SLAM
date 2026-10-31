@@ -1,0 +1,46 @@
+{
+  "profile": {
+    "beams": 256,
+    "vertical_rays": 256,
+    "range_bins": 599,
+    "bandwidth_hz": 29900.0,
+    "maximum_range_m": 15.0
+  },
+  "observation_setup_seconds": 0.5184503750060685,
+  "cases": [
+    {
+      "name": "pixels16",
+      "pixels": 16,
+      "independent_sources": 65536,
+      "analytic_seconds": 0.23240208299830556,
+      "full_fft_seconds": 2.135424458014313,
+      "relative_l2_error": {
+        "mean": 7.903265438625204e-15,
+        "covariance": 1.568452112745455e-14
+      },
+      "ideal_normal_mean_difference": 0.00016772278144036828,
+      "equivalent_looks_min_max": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "pixels64",
+      "pixels": 64,
+      "independent_sources": 65536,
+      "analytic_seconds": 3.773951208044309,
+      "full_fft_seconds": 2.588669749966357,
+      "relative_l2_error": {
+        "mean": 5.708674327061104e-15,
+        "covariance": 1.0572450436540165e-14
+      },
+      "ideal_normal_mean_difference": 0.0080153727850183,
+      "equivalent_looks_min_max": [
+        1.0,
+        1.0
+      ]
+    }
+  ],
+  "passed": true,
+  "scope": "Conditional supplied geometry; one local process timing, not native throughput or a SLAM result"
+}

@@ -1,0 +1,83 @@
+"""Deterministic change-of-IMU-basis control; not field/map acceptance."""
+from pathlib import Path
+import hashlib,json,sys,time
+import numpy as np
+from scipy.spatial.transform import Rotation
+
+root=Path.cwd();sys.path.insert(0,str(root/'libraries/posim-slam/src'))
+from posim_slam.live_client import LiveClient
+out=root/'.local/camera-view-fixed-20261029/basis-control';out.mkdir(exist_ok=True)
+binary=root/'.local/retained-startup-20261028/shared-factor-build/basalt_stream'
+
+def receive(client,kinds,stamp=None):
+    result={};deadline=time.monotonic()+20
+    while time.monotonic()<deadline:
+        for row in client.poll():
+            if row['type'] in kinds and (stamp is None or row.get('stamp_ns')==stamp):result[row['type']]=row
+        if len(result)==len(kinds):return result
+        time.sleep(.002)
+    raise RuntimeError('control_reply_timeout:'+str(stamp))
+
+def trial(name,B,recent):
+    base=out/(name+'-'+str(recent));base.mkdir(exist_ok=True)
+    config=dict(schema='posim-slam-vio-recording-1',orientation_used=False,
+        width=160,height=128,fx=100.,fy=100.,cx=80.,cy=64.,
+        T_i_c_q_xyzw=Rotation.from_matrix(B).as_quat().tolist(),
+        T_i_c_translation_m=(B@np.array([.2,-.1,.3])).tolist(),
+        imu_rate_hz=100.,gravity_m_s2=9.80665,max_imu_gap_s=.02,
+        require_gravity_seed=True,max_recent_states=recent,optical_flow_type='patch',
+        gyro_noise_density=.001,accel_noise_density=.02,
+        gyro_bias_random_walk=.0001,accel_bias_random_walk=.001,
+        enable_joint_dvl=True,enable_joint_pressure=True,
+        joint_map_information=True,map_point_three_sigma_m=.1,
+        map_observation_culling=True,record_visual_tracks=True)
+    calibration=base/'calibration.json';calibration.write_text(json.dumps(config))
+    (base/'dvl-calibration.json').write_text(json.dumps(dict(schema='posim-slam-dvl-calibration-1',
+        dvl_to_imu=B.tolist(),imu_to_dvl=(B@np.array([-.05,.04,.07])).tolist())))
+    (base/'pressure-calibration.json').write_text(json.dumps(dict(schema='posim-slam-pressure-calibration-1',
+        imu_to_pressure=(B@np.array([.07,.02,.1])).tolist())))
+    texture=(np.random.default_rng(17).integers(0,2,(32,104))*220+15).astype(np.uint8)
+    texture=np.repeat(np.repeat(texture,4,axis=0),4,axis=1)
+    states=[];maps=[];initial=1_000_000_000;next_imu=initial
+    with (base/'worker.log').open('w') as log:
+        client=LiveClient(binary,calibration,log)
+        try:
+            ready=receive(client,{'ready'})['ready'];(base/'ready.json').write_text(json.dumps(ready))
+            client.inertial_seed(initial,B@np.array([0,0,1]),B@np.array([.2,0,0]),[0,0,0],[0,0,0])
+            for index in range(121):
+                stamp=initial+index*100_000_000
+                while next_imu<=stamp+10_000_000:
+                    client.imu(next_imu,[0,0,0],B@np.array([0,0,9.80665]));next_imu+=10_000_000
+                client.dvl(stamp,[.2,0,0],np.eye(3)*.0001,gyro=[0,0,0],gyro_stamp_ns=stamp,
+                    gyro_covariance=np.eye(3)*.000001,bottom_locked=True,locked_beams=4)
+                client.pressure(stamp,17.1,.005**2)
+                client.image(stamp,160,128,texture[:,2*index:2*index+160].copy().tobytes())
+                rows=receive(client,{'state','map'},stamp);states.append(rows['state']);maps.append(rows['map'])
+            client.snapshot(1);export=receive(client,{'export'})['export']
+            (base/'export.json').write_text(json.dumps(export))
+        finally:client.close()
+    (base/'states.json').write_text(json.dumps(states));(base/'maps.json').write_text(json.dumps(maps))
+    return states,maps,json.loads((base/'calibration.archive-export-1.json').read_text()) if export['success'] else None
+
+reports=[]
+for recent in (3,16):
+    baseline=None
+    for name,B in [('identity',np.eye(3)),('pitch90',Rotation.from_euler('y',90,degrees=True).as_matrix()),
+                   ('roll180',Rotation.from_euler('x',180,degrees=True).as_matrix())]:
+        states,maps,archive=trial(name,B,recent)
+        C=Rotation.from_quat(states[0]['orientation_xyzw']).as_matrix()@B
+        positions=np.array([s['position'] for s in states])@C
+        rotations=np.array([C.T@Rotation.from_quat(s['orientation_xyzw']).as_matrix()@B for s in states])
+        ids=[] if archive is None else archive['ids'];points=np.empty((0,3)) if archive is None else np.array(archive['points'])@C
+        if baseline is None:baseline=(positions,rotations,ids,points)
+        bp,br,bi,bc=baseline
+        report=dict(case=name,recent_states=recent,states=len(states),archive_points=len(ids),
+            same_archive_ids=ids==bi,max_position_delta_m=float(np.max(np.linalg.norm(positions-bp,axis=1))),
+            max_camera_rotation_delta_rad=float(np.max(Rotation.from_matrix(rotations@np.transpose(br,(0,2,1))).magnitude())),
+            max_archive_delta_m=float(np.max(np.linalg.norm(points-bc,axis=1))) if ids==bi and len(ids) else None,
+            peak_visual_landmarks=max(m['landmarks_window'] for m in maps),
+            scope='Synthetic IMU-basis covariance; constant physical orientation, translated planar texture; not field or map accuracy acceptance')
+        reports.append(report);print(json.dumps(report),flush=True)
+result=dict(reports=reports,binary_sha256=hashlib.sha256(binary.read_bytes()).hexdigest(),
+    probe_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest())
+(out/'summary.json').write_text(json.dumps(result,indent=2)+'\n')

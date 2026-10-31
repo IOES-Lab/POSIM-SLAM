@@ -1,0 +1,33 @@
+{
+  "source_record": "sonar-translated-view-20261031b",
+  "public_helper_commit": "dcdbda212d28922c042afd63cac4e2e792b7deb0",
+  "public_helper_sha256": {
+    "dvl_plane.py": "1231bdc4b33c5c91675da165c7ff1fe537fc0517b762261ef6c33a842afb9a32",
+    "shadow_extract.py": "75b651550a612a303a46fff18d785602eedd3e34778b89ad51a1b03e88159790",
+    "shadow_geometry.py": "8b0fda6c15d1fb179d9526bcfedaa0a9577861e3afaf3a4e3447a48e7d644e2d",
+    "evaluate_vio.py": "8f384a2edbc0026782017679d11c8da46b451f1377af4c5a14f3de1c10317b04",
+    "surface_geometry.py": "bcde76abfff75d519f941921db46604566ef07c5d2ffc4c057549f1e4fd7192f"
+  },
+  "detector_protocol": {
+    "median_width": 5,
+    "normalized_range_samples": 128,
+    "aperture_guard_samples": 8,
+    "dark_drop_db": 8.0,
+    "bright_excess_db": 3.0,
+    "background_fit_dynamic_range_db": 25.0,
+    "minimum_beam_span": 3,
+    "minimum_sample_span": 3,
+    "minimum_area": 12,
+    "flank_length_m": 0.15,
+    "background": "one positive common gain; uniform supplied plane"
+  },
+  "representative_indices": [
+    48,
+    96,
+    144
+  ],
+  "native_factor": false,
+  "source_truth_rgb_used": false,
+  "uncertainty_unknown": true,
+  "settings_changed_from_previous_shadow_control": false
+}

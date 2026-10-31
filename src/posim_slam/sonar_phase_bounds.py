@@ -64,3 +64,41 @@ class BeamPhaseBounds:
         if not np.isfinite(lower).all() or not np.isfinite(upper).all():
             raise ValueError('beam_magnitude_interval_overflow')
         return dict(lower=lower, upper=upper)
+
+    def query_image(self, magnitudes, *, relative_error=0., absolute_error=0.):
+        """Bound every source in each raw range row, with bounded temporaries.
+
+        Each range row is bounded separately under the supplied complex mixing
+        model; no statistical independence is claimed. No smoothing, phase
+        estimate, threshold, range deconvolution or
+        elevation/occupancy inference is applied. A zero lower bound remains
+        unresolved. The dense result is the same polygon bound as query().
+        At most 2,000,000 range/source cells are accepted. The multiplication
+        temporary is at most 8 MiB, rather than a full range/beam/beam tensor.
+        """
+        values = np.asarray(magnitudes, dtype=float)
+        if (values.ndim != 2 or values.shape[1] != self.beams
+                or not 1 <= len(values) <= 4096 or values.size > 2_000_000
+                or not np.isfinite(values).all() or np.any(values < 0)):
+            raise ValueError('invalid_beam_magnitude_image')
+        if (not np.isscalar(relative_error) or not np.isscalar(absolute_error)
+                or not np.isfinite([relative_error, absolute_error]).all()
+                or not 0 <= relative_error < 1 or absolute_error < 0):
+            raise ValueError('invalid_beam_magnitude_error_interval')
+        lower = np.empty_like(values)
+        upper = np.empty_like(values)
+        block_rows = min(len(values), max(1, 1_048_576//self.beams**2))
+        for start in range(0, len(values), block_rows):
+            stop = min(start+block_rows, len(values))
+            with np.errstate(over='ignore', invalid='ignore'):
+                lo = np.maximum(0, values[start:stop]*(1-relative_error)-absolute_error)
+                hi = values[start:stop]*(1+relative_error)+absolute_error
+                summed = hi@self._weights.T
+                largest = np.max((lo+hi)[:, None, :]*self._weights[None, :, :], axis=2)
+                upper[start:stop] = summed
+                lower[start:stop] = np.maximum(0, largest-summed)
+        if not np.isfinite(lower).all() or not np.isfinite(upper).all():
+            raise ValueError('beam_magnitude_interval_overflow')
+        return dict(lower=lower, upper=upper,
+            maximum_product_temporary_bytes=block_rows*self.beams**2*8,
+            phase_estimated=False, range_response_included=False)

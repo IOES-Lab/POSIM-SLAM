@@ -1,0 +1,53 @@
+{
+  "records": [
+    {
+      "record": "sonar-roll-capability-20261030",
+      "capture_passed": false,
+      "failure": "AssertionError: roll_actuation_tracking_gate",
+      "truth_assessment_samples": 567,
+      "excluded_truth_support": 0,
+      "body_vs_fcu_roll_error_rmse_deg": 0.13612094854155787,
+      "body_vs_fcu_roll_error_max_deg": 0.6047042588700533,
+      "physical_body_roll_min_max_deg": [
+        -4.4342507244029115,
+        4.434970955730382
+      ],
+      "max_recorded_pre_stop_horizontal_m": 0.33310458100824136,
+      "pressure_depth_min_max_m": [
+        0.1494368187911094,
+        1.5272908220094246
+      ],
+      "disarmed_confirmed": true,
+      "owned_processes_exited": true,
+      "forced_exit": false,
+      "no_truth_used_for_slam": true,
+      "new_slam_update_installed": false,
+      "full_sweep_qualified": false
+    },
+    {
+      "record": "sonar-roll-arrival-20261030",
+      "capture_passed": false,
+      "failure": "RuntimeError: horizontal_guard",
+      "truth_assessment_samples": 660,
+      "excluded_truth_support": 0,
+      "body_vs_fcu_roll_error_rmse_deg": 0.2534921697955407,
+      "body_vs_fcu_roll_error_max_deg": 1.2387221197886724,
+      "physical_body_roll_min_max_deg": [
+        -18.922059922516286,
+        4.030629847427772
+      ],
+      "max_recorded_pre_stop_horizontal_m": 0.7933322101021879,
+      "pressure_depth_min_max_m": [
+        0.15109330547795005,
+        1.5270391782479482
+      ],
+      "disarmed_confirmed": true,
+      "owned_processes_exited": true,
+      "forced_exit": false,
+      "no_truth_used_for_slam": true,
+      "new_slam_update_installed": false,
+      "full_sweep_qualified": false
+    }
+  ],
+  "scope": "Control assessment only; raw and failed observations remain complete"
+}

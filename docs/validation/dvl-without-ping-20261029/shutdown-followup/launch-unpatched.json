@@ -1,0 +1,58 @@
+[
+  {
+    "mode": "ros-only-paused",
+    "exit_code": -9,
+    "parent_forced": true,
+    "elapsed_s": 20.00794300000416,
+    "child_sigkill": true,
+    "spin_exited": true,
+    "state": {
+      "pid": 15191,
+      "blocked_signals": [],
+      "python_sigint": "<built-in function default_int_handler>",
+      "ros_handlers": "SignalHandlerOptions.ALL"
+    }
+  },
+  {
+    "mode": "bridge-paused-child",
+    "exit_code": 0,
+    "parent_forced": false,
+    "elapsed_s": 0.07601841702125967,
+    "child_sigkill": false,
+    "spin_exited": true,
+    "state": {
+      "pid": 15412,
+      "blocked_signals": [],
+      "python_sigint": "<built-in function default_int_handler>",
+      "ros_handlers": "SignalHandlerOptions.ALL"
+    }
+  },
+  {
+    "mode": "bridge-paused-group",
+    "exit_code": -9,
+    "parent_forced": true,
+    "elapsed_s": 20.011126875004265,
+    "child_sigkill": true,
+    "spin_exited": true,
+    "state": {
+      "pid": 15474,
+      "blocked_signals": [],
+      "python_sigint": "<built-in function default_int_handler>",
+      "ros_handlers": "SignalHandlerOptions.ALL"
+    }
+  },
+  {
+    "mode": "bridge-paused-group-repeat",
+    "exit_code": -9,
+    "parent_forced": true,
+    "elapsed_s": 20.004452541994397,
+    "child_sigkill": true,
+    "spin_exited": true,
+    "state": {
+      "pid": 15723,
+      "blocked_signals": [],
+      "python_sigint": "<built-in function default_int_handler>",
+      "ros_handlers": "SignalHandlerOptions.ALL"
+    }
+  }
+]

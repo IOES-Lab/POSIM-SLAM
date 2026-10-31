@@ -1,5 +1,152 @@
 # POSIM-SLAM
 
+`delayed_surface_update` prepares correlated late-range rows with sequential
+block elimination. It updates retiring-state conditionals and retains live-state
+uncertainty without freezing recovered poses. The optional native
+`SurfaceMarginalOwner` installs new live rows, conditional replacements and the
+original-reading ledger together, while active IMU/DVL/pressure factors retain
+their own observations. It keeps unknown planes through optimization and state
+retirement. `native_surface.prepare_native_ranges` prepares only new rows from
+a native snapshot; `LiveClient` queues their installation on the estimator
+thread. Snapshot identity, original-reading reuse and explicit archive expiry
+are checked by the native owner. This optional transport is off by default;
+physical correspondence, calibrated uncertainty and useful sonar maps still
+require qualification. [Streaming API and recorded controls](docs/diagnostics/native-surface-transport-20261029/README.md),
+[native owner API](docs/diagnostics/native-surface-owner-20261029/README.md),
+[reference method](docs/diagnostics/delayed-surface-update-20261029/README.md).
+
+`native_surface_ranges` forms joint original cone/fan rows at native-owned
+coordinates. It initializes new unknown planes with the actual correlated
+factor rows and rechecks their complete support before preparing an update.
+Support-only range seeds add no likelihood. Read-only inspection preserves
+unbounded plane modes and reevaluates the nonlinear range equations.
+[Original-input initialization and rejected correspondence](docs/diagnostics/native-surface-ranges-20261029/README.md).
+
+`NativeSurfaceSnapshot.joint_marginal` reads the same native owner's undamped
+information and propagates live-state uncertainty through shared retiring-state
+conditionals. Householder QR and rank-aware SVD retain pose/plane/pressure cross
+terms and explicit unbounded directions. The result is a local approximation
+with frozen robust weights and declared sensor noise.
+[Joint uncertainty and original-input checks](docs/diagnostics/native-surface-information-20261029/README.md).
+
+The optional native surface-owner profile accepts `InitialImuBiasCalibration`
+for its first IMU state. Full covariance supplies finite prior rows; zero
+variance modes use exact affine support through optimization, retirement and
+delayed updates. IMU noise and later bias random walks remain separate. A
+matching worker must acknowledge this calibration.
+[Calibration input, original replay and limits](docs/diagnostics/native-imu-bias-calibration-20261029/README.md).
+
+[Wall/corner geometry control](docs/diagnostics/sonar-wall-corner-20261030/README.md) compares complete navigation and acoustic outputs on one moving recording, with matched RGB/sonar and identically projected field/cloud views.
+
+[Sonar input diagnostics](docs/diagnostics/sonar-pr31-36-20261030/README.md) check empty-frame recovery, the maximum-range grid and synchronized RGB/sonar input on Orca5 terrain. Saved complex operator outputs have an independent NumPy verifier.
+
+[Inspection-scene point controls](docs/diagnostics/sonar-inspection-scene-20261031/README.md) retain full clouds, matched native RGB and exact-pose comparisons using the corrected #31–36 integration. Point-map usefulness remains unqualified.
+
+[Projective association and motion design](docs/diagnostics/sonar-return-support-20261031/README.md) compare the same detections with descriptor and full-elevation search, retaining every conditional point and unresolved observability.
+
+[Close-view support](docs/diagnostics/sonar-close-view-20261031/README.md) separates actual target visibility from persistent feature correspondence and preserves complete unqualified native and offline maps.
+
+[Conditional shadow geometry](docs/diagnostics/sonar-shadow-support-20261031/README.md) compares angular and physical-plane backgrounds, preserving every observation hypothesis and the unresolved plane/pose uncertainty.
+
+[Known-plane DVL calibration](docs/diagnostics/dvl-plane-calibration-20261031/README.md) separates conditional return-direction means from unknown range uncertainty and retains all static forward-model controls.
+
+[Translated-view control](docs/diagnostics/sonar-translated-view-20261031/README.md) retains the measured 62.87° viewing baseline, matched sensors and every failed-map point; wider motion alone does not qualify the existing point model.
+
+[Translated shadow measurements](docs/diagnostics/sonar-translated-shadow-20261031/README.md) retain every conditional region observation and supplied-edge/mean-image controls. Intensity boundaries do not certify corresponding physical edges.
+
+`sonar_input` preserves zero-power `-inf` bins and validates the broadband source's
+physical range grid from bandwidth and sound speed. Feature candidates require
+measured echo support; image working values never replace raw observations.
+[Input contract and native continuity controls](docs/diagnostics/sonar-input-contract-20261030/README.md).
+
+`sonar_range_response.PosimRangeResponse` evaluates the source-specific frequency
+aperture and conditional diffuse-return power moments. Explicit scattering
+geometry, variances and beam mixing preserve dependence between range/beam
+pixels. [Assumptions and calibration controls](docs/diagnostics/sonar-range-response-20261030/README.md).
+
+`sonar_source_surface.SourceSurfaceObservation` evaluates supplied finite
+surfaces in the sonar frame, retaining opaque first-hit visibility, POSIM's
+range-derived ray normals and correlated power moments. Geometry and
+reflectivity remain caller-supplied hypotheses. [Source and numerical controls](docs/diagnostics/sonar-source-local-power-20261031/README.md).
+
+`sonar_scene_fit.SceneHeightFit` fits shared heights of finite multiple-reflector
+scene hypotheses to original power. Exact source re-tracing checks every step;
+fixed navigation, unmeasured prior surfaces and residual echoes remain explicit.
+[Inverse operation and complete outputs](docs/diagnostics/sonar-partial-scene-fit-20261031/README.md).
+
+`sonar_birth` proposes finite reflecting surfaces from unexplained power and
+whole-elevation region overlap across distinct views. Its output remains search
+support until scene/pose/time agreement and joint uncertainty are established.
+[Failed birth and whole-image controls](docs/diagnostics/sonar-reflector-birth-20261031/README.md).
+
+`sonar_power_evidence` profiles common reflectivity and preserves pixel
+correlations and gain nullspaces in conditional score information. [Native
+power controls and original-image baselines](docs/diagnostics/sonar-native-power-moments-20261031/README.md)
+qualify its source model before finite-geometry fitting.
+
+[Original-image finite-geometry fitting](docs/diagnostics/sonar-finite-geometry-fit-20261031/README.md)
+compares ground and opaque-prism hypotheses with explicit material gains.
+Better image scores do not improve complete shape RMSE; all model samples and
+matched field RGB remain. 원본 영상의 해저·유한 물체 적합은 영상 점수가 좋아져도
+전체 형상 RMSE를 개선하지 못하며, 모든 표면 가설 점과 같은 카메라의 현장 RGB를 보존합니다.
+
+[Height-diversity and scene-support controls](docs/diagnostics/sonar-height-diversity-fit-20261031/README.md)
+retain matched-search comparisons and post-seal reference-geometry ablations.
+Missing reflectors can be absorbed by a wrong flat background; adding views
+alone does not repair that model. 높이 관측·장면 범위 대조군은 누락 반사체를 잘못된
+평면이 대신 설명할 수 있음을 보존하며, 관측 추가만으로 모델을 고치지 못합니다.
+
+[Conditional sonar-row diagnostics](docs/diagnostics/sonar-structureless-update-20261030/README.md)
+provide a public numerical reproduction of single-posterior conditioning,
+retained weak-height modes and identical-clock DVL omission controls.
+
+`BeamPhaseBounds.query_image()` bounds source magnitudes across a raw acoustic
+image with at most 8 MiB of multiplication temporary storage. It retains unknown
+phase/elevation and does not turn source support into independent 3D points.
+[Separated-view geometry and complete candidate comparison](docs/diagnostics/sonar-source-support-20261030/README.md)
+includes joint pose uncertainty, original-pixel ownership and retained failures.
+
+`retired_pose_archive` jointly recovers old poses from native Gaussian
+conditionals, preserving shared noise and unbounded directions. It is a read-only
+diagnostic that conditions on known live coordinates; capture is off by default.
+[Delayed-state recovery and its covariance limits](docs/diagnostics/retired-pose-conditionals-20261029/README.md).
+
+`surface_prior` retains joint pose, unknown-plane and pressure-datum information
+when source states retire. It preserves cross terms and fixed owner references,
+with a bounded original-range ledger. The native owner bridge reads actual
+Basalt coordinates. [Delayed-update controls and remaining live-integration requirements](docs/diagnostics/persistent-surface-prior-20261029/README.md).
+
+`range_surface_joint` and the native `makeOwnedRangeSurfaces` adapter keep
+per-beam DVL cones, sonar fans, current poses and unknown planes in one
+correlated block. Original range keys identify every factor and support source.
+They require explicit surface hypotheses and uncertainty; live surface fusion
+is not enabled. [Geometry, native-owner checks and retention limits](docs/diagnostics/joint-surface-ranges-20261029/README.md).
+
+`dvl_surface` provides independent finite-cone/local-plane range residuals,
+pose/plane Jacobians, full covariance whitening and local support checks.
+It requires an associated plane and explicit uncertainty; the application still
+fuses DVL velocity. [Model, controlled measurements and limits](docs/diagnostics/dvl-cone-model-20261029/README.md).
+
+`sonar_plane_intersection` retains every elevation branch allowed by measured
+range/azimuth and a supplied plane. [Moving inputs and overlap diagnosis](docs/diagnostics/dvl-moving-overlap-20261029/README.md)
+describe the correspondence and spatial-support requirements.
+
+`evaluate_dvl_sonar_prediction.py` predicts FLS geometric ranges from DVL
+patches and poses that omit acoustic factors. It selects support without using
+observed onset ranges. [Inputs, complete errors and data availability](docs/diagnostics/sonar-low-altitude-15m-20261029/README.md).
+
+[Native VIO duration and mode lifecycle](docs/validation/native-vio-lifecycle-20261028/README.md) preserves complete long-run maps, sensor-combination transitions and independent navigation receipts.
+
+[Measured startup scoring controls](docs/validation/seed-scoring-20261028/README.md) preserve sensor-only numerical comparisons and complete source-bound recovery maps.
+
+[Status publication and VIO input recovery / 상태 발행과 VIO 입력 복구](docs/validation/status-publication-vio-20261028/README.md) retains six complete maps, matched RGB/cloud overviews and actual GUI switching evidence.
+
+[Default-budget reference tracking](docs/validation/default-reference-vio-20261028/README.md) compares equal-input native frontends and measured application ROS/managed maps.
+
+[Measured pressure and IMU-delivery comparisons](docs/validation/pressure-event-imu-20261028/README.md) retain full maps, default-budget failures and source-hashed recovery evidence.
+
+[IMU delivery at state events / 상태 시각에 맞춘 IMU 전송](docs/diagnostics/event-imu.md) keeps future raw samples in bounded history while a camera or sonar state awaits its native acknowledgement.
+
 [Static visual-map correspondence / 시각 지도의 고정 특징 대응](docs/diagnostics/visual-static-tracks.md)
 describes the physical-identity assumptions behind visual track and map checks.
 시각 트랙과 지도 검사의 물리적 동일성 가정을 설명합니다.
@@ -267,6 +414,11 @@ updates pose, velocity and biases in that standalone executable. The Python pack
 and supervises the worker and chooses its startup/default-mode policy.
 Native-world timing, calibration, recovery and package acceptance remain separate.
 
+The native camera interface offers previous-frame reference tracking (default)
+and birth-frame reference tracking through `optical_flow_type`. Birth-frame
+references retire after their last camera observation. See the
+[reference-patch contract](native/basalt/README.md#visual-reference-patches--시각-참조-패치).
+
 ## Experimental inertial observation filter
 
 `posim_slam.inertial_filter.InertialFilter` advances one local segment using
@@ -298,6 +450,14 @@ a two-second stationary raw-gyro calibration. It compares IMU-only propagation
 with DVL/pressure updates, with no truth observation updates or scale alignment.
 It does not qualify native sensor initialization, field accuracy, acoustic map
 integration or application defaults.
+
+## Moving camera/IMU startup
+
+`visual_inertial_seed.tracked_imu_seed` forms a provisional metric velocity and
+gravity seed from calibrated multi-view image tracks and raw IMU. Explicit
+gravity magnitude and pixel-noise inputs enable bounded RANSAC track consensus
+and tangent-plane gravity refinement. Biases remain conditioned inputs and
+initialization uncertainty needs qualification. [Inputs and method](docs/diagnostics/visual-inertial-seed.md).
 
 ## Moving IMU/DVL initialization
 

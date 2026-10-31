@@ -1,0 +1,3742 @@
+{
+  "geometry": {
+    "range_min": 0.4,
+    "range_max": 14.974916458129883,
+    "horizontal_fov": 2.0943951023931953,
+    "vertical_fov": 0.3490658503988659,
+    "sonar_to_imu": [
+      [
+        0.9393727128473789,
+        -3.0814879110195774e-33,
+        0.34289780745545134
+      ],
+      [
+        -4.199287023349639e-17,
+        -0.9999999999999999,
+        1.1503997859949083e-16
+      ],
+      [
+        0.34289780745545134,
+        -1.2246467991473532e-16,
+        -0.9393727128473789
+      ]
+    ],
+    "imu_to_sonar": [
+      0.24,
+      0.0,
+      0.0
+    ]
+  },
+  "states": {
+    "32010000000": {
+      "position": [
+        -0.12027291714562623,
+        0.2073072567418595,
+        -1.6091387450631822
+      ],
+      "attitude": [
+        [
+          0.9999976443475179,
+          -0.0021026319972598452,
+          0.0005387375049358465
+        ],
+        [
+          -0.0020980136720540996,
+          -0.9999622301006648,
+          -0.008434258161634931
+        ],
+        [
+          0.0005564512979583205,
+          0.008433108014802754,
+          -0.9999642858878329
+        ]
+      ]
+    },
+    "32500000000": {
+      "position": [
+        -0.1254620011305929,
+        0.20745916707636067,
+        -1.6159489350830634
+      ],
+      "attitude": [
+        [
+          0.9999720087152816,
+          -0.0029289241043594957,
+          -0.006884997423067954
+        ],
+        [
+          -0.00305042947252258,
+          -0.999838616894092,
+          -0.017704096908408164
+        ],
+        [
+          -0.006832032344618698,
+          0.01772460354704849,
+          -0.9998195646031048
+        ]
+      ]
+    },
+    "33010000000": {
+      "position": [
+        -0.10557290290562217,
+        0.17007699603453516,
+        -1.617565692317627
+      ],
+      "attitude": [
+        [
+          0.9999633154074032,
+          -0.0034431455509963886,
+          -0.007842996120664457
+        ],
+        [
+          -0.00404296823120833,
+          -0.9969612656624655,
+          -0.07779388906962124
+        ],
+        [
+          -0.007551307655998671,
+          0.07782274421664755,
+          -0.996938613072678
+        ]
+      ]
+    },
+    "33500000000": {
+      "position": [
+        -0.0896034466738275,
+        0.11983676794795303,
+        -1.6179405977081094
+      ],
+      "attitude": [
+        [
+          0.9999750708525594,
+          -0.0029954283956707102,
+          0.006394144363799109
+        ],
+        [
+          -0.002025134290338037,
+          -0.9891809097198015,
+          -0.14668683198232843
+        ],
+        [
+          0.00676435544045339,
+          0.14667022620365786,
+          -0.9891623164278162
+        ]
+      ]
+    },
+    "34010000000": {
+      "position": [
+        -0.09763381526593379,
+        0.0720237672031561,
+        -1.617662338080089
+      ],
+      "attitude": [
+        [
+          0.9999046140270392,
+          -0.0032992365758152302,
+          0.013411856152472432
+        ],
+        [
+          -0.00028897961250606125,
+          -0.9758357316663098,
+          -0.21850524317293027
+        ],
+        [
+          0.013808668951834765,
+          0.21848052508471924,
+          -0.9757436040377021
+        ]
+      ]
+    },
+    "34500000000": {
+      "position": [
+        -0.11340742499293494,
+        0.01681135464254108,
+        -1.6215555816310754
+      ],
+      "attitude": [
+        [
+          0.9999782621145239,
+          -0.002143328454532424,
+          -0.006235498500730335
+        ],
+        [
+          -0.0037416772676449714,
+          -0.963136046719959,
+          -0.26898876437478547
+        ],
+        [
+          -0.00542910210268765,
+          0.26900624835082376,
+          -0.9631231298222328
+        ]
+      ]
+    },
+    "35010000000": {
+      "position": [
+        -0.11463502602318378,
+        -0.06079767371746609,
+        -1.6194065274244225
+      ],
+      "attitude": [
+        [
+          0.9999680605747059,
+          -0.0019631786889240293,
+          -0.007747500235342583
+        ],
+        [
+          -0.004084043531159764,
+          -0.9587619642676143,
+          -0.2841809572475638
+        ],
+        [
+          -0.006870110544734411,
+          0.28420352179932856,
+          -0.9587393596687067
+        ]
+      ]
+    },
+    "35500000000": {
+      "position": [
+        -0.1072621177989254,
+        -0.1485296310561058,
+        -1.609542595234205
+      ],
+      "attitude": [
+        [
+          0.9999952380574118,
+          -0.0016841498271476126,
+          0.002586020467861673
+        ],
+        [
+          -0.0008418902703288041,
+          -0.955054802639158,
+          -0.2964280944456037
+        ],
+        [
+          0.0029690205915767127,
+          0.29642450572656565,
+          -0.9550516725923724
+        ]
+      ]
+    },
+    "36010000000": {
+      "position": [
+        -0.10780301944041779,
+        -0.245453961939319,
+        -1.6022176313254077
+      ],
+      "attitude": [
+        [
+          0.9999699805581912,
+          -0.0017684562359558073,
+          0.007543907806445023
+        ],
+        [
+          0.0006180116819024446,
+          -0.9523010251342461,
+          -0.3051595903618715
+        ],
+        [
+          0.0077237325181330075,
+          0.30515509186445783,
+          -0.9522713446624248
+        ]
+      ]
+    },
+    "36500000000": {
+      "position": [
+        -0.1121969855464678,
+        -0.3464589348045838,
+        -1.6029192482066177
+      ],
+      "attitude": [
+        [
+          0.9999715175142538,
+          -0.0018643650767149013,
+          -0.00731356979190779
+        ],
+        [
+          -0.004053362093341753,
+          -0.950067128541708,
+          -0.3120192646620619
+        ],
+        [
+          -0.006366664431289,
+          0.31204002212436516,
+          -0.9500476252149916
+        ]
+      ]
+    },
+    "37010000000": {
+      "position": [
+        -0.10552042823448399,
+        -0.4560527068383916,
+        -1.6070627175026724
+      ],
+      "attitude": [
+        [
+          0.9999741147373918,
+          -0.0015842385322134473,
+          -0.00701854995298071
+        ],
+        [
+          -0.003742561294432335,
+          -0.9476388328373976,
+          -0.3193221503960105
+        ],
+        [
+          -0.0061451680308069944,
+          0.3193401520116879,
+          -0.9476202320671637
+        ]
+      ]
+    },
+    "37500000000": {
+      "position": [
+        -0.10056762171780556,
+        -0.5558454030001203,
+        -1.6086544335127444
+      ],
+      "attitude": [
+        [
+          0.9999804743799946,
+          -0.0015948883617003808,
+          0.006042117995750498
+        ],
+        [
+          0.00044928220957575363,
+          -0.9460318917279344,
+          -0.3240732293466432
+        ],
+        [
+          0.006232896939386859,
+          0.3240696162320367,
+          -0.9460127033137364
+        ]
+      ]
+    },
+    "38010000000": {
+      "position": [
+        -0.11084811240070132,
+        -0.6555953131531911,
+        -1.6106218379395876
+      ],
+      "attitude": [
+        [
+          0.9999848141029146,
+          -0.0012832785815759793,
+          0.005359548454987095
+        ],
+        [
+          0.0003030185552214601,
+          -0.9582369196602724,
+          -0.2859753730301755
+        ],
+        [
+          0.005502703273344631,
+          0.28597265428022123,
+          -0.9582219791158052
+        ]
+      ]
+    },
+    "38500000000": {
+      "position": [
+        -0.12151811856617632,
+        -0.755689144603,
+        -1.6112199832984322
+      ],
+      "attitude": [
+        [
+          0.9999513459416036,
+          -0.0025170160527555763,
+          -0.009537839365678542
+        ],
+        [
+          -0.004640280778684905,
+          -0.9732629153455203,
+          -0.2296470452834819
+        ],
+        [
+          -0.008704800047691155,
+          0.22968013027540884,
+          -0.9732272418160113
+        ]
+      ]
+    }
+  },
+  "boxes": [
+    {
+      "name": "acoustic_validation_wall_0",
+      "center": [
+        8.0,
+        0.5,
+        -2.5
+      ],
+      "half_size": [
+        0.125,
+        3.0,
+        1.5
+      ]
+    },
+    {
+      "name": "acoustic_validation_wall_1",
+      "center": [
+        6.525,
+        3.375,
+        -2.5
+      ],
+      "half_size": [
+        1.35,
+        0.125,
+        1.5
+      ]
+    },
+    {
+      "name": "acoustic_validation_floor",
+      "center": [
+        0.0,
+        0.0,
+        -4.15
+      ],
+      "half_size": [
+        20.0,
+        20.0,
+        0.15
+      ]
+    },
+    {
+      "name": "acoustic_validation_object_0",
+      "center": [
+        3.8,
+        5.2,
+        -3.4
+      ],
+      "half_size": [
+        0.3,
+        0.4,
+        0.6
+      ]
+    },
+    {
+      "name": "acoustic_validation_object_1",
+      "center": [
+        5.0,
+        5.2,
+        -3.5
+      ],
+      "half_size": [
+        0.4,
+        0.3,
+        0.5
+      ]
+    },
+    {
+      "name": "acoustic_validation_object_2",
+      "center": [
+        4.4,
+        6.7,
+        -3.25
+      ],
+      "half_size": [
+        0.3,
+        0.3,
+        0.75
+      ]
+    }
+  ],
+  "variants": {
+    "lk_source_positive": [
+      {
+        "id": 0,
+        "observations": [
+          {
+            "stamp_ns": 32010000000,
+            "pixel": [
+              239.0,
+              237.0
+            ],
+            "range_azimuth": [
+              5.9448161125183105,
+              0.9157845440005571
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": true
+            },
+            "forward_backward_error_pixels": null
+          },
+          {
+            "stamp_ns": 32500000000,
+            "pixel": [
+              239.5891876220703,
+              237.5476531982422
+            ],
+            "range_azimuth": [
+              5.958553194446722,
+              0.9206236925557675
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": true
+            },
+            "forward_backward_error_pixels": null
+          }
+        ],
+        "lost_at_ns": 33010000000,
+        "reason": "optical_flow_rejected"
+      },
+      {
+        "id": 1,
+        "observations": [
+          {
+            "stamp_ns": 32010000000,
+            "pixel": [
+              171.0,
+              341.0
+            ],
+            "range_azimuth": [
+              8.553511619567871,
+              0.35727914508168584
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": true
+            },
+            "forward_backward_error_pixels": null
+          },
+          {
+            "stamp_ns": 32500000000,
+            "pixel": [
+              170.90821838378906,
+              341.2088623046875
+            ],
+            "range_azimuth": [
+              8.55875062593259,
+              0.3565253141072099
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": null
+          },
+          {
+            "stamp_ns": 33010000000,
+            "pixel": [
+              174.01771545410156,
+              342.341064453125
+            ],
+            "range_azimuth": [
+              8.587150265928358,
+              0.38206458883225625
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.06549118459224701
+          }
+        ],
+        "lost_at_ns": 33500000000,
+        "reason": "optical_flow_rejected"
+      },
+      {
+        "id": 2,
+        "observations": [
+          {
+            "stamp_ns": 32010000000,
+            "pixel": [
+              89.0,
+              338.0
+            ],
+            "range_azimuth": [
+              8.47826099395752,
+              -0.3162126342319832
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": null
+          },
+          {
+            "stamp_ns": 32500000000,
+            "pixel": [
+              87.92818450927734,
+              339.12109375
+            ],
+            "range_azimuth": [
+              8.506381995975971,
+              -0.3250157688816458
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": true
+            },
+            "forward_backward_error_pixels": null
+          },
+          {
+            "stamp_ns": 33010000000,
+            "pixel": [
+              89.47686004638672,
+              337.76153564453125
+            ],
+            "range_azimuth": [
+              8.472279463312589,
+              -0.31229602811298895
+            ],
+            "source_support": {
+              "positive": false,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.03772808611392975
+          },
+          {
+            "stamp_ns": 33500000000,
+            "pixel": [
+              93.84988403320312,
+              335.7687072753906
+            ],
+            "range_azimuth": [
+              8.422292269475292,
+              -0.2763789789960906
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.29384860396385193
+          },
+          {
+            "stamp_ns": 34010000000,
+            "pixel": [
+              96.90994262695312,
+              335.33209228515625
+            ],
+            "range_azimuth": [
+              8.411340419086628,
+              -0.25124578055561286
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.055453043431043625
+          },
+          {
+            "stamp_ns": 34500000000,
+            "pixel": [
+              100.13712310791016,
+              335.5535888671875
+            ],
+            "range_azimuth": [
+              8.416896337876096,
+              -0.22473991416284944
+            ],
+            "source_support": {
+              "positive": false,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.05581532418727875
+          },
+          {
+            "stamp_ns": 35010000000,
+            "pixel": [
+              101.1097412109375,
+              335.01739501953125
+            ],
+            "range_azimuth": [
+              8.403446697047912,
+              -0.21675149689710824
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.015640610828995705
+          },
+          {
+            "stamp_ns": 35500000000,
+            "pixel": [
+              102.404296875,
+              333.9919128417969
+            ],
+            "range_azimuth": [
+              8.377723971905652,
+              -0.2061189146370224
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.18441587686538696
+          },
+          {
+            "stamp_ns": 36010000000,
+            "pixel": [
+              104.39116668701172,
+              333.4165344238281
+            ],
+            "range_azimuth": [
+              8.363291443267372,
+              -0.1898001144140767
+            ],
+            "source_support": {
+              "positive": false,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.05477990210056305
+          },
+          {
+            "stamp_ns": 36500000000,
+            "pixel": [
+              106.2021255493164,
+              332.4763488769531
+            ],
+            "range_azimuth": [
+              8.339707760344027,
+              -0.17492614724230623
+            ],
+            "source_support": {
+              "positive": false,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.14170554280281067
+          },
+          {
+            "stamp_ns": 37010000000,
+            "pixel": [
+              107.95915985107422,
+              331.3008728027344
+            ],
+            "range_azimuth": [
+              8.31022220273735,
+              -0.16049508911273436
+            ],
+            "source_support": {
+              "positive": false,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.06218402832746506
+          },
+          {
+            "stamp_ns": 37500000000,
+            "pixel": [
+              110.1098861694336,
+              330.1471252441406
+            ],
+            "range_azimuth": [
+              8.281282127543818,
+              -0.1428304832417233
+            ],
+            "source_support": {
+              "positive": false,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.060038406401872635
+          },
+          {
+            "stamp_ns": 38010000000,
+            "pixel": [
+              109.83470916748047,
+              330.00238037109375
+            ],
+            "range_azimuth": [
+              8.277651413460262,
+              -0.14509059930227763
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.032150350511074066
+          },
+          {
+            "stamp_ns": 38500000000,
+            "pixel": [
+              109.3331298828125,
+              329.4000244140625
+            ],
+            "range_azimuth": [
+              8.262542192591354,
+              -0.1492102315697526
+            ],
+            "source_support": {
+              "positive": false,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.08653681725263596
+          }
+        ],
+        "lost_at_ns": null,
+        "reason": null
+      },
+      {
+        "id": 3,
+        "observations": [
+          {
+            "stamp_ns": 32010000000,
+            "pixel": [
+              186.0,
+              263.0
+            ],
+            "range_azimuth": [
+              6.59699010848999,
+              0.4804788467654896
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": null
+          },
+          {
+            "stamp_ns": 32500000000,
+            "pixel": [
+              186.2104949951172,
+              264.0423278808594
+            ],
+            "range_azimuth": [
+              6.623135383531917,
+              0.4822077194191476
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": null
+          },
+          {
+            "stamp_ns": 33010000000,
+            "pixel": [
+              189.415771484375,
+              264.3531494140625
+            ],
+            "range_azimuth": [
+              6.6309318884741515,
+              0.5085336604620876
+            ],
+            "source_support": {
+              "positive": false,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.156556636095047
+          },
+          {
+            "stamp_ns": 33500000000,
+            "pixel": [
+              193.4031524658203,
+              263.3321838378906
+            ],
+            "range_azimuth": [
+              6.605322455696296,
+              0.5412832918018744
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": true
+            },
+            "forward_backward_error_pixels": 0.10724736750125885
+          },
+          {
+            "stamp_ns": 34010000000,
+            "pixel": [
+              196.2553253173828,
+              263.4175109863281
+            ],
+            "range_azimuth": [
+              6.607462762796786,
+              0.5647090870522359
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": true
+            },
+            "forward_backward_error_pixels": 0.19676744937896729
+          },
+          {
+            "stamp_ns": 34500000000,
+            "pixel": [
+              198.66259765625,
+              267.31744384765625
+            ],
+            "range_azimuth": [
+              6.705286892014556,
+              0.5844807739822196
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.15517151355743408
+          },
+          {
+            "stamp_ns": 35010000000,
+            "pixel": [
+              200.33413696289062,
+              268.70849609375
+            ],
+            "range_azimuth": [
+              6.740179409272969,
+              0.5982096235284488
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.059740643948316574
+          },
+          {
+            "stamp_ns": 35500000000,
+            "pixel": [
+              202.2014617919922,
+              270.89697265625
+            ],
+            "range_azimuth": [
+              6.795074152760208,
+              0.6135465598545115
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.23687900602817535
+          },
+          {
+            "stamp_ns": 36010000000,
+            "pixel": [
+              203.91543579101562,
+              273.3313903808594
+            ],
+            "range_azimuth": [
+              6.856138925359119,
+              0.6276239673882897
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.02770249918103218
+          },
+          {
+            "stamp_ns": 36500000000,
+            "pixel": [
+              205.62020874023438,
+              274.78472900390625
+            ],
+            "range_azimuth": [
+              6.8925938055617735,
+              0.6416258202614651
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": true
+            },
+            "forward_backward_error_pixels": 0.4750259816646576
+          },
+          {
+            "stamp_ns": 37010000000,
+            "pixel": [
+              207.31582641601562,
+              276.2264099121094
+            ],
+            "range_azimuth": [
+              6.928756268986035,
+              0.6555524558480054
+            ],
+            "source_support": {
+              "positive": false,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.21461735665798187
+          },
+          {
+            "stamp_ns": 37500000000,
+            "pixel": [
+              209.26296997070312,
+              277.28839111328125
+            ],
+            "range_azimuth": [
+              6.955394518910907,
+              0.6715449627540407
+            ],
+            "source_support": {
+              "positive": false,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.10933630913496017
+          },
+          {
+            "stamp_ns": 38010000000,
+            "pixel": [
+              209.17576599121094,
+              279.7039489746094
+            ],
+            "range_azimuth": [
+              7.015985265665222,
+              0.6708287300709679
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.36735665798187256
+          },
+          {
+            "stamp_ns": 38500000000,
+            "pixel": [
+              208.699951171875,
+              282.6002502441406
+            ],
+            "range_azimuth": [
+              7.088635236665141,
+              0.6669207167939527
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.013158217072486877
+          }
+        ],
+        "lost_at_ns": null,
+        "reason": null
+      },
+      {
+        "id": 4,
+        "observations": [
+          {
+            "stamp_ns": 32010000000,
+            "pixel": [
+              194.0,
+              256.0
+            ],
+            "range_azimuth": [
+              6.421404838562012,
+              0.5461853658767233
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": true
+            },
+            "forward_backward_error_pixels": null
+          },
+          {
+            "stamp_ns": 32500000000,
+            "pixel": [
+              194.04449462890625,
+              256.8065185546875
+            ],
+            "range_azimuth": [
+              6.441635180497542,
+              0.5465508157949913
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": null
+          }
+        ],
+        "lost_at_ns": 33010000000,
+        "reason": "optical_flow_rejected"
+      },
+      {
+        "id": 5,
+        "observations": [
+          {
+            "stamp_ns": 32010000000,
+            "pixel": [
+              241.0,
+              311.0
+            ],
+            "range_azimuth": [
+              7.8010029792785645,
+              0.9322111427061748
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": null
+          },
+          {
+            "stamp_ns": 32500000000,
+            "pixel": [
+              241.00440979003906,
+              310.9670715332031
+            ],
+            "range_azimuth": [
+              7.800177016702946,
+              0.9322473615005928
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": true
+            },
+            "forward_backward_error_pixels": null
+          },
+          {
+            "stamp_ns": 33010000000,
+            "pixel": [
+              243.9769744873047,
+              311.8883972167969
+            ],
+            "range_azimuth": [
+              7.823287128063384,
+              0.9566619701209287
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.16533224284648895
+          },
+          {
+            "stamp_ns": 33500000000,
+            "pixel": [
+              248.9554901123047,
+              310.21405029296875
+            ],
+            "range_azimuth": [
+              7.78128857689444,
+              0.9975521055962966
+            ],
+            "source_support": {
+              "positive": false,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.11286714673042297
+          }
+        ],
+        "lost_at_ns": 34010000000,
+        "reason": "optical_flow_rejected"
+      },
+      {
+        "id": 6,
+        "observations": [
+          {
+            "stamp_ns": 32010000000,
+            "pixel": [
+              227.0,
+              256.0
+            ],
+            "range_azimuth": [
+              6.421404838562012,
+              0.8172247449282259
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": true
+            },
+            "forward_backward_error_pixels": null
+          },
+          {
+            "stamp_ns": 32500000000,
+            "pixel": [
+              228.01405334472656,
+              254.6999969482422
+            ],
+            "range_azimuth": [
+              6.3887961575819645,
+              0.825553506812972
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": true
+            },
+            "forward_backward_error_pixels": null
+          },
+          {
+            "stamp_ns": 33010000000,
+            "pixel": [
+              231.1576690673828,
+              256.0694274902344
+            ],
+            "range_azimuth": [
+              6.423146325920243,
+              0.851372969007075
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": true
+            },
+            "forward_backward_error_pixels": 0.15465272963047028
+          },
+          {
+            "stamp_ns": 33500000000,
+            "pixel": [
+              235.24781799316406,
+              257.40185546875
+            ],
+            "range_azimuth": [
+              6.456568338908255,
+              0.8849666837922137
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": true
+            },
+            "forward_backward_error_pixels": 0.08559910953044891
+          },
+          {
+            "stamp_ns": 34010000000,
+            "pixel": [
+              239.21726989746094,
+              258.9261169433594
+            ],
+            "range_azimuth": [
+              6.494802215427626,
+              0.9175690372095189
+            ],
+            "source_support": {
+              "positive": false,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.48283103108406067
+          },
+          {
+            "stamp_ns": 34500000000,
+            "pixel": [
+              241.38690185546875,
+              259.70355224609375
+            ],
+            "range_azimuth": [
+              6.514303046395071,
+              0.9353888719493036
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": true
+            },
+            "forward_backward_error_pixels": 0.14719930291175842
+          },
+          {
+            "stamp_ns": 35010000000,
+            "pixel": [
+              243.04600524902344,
+              261.3289794921875
+            ],
+            "range_azimuth": [
+              6.555074675648939,
+              0.9490156242785068
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": true
+            },
+            "forward_backward_error_pixels": 0.18497127294540405
+          },
+          {
+            "stamp_ns": 35500000000,
+            "pixel": [
+              244.9495391845703,
+              263.6016845703125
+            ],
+            "range_azimuth": [
+              6.612082488602027,
+              0.9646499226557415
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": true
+            },
+            "forward_backward_error_pixels": 0.29812926054000854
+          }
+        ],
+        "lost_at_ns": 36010000000,
+        "reason": "optical_flow_rejected"
+      },
+      {
+        "id": 7,
+        "observations": [
+          {
+            "stamp_ns": 32010000000,
+            "pixel": [
+              223.0,
+              270.0
+            ],
+            "range_azimuth": [
+              6.7725749015808105,
+              0.7843714659916369
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": null
+          },
+          {
+            "stamp_ns": 32500000000,
+            "pixel": [
+              223.7186279296875,
+              268.80572509765625
+            ],
+            "range_azimuth": [
+              6.742618257063441,
+              0.7902737746422995
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": null
+          },
+          {
+            "stamp_ns": 33010000000,
+            "pixel": [
+              226.1289825439453,
+              270.8591003417969
+            ],
+            "range_azimuth": [
+              6.7941241809749044,
+              0.8100708161444384
+            ],
+            "source_support": {
+              "positive": false,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.1490834653377533
+          },
+          {
+            "stamp_ns": 33500000000,
+            "pixel": [
+              230.14280700683594,
+              273.3726806640625
+            ],
+            "range_azimuth": [
+              6.857174631906673,
+              0.843037605781005
+            ],
+            "source_support": {
+              "positive": false,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.04603375494480133
+          },
+          {
+            "stamp_ns": 34010000000,
+            "pixel": [
+              232.68727111816406,
+              275.61553955078125
+            ],
+            "range_azimuth": [
+              6.9134334767004475,
+              0.8639360770293291
+            ],
+            "source_support": {
+              "positive": false,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.0526757538318634
+          },
+          {
+            "stamp_ns": 34500000000,
+            "pixel": [
+              234.0240936279297,
+              277.7367248535156
+            ],
+            "range_azimuth": [
+              6.966640317055862,
+              0.8749158393256597
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.26385605335235596
+          },
+          {
+            "stamp_ns": 35010000000,
+            "pixel": [
+              235.36537170410156,
+              279.94207763671875
+            ],
+            "range_azimuth": [
+              7.0219583759317175,
+              0.8859321816868196
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": true
+            },
+            "forward_backward_error_pixels": 0.049165450036525726
+          },
+          {
+            "stamp_ns": 35500000000,
+            "pixel": [
+              236.91444396972656,
+              282.2313232421875
+            ],
+            "range_azimuth": [
+              7.079381240764633,
+              0.8986552116570828
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": true
+            },
+            "forward_backward_error_pixels": 0.1529206931591034
+          },
+          {
+            "stamp_ns": 36010000000,
+            "pixel": [
+              237.83425903320312,
+              287.0024719238281
+            ],
+            "range_azimuth": [
+              7.19905854848912,
+              0.9062098949073549
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.2184700220823288
+          },
+          {
+            "stamp_ns": 36500000000,
+            "pixel": [
+              239.5549774169922,
+              286.7774353027344
+            ],
+            "range_azimuth": [
+              7.193413832981605,
+              0.9203427153962414
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.40251022577285767
+          },
+          {
+            "stamp_ns": 37010000000,
+            "pixel": [
+              241.364990234375,
+              288.76226806640625
+            ],
+            "range_azimuth": [
+              7.243200468714349,
+              0.9352089058981468
+            ],
+            "source_support": {
+              "positive": false,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.31963253021240234
+          },
+          {
+            "stamp_ns": 37500000000,
+            "pixel": [
+              242.4246063232422,
+              292.573974609375
+            ],
+            "range_azimuth": [
+              7.338812523055822,
+              0.9439118553024469
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": true
+            },
+            "forward_backward_error_pixels": 0.3202410936355591
+          },
+          {
+            "stamp_ns": 38010000000,
+            "pixel": [
+              241.72239685058594,
+              296.0458984375
+            ],
+            "range_azimuth": [
+              7.425900669768453,
+              0.9381443827896836
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": true
+            },
+            "forward_backward_error_pixels": 0.2403584122657776
+          },
+          {
+            "stamp_ns": 38500000000,
+            "pixel": [
+              241.46255493164062,
+              296.7156066894531
+            ],
+            "range_azimuth": [
+              7.442699324747082,
+              0.9360102310590778
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.2925826907157898
+          }
+        ],
+        "lost_at_ns": null,
+        "reason": null
+      },
+      {
+        "id": 8,
+        "observations": [
+          {
+            "stamp_ns": 32010000000,
+            "pixel": [
+              90.0,
+              333.0
+            ],
+            "range_azimuth": [
+              8.352843284606934,
+              -0.3079993101158797
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": true
+            },
+            "forward_backward_error_pixels": null
+          },
+          {
+            "stamp_ns": 32500000000,
+            "pixel": [
+              89.04131317138672,
+              334.1118469238281
+            ],
+            "range_azimuth": [
+              8.380732343473937,
+              -0.31587331576511996
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": null
+          },
+          {
+            "stamp_ns": 33010000000,
+            "pixel": [
+              90.5219955444336,
+              333.19873046875
+            ],
+            "range_azimuth": [
+              8.357828148640692,
+              -0.3037119936986867
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": true
+            },
+            "forward_backward_error_pixels": 0.14010068774223328
+          },
+          {
+            "stamp_ns": 33500000000,
+            "pixel": [
+              94.11046600341797,
+              330.6492004394531
+            ],
+            "range_azimuth": [
+              8.293875951727387,
+              -0.27423873853456
+            ],
+            "source_support": {
+              "positive": false,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.18110458552837372
+          },
+          {
+            "stamp_ns": 34010000000,
+            "pixel": [
+              96.760986328125,
+              329.77618408203125
+            ],
+            "range_azimuth": [
+              8.271977609372698,
+              -0.2524692060072754
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.054395295679569244
+          },
+          {
+            "stamp_ns": 34500000000,
+            "pixel": [
+              100.1783218383789,
+              330.3576354980469
+            ],
+            "range_azimuth": [
+              8.286562470311765,
+              -0.2244015360434161
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.04239128902554512
+          },
+          {
+            "stamp_ns": 35010000000,
+            "pixel": [
+              100.9731674194336,
+              329.4784240722656
+            ],
+            "range_azimuth": [
+              8.264508733700495,
+              -0.2178732195177118
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": true
+            },
+            "forward_backward_error_pixels": 0.031727515161037445
+          },
+          {
+            "stamp_ns": 35500000000,
+            "pixel": [
+              101.98113250732422,
+              328.2330322265625
+            ],
+            "range_azimuth": [
+              8.233269895194098,
+              -0.2095944930701992
+            ],
+            "source_support": {
+              "positive": false,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.016880834475159645
+          },
+          {
+            "stamp_ns": 36010000000,
+            "pixel": [
+              103.94197845458984,
+              327.53936767578125
+            ],
+            "range_azimuth": [
+              8.21587033139076,
+              -0.19348943859261097
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": true
+            },
+            "forward_backward_error_pixels": 0.05762214586138725
+          },
+          {
+            "stamp_ns": 36500000000,
+            "pixel": [
+              105.97860717773438,
+              327.07733154296875
+            ],
+            "range_azimuth": [
+              8.204280828707851,
+              -0.1767619742234003
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": true
+            },
+            "forward_backward_error_pixels": 0.12570326030254364
+          },
+          {
+            "stamp_ns": 37010000000,
+            "pixel": [
+              107.69361877441406,
+              325.8415832519531
+            ],
+            "range_azimuth": [
+              8.173283884709235,
+              -0.16267605626375045
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.022118372842669487
+          },
+          {
+            "stamp_ns": 37500000000,
+            "pixel": [
+              109.62794494628906,
+              324.5135803222656
+            ],
+            "range_azimuth": [
+              8.13997286761878,
+              -0.14678882046773767
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": true
+            },
+            "forward_backward_error_pixels": 0.028743987902998924
+          },
+          {
+            "stamp_ns": 38010000000,
+            "pixel": [
+              109.59615325927734,
+              324.746337890625
+            ],
+            "range_azimuth": [
+              8.14581125183031,
+              -0.1470499358360441
+            ],
+            "source_support": {
+              "positive": false,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.055721089243888855
+          },
+          {
+            "stamp_ns": 38500000000,
+            "pixel": [
+              109.5824966430664,
+              324.9132385253906
+            ],
+            "range_azimuth": [
+              8.149997710890602,
+              -0.1471621020249734
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.16640907526016235
+          }
+        ],
+        "lost_at_ns": null,
+        "reason": null
+      },
+      {
+        "id": 9,
+        "observations": [
+          {
+            "stamp_ns": 32010000000,
+            "pixel": [
+              176.0,
+              309.0
+            ],
+            "range_azimuth": [
+              7.75083589553833,
+              0.3983457006619598
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": null
+          },
+          {
+            "stamp_ns": 32500000000,
+            "pixel": [
+              177.16229248046875,
+              306.6708679199219
+            ],
+            "range_azimuth": [
+              7.692413013486657,
+              0.40789200697648265
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": null
+          }
+        ],
+        "lost_at_ns": 33010000000,
+        "reason": "optical_flow_rejected"
+      },
+      {
+        "id": 10,
+        "observations": [
+          {
+            "stamp_ns": 32010000000,
+            "pixel": [
+              182.0,
+              260.0
+            ],
+            "range_azimuth": [
+              6.5217390060424805,
+              0.447625596599039
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": null
+          },
+          {
+            "stamp_ns": 32500000000,
+            "pixel": [
+              181.70889282226562,
+              261.470458984375
+            ],
+            "range_azimuth": [
+              6.558623549877666,
+              0.44523465089325964
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": null
+          }
+        ],
+        "lost_at_ns": 33010000000,
+        "reason": "optical_flow_rejected"
+      },
+      {
+        "id": 11,
+        "observations": [
+          {
+            "stamp_ns": 32010000000,
+            "pixel": [
+              103.0,
+              198.0
+            ],
+            "range_azimuth": [
+              4.966555118560791,
+              -0.201226222611122
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": true
+            },
+            "forward_backward_error_pixels": null
+          },
+          {
+            "stamp_ns": 32500000000,
+            "pixel": [
+              103.71177673339844,
+              195.29161071777344
+            ],
+            "range_azimuth": [
+              4.898619122599484,
+              -0.19538016230170355
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": null
+          },
+          {
+            "stamp_ns": 33010000000,
+            "pixel": [
+              113.96894073486328,
+              197.35401916503906
+            ],
+            "range_azimuth": [
+              4.950351631239755,
+              -0.11113486092959816
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.23301993310451508
+          }
+        ],
+        "lost_at_ns": 33500000000,
+        "reason": "optical_flow_rejected"
+      },
+      {
+        "id": 12,
+        "observations": [
+          {
+            "stamp_ns": 32010000000,
+            "pixel": [
+              175.0,
+              202.0
+            ],
+            "range_azimuth": [
+              5.06688928604126,
+              0.3901324036909302
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": null
+          },
+          {
+            "stamp_ns": 32500000000,
+            "pixel": [
+              175.68527221679688,
+              198.05978393554688
+            ],
+            "range_azimuth": [
+              4.968054711411241,
+              0.3957607479134787
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": null
+          }
+        ],
+        "lost_at_ns": 33010000000,
+        "reason": "optical_flow_rejected"
+      },
+      {
+        "id": 13,
+        "observations": [
+          {
+            "stamp_ns": 32010000000,
+            "pixel": [
+              236.0,
+              248.0
+            ],
+            "range_azimuth": [
+              6.220735549926758,
+              0.8911445418808169
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": null
+          },
+          {
+            "stamp_ns": 32500000000,
+            "pixel": [
+              236.67466735839844,
+              247.91143798828125
+            ],
+            "range_azimuth": [
+              6.218514100997709,
+              0.8966858368157833
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": true
+            },
+            "forward_backward_error_pixels": null
+          },
+          {
+            "stamp_ns": 33010000000,
+            "pixel": [
+              239.9303436279297,
+              249.1531982421875
+            ],
+            "range_azimuth": [
+              6.2496618463192135,
+              0.923425694042246
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.17038854956626892
+          },
+          {
+            "stamp_ns": 33500000000,
+            "pixel": [
+              244.06283569335938,
+              250.58705139160156
+            ],
+            "range_azimuth": [
+              6.285628521683975,
+              0.9573671734722766
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.07834538072347641
+          },
+          {
+            "stamp_ns": 34010000000,
+            "pixel": [
+              247.81851196289062,
+              251.50833129882812
+            ],
+            "range_azimuth": [
+              6.308737878629472,
+              0.9882137536090415
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.45114460587501526
+          }
+        ],
+        "lost_at_ns": 34500000000,
+        "reason": "optical_flow_rejected"
+      },
+      {
+        "id": 14,
+        "observations": [
+          {
+            "stamp_ns": 32010000000,
+            "pixel": [
+              231.0,
+              248.0
+            ],
+            "range_azimuth": [
+              6.220735549926758,
+              0.850077972519118
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": true
+            },
+            "forward_backward_error_pixels": null
+          },
+          {
+            "stamp_ns": 32500000000,
+            "pixel": [
+              231.76243591308594,
+              247.2890167236328
+            ],
+            "range_azimuth": [
+              6.202901571145048,
+              0.8563401509294297
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": true
+            },
+            "forward_backward_error_pixels": null
+          },
+          {
+            "stamp_ns": 33010000000,
+            "pixel": [
+              234.4987030029297,
+              248.48974609375
+            ],
+            "range_azimuth": [
+              6.233020116575062,
+              0.8788139688265794
+            ],
+            "source_support": {
+              "positive": false,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.17909972369670868
+          },
+          {
+            "stamp_ns": 33500000000,
+            "pixel": [
+              238.95870971679688,
+              249.76351928710938
+            ],
+            "range_azimuth": [
+              6.264970859803725,
+              0.915445411347451
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": true
+            },
+            "forward_backward_error_pixels": 0.028978606685996056
+          }
+        ],
+        "lost_at_ns": 34010000000,
+        "reason": "optical_flow_rejected"
+      },
+      {
+        "id": 15,
+        "observations": [
+          {
+            "stamp_ns": 32010000000,
+            "pixel": [
+              197.0,
+              263.0
+            ],
+            "range_azimuth": [
+              6.59699010848999,
+              0.5708253508864002
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": true
+            },
+            "forward_backward_error_pixels": null
+          },
+          {
+            "stamp_ns": 32500000000,
+            "pixel": [
+              197.13294982910156,
+              263.11767578125
+            ],
+            "range_azimuth": [
+              6.599941833876073,
+              0.5719173037537316
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": true
+            },
+            "forward_backward_error_pixels": null
+          },
+          {
+            "stamp_ns": 33010000000,
+            "pixel": [
+              200.2847442626953,
+              264.36676025390625
+            ],
+            "range_azimuth": [
+              6.63127329654526,
+              0.5978039464686384
+            ],
+            "source_support": {
+              "positive": false,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.1995917707681656
+          },
+          {
+            "stamp_ns": 33500000000,
+            "pixel": [
+              204.38644409179688,
+              263.2778625488281
+            ],
+            "range_azimuth": [
+              6.603959885367658,
+              0.63149251263411
+            ],
+            "source_support": {
+              "positive": false,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.06580881029367447
+          },
+          {
+            "stamp_ns": 34010000000,
+            "pixel": [
+              207.09307861328125,
+              262.909912109375
+            ],
+            "range_azimuth": [
+              6.5947303851135075,
+              0.6537229540830458
+            ],
+            "source_support": {
+              "positive": false,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.3248584568500519
+          },
+          {
+            "stamp_ns": 34500000000,
+            "pixel": [
+              209.5179901123047,
+              266.5283508300781
+            ],
+            "range_azimuth": [
+              6.685493644268718,
+              0.6736395203799719
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.20295798778533936
+          },
+          {
+            "stamp_ns": 35010000000,
+            "pixel": [
+              211.20855712890625,
+              267.0477294921875
+            ],
+            "range_azimuth": [
+              6.698521500686184,
+              0.6875246249293296
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.2144637107849121
+          }
+        ],
+        "lost_at_ns": 35500000000,
+        "reason": "optical_flow_rejected"
+      },
+      {
+        "id": 16,
+        "observations": [
+          {
+            "stamp_ns": 32010000000,
+            "pixel": [
+              102.0,
+              325.0
+            ],
+            "range_azimuth": [
+              8.15217399597168,
+              -0.20943952856935477
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": null
+          },
+          {
+            "stamp_ns": 32500000000,
+            "pixel": [
+              99.99774932861328,
+              326.6094970703125
+            ],
+            "range_azimuth": [
+              8.192545883124694,
+              -0.22588463483565396
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": null
+          },
+          {
+            "stamp_ns": 33010000000,
+            "pixel": [
+              104.17093658447266,
+              324.1575622558594
+            ],
+            "range_azimuth": [
+              8.131042673543561,
+              -0.1916089328346571
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.44843894243240356
+          }
+        ],
+        "lost_at_ns": 33500000000,
+        "reason": "optical_flow_rejected"
+      },
+      {
+        "id": 17,
+        "observations": [
+          {
+            "stamp_ns": 32010000000,
+            "pixel": [
+              248.0,
+              319.0
+            ],
+            "range_azimuth": [
+              8.00167179107666,
+              0.9897043804384891
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": null
+          },
+          {
+            "stamp_ns": 32500000000,
+            "pixel": [
+              248.20120239257812,
+              319.44140625
+            ],
+            "range_azimuth": [
+              8.012743823230267,
+              0.9913569156742937
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": true
+            },
+            "forward_backward_error_pixels": null
+          }
+        ],
+        "lost_at_ns": 33010000000,
+        "reason": "optical_flow_rejected"
+      },
+      {
+        "id": 18,
+        "observations": [
+          {
+            "stamp_ns": 32010000000,
+            "pixel": [
+              98.0,
+              333.0
+            ],
+            "range_azimuth": [
+              8.352843284606934,
+              -0.24229278995432738
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": true
+            },
+            "forward_backward_error_pixels": null
+          },
+          {
+            "stamp_ns": 32500000000,
+            "pixel": [
+              96.96574401855469,
+              333.80743408203125
+            ],
+            "range_azimuth": [
+              8.373096591210924,
+              -0.25078746598106566
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": null
+          }
+        ],
+        "lost_at_ns": 33010000000,
+        "reason": "optical_flow_rejected"
+      },
+      {
+        "id": 19,
+        "observations": [
+          {
+            "stamp_ns": 32010000000,
+            "pixel": [
+              102.0,
+              330.0
+            ],
+            "range_azimuth": [
+              8.277591705322266,
+              -0.20943952856935477
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": null
+          },
+          {
+            "stamp_ns": 32500000000,
+            "pixel": [
+              99.98776245117188,
+              331.6023864746094
+            ],
+            "range_azimuth": [
+              8.31778523355024,
+              -0.22596666031937845
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": null
+          },
+          {
+            "stamp_ns": 33010000000,
+            "pixel": [
+              103.5361328125,
+              329.4625244140625
+            ],
+            "range_azimuth": [
+              8.264109913958237,
+              -0.19682278455440394
+            ],
+            "source_support": {
+              "positive": false,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.14894652366638184
+          }
+        ],
+        "lost_at_ns": 33500000000,
+        "reason": "optical_flow_rejected"
+      },
+      {
+        "id": 20,
+        "observations": [
+          {
+            "stamp_ns": 32010000000,
+            "pixel": [
+              109.0,
+              328.0
+            ],
+            "range_azimuth": [
+              8.227424621582031,
+              -0.15194633462752344
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": null
+          },
+          {
+            "stamp_ns": 32500000000,
+            "pixel": [
+              106.57970428466797,
+              329.4207458496094
+            ],
+            "range_azimuth": [
+              8.263061959587503,
+              -0.171824973539416
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": null
+          },
+          {
+            "stamp_ns": 33010000000,
+            "pixel": [
+              110.12709045410156,
+              327.368896484375
+            ],
+            "range_azimuth": [
+              8.211594310123473,
+              -0.14268917911463022
+            ],
+            "source_support": {
+              "positive": false,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.1500009447336197
+          }
+        ],
+        "lost_at_ns": 33500000000,
+        "reason": "optical_flow_rejected"
+      },
+      {
+        "id": 21,
+        "observations": [
+          {
+            "stamp_ns": 32010000000,
+            "pixel": [
+              251.0,
+              314.0
+            ],
+            "range_azimuth": [
+              7.876254558563232,
+              1.0143443514654924
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": null
+          },
+          {
+            "stamp_ns": 32500000000,
+            "pixel": [
+              251.0762481689453,
+              314.33294677734375
+            ],
+            "range_azimuth": [
+              7.884606042993255,
+              1.0149705987800788
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": null
+          }
+        ],
+        "lost_at_ns": 33010000000,
+        "reason": "optical_flow_rejected"
+      },
+      {
+        "id": 22,
+        "observations": [
+          {
+            "stamp_ns": 32010000000,
+            "pixel": [
+              191.0,
+              248.0
+            ],
+            "range_azimuth": [
+              6.220735549926758,
+              0.5215454262805204
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": null
+          },
+          {
+            "stamp_ns": 32500000000,
+            "pixel": [
+              191.41336059570312,
+              248.70281982421875
+            ],
+            "range_azimuth": [
+              6.238364760414697,
+              0.5249405031069173
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": true
+            },
+            "forward_backward_error_pixels": null
+          },
+          {
+            "stamp_ns": 33010000000,
+            "pixel": [
+              193.69830322265625,
+              251.216796875
+            ],
+            "range_azimuth": [
+              6.301425162702799,
+              0.5437074466997346
+            ],
+            "source_support": {
+              "positive": false,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.2802976369857788
+          },
+          {
+            "stamp_ns": 33500000000,
+            "pixel": [
+              196.94883728027344,
+              250.33375549316406
+            ],
+            "range_azimuth": [
+              6.279274721848196,
+              0.5704051342473421
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": true
+            },
+            "forward_backward_error_pixels": 0.04491342976689339
+          },
+          {
+            "stamp_ns": 34010000000,
+            "pixel": [
+              199.818359375,
+              252.3986053466797
+            ],
+            "range_azimuth": [
+              6.3310691049846355,
+              0.593973391923257
+            ],
+            "source_support": {
+              "positive": false,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.13189664483070374
+          },
+          {
+            "stamp_ns": 34500000000,
+            "pixel": [
+              202.65174865722656,
+              256.312255859375
+            ],
+            "range_azimuth": [
+              6.429237321484834,
+              0.6172449115235354
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.16781945526599884
+          },
+          {
+            "stamp_ns": 35010000000,
+            "pixel": [
+              204.10760498046875,
+              257.4759826660156
+            ],
+            "range_azimuth": [
+              6.458427711564582,
+              0.6292023145583089
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.04522240534424782
+          },
+          {
+            "stamp_ns": 35500000000,
+            "pixel": [
+              205.42593383789062,
+              259.9192810058594
+            ],
+            "range_azimuth": [
+              6.51971428777324,
+              0.6400301793646755
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": true
+            },
+            "forward_backward_error_pixels": 0.04925817996263504
+          },
+          {
+            "stamp_ns": 36010000000,
+            "pixel": [
+              207.741455078125,
+              262.103759765625
+            ],
+            "range_azimuth": [
+              6.574509229045361,
+              0.6590482855665821
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.2386663556098938
+          },
+          {
+            "stamp_ns": 36500000000,
+            "pixel": [
+              209.6634979248047,
+              263.9808654785156
+            ],
+            "range_azimuth": [
+              6.6215936887892894,
+              0.6748346200940195
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.3803546726703644
+          },
+          {
+            "stamp_ns": 37010000000,
+            "pixel": [
+              211.77835083007812,
+              266.55194091796875
+            ],
+            "range_azimuth": [
+              6.686085367226042,
+              0.6922045548061444
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": true
+            },
+            "forward_backward_error_pixels": 0.12068188935518265
+          },
+          {
+            "stamp_ns": 37500000000,
+            "pixel": [
+              213.029296875,
+              267.3111267089844
+            ],
+            "range_azimuth": [
+              6.70512843580218,
+              0.7024789498656292
+            ],
+            "source_support": {
+              "positive": false,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.08472790569067001
+          },
+          {
+            "stamp_ns": 38010000000,
+            "pixel": [
+              212.8177032470703,
+              269.4679260253906
+            ],
+            "range_azimuth": [
+              6.759228601760697,
+              0.7007410702761954
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.09083816409111023
+          },
+          {
+            "stamp_ns": 38500000000,
+            "pixel": [
+              212.44381713867188,
+              272.93157958984375
+            ],
+            "range_azimuth": [
+              6.846110254642554,
+              0.6976702381635144
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": true
+            },
+            "forward_backward_error_pixels": 0.16100609302520752
+          }
+        ],
+        "lost_at_ns": null,
+        "reason": null
+      },
+      {
+        "id": 23,
+        "observations": [
+          {
+            "stamp_ns": 32010000000,
+            "pixel": [
+              108.0,
+              195.0
+            ],
+            "range_azimuth": [
+              4.8913044929504395,
+              -0.1601596569288703
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": null
+          },
+          {
+            "stamp_ns": 32500000000,
+            "pixel": [
+              107.88059997558594,
+              192.5918426513672
+            ],
+            "range_azimuth": [
+              4.830899377266178,
+              -0.16114032453161134
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": null
+          }
+        ],
+        "lost_at_ns": 33010000000,
+        "reason": "optical_flow_rejected"
+      },
+      {
+        "id": 24,
+        "observations": [
+          {
+            "stamp_ns": 32010000000,
+            "pixel": [
+              92.0,
+              328.0
+            ],
+            "range_azimuth": [
+              8.227424621582031,
+              -0.2915726604490162
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": null
+          },
+          {
+            "stamp_ns": 32500000000,
+            "pixel": [
+              91.09434509277344,
+              329.2010498046875
+            ],
+            "range_azimuth": [
+              8.257551204646006,
+              -0.29901110281473803
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": null
+          }
+        ],
+        "lost_at_ns": 33010000000,
+        "reason": "optical_flow_rejected"
+      },
+      {
+        "id": 25,
+        "observations": [
+          {
+            "stamp_ns": 32010000000,
+            "pixel": [
+              162.0,
+              203.0
+            ],
+            "range_azimuth": [
+              5.091973304748535,
+              0.2833593099905961
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": null
+          },
+          {
+            "stamp_ns": 32500000000,
+            "pixel": [
+              163.89242553710938,
+              199.35633850097656
+            ],
+            "range_azimuth": [
+              5.000576892140089,
+              0.29890240144652974
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": null
+          }
+        ],
+        "lost_at_ns": 33010000000,
+        "reason": "optical_flow_rejected"
+      },
+      {
+        "id": 26,
+        "observations": [
+          {
+            "stamp_ns": 32010000000,
+            "pixel": [
+              86.0,
+              375.0
+            ],
+            "range_azimuth": [
+              9.406354904174805,
+              -0.3408525450604348
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": null
+          },
+          {
+            "stamp_ns": 32500000000,
+            "pixel": [
+              87.09393310546875,
+              378.53839111328125
+            ],
+            "range_azimuth": [
+              9.495110285817645,
+              -0.33186775053629336
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": null
+          }
+        ],
+        "lost_at_ns": 33010000000,
+        "reason": "optical_flow_rejected"
+      },
+      {
+        "id": 27,
+        "observations": [
+          {
+            "stamp_ns": 32010000000,
+            "pixel": [
+              86.0,
+              365.0
+            ],
+            "range_azimuth": [
+              9.155518531799316,
+              -0.3408525450604348
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": null
+          },
+          {
+            "stamp_ns": 32500000000,
+            "pixel": [
+              85.99345397949219,
+              369.81512451171875
+            ],
+            "range_azimuth": [
+              9.276298909098841,
+              -0.3409063096009525
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": null
+          }
+        ],
+        "lost_at_ns": 33010000000,
+        "reason": "optical_flow_rejected"
+      },
+      {
+        "id": 28,
+        "observations": [
+          {
+            "stamp_ns": 32010000000,
+            "pixel": [
+              209.0,
+              313.0
+            ],
+            "range_azimuth": [
+              7.851171016693115,
+              0.6693851107750246
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": null
+          },
+          {
+            "stamp_ns": 32500000000,
+            "pixel": [
+              209.07614135742188,
+              312.69317626953125
+            ],
+            "range_azimuth": [
+              7.843474498193245,
+              0.6700104827940155
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": null
+          },
+          {
+            "stamp_ns": 33010000000,
+            "pixel": [
+              213.1501007080078,
+              313.0933837890625
+            ],
+            "range_azimuth": [
+              7.853513412876055,
+              0.7034711516698773
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.4187632203102112
+          }
+        ],
+        "lost_at_ns": 33500000000,
+        "reason": "optical_flow_rejected"
+      },
+      {
+        "id": 29,
+        "observations": [
+          {
+            "stamp_ns": 32010000000,
+            "pixel": [
+              134.0,
+              316.0
+            ],
+            "range_azimuth": [
+              7.926421642303467,
+              0.053386526467780505
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": null
+          },
+          {
+            "stamp_ns": 32500000000,
+            "pixel": [
+              134.5459442138672,
+              316.0048828125
+            ],
+            "range_azimuth": [
+              7.9265441205352545,
+              0.05787053648351011
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": null
+          }
+        ],
+        "lost_at_ns": 33010000000,
+        "reason": "optical_flow_rejected"
+      },
+      {
+        "id": 30,
+        "observations": [
+          {
+            "stamp_ns": 32010000000,
+            "pixel": [
+              73.0,
+              259.0
+            ],
+            "range_azimuth": [
+              6.496655464172363,
+              -0.44762562346515744
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": null
+          },
+          {
+            "stamp_ns": 32500000000,
+            "pixel": [
+              76.74510955810547,
+              261.68084716796875
+            ],
+            "range_azimuth": [
+              6.563900931010721,
+              -0.41686589791162965
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": null
+          }
+        ],
+        "lost_at_ns": 33010000000,
+        "reason": "optical_flow_rejected"
+      },
+      {
+        "id": 31,
+        "observations": [
+          {
+            "stamp_ns": 32010000000,
+            "pixel": [
+              243.0,
+              260.0
+            ],
+            "range_azimuth": [
+              6.5217390060424805,
+              0.9486377685662715
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": null
+          },
+          {
+            "stamp_ns": 32500000000,
+            "pixel": [
+              243.34718322753906,
+              257.90032958984375
+            ],
+            "range_azimuth": [
+              6.46907183539588,
+              0.9514892946095519
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": null
+          }
+        ],
+        "lost_at_ns": 33010000000,
+        "reason": "optical_flow_rejected"
+      },
+      {
+        "id": 32,
+        "observations": [
+          {
+            "stamp_ns": 32010000000,
+            "pixel": [
+              87.0,
+              396.0
+            ],
+            "range_azimuth": [
+              9.933110237121582,
+              -0.33263925408126505
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": null
+          },
+          {
+            "stamp_ns": 32500000000,
+            "pixel": [
+              86.672119140625,
+              401.8836975097656
+            ],
+            "range_azimuth": [
+              10.080694209958892,
+              -0.33533223498581216
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": null
+          }
+        ],
+        "lost_at_ns": 33010000000,
+        "reason": "optical_flow_rejected"
+      },
+      {
+        "id": 33,
+        "observations": [
+          {
+            "stamp_ns": 32010000000,
+            "pixel": [
+              83.0,
+              379.0
+            ],
+            "range_azimuth": [
+              9.506689071655273,
+              -0.36549248800009065
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": null
+          },
+          {
+            "stamp_ns": 32500000000,
+            "pixel": [
+              84.23173522949219,
+              382.50128173828125
+            ],
+            "range_azimuth": [
+              9.594513618736528,
+              -0.3553758594706483
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": null
+          },
+          {
+            "stamp_ns": 33010000000,
+            "pixel": [
+              89.6673355102539,
+              376.9221496582031
+            ],
+            "range_azimuth": [
+              9.454569225606974,
+              -0.31073159139208256
+            ],
+            "source_support": {
+              "positive": false,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.2380923330783844
+          },
+          {
+            "stamp_ns": 33500000000,
+            "pixel": [
+              92.26915740966797,
+              376.1441650390625
+            ],
+            "range_azimuth": [
+              9.435054615838453,
+              -0.2893619840165638
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.13737313449382782
+          },
+          {
+            "stamp_ns": 34010000000,
+            "pixel": [
+              94.5628662109375,
+              377.3420104980469
+            ],
+            "range_azimuth": [
+              9.465100822562817,
+              -0.27052303452352877
+            ],
+            "source_support": {
+              "positive": false,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.4396671652793884
+          },
+          {
+            "stamp_ns": 34500000000,
+            "pixel": [
+              98.14599609375,
+              372.2037658691406
+            ],
+            "range_azimuth": [
+              9.336214494600426,
+              -0.24109367815574145
+            ],
+            "source_support": {
+              "positive": false,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.33364370465278625
+          },
+          {
+            "stamp_ns": 35010000000,
+            "pixel": [
+              100.13204193115234,
+              374.55902099609375
+            ],
+            "range_azimuth": [
+              9.39529358886648,
+              -0.2247816474642462
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.19859743118286133
+          }
+        ],
+        "lost_at_ns": 35500000000,
+        "reason": "optical_flow_rejected"
+      },
+      {
+        "id": 34,
+        "observations": [
+          {
+            "stamp_ns": 32010000000,
+            "pixel": [
+              211.0,
+              348.0
+            ],
+            "range_azimuth": [
+              8.729097366333008,
+              0.6858116668243458
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": true
+            },
+            "forward_backward_error_pixels": null
+          },
+          {
+            "stamp_ns": 32500000000,
+            "pixel": [
+              210.91854858398438,
+              347.7586975097656
+            ],
+            "range_azimuth": [
+              8.72304464521585,
+              0.6851426857116188
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": true
+            },
+            "forward_backward_error_pixels": null
+          },
+          {
+            "stamp_ns": 33010000000,
+            "pixel": [
+              214.54006958007812,
+              352.06884765625
+            ],
+            "range_azimuth": [
+              8.831158476881683,
+              0.7148874533762546
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.4741053879261017
+          },
+          {
+            "stamp_ns": 33500000000,
+            "pixel": [
+              217.42050170898438,
+              348.62823486328125
+            ],
+            "range_azimuth": [
+              8.74485572183039,
+              0.7385453173951941
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.16208316385746002
+          }
+        ],
+        "lost_at_ns": 34010000000,
+        "reason": "optical_flow_rejected"
+      }
+    ],
+    "lk_source_contrast": [
+      {
+        "id": 0,
+        "observations": [
+          {
+            "stamp_ns": 32010000000,
+            "pixel": [
+              239.0,
+              237.0
+            ],
+            "range_azimuth": [
+              5.9448161125183105,
+              0.9157845440005571
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": true
+            },
+            "forward_backward_error_pixels": null
+          },
+          {
+            "stamp_ns": 32500000000,
+            "pixel": [
+              239.5891876220703,
+              237.5476531982422
+            ],
+            "range_azimuth": [
+              5.958553194446722,
+              0.9206236925557675
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": true
+            },
+            "forward_backward_error_pixels": null
+          }
+        ],
+        "lost_at_ns": 33010000000,
+        "reason": "optical_flow_rejected"
+      },
+      {
+        "id": 1,
+        "observations": [
+          {
+            "stamp_ns": 32010000000,
+            "pixel": [
+              227.0,
+              256.0
+            ],
+            "range_azimuth": [
+              6.421404838562012,
+              0.8172247449282259
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": true
+            },
+            "forward_backward_error_pixels": null
+          },
+          {
+            "stamp_ns": 32500000000,
+            "pixel": [
+              228.01405334472656,
+              254.6999969482422
+            ],
+            "range_azimuth": [
+              6.3887961575819645,
+              0.825553506812972
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": true
+            },
+            "forward_backward_error_pixels": null
+          },
+          {
+            "stamp_ns": 33010000000,
+            "pixel": [
+              231.1576690673828,
+              256.0694274902344
+            ],
+            "range_azimuth": [
+              6.423146325920243,
+              0.851372969007075
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": true
+            },
+            "forward_backward_error_pixels": 0.15465272963047028
+          },
+          {
+            "stamp_ns": 33500000000,
+            "pixel": [
+              235.24781799316406,
+              257.40185546875
+            ],
+            "range_azimuth": [
+              6.456568338908255,
+              0.8849666837922137
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": true
+            },
+            "forward_backward_error_pixels": 0.08559910953044891
+          },
+          {
+            "stamp_ns": 34010000000,
+            "pixel": [
+              239.21726989746094,
+              258.9261169433594
+            ],
+            "range_azimuth": [
+              6.494802215427626,
+              0.9175690372095189
+            ],
+            "source_support": {
+              "positive": false,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.48283103108406067
+          },
+          {
+            "stamp_ns": 34500000000,
+            "pixel": [
+              241.38690185546875,
+              259.70355224609375
+            ],
+            "range_azimuth": [
+              6.514303046395071,
+              0.9353888719493036
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": true
+            },
+            "forward_backward_error_pixels": 0.14719930291175842
+          },
+          {
+            "stamp_ns": 35010000000,
+            "pixel": [
+              243.04600524902344,
+              261.3289794921875
+            ],
+            "range_azimuth": [
+              6.555074675648939,
+              0.9490156242785068
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": true
+            },
+            "forward_backward_error_pixels": 0.18497127294540405
+          },
+          {
+            "stamp_ns": 35500000000,
+            "pixel": [
+              244.9495391845703,
+              263.6016845703125
+            ],
+            "range_azimuth": [
+              6.612082488602027,
+              0.9646499226557415
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": true
+            },
+            "forward_backward_error_pixels": 0.29812926054000854
+          }
+        ],
+        "lost_at_ns": 36010000000,
+        "reason": "optical_flow_rejected"
+      },
+      {
+        "id": 2,
+        "observations": [
+          {
+            "stamp_ns": 32010000000,
+            "pixel": [
+              231.0,
+              248.0
+            ],
+            "range_azimuth": [
+              6.220735549926758,
+              0.850077972519118
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": true
+            },
+            "forward_backward_error_pixels": null
+          },
+          {
+            "stamp_ns": 32500000000,
+            "pixel": [
+              231.76243591308594,
+              247.2890167236328
+            ],
+            "range_azimuth": [
+              6.202901571145048,
+              0.8563401509294297
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": true
+            },
+            "forward_backward_error_pixels": null
+          },
+          {
+            "stamp_ns": 33010000000,
+            "pixel": [
+              234.4987030029297,
+              248.48974609375
+            ],
+            "range_azimuth": [
+              6.233020116575062,
+              0.8788139688265794
+            ],
+            "source_support": {
+              "positive": false,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.17909972369670868
+          },
+          {
+            "stamp_ns": 33500000000,
+            "pixel": [
+              238.95870971679688,
+              249.76351928710938
+            ],
+            "range_azimuth": [
+              6.264970859803725,
+              0.915445411347451
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": true
+            },
+            "forward_backward_error_pixels": 0.028978606685996056
+          }
+        ],
+        "lost_at_ns": 34010000000,
+        "reason": "optical_flow_rejected"
+      },
+      {
+        "id": 3,
+        "observations": [
+          {
+            "stamp_ns": 32010000000,
+            "pixel": [
+              197.0,
+              263.0
+            ],
+            "range_azimuth": [
+              6.59699010848999,
+              0.5708253508864002
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": true
+            },
+            "forward_backward_error_pixels": null
+          },
+          {
+            "stamp_ns": 32500000000,
+            "pixel": [
+              197.13294982910156,
+              263.11767578125
+            ],
+            "range_azimuth": [
+              6.599941833876073,
+              0.5719173037537316
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": true
+            },
+            "forward_backward_error_pixels": null
+          },
+          {
+            "stamp_ns": 33010000000,
+            "pixel": [
+              200.2847442626953,
+              264.36676025390625
+            ],
+            "range_azimuth": [
+              6.63127329654526,
+              0.5978039464686384
+            ],
+            "source_support": {
+              "positive": false,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.1995917707681656
+          },
+          {
+            "stamp_ns": 33500000000,
+            "pixel": [
+              204.38644409179688,
+              263.2778625488281
+            ],
+            "range_azimuth": [
+              6.603959885367658,
+              0.63149251263411
+            ],
+            "source_support": {
+              "positive": false,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.06580881029367447
+          },
+          {
+            "stamp_ns": 34010000000,
+            "pixel": [
+              207.09307861328125,
+              262.909912109375
+            ],
+            "range_azimuth": [
+              6.5947303851135075,
+              0.6537229540830458
+            ],
+            "source_support": {
+              "positive": false,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.3248584568500519
+          },
+          {
+            "stamp_ns": 34500000000,
+            "pixel": [
+              209.5179901123047,
+              266.5283508300781
+            ],
+            "range_azimuth": [
+              6.685493644268718,
+              0.6736395203799719
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.20295798778533936
+          },
+          {
+            "stamp_ns": 35010000000,
+            "pixel": [
+              211.20855712890625,
+              267.0477294921875
+            ],
+            "range_azimuth": [
+              6.698521500686184,
+              0.6875246249293296
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.2144637107849121
+          }
+        ],
+        "lost_at_ns": 35500000000,
+        "reason": "optical_flow_rejected"
+      },
+      {
+        "id": 4,
+        "observations": [
+          {
+            "stamp_ns": 32010000000,
+            "pixel": [
+              211.0,
+              348.0
+            ],
+            "range_azimuth": [
+              8.729097366333008,
+              0.6858116668243458
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": true
+            },
+            "forward_backward_error_pixels": null
+          },
+          {
+            "stamp_ns": 32500000000,
+            "pixel": [
+              210.91854858398438,
+              347.7586975097656
+            ],
+            "range_azimuth": [
+              8.72304464521585,
+              0.6851426857116188
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": true
+            },
+            "forward_backward_error_pixels": null
+          },
+          {
+            "stamp_ns": 33010000000,
+            "pixel": [
+              214.54006958007812,
+              352.06884765625
+            ],
+            "range_azimuth": [
+              8.831158476881683,
+              0.7148874533762546
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.4741053879261017
+          },
+          {
+            "stamp_ns": 33500000000,
+            "pixel": [
+              217.42050170898438,
+              348.62823486328125
+            ],
+            "range_azimuth": [
+              8.74485572183039,
+              0.7385453173951941
+            ],
+            "source_support": {
+              "positive": true,
+              "contrast": false
+            },
+            "forward_backward_error_pixels": 0.16208316385746002
+          }
+        ],
+        "lost_at_ns": 34010000000,
+        "reason": "optical_flow_rejected"
+      }
+    ]
+  },
+  "settings": {
+    "windows": [
+      "two_training_views",
+      "eight_training_views",
+      "full_bounded_history"
+    ],
+    "pose_controls": [
+      "truth_assessment_only"
+    ],
+    "full_history": "Uniformly spaced at most16 original samples before the last; all remaining observations are held out",
+    "seeds": 9,
+    "iterations": 30,
+    "noise_sigma": [
+      0.025083611719310284,
+      0.008213314126139591
+    ],
+    "heldout_cost_cutoff": 9.0,
+    "original_track_admission_by_truth_or_cost": false,
+    "summary_mode": "First minimum-cost public solver mode; all other modes retained",
+    "all_original_chains_retained": true,
+    "native_or_product_update": false,
+    "scope": "Optimistic fixed-pose point-model capability, not a deployable estimator or map acceptance"
+  },
+  "source_case": "aborted physical roll control, 2026-10-30",
+  "pose_role": "Perfect poses for offline point-model assessment only; never native SLAM input",
+  "full_sweep_completed": false,
+  "qualified": false,
+  "selected_stamps_ns": {
+    "first_stamp_ns": 32010000000,
+    "second_stamp_ns": 32500000000,
+    "selection": "Last original sonar before the predeclared large-roll stage, then its next frame; selected from control timestamps before inspecting association counts"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "adaptive_post_selection_check": true,
+  "purpose": "Test whether sparse-query model preference persists across every original native pixel. Never change the already sealed training selection from this check or unused/reference results.",
+  "calculation": "Use the existing exact periodic_hamming_amplitude, sum nonnegative source power over elevations separately for each source beam, then apply the same squared beam amplitudes. This is the same source mean with reordered positive sums, without FFT cancellation. Check original discovery means over every pixel against their stored diagnostic arithmetic envelope. Retain all original zero/weak powers and no mean floor. Compute the full-image composite mean score with one positive common gain; correlated pixels do not provide independent information/confidence.",
+  "scope": "Unchanged and training-selected scene, all five training and three unused temporal views. Store every scalar result and per-range/beam power/residual profiles, without duplicating raw data. This check neither fits geometry nor updates native navigation or map. No reference geometry, RGB or truth is read."
+}

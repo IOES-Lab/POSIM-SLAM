@@ -1,0 +1,31 @@
+{
+  "modes": {
+    "angular_median": {
+      "frames": 193,
+      "supported_frames": 191,
+      "components": 1384,
+      "truncated_components": 605,
+      "points": 9617,
+      "paired_points": 1005
+    },
+    "physical_plane": {
+      "frames": 193,
+      "supported_frames": 191,
+      "components": 2080,
+      "truncated_components": 1207,
+      "points": 10424,
+      "paired_points": 534
+    }
+  },
+  "planes": 96,
+  "unavailable_planes": [
+    {
+      "stamp_ns": 2000000000,
+      "reason": "native_pose_unavailable"
+    }
+  ],
+  "seconds": 34.14239325,
+  "map_accepted": false,
+  "physical_identity_verified": false,
+  "native_fusion": false
+}

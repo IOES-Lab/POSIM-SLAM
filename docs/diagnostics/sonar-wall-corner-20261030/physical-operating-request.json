@@ -1,0 +1,43 @@
+{
+  "authored_xyz_yaw": [
+    [
+      3.0,
+      0.0,
+      2.3,
+      0.0
+    ],
+    [
+      4.5,
+      0.0,
+      2.3,
+      0.0
+    ],
+    [
+      4.5,
+      1.0,
+      2.3,
+      0.0
+    ],
+    [
+      4.5,
+      1.0,
+      2.3,
+      0.7853981633974483
+    ],
+    [
+      4.5,
+      1.0,
+      2.8,
+      0.7853981633974483
+    ],
+    [
+      3.0,
+      0.0,
+      2.3,
+      0.0
+    ]
+  ],
+  "scenario_authored": true,
+  "truth_is_estimator_input": false,
+  "reason": "Separate wall/corner identity from navigation; overlapping passes, turn, lateral and depth motion"
+}

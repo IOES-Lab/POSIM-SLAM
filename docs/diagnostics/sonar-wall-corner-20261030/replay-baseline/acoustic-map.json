@@ -1,0 +1,9 @@
+{
+  "scope": "local_acoustic_track_hypotheses",
+  "map_qualified": false,
+  "physical_identity_verified": false,
+  "joint_uncertainty_available": false,
+  "stamp_ns": 3010000000,
+  "evicted": 0,
+  "points": []
+}

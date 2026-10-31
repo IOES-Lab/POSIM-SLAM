@@ -1,0 +1,20 @@
+.E
+======================================================================
+ERROR: test_retired_exact_bias_support_and_correlations_survive_delayed_pose_rows (__main__.CalibratedSurfaceInformationTests.test_retired_exact_bias_support_and_correlations_survive_delayed_pose_rows)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/libraries/posim-slam/tests/test_calibrated_surface_information.py", line 43, in test_retired_exact_bias_support_and_correlations_survive_delayed_pose_rows
+    native=NativeSurfaceSnapshot.read(p);recovered=native.joint_marginal(full)
+  File "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/libraries/posim-slam/src/posim_slam/native_surface.py", line 65, in read
+    archive.ingest(dict(epoch=epoch,stamp_ns=stamp,variables=packet['variables'],delta=packet['delta'],conditionals=packet['conditionals']))
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/libraries/posim-slam/src/posim_slam/retired_pose_archive.py", line 118, in ingest
+    node=Conditional.read(value)
+  File "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/libraries/posim-slam/src/posim_slam/retired_pose_archive.py", line 57, in read
+    raise ValueError('finite_complete_conditional_geometry_required')
+ValueError: finite_complete_conditional_geometry_required
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.024s
+
+FAILED (errors=1)

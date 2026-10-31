@@ -1,0 +1,20 @@
+{
+  "baseline": "c96dff1b9f40753684b39cf78e19168529f793fa",
+  "changed_public_sources": {
+    "sonar_input.py": "dfb0fd0c743930f3afeedcbce53303fa0a91cec7d2126b500410068c53564e6e",
+    "acoustic_flow.py": "5f13e9ac93a0856f042b02a912c18d7bc86e545ae8b0561572492e4737b26d91",
+    "acoustic_tracks.py": "b6ec9a6867f3e8253afb6a505e7a7a3e9973a1a83a7f09c52eeff95b59741336",
+    "sonar_edges.py": "69871e87282054462afbafa58484c36c6c2110d2bc4a4dc8d80fd87fbdff847d",
+    "sonar_surface.py": "95174e8cec838f51c8c7ff0c4838d04f9ee153c3748d610f1afada35a66480d6",
+    "sonar_ground.py": "8d4ffb73a019bb9284b0df0e99b032491dc5cca36894029d8ae7fc4223eef8db",
+    "sonar_factor.py": "5f3a1475c063b6bd18d89b117cc6d3e7ff599a38699ebe0e7e0c46fb904de4b3"
+  },
+  "user_modified_sources_included": false,
+  "private_application_imports": false,
+  "native_changes": {
+    "sonar_geometry.hpp": "c91a3ef3a56046095f8d2bf06862c9b56d17f4efc4e8d40491877ed959eeeb98",
+    "sonar_geometry_probe.cc": "b079a6811ae98644b71b887011ba6673042dc9abc664bcdc626d7b34ea8f4386",
+    "test_sonar_clock_native.py": "c15bc6f3d5685dc9f9a5c7cccf54d26de20c6a3b9598308a3faacd1c037e2730"
+  },
+  "preserved_input_only_export": "candidate-input-only"
+}

@@ -1,0 +1,13 @@
+{
+  "README.ko.md": "12bdb78ded3345531338388ef36386416955118f5616d50cd09b8b234152e080",
+  "README.md": "4675cbde8f7718f976c003eb3d4765f308c6ff89820901183c334967e90aacd9",
+  "display-cpu.json": "410ef23fae89aaa1be72e8d9357b23f79fae83a52556572b779458b4823c7cb1",
+  "display-wgpu.json": "0c4025c7ed593883aa3520597796eaf4260ec0b9d20ecb2531c2a2b3c48ddc60",
+  "endpoint-ffi-all.npz": "de9814d69f6e16f3d9dc2bb2b5d65354423c2371aba06933b0e078f3cda69d20",
+  "endpoint-ffi.json": "fde56f30bb27b208f1d4ec2e3351b356cb46ec5e06882995bf77cf14eb32cdfc",
+  "field-audit.json": "95b0c25b7cf892922e2ee3cff07fb620d15d764d441a695df4aab756e7cfe79b",
+  "scene-preflight.json": "e09123856f6639f2c49fb5f9c1fcdaa45413290ed010f78984ef70bca7bffba0",
+  "sonar-input-comparison.png": "4b14a2a97e968f994a27387e56494614b44f6e5cdb8749b15c313b6aaae2363e",
+  "source-identity.json": "fa35ac008464cb8dfbf0881f0784e4340bb9cb6b7f1fbf6623cf5482864fd8c3",
+  "verify.py": "6f91d976c16a63cd7be463eae2f74e2f2ff9f8ab36b332392a8ac02901a6c2b7"
+}

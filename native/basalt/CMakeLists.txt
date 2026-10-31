@@ -23,6 +23,8 @@ set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS
  ${CMAKE_CURRENT_SOURCE_DIR}/prepare_joint_headers.py
  ${CMAKE_CURRENT_SOURCE_DIR}/imu_continuous.inc
  ${SOURCE_ROOT}/headers/include/basalt/imu/preintegration.h
+ ${B}/include/basalt/optical_flow/optical_flow.h
+ ${B}/include/basalt/optical_flow/patch_optical_flow.h
  ${B}/include/basalt/linearization/landmark_block.hpp
  ${B}/include/basalt/linearization/landmark_block_abs_dynamic.hpp
  ${B}/include/basalt/vi_estimator/ba_base.h
@@ -110,6 +112,14 @@ target_link_libraries(basalt_stream PRIVATE basalt_core)
 
 add_executable(basalt_input_probe input_probe.cc)
 target_link_libraries(basalt_input_probe PRIVATE basalt_core)
+add_executable(basalt_reference_patch_probe reference_patch_probe.cc)
+target_link_libraries(basalt_reference_patch_probe PRIVATE basalt_core)
+target_compile_options(basalt_reference_patch_probe PRIVATE -UNDEBUG)
+foreach(DIAGNOSTIC patch_information reference_photometry reference_warp)
+ add_executable(basalt_${DIAGNOSTIC}_probe EXCLUDE_FROM_ALL diagnostics/${DIAGNOSTIC}.cc)
+ target_link_libraries(basalt_${DIAGNOSTIC}_probe PRIVATE basalt_core)
+ target_compile_options(basalt_${DIAGNOSTIC}_probe PRIVATE -UNDEBUG)
+endforeach()
 add_executable(basalt_joint_landmark_probe joint_landmark_probe.cc)
 target_link_libraries(basalt_joint_landmark_probe PRIVATE basalt_core)
 add_executable(basalt_ping_geometry_probe ping_geometry_probe.cc)
@@ -148,6 +158,22 @@ target_link_libraries(basalt_terrain_ping_probe PRIVATE basalt_core)
 
 add_executable(basalt_sonar_ground_probe sonar_ground_probe.cc)
 target_link_libraries(basalt_sonar_ground_probe PRIVATE basalt_core)
+
+add_executable(basalt_range_surface_probe range_surface_probe.cc)
+target_link_libraries(basalt_range_surface_probe PRIVATE Eigen3::Eigen)
+target_include_directories(basalt_range_surface_probe PRIVATE ${SOURCE_ROOT}/json/single_include)
+add_executable(basalt_range_surface_owner_probe range_surface_owner_probe.cc)
+target_link_libraries(basalt_range_surface_owner_probe PRIVATE basalt_core)
+add_executable(basalt_surface_prior_probe surface_prior_probe.cc)
+target_link_libraries(basalt_surface_prior_probe PRIVATE Eigen3::Eigen)
+target_include_directories(basalt_surface_prior_probe PRIVATE ${SOURCE_ROOT}/json/single_include)
+add_executable(basalt_surface_prior_owner_probe surface_prior_owner_probe.cc)
+target_link_libraries(basalt_surface_prior_owner_probe PRIVATE basalt_core)
+add_executable(basalt_surface_owner_probe EXCLUDE_FROM_ALL surface_owner_probe.cc)
+target_link_libraries(basalt_surface_owner_probe PRIVATE basalt_core)
+add_executable(basalt_joint_information_probe joint_information_probe.cc)
+target_link_libraries(basalt_joint_information_probe PRIVATE Eigen3::Eigen)
+target_include_directories(basalt_joint_information_probe PRIVATE ${SOURCE_ROOT}/json/single_include)
 
 add_executable(basalt_ping_joint_probe ping_joint_probe.cc)
 target_link_libraries(basalt_ping_joint_probe PRIVATE Eigen3::Eigen)

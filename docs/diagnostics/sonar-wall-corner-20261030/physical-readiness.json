@@ -1,0 +1,479 @@
+[
+  {
+    "wall": 1793313781.1002371,
+    "connected": true,
+    "arming_blocker": "autopilot_navigation_stale",
+    "local_pose": {},
+    "control_active": false
+  },
+  {
+    "wall": 1793313781.3114371,
+    "connected": true,
+    "arming_blocker": "autopilot_navigation_stale",
+    "local_pose": {},
+    "control_active": false
+  },
+  {
+    "wall": 1793313781.518989,
+    "connected": true,
+    "arming_blocker": "autopilot_navigation_stale",
+    "local_pose": {},
+    "control_active": false
+  },
+  {
+    "wall": 1793313781.730195,
+    "connected": true,
+    "arming_blocker": "autopilot_navigation_stale",
+    "local_pose": {},
+    "control_active": false
+  },
+  {
+    "wall": 1793313781.937814,
+    "connected": true,
+    "arming_blocker": "autopilot_navigation_stale",
+    "local_pose": {},
+    "control_active": false
+  },
+  {
+    "wall": 1793313782.149327,
+    "connected": true,
+    "arming_blocker": "autopilot_navigation_stale",
+    "local_pose": {},
+    "control_active": false
+  },
+  {
+    "wall": 1793313782.3579211,
+    "connected": true,
+    "arming_blocker": "autopilot_navigation_stale",
+    "local_pose": {},
+    "control_active": false
+  },
+  {
+    "wall": 1793313782.561079,
+    "connected": true,
+    "arming_blocker": "autopilot_navigation_stale",
+    "local_pose": {},
+    "control_active": false
+  },
+  {
+    "wall": 1793313782.767966,
+    "connected": true,
+    "arming_blocker": "autopilot_navigation_stale",
+    "local_pose": {},
+    "control_active": false
+  },
+  {
+    "wall": 1793313782.980876,
+    "connected": true,
+    "arming_blocker": "autopilot_navigation_stale",
+    "local_pose": {},
+    "control_active": false
+  },
+  {
+    "wall": 1793313783.188087,
+    "connected": true,
+    "arming_blocker": "autopilot_navigation_stale",
+    "local_pose": {},
+    "control_active": false
+  },
+  {
+    "wall": 1793313783.391053,
+    "connected": true,
+    "arming_blocker": "autopilot_navigation_stale",
+    "local_pose": {},
+    "control_active": false
+  },
+  {
+    "wall": 1793313783.599456,
+    "connected": true,
+    "arming_blocker": "autopilot_navigation_stale",
+    "local_pose": {},
+    "control_active": false
+  },
+  {
+    "wall": 1793313783.8082602,
+    "connected": true,
+    "arming_blocker": "autopilot_navigation_stale",
+    "local_pose": {},
+    "control_active": false
+  },
+  {
+    "wall": 1793313784.019403,
+    "connected": true,
+    "arming_blocker": "autopilot_navigation_stale",
+    "local_pose": {},
+    "control_active": false
+  },
+  {
+    "wall": 1793313784.228662,
+    "connected": true,
+    "arming_blocker": "autopilot_navigation_stale",
+    "local_pose": {
+      "age_seconds": 0.0015097500290721655,
+      "data": {
+        "header": {
+          "stamp": {
+            "sec": 5,
+            "nanosec": 370000000
+          },
+          "frame_id": "map"
+        },
+        "pose": {
+          "position": {
+            "x": -0.03307351842522621,
+            "y": 0.013800672255456448,
+            "z": -0.3660798966884613
+          },
+          "orientation": {
+            "x": -0.0057901578641003345,
+            "y": 0.004572601876149342,
+            "z": 0.006501664503551052,
+            "w": -0.9999516457022679
+          }
+        }
+      }
+    },
+    "control_active": false
+  },
+  {
+    "wall": 1793313784.448247,
+    "connected": true,
+    "arming_blocker": "navigation_settling",
+    "local_pose": {
+      "age_seconds": 0.013617917022202164,
+      "data": {
+        "header": {
+          "stamp": {
+            "sec": 5,
+            "nanosec": 560000000
+          },
+          "frame_id": "map"
+        },
+        "pose": {
+          "position": {
+            "x": -0.028901396319270134,
+            "y": 0.008019755594432354,
+            "z": -0.30069953203201294
+          },
+          "orientation": {
+            "x": -0.004761134608034779,
+            "y": 0.007567631381503097,
+            "z": 0.006362984987725141,
+            "w": -0.9999397856743995
+          }
+        }
+      }
+    },
+    "control_active": false
+  },
+  {
+    "wall": 1793313784.659877,
+    "connected": true,
+    "arming_blocker": "navigation_settling",
+    "local_pose": {
+      "age_seconds": 0.030058500007726252,
+      "data": {
+        "header": {
+          "stamp": {
+            "sec": 5,
+            "nanosec": 770000000
+          },
+          "frame_id": "map"
+        },
+        "pose": {
+          "position": {
+            "x": -0.029013222083449364,
+            "y": 0.0026585243176668882,
+            "z": -0.021304940804839134
+          },
+          "orientation": {
+            "x": -0.003014913596979048,
+            "y": 0.009700306780919342,
+            "z": 0.0050077921097693165,
+            "w": -0.9999358661246951
+          }
+        }
+      }
+    },
+    "control_active": false
+  },
+  {
+    "wall": 1793313784.868732,
+    "connected": true,
+    "arming_blocker": "navigation_settling",
+    "local_pose": {
+      "age_seconds": 0.04156275000423193,
+      "data": {
+        "header": {
+          "stamp": {
+            "sec": 5,
+            "nanosec": 970000000
+          },
+          "frame_id": "map"
+        },
+        "pose": {
+          "position": {
+            "x": -0.032011859118938446,
+            "y": -0.0005385237745940685,
+            "z": 0.1782011240720749
+          },
+          "orientation": {
+            "x": -0.0009404743042051243,
+            "y": 0.010939765242022462,
+            "z": 0.0027629347254591327,
+            "w": -0.9999358995636847
+          }
+        }
+      }
+    },
+    "control_active": false
+  },
+  {
+    "wall": 1793313785.078563,
+    "connected": true,
+    "arming_blocker": "navigation_settling",
+    "local_pose": {
+      "age_seconds": 0.04662016697693616,
+      "data": {
+        "header": {
+          "stamp": {
+            "sec": 6,
+            "nanosec": 170000000
+          },
+          "frame_id": "map"
+        },
+        "pose": {
+          "position": {
+            "x": -0.03914251923561096,
+            "y": -0.001897845882922411,
+            "z": 0.2651711404323578
+          },
+          "orientation": {
+            "x": 0.004378735663620419,
+            "y": 0.001800603847619603,
+            "z": 0.000435035197851097,
+            "w": -0.9999886975582017
+          }
+        }
+      }
+    },
+    "control_active": false
+  },
+  {
+    "wall": 1793313785.288125,
+    "connected": true,
+    "arming_blocker": "navigation_settling",
+    "local_pose": {
+      "age_seconds": 0.011192125035449862,
+      "data": {
+        "header": {
+          "stamp": {
+            "sec": 6,
+            "nanosec": 420000000
+          },
+          "frame_id": "map"
+        },
+        "pose": {
+          "position": {
+            "x": -0.04653070494532585,
+            "y": 0.0017303305212408304,
+            "z": 0.2625316381454468
+          },
+          "orientation": {
+            "x": 0.002497282895749125,
+            "y": 0.0026774845967564415,
+            "z": -0.0015401986210260563,
+            "w": -0.9999921111901735
+          }
+        }
+      }
+    },
+    "control_active": false
+  },
+  {
+    "wall": 1793313785.50261,
+    "connected": true,
+    "arming_blocker": "navigation_settling",
+    "local_pose": {
+      "age_seconds": 0.02117820899002254,
+      "data": {
+        "header": {
+          "stamp": {
+            "sec": 6,
+            "nanosec": 620000000
+          },
+          "frame_id": "map"
+        },
+        "pose": {
+          "position": {
+            "x": -0.055962447077035904,
+            "y": 0.005417127162218094,
+            "z": 0.23696739971637726
+          },
+          "orientation": {
+            "x": 0.000496505224077488,
+            "y": 0.006910753602025562,
+            "z": -0.002520322393868512,
+            "w": -0.9999728211017765
+          }
+        }
+      }
+    },
+    "control_active": false
+  },
+  {
+    "wall": 1793313785.7085178,
+    "connected": true,
+    "arming_blocker": "navigation_settling",
+    "local_pose": {
+      "age_seconds": 0.030718040943611413,
+      "data": {
+        "header": {
+          "stamp": {
+            "sec": 6,
+            "nanosec": 820000000
+          },
+          "frame_id": "map"
+        },
+        "pose": {
+          "position": {
+            "x": -0.06841351836919785,
+            "y": 0.009417416527867317,
+            "z": 0.2315974235534668
+          },
+          "orientation": {
+            "x": 0.0014473264564818823,
+            "y": 0.006200761081553156,
+            "z": -0.0022238440540140454,
+            "w": -0.9999772549042111
+          }
+        }
+      }
+    },
+    "control_active": false
+  },
+  {
+    "wall": 1793313785.920866,
+    "connected": true,
+    "arming_blocker": "navigation_settling",
+    "local_pose": {
+      "age_seconds": 0.042661957966629416,
+      "data": {
+        "header": {
+          "stamp": {
+            "sec": 7,
+            "nanosec": 20000000
+          },
+          "frame_id": "map"
+        },
+        "pose": {
+          "position": {
+            "x": -0.07965593785047531,
+            "y": 0.015397689305245876,
+            "z": 0.22233614325523376
+          },
+          "orientation": {
+            "x": 0.0014308279269909295,
+            "y": -0.0007946140913904494,
+            "z": -0.0007509415186520707,
+            "w": -0.999998378702048
+          }
+        }
+      }
+    },
+    "control_active": false
+  },
+  {
+    "wall": 1793313786.128481,
+    "connected": true,
+    "arming_blocker": "navigation_settling",
+    "local_pose": {
+      "age_seconds": 0.0013049580156803131,
+      "data": {
+        "header": {
+          "stamp": {
+            "sec": 7,
+            "nanosec": 270000000
+          },
+          "frame_id": "map"
+        },
+        "pose": {
+          "position": {
+            "x": -0.08521682024002075,
+            "y": 0.02174377627670765,
+            "z": 0.13245177268981934
+          },
+          "orientation": {
+            "x": -0.0038994147152315675,
+            "y": -0.0013712302634958757,
+            "z": 0.002461208666218462,
+            "w": -0.9999884283052201
+          }
+        }
+      }
+    },
+    "control_active": false
+  },
+  {
+    "wall": 1793313786.3305368,
+    "connected": true,
+    "arming_blocker": "navigation_settling",
+    "local_pose": {
+      "age_seconds": 0.0011760829947888851,
+      "data": {
+        "header": {
+          "stamp": {
+            "sec": 7,
+            "nanosec": 470000000
+          },
+          "frame_id": "map"
+        },
+        "pose": {
+          "position": {
+            "x": -0.08538298308849335,
+            "y": 0.024191919714212418,
+            "z": 0.0816674679517746
+          },
+          "orientation": {
+            "x": -0.00013214556780531976,
+            "y": -0.0006181734968325302,
+            "z": 0.0045864238695665915,
+            "w": -0.9999892825001504
+          }
+        }
+      }
+    },
+    "control_active": false
+  },
+  {
+    "wall": 1793313786.539579,
+    "connected": true,
+    "arming_blocker": null,
+    "local_pose": {
+      "age_seconds": 0.00939029100118205,
+      "data": {
+        "header": {
+          "stamp": {
+            "sec": 7,
+            "nanosec": 670000000
+          },
+          "frame_id": "map"
+        },
+        "pose": {
+          "position": {
+            "x": -0.08244577050209045,
+            "y": 0.02686673030257225,
+            "z": 0.05425947159528732
+          },
+          "orientation": {
+            "x": -0.00029025843439398015,
+            "y": -0.0044334663874620595,
+            "z": 0.006178512823919513,
+            "w": -0.999971042633294
+          }
+        }
+      }
+    },
+    "control_active": false
+  }
+]

@@ -1,5 +1,135 @@
 # POSIM-SLAM
 
+`delayed_surface_update`는 상태 블록을 순서대로 제거해 상관관계가 있는 지연 거리
+관측을 준비합니다. 과거 자세를 확정값으로 고정하지 않고 조건부 관계와 현재 상태의
+불확실성을 유지합니다. 선택형 네이티브 `SurfaceMarginalOwner`는 새 현재 상태 제약,
+조건부 관계와 원본 관측 기록을 함께 설치합니다. 활성 IMU·DVL·압력 제약은 각자의
+관측을 유지하며, 미지 평면은 최적화와 상태 주변화를 거쳐 보존합니다.
+`native_surface.prepare_native_ranges`는 네이티브 상태 사본에서 새 제약만 준비하고,
+`LiveClient`는 이를 추정기 스레드의 큐로 전달합니다. 네이티브 소유자는 상태 사본의
+식별자, 원본 관측의 중복 사용과 명시적인 기록 만료를 검사합니다. 이 선택 기능의
+기본값은 꺼짐이며, 실제 반사면 대응·불확실성 보정·유용한 소나 지도 검증이 필요합니다.
+[스트리밍 API와 원본 재생 검사](docs/diagnostics/native-surface-transport-20261029/README.md),
+[네이티브 소유자 API](docs/diagnostics/native-surface-owner-20261029/README.md),
+[참조 계산 방법](docs/diagnostics/delayed-surface-update-20261029/README.md).
+
+`native_surface_ranges`는 네이티브 소유 좌표에서 원본 원뿔·팬 거리 제약을
+함께 계산합니다. 실제 상관된 거리 제약으로 새 미지 평면을 초기화한 뒤,
+전체 지지 범위를 다시 확인하고 갱신을 준비합니다. 지지 확인용 거리 표본은
+추가 확률 정보를 만들지 않습니다. 읽기 전용 검사는 평면의 관측 불가능한
+방향을 보존하고 비선형 거리식을 다시 평가합니다.
+[원본 초기화 검사와 거부된 대응](docs/diagnostics/native-surface-ranges-20261029/README.md).
+
+`NativeSurfaceSnapshot.joint_marginal`은 같은 네이티브 소유자의 수치 감쇠 없는
+정보를 읽고, 공유된 과거 상태의 조건부 관계에 현재 상태의 불확실성을 전파합니다.
+Householder QR과 유효 정보 방향을 구분하는 SVD로 자세·평면·압력 기준값의 상관관계와
+관측 불가능한 방향을 유지합니다. 강건 가중치와 지정된 센서 잡음에 따른 국소 근사입니다.
+[결합 불확실성과 원본 입력 검사](docs/diagnostics/native-surface-information-20261029/README.md).
+
+선택형 네이티브 표면 추정기는 첫 IMU 상태에 `InitialImuBiasCalibration`을
+적용합니다. 전체 공분산의 유한 분산 방향은 사전 제약으로, 분산 0인 방향은 정확한
+등식으로 처리하며 최적화·주변화·지연 갱신에서도 유지합니다. IMU 잡음과 이후의
+바이어스 랜덤워크는 별도로 유지합니다. 일치하는 워커의 보정 적용 확인이 필요합니다.
+[보정 입력·원본 재생·한계](docs/diagnostics/native-imu-bias-calibration-20261029/README.md).
+
+[벽·모서리 관측 대조](docs/diagnostics/sonar-wall-corner-20261030/README.md)에 한 주행 기록의 전체 항법·음향 출력과 같은 시각의 RGB·소나, 동일 투영의 현장·점군 비교를 보존합니다.
+
+[소나 입력 진단](docs/diagnostics/sonar-pr31-36-20261030/README.ko.md)은 빈 영상 복구, 최대 거리 격자와 Orca5 지형의 시각이 맞는 RGB·소나를 검사합니다. 저장한 복소 연산 출력은 독립 NumPy 검사기로 확인합니다.
+
+[검사 장면의 점 복원 대조](docs/diagnostics/sonar-inspection-scene-20261031/README.ko.md)에 #31–36 통합을 적용한 전체 점군, 같은 방향의 네이티브 RGB, 정확한 자세 대조군을 보존합니다. 유용한 점 지도는 아직 검증되지 않았습니다.
+
+[고도 호 대응과 관측 동작 검토](docs/diagnostics/sonar-return-support-20261031/README.ko.md)는 같은 검출 특징의 기술자·고도 전체 탐색을 비교하며 모든 조건부 점과 미해결 관측성을 보존합니다.
+
+[근거리 관측 검토](docs/diagnostics/sonar-close-view-20261031/README.ko.md)는 실제 표적의 가시성과 특징 대응의 지속성을 구분하고, 미합격 네이티브·오프라인 지도를 전체 보존합니다.
+
+[조건부 그림자 기하](docs/diagnostics/sonar-shadow-support-20261031/README.ko.md)는 각도·물리 평면 배경을 비교하며 모든 관측 가설과 미해결 평면·자세 불확실성을 보존합니다.
+
+[알려진 평면의 DVL 보정](docs/diagnostics/dvl-plane-calibration-20261031/README.ko.md)은 조건부 반사 방향 평균과 미확정 거리 불확실성을 구분하고 정적 관측 모델 대조군을 전체 보존합니다.
+
+[병진 시점 대조](docs/diagnostics/sonar-translated-view-20261031/README.ko.md)는 실제 62.87° 관측 시점 변화, 시각이 맞는 센서와 실패 지도의 모든 점을 보존합니다. 넓은 동작만으로 기존 점 모델은 합격하지 못합니다.
+
+[병진 시점의 그림자 관측](docs/diagnostics/sonar-translated-shadow-20261031/README.ko.md)은 모든 조건부 영역 관측과 실제 모서리·평균 영상 대조를 보존합니다. 강도 영상 경계만으로 대응하는 물리적 모서리를 확인할 수 없습니다.
+
+`sonar_input`은 전력 0인 `-inf` 표본을 보존하고 대역폭·음속으로 광대역 소나의
+물리 거리 격자를 검사합니다. 특징점 후보에는 측정된 반사 지지가 필요하며,
+영상 처리용 값으로 원본 관측을 바꾸지 않습니다.
+[입력 계약과 네이티브 연속 처리 대조](docs/diagnostics/sonar-input-contract-20261030/README.ko.md).
+
+`sonar_range_response.PosimRangeResponse`는 소스별 주파수 창 응답과 조건부 산란
+파워 모멘트를 계산합니다. 명시적으로 입력한 산란 기하·분산·빔 혼합값으로
+거리·빔 픽셀의 의존 관계를 유지합니다.
+[가정과 보정 대조](docs/diagnostics/sonar-range-response-20261030/README.ko.md).
+
+`sonar_source_surface.SourceSurfaceObservation`은 소나 좌표계에 주어진 유한한
+표면을 계산합니다. 불투명한 첫 교차점의 가림, POSIM의 거리 격자 법선과 픽셀
+상관관계를 포함한 전력 모멘트를 유지합니다. 형상과 반사율은 호출자가 제공하는
+가설입니다. [소스와 수치 대조](docs/diagnostics/sonar-source-local-power-20261031/README.ko.md).
+
+`sonar_scene_fit.SceneHeightFit`는 원본 전력으로 여러 반사체를 포함한 유한 장면
+가설의 공통 높이를 맞춥니다. 매 이동을 정확한 소스 재계산으로 검사하며,
+고정 항법·측정되지 않은 사전 표면·설명되지 않는 잔차를 명시합니다.
+[역추정 실행과 전체 결과](docs/diagnostics/sonar-partial-scene-fit-20261031/README.ko.md).
+
+`sonar_birth`는 설명되지 않은 전력과 여러 시점의 전체 고도각 영역 겹침으로
+유한한 반사 표면을 제안합니다. 장면·자세·시각의 일치와 공통 불확실성을
+확인할 때까지 검색 후보로 유지합니다.
+[잘못된 후보와 전체 영상 대조](docs/diagnostics/sonar-reflector-birth-20261031/README.ko.md).
+
+`sonar_power_evidence`는 공통 반사율을 추정하고 조건부 점수 정보에서 픽셀
+상관관계와 배율 영공간을 유지합니다. [네이티브 전력 대조와 원본 영상의 기준 모델](docs/diagnostics/sonar-native-power-moments-20261031/README.ko.md)에서
+유한 형상 적합에 앞서 소스 모델을 확인합니다.
+
+[소나 관측식의 조건부 결합 진단](docs/diagnostics/sonar-structureless-update-20261030/README.ko.md)은
+하나의 추정 분포에 관측을 결합하는 수치 계산, 높이가 불확실한 모드와
+같은 시각을 유지한 DVL 생략 대조군을 공개 코드로 재현합니다.
+
+`BeamPhaseBounds.query_image()`는 원본 음향 영상 전체의 반사 기여 진폭 구간을
+계산하며, 곱셈 임시 저장공간은 8 MiB 이하입니다. 미지 위상·고도각을 유지하고
+반사 지지를 독립된 3차원 점으로 바꾸지 않습니다.
+[분리 관측의 기하 검증과 후보 전체 비교](docs/diagnostics/sonar-source-support-20261030/README.ko.md)는
+차량 위치의 상관 불확실성, 원래 픽셀의 중복 사용과 실패 사례를 보존합니다.
+
+`retired_pose_archive`는 네이티브 조건부 식에서 과거 자세를 함께 복원하고,
+공유 잡음과 관측 불가능한 방향을 보존합니다. 현재 좌표를 알고 있다는 조건의
+읽기 전용 진단이며, 기록 기능의 기본값은 꺼짐입니다.
+[지연 자세 복원과 공분산의 범위](docs/diagnostics/retired-pose-conditionals-20261029/README.md).
+
+`surface_prior`는 원본 자세를 폐기할 때 자세·미지 평면·압력 기준값의 정보를
+함께 보존합니다. 변수 간 상관과 소유자의 고정 참조 좌표를 유지하고, 제한된
+원본 거리 기록으로 중복 사용을 막습니다. 네이티브 연결부는 실제 Basalt 좌표를
+읽습니다. [지연 갱신 검사와 남은 라이브 통합 조건](docs/diagnostics/persistent-surface-prior-20261029/README.md).
+
+`range_surface_joint`와 네이티브 `makeOwnedRangeSurfaces` 어댑터는 빔별
+DVL 원뿔·소나 팬, 현재 자세와 미지 평면을 하나의 상관된 계산 블록에 둡니다.
+원본 거리 식별자로 각 제약과 관측 범위의 출처를 추적합니다. 명시적인 평면 대응
+가설과 불확실성이 필요하며, 라이브 평면 융합은 아직 활성화하지 않습니다.
+[기하·네이티브 최적화기 검사와 상태 보존 한계](docs/diagnostics/joint-surface-ranges-20261029/README.md).
+
+`dvl_surface`는 유한한 빔 원뿔과 국소 평면의 거리 잔차, 자세·평면 Jacobian,
+전체 공분산 처리와 국소 관측 범위 검사를 독립적으로 제공합니다.
+연결된 평면과 명시적인 불확실성이 필요하며, 앱은 아직 DVL 속도만 융합합니다.
+[모델·제어된 측정과 한계](docs/diagnostics/dvl-cone-model-20261029/README.md).
+
+`sonar_plane_intersection`은 측정된 거리·방위각과 주어진 평면이 허용하는
+모든 고각 해를 보존합니다. [이동 입력과 관측 중첩 진단](docs/diagnostics/dvl-moving-overlap-20261029/README.md)에
+관측 대응과 공간적 지지 범위의 조건을 정리합니다.
+
+`evaluate_dvl_sonar_prediction.py`는 음향 제약을 제외한 자세와 DVL 평면으로
+전방 소나의 기하학적 거리를 예측합니다. 관측된 경계 거리를 지지 범위 선택에
+사용하지 않습니다. [입력·전체 오차·데이터 위치](docs/diagnostics/sonar-low-altitude-15m-20261029/README.md).
+
+[네이티브 VIO 장시간 운용과 모드 전환](docs/validation/native-vio-lifecycle-20261028/README.md)에 장시간 운용의 전체 지도, 센서 조합 전환과 독립 항법 수신 기록을 보존합니다.
+
+[초기화 계산 대조](docs/validation/seed-scoring-20261028/README.md)에 센서 원본만 사용하는 수치 비교와 소스가 연결된 복구 지도 전체를 보존합니다.
+
+[상태 발행과 VIO 입력 복구](docs/validation/status-publication-vio-20261028/README.md)에 전체 지도 여섯 개, RGB·점군 비교와 실제 GUI 전환 검증을 정리합니다.
+
+[기본 예산의 기준 패치 추적](docs/validation/default-reference-vio-20261028/README.md)에 같은 입력의 추적 방식 대조와 실제 ROS·시뮬레이터 지도를 정리합니다.
+
+[압력 융합·IMU 전송 비교](docs/validation/pressure-event-imu-20261028/README.md)에 전체 지도·기본 예산의 이상점·복구 검증 근거를 보존합니다.
+
+[상태 시각에 맞춘 IMU 전송](docs/diagnostics/event-imu.md)은 카메라·소나 상태의 네이티브 응답을 기다리는 동안 이후 원본 샘플을 제한된 이력에 보존합니다.
+
 [시각 지도의 고정 특징 대응](docs/diagnostics/visual-static-tracks.md)은 시각 트랙과
 지도 검사의 물리적 동일성 가정을 설명합니다.
 
@@ -244,6 +374,11 @@ VIO 코어를 빌드하고 잡음이 있는 6자유도 특징·영상과 원본 
 모드 선택을 담당합니다. 실제
 월드의 시각·보정·복구와 배포 패키지는 별도로 검증해야 합니다.
 
+네이티브 카메라 인터페이스는 `optical_flow_type`으로 이전 프레임 참조
+추적(기본값)과 최초 프레임 참조 추적을 제공합니다. 최초 프레임 참조는
+모든 카메라에서 마지막 관측이 사라지면 해제합니다.
+[참조 패치 협약](native/basalt/README.md#visual-reference-patches--시각-참조-패치)을 확인하세요.
+
 ## 실험적 관성 관측 필터
 
 `posim_slam.inertial_filter.InertialFilter`는 위치·속도·IMU 자세·gyro/accel
@@ -271,6 +406,14 @@ PYTHONPATH=src python tools/evaluate_inertial_filter.py --output /tmp/inertial.j
 raw gyro 보정을 사용합니다. 정답 관측 갱신이나 축척 정렬 없이 IMU 예측과
 DVL·수압 갱신을 비교합니다. 네이티브 초기화·현장 정확도·음향 지도 연결·앱 기본값의
 승인 시험은 아닙니다.
+
+## 움직이는 상태의 카메라/IMU 초기값
+
+`visual_inertial_seed.tracked_imu_seed`는 보정된 다중 시점 영상 특징점과
+원시 IMU로 미터 단위 속도·중력의 임시 초기값을 구합니다. 중력 크기와 픽셀
+잡음을 명시하면 제한된 RANSAC 특징점 일치 검사와 중력 접평면 보정을
+사용합니다. 바이어스는 주어진 입력값으로 취급하며 초기화 불확실성 검증이
+필요합니다. [입력과 방법](docs/diagnostics/visual-inertial-seed.md).
 
 ## 움직이는 상태의 IMU/DVL 초기화
 

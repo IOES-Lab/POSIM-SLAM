@@ -1,0 +1,14 @@
+{
+  "truth_scene_rgb_used": false,
+  "unused_power_used": false,
+  "files": {
+    "protocol.json": "c8040a567f2c4285ba4fd9795c330c8b2c3789e0fec0053781ac9c85f5ed7fdd",
+    "run_birth.py": "70becf60c0adff651133bbb6142ea607fc4fc2e5a84b8d5029ee0fd1846940de",
+    "inputs.json": "10b8b21aed879c65211f4c3162d4099fb5d015998021d1d62a041b3784801a69",
+    "scenes.json": "711c32803d646e8f716548e25ab397e940a09aa5cd96a1dd4ecbf88bc40f84c8",
+    "scenes.npz": "2e8f91e49b619b8ea56270db48c2304b8b5d5936ba7b6d8d5d1d8a71d4f58dc3",
+    "proposal-images.npz": "57583572cc55ebb96495d7794189b8bd61790b8339eed0cb466455b765c63db8",
+    "memberships.json.gz": "c9442ea1b9c32f0839d6f23d2dba2caef1516b95a614df37b254f49a90588348",
+    "component-source.json": "6af00abdce3c04d3e1ec49fea25a777c3ef2505e9174ac9f6217c789648d757c"
+  }
+}

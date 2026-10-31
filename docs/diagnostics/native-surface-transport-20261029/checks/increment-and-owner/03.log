@@ -1,0 +1,6 @@
+..........{"max_covariance_error": 1.2212453270876722e-15, "max_gradient_error": 1.616484723854228e-13, "max_information_error": 6.110667527536862e-13, "max_solution_error": 6.701927068863966e-10, "max_squared_residual_error": 2.842170943040401e-14, "scope": "Synthetic real-owner algebra and lifecycle; no physical sonar map"}
+
+----------------------------------------------------------------------
+Ran 10 tests in 2.012s
+
+OK

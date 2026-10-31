@@ -1,0 +1,64 @@
+{
+  "method": "baseline",
+  "sonar_stamp_ns": 35000000000,
+  "camera_stamp_ns": 35000000000,
+  "isometric_stamp_ns": 35000000000,
+  "all_points_retained": 46,
+  "all_points_in_view": 46,
+  "exact_field_camera_projection": {
+    "eye": [
+      0.0,
+      -5.0,
+      -0.15
+    ],
+    "camera_to_world": [
+      [
+        0.5773502691896257,
+        -0.7071067811865475,
+        0.4082482904638631
+      ],
+      [
+        0.5773502691896256,
+        0.7071067811865476,
+        0.408248290463863
+      ],
+      [
+        -0.5773502691896258,
+        0.0,
+        0.8164965809277259
+      ]
+    ],
+    "width": 1000,
+    "height": 800,
+    "horizontal_fov": 1.35
+  },
+  "marker_area_pt2": 64,
+  "colours": {
+    "colormap": "turbo",
+    "colour_entries": [
+      32,
+      255
+    ],
+    "height_limits_m": [
+      -4.3,
+      -0.8
+    ],
+    "measured_height_bounds_m": [
+      -4.411730846524095,
+      -1.6534157717274072
+    ],
+    "range_policy": "explicit shared comparison height limits",
+    "colour_saturated_points": 1,
+    "coordinates_filtered": false
+  },
+  "scope": "Measured input and complete unqualified hypothesis comparison",
+  "context_is_clear_water_reference": true,
+  "source_sha256": {
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/sonar-wall-corner-20261030c/record/inputs/sonar-0067.npz": "3ec7b2500b16ae92d4d749fb70473a2430611226da6123cc4515b66a6ea5d63e",
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/sonar-wall-corner-20261030c/record/inputs/camera-0169.npz": "b4f4ec9e59c6409f1ce6b0d5f5fb1508eea5746388e423b4d8fe021902871c38",
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/sonar-wall-corner-20261030c/record/inputs/isometric-0034.npz": "dbcc76d47a32442b04930dd9ee06892ee79b876f0e0e7a9252ae8c13cb2faacf",
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/sonar-wall-corner-20261030c/context-reference/isometric-rgb.png": "3048c5ef71f02ae41f97834493c9b793c3aedd4619dd01acdda17c82a19793db",
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/sonar-wall-corner-20261030c/context-reference/receipt.json": "c5eef11b7c81ec5dfb6add6c151802e0e87b52b1f82803b4951d5d1590879343",
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/sonar-wall-corner-20261030c/comparison-baseline.png": "252e1e26e0688cf69ef1683835aad305d32bb7727da7c318c8c418a8c01738bd"
+  }
+}

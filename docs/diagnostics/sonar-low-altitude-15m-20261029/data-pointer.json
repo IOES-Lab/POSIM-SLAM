@@ -1,0 +1,1989 @@
+{
+  "schema": "posim-slam-validation-data-1",
+  "canonical_directory": "/Volumes/ExternalHDD/POSIM/validation-data/posim-slam/sonar-low-altitude-15m-20261029",
+  "input_directory": "inputs",
+  "files": {
+    "assessment/orca5-seafloor.dae": {
+      "sha256": "277c49dd9c3b2ec1c9d3c3754be9d076c7b0438ccd29e9ae11355869849fbeb2",
+      "bytes": 2914368
+    },
+    "assessment/world.sdf": {
+      "sha256": "a64e551d09643c971a9e88aa0c7fd14efcdfa37fa4c80627dca6ee995495a62b",
+      "bytes": 13666
+    },
+    "inputs/camera-0000.npz": {
+      "sha256": "6635b4d8818896bdcfc4ff16071d8221d44c3b15f79fbfacb379a07dcf33d7e5",
+      "bytes": 55733
+    },
+    "inputs/camera-0001.npz": {
+      "sha256": "6eb2698c4fb382c1c88de2b5a33ad8d94b95eda3c54ebf38db50b0d4d5c216b2",
+      "bytes": 54695
+    },
+    "inputs/camera-0002.npz": {
+      "sha256": "b099d7b35409700333705f9781e16383a37b01baefc4b11941e5cf9c12bde13e",
+      "bytes": 53535
+    },
+    "inputs/camera-0003.npz": {
+      "sha256": "77ce4de02681977b43d9a6dc7a8b121c7ee3ecb219d3d2543f24500739fb207b",
+      "bytes": 52814
+    },
+    "inputs/camera-0004.npz": {
+      "sha256": "a1f73f331023ed140d588311b2fe5ecafd89976212a0b771a24dffb14e67d215",
+      "bytes": 52136
+    },
+    "inputs/camera-0005.npz": {
+      "sha256": "9527e2f06d2daf7a86ca92b924cdc0aefe2aee0c150b399db0c9e20b58421159",
+      "bytes": 51893
+    },
+    "inputs/camera-0006.npz": {
+      "sha256": "c128aac94978f0659fb9e74d1d59426a5cd2cb280ec697aefe9fcdd64b3ea710",
+      "bytes": 52235
+    },
+    "inputs/camera-0007.npz": {
+      "sha256": "91d5af7e07128d98fffed1b9a2ed095033a85957a16f2e559c796eca94ef1a2b",
+      "bytes": 53030
+    },
+    "inputs/camera-0008.npz": {
+      "sha256": "e7f43927e9b0dcd8750cf6e6b0d61ccdf864ff34e6c3e18100f9fa47eb078e96",
+      "bytes": 53626
+    },
+    "inputs/camera-0009.npz": {
+      "sha256": "57b72095278f8b64c84eb70145486fc555eb46a67b7d35d323b0a342c195256c",
+      "bytes": 54998
+    },
+    "inputs/camera-0010.npz": {
+      "sha256": "405e98e48c1e0316348933a3797581c58fd2813727510e72b2555b26af6e434c",
+      "bytes": 56483
+    },
+    "inputs/camera-0011.npz": {
+      "sha256": "a8440ae5a4f4a9ea7c6acc613a42a3836bf26c6c50a8ab05ae964e80690e66b2",
+      "bytes": 57228
+    },
+    "inputs/camera-0012.npz": {
+      "sha256": "31acbdc09cb516125976b248df133277912de3cb4e752ac096ca8891f4250295",
+      "bytes": 57553
+    },
+    "inputs/camera-0013.npz": {
+      "sha256": "26c6b1d350d21b36f478f5fd145c973b696ddf04204140c79e9f15e744336889",
+      "bytes": 57936
+    },
+    "inputs/camera-0014.npz": {
+      "sha256": "324e0c220920c83df011f62eb228577d5e741e9c20bda9ded7e4c1fe4f4d72a6",
+      "bytes": 57750
+    },
+    "inputs/camera-0015.npz": {
+      "sha256": "58509d032a495b38577058d2fc875078512930aaef2200a31d1b12a68a6fbbb4",
+      "bytes": 58147
+    },
+    "inputs/camera-0016.npz": {
+      "sha256": "b7f174d0c2e03b54a4a200355631654fadc034b1f50f506739242b1cb976b6ea",
+      "bytes": 58584
+    },
+    "inputs/camera-0017.npz": {
+      "sha256": "3d912afadd786f6413ddbdc9bc20b95f26c4d98162064ac48575fa662b74811b",
+      "bytes": 59742
+    },
+    "inputs/camera-0018.npz": {
+      "sha256": "625678e1f39fa37361ee1eb819507e547ae59f1e82128021d39178535335e5e6",
+      "bytes": 61860
+    },
+    "inputs/camera-0019.npz": {
+      "sha256": "1b81c8f6f3d4dc673eca183cd1f507cb1b0e8212fbb75ec1c783be0ab720655e",
+      "bytes": 64944
+    },
+    "inputs/camera-0020.npz": {
+      "sha256": "4002cd3de3248565c2d2a647585176ec3a7dfd2c4a4e6c01a726b049b5bab6fa",
+      "bytes": 68059
+    },
+    "inputs/camera-0021.npz": {
+      "sha256": "9e011cc14fe2fdf59a35024ab1d08d45fb9bba38155e61be34dca598c6f0db3f",
+      "bytes": 73539
+    },
+    "inputs/camera-0022.npz": {
+      "sha256": "b8420761bb161ecd73fc4a387602989af1f82bc9c5b18b44234f22b6799c19ec",
+      "bytes": 79987
+    },
+    "inputs/camera-0023.npz": {
+      "sha256": "9acf7044c8532c655095450fc3dc61804c20b1c6370a2dd229e9c41f433978f1",
+      "bytes": 87682
+    },
+    "inputs/camera-0024.npz": {
+      "sha256": "e18710b439aea1487379116933c45a02ef1117b9ec1c260adc4f950f23ef3e3f",
+      "bytes": 95819
+    },
+    "inputs/camera-0025.npz": {
+      "sha256": "8db69e5c33f71288ecafa6ee8b022a8902f847cbb08347db51069f8186a8c849",
+      "bytes": 92787
+    },
+    "inputs/camera-0026.npz": {
+      "sha256": "0ca24bad44cb77eceaa5484caa503bed2e3e4d6e57ac72f9b7ec00fe7d9b9691",
+      "bytes": 90824
+    },
+    "inputs/camera-0027.npz": {
+      "sha256": "cc1e7f7c95e6a2dfc0d89e0be0c1bce99c1317e1ef20cb020cd0aea0d5ce5488",
+      "bytes": 91133
+    },
+    "inputs/camera-0028.npz": {
+      "sha256": "6a82d87368095664f7fd4672357f78bb03af7f1b04b0f5482f1f69c71d333af5",
+      "bytes": 91436
+    },
+    "inputs/camera-0029.npz": {
+      "sha256": "c59130951aa785f8a9c57a27a41ca1a93257799f9a55c4454cc2c645177247f5",
+      "bytes": 91144
+    },
+    "inputs/camera-0030.npz": {
+      "sha256": "a317a46f328d678f81c252e9433df49e5842f66f8283e09de97e871d3fd6c5cf",
+      "bytes": 86895
+    },
+    "inputs/camera-0031.npz": {
+      "sha256": "5c9e16f0898b8e5ea30bde50e9ba04bfee48cad16412c3324bfa30817047f0db",
+      "bytes": 84969
+    },
+    "inputs/camera-0032.npz": {
+      "sha256": "a16e759cd5548a0160faa5af70fee7516e2eb81b6e1d98e5dc0cafc01135920c",
+      "bytes": 82656
+    },
+    "inputs/camera-0033.npz": {
+      "sha256": "6fd09bca3d9fba648717bf1ae707bbabc9f10c6e816a5cbc10b220e13072112a",
+      "bytes": 82651
+    },
+    "inputs/camera-0034.npz": {
+      "sha256": "78ee1ab21e59c04202f4a54101908fa8c9494aab732c5b77fe93b22d2276f853",
+      "bytes": 87531
+    },
+    "inputs/camera-0035.npz": {
+      "sha256": "3d3e5f9863047ae881b584bf9204fefbdf7c86c3aa89461e2d95ad77ea6afa35",
+      "bytes": 90518
+    },
+    "inputs/camera-0036.npz": {
+      "sha256": "85650859b32b3393c4de835cc9ac4111433f1dc13d787c23666568473f9e2c2a",
+      "bytes": 87090
+    },
+    "inputs/camera-0037.npz": {
+      "sha256": "492c0c4fe0474d553fc414ca93fe409af85cd3db9795956be66fd9a31a472a0a",
+      "bytes": 88568
+    },
+    "inputs/camera-0038.npz": {
+      "sha256": "3d5f28213a331aedfb8dfcd9cddaee9c126458c67c1f744b2ee5502d1c16f903",
+      "bytes": 94267
+    },
+    "inputs/camera-0039.npz": {
+      "sha256": "c39dbdba79658bf8ca616c97e05d9d743476b87e26647a676b7191f401541c6c",
+      "bytes": 92811
+    },
+    "inputs/camera-0040.npz": {
+      "sha256": "f0e690c88b932bca15aa7c7536ae204d6a6e8b15cdc82c3471a223da0fe22261",
+      "bytes": 89028
+    },
+    "inputs/camera-0041.npz": {
+      "sha256": "1e8b921ef7201bcf99f86dad326c31fc0c80f68b95d8786a335c0b6a0e0d8035",
+      "bytes": 89842
+    },
+    "inputs/camera-0042.npz": {
+      "sha256": "8f82e292f3b0e6c9457b4a37fda5e8e9ab641f3669248b565878f10e849349d6",
+      "bytes": 90968
+    },
+    "inputs/camera-0043.npz": {
+      "sha256": "45acc429335940221db99f0d6712894c487394eea804fc06628da00d581e0d5e",
+      "bytes": 88328
+    },
+    "inputs/camera-0044.npz": {
+      "sha256": "515e7625f9a4157985f9b3ffcf86641cd8092afb75fdd0af389fa60d27282ef3",
+      "bytes": 91610
+    },
+    "inputs/camera-0045.npz": {
+      "sha256": "709f698e270e981a2e9f4285bd4bd97b6c84f6da0e4cd57934c2e0df49706d1c",
+      "bytes": 86117
+    },
+    "inputs/camera-0046.npz": {
+      "sha256": "2582212836e763186387959425ab8fecca74a50415d024efc64950d12cc9a22d",
+      "bytes": 93617
+    },
+    "inputs/camera-0047.npz": {
+      "sha256": "be1414670f14bfe9d40b7f8fb720e72a09b586a0b91d0f315e5c3b2b2da94646",
+      "bytes": 88948
+    },
+    "inputs/camera-0048.npz": {
+      "sha256": "6f90ca661b0f5c6ca408f940bb422828ed153e80569bb5e6e82919f42a5b7085",
+      "bytes": 87622
+    },
+    "inputs/camera-0049.npz": {
+      "sha256": "a53daaea13bef8ff0de5fc528fd1f9c6dbfda241d5b2e8bcdc1dc94df38bb881",
+      "bytes": 90347
+    },
+    "inputs/camera-0050.npz": {
+      "sha256": "1b15a68fef0e82383d1098fa02301fd04967b1c79bb102f42c892ab94ea20cbd",
+      "bytes": 97728
+    },
+    "inputs/camera-0051.npz": {
+      "sha256": "a001c96b9c4e8be079be187d65394a67168a4b04e9ddcf516de110309d7d83f1",
+      "bytes": 83152
+    },
+    "inputs/camera-0052.npz": {
+      "sha256": "52e214e4a49404cc4b4b2fc8e77785da65d3a10533c93ad1416cb8352e560d14",
+      "bytes": 105629
+    },
+    "inputs/camera-0053.npz": {
+      "sha256": "0db5a7123fb3a862a20db2a74978b8566b9a717b8e0342f4f1adfc165c98259e",
+      "bytes": 80689
+    },
+    "inputs/camera-0054.npz": {
+      "sha256": "fd6cef2a9accdeddc4e8ffaa33186ec6478b36815373dedf5ea4eeb06b4a190d",
+      "bytes": 97382
+    },
+    "inputs/camera-0055.npz": {
+      "sha256": "a092af0cd0e1a830fa706002d04810861812f1ab4e2c56dd69d09b7213cfd5cb",
+      "bytes": 88782
+    },
+    "inputs/camera-0056.npz": {
+      "sha256": "ed3fe85504601decc4e1eb39b7b8c835c4ff38eed66731040bdcbf90669d8662",
+      "bytes": 92462
+    },
+    "inputs/camera-0057.npz": {
+      "sha256": "bf113cd5cbdf4c829e38e828586ff94d28b525142bedf0798ada2cab30f669ad",
+      "bytes": 82872
+    },
+    "inputs/camera-0058.npz": {
+      "sha256": "0d4cf31320cf99948393cba90431e324067356af6dea0d3da1f5d785861d1248",
+      "bytes": 78928
+    },
+    "inputs/camera-0059.npz": {
+      "sha256": "c1086894867be0319470cff16dae394d93eb10feeafd841aa1d07d28f372d127",
+      "bytes": 81392
+    },
+    "inputs/camera-0060.npz": {
+      "sha256": "794460157ada95e19967f8cc8721fe1cbe8ef46b083ae229fe17666cb052c052",
+      "bytes": 71514
+    },
+    "inputs/camera-0061.npz": {
+      "sha256": "baafa41a149287386c74934b3b0f15527fd9c7c15f069113300b5d2695f3c9a6",
+      "bytes": 71984
+    },
+    "inputs/camera-0062.npz": {
+      "sha256": "8b48ec507dfff203d1a52fe451e15726b786b5d2ed18e672749d72e1aba7058a",
+      "bytes": 67835
+    },
+    "inputs/camera-0063.npz": {
+      "sha256": "33c5cd6f3d830c076138c5a01c70940783b1450a764f26684c75f3a1de206c9a",
+      "bytes": 64065
+    },
+    "inputs/camera-0064.npz": {
+      "sha256": "871aa308ae27e2026f613f99d2bdc9731048480a84a462e90fc2a0390fd6326b",
+      "bytes": 63859
+    },
+    "inputs/camera-0065.npz": {
+      "sha256": "556382dadcf84594fff5948bcc8f0dd111d9a94841112d4bf035d1e6885ec724",
+      "bytes": 61985
+    },
+    "inputs/camera-0066.npz": {
+      "sha256": "4dab390041d224a1627ee1353a5a1dc6e071b8718e55506c5b2cde5a475045b7",
+      "bytes": 60233
+    },
+    "inputs/camera-0067.npz": {
+      "sha256": "682549052bcff324c0b63ce0f3d4ac384dda8176dd25a3825467585fc15fd7dc",
+      "bytes": 59522
+    },
+    "inputs/camera-0068.npz": {
+      "sha256": "f08a3257c9c96142d879e3c0b85a6ac0c36a31c48f1472e8d052b95b4877976a",
+      "bytes": 57343
+    },
+    "inputs/camera-0069.npz": {
+      "sha256": "2938161d06de8aa2d6cf176ca85f226ebb4d34c89291c14a321dfa2bf0c64d7a",
+      "bytes": 56214
+    },
+    "inputs/camera-0070.npz": {
+      "sha256": "23c27ee77c4b140dea8aceb9687e180bc74911eb6b961c7416900cee26ec2a1d",
+      "bytes": 55780
+    },
+    "inputs/camera-0071.npz": {
+      "sha256": "49bda48cfa14a5a4be8ab434a6a7a8c452cd672879de0df2b692db77ef49af11",
+      "bytes": 54673
+    },
+    "inputs/camera-0072.npz": {
+      "sha256": "d0e2446704f0b3bd14d3fd36eacb3a677d73822f68da352e75d750408eaaf411",
+      "bytes": 54460
+    },
+    "inputs/camera-0073.npz": {
+      "sha256": "dfa508e91f1dcee15972a732bdb55298ffed3e6c1796d9b2be7b1ca532028897",
+      "bytes": 52710
+    },
+    "inputs/camera-0074.npz": {
+      "sha256": "f7c13c0b1ac2389f57e17ef72bc5af2bed233a8c356a43cd9412d3df1868686c",
+      "bytes": 52648
+    },
+    "inputs/camera-0075.npz": {
+      "sha256": "24014f025690544ee51138eaf1a659cee5ca113a8bfee98ef51f4272f953e27f",
+      "bytes": 52578
+    },
+    "inputs/camera-0076.npz": {
+      "sha256": "195990c8e4ca8f96079b719185b42b8ef986720ad3e05db40fcf4aefc78501b5",
+      "bytes": 52752
+    },
+    "inputs/camera-0077.npz": {
+      "sha256": "484e56fefd77955df7be0603d8d5c1aab540f25b6e22564415b087bf1b60cbc5",
+      "bytes": 53040
+    },
+    "inputs/camera-0078.npz": {
+      "sha256": "46d5f3f189ddba3517ac302150ded97ad0ada8b78a5fe5ef3c070698ca940ee2",
+      "bytes": 52739
+    },
+    "inputs/camera-0079.npz": {
+      "sha256": "c5c3fb8f8cfbf7d9f516a70d8a90c436a50cc2dafe3b8b5c2b5b00440372019f",
+      "bytes": 52763
+    },
+    "inputs/camera-0080.npz": {
+      "sha256": "0833c7ef9c13ebcad09a3180cba6a0dcf75ff1fa67446c59caa910f238ce69bd",
+      "bytes": 52783
+    },
+    "inputs/camera-0081.npz": {
+      "sha256": "4e7b509424f7d576d31c8ac845c1dbe13d6944cffe1048ab5e00a3f0bddabaf5",
+      "bytes": 52797
+    },
+    "inputs/camera-0082.npz": {
+      "sha256": "fe28dc9502d773b6f7e7299cbdd2a4abf7e47517a1df90d27785e444c1d8f93e",
+      "bytes": 54183
+    },
+    "inputs/camera-0083.npz": {
+      "sha256": "0039657bf76fd2ba40ca7e6b236600c71110d5c9c4e802b26f8e9182582e7948",
+      "bytes": 53321
+    },
+    "inputs/camera-0084.npz": {
+      "sha256": "6cb42012e76e0ee585236c553452760327281024b3789c50f86ae997fc5727ab",
+      "bytes": 52509
+    },
+    "inputs/camera-0085.npz": {
+      "sha256": "a1a27af17d3fdace349d339f8013d9e32f6e98fe070229f1fa5b501cd43a0896",
+      "bytes": 52984
+    },
+    "inputs/camera-0086.npz": {
+      "sha256": "82fd3437e5ff77b3473a577589fefd0816a805c5ff981aa3fd5b6a2a326f2444",
+      "bytes": 53619
+    },
+    "inputs/camera-0087.npz": {
+      "sha256": "0569791baeca9ad52b02c7aaf9a0ed92aa521af836f63645a6c172d49e1b746c",
+      "bytes": 54534
+    },
+    "inputs/camera-0088.npz": {
+      "sha256": "b786dd750b0911d56b08734a30f347bec870ed5c14060d2164ee83e94cf9a539",
+      "bytes": 56511
+    },
+    "inputs/camera-0089.npz": {
+      "sha256": "eaea65d6576955a4426a18c61d7bb1c42e0d578aabe821a27301d0b1d13687e7",
+      "bytes": 58551
+    },
+    "inputs/camera-0090.npz": {
+      "sha256": "723f37519c244e6827502a6dba9ba62c08f750c7d7952fa7ce71470df32eff24",
+      "bytes": 60730
+    },
+    "inputs/camera-0091.npz": {
+      "sha256": "4050365fa26e893d4910caf00e25647be40eed78df718ebb4fe48fb17f845a0a",
+      "bytes": 63692
+    },
+    "inputs/camera-0092.npz": {
+      "sha256": "97eaadd7e44eae3dd60b1ad01e0f8e124c8e96b2328847f77db35979cea79c08",
+      "bytes": 64220
+    },
+    "inputs/camera-0093.npz": {
+      "sha256": "81175d3f219569bf5feaf975cc97e30da57f1ae97f2a7cf6329f924ec973831e",
+      "bytes": 64517
+    },
+    "inputs/camera-0094.npz": {
+      "sha256": "36c8a2d0b7117ddd1ac291b2e56130a5cdf24ef23d0e711d1e05b388fe467b61",
+      "bytes": 64928
+    },
+    "inputs/camera-0095.npz": {
+      "sha256": "ff16127954c7af8368fa336b816724e749c2d70217f704865d3e12ee7cd1e590",
+      "bytes": 66339
+    },
+    "inputs/camera-0096.npz": {
+      "sha256": "7245fb742c9cb41572832cdafef2a5e74cc5a9d0e235387fd1e456eb8aba67e0",
+      "bytes": 65294
+    },
+    "inputs/camera-0097.npz": {
+      "sha256": "ddb3e1d258a4816441c69ed3b6d05e36b32530b6fc8686902fb68de7449f9a2c",
+      "bytes": 64598
+    },
+    "inputs/camera-0098.npz": {
+      "sha256": "a0eba2901814526559d908e63f3725071ae1ba50d925e960420cfaff80c9583a",
+      "bytes": 63578
+    },
+    "inputs/camera-0099.npz": {
+      "sha256": "011282a46c75c9b68ae49880b9764030ab9590e071d7c8da23ef661a3f308c1b",
+      "bytes": 64232
+    },
+    "inputs/camera-0100.npz": {
+      "sha256": "59c7db327043bcc14f038fe41683de580b7795e50575a1375741695ccf28204c",
+      "bytes": 65089
+    },
+    "inputs/camera-0101.npz": {
+      "sha256": "3759a61beae63181d84c2a0403a567ae79188a0b6549b5433fdf6d2cf116cd7d",
+      "bytes": 65563
+    },
+    "inputs/camera-0102.npz": {
+      "sha256": "5ea9c90f20c17e00fc541a99e4a476644ffeb27761d9071f64e7304affbefbfa",
+      "bytes": 65848
+    },
+    "inputs/camera-0103.npz": {
+      "sha256": "56ff3e8f87c9770553894721760e7a558caaeaf49cef71fa685832a5ef01a38f",
+      "bytes": 66729
+    },
+    "inputs/camera-0104.npz": {
+      "sha256": "beb54d9d78ee4de408a4423896d73bb2da80f90e1709c48af83c64abb09ff8c3",
+      "bytes": 68159
+    },
+    "inputs/camera-0105.npz": {
+      "sha256": "109c83118595ae229e834def006c5fb2810e76a95c1f6e0701619633d1400379",
+      "bytes": 68812
+    },
+    "inputs/camera-0106.npz": {
+      "sha256": "bd1f56c30a2cdeb6edf0d525df6b8f5507707ddee6844b405d5f18c3908137ca",
+      "bytes": 69614
+    },
+    "inputs/camera-0107.npz": {
+      "sha256": "de03f56e49eefea9f060b3ea86e088cd7725fbd79abac7076bee8ee7bfcb36d0",
+      "bytes": 69629
+    },
+    "inputs/camera-0108.npz": {
+      "sha256": "fcfab42e12b9c616a7a1d09cb94a0896fe2516558dfe704e4e665b5875e9c36d",
+      "bytes": 68676
+    },
+    "inputs/camera-0109.npz": {
+      "sha256": "1ecfe41c46a8ff6930484d204581f668f0071eae5c63aa4f3ad8aa0790afdbf1",
+      "bytes": 68645
+    },
+    "inputs/camera-0110.npz": {
+      "sha256": "a8cdc3226d3415cea7b68a79ce966831162699c8686d0a91a229aac543d15609",
+      "bytes": 67844
+    },
+    "inputs/camera-0111.npz": {
+      "sha256": "7c53cf84fb64026e866b05b51a6490b118f3267b9328ac466623a202758186ee",
+      "bytes": 65134
+    },
+    "inputs/camera-0112.npz": {
+      "sha256": "57e79b057b9f2dd8bce472239ada89da1075f66b928dbe182826c126f6f56ae0",
+      "bytes": 64618
+    },
+    "inputs/camera-0113.npz": {
+      "sha256": "836f0b6dd141787159eb619333dfbb71781072ddaf0225bda94df899daf11246",
+      "bytes": 64938
+    },
+    "inputs/camera-0114.npz": {
+      "sha256": "5369ef9aa79e461604467af45082a5e65bfc187306a70e312c7e17f27760b966",
+      "bytes": 65641
+    },
+    "inputs/camera-0115.npz": {
+      "sha256": "3eb1753f09b5ebe588fad6041d1341f2048f0c4f93a52d176a10593bf8c07ea9",
+      "bytes": 67540
+    },
+    "inputs/camera-0116.npz": {
+      "sha256": "385efdb78f2180634d47d8afbcaf1b492ec50b5cb3f461e8d89151b960c54ff6",
+      "bytes": 69426
+    },
+    "inputs/camera-0117.npz": {
+      "sha256": "ca416175862ff63ffd9ac7b0804019e0279f07fa3756fbd5dfc857e50e24bd9d",
+      "bytes": 70916
+    },
+    "inputs/camera-0118.npz": {
+      "sha256": "23d9622000cc77905027cc55b7294a20b417a5b70b700f95e8a64547e2902538",
+      "bytes": 71417
+    },
+    "inputs/camera-0119.npz": {
+      "sha256": "443896e8de5410ed806ee9b995c6c708a6c429ba582ac2a2fc11138b9f5ef552",
+      "bytes": 70274
+    },
+    "inputs/camera-0120.npz": {
+      "sha256": "08a6e6b86296e92f3779f1660d5265d9678c13a1cb65a2e31ef54025876c466a",
+      "bytes": 68955
+    },
+    "inputs/camera-0121.npz": {
+      "sha256": "18103496abf126a15ed9fbbc1383495f2b02ef4683fbfe8d905fd51cc08b4c79",
+      "bytes": 66766
+    },
+    "inputs/camera-0122.npz": {
+      "sha256": "f2d134aee5b8e24aae6c4ab110755ce705295a610bf102751014aeb7a15251c6",
+      "bytes": 65150
+    },
+    "inputs/camera-0123.npz": {
+      "sha256": "c613366dfcf679d1a42393e7480972a55138d35a2eb1e6fe6c8dff721c6b3ea0",
+      "bytes": 64862
+    },
+    "inputs/camera-0124.npz": {
+      "sha256": "9d809e3dbaa3ac9ca081a4cfd4c6249a8fc9686ddf5730fd5c0dd987a3b00483",
+      "bytes": 65600
+    },
+    "inputs/camera-0125.npz": {
+      "sha256": "4d647acc1bfe21aa413f5bd9b2063872ae8849bf923e4b8da6cd9866aa42d553",
+      "bytes": 67364
+    },
+    "inputs/camera-0126.npz": {
+      "sha256": "08b7cc7b1844c64a6440bcd64b67f01e6132eee3c3a2c134832356e5340d483d",
+      "bytes": 69775
+    },
+    "inputs/camera-0127.npz": {
+      "sha256": "d31f9a21168c95957ba1aca83cac497c075b2580bc31d0dde1b58cfe7fe7f0f6",
+      "bytes": 73976
+    },
+    "inputs/camera-0128.npz": {
+      "sha256": "1227a3e9bf92fd17c6aa3090ba2e4bb37bee8e958b7be9e119f4bffb31a2f629",
+      "bytes": 79195
+    },
+    "inputs/camera-0129.npz": {
+      "sha256": "d349d4ad62cfd246939d12919bf8f850817803b77a995a310c8ff48dff8e5d0c",
+      "bytes": 86742
+    },
+    "inputs/camera-0130.npz": {
+      "sha256": "b28fc61f76d376b0f645817f0dee24d69864406985e18408312068cbc1e00dad",
+      "bytes": 91346
+    },
+    "inputs/camera-0131.npz": {
+      "sha256": "453f019989100b2f552fc23f5cd620cfe9bc32c40645ae2f4280eeee13d6c0bb",
+      "bytes": 91460
+    },
+    "inputs/camera-0132.npz": {
+      "sha256": "8c0954cb8dc32310cd5a3c00c07a01ad369860f0b1a0bd0b12fe981c2e30c724",
+      "bytes": 89447
+    },
+    "inputs/camera-0133.npz": {
+      "sha256": "9780c959b87b83becdd169192dd5092067e798fb953302413467e8df209d82cc",
+      "bytes": 84228
+    },
+    "inputs/camera-0134.npz": {
+      "sha256": "5cf09c9d12b57ddbca8f77440ede6290ae53fb02b74eb5dc4930a33f4c5a3b9d",
+      "bytes": 79126
+    },
+    "inputs/camera-0135.npz": {
+      "sha256": "7dfba559ab5f4422077988904d21162d6918756319b4ba79413a1bb628641bda",
+      "bytes": 73865
+    },
+    "inputs/camera-0136.npz": {
+      "sha256": "0c6d86427929cf7d554b5edd9286f437502657fff946e88357f4ce11ef624667",
+      "bytes": 67223
+    },
+    "inputs/camera-0137.npz": {
+      "sha256": "258e3c2ab09ae68296cc083c58f530ad0dbbf2ca4ec64cab3b19cf7ef3955a03",
+      "bytes": 65041
+    },
+    "inputs/camera-0138.npz": {
+      "sha256": "e745f7f14791e8cc8b8bcc44f20114fa62ddfd5d3bdbc8348297edb578853675",
+      "bytes": 64387
+    },
+    "inputs/camera-0139.npz": {
+      "sha256": "a1aaaf2bb13e69b0714933c39ba60981c6b660fd17d90c9fe5bab8541f844515",
+      "bytes": 64157
+    },
+    "inputs/camera-0140.npz": {
+      "sha256": "91b015215e43831c57d0ab32239ce30e85abcf5c5e6081481690c55be82daf78",
+      "bytes": 65123
+    },
+    "inputs/camera-0141.npz": {
+      "sha256": "d6c17379491d2725098788eecb328ea4ce572e353c81d3fc817693322c6cf343",
+      "bytes": 64945
+    },
+    "inputs/camera-0142.npz": {
+      "sha256": "cabee8483501df3546fd8c6a646b1d57bc3c1f56ab81cd2c63782b0a9c88b525",
+      "bytes": 64748
+    },
+    "inputs/camera-0143.npz": {
+      "sha256": "bd7debac6b8d42c32ba172bbb9ad4ce2bd55b1ec689b6d6d6d3369e4aea231e8",
+      "bytes": 64175
+    },
+    "inputs/camera-0144.npz": {
+      "sha256": "b63ab8f803dfa451143e8834544a90ecdf52aa7fe572ff38dff6260c8b318b7a",
+      "bytes": 64583
+    },
+    "inputs/camera-0145.npz": {
+      "sha256": "c2bfff73cbae0fddd88ac882e357d157cf443b96e743da652489080bdfe08571",
+      "bytes": 65095
+    },
+    "inputs/camera-0146.npz": {
+      "sha256": "a83ad16a773b427c48446746cac68828301d9c10bf800d9facccd76d34e9ebc5",
+      "bytes": 67047
+    },
+    "inputs/camera-0147.npz": {
+      "sha256": "2329a3ae34b0925fa8ad10034579ae1d7c19b991a1e7904ba16bc6b2ebcaf413",
+      "bytes": 67799
+    },
+    "inputs/camera-0148.npz": {
+      "sha256": "3336deb50be670bfad24ded1f9624f15c02088b784cdf5b497307cdc50f4fb1e",
+      "bytes": 67256
+    },
+    "inputs/camera-0149.npz": {
+      "sha256": "9fbd29eb4442e2123459acfded54ef3fe130e91070f5c9bf3e93088e630ce6cc",
+      "bytes": 67094
+    },
+    "inputs/camera-0150.npz": {
+      "sha256": "7d544d92457dfa4f96b5eae59c5eff95bf9547daa0a1dffffca2442f431eb92f",
+      "bytes": 66889
+    },
+    "inputs/camera-0151.npz": {
+      "sha256": "eeef9172235b58bca17a79c0094c0cf535832601ba484038c52a473c34b095af",
+      "bytes": 66960
+    },
+    "inputs/camera-0152.npz": {
+      "sha256": "6f84ed56331991941952acb866c4686238cbb8459cbe2ac6009a88fb0f8f8c07",
+      "bytes": 68016
+    },
+    "inputs/camera-0153.npz": {
+      "sha256": "fcdf5f5fc1579d7b6a1173da278092a73a7cd546206becadd544d9f375870820",
+      "bytes": 68858
+    },
+    "inputs/camera-0154.npz": {
+      "sha256": "77c8883aaac816f32d2632d078939b5e075e77803039c98b6a2622d5dcfcc55b",
+      "bytes": 67837
+    },
+    "inputs/camera-0155.npz": {
+      "sha256": "37b5e18218a9e2a8890036722815972a6e46b8bf0bdda93ebfab6fd799d4a264",
+      "bytes": 67996
+    },
+    "inputs/camera-0156.npz": {
+      "sha256": "8932130285aa6bdddec610b230f972cb0be3c3ee7bcf8ca4b516eee771eaee6e",
+      "bytes": 66684
+    },
+    "inputs/camera-0157.npz": {
+      "sha256": "5bcc45e542703185b094a37cc7513f64f595c2e4bd5f31d8d6e751ab9ad9ca1d",
+      "bytes": 66081
+    },
+    "inputs/camera-0158.npz": {
+      "sha256": "211e3c0898e9cfae2afd83dd2ae4bb9c7bfe778d4f315cafd60c7ea7d1969e93",
+      "bytes": 65765
+    },
+    "inputs/camera-0159.npz": {
+      "sha256": "35435e7f6a18e58151cf64bc20f9dcfa9cbb249469a0cf7595a1349e82ddba12",
+      "bytes": 65686
+    },
+    "inputs/camera-0160.npz": {
+      "sha256": "5a6a7afead9a8699ee9eff76cb385080e9e0024c142a72997ff446cd652a015a",
+      "bytes": 66502
+    },
+    "inputs/camera-0161.npz": {
+      "sha256": "a0b7d5df241aa8fc5e4cdb5a0d091e06b0191cf4a9fa426c960361c5c730d55d",
+      "bytes": 66158
+    },
+    "inputs/camera-0162.npz": {
+      "sha256": "733cbcd439addb5c865be7649c38aab4897e0408fab01150c08cd5aac366b10e",
+      "bytes": 65498
+    },
+    "inputs/camera-0163.npz": {
+      "sha256": "a4c2f568e22a6010aafcf86fc06a09f307180a6f169f95215ec1bc098f7a21ec",
+      "bytes": 64429
+    },
+    "inputs/camera-0164.npz": {
+      "sha256": "cd7391bbe24b8e0116d849ff8efc2b80f60c22d556da972e300b376174ee9c8d",
+      "bytes": 64031
+    },
+    "inputs/camera-0165.npz": {
+      "sha256": "bbf1717f8d20afb35826b4c6fbddd0be0d31589589eea56c7fcaa9593530f085",
+      "bytes": 63777
+    },
+    "inputs/camera-0166.npz": {
+      "sha256": "f87c87bb3e038023780acd7521ebcfc3ec06be0579c324bdd3a8504964a97307",
+      "bytes": 64541
+    },
+    "inputs/camera-0167.npz": {
+      "sha256": "a6f9f578c92512bd505c5f1d1b46a69e72e93848590c056ab52fe30be7a5efd2",
+      "bytes": 65144
+    },
+    "inputs/camera-0168.npz": {
+      "sha256": "b8e3e05d75e8140b9341a9ae07145e6ec1af6f85d0d58a5959c44ff48f1d6685",
+      "bytes": 65088
+    },
+    "inputs/camera-0169.npz": {
+      "sha256": "79bb10328e35022192a767242aabf4a395a85beebafd4716b8429f4b77b93e9e",
+      "bytes": 64172
+    },
+    "inputs/camera-0170.npz": {
+      "sha256": "dfb20b7aa7dcf4dad0729c419a78bda76746cc4dbbf67c5a7dc9ec35178bd9ef",
+      "bytes": 63750
+    },
+    "inputs/camera-0171.npz": {
+      "sha256": "33fd8ed5f61643937be968d17dad24d77a83a9513380b2a341b68890b7218355",
+      "bytes": 63073
+    },
+    "inputs/camera-0172.npz": {
+      "sha256": "b90ed6f854ab2fc8b5a1dcf2c99f466fe5c67e434912c12ed0910b28ab109395",
+      "bytes": 62523
+    },
+    "inputs/camera-0173.npz": {
+      "sha256": "e6bd826f609dd335bf3633e7ec65c6860621bf02c50373a334e6aafc3e23ee31",
+      "bytes": 62177
+    },
+    "inputs/camera-0174.npz": {
+      "sha256": "45c99979dfb0329ce6697b5242c9a65a85241cf3b21d08f199972a900abf5d85",
+      "bytes": 63560
+    },
+    "inputs/camera-0175.npz": {
+      "sha256": "8bfcf28015f190c70a5ce5610eba1edeee5081f4ae0937ab307af7a2a21ea502",
+      "bytes": 66263
+    },
+    "inputs/camera-0176.npz": {
+      "sha256": "54a53c297220c764bf40e33be355c8108400b40f092f02e2c3d6a8cffa59098a",
+      "bytes": 70408
+    },
+    "inputs/camera-0177.npz": {
+      "sha256": "2869fa73a53a2b70d1f9a592ad02d29620bcc3c2ac7ec9b97fd0ebe08a131edd",
+      "bytes": 72891
+    },
+    "inputs/camera-0178.npz": {
+      "sha256": "c47e960e39a2db99e7ce071ca289436ae7a68a0f1261f6718bb28195bbb68f2c",
+      "bytes": 74488
+    },
+    "inputs/camera-0179.npz": {
+      "sha256": "cdc532636f08570fb8438b5d86b40ab25fd3cda66f9b19bb8fa9421791ef87dd",
+      "bytes": 73306
+    },
+    "inputs/camera-0180.npz": {
+      "sha256": "d0ccd0b38403ab9671e33ed6be207e16f8c1e5db01404103ceb2c506e279c4c7",
+      "bytes": 70064
+    },
+    "inputs/camera-0181.npz": {
+      "sha256": "9ddbea9514097f21a87413d54dbfa6d16f297cbbe97b1aa757a71661832deac5",
+      "bytes": 68281
+    },
+    "inputs/camera-0182.npz": {
+      "sha256": "d836769ff2e165c8cf7bca20990e3d030f6f7f698e1b10da57d0cb0bda54e15b",
+      "bytes": 65254
+    },
+    "inputs/camera-0183.npz": {
+      "sha256": "779052dfe6207179c6218250ce26728b77590c1a3c19a49719b56f6a935d8622",
+      "bytes": 63187
+    },
+    "inputs/camera-0184.npz": {
+      "sha256": "41fc625b743fca2d022d03f4a4e6242d2de74db9741138e3cea473897cc5c7e4",
+      "bytes": 61218
+    },
+    "inputs/camera-0185.npz": {
+      "sha256": "fcb3fccb854f422063ea938ff92efbe21957bd2f41402600c716a5e5b41aeebf",
+      "bytes": 60471
+    },
+    "inputs/camera-0186.npz": {
+      "sha256": "61daa38e98c2e23becb10f6af425a63b021d9c63f381c4dc531c021ce8d64bac",
+      "bytes": 62782
+    },
+    "inputs/camera-0187.npz": {
+      "sha256": "326bdcada4f9034a7f650c8578509113185235c17010f83531d7edd84cfb20ec",
+      "bytes": 64898
+    },
+    "inputs/camera-0188.npz": {
+      "sha256": "46ccbc16a77b09d92c04ba1c1d31796a54e37da7ab3e2589d5e2d75c94d6a11d",
+      "bytes": 66682
+    },
+    "inputs/camera-0189.npz": {
+      "sha256": "5408bbdc1f5bac3c95c6a11215fbc376506862620b6280aa4f92b6dd43ba7806",
+      "bytes": 67910
+    },
+    "inputs/camera-0190.npz": {
+      "sha256": "649b8f667c9feb194d3f36fde5650e19a43783125db1870c778028b52c1681e2",
+      "bytes": 67545
+    },
+    "inputs/camera-0191.npz": {
+      "sha256": "43a088f4b2279486ee94f696b4b696056eb491ef5334194e076d46db52b538ad",
+      "bytes": 66323
+    },
+    "inputs/camera-0192.npz": {
+      "sha256": "bd54aa873ee85d4e1bb97ce6c2281fc67cd7c1836e58513da6b73e255f0c1154",
+      "bytes": 66313
+    },
+    "inputs/camera-0193.npz": {
+      "sha256": "afcb1310757dc0ab025a1caeec35b90292710ad9d4679744586f7e83600584f3",
+      "bytes": 64500
+    },
+    "inputs/camera-0194.npz": {
+      "sha256": "3eab1a1266e2a629f895275cb711c3dbd671c342d459d5c014f30b93da906c8e",
+      "bytes": 64863
+    },
+    "inputs/camera-0195.npz": {
+      "sha256": "96f7836730c3c43ae2a18132dd28016085507da6b3afe7ce897fbb98fbe4b831",
+      "bytes": 65753
+    },
+    "inputs/camera-0196.npz": {
+      "sha256": "4c07d9e4c54f1aa6f9a5e701c5dc1a2534da567e0a309c130ddb6ee34b9588aa",
+      "bytes": 66899
+    },
+    "inputs/camera-0197.npz": {
+      "sha256": "1769f2ebe20577669eba2f4479ed89329864a296c42ac6187fdbabab97b105e2",
+      "bytes": 68142
+    },
+    "inputs/camera-0198.npz": {
+      "sha256": "c791fb22323ffe9131cab65eea86f305e180a8b715d443b7c4b7bff516932170",
+      "bytes": 67721
+    },
+    "inputs/camera-0199.npz": {
+      "sha256": "bc49c10c1effa6630beb8ee63a6895ddadf1425506a0f1012a999f10b497203b",
+      "bytes": 66079
+    },
+    "inputs/camera-0200.npz": {
+      "sha256": "5c34d27d1cdb376d5616facd1c33b1f5fede6f85b7fe2b264ab031b1d322c2cb",
+      "bytes": 65885
+    },
+    "inputs/camera-0201.npz": {
+      "sha256": "64f2009536f574714e5b0811fe451f8cafdff2ebd17c88a344f47aeb56b52aa2",
+      "bytes": 65732
+    },
+    "inputs/camera-0202.npz": {
+      "sha256": "74ad2ce4c08a6bbec2cc1661e82d47fd9f16f4d067378f03dc5c754c415c0cb2",
+      "bytes": 65164
+    },
+    "inputs/camera-0203.npz": {
+      "sha256": "306cdbbde5fdb521183675c70ab7a4b80dbc1746a4a9f719ecb71a0a80926b2c",
+      "bytes": 65191
+    },
+    "inputs/camera-0204.npz": {
+      "sha256": "a7ab470a8e22e63d1ffcaef711592ae0c8cb053af030f86b1ff5039fcce3fc56",
+      "bytes": 66348
+    },
+    "inputs/camera-0205.npz": {
+      "sha256": "c42016dbedccc5b42e901f5e2764ac319542cadc26d88f769261ed90236c8623",
+      "bytes": 67441
+    },
+    "inputs/camera-0206.npz": {
+      "sha256": "cf2c2ecf1a2e7d6fec74beef64e2a4dc42e62a79cf5dc7c9b155448228936ea5",
+      "bytes": 66961
+    },
+    "inputs/camera-0207.npz": {
+      "sha256": "6a467af82a02653a4c2bf00f451f655bb9d37ee6b256b05b546a78f568a0fdfe",
+      "bytes": 66771
+    },
+    "inputs/camera-0208.npz": {
+      "sha256": "d9dccfc83d525acd69682c1a3347e597dc8f76578c3d679cd60df7d3966688a6",
+      "bytes": 65332
+    },
+    "inputs/camera-0209.npz": {
+      "sha256": "256c0128dd7686e115f178eb633a90cb26b4c13260e887cd7078588c444f75a6",
+      "bytes": 65153
+    },
+    "inputs/camera-0210.npz": {
+      "sha256": "aefb5af1e24d2ff554a67f45b7ad095cf42f7380d03da785da8e7b742b74256a",
+      "bytes": 65409
+    },
+    "inputs/camera-0211.npz": {
+      "sha256": "9dee8e2fe79d6e928d33ff5de93f873412d9e4346414c89d7b886cf1b413e120",
+      "bytes": 65178
+    },
+    "inputs/camera-0212.npz": {
+      "sha256": "c79195ceeabbd321ca01307b65547dc08afc4cb35fa83a1baa02944be859644c",
+      "bytes": 66095
+    },
+    "inputs/camera-0213.npz": {
+      "sha256": "1df96b86afd6de59c74c76729ad2b399463c93a85490a825f545de6a3905baaf",
+      "bytes": 66875
+    },
+    "inputs/camera-0214.npz": {
+      "sha256": "ea36fc316998deaf9d06c53a9097506cc0bc90b1cd5f4a77ba5871978aec28cc",
+      "bytes": 67986
+    },
+    "inputs/camera-0215.npz": {
+      "sha256": "f10c3e55d83b278c51470605def2f90a3ad2ff6d458155ed5d9e7768186d82ed",
+      "bytes": 68569
+    },
+    "inputs/camera-0216.npz": {
+      "sha256": "e9da289c804d22a84ef98d3670cb22784b649ed9e4c716e9a6c26ed4722e38b1",
+      "bytes": 69257
+    },
+    "inputs/camera-0217.npz": {
+      "sha256": "674658af550d5fbc888f4109aed459e7b73a54a2dd23f28157387b243b8a6a1a",
+      "bytes": 68429
+    },
+    "inputs/camera-0218.npz": {
+      "sha256": "f46b37e5330e5e328f7168f3063dbb5996b83a410807819e609a78794d5daf22",
+      "bytes": 68089
+    },
+    "inputs/camera-0219.npz": {
+      "sha256": "95bd5a031b3f2907ff5054d01ab777609c406c9da3953c023a41c5eabeaa8afa",
+      "bytes": 68384
+    },
+    "inputs/camera-0220.npz": {
+      "sha256": "136828b47fef145932ceffa2669669f19a44f005ec1a60b97b97669f07403215",
+      "bytes": 68828
+    },
+    "inputs/camera-0221.npz": {
+      "sha256": "d64fffdeb8f4cdfb3c2370c39b113463af4a8db14e06dd9434e7772484cea129",
+      "bytes": 68738
+    },
+    "inputs/camera-0222.npz": {
+      "sha256": "6ae2f65f90c0225180fdbf361abe6b48bc4133136cec2cc81cb13a69b81ab776",
+      "bytes": 66539
+    },
+    "inputs/camera-0223.npz": {
+      "sha256": "d8400b9e2df81315b3aa997836f380627808f434c9c150438851f28daffc7214",
+      "bytes": 65984
+    },
+    "inputs/camera-0224.npz": {
+      "sha256": "3c61a5cacd323ffa513ef6f0cc0962ce0dcd94f216ff6e23f1b2c682dfd34ef6",
+      "bytes": 66455
+    },
+    "inputs/camera-0225.npz": {
+      "sha256": "e198816b518a4caf272a8d8175b8ebb71c367321f570ca1d787e63188a6b19b1",
+      "bytes": 67860
+    },
+    "inputs/camera-0226.npz": {
+      "sha256": "fbb28f53e38a0ff7e55700bbdbf0f08968446e764990980c71352ecaa731fca3",
+      "bytes": 68090
+    },
+    "inputs/camera-0227.npz": {
+      "sha256": "ffc47a961f75b24362e8e1d1749d8041a098cc15af171059fbf35b7e5f138933",
+      "bytes": 68473
+    },
+    "inputs/camera-0228.npz": {
+      "sha256": "05ee2af096082e4aaf91c4118f2882d117c5a03c3f9df777becb5fb234d5b308",
+      "bytes": 68079
+    },
+    "inputs/camera-0229.npz": {
+      "sha256": "d83a3a91f14df6ea9abc5467ee23b8b57ffc12175aa766598c5b197e058c886b",
+      "bytes": 67816
+    },
+    "inputs/camera-0230.npz": {
+      "sha256": "083e281a0bf8d1de7cc04ef077f542f54ffdcc4087a82ca718cb29d08c37ee0a",
+      "bytes": 67711
+    },
+    "inputs/camera-0231.npz": {
+      "sha256": "929453968827aca70c38580b707ab7ae9471092d3f80edabe9ff10564cc67f09",
+      "bytes": 68223
+    },
+    "inputs/camera-0232.npz": {
+      "sha256": "06f412e321667bd4f767294f6d61a779e2546c27fd38f084e7d9429c5167f109",
+      "bytes": 66990
+    },
+    "inputs/camera-0233.npz": {
+      "sha256": "b6c3cc9f0f2011d90edcb8a43175b8ba0a51dd899c2335fa86c1cfe40c3dddb0",
+      "bytes": 66341
+    },
+    "inputs/camera-0234.npz": {
+      "sha256": "19f221986b799814f0d269e5bbae59e438306ea3b60568ef3ee5b2d3a5049e2b",
+      "bytes": 66683
+    },
+    "inputs/camera-0235.npz": {
+      "sha256": "786575ce1db220671d696dd2ae6f0b733294b458cf5d4e90a38b9587112afd7e",
+      "bytes": 67867
+    },
+    "inputs/camera-0236.npz": {
+      "sha256": "38a188fa7e2b7b4ed1cc2acff392dfc459b42def1c9e910f0c219ae56c842e5f",
+      "bytes": 68261
+    },
+    "inputs/camera-0237.npz": {
+      "sha256": "5565bc69f175938fce0133dcce2807e6b9d7fd73ede015593f3799f737d3b6d0",
+      "bytes": 68942
+    },
+    "inputs/camera-0238.npz": {
+      "sha256": "1af1ddeb6e80104df4402a43c325f28ec080d03f12568ff5e43ff127fb27f958",
+      "bytes": 68926
+    },
+    "inputs/camera-0239.npz": {
+      "sha256": "7c476c8805b47a47bd9e623c3d654b629c52b38221080a4f4dcfaefb3b217874",
+      "bytes": 68825
+    },
+    "inputs/camera-0240.npz": {
+      "sha256": "7f612e7e402b1084aea533cbdc216656a503cfb7192198dc8dcb249e292c4684",
+      "bytes": 67733
+    },
+    "inputs/camera-0241.npz": {
+      "sha256": "6103c3e22e8bbbe866ded52824994828b52c7d93a8467be1afb8cd0521e5aa8c",
+      "bytes": 68176
+    },
+    "inputs/camera-0242.npz": {
+      "sha256": "e637fab21f5cee0860c2e216fe000896d64539533a45f65a50a62a770adab89a",
+      "bytes": 66357
+    },
+    "inputs/camera-0243.npz": {
+      "sha256": "a57196866ba78055d51a6582cdf294d7aae42e6985eabdd9b8cafadd4003c72c",
+      "bytes": 64679
+    },
+    "inputs/camera-0244.npz": {
+      "sha256": "25a97e4c9a4fdd23ebad3fe053f76c82937141d3ba8f8243b0fbf869be68361f",
+      "bytes": 63826
+    },
+    "inputs/camera-0245.npz": {
+      "sha256": "45f62b5eab0d2acf80f812750832a8c3b6753a38ba36fc2f10780f97d669592c",
+      "bytes": 64794
+    },
+    "inputs/camera-0246.npz": {
+      "sha256": "e5d5ecffa00f2ce3d1b8ecff506da95890c2a7d5b69936e25464387f708d07bc",
+      "bytes": 65934
+    },
+    "inputs/camera-0247.npz": {
+      "sha256": "a953e36afeafbaed38ea4e803db05bad954fa274b5d9c66746ddf5584d8b2e9d",
+      "bytes": 66020
+    },
+    "inputs/camera-0248.npz": {
+      "sha256": "68d7d589a270cc40e19be770d4d33e8e8fc19aae24dd6ac0f93909438ea4586f",
+      "bytes": 66294
+    },
+    "inputs/camera-0249.npz": {
+      "sha256": "810172c1b5a03d1ba281810563b7244067808f220b1090fece1c136016e98a92",
+      "bytes": 68126
+    },
+    "inputs/camera-0250.npz": {
+      "sha256": "a692c0156c0757975e92f1554c45fe1064f21ea9f2239ccbe5c1c02e329a05e9",
+      "bytes": 70556
+    },
+    "inputs/camera-0251.npz": {
+      "sha256": "44e3c9ea8bbf821c1e51f5f5d750f52b8d432b89379c833e2145735f47b5dd8e",
+      "bytes": 71597
+    },
+    "inputs/camera-0252.npz": {
+      "sha256": "bb4f845b7194db05520f3528b5e6226e8bcb1c89c779502f20c05e295b3e6da1",
+      "bytes": 70753
+    },
+    "inputs/camera-0253.npz": {
+      "sha256": "ddc1e33861f3d1dfd6d2f95f37f3353e4be98793073648c98587308928a8ae60",
+      "bytes": 69348
+    },
+    "inputs/camera-0254.npz": {
+      "sha256": "5864b0384c6b88d6bce89a3f0ac0c295da596196b845f8cb6e3221fe99ca51e9",
+      "bytes": 68442
+    },
+    "inputs/camera-0255.npz": {
+      "sha256": "396a2493d6b43d95203541a3afd9dd050907c2641f0e1c9db15dd719aa7c7a89",
+      "bytes": 68193
+    },
+    "inputs/camera-0256.npz": {
+      "sha256": "6da93a50aa6ce4ce64efdafb8e62f14592cfbdfc5ad50fdf667c5ec37075d08f",
+      "bytes": 67708
+    },
+    "inputs/camera-0257.npz": {
+      "sha256": "466761181ce7c86cd964a2f353783e4f6f119c39cc532af7a05d07eda6f6b1ef",
+      "bytes": 68103
+    },
+    "inputs/camera-0258.npz": {
+      "sha256": "6f55c0a3e7ad1ba5ad7700b237faa705f9129c48766715488fb92d32983c9cc4",
+      "bytes": 68959
+    },
+    "inputs/camera-0259.npz": {
+      "sha256": "13c42fd551c6270bbb49447e094af14e6222a56bbebade8c9ae26d6be381ccbf",
+      "bytes": 69227
+    },
+    "inputs/camera-0260.npz": {
+      "sha256": "b6117c99ac2192d3236f8831d215ca3f80f3273eb23a0feeaaa5f932c3fcc328",
+      "bytes": 69588
+    },
+    "inputs/camera-0261.npz": {
+      "sha256": "07d920f0c0f67b0ae3e46d34737213d6bf66047bdead6e96dea00c256ff8edeb",
+      "bytes": 68998
+    },
+    "inputs/camera-0262.npz": {
+      "sha256": "4e78329e5b3ae4985f6123d70a0a1c19b8b5b69729241f9387ebbc190e6f4dad",
+      "bytes": 67447
+    },
+    "inputs/camera-0263.npz": {
+      "sha256": "ac295455cd0ffb3911e4078e8a86019af54959194aaab9d6f4fdb8d50b7d61fa",
+      "bytes": 65546
+    },
+    "inputs/camera-0264.npz": {
+      "sha256": "0c02e3f4534912121ef61d85cac83216f80f22d344410588ee7d6a2f200f5213",
+      "bytes": 63080
+    },
+    "inputs/camera-0265.npz": {
+      "sha256": "4c37fc0bd821625e9a1b9bb53e5a066fc742ba61eb320822033066b1a62847a5",
+      "bytes": 59725
+    },
+    "inputs/camera-0266.npz": {
+      "sha256": "dbaaf1dfd9befcc70658dea5788404f0bdddb5d4b9bc11f8fec66648556a6a79",
+      "bytes": 55949
+    },
+    "inputs/camera-0267.npz": {
+      "sha256": "853817aeb226814287caf88dd5a4ba083fbf0b3f203d402a74e9153c74df28e6",
+      "bytes": 53346
+    },
+    "inputs/camera-0268.npz": {
+      "sha256": "4f3853918358b3dd30e7dabdf8cc542056bd3ee578ddbaae329f27e1c56b5121",
+      "bytes": 53198
+    },
+    "inputs/camera-0269.npz": {
+      "sha256": "2544f13d7398484fad2db0e5a2bacc3bbff95705cbf20c3c05225becfbefba01",
+      "bytes": 54075
+    },
+    "inputs/camera-0270.npz": {
+      "sha256": "88af0d77ac1e6ad5a4566b6fb1c505c656524d8a6699a25b74d33d8c07a3747e",
+      "bytes": 54386
+    },
+    "inputs/camera-0271.npz": {
+      "sha256": "32cd66707fdc86b979db974763db03fa5d645441463a13eb06c1d5a1bb8ede67",
+      "bytes": 55840
+    },
+    "inputs/camera-0272.npz": {
+      "sha256": "047f16446895fbad590627b24abaf30208c7b28a1e94d8d64389534958134bdd",
+      "bytes": 57058
+    },
+    "inputs/camera-0273.npz": {
+      "sha256": "54854e2332201264f4926cd573f6df2f2f30490465542864fc94c07f5c90d4ed",
+      "bytes": 57306
+    },
+    "inputs/camera-0274.npz": {
+      "sha256": "26f7be4647b9aa965b790e3dbadacf2ed3410b32437ed7830ccf045aa8e44f8d",
+      "bytes": 58068
+    },
+    "inputs/camera-0275.npz": {
+      "sha256": "18374d97797fe72726dd1d3676e8f4e43bbadc288029d8dd74c9ee015fdd6aae",
+      "bytes": 57281
+    },
+    "inputs/camera-0276.npz": {
+      "sha256": "93f28b015d072c0cc9cb50038e939759db8109e20b01f2672ba37e735dfddd8a",
+      "bytes": 55784
+    },
+    "inputs/camera-0277.npz": {
+      "sha256": "7233edb16b2f9c8ef5f98946fcce07bb1ba22b326bfd989a27e19eb36ce26fe7",
+      "bytes": 56602
+    },
+    "inputs/camera-0278.npz": {
+      "sha256": "53d077ef4a7700ffb0019f1d45743cd93971fd8d4f0b6c142893ec32c9c1a770",
+      "bytes": 59966
+    },
+    "inputs/camera-0279.npz": {
+      "sha256": "2a38b5f695fa79179926cf550761f913824a39088c37609d7e78f6945df25e63",
+      "bytes": 66430
+    },
+    "inputs/camera-0280.npz": {
+      "sha256": "49f8ef9baa85bd1e9cf1abf0f5a6af0514cb7326c61179308ae5fa585c6c538e",
+      "bytes": 68865
+    },
+    "inputs/camera-0281.npz": {
+      "sha256": "89235f781e4c529114f3033a7cd450bb316f32b5def3c33f18f797673898dd80",
+      "bytes": 74550
+    },
+    "inputs/camera-0282.npz": {
+      "sha256": "569539dcc586a4310f4ebe5bece572378f4d3be001319ced1f8f49d2d720d028",
+      "bytes": 81060
+    },
+    "inputs/camera-0283.npz": {
+      "sha256": "5bc1e1d4f630e318ab29397d686ce462ef3bccb658808cb610fac3a582979d5d",
+      "bytes": 84711
+    },
+    "inputs/camera-0284.npz": {
+      "sha256": "853be65d32d49c1733ef67876984be7fbd8ba448dd489529df578f109ebce6a4",
+      "bytes": 89122
+    },
+    "inputs/camera-0285.npz": {
+      "sha256": "7cc176767e77804dbe62644862ccb9a77d576bfb46f2c6229c3bc05e4e762287",
+      "bytes": 92941
+    },
+    "inputs/camera-0286.npz": {
+      "sha256": "329f3ae637209902be421a48b6bb10a76b1f2b9a44abe8efae120085032652fa",
+      "bytes": 95160
+    },
+    "inputs/camera-0287.npz": {
+      "sha256": "73152450d94858b994d6db36a7d4a495835d11ef52f0a310a730db2c74185d44",
+      "bytes": 87853
+    },
+    "inputs/camera-0288.npz": {
+      "sha256": "4b8474d074bb60b462b5f7c2d99c33c05dd768d3bbd5057519b28a9815d86356",
+      "bytes": 91450
+    },
+    "inputs/camera-0289.npz": {
+      "sha256": "c4288bb78269b65624c382acf95b694bd6dbe4bc1824e87731b7c7977d905f3f",
+      "bytes": 86064
+    },
+    "inputs/camera-0290.npz": {
+      "sha256": "8a2de687c80b31cba472b7d04a395e477329d107a7876d5a5867f999c4f94e9c",
+      "bytes": 78279
+    },
+    "inputs/camera-0291.npz": {
+      "sha256": "be239e9b1343709f9449f9190b45a764a9ea6583c91ff1276cfc21434430ba2a",
+      "bytes": 73782
+    },
+    "inputs/camera.json": {
+      "sha256": "2b93484a0d1502352454ecb523a662b64d45682f573510f624a036b8ea7b3322",
+      "bytes": 105955
+    },
+    "inputs/dvl-events.json": {
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "bytes": 3
+    },
+    "inputs/dvl.json": {
+      "sha256": "5b734a4045af480d9f335b3f7fb0b65b2108c29958e1b497bf1c7cbc1162bfd3",
+      "bytes": 89161
+    },
+    "inputs/imu.json": {
+      "sha256": "ebbf64fe69a472261a4174d7ac9e70947e697285ff400b3c51a3c63d43a51d18",
+      "bytes": 3369091
+    },
+    "inputs/isometric-0000.npz": {
+      "sha256": "2af6ecc499912127b5fb4ab040b081642fd4d093eba428ed48265657ca0321e9",
+      "bytes": 8077
+    },
+    "inputs/isometric-0001.npz": {
+      "sha256": "3da58b91cbd6187f44c918a83d6a48c60b0165b2f37d0b9cca45c028bb433228",
+      "bytes": 8004
+    },
+    "inputs/isometric-0002.npz": {
+      "sha256": "0018a66cfb2d4ded44f616e89b3c6c3afb7567f90ff57067930f65749ad121a2",
+      "bytes": 8029
+    },
+    "inputs/isometric-0003.npz": {
+      "sha256": "ded50994cf18d80d1a417dd6904a8edd45e9dbf4dd7bbb6a518535db893caf66",
+      "bytes": 8068
+    },
+    "inputs/isometric-0004.npz": {
+      "sha256": "134ce94ce6d42fda098511e7e3b08f57a554cb9f4e0098e4d055359e8f3775a8",
+      "bytes": 7970
+    },
+    "inputs/isometric-0005.npz": {
+      "sha256": "02c866b211ebec5018dfe90b69a6bc07cf50918bb655ca3e812a93c94268f86a",
+      "bytes": 7945
+    },
+    "inputs/isometric-0006.npz": {
+      "sha256": "1a7d33e581759a190a16a507495744476af2971ceaeee54d4073e407d15bd190",
+      "bytes": 8093
+    },
+    "inputs/isometric-0007.npz": {
+      "sha256": "8578c4c466574ef9e4a9ca6d4350bc1c7a879fc9c8fd571db5c9c05ec920c854",
+      "bytes": 8070
+    },
+    "inputs/isometric-0008.npz": {
+      "sha256": "428f72ad48c5c906e9c7c02db80629625c85b7fbc62d34ea22ef409e4b7be6cf",
+      "bytes": 8016
+    },
+    "inputs/isometric-0009.npz": {
+      "sha256": "4b683fc48c37a7015ca027ae6ff5bf97da6c5648432359b5a711ee155ec9e2ee",
+      "bytes": 7963
+    },
+    "inputs/isometric-0010.npz": {
+      "sha256": "6b2b74c841c55ddb32272515a6faffb0200e71dddc6be12eb8ca3bb43dc17d25",
+      "bytes": 7993
+    },
+    "inputs/isometric-0011.npz": {
+      "sha256": "f34ebef389c5be105dc3e5dd12d7d7b45fdf777623d28cf9fbae72397b74e68e",
+      "bytes": 7977
+    },
+    "inputs/isometric-0012.npz": {
+      "sha256": "9e581c39d8b238cfa5b71ebd6c950a10626b192ca762db64bf7613890238e422",
+      "bytes": 8009
+    },
+    "inputs/isometric-0013.npz": {
+      "sha256": "63331bb905fc3f4204d306ed80a8ae805c05a73f7f8d592f0a78cb635b7aee97",
+      "bytes": 7945
+    },
+    "inputs/isometric-0014.npz": {
+      "sha256": "ae8f1c4a94ee164eb1072e997c7486d6df37627fe71bddcbf4f9519d4eed2217",
+      "bytes": 8049
+    },
+    "inputs/isometric-0015.npz": {
+      "sha256": "3182b17acacd4bceabab1974e4a8955e78626ccd782cf6b7a7493e542a5bc889",
+      "bytes": 10087
+    },
+    "inputs/isometric-0016.npz": {
+      "sha256": "ad266aba2f50c8b245922af9ca5ca9940e5ad294f5570e3fce0e393d719275bf",
+      "bytes": 13721
+    },
+    "inputs/isometric-0017.npz": {
+      "sha256": "de5748e48c583453f0e96aa49a766304e31fa27cd69b54c1bb64e50ed6a84f39",
+      "bytes": 15452
+    },
+    "inputs/isometric-0018.npz": {
+      "sha256": "d903e51ad29aa1a83bc96fa9138ec2d388d2a84d98e6d9c09ab833fbc032e120",
+      "bytes": 10550
+    },
+    "inputs/isometric-0019.npz": {
+      "sha256": "5367550c96f06a9a5f601180e5af6e6e7f2378b94baf42e4ecbcb0a37c700325",
+      "bytes": 7992
+    },
+    "inputs/isometric-0020.npz": {
+      "sha256": "6dc3f45a0046d064b9b805e73dea3366002a205571c6e09ae328c97c99ece610",
+      "bytes": 8604
+    },
+    "inputs/isometric-0021.npz": {
+      "sha256": "4edefc442d7c62d0a86a5e887fc32965b3fd2f367c9fdfbdac85815e11363e1a",
+      "bytes": 9841
+    },
+    "inputs/isometric-0022.npz": {
+      "sha256": "ca1cb038ecfcc486ff11d992d54b0027d681b77d3c36961619f3f8c1218af854",
+      "bytes": 11023
+    },
+    "inputs/isometric-0023.npz": {
+      "sha256": "87bedd084e6f8949a788ec70a8b12a733a3c94de0ce0ed5d6897f5b1fcf8e055",
+      "bytes": 9817
+    },
+    "inputs/isometric-0024.npz": {
+      "sha256": "0e8f5d6f0dd0af253af5564b6fa640ae125b85166fa22502bff5ab0d8a246bed",
+      "bytes": 8532
+    },
+    "inputs/isometric-0025.npz": {
+      "sha256": "7a75a6b5f1db07cd579f8c703d82262aefe5ac0d3018709010ecae82f4e4db1e",
+      "bytes": 7831
+    },
+    "inputs/isometric-0026.npz": {
+      "sha256": "bd40dbbe9cb292a54c8c020d22f4adc56ff5b1001bd0229cd76bb1983e783520",
+      "bytes": 7741
+    },
+    "inputs/isometric-0027.npz": {
+      "sha256": "4c7ef317cab25e0b94893fb3b03ca5e5582c1d81b31e1a00acf400bbaf6e38f9",
+      "bytes": 7729
+    },
+    "inputs/isometric-0028.npz": {
+      "sha256": "37a949af77cc00762bcd40a4c6aeaea60103938b8f317ebcb7bf5d0cfb84fb1c",
+      "bytes": 7741
+    },
+    "inputs/isometric-0029.npz": {
+      "sha256": "3f97e62ee7cec38a3793fa5ee1a16fd0d35295c852522ddb68238772dc65dbc3",
+      "bytes": 7620
+    },
+    "inputs/isometric-0030.npz": {
+      "sha256": "fe966602ffebb2719fd677d007d314920e20dbebf54d89e6902fc74b5c0e6015",
+      "bytes": 7776
+    },
+    "inputs/isometric-0031.npz": {
+      "sha256": "c3d5a0ba167899e5d1ed147462c58e7af053683ccb842eef77d5fba5203403eb",
+      "bytes": 7783
+    },
+    "inputs/isometric-0032.npz": {
+      "sha256": "dc281a6d2edaab7c61efeabc31f01f8a9572cbf6a519aea82e001e93e564e1a5",
+      "bytes": 7788
+    },
+    "inputs/isometric-0033.npz": {
+      "sha256": "7b12f6515c9f38e5a034d72a9064429e56f35fc5b092eecf5a2f1b8b1574f6e6",
+      "bytes": 7734
+    },
+    "inputs/isometric-0034.npz": {
+      "sha256": "9c6de6eda565a7d49b24dbb853c2c41ad87632257b87fe55a0f5941f2fc202b1",
+      "bytes": 7673
+    },
+    "inputs/isometric-0035.npz": {
+      "sha256": "28761eece3f917da68d2b1af1b3fc8e61b2700ebb2d811b813c28d17019b8be7",
+      "bytes": 7522
+    },
+    "inputs/isometric-0036.npz": {
+      "sha256": "dc6e15e1e75d29fd4aa7ce1bbd7986fb42072109b3fa0d01b373d01ebf6456c0",
+      "bytes": 7521
+    },
+    "inputs/isometric-0037.npz": {
+      "sha256": "9d9c24637cede5c1228f2be3bac8be610a71a087d1f0838ef6f9db784966320f",
+      "bytes": 7677
+    },
+    "inputs/isometric-0038.npz": {
+      "sha256": "69b42ef133cc1301a1d95bfa38eaf7efa02300e4912c01232927bd0fe75ea466",
+      "bytes": 8435
+    },
+    "inputs/isometric-0039.npz": {
+      "sha256": "e227e1173ddf6e54d0fb0554548a9aa2a736deb7c688632b609e494d35781ac5",
+      "bytes": 10016
+    },
+    "inputs/isometric-0040.npz": {
+      "sha256": "da9b5af3221173269438e395b56cdb79be46d9beac70e281a7e0aa3fcf61fb9a",
+      "bytes": 10910
+    },
+    "inputs/isometric-0041.npz": {
+      "sha256": "af8d09a9fc72558c690f5b622356aa05684f5fb809b6b1de5cad57152ad4ea6b",
+      "bytes": 8580
+    },
+    "inputs/isometric-0042.npz": {
+      "sha256": "36a791661e9df9535be4d0303bd9bd75bc4d9cce83d8bdd54f8e76127150adff",
+      "bytes": 7831
+    },
+    "inputs/isometric-0043.npz": {
+      "sha256": "cb7420fc0a8fabfdb05e717014a399749f303ce896b192dda6a1c00a9a035b46",
+      "bytes": 7949
+    },
+    "inputs/isometric-0044.npz": {
+      "sha256": "6ed2ecb4ca1728c8a6eb8f2e58da0416e056fd2bddb6cc9693d3206f76d80d08",
+      "bytes": 9073
+    },
+    "inputs/isometric-0045.npz": {
+      "sha256": "96dd1b98c180dab40a4d50ebe5fa15ee34f27ba0e5274dfc5ab35a94ab83e6a9",
+      "bytes": 11061
+    },
+    "inputs/isometric-0046.npz": {
+      "sha256": "fd2c18041d8dd7dccb2e57685f2ed3245b42b28aaed74801b1245de85fc70205",
+      "bytes": 8994
+    },
+    "inputs/isometric-0047.npz": {
+      "sha256": "ba16a098f1d7b3bf40ddca3a83f244615691a63eb227be65b7959f9a4dd5cfc9",
+      "bytes": 8019
+    },
+    "inputs/isometric-0048.npz": {
+      "sha256": "008580ddf598cd443964018fd2ae24be0acbfdaabbcbd49c9a6c327abc7b8392",
+      "bytes": 7802
+    },
+    "inputs/isometric-0049.npz": {
+      "sha256": "a6682af88a55d7fbfddfafa630ec7ddad2199e4dc39f45e8dc2510fefbbca214",
+      "bytes": 7847
+    },
+    "inputs/isometric-0050.npz": {
+      "sha256": "b32cbc7d28f3b0af71b65ab00ffa443bcae28a5a5719b04626b9faaafbdf97cd",
+      "bytes": 8065
+    },
+    "inputs/isometric-0051.npz": {
+      "sha256": "6872ef4e17a16d0d1184c4b514836d8489c9978194c4f047baa6db3f92df8de1",
+      "bytes": 8021
+    },
+    "inputs/isometric-0052.npz": {
+      "sha256": "328452a2d4831a1976ad22f23fb853ff947f0d9986a392324b8d98d28a3f672e",
+      "bytes": 8000
+    },
+    "inputs/isometric-0053.npz": {
+      "sha256": "0e433c492d9a42ee2ed91d53facbebe20ada6da3350aad5afa342565b085e3df",
+      "bytes": 7924
+    },
+    "inputs/isometric-0054.npz": {
+      "sha256": "fc34f3c309cb902bc217b4fc5b3e5df354ecb22f9a05e27202ee9c1545525b62",
+      "bytes": 7914
+    },
+    "inputs/isometric-0055.npz": {
+      "sha256": "54c3103d0ad59c2e0e3e1f153544766accd8cffeab202d7af8d325b8f11e3391",
+      "bytes": 7920
+    },
+    "inputs/isometric-0056.npz": {
+      "sha256": "aa7d40c8f6d32ad9f5a6d15ffe4746da209d32c43ed63426465ecea85e00415a",
+      "bytes": 7865
+    },
+    "inputs/isometric-0057.npz": {
+      "sha256": "eb67004b98fbaf4212dd1f0cd035634f9e4649398ebb961954c1d4ec7b53ec27",
+      "bytes": 8042
+    },
+    "inputs/isometric-0058.npz": {
+      "sha256": "abdb9e50240381f841a0fe0f84cc5a9b64356d342573a7eece9a907861e167eb",
+      "bytes": 8050
+    },
+    "inputs/isometric.json": {
+      "sha256": "716e4db59d73ed2d05252b03fb4524861be45a3f7bd3ca82af9529327ebf6bac",
+      "bytes": 4183
+    },
+    "inputs/native-dvl.json": {
+      "sha256": "009493fe2f15744729bb369765531ea9bc36ebd0d73effb206b19718f6d409b1",
+      "bytes": 242023
+    },
+    "inputs/pressure.json": {
+      "sha256": "4652740a2cc5693fc220bcf64636a67dbca6f2e0f11735568a8d0d7bbe569f1e",
+      "bytes": 78960
+    },
+    "inputs/sensor-model.sdf": {
+      "sha256": "1e466c8089f5ab8792c88e2d09f400a2f8de046b788922b081b97b36a46cf42e",
+      "bytes": 20150
+    },
+    "inputs/sonar-0000.npz": {
+      "sha256": "76b0e5c92e7307badad30fb85e7beadb0218ee619609fc6c247729a8a7ec7452",
+      "bytes": 561391
+    },
+    "inputs/sonar-0001.npz": {
+      "sha256": "69aa73f8d6920c0a7d59a7d67e15e120a8304e58a9bc92c33d97eb1bb132155e",
+      "bytes": 561352
+    },
+    "inputs/sonar-0002.npz": {
+      "sha256": "e5e33b4416d1525e26a05ef61e286387a710c2ca0a0cc035867e2524bb82f91b",
+      "bytes": 561652
+    },
+    "inputs/sonar-0003.npz": {
+      "sha256": "32d21cf06e64aa9c296d1ed97a7b39335d37787ec9382e5c12c39d23f6b1da3e",
+      "bytes": 562090
+    },
+    "inputs/sonar-0004.npz": {
+      "sha256": "6500607b92967845ee4461fea6e0d707989d37b224e8687fad6d282c57938e8b",
+      "bytes": 562561
+    },
+    "inputs/sonar-0005.npz": {
+      "sha256": "5aa275c9a75df8bcf8863dff94103fdd6ab1b27573bc4aacb09ae1985b4fff19",
+      "bytes": 562452
+    },
+    "inputs/sonar-0006.npz": {
+      "sha256": "646627b2c5264fe4214dbf25d3d87191af73ec92dc2f3b10cb092dd4d65cd687",
+      "bytes": 563105
+    },
+    "inputs/sonar-0007.npz": {
+      "sha256": "c425c935fe800df248f340e66243568b8cce6868aaa4c42b312826cfc2a72cf2",
+      "bytes": 563708
+    },
+    "inputs/sonar-0008.npz": {
+      "sha256": "737f3908c9a0870051232d0f1bbc89f96a6b3e0b6c804bbd03be4d44d1fb7501",
+      "bytes": 564113
+    },
+    "inputs/sonar-0009.npz": {
+      "sha256": "bcdd3a1a66ad303d94919b8966824684c206b1c5714a292420d1983f50ae22a9",
+      "bytes": 564284
+    },
+    "inputs/sonar-0010.npz": {
+      "sha256": "0568fee7ecca7427386fe7434aca7e3369dd1e7e590a22e29feb1271fea900ac",
+      "bytes": 564101
+    },
+    "inputs/sonar-0011.npz": {
+      "sha256": "e408e29faf6d018d5c1319f1e0b55e1f2b1ea9e18833259cfc1bdab0e26a04dd",
+      "bytes": 564110
+    },
+    "inputs/sonar-0012.npz": {
+      "sha256": "6b83477ec6b9e0b773b6dcf08bd85b899f66677f62495f13a2e5fef4c9da2e0b",
+      "bytes": 563654
+    },
+    "inputs/sonar-0013.npz": {
+      "sha256": "428f4290b83da91a9062103bb14bddd26aee5429bf7c5fb237d3a4cba4dae475",
+      "bytes": 563792
+    },
+    "inputs/sonar-0014.npz": {
+      "sha256": "7d8772009604f0212f224850724168ad21dde717c2e11656940c3189bf863625",
+      "bytes": 564369
+    },
+    "inputs/sonar-0015.npz": {
+      "sha256": "3ede5f171b94f1001ae951cfc4e596a29203431ad6c961d70622c43e9b630d6c",
+      "bytes": 564231
+    },
+    "inputs/sonar-0016.npz": {
+      "sha256": "7644bbee397e29ce09d5527e678a227c9dc8a3504de2567842e2897401a5a706",
+      "bytes": 563904
+    },
+    "inputs/sonar-0017.npz": {
+      "sha256": "97287a428f54e1a2bc87531ac5cf0b37346538b0b4f226ee91845128bbd709cf",
+      "bytes": 564077
+    },
+    "inputs/sonar-0018.npz": {
+      "sha256": "8042c22e7876a295f1220db1d98896c58675c89d4c0fc3939a9c7682371b32b4",
+      "bytes": 563699
+    },
+    "inputs/sonar-0019.npz": {
+      "sha256": "27ad6d4df7b03ab01be0dd50e7352140f722e273ab8393c097268ae0352501bc",
+      "bytes": 564305
+    },
+    "inputs/sonar-0020.npz": {
+      "sha256": "3413625ac4a84581901ded2825a9373b8ff17e3b0290b88f9403bcfd3f272a61",
+      "bytes": 564404
+    },
+    "inputs/sonar-0021.npz": {
+      "sha256": "acb6600ddbb8e19a36767f4b16e243ba2f07e9a6afed327581b231ab451db4ba",
+      "bytes": 563912
+    },
+    "inputs/sonar-0022.npz": {
+      "sha256": "a06027d8d06c9f351bcb748853e0cce35c8732b170b1c844e5b64cb92cb9562b",
+      "bytes": 564104
+    },
+    "inputs/sonar-0023.npz": {
+      "sha256": "2622cad726aec7587b644ba7b023f870442f96fd8b2a55c9359177f2b5aebc76",
+      "bytes": 564382
+    },
+    "inputs/sonar-0024.npz": {
+      "sha256": "ac85024100d063a8eaf486a9dee764d661760a1a4cd3dac1b3af6febd0f99b4b",
+      "bytes": 563748
+    },
+    "inputs/sonar-0025.npz": {
+      "sha256": "fa8a1b584e91135edf3266001a37862091927c9e4a990d64176481ad40823835",
+      "bytes": 563582
+    },
+    "inputs/sonar-0026.npz": {
+      "sha256": "474c9c26ffe8745a216b28eb8eafdc80b3ddde9072c59804e3a37aea58e9f2a8",
+      "bytes": 563178
+    },
+    "inputs/sonar-0027.npz": {
+      "sha256": "650b54bdc3cb9e123e97469cc4394d6a2652981380eec4737059f296af3b077d",
+      "bytes": 562787
+    },
+    "inputs/sonar-0028.npz": {
+      "sha256": "b0d6ed7870313db6477313072406bd4294ef292a25516e166242c27b269bdaf4",
+      "bytes": 562565
+    },
+    "inputs/sonar-0029.npz": {
+      "sha256": "eac03a16796949b2a077b1c976ca6343cf4cf7504a13eca49ff92dcea93559f1",
+      "bytes": 562126
+    },
+    "inputs/sonar-0030.npz": {
+      "sha256": "9a381c0a872faf8da80a832bca71fd71bab513ba37c776b292a10d979b612f81",
+      "bytes": 560855
+    },
+    "inputs/sonar-0031.npz": {
+      "sha256": "8b53c3963b550f78e22071ae2ff82376212d7f53cb93928382fb7c7cc13e0523",
+      "bytes": 560261
+    },
+    "inputs/sonar-0032.npz": {
+      "sha256": "1804362ddfec287b8342815a1b64d93936fc40e94ae852a6e6d5d0f4cc8f1a60",
+      "bytes": 560166
+    },
+    "inputs/sonar-0033.npz": {
+      "sha256": "6bcdb64a13d3f21f5b872ccda7226c273f84224791c22e0bfffbe68c596e0192",
+      "bytes": 559995
+    },
+    "inputs/sonar-0034.npz": {
+      "sha256": "511f0355bbcae1b3f8de8c3ff16b4ad71b1a9da49f91139f10e9e27ae6d7280f",
+      "bytes": 559497
+    },
+    "inputs/sonar-0035.npz": {
+      "sha256": "5e71f52e421994bed58c71d34ab690c9241f15b8e21f280b624c33c86eb60ce3",
+      "bytes": 560472
+    },
+    "inputs/sonar-0036.npz": {
+      "sha256": "8befadf30c3a94ef61969228175444c288c8986b52e9f20ea146c2883b46a071",
+      "bytes": 560538
+    },
+    "inputs/sonar-0037.npz": {
+      "sha256": "f69a048a8036676c6a775cac9efc5717cc239485c1a2e1af57b357a6ecdab819",
+      "bytes": 561454
+    },
+    "inputs/sonar-0038.npz": {
+      "sha256": "3d7c9eb05912f58f9040dd83a691336e9575999423534eca11c5a30c9fb71635",
+      "bytes": 561219
+    },
+    "inputs/sonar-0039.npz": {
+      "sha256": "11ae96df6414751d0293e49e80dd1334f20b4c73579fc20742a7681df5bd3a29",
+      "bytes": 560391
+    },
+    "inputs/sonar-0040.npz": {
+      "sha256": "dac364f81602d8b81dea6ad9d1559db098b0078c4ec720bd0a7cfd4ae77cb178",
+      "bytes": 560985
+    },
+    "inputs/sonar-0041.npz": {
+      "sha256": "2bc4ddb0ae153cdaa6dc2c81e345e0ff98524e6e98e75ddd1e0e6d064282399f",
+      "bytes": 561575
+    },
+    "inputs/sonar-0042.npz": {
+      "sha256": "f1dda729d63c4a9879f00dd987ca4601eed77eeb5ad381edfc3ddb061e163a23",
+      "bytes": 562147
+    },
+    "inputs/sonar-0043.npz": {
+      "sha256": "1d6772e1926a983acdc7a59f47397203c70029308338e5b8faa670d729b36648",
+      "bytes": 563173
+    },
+    "inputs/sonar-0044.npz": {
+      "sha256": "df801f889e70637563b4bcac97c5076a28d8d18dcc36e39641952dfe19c3dc6f",
+      "bytes": 561788
+    },
+    "inputs/sonar-0045.npz": {
+      "sha256": "9ebad245180a8f8a9a4938c47f536a0ba54d2398cdafcab6cf574876cf94d0cd",
+      "bytes": 561482
+    },
+    "inputs/sonar-0046.npz": {
+      "sha256": "4e1e776164823888f33962c68e968c5647776970fa9f55f381fe13b4c7f77309",
+      "bytes": 563655
+    },
+    "inputs/sonar-0047.npz": {
+      "sha256": "26c33cb1cf6da80aa4bb499b539337758f54a3cc2608f04950a9118bf2efd2ee",
+      "bytes": 565757
+    },
+    "inputs/sonar-0048.npz": {
+      "sha256": "107e2f1eca7d784baeaee39109e1308965cc5926d3c760fd85a418778e903aed",
+      "bytes": 564792
+    },
+    "inputs/sonar-0049.npz": {
+      "sha256": "3592a37a8d6b67eecf93ec0dae666c08fadc61f0f397b4179f44128428c1582c",
+      "bytes": 563979
+    },
+    "inputs/sonar-0050.npz": {
+      "sha256": "045c25aee32197a4570058f0c2e46d4ff50d126a6e5e0692905e07a4471a8eab",
+      "bytes": 566438
+    },
+    "inputs/sonar-0051.npz": {
+      "sha256": "04d6d08a142c97de4acc18a1aedfbd8a5be8b2fc7934988bb39ddce5a48009c5",
+      "bytes": 567738
+    },
+    "inputs/sonar-0052.npz": {
+      "sha256": "9a231a9770429fc29f68c85443e43974cd16567df4ad9377d5492a6a76ef2193",
+      "bytes": 566964
+    },
+    "inputs/sonar-0053.npz": {
+      "sha256": "cd718af0db53f4fc4dd186d81895fcb04b1c8b4a205b03f7c54b548025a45b0c",
+      "bytes": 564902
+    },
+    "inputs/sonar-0054.npz": {
+      "sha256": "8c8aafcd928ca6e49d0dd0bf8498a0857d257d1826d71e3e138564d2cc56209b",
+      "bytes": 565055
+    },
+    "inputs/sonar-0055.npz": {
+      "sha256": "934bc103402a8a4296b12132f55b96656adfb445e4538a761ad8fb7e384e5f30",
+      "bytes": 565611
+    },
+    "inputs/sonar-0056.npz": {
+      "sha256": "71f642a5449f86fd87e8def36e55fb765658cfeef2c8faeee32ed58f28ef5639",
+      "bytes": 567062
+    },
+    "inputs/sonar-0057.npz": {
+      "sha256": "ec07cb08763bd856e5675100b1781b5ff962298170ba3d9ad840f2842fda7964",
+      "bytes": 566734
+    },
+    "inputs/sonar-0058.npz": {
+      "sha256": "1a52cce5d85202bf663e590c28162d568189e138b822ac9f1d058bae56755e0b",
+      "bytes": 566401
+    },
+    "inputs/sonar-0059.npz": {
+      "sha256": "0dafd9547c2d3c3194bc5cf0e2d32963017660b2a13e6b66eb2394abe458a3e0",
+      "bytes": 565696
+    },
+    "inputs/sonar-0060.npz": {
+      "sha256": "205f378a8d2ce3bc3cb79c415ab5de9bfe19a3a8b350a318c485521bf1a2d471",
+      "bytes": 566749
+    },
+    "inputs/sonar-0061.npz": {
+      "sha256": "f85e99caf2770a3080bda200d93d5696dbceccae5fc313162d0efe83342f2180",
+      "bytes": 566838
+    },
+    "inputs/sonar-0062.npz": {
+      "sha256": "f3f5356f96877d7b6d3a04430318b3ff612dee31c76ecf05125dae7616d8ab77",
+      "bytes": 564577
+    },
+    "inputs/sonar-0063.npz": {
+      "sha256": "11da0defe20b2364060f807d16414345fc6bdb5652672816e808eb8635eac3db",
+      "bytes": 564598
+    },
+    "inputs/sonar-0064.npz": {
+      "sha256": "c6b53da064a37987dfd426b436d50b490697efc1ec2add1bd4a6270acd90b011",
+      "bytes": 565136
+    },
+    "inputs/sonar-0065.npz": {
+      "sha256": "9238de1ff7b4019f169875e0b77940183e4c52a851c7770442a122aa14fa618d",
+      "bytes": 563238
+    },
+    "inputs/sonar-0066.npz": {
+      "sha256": "67b27262545ce2f4f82878eba2f35d5cb6fcee4b31fc5e4e315077727dda4e57",
+      "bytes": 563092
+    },
+    "inputs/sonar-0067.npz": {
+      "sha256": "29179bdcbe47b51f5dac2575aac78f3ea2e1b1403dbfd693364c0431492aafad",
+      "bytes": 562680
+    },
+    "inputs/sonar-0068.npz": {
+      "sha256": "db03d814ed4dd16ee3ccd6320761f6a94d27dead944488b640036b9be543cd44",
+      "bytes": 561784
+    },
+    "inputs/sonar-0069.npz": {
+      "sha256": "00871729465a9e2e66675ce7cd77f6a98bd8d547e6057af2358366afa9ea6604",
+      "bytes": 562076
+    },
+    "inputs/sonar-0070.npz": {
+      "sha256": "b0ead74c7b68dea2b8d457af38ef28303ef1b149be4ffb62289faa8643fc222e",
+      "bytes": 563664
+    },
+    "inputs/sonar-0071.npz": {
+      "sha256": "153822f65044f13c22837a717cae51280b24d1e23cc2a470fb2e7f5b275a4b65",
+      "bytes": 564744
+    },
+    "inputs/sonar-0072.npz": {
+      "sha256": "d21e4db03a96c5c64687f04e750b7b1587fdcf884274657720034086ce14c8aa",
+      "bytes": 563077
+    },
+    "inputs/sonar-0073.npz": {
+      "sha256": "e75433df5bfb6a750d3a7b5b47088bab704372bb6ee41269caf179099781f9a3",
+      "bytes": 562883
+    },
+    "inputs/sonar-0074.npz": {
+      "sha256": "2c3c8159e01fcc62218d1f7f6683b9cc0395b353cf6c61949b38900cac31842b",
+      "bytes": 561992
+    },
+    "inputs/sonar-0075.npz": {
+      "sha256": "d9537ffa9430128525432f29735632546404dd46ea145bf32e8c8efd4522105b",
+      "bytes": 563636
+    },
+    "inputs/sonar-0076.npz": {
+      "sha256": "851458449af36324f231acaa457a441ee9054962b2bf35a9182af7894246e02c",
+      "bytes": 562325
+    },
+    "inputs/sonar-0077.npz": {
+      "sha256": "c115f45fcfd300492d1a6ca77326d49437d378bebaffcbd0bcddecc78e794090",
+      "bytes": 560838
+    },
+    "inputs/sonar-0078.npz": {
+      "sha256": "cd98a8fe05c4f614f948009cdb823e4de009b124148b51ef9fa5afaf0609a5a1",
+      "bytes": 561301
+    },
+    "inputs/sonar-0079.npz": {
+      "sha256": "b26c707e28721bc78e36a8a10b161a074327b48fcf71a46ac0c337a08b49f1e9",
+      "bytes": 561209
+    },
+    "inputs/sonar-0080.npz": {
+      "sha256": "8833183490b7753c2b86b1091a2f7d72d49ef337f7b0f803df2455d677e88d73",
+      "bytes": 561114
+    },
+    "inputs/sonar-0081.npz": {
+      "sha256": "95d1e5473765a8cc7664ff5495f7d58a976c38540fbe07712f4bd63667da41ad",
+      "bytes": 561328
+    },
+    "inputs/sonar-0082.npz": {
+      "sha256": "517d759d8506e131238446d101ebd24d5bc54242a772d8b83daa05d1d1e080af",
+      "bytes": 560841
+    },
+    "inputs/sonar-0083.npz": {
+      "sha256": "1e887dfc3156d6cded9a20c05fcbc8f27a8fbbadc8504a7dd3738726020d1271",
+      "bytes": 561027
+    },
+    "inputs/sonar-0084.npz": {
+      "sha256": "45874b00546507de98f9b8140c8ee540fc7798e7eeebbf248f0ccc32dbf5f4a6",
+      "bytes": 561327
+    },
+    "inputs/sonar-0085.npz": {
+      "sha256": "2b5ea23353184f1100dd62299a20e26dfcde00bd41f2a3daf78b35677d842e18",
+      "bytes": 561128
+    },
+    "inputs/sonar-0086.npz": {
+      "sha256": "f31746cd6c8b3355892d5ab42171896c7913b784809af2bd5fab0f23d12c32e7",
+      "bytes": 561532
+    },
+    "inputs/sonar-0087.npz": {
+      "sha256": "93930917c5bee46885c8743ccf46420c4fd82fb48477c660237c32bb5be24ee4",
+      "bytes": 562712
+    },
+    "inputs/sonar-0088.npz": {
+      "sha256": "59ab3b1391f0373d767b2d4b9f73a20fc948c9cbcc87bf0bc5079bcfa301702c",
+      "bytes": 562384
+    },
+    "inputs/sonar-0089.npz": {
+      "sha256": "f3fad4ee8ce1a5e7df996920f8475d8bd9da2a759e027ae191a28555f870e94a",
+      "bytes": 561966
+    },
+    "inputs/sonar-0090.npz": {
+      "sha256": "3ced20e04cea44b630d11e2ac85d43e1dfd4cdc5b4fececfe6634f8e7e80ab28",
+      "bytes": 563328
+    },
+    "inputs/sonar-0091.npz": {
+      "sha256": "0d847fce17360a4635d54dcc691e2e1cb11e8e15c64c50991fc3d9f7bb274ad4",
+      "bytes": 564892
+    },
+    "inputs/sonar-0092.npz": {
+      "sha256": "2ae2d3a62b4bd942d49bd366840f43eaaabecaf821dce6a7584a39a5f736a51f",
+      "bytes": 564346
+    },
+    "inputs/sonar-0093.npz": {
+      "sha256": "f409deca41403cef1f3a4c8fef4545d944d5227e12838c32df8cbf8caa61e416",
+      "bytes": 562165
+    },
+    "inputs/sonar-0094.npz": {
+      "sha256": "fcc1d0fc0bc60b7e297089a618555fa8b6939191fe671f2c6348c673bff238ef",
+      "bytes": 562878
+    },
+    "inputs/sonar-0095.npz": {
+      "sha256": "ec6dc860634edd540774fbac634ae153701bf50b4e769daecae88affa766f9d6",
+      "bytes": 563995
+    },
+    "inputs/sonar-0096.npz": {
+      "sha256": "189b0afc06cddfda50d594b2de7b49311555a20c9a51bc4b942a3a89da071265",
+      "bytes": 563214
+    },
+    "inputs/sonar-0097.npz": {
+      "sha256": "b1579bb6e72cfaf16c49405f93d8a107e925697809ebcf07a79b5c05ff6dd5a2",
+      "bytes": 561729
+    },
+    "inputs/sonar-0098.npz": {
+      "sha256": "0d5348e3c664ce7c7bfc74803216fc2be6bb1acf90fbb319e9d335be9a9a842e",
+      "bytes": 563040
+    },
+    "inputs/sonar-0099.npz": {
+      "sha256": "7ac5a04aa7f03ffdea0d94f9292ad3b0df946a3c3d792f10606c56ae3d26b960",
+      "bytes": 564103
+    },
+    "inputs/sonar-0100.npz": {
+      "sha256": "3738c107b16722fc9908acd8c369be3b2c176cd24a5859df7f2f149488dc5980",
+      "bytes": 565323
+    },
+    "inputs/sonar-0101.npz": {
+      "sha256": "f920b1fe120396cd49a637c265cc96f6e8cf7035adbb87e79f21f7da1840d0c9",
+      "bytes": 561941
+    },
+    "inputs/sonar-0102.npz": {
+      "sha256": "178bcc45c32f384c5005e085ae7d1bc1c9ad0471a9c449dae222ec815dacb9f8",
+      "bytes": 561672
+    },
+    "inputs/sonar-0103.npz": {
+      "sha256": "cbb9a1f752ce8f19a711dbea1ef836c5faac837c3e50dda5cc5df84d237c2705",
+      "bytes": 562142
+    },
+    "inputs/sonar-0104.npz": {
+      "sha256": "9da6366105e9714a728148c74a6d6874a873d1da8be49266e8452b001027004c",
+      "bytes": 562389
+    },
+    "inputs/sonar-0105.npz": {
+      "sha256": "692de837eb30016f0762f58147f45eed09991aa10a2337e98e13df0ac6ec6dde",
+      "bytes": 563929
+    },
+    "inputs/sonar-0106.npz": {
+      "sha256": "7a234d87f9b9f2687b47d6460deb360db777098a2d4930e7646c4410a05c6955",
+      "bytes": 561788
+    },
+    "inputs/sonar-0107.npz": {
+      "sha256": "58062bcfdcc62effa7993b09d71ea545fa6703fc54ea16f7c8eae2b34c424569",
+      "bytes": 564306
+    },
+    "inputs/sonar-0108.npz": {
+      "sha256": "4503c4224deb99861b210ccbdffe8808b6b93a715181663cbc0526f8ecf3e196",
+      "bytes": 564949
+    },
+    "inputs/sonar-0109.npz": {
+      "sha256": "4313381dd057a50f8bc8e22e15b9f51199ca523c7d554adafb325f15ac5db3ed",
+      "bytes": 565712
+    },
+    "inputs/sonar-0110.npz": {
+      "sha256": "64f1bb3ef68646ed1c3f0e7d7cc1e7548cdad3b183940e12505f0ef278c59d30",
+      "bytes": 563773
+    },
+    "inputs/sonar-0111.npz": {
+      "sha256": "9209258fefbcd2ad2c9bb24d682c200191da1caf17ffc89014aacc1685e66b38",
+      "bytes": 561334
+    },
+    "inputs/sonar-0112.npz": {
+      "sha256": "a8d13f92cf96ce86c520d0bc4f94ee05e8e6e902720edac398df2543bd73e674",
+      "bytes": 558696
+    },
+    "inputs/sonar-0113.npz": {
+      "sha256": "16d3bf27afd108f2d5e7d966d0b4f05dab86df441573ac06e628355ee40c6f97",
+      "bytes": 557261
+    },
+    "inputs/sonar-0114.npz": {
+      "sha256": "df129c8e8ef19298c26e97a14b8f0b8cffefc2dc6d790b50b9ae3f6e9d40298e",
+      "bytes": 557166
+    },
+    "inputs/sonar-0115.npz": {
+      "sha256": "ea1ce68fc43e0c996733c40dd6b48b60d027232a96579fb0d24a20efabcef135",
+      "bytes": 557839
+    },
+    "inputs/sonar.json": {
+      "sha256": "38c50b2913320609e4dd4498ed34b9bbd85ac0cbb8c6463b423457622e1b2c9a",
+      "bytes": 22606
+    },
+    "inputs/timeline.json": {
+      "sha256": "60684bdd4be1a31f5490eb92c9b15c8e82f97c2aaa3253668e0abaef4da0cfec",
+      "bytes": 4112085
+    },
+    "inputs/truth-assessment-only.json": {
+      "sha256": "95fc2d52cc41d50adbbd105008909a99704a14adde29781f0ee3b4f8bbb56dc6",
+      "bytes": 296146
+    },
+    "metadata/LICENSE.orca5": {
+      "sha256": "e4da13b8ee8adf3c184f3cfaa765c1b002efd9e1b7a200fe7c507a30391f8fb9",
+      "bytes": 1023
+    },
+    "metadata/appearance.json": {
+      "sha256": "64e6ed5a3b431dc0b9e36e5bccbaa1e84b3455b31e7233426a34ae7af73f710d",
+      "bytes": 485
+    },
+    "metadata/calibration.json": {
+      "sha256": "4b77ff9c3fe039c13a3053a71de24ebcf0eec311fe21bdaa11f2258a701fb33f",
+      "bytes": 6794
+    },
+    "metadata/mission-final.json": {
+      "sha256": "476e28b01f5f5ce227293c133c57422e16866b34b625f00f81f6f9d187a6e6e1",
+      "bytes": 67104
+    },
+    "metadata/mission-request.json": {
+      "sha256": "44e9aacb8098dada778546cb55efaa774b8255885865618ccaba5d089d512e7b",
+      "bytes": 1240
+    },
+    "metadata/mission.json": {
+      "sha256": "d824769e327f08428e85bd0d8ffbb49871bedd8efd3b2ddaab9aadee176f4cb7",
+      "bytes": 10657
+    },
+    "metadata/operating-request.json": {
+      "sha256": "1f6286a7166e824cbf6b65a0dc375fbafa0c3599a1565b5dbba876f6dcd7f468",
+      "bytes": 304
+    },
+    "metadata/optical-profile.json": {
+      "sha256": "5945d28d0dec554b548eb8384f529c4810d3f809027b95c14c741db49e59d238",
+      "bytes": 576
+    },
+    "metadata/readiness.json": {
+      "sha256": "62f0730795baeec9dc2ea4a5f58a5900113b60e9fe925cb026a38419359850e5",
+      "bytes": 9825
+    },
+    "metadata/receipt.json": {
+      "sha256": "bc68d050d1a4f2e11eed8c8f486ab4e26e10763c9b1a4a11eaa85f887014137e",
+      "bytes": 398
+    },
+    "metadata/session.json": {
+      "sha256": "4cf49bb11b11a5493976f674d16712438bf312d78bd06230f06eb461173ff138",
+      "bytes": 839
+    },
+    "metadata/start-request.json": {
+      "sha256": "953bb29202688538e10a039eb2e877eae939944b5b1073b719339c46864a52be",
+      "bytes": 75
+    },
+    "metadata/vehicle-at-ready.json": {
+      "sha256": "454aa731feaf20ac45b79c2912994ee8849b6a40195abfb46c802f3eac0fcea7",
+      "bytes": 4744
+    },
+    "metadata/vehicle.sdf": {
+      "sha256": "1e466c8089f5ab8792c88e2d09f400a2f8de046b788922b081b97b36a46cf42e",
+      "bytes": 20150
+    }
+  },
+  "total_bytes": 97241159,
+  "raw_data_in_git": false,
+  "app_commit": "3095c5d4b4354bd994f7aaa2ade8f9be45fbd90c",
+  "input_component_commit": "061c45cdf60b97334b6080043476fed37f147e16",
+  "source_inputs_relocated_without_content_changes": true,
+  "scope": "Single canonical original data directory outside Git to avoid CI clone duplication; all original frames retained"
+}

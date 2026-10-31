@@ -1,0 +1,100 @@
+{
+  "schema": "posim-inertial-dvl-1",
+  "calibration_source": "generated_sdf_noiseless_imu",
+  "available": true,
+  "reason": null,
+  "imu_frame": "vehicle/imu",
+  "dvl_frame": "vehicle/dvl",
+  "imu_mount": {
+    "parent": "vehicle/base_link",
+    "child": "vehicle/imu",
+    "translation": [
+      0.0,
+      0.0,
+      -0.1
+    ],
+    "rotation": [
+      1.0,
+      0.0,
+      0.0,
+      6.123233995736766e-17
+    ]
+  },
+  "estimator": {
+    "dvl_to_imu": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        -1.0,
+        1.2246467991473532e-16
+      ],
+      [
+        0.0,
+        -1.2246467991473532e-16,
+        -1.0
+      ]
+    ],
+    "imu_to_dvl": [
+      0.0,
+      -2.4492935982947052e-18,
+      0.01999999999999999
+    ],
+    "noise_density": [
+      0.001,
+      0.02,
+      0.0001,
+      0.001
+    ],
+    "gravity_m_s2": 9.8,
+    "gyro_bias": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "gyro_bias_covariance": [
+      [
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "accel_bias": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "accel_bias_covariance": [
+      [
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ]
+  },
+  "noise_profile": "simulation_integration_model_error_v1",
+  "session_nonce": "a4052fd3fee54880be300be5f3543755"
+}

@@ -1,0 +1,187 @@
+{
+  "modes": {
+    "angular_median": {
+      "all": {
+        "points": 9617,
+        "frames": 190,
+        "error_m": {
+          "rmse": 0.06669471058856592,
+          "median": 0.03183450282642863,
+          "p90": 0.11082454231910648,
+          "maximum": 0.34207771886279703
+        },
+        "beyond_10cm": 1157,
+        "nearest_surface_counts": {
+          "seabed": 6720,
+          "inspection_block_0": 2739,
+          "inspection_block_1": 86,
+          "inspection_block_2": 64,
+          "inspection_wall_0": 0,
+          "inspection_wall_1": 8
+        },
+        "within_10cm_counts": {
+          "seabed": 5836,
+          "inspection_block_0": 2531,
+          "inspection_block_1": 53,
+          "inspection_block_2": 32,
+          "inspection_wall_0": 0,
+          "inspection_wall_1": 8
+        },
+        "assessment_view_span_around_first_block_deg": 62.86875385246945
+      },
+      "paired": {
+        "points": 1005,
+        "frames": 94,
+        "error_m": {
+          "rmse": 0.04789329968176914,
+          "median": 0.016446660443605765,
+          "p90": 0.06566411884869337,
+          "maximum": 0.2882041355301732
+        },
+        "beyond_10cm": 60,
+        "nearest_surface_counts": {
+          "seabed": 125,
+          "inspection_block_0": 844,
+          "inspection_block_1": 6,
+          "inspection_block_2": 29,
+          "inspection_wall_0": 0,
+          "inspection_wall_1": 1
+        },
+        "within_10cm_counts": {
+          "seabed": 98,
+          "inspection_block_0": 838,
+          "inspection_block_1": 3,
+          "inspection_block_2": 5,
+          "inspection_wall_0": 0,
+          "inspection_wall_1": 1
+        },
+        "assessment_view_span_around_first_block_deg": 62.69391077762624
+      },
+      "eligible_component_snapshots": 87,
+      "eligible_frames": 79,
+      "snapshot_height_range_m": [
+        0.04182323563844125,
+        0.39886843601633437
+      ],
+      "cross_frame_identity_verified": false,
+      "map_accepted": false,
+      "native_pose_updated": false,
+      "range_plane_pose_uncertainty_available": false
+    },
+    "physical_plane": {
+      "all": {
+        "points": 10424,
+        "frames": 187,
+        "error_m": {
+          "rmse": 0.08218720253808533,
+          "median": 0.03675542270621482,
+          "p90": 0.13597326629949863,
+          "maximum": 0.4521075751222188
+        },
+        "beyond_10cm": 1725,
+        "nearest_surface_counts": {
+          "seabed": 7028,
+          "inspection_block_0": 3087,
+          "inspection_block_1": 305,
+          "inspection_block_2": 0,
+          "inspection_wall_0": 0,
+          "inspection_wall_1": 4
+        },
+        "within_10cm_counts": {
+          "seabed": 5506,
+          "inspection_block_0": 2921,
+          "inspection_block_1": 268,
+          "inspection_block_2": 0,
+          "inspection_wall_0": 0,
+          "inspection_wall_1": 4
+        },
+        "assessment_view_span_around_first_block_deg": 62.86875385246945
+      },
+      "paired": {
+        "points": 534,
+        "frames": 83,
+        "error_m": {
+          "rmse": 0.0563684636375798,
+          "median": 0.029080323526790464,
+          "p90": 0.09370572707040767,
+          "maximum": 0.21610352427997026
+        },
+        "beyond_10cm": 47,
+        "nearest_surface_counts": {
+          "seabed": 49,
+          "inspection_block_0": 476,
+          "inspection_block_1": 9,
+          "inspection_block_2": 0,
+          "inspection_wall_0": 0,
+          "inspection_wall_1": 0
+        },
+        "within_10cm_counts": {
+          "seabed": 42,
+          "inspection_block_0": 436,
+          "inspection_block_1": 9,
+          "inspection_block_2": 0,
+          "inspection_wall_0": 0,
+          "inspection_wall_1": 0
+        },
+        "assessment_view_span_around_first_block_deg": 60.63676199413232
+      },
+      "eligible_component_snapshots": 54,
+      "eligible_frames": 53,
+      "snapshot_height_range_m": [
+        0.31207308885587387,
+        0.6412980353238964
+      ],
+      "cross_frame_identity_verified": false,
+      "map_accepted": false,
+      "native_pose_updated": false,
+      "range_plane_pose_uncertainty_available": false
+    }
+  },
+  "navigation": {
+    "evaluated": true,
+    "states": 286,
+    "duration_s": 95.0,
+    "evaluation_alignment": {
+      "rotation": [
+        [
+          -0.9903724594049796,
+          -0.13842829064946172,
+          0.0
+        ],
+        [
+          0.13842829064946172,
+          -0.9903724594049796,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "translation": [
+        -0.02274078061066737,
+        0.010448829452008833,
+        -1.2924615732501334
+      ],
+      "scale": 1.0
+    },
+    "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+    "position_rmse_m": 0.04791106141529139,
+    "position_max_m": 0.11977843021603285,
+    "rotation_rmse_rad": 0.017801165298626187,
+    "rotation_max_rad": 0.032671478930309,
+    "truth_distance_m": 25.014677471794805,
+    "estimated_distance_m": 25.142869365738342,
+    "rpe_1s_pairs": 259,
+    "rpe_1s_position_rmse_m": 0.005327192395722801,
+    "rpe_1s_rotation_rmse_rad": 0.002911735783298081,
+    "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+  },
+  "source_record": "sonar-translated-view-20261031b",
+  "scene_sha256": "e47b848bd28c46911ee7b4a455343e786b1382737e937f6b8dba0b4e6a6e1678",
+  "source_integration": "ffecee9be9976f68c9e883d6cf3bbd6d40eb7729",
+  "truth_is_estimator_input": false,
+  "map_accepted": false,
+  "diagnostic_cutoff_is_universal_acceptance": false
+}

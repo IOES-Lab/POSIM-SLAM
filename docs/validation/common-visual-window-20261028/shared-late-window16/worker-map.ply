@@ -1,0 +1,11 @@
+ply
+format binary_little_endian 1.0
+comment scope accumulated_local_vio_landmarks
+comment request_id 1
+comment stamp_ns 129200000000
+element vertex 2
+property float x
+property float y
+property float z
+end_header
+­­?yë¿ŒŒÊ¿œÍ¯?9]Î¾·sÊ¿

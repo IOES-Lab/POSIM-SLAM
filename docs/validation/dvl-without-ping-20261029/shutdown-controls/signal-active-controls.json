@@ -1,0 +1,30 @@
+[
+  {
+    "mode": "active",
+    "exit_code": 0,
+    "forced": false,
+    "elapsed_s": 0.07573362503899261,
+    "received": {
+      "state": {
+        "blocked_signals": [],
+        "python_sigint": "<built-in function default_int_handler>",
+        "ros_handlers": "SignalHandlerOptions.ALL"
+      },
+      "valid": true
+    }
+  },
+  {
+    "mode": "active-paused",
+    "exit_code": 0,
+    "forced": false,
+    "elapsed_s": 0.07754500000737607,
+    "received": {
+      "state": {
+        "blocked_signals": [],
+        "python_sigint": "<built-in function default_int_handler>",
+        "ros_handlers": "SignalHandlerOptions.ALL"
+      },
+      "valid": true
+    }
+  }
+]

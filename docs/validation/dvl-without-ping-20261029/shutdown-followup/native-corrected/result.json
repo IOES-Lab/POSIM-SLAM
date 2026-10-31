@@ -1,0 +1,16 @@
+{
+  "passed": true,
+  "scope": "Full native SDK lifecycle and real DVL pause/return; no mapping or navigation acceptance",
+  "session_nonce": "a721322dbbf2449898a38432ff688d01",
+  "ping_physically_absent": true,
+  "dvl_messages": 9,
+  "valid_dvl_messages": 8,
+  "receiver": {
+    "pid": 21532,
+    "group": 21453,
+    "command": "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/posim332f629-sdk/bin/python /Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/slam-resume-20261028/runtime/worlds/practice_dvl_bridge.py --input-topic /vehicle/sensors/dvl --output-topic /vehicle/sensors/dvl --frame vehicle/dvl --native-frame vehicle/dvl"
+  },
+  "max_receipt_gap_s": 4.10152837500209,
+  "api_during_pause_ms": 1.5654590097256005,
+  "asyncio_upstream": "23dc7c9f05c6e85033dba4ca7a0c807cbede2a8f"
+}

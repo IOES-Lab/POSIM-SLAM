@@ -1,0 +1,17 @@
+{
+  "app_commit": "2fa8f1ce1518ee069e469f90c75323028060ab5e",
+  "component_revisions": {
+    "posim-terrain": "1f06e84f2b3fb354cbc03f24742b70a92a9548df",
+    "posim-routing": "296888947c8dd6b7f6965e340531fdbe9b91fd4e",
+    "posim-control": "486e82a0403ab9c052dc6b7794ced22b50ae99ba",
+    "posim-slam": "44aa93edb8a1fc8b914b762c67639f14ffdf23f8"
+  },
+  "components_source_sha256": "258d8a892c0dc7856273da5dfa4dccaca01b9582178eb33506f6c3b10614a150",
+  "diagnostic_changes": {
+    "file": "worlds/sensor_composition.py",
+    "before_sha256": "d1441fdfa573db4fd1d71f65f80065c3d9e23232a97f6b3844e9aaafeb2c25e7",
+    "after_sha256": "6dc51dc3588ba17fb687989185725150fb3c5fc8b186823bc365fb8b3df8c95f",
+    "purpose": "Comparison RGB shares sonar origin, pitch and 120 degree horizontal FOV; production payload defaults unchanged"
+  },
+  "scope": "Frozen development input recorder, no SLAM or archive qualification"
+}

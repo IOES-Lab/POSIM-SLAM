@@ -1,0 +1,66 @@
+{
+  "passed": true,
+  "error": null,
+  "mission_status": "completed",
+  "live_poses": 1125,
+  "segment_stable": true,
+  "clearance": {
+    "clear": true,
+    "minimum_centerline_clearance_m": 0.8656420409828744,
+    "required_body_margin_m": 0.5,
+    "closest": {
+      "actor": "acoustic_validation_target_1/body/collision",
+      "segment": 2010
+    },
+    "segments": 3003,
+    "collision_boxes": 5,
+    "method": "exact segment-to-oriented-box distance; spherical body envelope",
+    "scope": "authored targets only; terrain checked separately by mission planner"
+  },
+  "startup": {
+    "visually_constrained_poses": 10,
+    "initial_cloud_points": 0,
+    "map_required_before_motion": false,
+    "mission_started_before_tracking": true
+  },
+  "recovery": {
+    "killed_owned_worker": 73595,
+    "old_frame": "vehicle/vio_8114b37d2a684ee5a7c9a0fe30ba46fe_segment_0",
+    "new_frame": "vehicle/vio_8114b37d2a684ee5a7c9a0fe30ba46fe_segment_1",
+    "new_pose_count": 5,
+    "acceptance": "five visually constrained poses; bootstrap predictions retained separately",
+    "empty_new_segment_clouds": 12
+  },
+  "density_default": {
+    "shown": 1000,
+    "total": 2409,
+    "source": "ros_sample"
+  },
+  "density_views": [
+    {
+      "limit": 2000,
+      "shown": 2000,
+      "total": 2409,
+      "source": "native_archive",
+      "stamp_ns": 129200000000
+    },
+    {
+      "limit": 5000,
+      "shown": 2409,
+      "total": 2409,
+      "source": "native_archive",
+      "stamp_ns": 129200000000
+    },
+    {
+      "limit": 0,
+      "shown": 2409,
+      "total": 2409,
+      "source": "native_archive",
+      "stamp_ns": 129200000000
+    }
+  ],
+  "failures": [
+    "worker_closed"
+  ],
+  "max_transmitted_imu_lead_ns": 10000000
+}

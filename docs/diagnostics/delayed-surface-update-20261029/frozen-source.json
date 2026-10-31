@@ -1,0 +1,10 @@
+{
+  "scope": "Committed independent library plus the new delayed operator/tests/README; protected user edits excluded",
+  "base_commit": "95bce8e65a8449acd238495c85e32095ec9625ec",
+  "new_source_sha256": {
+    "src/posim_slam/delayed_surface_update.py": "7ce6897bc4dc83527dec9940cdcdb028f6b90c6b973f60fcbc041f32c627c5c4",
+    "tests/test_delayed_surface_update.py": "d95d0d2747ce2fac047e923cd66ced8e1c2060f08d07f02248fe07c322ddc058",
+    "tools/audit_delayed_surface_width.py": "172ebf0dbd5da121078fb98f1904b7e82d4a98ca90d422e40776956ed71751b7"
+  },
+  "protected_user_edits_included": false
+}

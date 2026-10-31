@@ -1,0 +1,66 @@
+{
+  "cases": [
+    {
+      "name": "empty_returns",
+      "max_absolute_error": 0.0,
+      "zero_mask_exact": true,
+      "python_seconds": 0.002383458020631224
+    },
+    {
+      "name": "finite_occluder_256x256",
+      "max_absolute_error": 3.129243850708008e-06,
+      "zero_mask_exact": true,
+      "python_seconds": 0.4297176669933833
+    },
+    {
+      "name": "front_plane_17x19",
+      "max_absolute_error": 0.0,
+      "zero_mask_exact": true,
+      "python_seconds": 0.0026544170104898512
+    },
+    {
+      "name": "missing_isolated_15x17",
+      "max_absolute_error": 0.0,
+      "zero_mask_exact": true,
+      "python_seconds": 0.0015331669710576534
+    },
+    {
+      "name": "nonuniform_13x19",
+      "max_absolute_error": 2.9802322387695312e-08,
+      "zero_mask_exact": true,
+      "python_seconds": 0.0025267499731853604
+    },
+    {
+      "name": "single_column",
+      "max_absolute_error": 0.0,
+      "zero_mask_exact": true,
+      "python_seconds": 0.0008881670073606074
+    },
+    {
+      "name": "single_row",
+      "max_absolute_error": 0.0,
+      "zero_mask_exact": true,
+      "python_seconds": 0.00035258400021120906
+    },
+    {
+      "name": "slanted_plane_23x29",
+      "max_absolute_error": 0.0,
+      "zero_mask_exact": true,
+      "python_seconds": 0.005120375019032508
+    },
+    {
+      "name": "spherical_range_13x17",
+      "max_absolute_error": 0.0,
+      "zero_mask_exact": true,
+      "python_seconds": 0.0025566669646650553
+    },
+    {
+      "name": "two_by_two",
+      "max_absolute_error": 0.0,
+      "zero_mask_exact": true,
+      "python_seconds": 0.0005318750045262277
+    }
+  ],
+  "passed": true,
+  "change": "Preserve source float32 trigonometric values before double-precision geometry; no threshold changes"
+}

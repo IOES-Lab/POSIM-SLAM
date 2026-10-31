@@ -1,0 +1,221 @@
+{
+  "scope": "Unit-normalized linear mean calibration under a fixed effective-return-ray hypothesis",
+  "training_cases": [
+    0,
+    1,
+    2
+  ],
+  "training_normals": [
+    [
+      0.0,
+      0.0,
+      -1.0
+    ],
+    [
+      0.13917310096006544,
+      0.0,
+      -0.9902680687415704
+    ],
+    [
+      0.08715574274765817,
+      0.12140559376013015,
+      -0.9887692138764507
+    ]
+  ],
+  "beams": [
+    {
+      "id": 1,
+      "ray": [
+        -0.3471219982074771,
+        0.34712733954984376,
+        -0.8712111847867287
+      ],
+      "linear_solution_norm": 1.0000010501698724,
+      "original_training_observations": [
+        {
+          "case": 0,
+          "packet": 0,
+          "beam_id": 1,
+          "locked": true,
+          "observed_range_m": 0.8608695864677429,
+          "reported_variance_m2": null,
+          "available": true,
+          "predicted_continuous_cone_range_m": 0.85751555090499,
+          "error_m": 0.003354035562752933,
+          "relative_to_altitude": 0.00447204741700391
+        },
+        {
+          "case": 1,
+          "packet": 0,
+          "beam_id": 1,
+          "locked": true,
+          "observed_range_m": 0.9208968877792357,
+          "reported_variance_m2": null,
+          "available": true,
+          "predicted_continuous_cone_range_m": 0.9162629496572828,
+          "error_m": 0.004633938121952896,
+          "relative_to_altitude": 0.006178584162603862
+        },
+        {
+          "case": 2,
+          "packet": 0,
+          "beam_id": 1,
+          "locked": true,
+          "observed_range_m": 0.8587944507598876,
+          "reported_variance_m2": null,
+          "available": true,
+          "predicted_continuous_cone_range_m": 0.8552564889947469,
+          "error_m": 0.0035379617651406514,
+          "relative_to_altitude": 0.0047172823535208686
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "ray": [
+        0.3471227107542977,
+        0.34712596815333335,
+        -0.8712114473032361
+      ],
+      "linear_solution_norm": 1.0000007488460265,
+      "original_training_observations": [
+        {
+          "case": 0,
+          "packet": 0,
+          "beam_id": 2,
+          "locked": true,
+          "observed_range_m": 0.8608695864677428,
+          "reported_variance_m2": null,
+          "available": true,
+          "predicted_continuous_cone_range_m": 0.85751555090499,
+          "error_m": 0.0033540355627528218,
+          "relative_to_altitude": 0.004472047417003762
+        },
+        {
+          "case": 1,
+          "packet": 0,
+          "beam_id": 2,
+          "locked": true,
+          "observed_range_m": 0.8232316374778748,
+          "reported_variance_m2": null,
+          "available": true,
+          "predicted_continuous_cone_range_m": 0.8205496439982188,
+          "error_m": 0.0026819934796559197,
+          "relative_to_altitude": 0.003575991306207893
+        },
+        {
+          "case": 2,
+          "packet": 0,
+          "beam_id": 2,
+          "locked": true,
+          "observed_range_m": 0.8031487464904786,
+          "reported_variance_m2": null,
+          "available": true,
+          "predicted_continuous_cone_range_m": 0.8010181705733033,
+          "error_m": 0.002130575917175359,
+          "relative_to_altitude": 0.0028407678895671453
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "ray": [
+        -0.34712368374115804,
+        -0.3471198083387197,
+        -0.8712135139246057
+      ],
+      "linear_solution_norm": 0.9999983767261225,
+      "original_training_observations": [
+        {
+          "case": 0,
+          "packet": 0,
+          "beam_id": 3,
+          "locked": true,
+          "observed_range_m": 0.860869586467743,
+          "reported_variance_m2": null,
+          "available": true,
+          "predicted_continuous_cone_range_m": 0.85751555090499,
+          "error_m": 0.003354035562753044,
+          "relative_to_altitude": 0.004472047417004059
+        },
+        {
+          "case": 1,
+          "packet": 0,
+          "beam_id": 3,
+          "locked": true,
+          "observed_range_m": 0.9208970069885254,
+          "reported_variance_m2": null,
+          "available": true,
+          "predicted_continuous_cone_range_m": 0.9162629496572828,
+          "error_m": 0.004634057331242558,
+          "relative_to_altitude": 0.006178743108323411
+        },
+        {
+          "case": 2,
+          "packet": 0,
+          "beam_id": 3,
+          "locked": true,
+          "observed_range_m": 0.9505321383476257,
+          "reported_variance_m2": null,
+          "available": true,
+          "predicted_continuous_cone_range_m": 0.9454084599677416,
+          "error_m": 0.0051236783798841445,
+          "relative_to_altitude": 0.006831571173178859
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "ray": [
+        0.34712390782424213,
+        -0.3471202161199495,
+        -0.8712132621681483
+      ],
+      "linear_solution_norm": 0.9999986656979045,
+      "original_training_observations": [
+        {
+          "case": 0,
+          "packet": 0,
+          "beam_id": 4,
+          "locked": true,
+          "observed_range_m": 0.8608695864677428,
+          "reported_variance_m2": null,
+          "available": true,
+          "predicted_continuous_cone_range_m": 0.85751555090499,
+          "error_m": 0.0033540355627528218,
+          "relative_to_altitude": 0.004472047417003762
+        },
+        {
+          "case": 1,
+          "packet": 0,
+          "beam_id": 4,
+          "locked": true,
+          "observed_range_m": 0.82323157787323,
+          "reported_variance_m2": null,
+          "available": true,
+          "predicted_continuous_cone_range_m": 0.8205496439982188,
+          "error_m": 0.0026819338750111443,
+          "relative_to_altitude": 0.0035759118333481923
+        },
+        {
+          "case": 2,
+          "packet": 0,
+          "beam_id": 4,
+          "locked": true,
+          "observed_range_m": 0.8828315138816833,
+          "reported_variance_m2": null,
+          "available": true,
+          "predicted_continuous_cone_range_m": 0.8788203022033404,
+          "error_m": 0.004011211678342952,
+          "relative_to_altitude": 0.0053482822377906025
+        }
+      ]
+    }
+  ],
+  "condition_number": 18.792717773724796,
+  "uses_first_packet_only": true,
+  "range_sigma_available": false,
+  "pose_sigma_available": false,
+  "map_qualified": false,
+  "native_fusion": false
+}

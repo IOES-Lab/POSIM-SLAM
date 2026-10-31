@@ -1,0 +1,102 @@
+[
+  {
+    "profile": "dvl-transport",
+    "phase": "initial",
+    "points": 1373,
+    "surface_rmse_m": 0.014626163507585702,
+    "max_surface_m": 0.16711749304532336,
+    "above_10cm": 5,
+    "trajectory_rmse_m": 0.010995649338611331,
+    "coordinates_filtered": false
+  },
+  {
+    "profile": "dvl-transport",
+    "phase": "recovered",
+    "points": 1459,
+    "surface_rmse_m": 0.01196629925532259,
+    "max_surface_m": 0.1223328316693979,
+    "above_10cm": 1,
+    "trajectory_rmse_m": 0.007551702331978494,
+    "coordinates_filtered": false
+  },
+  {
+    "profile": "dvl-lock",
+    "phase": "initial",
+    "points": 1425,
+    "surface_rmse_m": 0.011367673886986077,
+    "max_surface_m": 0.15737634164423273,
+    "above_10cm": 3,
+    "trajectory_rmse_m": 0.009872383290076918,
+    "coordinates_filtered": false
+  },
+  {
+    "profile": "dvl-lock",
+    "phase": "recovered",
+    "points": 2897,
+    "surface_rmse_m": 0.01125174044734436,
+    "max_surface_m": 0.15737634164423273,
+    "above_10cm": 5,
+    "trajectory_rmse_m": 0.014847362236235994,
+    "coordinates_filtered": false
+  },
+  {
+    "profile": "no-ping",
+    "phase": "initial",
+    "points": 1273,
+    "surface_rmse_m": 0.017235090781723243,
+    "max_surface_m": 0.16670927435177985,
+    "above_10cm": 3,
+    "trajectory_rmse_m": 0.01768504158030081,
+    "coordinates_filtered": false
+  },
+  {
+    "profile": "no-ping",
+    "phase": "recovered",
+    "points": 994,
+    "surface_rmse_m": 0.017318232163612092,
+    "max_surface_m": 0.14583506244587238,
+    "above_10cm": 2,
+    "trajectory_rmse_m": 0.030584263175972185,
+    "coordinates_filtered": false
+  },
+  {
+    "profile": "ping-fused",
+    "phase": "initial",
+    "points": 1135,
+    "surface_rmse_m": 0.017954056859179238,
+    "max_surface_m": 0.23822913467865628,
+    "above_10cm": 2,
+    "trajectory_rmse_m": 0.015088782768873748,
+    "coordinates_filtered": false
+  },
+  {
+    "profile": "ping-fused",
+    "phase": "recovered",
+    "points": 1142,
+    "surface_rmse_m": 0.013134224450493934,
+    "max_surface_m": 0.14669540776160428,
+    "above_10cm": 3,
+    "trajectory_rmse_m": 0.014720295716678879,
+    "coordinates_filtered": false
+  },
+  {
+    "profile": "ping-received",
+    "phase": "initial",
+    "points": 1346,
+    "surface_rmse_m": 0.019421606967711853,
+    "max_surface_m": 0.17032561325347986,
+    "above_10cm": 3,
+    "trajectory_rmse_m": 0.020881997921098,
+    "coordinates_filtered": false
+  },
+  {
+    "profile": "ping-received",
+    "phase": "recovered",
+    "points": 994,
+    "surface_rmse_m": 0.017263461103353434,
+    "max_surface_m": 0.13759369888926104,
+    "above_10cm": 2,
+    "trajectory_rmse_m": 0.030633711787597488,
+    "coordinates_filtered": false
+  }
+]

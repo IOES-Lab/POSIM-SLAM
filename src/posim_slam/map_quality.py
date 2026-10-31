@@ -43,6 +43,14 @@ def validate_geometry(value,window):
             or value['active_eligible']+value['active_unqualified']!=window
             or not value['active_eligible']<=value['active_joint_observed']<=window):
         raise ValueError('invalid_visual_geometry_report')
-    if 'error' not in value or value['error'] is not None:
-        raise ValueError('visual_map_information_unavailable')
+    if 'error' not in value:
+        raise ValueError('invalid_visual_geometry_report')
+    error=value['error']
+    if error is not None:
+        # The native owner clears all point information on a failed query and
+        # continues independently valid tracking. No point can be certified by
+        # that query, but this is not a sensor/pose/transport failure.
+        if (not isinstance(error,str) or not error.strip() or len(error)>1024
+                or value['active_eligible'] or value['active_joint_observed']):
+            raise ValueError('invalid_visual_geometry_report')
     return dict(value)

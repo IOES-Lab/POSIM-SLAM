@@ -1,0 +1,2187 @@
+{
+  "scope": "Complete raw-input audit; not a SLAM, navigation or installed-package acceptance",
+  "source_revision": "ffecee9be9976f68c9e883d6cf3bbd6d40eb7729",
+  "field": {
+    "error": null,
+    "callback_errors": [],
+    "sonar_frames": 95,
+    "camera_frames": 238,
+    "imu_samples": 4748,
+    "dvl_samples": 47,
+    "pressure_samples": 475,
+    "truth_assessment_samples": 1186,
+    "isometric_frames": 48,
+    "native_dvl_samples": 47,
+    "sonar_reference_frames": 96,
+    "mission_start_ns": 7110000000,
+    "passed": true,
+    "scope": "Raw physical sensor capture, no sonar SLAM acceptance",
+    "ping_present": false
+  },
+  "shape": [
+    599,
+    256
+  ],
+  "range_min_m": 0.0,
+  "range_last_m": 15.0,
+  "range_spacing_m": 0.02508361204013378,
+  "maximum_observed_sonar_stamp_gap_s": 0.51,
+  "reference_delta_ns_histogram": {
+    "0": 35,
+    "-10000000": 60
+  },
+  "reference_mount_equals_sonar": true,
+  "reference_is_estimator_input": false,
+  "actual_camera_mount": ".4 0 -.1 0 0 0",
+  "sonar_mount": ".24 0 -.1 0 .35 0",
+  "dvl": [
+    {
+      "valid": true,
+      "reason": "bottom_locked",
+      "locked_beams": 4,
+      "count": 47
+    }
+  ],
+  "mission_status": "completed",
+  "minimum_planned_clearance_m": 1.350957155134346,
+  "planned_route_length_m": 10.0239148683782,
+  "mission_position_source": "simulated Gazebo external navigation",
+  "lifecycle": {
+    "exit": 0,
+    "forced": false,
+    "error": null,
+    "groups": [
+      {
+        "pid": 4607,
+        "live_members": []
+      },
+      {
+        "pid": 5519,
+        "live_members": []
+      },
+      {
+        "pid": 4605,
+        "live_members": []
+      },
+      {
+        "pid": 4603,
+        "live_members": []
+      }
+    ]
+  },
+  "all_frames": [
+    {
+      "stamp_ns": 1500000000,
+      "file": "sonar-0000.npz",
+      "sha256": "27c80ccfd304e74ed9ae775a3b358d1f69492a6e3851b8e1bb2b60656fb39264",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0001.npz",
+        "stamp_ns": 1500000000
+      },
+      "reference_delta_ns": 0,
+      "isometric_rgb": {
+        "file": "isometric-0000.npz",
+        "stamp_ns": 1430000000
+      },
+      "isometric_delta_ns": -70000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 2010000000,
+      "file": "sonar-0001.npz",
+      "sha256": "ced5aabb915a61c4dd2fe2063d17d50dd7d001d725c9eb8144ae9334e60cc39a",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0002.npz",
+        "stamp_ns": 2000000000
+      },
+      "reference_delta_ns": -10000000,
+      "isometric_rgb": {
+        "file": "isometric-0001.npz",
+        "stamp_ns": 2000000000
+      },
+      "isometric_delta_ns": -10000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 2500000000,
+      "file": "sonar-0002.npz",
+      "sha256": "40789fbd27cde22f87282997302828f24053c2d647575dd453dd78d22d9ee6a9",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0003.npz",
+        "stamp_ns": 2500000000
+      },
+      "reference_delta_ns": 0,
+      "isometric_rgb": {
+        "file": "isometric-0001.npz",
+        "stamp_ns": 2000000000
+      },
+      "isometric_delta_ns": -500000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 3010000000,
+      "file": "sonar-0003.npz",
+      "sha256": "eec2c9bbc93a67e0a669cedb0d8a0f85c0716bbc350adfcb67c057a092d07187",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0004.npz",
+        "stamp_ns": 3000000000
+      },
+      "reference_delta_ns": -10000000,
+      "isometric_rgb": {
+        "file": "isometric-0002.npz",
+        "stamp_ns": 3000000000
+      },
+      "isometric_delta_ns": -10000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 3510000000,
+      "file": "sonar-0004.npz",
+      "sha256": "bcec6c1e377daeccdd7c8bed8aa1b48c292abab5299468c8729bb5fe31250dd0",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0005.npz",
+        "stamp_ns": 3500000000
+      },
+      "reference_delta_ns": -10000000,
+      "isometric_rgb": {
+        "file": "isometric-0003.npz",
+        "stamp_ns": 4000000000
+      },
+      "isometric_delta_ns": 490000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 4010000000,
+      "file": "sonar-0005.npz",
+      "sha256": "17c564a1100bfcc0a340886a8589400ad98ae8d0777826c3fd988d5f0d8fe4a9",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0006.npz",
+        "stamp_ns": 4000000000
+      },
+      "reference_delta_ns": -10000000,
+      "isometric_rgb": {
+        "file": "isometric-0003.npz",
+        "stamp_ns": 4000000000
+      },
+      "isometric_delta_ns": -10000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 4510000000,
+      "file": "sonar-0006.npz",
+      "sha256": "5a3971a9fc98809900e1290b135f2b06fef9ad6cb3ee1fa8a2717350d4773f59",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0007.npz",
+        "stamp_ns": 4500000000
+      },
+      "reference_delta_ns": -10000000,
+      "isometric_rgb": {
+        "file": "isometric-0004.npz",
+        "stamp_ns": 5000000000
+      },
+      "isometric_delta_ns": 490000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 5010000000,
+      "file": "sonar-0007.npz",
+      "sha256": "14ea88c67b548bdffaf9ae6e2652736c8dbdf72850ae52ce4d8e1f902bfabb76",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0008.npz",
+        "stamp_ns": 5000000000
+      },
+      "reference_delta_ns": -10000000,
+      "isometric_rgb": {
+        "file": "isometric-0004.npz",
+        "stamp_ns": 5000000000
+      },
+      "isometric_delta_ns": -10000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 5500000000,
+      "file": "sonar-0008.npz",
+      "sha256": "aae0e240efb63a34d3d5d732ae6c6b9217cb389bbac9e786a3fd8dadc2d60603",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0009.npz",
+        "stamp_ns": 5500000000
+      },
+      "reference_delta_ns": 0,
+      "isometric_rgb": {
+        "file": "isometric-0004.npz",
+        "stamp_ns": 5000000000
+      },
+      "isometric_delta_ns": -500000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 6010000000,
+      "file": "sonar-0009.npz",
+      "sha256": "5fd0704bb8d59ada2b20a5a3820b4b6086c04300d244e40a447315d5165e4e02",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0010.npz",
+        "stamp_ns": 6000000000
+      },
+      "reference_delta_ns": -10000000,
+      "isometric_rgb": {
+        "file": "isometric-0005.npz",
+        "stamp_ns": 6000000000
+      },
+      "isometric_delta_ns": -10000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 6510000000,
+      "file": "sonar-0010.npz",
+      "sha256": "94328d74cd919093b84f6258d3f02c57e456e1052534f72ddcfbf577b82f4822",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0011.npz",
+        "stamp_ns": 6500000000
+      },
+      "reference_delta_ns": -10000000,
+      "isometric_rgb": {
+        "file": "isometric-0006.npz",
+        "stamp_ns": 7000000000
+      },
+      "isometric_delta_ns": 490000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 7010000000,
+      "file": "sonar-0011.npz",
+      "sha256": "515c523f27397d6165d5d97d8feeda0f0e6f790919536671b308568a44cc3829",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0012.npz",
+        "stamp_ns": 7000000000
+      },
+      "reference_delta_ns": -10000000,
+      "isometric_rgb": {
+        "file": "isometric-0006.npz",
+        "stamp_ns": 7000000000
+      },
+      "isometric_delta_ns": -10000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 7500000000,
+      "file": "sonar-0012.npz",
+      "sha256": "3217ba344113226730bb4a2a508f7eea99586beaf68737de70c5e6ad83ad02a2",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0013.npz",
+        "stamp_ns": 7500000000
+      },
+      "reference_delta_ns": 0,
+      "isometric_rgb": {
+        "file": "isometric-0006.npz",
+        "stamp_ns": 7000000000
+      },
+      "isometric_delta_ns": -500000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 8010000000,
+      "file": "sonar-0013.npz",
+      "sha256": "112185b8b335692eb878048712220dab3b85f4ac1787d2d19809c6fca8937b86",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0014.npz",
+        "stamp_ns": 8000000000
+      },
+      "reference_delta_ns": -10000000,
+      "isometric_rgb": {
+        "file": "isometric-0007.npz",
+        "stamp_ns": 8000000000
+      },
+      "isometric_delta_ns": -10000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 8510000000,
+      "file": "sonar-0014.npz",
+      "sha256": "20c6931b632569e1b21c7a0f92400877e90811c50baffcebb5a72053ec694b33",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0015.npz",
+        "stamp_ns": 8500000000
+      },
+      "reference_delta_ns": -10000000,
+      "isometric_rgb": {
+        "file": "isometric-0008.npz",
+        "stamp_ns": 9000000000
+      },
+      "isometric_delta_ns": 490000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 9010000000,
+      "file": "sonar-0015.npz",
+      "sha256": "47808c3be69881087e764f3e577c1b7653e4bbae46ec3fcede8065e158cb315d",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0016.npz",
+        "stamp_ns": 9000000000
+      },
+      "reference_delta_ns": -10000000,
+      "isometric_rgb": {
+        "file": "isometric-0008.npz",
+        "stamp_ns": 9000000000
+      },
+      "isometric_delta_ns": -10000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 9510000000,
+      "file": "sonar-0016.npz",
+      "sha256": "eea09bdfc58b0d11339b685e17529da517213fb767d054a1e2baa6b008760111",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0017.npz",
+        "stamp_ns": 9500000000
+      },
+      "reference_delta_ns": -10000000,
+      "isometric_rgb": {
+        "file": "isometric-0009.npz",
+        "stamp_ns": 10000000000
+      },
+      "isometric_delta_ns": 490000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 10010000000,
+      "file": "sonar-0017.npz",
+      "sha256": "377eb923570a002c2c85b8880a3c1a724f3ff0a45ad505fb2c5d7f6a6e0a96c7",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0018.npz",
+        "stamp_ns": 10000000000
+      },
+      "reference_delta_ns": -10000000,
+      "isometric_rgb": {
+        "file": "isometric-0009.npz",
+        "stamp_ns": 10000000000
+      },
+      "isometric_delta_ns": -10000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 10500000000,
+      "file": "sonar-0018.npz",
+      "sha256": "b4855e28e67d3392f39d217a0b5eebdbb12b58324864cf74b4707884376f26a8",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0019.npz",
+        "stamp_ns": 10500000000
+      },
+      "reference_delta_ns": 0,
+      "isometric_rgb": {
+        "file": "isometric-0009.npz",
+        "stamp_ns": 10000000000
+      },
+      "isometric_delta_ns": -500000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 11010000000,
+      "file": "sonar-0019.npz",
+      "sha256": "dcf6e8107412f12b78c13d707bd92e5393f4cb71360255ef617d4247c6a1f919",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0020.npz",
+        "stamp_ns": 11000000000
+      },
+      "reference_delta_ns": -10000000,
+      "isometric_rgb": {
+        "file": "isometric-0010.npz",
+        "stamp_ns": 11000000000
+      },
+      "isometric_delta_ns": -10000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 11500000000,
+      "file": "sonar-0020.npz",
+      "sha256": "191d88e5190fa1b26054dd2ad8d11ae45ec46f7855e990e4cca53800425724a5",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0021.npz",
+        "stamp_ns": 11500000000
+      },
+      "reference_delta_ns": 0,
+      "isometric_rgb": {
+        "file": "isometric-0010.npz",
+        "stamp_ns": 11000000000
+      },
+      "isometric_delta_ns": -500000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 12010000000,
+      "file": "sonar-0021.npz",
+      "sha256": "218e258328c8ab9991eec7d737f96ab82dc0f020451ab729b6125801ea8b2179",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0022.npz",
+        "stamp_ns": 12000000000
+      },
+      "reference_delta_ns": -10000000,
+      "isometric_rgb": {
+        "file": "isometric-0011.npz",
+        "stamp_ns": 12000000000
+      },
+      "isometric_delta_ns": -10000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 12500000000,
+      "file": "sonar-0022.npz",
+      "sha256": "4348ad5cd1e5e3622fcb3bda46f352bfcd916308c97012d07f3d62b319fd4a5a",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0023.npz",
+        "stamp_ns": 12500000000
+      },
+      "reference_delta_ns": 0,
+      "isometric_rgb": {
+        "file": "isometric-0011.npz",
+        "stamp_ns": 12000000000
+      },
+      "isometric_delta_ns": -500000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 13010000000,
+      "file": "sonar-0023.npz",
+      "sha256": "64ce947a9c3a58fa65176f0df068109a2fc4927048d46511244964a865b256fb",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0024.npz",
+        "stamp_ns": 13000000000
+      },
+      "reference_delta_ns": -10000000,
+      "isometric_rgb": {
+        "file": "isometric-0012.npz",
+        "stamp_ns": 13000000000
+      },
+      "isometric_delta_ns": -10000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 13500000000,
+      "file": "sonar-0024.npz",
+      "sha256": "a087cc14e2a5d97309bdebdd5aa8b09c4cba0211547505981248749f2f0618c3",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0025.npz",
+        "stamp_ns": 13500000000
+      },
+      "reference_delta_ns": 0,
+      "isometric_rgb": {
+        "file": "isometric-0012.npz",
+        "stamp_ns": 13000000000
+      },
+      "isometric_delta_ns": -500000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 14010000000,
+      "file": "sonar-0025.npz",
+      "sha256": "c7479ecc019a21d229f784235845bbfae0b5702f6ec4ecaed022d24eaa3cd82a",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0026.npz",
+        "stamp_ns": 14000000000
+      },
+      "reference_delta_ns": -10000000,
+      "isometric_rgb": {
+        "file": "isometric-0013.npz",
+        "stamp_ns": 14000000000
+      },
+      "isometric_delta_ns": -10000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 14510000000,
+      "file": "sonar-0026.npz",
+      "sha256": "94e7467cd84defaee477253140f2936ef637fbb334ef9ed7cd156e09ad76f976",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0027.npz",
+        "stamp_ns": 14500000000
+      },
+      "reference_delta_ns": -10000000,
+      "isometric_rgb": {
+        "file": "isometric-0014.npz",
+        "stamp_ns": 15000000000
+      },
+      "isometric_delta_ns": 490000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 15010000000,
+      "file": "sonar-0027.npz",
+      "sha256": "010dea200e16d0dda75772ba3649c6c1d068a01943cf33b2624ffa10bcf850e3",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0028.npz",
+        "stamp_ns": 15000000000
+      },
+      "reference_delta_ns": -10000000,
+      "isometric_rgb": {
+        "file": "isometric-0014.npz",
+        "stamp_ns": 15000000000
+      },
+      "isometric_delta_ns": -10000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 15510000000,
+      "file": "sonar-0028.npz",
+      "sha256": "42cf9c0e76272bfd06d9e31f77deb4a4bc990e7010e1bde3d3c3e2221bbdd83c",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0029.npz",
+        "stamp_ns": 15500000000
+      },
+      "reference_delta_ns": -10000000,
+      "isometric_rgb": {
+        "file": "isometric-0015.npz",
+        "stamp_ns": 16000000000
+      },
+      "isometric_delta_ns": 490000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 16010000000,
+      "file": "sonar-0029.npz",
+      "sha256": "b70a35cb9ad37352ce0544eecd07a347f68f8577a00c70308e322cde150e0344",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0030.npz",
+        "stamp_ns": 16000000000
+      },
+      "reference_delta_ns": -10000000,
+      "isometric_rgb": {
+        "file": "isometric-0015.npz",
+        "stamp_ns": 16000000000
+      },
+      "isometric_delta_ns": -10000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 16500000000,
+      "file": "sonar-0030.npz",
+      "sha256": "0f01a288f81535ffbd0a3cf98bc2a0b615ac504d84d62d7f68f5dca59647902b",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0031.npz",
+        "stamp_ns": 16500000000
+      },
+      "reference_delta_ns": 0,
+      "isometric_rgb": {
+        "file": "isometric-0015.npz",
+        "stamp_ns": 16000000000
+      },
+      "isometric_delta_ns": -500000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 17010000000,
+      "file": "sonar-0031.npz",
+      "sha256": "ab58b8ea376a9cee34b5fcd9fde5cedb150edaffab8848725372544353c7835f",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0032.npz",
+        "stamp_ns": 17000000000
+      },
+      "reference_delta_ns": -10000000,
+      "isometric_rgb": {
+        "file": "isometric-0016.npz",
+        "stamp_ns": 17000000000
+      },
+      "isometric_delta_ns": -10000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 17500000000,
+      "file": "sonar-0032.npz",
+      "sha256": "832930ee1ae336aa3d21b9a306e661ceb9616081968c6ae1a213f8d89a02d64e",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0033.npz",
+        "stamp_ns": 17500000000
+      },
+      "reference_delta_ns": 0,
+      "isometric_rgb": {
+        "file": "isometric-0016.npz",
+        "stamp_ns": 17000000000
+      },
+      "isometric_delta_ns": -500000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 18010000000,
+      "file": "sonar-0033.npz",
+      "sha256": "8f666d39bccacef7c1499edb3e738e58a3baf800e440ca5b0b389881d603f169",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0034.npz",
+        "stamp_ns": 18000000000
+      },
+      "reference_delta_ns": -10000000,
+      "isometric_rgb": {
+        "file": "isometric-0017.npz",
+        "stamp_ns": 18000000000
+      },
+      "isometric_delta_ns": -10000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 18500000000,
+      "file": "sonar-0034.npz",
+      "sha256": "a1024a6757ffff2b627d66d0a00b88f8af8ec9dbb4105876ac4b21650f3245ee",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0035.npz",
+        "stamp_ns": 18500000000
+      },
+      "reference_delta_ns": 0,
+      "isometric_rgb": {
+        "file": "isometric-0017.npz",
+        "stamp_ns": 18000000000
+      },
+      "isometric_delta_ns": -500000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 19010000000,
+      "file": "sonar-0035.npz",
+      "sha256": "cfa37f8f4ee250517385abd12e8eea14eb9e9fc975a1b78eabd016c1eba19b2a",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0036.npz",
+        "stamp_ns": 19000000000
+      },
+      "reference_delta_ns": -10000000,
+      "isometric_rgb": {
+        "file": "isometric-0018.npz",
+        "stamp_ns": 19000000000
+      },
+      "isometric_delta_ns": -10000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 19510000000,
+      "file": "sonar-0036.npz",
+      "sha256": "2cbdc5e887765d80820f5d6d14dfbb4437e9f14e5f1a189204a07540aef788ba",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0037.npz",
+        "stamp_ns": 19500000000
+      },
+      "reference_delta_ns": -10000000,
+      "isometric_rgb": {
+        "file": "isometric-0019.npz",
+        "stamp_ns": 20000000000
+      },
+      "isometric_delta_ns": 490000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 20010000000,
+      "file": "sonar-0037.npz",
+      "sha256": "784b8b58c85b1ca9acea6619e9ab41cd162b8d617910e8890835ac4593771183",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0038.npz",
+        "stamp_ns": 20000000000
+      },
+      "reference_delta_ns": -10000000,
+      "isometric_rgb": {
+        "file": "isometric-0019.npz",
+        "stamp_ns": 20000000000
+      },
+      "isometric_delta_ns": -10000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 20500000000,
+      "file": "sonar-0038.npz",
+      "sha256": "9e7b5b2aa4df2c14507e6976a86aa763bd3a8097bcc1c3461ef4983d1d3d0d60",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0039.npz",
+        "stamp_ns": 20500000000
+      },
+      "reference_delta_ns": 0,
+      "isometric_rgb": {
+        "file": "isometric-0019.npz",
+        "stamp_ns": 20000000000
+      },
+      "isometric_delta_ns": -500000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 21010000000,
+      "file": "sonar-0039.npz",
+      "sha256": "67933ee1f90e211ba60d6a93a2527173c30a039d18a6df86c111f677b3af0f93",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0040.npz",
+        "stamp_ns": 21000000000
+      },
+      "reference_delta_ns": -10000000,
+      "isometric_rgb": {
+        "file": "isometric-0020.npz",
+        "stamp_ns": 21000000000
+      },
+      "isometric_delta_ns": -10000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 21500000000,
+      "file": "sonar-0040.npz",
+      "sha256": "ef894cd0d566dbd1dac830120de2a813e5c67192e01e50756a75a889fed61071",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0041.npz",
+        "stamp_ns": 21500000000
+      },
+      "reference_delta_ns": 0,
+      "isometric_rgb": {
+        "file": "isometric-0020.npz",
+        "stamp_ns": 21000000000
+      },
+      "isometric_delta_ns": -500000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 22010000000,
+      "file": "sonar-0041.npz",
+      "sha256": "b69dc396b65a0a817f343f50923789036cb79f608eb843c42507c7fe709e69be",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0042.npz",
+        "stamp_ns": 22000000000
+      },
+      "reference_delta_ns": -10000000,
+      "isometric_rgb": {
+        "file": "isometric-0021.npz",
+        "stamp_ns": 22000000000
+      },
+      "isometric_delta_ns": -10000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 22500000000,
+      "file": "sonar-0042.npz",
+      "sha256": "65553a7a8ceff0b51ea88c5f012373c76b89d2df7ee140bfa550a267e5933206",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0043.npz",
+        "stamp_ns": 22500000000
+      },
+      "reference_delta_ns": 0,
+      "isometric_rgb": {
+        "file": "isometric-0021.npz",
+        "stamp_ns": 22000000000
+      },
+      "isometric_delta_ns": -500000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 23010000000,
+      "file": "sonar-0043.npz",
+      "sha256": "a4abdbe181ef146b6a6cf0c198994eaa485014a53a218c77fb16a4842cc769cf",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0044.npz",
+        "stamp_ns": 23000000000
+      },
+      "reference_delta_ns": -10000000,
+      "isometric_rgb": {
+        "file": "isometric-0022.npz",
+        "stamp_ns": 23000000000
+      },
+      "isometric_delta_ns": -10000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 23500000000,
+      "file": "sonar-0044.npz",
+      "sha256": "c806e0b56b02871ccb3515c86657b955a83a3c8188118483662afb9d6bd60529",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0045.npz",
+        "stamp_ns": 23500000000
+      },
+      "reference_delta_ns": 0,
+      "isometric_rgb": {
+        "file": "isometric-0022.npz",
+        "stamp_ns": 23000000000
+      },
+      "isometric_delta_ns": -500000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 24010000000,
+      "file": "sonar-0045.npz",
+      "sha256": "3e1666503871261b6b705779761eaad24fe84dcb664127684354d01e13aa1cc3",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0046.npz",
+        "stamp_ns": 24000000000
+      },
+      "reference_delta_ns": -10000000,
+      "isometric_rgb": {
+        "file": "isometric-0023.npz",
+        "stamp_ns": 24000000000
+      },
+      "isometric_delta_ns": -10000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 24500000000,
+      "file": "sonar-0046.npz",
+      "sha256": "7ec94b53b7c8de87cc679f091cd4a685bd15bd93eeb7d7d768b464c0f3c7ec05",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0047.npz",
+        "stamp_ns": 24500000000
+      },
+      "reference_delta_ns": 0,
+      "isometric_rgb": {
+        "file": "isometric-0023.npz",
+        "stamp_ns": 24000000000
+      },
+      "isometric_delta_ns": -500000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 25010000000,
+      "file": "sonar-0047.npz",
+      "sha256": "49d1d8ade0939e16e06059fea2166f37b13e2d30a683acfa712068c591608787",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0048.npz",
+        "stamp_ns": 25000000000
+      },
+      "reference_delta_ns": -10000000,
+      "isometric_rgb": {
+        "file": "isometric-0024.npz",
+        "stamp_ns": 25000000000
+      },
+      "isometric_delta_ns": -10000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 25500000000,
+      "file": "sonar-0048.npz",
+      "sha256": "84d4e5bf66d058ca1b56a4ae63f1e9cca4aab36da190759626979e250c8ba474",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0049.npz",
+        "stamp_ns": 25500000000
+      },
+      "reference_delta_ns": 0,
+      "isometric_rgb": {
+        "file": "isometric-0024.npz",
+        "stamp_ns": 25000000000
+      },
+      "isometric_delta_ns": -500000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 26010000000,
+      "file": "sonar-0049.npz",
+      "sha256": "aec17977beedaef30dfd5c5397a19754f277cabb6551e675d6fa021f76cd73d8",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0050.npz",
+        "stamp_ns": 26000000000
+      },
+      "reference_delta_ns": -10000000,
+      "isometric_rgb": {
+        "file": "isometric-0025.npz",
+        "stamp_ns": 26000000000
+      },
+      "isometric_delta_ns": -10000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 26500000000,
+      "file": "sonar-0050.npz",
+      "sha256": "1c2c58fbe95298a31850d4f6930a644b6bdd939a2896668fbe314c131c7fc44c",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0051.npz",
+        "stamp_ns": 26500000000
+      },
+      "reference_delta_ns": 0,
+      "isometric_rgb": {
+        "file": "isometric-0025.npz",
+        "stamp_ns": 26000000000
+      },
+      "isometric_delta_ns": -500000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 27010000000,
+      "file": "sonar-0051.npz",
+      "sha256": "5a459588d4dfccd15be345b46d63cd8f154e13639beb8308164ea4f26275169f",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0052.npz",
+        "stamp_ns": 27000000000
+      },
+      "reference_delta_ns": -10000000,
+      "isometric_rgb": {
+        "file": "isometric-0026.npz",
+        "stamp_ns": 27000000000
+      },
+      "isometric_delta_ns": -10000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 27500000000,
+      "file": "sonar-0052.npz",
+      "sha256": "589317829295e3cbed4dead97e00db1559bf473bf1e9c8bb264f572a3c0719fc",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0053.npz",
+        "stamp_ns": 27500000000
+      },
+      "reference_delta_ns": 0,
+      "isometric_rgb": {
+        "file": "isometric-0026.npz",
+        "stamp_ns": 27000000000
+      },
+      "isometric_delta_ns": -500000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 28010000000,
+      "file": "sonar-0053.npz",
+      "sha256": "47051b64e20705d2247a6c5be7a34b591dfa1ae945ab6dc13805bcee5d520b6d",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0054.npz",
+        "stamp_ns": 28000000000
+      },
+      "reference_delta_ns": -10000000,
+      "isometric_rgb": {
+        "file": "isometric-0027.npz",
+        "stamp_ns": 28000000000
+      },
+      "isometric_delta_ns": -10000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 28500000000,
+      "file": "sonar-0054.npz",
+      "sha256": "42a4e68605c79d812b31475962ee47227d1bfa0d937c6bdf220b1b3091ca17a7",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0055.npz",
+        "stamp_ns": 28500000000
+      },
+      "reference_delta_ns": 0,
+      "isometric_rgb": {
+        "file": "isometric-0027.npz",
+        "stamp_ns": 28000000000
+      },
+      "isometric_delta_ns": -500000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 29010000000,
+      "file": "sonar-0055.npz",
+      "sha256": "313909ab0442b8e4ed4f965db365260a153ed187a57c7e68657016740725b474",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0056.npz",
+        "stamp_ns": 29000000000
+      },
+      "reference_delta_ns": -10000000,
+      "isometric_rgb": {
+        "file": "isometric-0028.npz",
+        "stamp_ns": 29000000000
+      },
+      "isometric_delta_ns": -10000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 29500000000,
+      "file": "sonar-0056.npz",
+      "sha256": "61da97bdda04390ef4be55d09d824518aaa55c39313cc5035944f9a57e3081fa",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0057.npz",
+        "stamp_ns": 29500000000
+      },
+      "reference_delta_ns": 0,
+      "isometric_rgb": {
+        "file": "isometric-0028.npz",
+        "stamp_ns": 29000000000
+      },
+      "isometric_delta_ns": -500000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 30010000000,
+      "file": "sonar-0057.npz",
+      "sha256": "84d0f671649fdc1abd7b47955df3174824ce4875219a7e672301db7066efd279",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0058.npz",
+        "stamp_ns": 30000000000
+      },
+      "reference_delta_ns": -10000000,
+      "isometric_rgb": {
+        "file": "isometric-0029.npz",
+        "stamp_ns": 30000000000
+      },
+      "isometric_delta_ns": -10000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 30500000000,
+      "file": "sonar-0058.npz",
+      "sha256": "f43abcd877b35536c3b9b8bf33a8d7aae305ed378ddebe3babec152244e49db7",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0059.npz",
+        "stamp_ns": 30500000000
+      },
+      "reference_delta_ns": 0,
+      "isometric_rgb": {
+        "file": "isometric-0029.npz",
+        "stamp_ns": 30000000000
+      },
+      "isometric_delta_ns": -500000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 31010000000,
+      "file": "sonar-0059.npz",
+      "sha256": "5cd23d26e9c5ae5f5bac7422dccbfee8501e9ddc93b60d20c03dbfcbf575a994",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0060.npz",
+        "stamp_ns": 31000000000
+      },
+      "reference_delta_ns": -10000000,
+      "isometric_rgb": {
+        "file": "isometric-0030.npz",
+        "stamp_ns": 31000000000
+      },
+      "isometric_delta_ns": -10000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 31500000000,
+      "file": "sonar-0060.npz",
+      "sha256": "8b442c72e0f4d013dcfcc8cb9b3f9464a1591b1d383bd9fccba93540e6373c9a",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0061.npz",
+        "stamp_ns": 31500000000
+      },
+      "reference_delta_ns": 0,
+      "isometric_rgb": {
+        "file": "isometric-0030.npz",
+        "stamp_ns": 31000000000
+      },
+      "isometric_delta_ns": -500000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 32010000000,
+      "file": "sonar-0061.npz",
+      "sha256": "41f2633e489147c2856829a7b092d4fc088ea5790415496516b270c974fef769",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0062.npz",
+        "stamp_ns": 32000000000
+      },
+      "reference_delta_ns": -10000000,
+      "isometric_rgb": {
+        "file": "isometric-0031.npz",
+        "stamp_ns": 32000000000
+      },
+      "isometric_delta_ns": -10000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 32510000000,
+      "file": "sonar-0062.npz",
+      "sha256": "aaeb5b9796843e94c4eb35a4da67bf220352fad2cfa58849916c36f7d231efcf",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0063.npz",
+        "stamp_ns": 32500000000
+      },
+      "reference_delta_ns": -10000000,
+      "isometric_rgb": {
+        "file": "isometric-0032.npz",
+        "stamp_ns": 33000000000
+      },
+      "isometric_delta_ns": 490000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 33010000000,
+      "file": "sonar-0063.npz",
+      "sha256": "e23276555f20239a386aaf18312e2a7c9e73c1a0be9b093ce33d6f32422d1ac1",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0064.npz",
+        "stamp_ns": 33000000000
+      },
+      "reference_delta_ns": -10000000,
+      "isometric_rgb": {
+        "file": "isometric-0032.npz",
+        "stamp_ns": 33000000000
+      },
+      "isometric_delta_ns": -10000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 33500000000,
+      "file": "sonar-0064.npz",
+      "sha256": "635b71e22439d449b1a6026c1878ff756a59b74711d5f6217c5bedc265d433fe",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0065.npz",
+        "stamp_ns": 33500000000
+      },
+      "reference_delta_ns": 0,
+      "isometric_rgb": {
+        "file": "isometric-0032.npz",
+        "stamp_ns": 33000000000
+      },
+      "isometric_delta_ns": -500000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 34010000000,
+      "file": "sonar-0065.npz",
+      "sha256": "5e480d55ea8d7922af9b2816680132735a607df9b7b38aa0c1ded7da2ac433d2",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0066.npz",
+        "stamp_ns": 34000000000
+      },
+      "reference_delta_ns": -10000000,
+      "isometric_rgb": {
+        "file": "isometric-0033.npz",
+        "stamp_ns": 34000000000
+      },
+      "isometric_delta_ns": -10000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 34500000000,
+      "file": "sonar-0066.npz",
+      "sha256": "bcb1a6d91bd3ca74336c897f3575bab9aff6cec3f640c54d48cfa391f2b73baa",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0067.npz",
+        "stamp_ns": 34500000000
+      },
+      "reference_delta_ns": 0,
+      "isometric_rgb": {
+        "file": "isometric-0033.npz",
+        "stamp_ns": 34000000000
+      },
+      "isometric_delta_ns": -500000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 35010000000,
+      "file": "sonar-0067.npz",
+      "sha256": "885be7c1882f2a76426ee7d03d8b9119905b177eeb85b0a4cca54a31fce20a42",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0068.npz",
+        "stamp_ns": 35000000000
+      },
+      "reference_delta_ns": -10000000,
+      "isometric_rgb": {
+        "file": "isometric-0034.npz",
+        "stamp_ns": 35000000000
+      },
+      "isometric_delta_ns": -10000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 35500000000,
+      "file": "sonar-0068.npz",
+      "sha256": "f26b5c2633c5e98fa42283218638d594a10623eaefc49e59c897b4fc9b2c5b03",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0069.npz",
+        "stamp_ns": 35500000000
+      },
+      "reference_delta_ns": 0,
+      "isometric_rgb": {
+        "file": "isometric-0034.npz",
+        "stamp_ns": 35000000000
+      },
+      "isometric_delta_ns": -500000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 36010000000,
+      "file": "sonar-0069.npz",
+      "sha256": "61e4f50abb8c0b80d9fb7f79189fbda6be6f186f6437f8b90e4d56219fe67cd6",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0070.npz",
+        "stamp_ns": 36000000000
+      },
+      "reference_delta_ns": -10000000,
+      "isometric_rgb": {
+        "file": "isometric-0035.npz",
+        "stamp_ns": 36000000000
+      },
+      "isometric_delta_ns": -10000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 36500000000,
+      "file": "sonar-0070.npz",
+      "sha256": "dcd6e52f6f349dd370eb9d00d9a8b634af37ef3cf25553f9f5ddfa7d7f880dd4",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0071.npz",
+        "stamp_ns": 36500000000
+      },
+      "reference_delta_ns": 0,
+      "isometric_rgb": {
+        "file": "isometric-0035.npz",
+        "stamp_ns": 36000000000
+      },
+      "isometric_delta_ns": -500000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 37010000000,
+      "file": "sonar-0071.npz",
+      "sha256": "eeef80e4dd34d7a527bac06447600beda54e0669d22fddb1c7066463cc0cda06",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0072.npz",
+        "stamp_ns": 37000000000
+      },
+      "reference_delta_ns": -10000000,
+      "isometric_rgb": {
+        "file": "isometric-0036.npz",
+        "stamp_ns": 37000000000
+      },
+      "isometric_delta_ns": -10000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 37500000000,
+      "file": "sonar-0072.npz",
+      "sha256": "42dccf7be73d0bb54b3d717d6e56aec867d09f1ad2abb8e28c56db2446ffe621",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0073.npz",
+        "stamp_ns": 37500000000
+      },
+      "reference_delta_ns": 0,
+      "isometric_rgb": {
+        "file": "isometric-0036.npz",
+        "stamp_ns": 37000000000
+      },
+      "isometric_delta_ns": -500000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 38010000000,
+      "file": "sonar-0073.npz",
+      "sha256": "b6fb6c74c600726e8795b13195c86495981c5eee3eea9cb3a45ffa38c489841e",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0074.npz",
+        "stamp_ns": 38000000000
+      },
+      "reference_delta_ns": -10000000,
+      "isometric_rgb": {
+        "file": "isometric-0037.npz",
+        "stamp_ns": 38000000000
+      },
+      "isometric_delta_ns": -10000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 38500000000,
+      "file": "sonar-0074.npz",
+      "sha256": "f1a2e044781b8ede824120090f9f9038021e20f39a745effd78fc1b9e212cce2",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0075.npz",
+        "stamp_ns": 38500000000
+      },
+      "reference_delta_ns": 0,
+      "isometric_rgb": {
+        "file": "isometric-0037.npz",
+        "stamp_ns": 38000000000
+      },
+      "isometric_delta_ns": -500000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 39010000000,
+      "file": "sonar-0075.npz",
+      "sha256": "60009b190655e861a8755d022948fd28f596c367c0fd54395fe1be1df1a22362",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0076.npz",
+        "stamp_ns": 39000000000
+      },
+      "reference_delta_ns": -10000000,
+      "isometric_rgb": {
+        "file": "isometric-0038.npz",
+        "stamp_ns": 39000000000
+      },
+      "isometric_delta_ns": -10000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 39500000000,
+      "file": "sonar-0076.npz",
+      "sha256": "1bbe0e0b4a1aa049bec1000d1a451ab288c45f002e6d6922c688d048bffef1ad",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0077.npz",
+        "stamp_ns": 39500000000
+      },
+      "reference_delta_ns": 0,
+      "isometric_rgb": {
+        "file": "isometric-0038.npz",
+        "stamp_ns": 39000000000
+      },
+      "isometric_delta_ns": -500000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 40010000000,
+      "file": "sonar-0077.npz",
+      "sha256": "53417a2377eb60d076a5573ce5b726cee7f410fe9c04af9c6da7d988374e0bf2",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0078.npz",
+        "stamp_ns": 40000000000
+      },
+      "reference_delta_ns": -10000000,
+      "isometric_rgb": {
+        "file": "isometric-0039.npz",
+        "stamp_ns": 40000000000
+      },
+      "isometric_delta_ns": -10000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 40510000000,
+      "file": "sonar-0078.npz",
+      "sha256": "e08c9c260345f5d62953a21c4cdd118830c98fa6249db218329a9373291aa48a",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0079.npz",
+        "stamp_ns": 40500000000
+      },
+      "reference_delta_ns": -10000000,
+      "isometric_rgb": {
+        "file": "isometric-0040.npz",
+        "stamp_ns": 41000000000
+      },
+      "isometric_delta_ns": 490000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 41010000000,
+      "file": "sonar-0079.npz",
+      "sha256": "eedf8bb5de9ee5c6ab6cac2f0d959461c604dff4a16786e374b0ebead7a2f157",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0080.npz",
+        "stamp_ns": 41000000000
+      },
+      "reference_delta_ns": -10000000,
+      "isometric_rgb": {
+        "file": "isometric-0040.npz",
+        "stamp_ns": 41000000000
+      },
+      "isometric_delta_ns": -10000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 41500000000,
+      "file": "sonar-0080.npz",
+      "sha256": "39e777c8835774f10371e9dd849f2f51341dd6213e7fb3fca0f6baf967610abf",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0081.npz",
+        "stamp_ns": 41500000000
+      },
+      "reference_delta_ns": 0,
+      "isometric_rgb": {
+        "file": "isometric-0040.npz",
+        "stamp_ns": 41000000000
+      },
+      "isometric_delta_ns": -500000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 42010000000,
+      "file": "sonar-0081.npz",
+      "sha256": "c750aef658b20021241007a2f497edf43d1e057802cf4537bb1849c2d5f56fb0",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0082.npz",
+        "stamp_ns": 42000000000
+      },
+      "reference_delta_ns": -10000000,
+      "isometric_rgb": {
+        "file": "isometric-0041.npz",
+        "stamp_ns": 42000000000
+      },
+      "isometric_delta_ns": -10000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 42500000000,
+      "file": "sonar-0082.npz",
+      "sha256": "5f0f462e999210d98c050b864083c1a7d6ad9ba0f55732c58f290266e6480962",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0083.npz",
+        "stamp_ns": 42500000000
+      },
+      "reference_delta_ns": 0,
+      "isometric_rgb": {
+        "file": "isometric-0041.npz",
+        "stamp_ns": 42000000000
+      },
+      "isometric_delta_ns": -500000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 43010000000,
+      "file": "sonar-0083.npz",
+      "sha256": "7f991d571d67c353e154571cb42d34e1d8f83399314363bc7eddafd9a5afc051",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0084.npz",
+        "stamp_ns": 43000000000
+      },
+      "reference_delta_ns": -10000000,
+      "isometric_rgb": {
+        "file": "isometric-0042.npz",
+        "stamp_ns": 43000000000
+      },
+      "isometric_delta_ns": -10000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 43510000000,
+      "file": "sonar-0084.npz",
+      "sha256": "b0c1082c7d4cf4f67d7ddeeb78575ae5d1b180ed77430bf34d6c869dab01ca61",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0085.npz",
+        "stamp_ns": 43500000000
+      },
+      "reference_delta_ns": -10000000,
+      "isometric_rgb": {
+        "file": "isometric-0043.npz",
+        "stamp_ns": 44000000000
+      },
+      "isometric_delta_ns": 490000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 44010000000,
+      "file": "sonar-0085.npz",
+      "sha256": "250d174da0c334c09737a3af909ec17047aad43f9da47b7c5cac2d2175776130",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0086.npz",
+        "stamp_ns": 44000000000
+      },
+      "reference_delta_ns": -10000000,
+      "isometric_rgb": {
+        "file": "isometric-0043.npz",
+        "stamp_ns": 44000000000
+      },
+      "isometric_delta_ns": -10000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 44500000000,
+      "file": "sonar-0086.npz",
+      "sha256": "1ad320e2cc64947aee5ff903295c5d750fb552494b6e9e52f9773571b3766054",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0087.npz",
+        "stamp_ns": 44500000000
+      },
+      "reference_delta_ns": 0,
+      "isometric_rgb": {
+        "file": "isometric-0043.npz",
+        "stamp_ns": 44000000000
+      },
+      "isometric_delta_ns": -500000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 45010000000,
+      "file": "sonar-0087.npz",
+      "sha256": "eff8e678d9d8bb7901cf422fd46cb6dd27a4423e0633b40d2a2645b71ec22bdc",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0088.npz",
+        "stamp_ns": 45000000000
+      },
+      "reference_delta_ns": -10000000,
+      "isometric_rgb": {
+        "file": "isometric-0044.npz",
+        "stamp_ns": 45000000000
+      },
+      "isometric_delta_ns": -10000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 45510000000,
+      "file": "sonar-0088.npz",
+      "sha256": "49bc1e37208829a5fed76f61bc9e64ecf699e86d4e793f766f3f7b937707d7fb",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0089.npz",
+        "stamp_ns": 45500000000
+      },
+      "reference_delta_ns": -10000000,
+      "isometric_rgb": {
+        "file": "isometric-0045.npz",
+        "stamp_ns": 46000000000
+      },
+      "isometric_delta_ns": 490000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 46010000000,
+      "file": "sonar-0089.npz",
+      "sha256": "ea91749c2b18aff82687d90e59b57bc1de3c88e218816d7e381c73e13abdc673",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0090.npz",
+        "stamp_ns": 46000000000
+      },
+      "reference_delta_ns": -10000000,
+      "isometric_rgb": {
+        "file": "isometric-0045.npz",
+        "stamp_ns": 46000000000
+      },
+      "isometric_delta_ns": -10000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 46500000000,
+      "file": "sonar-0090.npz",
+      "sha256": "c4baa800a57bdae43a50c398c2ac59b62dd1dfe80e45e7261e67149e7268bafa",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0091.npz",
+        "stamp_ns": 46500000000
+      },
+      "reference_delta_ns": 0,
+      "isometric_rgb": {
+        "file": "isometric-0045.npz",
+        "stamp_ns": 46000000000
+      },
+      "isometric_delta_ns": -500000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 47010000000,
+      "file": "sonar-0091.npz",
+      "sha256": "9a88f258957fb7bc5aa587d57966b8ec147b4a27e27ae0d60840944be5977fdd",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0092.npz",
+        "stamp_ns": 47000000000
+      },
+      "reference_delta_ns": -10000000,
+      "isometric_rgb": {
+        "file": "isometric-0046.npz",
+        "stamp_ns": 47000000000
+      },
+      "isometric_delta_ns": -10000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 47510000000,
+      "file": "sonar-0092.npz",
+      "sha256": "09d694597f5a7bdf4a05d716c6dfe03c389c0c10ab5fdc235652b8c7dfa7461b",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0093.npz",
+        "stamp_ns": 47500000000
+      },
+      "reference_delta_ns": -10000000,
+      "isometric_rgb": {
+        "file": "isometric-0047.npz",
+        "stamp_ns": 48000000000
+      },
+      "isometric_delta_ns": 490000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 48010000000,
+      "file": "sonar-0093.npz",
+      "sha256": "e6d5e1968c38d1506b80679120d8f09bad81b437ce21d68033e79e427e3200e6",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0094.npz",
+        "stamp_ns": 48000000000
+      },
+      "reference_delta_ns": -10000000,
+      "isometric_rgb": {
+        "file": "isometric-0047.npz",
+        "stamp_ns": 48000000000
+      },
+      "isometric_delta_ns": -10000000,
+      "truth_bracket_ns": 40000000
+    },
+    {
+      "stamp_ns": 48500000000,
+      "file": "sonar-0094.npz",
+      "sha256": "9021e50ad75c5faab7537d746c59e0b69f51fc7dc27be205f37f1d214662fb28",
+      "shape": [
+        599,
+        256
+      ],
+      "finite_returns": 153344,
+      "negative_infinity_no_return": 0,
+      "reference_rgb": {
+        "file": "sonar-reference-0095.npz",
+        "stamp_ns": 48500000000
+      },
+      "reference_delta_ns": 0,
+      "isometric_rgb": {
+        "file": "isometric-0047.npz",
+        "stamp_ns": 48000000000
+      },
+      "isometric_delta_ns": -500000000,
+      "truth_bracket_ns": 40000000
+    }
+  ],
+  "figure_selection_rule": "First sonar at least 20 s after mission start, with RGB and isometric camera each within 50 ms",
+  "figure_frame": {
+    "stamp_ns": 28010000000,
+    "file": "sonar-0053.npz",
+    "sha256": "47051b64e20705d2247a6c5be7a34b591dfa1ae945ab6dc13805bcee5d520b6d",
+    "shape": [
+      599,
+      256
+    ],
+    "finite_returns": 153344,
+    "negative_infinity_no_return": 0,
+    "reference_rgb": {
+      "file": "sonar-reference-0054.npz",
+      "stamp_ns": 28000000000
+    },
+    "reference_delta_ns": -10000000,
+    "isometric_rgb": {
+      "file": "isometric-0027.npz",
+      "stamp_ns": 28000000000
+    },
+    "isometric_delta_ns": -10000000,
+    "truth_bracket_ns": 40000000
+  }
+}

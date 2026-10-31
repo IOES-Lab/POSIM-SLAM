@@ -1,0 +1,450 @@
+<?xml version='1.0' encoding='utf-8'?>
+<sdf xmlns:gz="http://gazebosim.org" version="1.6">
+  <model name="bluerov2" xmlns:gz="http://gazebosim.org">
+    <pose>0 0 0 0 0 0</pose>
+    <link name="base_link">
+      <inertial>
+        <pose>0 0 0.011 0 0 0</pose>
+        <mass>10</mass>
+        <inertia>
+          <ixx>0.10239205173574581</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.18394944548574582</iyy>
+          <iyz>0</iyz>
+          <izz>0.27853309041666663</izz>
+        </inertia>
+      </inertial>
+      <visual name="base_link_visual">
+        <geometry>
+          <mesh>
+            <uri>/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/sonar-low-altitude-15m-20261029/runtime/third_party/orca5/orca_bringup/models/orca5/meshes/bluerov2.dae</uri>
+            <scale>0.025 0.025 0.025</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name="base_link_collision">
+        <pose>0 0 0.06 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.457 0.338 0.0672963629536597</size>
+          </box>
+        </geometry>
+      </collision>
+      <sensor name="imu_sensor" type="imu">
+        <pose>0 0 -0.1 3.141592653589793 0 0</pose>
+        <always_on>1</always_on>
+        <update_rate>1000.0</update_rate>
+      </sensor>
+      <sensor name="wwos_magnetometer" type="magnetometer"><always_on>true</always_on><update_rate>20</update_rate><topic>/model/bluerov2/magnetometer</topic></sensor><sensor name="payload_camera" type="camera"><always_on>true</always_on><update_rate>5</update_rate><topic>/vehicle/sensors/camera</topic><camera><horizontal_fov>2.0943951023931953</horizontal_fov><image><width>640</width><height>480</height></image><clip><near>.1</near><far>100</far></clip><camera_info_topic>/vehicle/sensors/camera/camera_info</camera_info_topic></camera><pose>.24 0 -.1 0 .35 0</pose><frame_id>vehicle/camera</frame_id></sensor><sensor name="payload_multibeam_forward" type="custom" gz:type="multibeam_sonar">
+        <always_on>true</always_on>
+        <update_rate>2</update_rate>
+        <topic>/vehicle/sensors/multibeam_forward</topic>
+        <visualize>true</visualize>
+        <gz:multibeam_sonar>
+        <ray degrees="false">
+          <scan>
+            <horizontal>
+              <beams>256</beams>
+              <min_angle>-1.0471975511965976</min_angle>
+              <max_angle>1.0471975511965976</max_angle>
+            </horizontal>
+            <vertical>
+              <rays>256</rays>
+              <min_angle>-0.17453292519943295</min_angle>
+              <max_angle>0.17453292519943295</max_angle>
+            </vertical>
+          </scan>
+          <range>
+            <min>0.2</min>
+            <max>15</max>
+          </range>
+        </ray>
+          <spec>
+              
+            <verticalFOV>20</verticalFOV>
+            <sonarFreq>700e3</sonarFreq>
+            <bandwidth>29.9e3</bandwidth>
+            <soundSpeed>1500</soundSpeed>
+            <sourceLevel>220</sourceLevel>
+            <maxDistance>15</maxDistance>
+            <raySkips>1</raySkips>
+            <sensorGain>0.02</sensorGain>
+            <writeLog>false</writeLog>
+            <debugFlag>false</debugFlag>
+            <writeFrameInterval>5</writeFrameInterval>
+            
+            <pointCloudTopicName>geometry/points</pointCloudTopicName>
+            <sonarImageRawTopicName>sonar_image_raw</sonarImageRawTopicName>
+            <sonarImageTopicName>sonar_image</sonarImageTopicName>
+            <frameName>vehicle/multibeam_forward</frameName>
+          <visibilityMask>3892314111</visibilityMask></spec>
+        </gz:multibeam_sonar>
+      <pose>.24 0 -.1 0 .35 0</pose><frame_id>vehicle/multibeam_forward</frame_id></sensor>
+    <sensor name="payload_dvl" type="custom" gz:type="dvl"><pose>0 0 -.12 0 0 0</pose><always_on>true</always_on><update_rate>1</update_rate><topic>/vehicle/sensors/dvl</topic><gz:dvl><type>phased_array</type><arrangement degrees="true"><beam id="1"><aperture>2</aperture><rotation>45</rotation><tilt>30</tilt></beam><beam id="2"><aperture>2</aperture><rotation>135</rotation><tilt>30</tilt></beam><beam id="3"><aperture>2</aperture><rotation>-45</rotation><tilt>30</tilt></beam><beam id="4"><aperture>2</aperture><rotation>-135</rotation><tilt>30</tilt></beam></arrangement><tracking><bottom_mode><when>best</when><noise type="gaussian"><stddev>0.002</stddev></noise><visualize>false</visualize></bottom_mode></tracking><resolution>0.01</resolution><maximum_range>20</maximum_range><minimum_range>0.1</minimum_range><reference_frame>0 0 0 0 0 0</reference_frame></gz:dvl><frame_id>vehicle/dvl</frame_id></sensor><sensor name="surface_imu" type="imu"><pose>0 0 0 0 0 0</pose><always_on>true</always_on><update_rate>20</update_rate><topic>/vehicle/sensors/surface_imu</topic><frame_id>vehicle/surface_imu</frame_id><imu><enable_orientation>true</enable_orientation><orientation_reference_frame><localization>ENU</localization></orientation_reference_frame></imu></sensor></link>
+    <link name="thruster1">
+      <pose>0.14 -0.092 0 -1.5707963267948966 1.5707963267948966 -0.7853981633974483</pose>
+      <visual name="thruster_prop_visual">
+        <pose>0 0 0 1.5707963267948966 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/sonar-low-altitude-15m-20261029/runtime/third_party/orca5/orca_bringup/models/orca5/meshes/t200-cw-prop.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <inertial>
+        <mass>0.002</mass>
+        <inertia>
+          <ixx>0.001</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.001</iyy>
+          <iyz>0</iyz>
+          <izz>0.001</izz>
+        </inertia>
+      </inertial>
+    </link>
+    <link name="thruster2">
+      <pose>0.14 0.092 0 -1.5707963267948966 1.5707963267948966 -2.356194490192345</pose>
+      <visual name="thruster_prop_visual">
+        <pose>0 0 0 -1.5707963267948966 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/sonar-low-altitude-15m-20261029/runtime/third_party/orca5/orca_bringup/models/orca5/meshes/t200-ccw-prop.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <inertial>
+        <mass>0.002</mass>
+        <inertia>
+          <ixx>0.001</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.001</iyy>
+          <iyz>0</iyz>
+          <izz>0.001</izz>
+        </inertia>
+      </inertial>
+    </link>
+    <link name="thruster3">
+      <pose>-0.14 -0.092 0 -1.5707963267948966 1.5707963267948966 0.7853981633974483</pose>
+      <visual name="thruster_prop_visual">
+        <pose>0 0 0 -1.5707963267948966 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/sonar-low-altitude-15m-20261029/runtime/third_party/orca5/orca_bringup/models/orca5/meshes/t200-ccw-prop.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <inertial>
+        <mass>0.002</mass>
+        <inertia>
+          <ixx>0.001</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.001</iyy>
+          <iyz>0</iyz>
+          <izz>0.001</izz>
+        </inertia>
+      </inertial>
+    </link>
+    <link name="thruster4">
+      <pose>-0.14 0.092 0 -1.5707963267948966 1.5707963267948966 2.356194490192345</pose>
+      <visual name="thruster_prop_visual">
+        <pose>0 0 0 1.5707963267948966 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/sonar-low-altitude-15m-20261029/runtime/third_party/orca5/orca_bringup/models/orca5/meshes/t200-cw-prop.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <inertial>
+        <mass>0.002</mass>
+        <inertia>
+          <ixx>0.001</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.001</iyy>
+          <iyz>0</iyz>
+          <izz>0.001</izz>
+        </inertia>
+      </inertial>
+    </link>
+    <link name="thruster5">
+      <pose>0 -0.109 0.077 0 0 0</pose>
+      <visual name="thruster_prop_visual">
+        <pose>0 0 0 -1.5707963267948966 0 1.5707963267948966</pose>
+        <geometry>
+          <mesh>
+            <uri>/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/sonar-low-altitude-15m-20261029/runtime/third_party/orca5/orca_bringup/models/orca5/meshes/t200-ccw-prop.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <inertial>
+        <mass>0.002</mass>
+        <inertia>
+          <ixx>0.001</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.001</iyy>
+          <iyz>0</iyz>
+          <izz>0.001</izz>
+        </inertia>
+      </inertial>
+    </link>
+    <link name="thruster6">
+      <pose>0 0.109 0.077 0 0 0</pose>
+      <visual name="thruster_prop_visual">
+        <pose>0 0 0 1.5707963267948966 0 1.5707963267948966</pose>
+        <geometry>
+          <mesh>
+            <uri>/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/sonar-low-altitude-15m-20261029/runtime/third_party/orca5/orca_bringup/models/orca5/meshes/t200-cw-prop.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <inertial>
+        <mass>0.002</mass>
+        <inertia>
+          <ixx>0.001</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.001</iyy>
+          <iyz>0</iyz>
+          <izz>0.001</izz>
+        </inertia>
+      </inertial>
+    </link>
+    <joint name="thruster1_joint" type="revolute">
+      <parent>base_link</parent>
+      <child>thruster1</child>
+      <axis>
+        <xyz>0 0 -1</xyz>
+      </axis>
+    </joint>
+    <joint name="thruster2_joint" type="revolute">
+      <parent>base_link</parent>
+      <child>thruster2</child>
+      <axis>
+        <xyz>0 0 -1</xyz>
+      </axis>
+    </joint>
+    <joint name="thruster3_joint" type="revolute">
+      <parent>base_link</parent>
+      <child>thruster3</child>
+      <axis>
+        <xyz>0 0 -1</xyz>
+      </axis>
+    </joint>
+    <joint name="thruster4_joint" type="revolute">
+      <parent>base_link</parent>
+      <child>thruster4</child>
+      <axis>
+        <xyz>0 0 -1</xyz>
+      </axis>
+    </joint>
+    <joint name="thruster5_joint" type="revolute">
+      <parent>base_link</parent>
+      <child>thruster5</child>
+      <axis>
+        <xyz>0 0 -1</xyz>
+      </axis>
+    </joint>
+    <joint name="thruster6_joint" type="revolute">
+      <parent>base_link</parent>
+      <child>thruster6</child>
+      <axis>
+        <xyz>0 0 -1</xyz>
+      </axis>
+    </joint>
+    <plugin filename="gz-sim-thruster-system" name="gz::sim::systems::Thruster">
+      <namespace>bluerov2</namespace>
+      <joint_name>thruster1_joint</joint_name>
+      <thrust_coefficient>0.02</thrust_coefficient>
+      <fluid_density>1000</fluid_density>
+      <propeller_diameter>0.1</propeller_diameter>
+      <velocity_control>true</velocity_control>
+      <use_angvel_cmd>False</use_angvel_cmd>
+    </plugin>
+    <plugin filename="gz-sim-thruster-system" name="gz::sim::systems::Thruster">
+      <namespace>bluerov2</namespace>
+      <joint_name>thruster2_joint</joint_name>
+      <thrust_coefficient>0.02</thrust_coefficient>
+      <fluid_density>1000</fluid_density>
+      <propeller_diameter>0.1</propeller_diameter>
+      <velocity_control>true</velocity_control>
+      <use_angvel_cmd>False</use_angvel_cmd>
+    </plugin>
+    <plugin filename="gz-sim-thruster-system" name="gz::sim::systems::Thruster">
+      <namespace>bluerov2</namespace>
+      <joint_name>thruster3_joint</joint_name>
+      <thrust_coefficient>-0.02</thrust_coefficient>
+      <fluid_density>1000</fluid_density>
+      <propeller_diameter>0.1</propeller_diameter>
+      <velocity_control>true</velocity_control>
+      <use_angvel_cmd>False</use_angvel_cmd>
+    </plugin>
+    <plugin filename="gz-sim-thruster-system" name="gz::sim::systems::Thruster">
+      <namespace>bluerov2</namespace>
+      <joint_name>thruster4_joint</joint_name>
+      <thrust_coefficient>-0.02</thrust_coefficient>
+      <fluid_density>1000</fluid_density>
+      <propeller_diameter>0.1</propeller_diameter>
+      <velocity_control>true</velocity_control>
+      <use_angvel_cmd>False</use_angvel_cmd>
+    </plugin>
+    <plugin filename="gz-sim-thruster-system" name="gz::sim::systems::Thruster">
+      <namespace>bluerov2</namespace>
+      <joint_name>thruster5_joint</joint_name>
+      <thrust_coefficient>0.02</thrust_coefficient>
+      <fluid_density>1000</fluid_density>
+      <propeller_diameter>0.1</propeller_diameter>
+      <velocity_control>true</velocity_control>
+      <use_angvel_cmd>False</use_angvel_cmd>
+    </plugin>
+    <plugin filename="gz-sim-thruster-system" name="gz::sim::systems::Thruster">
+      <namespace>bluerov2</namespace>
+      <joint_name>thruster6_joint</joint_name>
+      <thrust_coefficient>-0.02</thrust_coefficient>
+      <fluid_density>1000</fluid_density>
+      <propeller_diameter>0.1</propeller_diameter>
+      <velocity_control>true</velocity_control>
+      <use_angvel_cmd>False</use_angvel_cmd>
+    </plugin>
+    <plugin name="ArduPilotPlugin" filename="libArduPilotPlugin.dylib">
+      <fdm_addr>127.0.0.1</fdm_addr>
+      <fdm_port_in>9392</fdm_port_in>
+      <connectionTimeoutMaxCount>5</connectionTimeoutMaxCount>
+      <lock_step>1</lock_step>
+      <modelXYZToAirplaneXForwardZDown>0 0 0 3.141592653589793 0 0</modelXYZToAirplaneXForwardZDown>
+      <gazeboXYZToNED>0 0 0 3.141592653589793 0 1.5707963267948966</gazeboXYZToNED>
+      <imuName>imu_sensor</imuName>
+      <control channel="0">
+        <jointName>thruster1_joint</jointName>
+        <servo_min>1100</servo_min>
+        <servo_max>1900</servo_max>
+        <type>COMMAND</type>
+        <cmd_topic>/model/bluerov2/joint/thruster1_joint/cmd_thrust</cmd_topic>
+        <offset>-0.5</offset>
+        <multiplier>100</multiplier>
+      </control>
+      <control channel="1">
+        <jointName>thruster2_joint</jointName>
+        <servo_min>1100</servo_min>
+        <servo_max>1900</servo_max>
+        <type>COMMAND</type>
+        <cmd_topic>/model/bluerov2/joint/thruster2_joint/cmd_thrust</cmd_topic>
+        <offset>-0.5</offset>
+        <multiplier>100</multiplier>
+      </control>
+      <control channel="2">
+        <jointName>thruster3_joint</jointName>
+        <servo_min>1100</servo_min>
+        <servo_max>1900</servo_max>
+        <type>COMMAND</type>
+        <cmd_topic>/model/bluerov2/joint/thruster3_joint/cmd_thrust</cmd_topic>
+        <offset>-0.5</offset>
+        <multiplier>100</multiplier>
+      </control>
+      <control channel="3">
+        <jointName>thruster4_joint</jointName>
+        <servo_min>1100</servo_min>
+        <servo_max>1900</servo_max>
+        <type>COMMAND</type>
+        <cmd_topic>/model/bluerov2/joint/thruster4_joint/cmd_thrust</cmd_topic>
+        <offset>-0.5</offset>
+        <multiplier>100</multiplier>
+      </control>
+      <control channel="4">
+        <jointName>thruster5_joint</jointName>
+        <servo_min>1100</servo_min>
+        <servo_max>1900</servo_max>
+        <type>COMMAND</type>
+        <cmd_topic>/model/bluerov2/joint/thruster5_joint/cmd_thrust</cmd_topic>
+        <offset>-0.5</offset>
+        <multiplier>100</multiplier>
+      </control>
+      <control channel="5">
+        <jointName>thruster6_joint</jointName>
+        <servo_min>1100</servo_min>
+        <servo_max>1900</servo_max>
+        <type>COMMAND</type>
+        <cmd_topic>/model/bluerov2/joint/thruster6_joint/cmd_thrust</cmd_topic>
+        <offset>-0.5</offset>
+        <multiplier>100</multiplier>
+      </control>
+      </plugin>
+    <link name="slam_camera_link">
+      <pose>0 0 0 0 1.5707963267948966 0</pose>
+      <visual name="camera_tube">
+        <geometry>
+          <cylinder>
+            <length>0.035</length>
+            <radius>0.024</radius>
+          </cylinder>
+        </geometry>
+        <material>
+          <ambient>0.0 0.0 0.2 1.0</ambient>
+          <diffuse>0.0 0.0 0.2 1.0</diffuse>
+        </material>
+      </visual>
+      <inertial>
+        <mass>0.1</mass>
+        <inertia>
+          <ixx>0.001</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.001</iyy>
+          <iyz>0</iyz>
+          <izz>0.001</izz>
+        </inertia>
+      </inertial>
+    </link>
+    <joint name="slam_camera_joint" type="fixed">
+      <parent>base_link</parent>
+      <child>slam_camera_link</child>
+    </joint>
+    <plugin filename="gz-sim-odometry-publisher-system" name="gz::sim::systems::OdometryPublisher">
+      <odom_frame>map</odom_frame>
+      <robot_base_frame>base_link</robot_base_frame>
+      <dimensions>3</dimensions>
+      <odom_topic>/model/bluerov2/odometry</odom_topic>
+      <odom_publish_frequency>30</odom_publish_frequency>
+    </plugin>
+    <link name="camera_link">
+      <pose relative_to="camera_mount_link">0 0 0 0 0 0</pose>
+      <inertial>
+        <mass>0.0001</mass>
+        <inertia>
+          <ixx>0.0001</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.0001</iyy>
+          <iyz>0</iyz>
+          <izz>0.0001</izz>
+        </inertia>
+      </inertial>
+      </link>
+    <link name="camera_mount_link">
+      <pose relative_to="base_link">0.19 0 0.067 0 0 0</pose>
+      <inertial>
+        <mass>0.0001</mass>
+        <inertia>
+          <ixx>0.0001</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.0001</iyy>
+          <iyz>0</iyz>
+          <izz>0.0001</izz>
+        </inertia>
+      </inertial>
+    </link>
+    <joint name="camera_joint" type="fixed">
+      <parent>camera_mount_link</parent>
+      <child>camera_link</child>
+    </joint>
+    <joint name="camera_mount_joint" type="fixed">
+      <parent>base_link</parent>
+      <child>camera_mount_link</child>
+    </joint>
+  <link name="gnss_link"><pose relative_to="base_link">0 0 0.3 0 0 0</pose><inertial><mass>.001</mass><inertia><ixx>0.000001</ixx><iyy>0.000001</iyy><izz>0.000001</izz></inertia></inertial><sensor name="gnss" type="custom" gz:type="posim_gnss"><always_on>true</always_on><update_rate>5</update_rate><topic>/model/bluerov2/gnss</topic></sensor></link><joint name="gnss_joint" type="fixed"><parent>base_link</parent><child>gnss_link</child></joint><plugin name="posim::Gnss" filename="libposim_gnss.dylib"><update_rate>5</update_rate><latency>0.2</latency><reacquire_seconds>3</reacquire_seconds><dry_margin>0.05</dry_margin><horizontal_stddev>0.7</horizontal_stddev><vertical_stddev>1.2</vertical_stddev><velocity_stddev>0.1</velocity_stddev><water_level>0</water_level><seed>42</seed><enabled>false</enabled><link_name>gnss_link</link_name><topic>/model/bluerov2/gnss</topic><wave_topic>/wwos/wave_surface</wave_topic></plugin><plugin filename="/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/sonar-low-altitude-15m-20261029/capture/native-plugins/f721bd479f7d2bd58ec4/competition_current.dylib" name="gz::sim::systems::CompetitionHydrodynamics"><enable>bluerov2::base_link</enable><hydrodynamics><damping_on>1</damping_on><viscous_drag_on>0</viscous_drag_on><pressure_drag_on>0</pressure_drag_on><cDampL1>.1</cDampL1><cDampL2>40</cDampL2><cDampR1>.1</cDampR1><cDampR2>4</cDampR2></hydrodynamics><current_user_configurable>true</current_user_configurable><current_session_tag>164486846568655</current_session_tag><current_start_enabled>false</current_start_enabled></plugin><plugin name="wwos::WaterPressure" filename="/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/posim332f629-sdk/www-posim/practice/water-pressure/install/lib/libwwos_water_pressure.dylib"><link_name>base_link</link_name><frame_id>vehicle/pressure</frame_id><topic>/vehicle/sensors/pressure</topic><noise_stddev_pa>30</noise_stddev_pa><update_rate>10</update_rate></plugin><plugin filename="gz-sim-pose-publisher-system" name="gz::sim::systems::PosePublisher"><publish_model_pose>true</publish_model_pose><publish_link_pose>true</publish_link_pose><publish_sensor_pose>true</publish_sensor_pose><publish_nested_model_pose>true</publish_nested_model_pose><publish_visual_pose>false</publish_visual_pose><publish_collision_pose>false</publish_collision_pose><use_pose_vector_msg>true</use_pose_vector_msg><update_frequency>20</update_frequency><topic>/model/bluerov2/wwos/poses</topic></plugin></model>
+</sdf>

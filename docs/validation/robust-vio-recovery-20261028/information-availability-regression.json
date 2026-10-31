@@ -1,0 +1,15 @@
+{
+  "passed": true,
+  "injected": [
+    {
+      "stamp_ns": 24300000000,
+      "pid": 3628,
+      "original_points": 9
+    }
+  ],
+  "withheld_statuses": 1,
+  "resumed_statuses": 211,
+  "failures": [],
+  "frozen_sources_unchanged": true,
+  "scope": "Diagnostic-only covariance availability response; no optimizer or sensor input changes; not provider qualification"
+}

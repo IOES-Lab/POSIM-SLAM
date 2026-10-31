@@ -1,0 +1,7 @@
+{
+  "adaptive_assessment_only": true,
+  "purpose": "Separate fixed-navigation/scene approximation from full-image source agreement after the blind birth has failed geometry assessment. No control may seed or change the sealed inference.",
+  "inputs": "Reuse the existing height-diversity audit's full-reference-scene range, source-normal and first-hit grids at frame27/81/88, separately at its navigation and interpolated true poses. These are already retained assessment-only predictions, not actual renderer grids. Preserve the original 40ms truth bracket/timing/rasterization limitations.",
+  "calculation": "Feed those frozen grids into the existing positive full-image mean calculation with the same uniform .001 reflectivity. Check the old 48 selected mean values exactly within derived arithmetic before computing every native-pixel score/residual. Original sonar raw remains unchanged. No new raycasting, native acquisition or oracle map input to inference.",
+  "interpretation": "If even the complete reference-scene/true-pose control has large full-image residuals, sensor/renderer/time/model agreement needs further diagnosis before mapper patches. A same-navigation/reference-scene improvement isolates scene support; a true-pose improvement additionally implicates pose/time alignment. These are conditional controls, not hardware or covariance calibration."
+}

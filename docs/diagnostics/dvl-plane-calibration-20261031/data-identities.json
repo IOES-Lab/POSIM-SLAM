@@ -1,0 +1,7 @@
+{
+  "observations-reference.json.gz": "5d2e9539a436358c822ab0860a996ad99dc2e9bebe248ed6b037b2ea1651480e",
+  "observations-unused.json.gz": "5331bbb752bbd72df9b83c572a8a0e02fe932b24e44e47d664120905025a4ba5",
+  "reference-assessment.json.gz": "f657e3915153961b7adce9a1ad68e450f7fd30e6e90334f3f3e22e4454df7148",
+  "unused-assessment.json.gz": "25a9b8967c0aabb1ffc544dbf0fc9ab82f5a65148280e7a6df1256702ad69f60",
+  "nominal-sampling-control.json.gz": "79d4862a0f75776f80bf5adde0c3b70c2d5eca25762d93f882359f3091338bc1"
+}

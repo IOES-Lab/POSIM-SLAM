@@ -1,0 +1,1012 @@
+{
+  "scope": "Assessment-only source-aware comparison of existing raw DVL minima; centre rays approximate finite cones; no new measurement or calibration claim",
+  "truth_is_estimator_input": false,
+  "native_fusion_range_used": false,
+  "recorded_samples": 66,
+  "per_beam_measurements_retained": false,
+  "geometry": {
+    "schema": "posim-dvl-range-calibration-1",
+    "frame": "vehicle/dvl",
+    "reference_to_sensor": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "beams": [
+      {
+        "id": 1,
+        "axis": [
+          -0.35355339059327373,
+          0.3535533905932737,
+          -0.8660254037844387
+        ],
+        "aperture_rad": 0.03490658503988659
+      },
+      {
+        "id": 2,
+        "axis": [
+          0.3535533905932737,
+          0.35355339059327373,
+          -0.8660254037844387
+        ],
+        "aperture_rad": 0.03490658503988659
+      },
+      {
+        "id": 3,
+        "axis": [
+          -0.35355339059327373,
+          -0.3535533905932737,
+          -0.8660254037844387
+        ],
+        "aperture_rad": 0.03490658503988659
+      },
+      {
+        "id": 4,
+        "axis": [
+          0.3535533905932737,
+          -0.35355339059327373,
+          -0.8660254037844387
+        ],
+        "aperture_rad": 0.03490658503988659
+      }
+    ],
+    "range_min_m": 0.1,
+    "range_max_m": 20.0,
+    "resolution_m": 0.01,
+    "return_model": "minimum_within_beam_cones",
+    "aggregate": "minimum_beam_slant_range",
+    "range_variance_m2": null
+  },
+  "rows": [
+    {
+      "stamp_ns": 2010000000,
+      "minimum_slant_range_m": 2.260005235671997,
+      "assessment_vertical_distance_m": 2.01070608368717,
+      "assessment_centre_beam_ranges_m": [
+        2.3208365978220287,
+        2.2766182997865845,
+        2.361297081882351,
+        2.3281179609279343
+      ],
+      "assessment_minimum_centre_beam_m": 2.2766182997865845,
+      "slant_minus_vertical_m": 0.2492991519848271,
+      "measured_minus_centre_prediction_m": -0.016613064114587406
+    },
+    {
+      "stamp_ns": 3010000000,
+      "minimum_slant_range_m": 2.6892580986022945,
+      "assessment_vertical_distance_m": 2.3755331024087702,
+      "assessment_centre_beam_ranges_m": [
+        2.7184444036241406,
+        2.7088926597266707,
+        2.767710880322709,
+        2.7752653888735375
+      ],
+      "assessment_minimum_centre_beam_m": 2.7088926597266707,
+      "slant_minus_vertical_m": 0.31372499619352423,
+      "measured_minus_centre_prediction_m": -0.019634561124376226
+    },
+    {
+      "stamp_ns": 4010000000,
+      "minimum_slant_range_m": 3.0923643112182617,
+      "assessment_vertical_distance_m": 2.7417581059022704,
+      "assessment_centre_beam_ranges_m": [
+        3.140024313952006,
+        3.113302421444235,
+        3.2077263996052996,
+        3.2048271578285767
+      ],
+      "assessment_minimum_centre_beam_m": 3.113302421444235,
+      "slant_minus_vertical_m": 0.3506062053159913,
+      "measured_minus_centre_prediction_m": -0.02093811022597336
+    },
+    {
+      "stamp_ns": 5010000000,
+      "minimum_slant_range_m": 3.497074604034424,
+      "assessment_vertical_distance_m": 3.1073902534451,
+      "assessment_centre_beam_ranges_m": [
+        3.591253672254037,
+        3.5212460821765843,
+        3.6418718530896994,
+        3.5973688867246962
+      ],
+      "assessment_minimum_centre_beam_m": 3.5212460821765843,
+      "slant_minus_vertical_m": 0.3896843505893237,
+      "measured_minus_centre_prediction_m": -0.024171478142160474
+    },
+    {
+      "stamp_ns": 6010000000,
+      "minimum_slant_range_m": 3.931357383728027,
+      "assessment_vertical_distance_m": 3.4700338533624473,
+      "assessment_centre_beam_ranges_m": [
+        3.9566517428742207,
+        3.956559470578522,
+        4.042725517334548,
+        4.073645811182279
+      ],
+      "assessment_minimum_centre_beam_m": 3.956559470578522,
+      "slant_minus_vertical_m": 0.4613235303655796,
+      "measured_minus_centre_prediction_m": -0.025202086850494965
+    },
+    {
+      "stamp_ns": 7010000000,
+      "minimum_slant_range_m": 3.92133355140686,
+      "assessment_vertical_distance_m": 3.4766670373650306,
+      "assessment_centre_beam_ranges_m": [
+        4.006990884507033,
+        3.942763448837758,
+        4.071500007579034,
+        4.033934922006569
+      ],
+      "assessment_minimum_centre_beam_m": 3.942763448837758,
+      "slant_minus_vertical_m": 0.44466651404182933,
+      "measured_minus_centre_prediction_m": -0.02142989743089796
+    },
+    {
+      "stamp_ns": 8010000000,
+      "minimum_slant_range_m": 3.8668785095214844,
+      "assessment_vertical_distance_m": 3.4249806831517695,
+      "assessment_centre_beam_ranges_m": [
+        3.9576401295705206,
+        3.8915872506538745,
+        4.002158442673632,
+        3.9631810996490833
+      ],
+      "assessment_minimum_centre_beam_m": 3.8915872506538745,
+      "slant_minus_vertical_m": 0.44189782636971486,
+      "measured_minus_centre_prediction_m": -0.024708741132390077
+    },
+    {
+      "stamp_ns": 9010000000,
+      "minimum_slant_range_m": 3.8440587520599365,
+      "assessment_vertical_distance_m": 3.4145917548399485,
+      "assessment_centre_beam_ranges_m": [
+        3.9118952875734694,
+        3.8669179621949126,
+        4.006121096809605,
+        3.988273840038871
+      ],
+      "assessment_minimum_centre_beam_m": 3.8669179621949126,
+      "slant_minus_vertical_m": 0.42946699721998804,
+      "measured_minus_centre_prediction_m": -0.02285921013497605
+    },
+    {
+      "stamp_ns": 10010000000,
+      "minimum_slant_range_m": 3.8568263053894043,
+      "assessment_vertical_distance_m": 3.4454798524110006,
+      "assessment_centre_beam_ranges_m": [
+        4.017872704580394,
+        3.8743845075970316,
+        4.075579898155677,
+        3.955217852767529
+      ],
+      "assessment_minimum_centre_beam_m": 3.8743845075970316,
+      "slant_minus_vertical_m": 0.41134645297840366,
+      "measured_minus_centre_prediction_m": -0.01755820220762727
+    },
+    {
+      "stamp_ns": 11010000000,
+      "minimum_slant_range_m": 3.8143730163574214,
+      "assessment_vertical_distance_m": 3.3901576203948376,
+      "assessment_centre_beam_ranges_m": [
+        3.927507031450263,
+        3.8396954115029325,
+        3.975503063614998,
+        3.9135967929841406
+      ],
+      "assessment_minimum_centre_beam_m": 3.8396954115029325,
+      "slant_minus_vertical_m": 0.42421539596258384,
+      "measured_minus_centre_prediction_m": -0.025322395145511045
+    },
+    {
+      "stamp_ns": 12010000000,
+      "minimum_slant_range_m": 3.601685285568237,
+      "assessment_vertical_distance_m": 3.1739773007767025,
+      "assessment_centre_beam_ranges_m": [
+        3.620044649977781,
+        3.6171921005676024,
+        3.6990413251390866,
+        3.725042407382062
+      ],
+      "assessment_minimum_centre_beam_m": 3.6171921005676024,
+      "slant_minus_vertical_m": 0.4277079847915344,
+      "measured_minus_centre_prediction_m": -0.01550681499936557
+    },
+    {
+      "stamp_ns": 13010000000,
+      "minimum_slant_range_m": 3.159075975418091,
+      "assessment_vertical_distance_m": 2.8011460045968266,
+      "assessment_centre_beam_ranges_m": [
+        3.2328493495577306,
+        3.1763065585515333,
+        3.2804784021981788,
+        3.248167091698743
+      ],
+      "assessment_minimum_centre_beam_m": 3.1763065585515333,
+      "slant_minus_vertical_m": 0.3579299708212642,
+      "measured_minus_centre_prediction_m": -0.0172305831334425
+    },
+    {
+      "stamp_ns": 14000000000,
+      "minimum_slant_range_m": 2.967866420745849,
+      "assessment_vertical_distance_m": 2.6255715162858575,
+      "assessment_centre_beam_ranges_m": [
+        3.0234292545643835,
+        2.9857218197262534,
+        3.06551516879918,
+        3.050473750036056
+      ],
+      "assessment_minimum_centre_beam_m": 2.9857218197262534,
+      "slant_minus_vertical_m": 0.34229490445999167,
+      "measured_minus_centre_prediction_m": -0.017855398980404225
+    },
+    {
+      "stamp_ns": 15010000000,
+      "minimum_slant_range_m": 2.7578577995300293,
+      "assessment_vertical_distance_m": 2.4461494421973584,
+      "assessment_centre_beam_ranges_m": [
+        2.7884303212522608,
+        2.7707349482188808,
+        2.8707936727820256,
+        2.8728275239525436
+      ],
+      "assessment_minimum_centre_beam_m": 2.7707349482188808,
+      "slant_minus_vertical_m": 0.3117083573326709,
+      "measured_minus_centre_prediction_m": -0.01287714868885148
+    },
+    {
+      "stamp_ns": 16010000000,
+      "minimum_slant_range_m": 2.692734003067016,
+      "assessment_vertical_distance_m": 2.3829078939281914,
+      "assessment_centre_beam_ranges_m": [
+        2.7624380190645637,
+        2.704257460114758,
+        2.787259452505476,
+        2.7496746416829483
+      ],
+      "assessment_minimum_centre_beam_m": 2.704257460114758,
+      "slant_minus_vertical_m": 0.3098261091388248,
+      "measured_minus_centre_prediction_m": -0.011523457047741825
+    },
+    {
+      "stamp_ns": 17010000000,
+      "minimum_slant_range_m": 2.6990530490875244,
+      "assessment_vertical_distance_m": 2.3826245476785757,
+      "assessment_centre_beam_ranges_m": [
+        2.7221786903304146,
+        2.7143887060274436,
+        2.777745490599994,
+        2.7894996309164926
+      ],
+      "assessment_minimum_centre_beam_m": 2.7143887060274436,
+      "slant_minus_vertical_m": 0.31642850140894874,
+      "measured_minus_centre_prediction_m": -0.015335656939919229
+    },
+    {
+      "stamp_ns": 18010000000,
+      "minimum_slant_range_m": 2.6874849796295166,
+      "assessment_vertical_distance_m": 2.382346150187988,
+      "assessment_centre_beam_ranges_m": [
+        2.721247833392311,
+        2.7042254058841975,
+        2.7888721201807107,
+        2.790516013838395
+      ],
+      "assessment_minimum_centre_beam_m": 2.7042254058841975,
+      "slant_minus_vertical_m": 0.3051388294415287,
+      "measured_minus_centre_prediction_m": -0.016740426254680862
+    },
+    {
+      "stamp_ns": 19010000000,
+      "minimum_slant_range_m": 2.936391830444336,
+      "assessment_vertical_distance_m": 2.5998547064750213,
+      "assessment_centre_beam_ranges_m": [
+        3.004209940823569,
+        2.950597154675083,
+        3.0412550081535854,
+        3.0108659352025122
+      ],
+      "assessment_minimum_centre_beam_m": 2.950597154675083,
+      "slant_minus_vertical_m": 0.3365371239693147,
+      "measured_minus_centre_prediction_m": -0.014205324230747163
+    },
+    {
+      "stamp_ns": 20010000000,
+      "minimum_slant_range_m": 3.270435571670532,
+      "assessment_vertical_distance_m": 2.8979459269199657,
+      "assessment_centre_beam_ranges_m": [
+        3.2909717161200702,
+        3.33573887853387,
+        3.344817512836273,
+        3.4124049746687475
+      ],
+      "assessment_minimum_centre_beam_m": 3.2909717161200702,
+      "slant_minus_vertical_m": 0.3724896447505661,
+      "measured_minus_centre_prediction_m": -0.02053614444953844
+    },
+    {
+      "stamp_ns": 21010000000,
+      "minimum_slant_range_m": 3.291132688522339,
+      "assessment_vertical_distance_m": 2.895235282956617,
+      "assessment_centre_beam_ranges_m": [
+        3.3672001614002225,
+        3.3458882705068898,
+        3.3531826854902027,
+        3.309750413413052
+      ],
+      "assessment_minimum_centre_beam_m": 3.309750413413052,
+      "slant_minus_vertical_m": 0.39589740556572206,
+      "measured_minus_centre_prediction_m": -0.018617724890713117
+    },
+    {
+      "stamp_ns": 22010000000,
+      "minimum_slant_range_m": 3.3104352951049805,
+      "assessment_vertical_distance_m": 2.9085830171898355,
+      "assessment_centre_beam_ranges_m": [
+        3.360534758295792,
+        3.3952887114375288,
+        3.330124240559627,
+        3.356344990254352
+      ],
+      "assessment_minimum_centre_beam_m": 3.330124240559627,
+      "slant_minus_vertical_m": 0.401852277915145,
+      "measured_minus_centre_prediction_m": -0.0196889454546465
+    },
+    {
+      "stamp_ns": 23010000000,
+      "minimum_slant_range_m": 3.3443281650543213,
+      "assessment_vertical_distance_m": 2.9204299952107786,
+      "assessment_centre_beam_ranges_m": [
+        3.3838967881934052,
+        3.364122185857529,
+        3.384260344642866,
+        3.364228700342946
+      ],
+      "assessment_minimum_centre_beam_m": 3.364122185857529,
+      "slant_minus_vertical_m": 0.42389816984354267,
+      "measured_minus_centre_prediction_m": -0.01979402080320769
+    },
+    {
+      "stamp_ns": 24010000000,
+      "minimum_slant_range_m": 3.295053005218506,
+      "assessment_vertical_distance_m": 2.932487531901176,
+      "assessment_centre_beam_ranges_m": [
+        3.4695914028219477,
+        3.3203749541729395,
+        3.4747606603701016,
+        3.313407161959774
+      ],
+      "assessment_minimum_centre_beam_m": 3.313407161959774,
+      "slant_minus_vertical_m": 0.3625654733173298,
+      "measured_minus_centre_prediction_m": -0.018354156741267946
+    },
+    {
+      "stamp_ns": 25010000000,
+      "minimum_slant_range_m": 3.295301675796509,
+      "assessment_vertical_distance_m": 2.912886730996353,
+      "assessment_centre_beam_ranges_m": [
+        3.3122388492243138,
+        3.3804324401746357,
+        3.367924558053253,
+        3.427637677577004
+      ],
+      "assessment_minimum_centre_beam_m": 3.3122388492243138,
+      "slant_minus_vertical_m": 0.3824149448001557,
+      "measured_minus_centre_prediction_m": -0.016937173427804986
+    },
+    {
+      "stamp_ns": 26010000000,
+      "minimum_slant_range_m": 3.305648565292358,
+      "assessment_vertical_distance_m": 2.904435769580613,
+      "assessment_centre_beam_ranges_m": [
+        3.327420876005276,
+        3.349588601964832,
+        3.3923204967618976,
+        3.400699584657521
+      ],
+      "assessment_minimum_centre_beam_m": 3.327420876005276,
+      "slant_minus_vertical_m": 0.40121279571174506,
+      "measured_minus_centre_prediction_m": -0.021772310712917964
+    },
+    {
+      "stamp_ns": 27010000000,
+      "minimum_slant_range_m": 3.2722318172454834,
+      "assessment_vertical_distance_m": 2.899456124836472,
+      "assessment_centre_beam_ranges_m": [
+        3.2889927666056678,
+        3.3955374429814604,
+        3.349687645458623,
+        3.4417557217239536
+      ],
+      "assessment_minimum_centre_beam_m": 3.2889927666056678,
+      "slant_minus_vertical_m": 0.3727756924090113,
+      "measured_minus_centre_prediction_m": -0.016760949360184352
+    },
+    {
+      "stamp_ns": 28010000000,
+      "minimum_slant_range_m": 3.284434556961059,
+      "assessment_vertical_distance_m": 2.9021937743155153,
+      "assessment_centre_beam_ranges_m": [
+        3.3018183718469016,
+        3.415066047358605,
+        3.338567020718374,
+        3.436649755169724
+      ],
+      "assessment_minimum_centre_beam_m": 3.3018183718469016,
+      "slant_minus_vertical_m": 0.38224078264554384,
+      "measured_minus_centre_prediction_m": -0.017383814885842508
+    },
+    {
+      "stamp_ns": 29010000000,
+      "minimum_slant_range_m": 3.302382230758667,
+      "assessment_vertical_distance_m": 2.912557705774861,
+      "assessment_centre_beam_ranges_m": [
+        3.3229456656070853,
+        3.3736157556770245,
+        3.3934215447543425,
+        3.42735966933446
+      ],
+      "assessment_minimum_centre_beam_m": 3.3229456656070853,
+      "slant_minus_vertical_m": 0.38982452498380615,
+      "measured_minus_centre_prediction_m": -0.02056343484841827
+    },
+    {
+      "stamp_ns": 30010000000,
+      "minimum_slant_range_m": 3.3333227634429927,
+      "assessment_vertical_distance_m": 2.9185665720579204,
+      "assessment_centre_beam_ranges_m": [
+        3.352751163571876,
+        3.3999850080667846,
+        3.3785209733666712,
+        3.407128074698507
+      ],
+      "assessment_minimum_centre_beam_m": 3.352751163571876,
+      "slant_minus_vertical_m": 0.41475619138507236,
+      "measured_minus_centre_prediction_m": -0.01942840012888336
+    },
+    {
+      "stamp_ns": 31010000000,
+      "minimum_slant_range_m": 3.132120847702026,
+      "assessment_vertical_distance_m": 2.767434053831016,
+      "assessment_centre_beam_ranges_m": [
+        3.1463204149600763,
+        3.234851226934437,
+        3.1938215153684233,
+        3.267440770716189
+      ],
+      "assessment_minimum_centre_beam_m": 3.1463204149600763,
+      "slant_minus_vertical_m": 0.3646867938710101,
+      "measured_minus_centre_prediction_m": -0.014199567258050383
+    },
+    {
+      "stamp_ns": 32000000000,
+      "minimum_slant_range_m": 2.7903194427490234,
+      "assessment_vertical_distance_m": 2.446142744114977,
+      "assessment_centre_beam_ranges_m": [
+        2.829925854094549,
+        2.8055300777327803,
+        2.872896006559485,
+        2.8345766905684475
+      ],
+      "assessment_minimum_centre_beam_m": 2.8055300777327803,
+      "slant_minus_vertical_m": 0.34417669863404665,
+      "measured_minus_centre_prediction_m": -0.015210634983756854
+    },
+    {
+      "stamp_ns": 33010000000,
+      "minimum_slant_range_m": 2.6602165699005127,
+      "assessment_vertical_distance_m": 2.3529678940122247,
+      "assessment_centre_beam_ranges_m": [
+        2.6732551138912215,
+        2.763525909486002,
+        2.7013914648833337,
+        2.779693825882019
+      ],
+      "assessment_minimum_centre_beam_m": 2.6732551138912215,
+      "slant_minus_vertical_m": 0.30724867588828797,
+      "measured_minus_centre_prediction_m": -0.013038543990708806
+    },
+    {
+      "stamp_ns": 34010000000,
+      "minimum_slant_range_m": 2.6548304557800293,
+      "assessment_vertical_distance_m": 2.3288621775464056,
+      "assessment_centre_beam_ranges_m": [
+        2.6955451708396474,
+        2.669305056032492,
+        2.736602394402212,
+        2.6973038262261224
+      ],
+      "assessment_minimum_centre_beam_m": 2.669305056032492,
+      "slant_minus_vertical_m": 0.32596827823362373,
+      "measured_minus_centre_prediction_m": -0.014474600252462722
+    },
+    {
+      "stamp_ns": 35010000000,
+      "minimum_slant_range_m": 2.6193857192993164,
+      "assessment_vertical_distance_m": 2.317644489398426,
+      "assessment_centre_beam_ranges_m": [
+        2.633477499119118,
+        2.698390360272673,
+        2.682564694460721,
+        2.736720262047592
+      ],
+      "assessment_minimum_centre_beam_m": 2.633477499119118,
+      "slant_minus_vertical_m": 0.3017412299008906,
+      "measured_minus_centre_prediction_m": -0.014091779819801697
+    },
+    {
+      "stamp_ns": 36010000000,
+      "minimum_slant_range_m": 2.653089046478271,
+      "assessment_vertical_distance_m": 2.323383662323235,
+      "assessment_centre_beam_ranges_m": [
+        2.6694699332410057,
+        2.7083779153922865,
+        2.6838344534392413,
+        2.709715032911774
+      ],
+      "assessment_minimum_centre_beam_m": 2.6694699332410057,
+      "slant_minus_vertical_m": 0.3297053841550359,
+      "measured_minus_centre_prediction_m": -0.016380886762734637
+    },
+    {
+      "stamp_ns": 37010000000,
+      "minimum_slant_range_m": 1.8886238336563108,
+      "assessment_vertical_distance_m": 2.335984854497177,
+      "assessment_centre_beam_ranges_m": [
+        2.6068923869428495,
+        2.7889521189767286,
+        2.6478656830474816,
+        1.8830379617053496
+      ],
+      "assessment_minimum_centre_beam_m": 1.8830379617053496,
+      "slant_minus_vertical_m": -0.44736102084086604,
+      "measured_minus_centre_prediction_m": 0.005585871950961163
+    },
+    {
+      "stamp_ns": 38010000000,
+      "minimum_slant_range_m": 1.4257562160491941,
+      "assessment_vertical_distance_m": 2.336461406349343,
+      "assessment_centre_beam_ranges_m": [
+        2.691428873289045,
+        2.710431841028653,
+        2.7077245152015177,
+        1.4890412853051798
+      ],
+      "assessment_minimum_centre_beam_m": 1.4890412853051798,
+      "slant_minus_vertical_m": -0.9107051903001488,
+      "measured_minus_centre_prediction_m": -0.06328506925598565
+    },
+    {
+      "stamp_ns": 39010000000,
+      "minimum_slant_range_m": 1.3666467666625977,
+      "assessment_vertical_distance_m": 2.356669343322826,
+      "assessment_centre_beam_ranges_m": [
+        2.6400200347124843,
+        2.8229544022991626,
+        2.658056930795057,
+        1.4260060915461032
+      ],
+      "assessment_minimum_centre_beam_m": 1.4260060915461032,
+      "slant_minus_vertical_m": -0.9900225766602282,
+      "measured_minus_centre_prediction_m": -0.05935932488350559
+    },
+    {
+      "stamp_ns": 40010000000,
+      "minimum_slant_range_m": 1.3463491201400757,
+      "assessment_vertical_distance_m": 2.3666214013068574,
+      "assessment_centre_beam_ranges_m": [
+        2.7113112346699797,
+        2.740054391433563,
+        1.4047972504945745,
+        2.757740668586826
+      ],
+      "assessment_minimum_centre_beam_m": 1.4047972504945745,
+      "slant_minus_vertical_m": -1.0202722811667817,
+      "measured_minus_centre_prediction_m": -0.058448130354498806
+    },
+    {
+      "stamp_ns": 41010000000,
+      "minimum_slant_range_m": 1.370710849761963,
+      "assessment_vertical_distance_m": 2.3780621724155924,
+      "assessment_centre_beam_ranges_m": [
+        2.715992241991961,
+        2.801490539250365,
+        1.4312511522681455,
+        2.7838020946193978
+      ],
+      "assessment_minimum_centre_beam_m": 1.4312511522681455,
+      "slant_minus_vertical_m": -1.0073513226536295,
+      "measured_minus_centre_prediction_m": -0.060540302506182586
+    },
+    {
+      "stamp_ns": 42010000000,
+      "minimum_slant_range_m": 2.544105052947998,
+      "assessment_vertical_distance_m": 2.3698654008213316,
+      "assessment_centre_beam_ranges_m": [
+        2.611720391670113,
+        2.480390841608954,
+        2.742031162720991,
+        2.7421844878614667
+      ],
+      "assessment_minimum_centre_beam_m": 2.480390841608954,
+      "slant_minus_vertical_m": 0.17423965212666648,
+      "measured_minus_centre_prediction_m": 0.06371421133904409
+    },
+    {
+      "stamp_ns": 43010000000,
+      "minimum_slant_range_m": 2.6646752357482906,
+      "assessment_vertical_distance_m": 2.3680560546177976,
+      "assessment_centre_beam_ranges_m": [
+        2.724364464340591,
+        2.792821354898136,
+        2.6807056560017597,
+        2.7648205949073223
+      ],
+      "assessment_minimum_centre_beam_m": 2.6807056560017597,
+      "slant_minus_vertical_m": 0.296619181130493,
+      "measured_minus_centre_prediction_m": -0.016030420253469124
+    },
+    {
+      "stamp_ns": 44010000000,
+      "minimum_slant_range_m": 2.718994140625,
+      "assessment_vertical_distance_m": 2.3786947035664956,
+      "assessment_centre_beam_ranges_m": [
+        2.765987084193302,
+        2.7537740211649093,
+        2.7347035378237323,
+        2.741656654589937
+      ],
+      "assessment_minimum_centre_beam_m": 2.7347035378237323,
+      "slant_minus_vertical_m": 0.3402994370585044,
+      "measured_minus_centre_prediction_m": -0.015709397198732322
+    },
+    {
+      "stamp_ns": 45010000000,
+      "minimum_slant_range_m": 2.374915361404419,
+      "assessment_vertical_distance_m": 2.3896463555227285,
+      "assessment_centre_beam_ranges_m": [
+        2.6691503948340025,
+        2.8852045059958358,
+        2.4788512283535438,
+        2.9009609876702114
+      ],
+      "assessment_minimum_centre_beam_m": 2.4788512283535438,
+      "slant_minus_vertical_m": -0.014730994118309582,
+      "measured_minus_centre_prediction_m": -0.10393586694912482
+    },
+    {
+      "stamp_ns": 46010000000,
+      "minimum_slant_range_m": 2.7307701110839844,
+      "assessment_vertical_distance_m": 1.128360952915426,
+      "assessment_centre_beam_ranges_m": [
+        2.75963406667405,
+        2.7711697546231466,
+        2.7464970522474577,
+        2.7849941264905587
+      ],
+      "assessment_minimum_centre_beam_m": 2.7464970522474577,
+      "slant_minus_vertical_m": 1.6024091581685584,
+      "measured_minus_centre_prediction_m": -0.015726941163473285
+    },
+    {
+      "stamp_ns": 47010000000,
+      "minimum_slant_range_m": 2.7006311416625977,
+      "assessment_vertical_distance_m": 1.1355079534867587,
+      "assessment_centre_beam_ranges_m": [
+        2.725196483665311,
+        2.845546334145128,
+        2.716019457460493,
+        2.856377665747939
+      ],
+      "assessment_minimum_centre_beam_m": 2.716019457460493,
+      "slant_minus_vertical_m": 1.565123188175839,
+      "measured_minus_centre_prediction_m": -0.015388315797895125
+    },
+    {
+      "stamp_ns": 48010000000,
+      "minimum_slant_range_m": 2.7434215545654297,
+      "assessment_vertical_distance_m": 2.411263748723008,
+      "assessment_centre_beam_ranges_m": [
+        2.7764324100185136,
+        2.758627834712992,
+        2.792577206945608,
+        2.7898745282094173
+      ],
+      "assessment_minimum_centre_beam_m": 2.758627834712992,
+      "slant_minus_vertical_m": 0.3321578058424217,
+      "measured_minus_centre_prediction_m": -0.015206280147562534
+    },
+    {
+      "stamp_ns": 49010000000,
+      "minimum_slant_range_m": 2.7157182693481445,
+      "assessment_vertical_distance_m": 2.408675252422031,
+      "assessment_centre_beam_ranges_m": [
+        2.7361168745034528,
+        2.8217523430520033,
+        2.7327500344184394,
+        2.826133209446332
+      ],
+      "assessment_minimum_centre_beam_m": 2.7327500344184394,
+      "slant_minus_vertical_m": 0.3070430169261136,
+      "measured_minus_centre_prediction_m": -0.017031765070294913
+    },
+    {
+      "stamp_ns": 50010000000,
+      "minimum_slant_range_m": 2.8183252811431885,
+      "assessment_vertical_distance_m": 2.6435324164033327,
+      "assessment_centre_beam_ranges_m": [
+        2.853066280146514,
+        2.978214977893336,
+        3.115960178695487,
+        3.031660463553886
+      ],
+      "assessment_minimum_centre_beam_m": 2.853066280146514,
+      "slant_minus_vertical_m": 0.17479286473985578,
+      "measured_minus_centre_prediction_m": -0.03474099900332561
+    },
+    {
+      "stamp_ns": 51010000000,
+      "minimum_slant_range_m": 2.634697198867798,
+      "assessment_vertical_distance_m": 3.1887936824180616,
+      "assessment_centre_beam_ranges_m": [
+        2.671566788704401,
+        3.725395394764799,
+        3.622491452640991,
+        3.7297659917571035
+      ],
+      "assessment_minimum_centre_beam_m": 2.671566788704401,
+      "slant_minus_vertical_m": -0.5540964835502638,
+      "measured_minus_centre_prediction_m": -0.036869589836602934
+    },
+    {
+      "stamp_ns": 52010000000,
+      "minimum_slant_range_m": 2.672534465789795,
+      "assessment_vertical_distance_m": 3.411954444840169,
+      "assessment_centre_beam_ranges_m": [
+        2.713443983393268,
+        3.933209649697771,
+        3.9202397906492683,
+        3.959638517266014
+      ],
+      "assessment_minimum_centre_beam_m": 2.713443983393268,
+      "slant_minus_vertical_m": -0.7394199790503739,
+      "measured_minus_centre_prediction_m": -0.040909517603473056
+    },
+    {
+      "stamp_ns": 53010000000,
+      "minimum_slant_range_m": 2.7171709537506104,
+      "assessment_vertical_distance_m": 3.4318777915664436,
+      "assessment_centre_beam_ranges_m": [
+        2.750193726459092,
+        3.9450426361537483,
+        3.9549345624368617,
+        3.9977054513580033
+      ],
+      "assessment_minimum_centre_beam_m": 2.750193726459092,
+      "slant_minus_vertical_m": -0.7147068378158332,
+      "measured_minus_centre_prediction_m": -0.03302277270848153
+    },
+    {
+      "stamp_ns": 54010000000,
+      "minimum_slant_range_m": 2.8131911754608154,
+      "assessment_vertical_distance_m": 3.3008990357439147,
+      "assessment_centre_beam_ranges_m": [
+        2.8483356259207695,
+        3.812132518314468,
+        3.7861308523732706,
+        3.827326994421251
+      ],
+      "assessment_minimum_centre_beam_m": 2.8483356259207695,
+      "slant_minus_vertical_m": -0.4877078602830993,
+      "measured_minus_centre_prediction_m": -0.03514445045995407
+    },
+    {
+      "stamp_ns": 55010000000,
+      "minimum_slant_range_m": 2.8893978595733643,
+      "assessment_vertical_distance_m": 3.4521238690665776,
+      "assessment_centre_beam_ranges_m": [
+        2.92340923941614,
+        3.998702133153508,
+        3.9479209600935685,
+        4.014107792901692
+      ],
+      "assessment_minimum_centre_beam_m": 2.92340923941614,
+      "slant_minus_vertical_m": -0.5627260094932134,
+      "measured_minus_centre_prediction_m": -0.03401137984277591
+    },
+    {
+      "stamp_ns": 56010000000,
+      "minimum_slant_range_m": 2.9839024543762207,
+      "assessment_vertical_distance_m": 3.43980624713319,
+      "assessment_centre_beam_ranges_m": [
+        3.0210320753196953,
+        3.9958307650487908,
+        3.9243528116973634,
+        4.018415395435182
+      ],
+      "assessment_minimum_centre_beam_m": 3.0210320753196953,
+      "slant_minus_vertical_m": -0.45590379275696913,
+      "measured_minus_centre_prediction_m": -0.037129620943474606
+    },
+    {
+      "stamp_ns": 57010000000,
+      "minimum_slant_range_m": 3.1353213787078853,
+      "assessment_vertical_distance_m": 3.4277550051958756,
+      "assessment_centre_beam_ranges_m": [
+        3.164352594421892,
+        3.884255696315433,
+        4.006236004236272,
+        3.9641822778149294
+      ],
+      "assessment_minimum_centre_beam_m": 3.164352594421892,
+      "slant_minus_vertical_m": -0.2924336264879903,
+      "measured_minus_centre_prediction_m": -0.029031215714006908
+    },
+    {
+      "stamp_ns": 58010000000,
+      "minimum_slant_range_m": 2.798386812210083,
+      "assessment_vertical_distance_m": 3.454820252556062,
+      "assessment_centre_beam_ranges_m": [
+        2.828995575362048,
+        4.060509845700221,
+        3.900673514977933,
+        4.012124124602308
+      ],
+      "assessment_minimum_centre_beam_m": 2.828995575362048,
+      "slant_minus_vertical_m": -0.6564334403459791,
+      "measured_minus_centre_prediction_m": -0.030608763151965146
+    },
+    {
+      "stamp_ns": 59010000000,
+      "minimum_slant_range_m": 3.03528881072998,
+      "assessment_vertical_distance_m": 3.489246531763326,
+      "assessment_centre_beam_ranges_m": [
+        3.062164631897275,
+        4.005485668312568,
+        4.021964107911118,
+        4.011909045162065
+      ],
+      "assessment_minimum_centre_beam_m": 3.062164631897275,
+      "slant_minus_vertical_m": -0.45395772103334586,
+      "measured_minus_centre_prediction_m": -0.026875821167295033
+    },
+    {
+      "stamp_ns": 60010000000,
+      "minimum_slant_range_m": 3.0220303535461426,
+      "assessment_vertical_distance_m": 3.4420594637645796,
+      "assessment_centre_beam_ranges_m": [
+        3.058064517994621,
+        3.9529168355363145,
+        3.9693123364613374,
+        4.009075162399227
+      ],
+      "assessment_minimum_centre_beam_m": 3.058064517994621,
+      "slant_minus_vertical_m": -0.42002911021843703,
+      "measured_minus_centre_prediction_m": -0.03603416444847829
+    },
+    {
+      "stamp_ns": 61010000000,
+      "minimum_slant_range_m": 3.159881830215454,
+      "assessment_vertical_distance_m": 3.4930384687781477,
+      "assessment_centre_beam_ranges_m": [
+        3.1943848360798017,
+        4.012915360114101,
+        4.024182352521601,
+        4.047832044739838
+      ],
+      "assessment_minimum_centre_beam_m": 3.1943848360798017,
+      "slant_minus_vertical_m": -0.3331566385626936,
+      "measured_minus_centre_prediction_m": -0.034503005864347625
+    },
+    {
+      "stamp_ns": 62010000000,
+      "minimum_slant_range_m": 3.043617248535156,
+      "assessment_vertical_distance_m": 3.4565733959247957,
+      "assessment_centre_beam_ranges_m": [
+        3.0765877943416005,
+        3.987330186979553,
+        3.9673360245128917,
+        4.000783044040494
+      ],
+      "assessment_minimum_centre_beam_m": 3.0765877943416005,
+      "slant_minus_vertical_m": -0.4129561473896399,
+      "measured_minus_centre_prediction_m": -0.03297054580644465
+    },
+    {
+      "stamp_ns": 63010000000,
+      "minimum_slant_range_m": 3.137877941131592,
+      "assessment_vertical_distance_m": 3.478097617704474,
+      "assessment_centre_beam_ranges_m": [
+        3.1779654905543886,
+        3.9957053839469765,
+        4.008366099979669,
+        4.034330256940608
+      ],
+      "assessment_minimum_centre_beam_m": 3.1779654905543886,
+      "slant_minus_vertical_m": -0.340219676572882,
+      "measured_minus_centre_prediction_m": -0.0400875494227968
+    },
+    {
+      "stamp_ns": 64010000000,
+      "minimum_slant_range_m": 3.176920413970947,
+      "assessment_vertical_distance_m": 3.4648940227696063,
+      "assessment_centre_beam_ranges_m": [
+        3.206615569813916,
+        3.979682557151585,
+        3.992538899287303,
+        3.999642397176179
+      ],
+      "assessment_minimum_centre_beam_m": 3.206615569813916,
+      "slant_minus_vertical_m": -0.2879736087986595,
+      "measured_minus_centre_prediction_m": -0.029695155842969
+    },
+    {
+      "stamp_ns": 65010000000,
+      "minimum_slant_range_m": 3.0527517795562744,
+      "assessment_vertical_distance_m": 3.4617790603812106,
+      "assessment_centre_beam_ranges_m": [
+        3.084371244974057,
+        3.986738048515553,
+        3.979693792888453,
+        4.010543268890893
+      ],
+      "assessment_minimum_centre_beam_m": 3.084371244974057,
+      "slant_minus_vertical_m": -0.4090272808249362,
+      "measured_minus_centre_prediction_m": -0.0316194654177826
+    },
+    {
+      "stamp_ns": 66010000000,
+      "minimum_slant_range_m": 3.100234031677246,
+      "assessment_vertical_distance_m": 3.4696081448478924,
+      "assessment_centre_beam_ranges_m": [
+        3.1335368540977817,
+        3.990938744902737,
+        3.9929941724465787,
+        4.026121886706476
+      ],
+      "assessment_minimum_centre_beam_m": 3.1335368540977817,
+      "slant_minus_vertical_m": -0.3693741131706463,
+      "measured_minus_centre_prediction_m": -0.033302822420535616
+    },
+    {
+      "stamp_ns": 67010000000,
+      "minimum_slant_range_m": 3.050802707672119,
+      "assessment_vertical_distance_m": 3.49074476495918,
+      "assessment_centre_beam_ranges_m": [
+        3.0847179736426877,
+        4.0143534188598435,
+        4.016653340970661,
+        4.0239594218263575
+      ],
+      "assessment_minimum_centre_beam_m": 3.0847179736426877,
+      "slant_minus_vertical_m": -0.4399420572870607,
+      "measured_minus_centre_prediction_m": -0.0339152659705686
+    }
+  ],
+  "summary": {
+    "slant_minus_vertical_m": {
+      "count": 66,
+      "median": 0.31271667676309756,
+      "minimum": -1.0202722811667817,
+      "maximum": 1.6024091581685584,
+      "absolute_p90": 0.7270634084331036
+    },
+    "measured_minus_centre_prediction_m": {
+      "count": 66,
+      "median": -0.020165082626373065,
+      "minimum": -0.10393586694912482,
+      "maximum": 0.06371421133904409,
+      "absolute_p90": 0.04049853351313493
+    }
+  },
+  "source_sha256": {
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/sonar-moving-current-20261029/diagnose_dvl_ranges.py": "29ea22edc3243c0e48e0d40166402f3cbff21f20d7c8ab9bcc0a2c3a81362602",
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/sonar-moving-current-20261029/record/inputs/timeline.json": "d5ff5d412e4055e5050dd5b7cd062eeb24118e59a271def4237709daa6719c1e",
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/sonar-moving-current-20261029/record/inputs/sensor-model.sdf": "60619a0d99f79aaf9e6d103902cb1ce9991739fb6c422ac068ee96a59623bd6c",
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/sonar-moving-current-20261029/record/inputs/truth-assessment-only.json": "d2e4c6c3fd9773b8f81daac2d0cdd3a1238563d125c199546430ad885b7a0f59",
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/sonar-moving-current-20261029/capture/demo-runtime/760e1b20089443c79964061ed8598eb9/orca5-seafloor.dae": "277c49dd9c3b2ec1c9d3c3754be9d076c7b0438ccd29e9ae11355869849fbeb2",
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/runtime/worlds/practice_dvl.py": "01fc4028defe7d0c83a5009b9e9eac91c6fc3e8c45960b50567c42ffa116ecdb",
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/runtime/worlds/inertial_source.py": "48f6d9cc386b68e3df545315a1de0792de0787c01f8bb45fb5d2fa74b4f655ac"
+  }
+}

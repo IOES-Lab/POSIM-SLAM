@@ -1,0 +1,36 @@
+{
+  "command": [
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/posim332f629-sdk/bin/python3",
+    "/Volumes/ExternalHDD/POSIM/validation-data/posim-slam/sonar-input-contract-20261030/live-consumer.py",
+    "--backend",
+    "cpu",
+    "--render-backend",
+    "metal",
+    "--preview-layout",
+    "metric",
+    "--sensor-system-plugin",
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/sonar-current-main-20261029/assembled-gz-render-init/build/libgz-sim-sensors-system.10.5.0.dylib",
+    "--output",
+    "/Volumes/ExternalHDD/POSIM/validation-data/posim-slam/sonar-input-contract-20261030/live-cpu"
+  ],
+  "exit": 0,
+  "sensor_source": "7afd71e7b7a1a13eca8c4b8deb9c6e8461285cd5",
+  "public_python_sources": {
+    "sonar_input.py": "dfb0fd0c743930f3afeedcbce53303fa0a91cec7d2126b500410068c53564e6e",
+    "acoustic_flow.py": "5f13e9ac93a0856f042b02a912c18d7bc86e545ae8b0561572492e4737b26d91",
+    "acoustic_tracks.py": "b6ec9a6867f3e8253afb6a505e7a7a3e9973a1a83a7f09c52eeff95b59741336",
+    "sonar_edges.py": "69871e87282054462afbafa58484c36c6c2110d2bc4a4dc8d80fd87fbdff847d",
+    "sonar_surface.py": "95174e8cec838f51c8c7ff0c4838d04f9ee153c3748d610f1afada35a66480d6",
+    "sonar_ground.py": "8d4ffb73a019bb9284b0df0e99b032491dc5cca36894029d8ae7fc4223eef8db"
+  },
+  "SDK_modified": false,
+  "dependency_controls": "Existing external Gazebo 10.5 renderer and Plugin 4 loader",
+  "native_feature_backend": "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/posim332f629-sdk/www-posim/practice/acoustic/install/lib/libwwos_acoustic_cv.dylib",
+  "paired": 125,
+  "all_raw_frames": 190,
+  "library_sha256": {
+    "libmultibeam_sonar_system.dylib": "ce72d4455b344b4c2a004425ab9d4fb59dbffd1f5aee45510038a5b5435a3dfc",
+    "libmultibeam_sonar.dylib": "5d1c6e45ab4110ae8f0dbbe082fb72f7e0fd0e2a4b46111e95ab1586a718913b"
+  },
+  "observer_sha256": "dd5936246a00e4c72a325fa4dbb282e8036e0b6fde436752ceb25755a492c966"
+}

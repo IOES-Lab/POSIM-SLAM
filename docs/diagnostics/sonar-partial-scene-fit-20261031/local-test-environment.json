@@ -1,0 +1,7 @@
+{
+  "command": "PYTHONPATH=src SDK/bin/python -m unittest discover -s tests -p test_sonar_s*.py",
+  "tests_run": 60,
+  "passed": 59,
+  "import_errors": [{"module":"test_sonar_session","error":"ModuleNotFoundError: No module named 'cv2'"}],
+  "explanation": "The retained Python 3.14 SDK has no optional research cv2 module. No SDK dependency was installed or changed. The six new inverse-fit tests pass independently. Existing hosted research/diagnostics CI installs its declared optional dependencies and remains the full-suite gate."
+}

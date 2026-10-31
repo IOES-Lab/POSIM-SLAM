@@ -11,6 +11,7 @@
 #include "dvl_input.hpp"
 #include "pressure_input.hpp"
 #include "sonar_ground_packet.hpp"
+#include "surface_protocol.hpp"
 #include <basalt/vi_estimator/sqrt_keypoint_vio.h>
 #include <tbb/global_control.h>
 #include <opencv2/core.hpp>
@@ -36,6 +37,18 @@ double number(const char* p) {
 }
 Json vector3(const Vec3& value) {
   return {value.x(),value.y(),value.z()};
+}
+Json conditionalVector(const Eigen::VectorXd& value) {
+  Json result=Json::array();for(Eigen::Index i=0;i<value.size();++i)result.push_back(value[i]);return result;
+}
+Json conditionalMatrix(const Eigen::MatrixXd& value) {
+  Json result=Json::array();for(Eigen::Index i=0;i<value.rows();++i)result.push_back(conditionalVector(value.row(i).transpose()));return result;
+}
+Json conditionalVariables(const std::vector<posim_slam::surface_prior::Variable>& variables) {
+  Json result=Json::array();
+  for(const auto& v:variables)result.push_back({{"kind",v.kind==posim_slam::surface_prior::Kind::State ? "state" : (v.kind==posim_slam::surface_prior::Kind::Plane ? "plane" : "pressure")},
+    {"ident",v.id},{"size",v.size},{"reference",conditionalVector(v.reference)}});
+  return result;
 }
 
 int main(int argc,char** argv) {
@@ -71,6 +84,7 @@ int main(int argc,char** argv) {
     std::map<int64_t,Json> pressure_reports;
     std::map<int64_t,posim_slam::GroundPacket> pending_ground;
     std::map<int64_t,Json> ground_reports;
+    std::map<uint64_t,Json> pending_surface;
     std::mutex snapshot_mutex;
     std::shared_ptr<const Snapshot> snapshot;
     const fs::path export_file=fs::absolute(argv[1]).parent_path()/"worker-map.ply";
@@ -106,8 +120,27 @@ int main(int argc,char** argv) {
     owner->posim_map_point_three_sigma_m=map_point_three_sigma_m;
     const bool dvl_enabled=input_settings.value("enable_joint_dvl",false);
     const bool pressure_enabled=input_settings.value("enable_joint_pressure",false);
+    const bool capture_pose_conditionals=input_settings.value("capture_retired_pose_conditionals",false);
+    const bool surface_enabled=input_settings.value("enable_surface_owner",false);
+    if(c.initial_bias && !surface_enabled)fail("initial_bias_calibration_requires_surface_owner_profile");
+    const std::string surface_epoch=input_settings.value("surface_owner_epoch",std::string());
+    if(surface_enabled && (!sonar_clock || !sonar_enabled || !pressure_enabled || capture_pose_conditionals ||
+        surface_epoch.empty() || surface_epoch.size()>128 || config.vio_enforce_realtime ||
+        input_settings.value("enable_joint_ping",false) || input_settings.value("enable_terrain_ping",false) ||
+        input_settings.value("enable_sonar_ground",false)))fail("exclusive_ordered_sonar_pressure_surface_owner_required");
+    std::unique_ptr<posim_slam::surface_protocol::Controller> surface_controller;
+    if(surface_enabled) {
+      const char* directory=std::getenv("POSIM_SLAM_SURFACE_DIRECTORY");
+      if(!directory || !*directory)fail("owned_surface_directory_required");
+      surface_controller=std::make_unique<posim_slam::surface_protocol::Controller>(directory,fs::absolute(argv[1]).parent_path());
+    }
+    const std::string conditional_epoch=input_settings.value("conditional_archive_epoch",std::string());
+    if(capture_pose_conditionals && (!sonar_clock || !sonar_enabled || !pressure_enabled ||
+        conditional_epoch.empty() || conditional_epoch.size()>128))fail("pose_conditional_capture_requires_sonar_pressure_epoch");
     const bool terrain_enabled=input_settings.value("enable_terrain_ping",false);
     const bool ground_enabled=input_settings.value("enable_sonar_ground",false);
+    if(capture_pose_conditionals && (terrain_enabled || ground_enabled || input_settings.value("enable_joint_ping",false)))
+      fail("pose_conditional_capture_requires_no_ping_or_ground_factors");
     if(ground_enabled && (!sonar_clock || terrain_enabled || input_settings.value("enable_joint_ping",false)))
       fail("ground_requires_exclusive_sonar_clock");
     if(terrain_enabled && input_settings.value("enable_joint_ping",false))fail("conflicting_ping_surface_modes");
@@ -176,8 +209,30 @@ int main(int argc,char** argv) {
       ping_ray_sigma=positive(settings,"per_ray_noise_stddev");
       if(!std::isfinite(ping_bias))throw std::runtime_error("invalid_ping_bias");
     }
-    if(joint_enabled || terrain_enabled || ground_enabled)
+    if(joint_enabled || terrain_enabled || ground_enabled || capture_pose_conditionals || surface_enabled)
       owner->posim_ping_factors=std::make_shared<posim_slam::PingFactorStore>(static_cast<basalt::BundleAdjustmentBase<double>&>(*owner));
+    if(capture_pose_conditionals)owner->posim_ping_factors->enablePoseConditionalCapture();
+    if(surface_enabled) {
+      owner->posim_ping_factors->enableSurfaceOwner(surface_epoch);
+      if(c.initial_bias)owner->posim_ping_factors->surfaceOwner()->configureInitialBias(*c.initial_bias);
+      owner->posim_joint_started=true;
+      owner->posim_owner_control=[&](auto& estimator,uint64_t request,auto& marginal) {
+        Json command;
+        {std::lock_guard<std::mutex> lock(ping_mutex);
+         const auto found=pending_surface.find(request);if(found==pending_surface.end())fail("surface_control_not_pending");
+         command=std::move(found->second);pending_surface.erase(found);}
+        try {
+          auto& base=static_cast<basalt::BundleAdjustmentBase<double>&>(estimator);
+          const auto order=posim_slam::planPingMarginalLayout(base,{},{},{},{}).source;
+          emit(surface_controller->handle(*estimator.posim_ping_factors->surfaceOwner(),base,order,marginal,
+            *estimator.posim_pressure_factors,command,[&] {estimator.posim_optimize_joint();},
+            [&] {return estimator.posim_surface_information();}));
+        } catch(const std::exception& error) {
+          emit({{"type","surface_control"},{"request_id",request},{"op",command.at("op")},
+            {"accepted",false},{"reason",error.what()},{"map_qualified",false}});
+        }
+      };
+    }
     owner->posim_after_joint=[&](auto& estimator,int64_t stamp) {
       std::lock_guard<std::mutex> lock(ping_mutex);
       // Copy on the estimator thread before marginalization. Output threads
@@ -277,6 +332,27 @@ int main(int argc,char** argv) {
       for(const auto& entry:base.frame_poses)retained.insert(entry.first);
       for(const auto& entry:base.frame_states)retained.insert(entry.first);
       report["retained_pose_stamps_ns"]=retained;
+      if(surface_enabled) {
+        const auto& state=estimator.posim_ping_factors->surfaceOwner()->state();
+        report["surface_owner"]={{"prior_revision",state.prior.revision},{"conditional_nodes",state.nodes.size()},
+          {"ledger_entries",state.prior.ledger.recent.size()},{"closed_through_ns",state.archive_closed_through},
+          {"map_qualified",false}};
+      }
+      if(capture_pose_conditionals) {
+        const auto order=posim_slam::planPingMarginalLayout(base,{},{},{},{}).source;
+        const auto coordinates=posim_slam::surface_prior::ownedRetirementCoordinates(base,order,
+          posim_slam::surface_prior::ScalarCoordinate{0,0.,estimator.posim_pressure_factors->datum()});
+        Json nodes=Json::array();
+        for(const auto& node:estimator.posim_ping_factors->takePoseConditionals())
+          nodes.push_back({{"id",node.id},{"variables",conditionalVariables(node.variables)},
+            {"kept_indices",node.kept},{"removed_indices",node.removed},
+            {"regression",conditionalMatrix(node.regression)},{"offset",conditionalVector(node.offset)},
+            {"noise_factor",conditionalMatrix(node.noise)},{"unbounded_basis",conditionalMatrix(node.unbounded)},
+            {"marginal_information_relative_error",node.marginal_information_relative_error},
+            {"marginal_gradient_relative_error",node.marginal_gradient_relative_error}});
+        report["pose_archive"]={{"epoch",conditional_epoch},{"stamp_ns",stamp},
+          {"variables",conditionalVariables(coordinates.order)},{"delta",conditionalVector(coordinates.delta)},{"conditionals",nodes}};
+      }
       report["visual_projection_rejections_total"]=estimator.posim_projection_rejections;
       if(report.value("owner_received",false))report["accepted_steps"]=estimator.posim_joint_last_accepted;
       report["map_qualified"]=false;
@@ -438,7 +514,7 @@ int main(int argc,char** argv) {
     vio->vision_data_queue.set_capacity(2);
     vio->imu_data_queue.set_capacity(256);
     vio->out_state_queue=&states;vio->out_vis_queue=&maps;
-    struct SensorEvent {int64_t stamp;bool image;bool startup=false;};
+    struct SensorEvent {int64_t stamp;bool image;bool startup=false;uint64_t control=0;};
     tbb::concurrent_bounded_queue<SensorEvent> events;
     tbb::concurrent_bounded_queue<basalt::OpticalFlowResult::Ptr> tracked;
     events.set_capacity(4);tracked.set_capacity(2);
@@ -446,6 +522,10 @@ int main(int argc,char** argv) {
     std::thread event_dispatcher([&] {
       for(;;) {
         SensorEvent event;events.pop(event);
+        if(event.control) {
+          auto command=std::make_shared<basalt::OpticalFlowResult>();command->t_ns=0;command->posim_owner_control_id=event.control;
+          vio->vision_data_queue.push(command);continue;
+        }
         basalt::OpticalFlowResult::Ptr result;
         if(event.image) {
           tracked.pop(result);
@@ -463,6 +543,8 @@ int main(int argc,char** argv) {
           }
           if(tracks.size()>4096)fail("startup_track_capacity");
           emit({{"type","startup_tracks"},{"stamp_ns",event.stamp},
+                {"optical_flow_type",config.optical_flow_type},
+                {"reference_patches",result->reference_patch_count},{"reference_patch_peak",result->reference_patch_peak},
                 {"width",c.processed_width},{"height",c.processed_height},{"tracks",tracks}});
           continue;
         }
@@ -553,16 +635,26 @@ int main(int argc,char** argv) {
           geometry["host_camera_uncertainty_scope"]="diagnostic_only";
         }
         emit({{"type","map"},{"stamp_ns",data->t_ns},{"point_geometry",geometry},
+              {"optical_flow_type",config.optical_flow_type},
+              {"reference_patches",data->opt_flow_res ? data->opt_flow_res->reference_patch_count : 0},
+              {"reference_patch_peak",data->opt_flow_res ? data->opt_flow_res->reference_patch_peak : 0},
               {"landmarks_window",data->points.size()},{"landmarks_accumulated",count},
               {"archive_evicted",archive.evicted()},{"archive_rejected",archive.rejected()},{"points",points},
               {"visual_support",visual_support(*data,c.processed_width,c.processed_height,config.vio_obs_huber_thresh)},
               {"observations",data->opt_flow_res && !data->opt_flow_res->observations.empty() ? data->opt_flow_res->observations[0].size() : 0}});
       }
     });
-    if(!require_gravity_seed)vio->initialize(Vec3::Zero(),Vec3::Zero());
+    if(!require_gravity_seed)vio->initialize(c.initial_bias ? Vec3(c.initial_bias->mean.head<3>()) : Vec3::Zero(),
+                                           c.initial_bias ? Vec3(c.initial_bias->mean.tail<3>()) : Vec3::Zero());
     int64_t gravity_stamp=0;Vec3 gravity_direction=Vec3::Zero();
     Vec3 initial_velocity_imu=Vec3::Zero(),initial_gyro_bias=Vec3::Zero(),initial_accel_bias=Vec3::Zero();
+    if(c.initial_bias) {initial_gyro_bias=c.initial_bias->mean.head<3>();initial_accel_bias=c.initial_bias->mean.tail<3>();}
     const auto initialize_seed=[&](int64_t stamp) {
+      if(c.initial_bias) {
+        Eigen::Matrix<double,6,1> bias;bias<<initial_gyro_bias,initial_accel_bias;
+        if((c.initial_bias->hard*(bias-c.initial_bias->mean)).norm()>2e-9)
+          fail("initial_seed_conflicts_with_exact_bias_calibration");
+      }
       const Eigen::Quaterniond q=Eigen::Quaterniond::FromTwoVectors(gravity_direction,Vec3::UnitZ());
       // Seed velocity is expressed in this first IMU frame, not the arbitrary
       // gravity-aligned world frame. Biases remain in IMU sensor coordinates.
@@ -575,10 +667,14 @@ int main(int argc,char** argv) {
           {"map_information_enabled",joint_map_information},{"map_point_three_sigma_m",map_point_three_sigma_m},
           {"sonar_clock_transport",sonar_clock ? Json("ordered_sonar_state_v1") : Json(nullptr)},
           {"imu_noise_model","continuous_white_midpoint_acceleration_bridge_v1"},
+          {"initial_imu_bias_calibration",c.initial_bias ? Json({{"source",c.initial_bias->source},{"scope","first_state"},
+            {"finite_modes",c.initial_bias->white.rows()},{"exact_modes",c.initial_bias->hard.rows()},
+            {"stochastic_evolution_unchanged",true},{"generic_initial_bias_prior_replaced",true}}) : Json(nullptr)},
           {"dvl_measurement_transport",dvl_enabled ? Json("body_velocity_gyro_covariance_v1") : Json(nullptr)},
           {"pressure_measurement_transport",pressure_enabled ? Json("height_unknown_datum_v1") : Json(nullptr)},
           {"sensor_state_transport",ordered_auxiliary ? Json("ordered_camera_auxiliary_states_v1") : Json(nullptr)},
-          {"sonar_snapshot_transport",sonar_enabled && !ground_enabled ? Json("exact_image_track_snapshot_v1") : Json(nullptr)},{"joint_sonar_enabled",sonar_enabled && !ground_enabled},{"sonar_auxiliary_transport",auxiliary_enabled ? Json("ordered_imu_state_v1") : Json(nullptr)},
+          {"sonar_snapshot_transport",sonar_enabled && !ground_enabled && !surface_enabled ? Json("exact_image_track_snapshot_v1") : Json(nullptr)},{"joint_sonar_enabled",sonar_enabled && !ground_enabled && !surface_enabled},{"sonar_auxiliary_transport",auxiliary_enabled ? Json("ordered_imu_state_v1") : Json(nullptr)},
+          {"native_surface_transport",surface_enabled ? Json("snapshot_increment_owner_queue_v1") : Json(nullptr)},
           {"terrain_ping_transport",terrain_enabled ? Json("exact_sensor_range_v1") : Json(nullptr)},
           {"ground_transport",ground_enabled ? Json("exact_beam_entries_v1") : Json(nullptr)},
           {"ground_surface_model",ground_enabled ? Json({{"schema","frozen_spatial_surface_covariance_v1"},
@@ -587,10 +683,12 @@ int main(int argc,char** argv) {
           {"opencv_threads",1},{"estimation_threads",2},
           {"keyframe_hold_frames",config.vio_min_frames_after_kf},
           {"feature_grid",config.optical_flow_detection_grid_size},{"max_recent_states",config.vio_max_states},
+          {"optical_flow_type",sonar_clock ? Json(nullptr) : Json(config.optical_flow_type)},
           {"raw_resolution",{c.width,c.height}},
           {"processed_resolution",{c.processed_width,c.processed_height}},
           {"scope",sonar_clock ? (ground_enabled ? "experimental raw sonar ground-plane and inertial estimation; no camera frontend" : terrain_enabled ? "experimental sonar-inertial with local planar range hypotheses; no camera frontend" : "experimental sonar-inertial state estimation; no terrain or camera frontend") : "experimental local visual-inertial odometry with sparse landmark archive"}});
     int64_t imu_stamp=0,image_stamp=0,event_stamp=0,dvl_stamp=0,pressure_stamp=0,range_stamp=0,ground_stamp=0;bool auxiliary_since_image=false;
+    uint64_t surface_request=0;
     int64_t startup_first=0,startup_last=0;int startup_frames=0;
     const auto submit_image=[&](int64_t stamp,char* bytes,bool startup) {
       cv::Mat raw(c.height,c.width,CV_8UC1,bytes);
@@ -607,15 +705,26 @@ int main(int argc,char** argv) {
       if(!std::cin)std::_Exit(0);
       auto type=u32(header),size=u32(header+4);
       if(type==3 && size==0)std::_Exit(0);
-      if((type!=1 && type!=2 && type!=4 && type!=5 && type!=6 && type!=7 && type!=8 && type!=9 && type!=10 && type!=11 && type!=12 && type!=13 && type!=14) ||
+      if((type!=1 && type!=2 && type!=4 && type!=5 && type!=6 && type!=7 && type!=8 && type!=9 && type!=10 && type!=11 && type!=12 && type!=13 && type!=14 && type!=15) ||
+          (type==15 && !surface_enabled) ||
           (type==7 && !sonar_enabled) || (type==8 && !auxiliary_enabled && !sonar_clock && !ordered_auxiliary) ||
-          (type==9 && !dvl_enabled) || (type==10 && !pressure_enabled) || (type==11 && !terrain_enabled) || (type==12 && !ground_enabled) || size>(type==13 ? 104 : type==12 ? 2608 : type==7 ? posim_slam::sonarSnapshotLimit : type==9 ? 216 : std::max(uint32_t(56),uint32_t(c.width*c.height+32))))
+          (type==9 && !dvl_enabled) || (type==10 && !pressure_enabled) || (type==11 && !terrain_enabled) || (type==12 && !ground_enabled) || size>(type==15 ? 4096 : type==13 ? 104 : type==12 ? 2608 : type==7 ? posim_slam::sonarSnapshotLimit : type==9 ? 216 : std::max(uint32_t(56),uint32_t(c.width*c.height+32))))
         fail("packet_size_or_type");
       if(terrain_enabled && type==5)fail("conflicting_ping_transport");
       if(sonar_clock && (type==2 || type==5))fail("camera_packet_in_sonar_clock");
       if(ground_enabled && type==7)fail("ground_and_point_factors_are_exclusive");
+      if(surface_enabled && type==7)fail("surface_and_point_factors_are_exclusive");
       std::vector<char> bytes(size);std::cin.read(bytes.data(),size);
       if(!std::cin)fail("incomplete_packet");
+      if(type==15) {
+        const auto command=Json::parse(bytes.begin(),bytes.end());
+        const auto request=uint64_t(posim_slam::surface_protocol::integer(command.at("request_id"),1));
+        if(request<=surface_request)fail("replayed_surface_control");
+        {std::lock_guard<std::mutex> lock(ping_mutex);
+         if(pending_surface.size()>=4)fail("surface_control_backlog");pending_surface.emplace(request,command);}
+        if(!events.try_push({0,false,false,request}))fail("sensor_event_backlog");
+        surface_request=request;continue;
+      }
       if(type==12) {
         auto packet=posim_slam::decodeGroundPacket(bytes,*ground_calibration,sonar_calibration->horizontal_fov);
         const auto stamp=packet.observation.stamp;

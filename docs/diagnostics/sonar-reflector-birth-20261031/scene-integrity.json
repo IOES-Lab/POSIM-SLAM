@@ -1,0 +1,16 @@
+{
+  "assessment_only": true,
+  "native_mesh_path": "/Volumes/ExternalHDD/POSIM/validation-data/posim-slam/sonar-translated-view-20261031b/capture/demo-runtime/976a07f085be421fbefceaeaaf407e00/orca5-seafloor.dae",
+  "native_mesh_sha256": "277c49dd9c3b2ec1c9d3c3754be9d076c7b0438ccd29e9ae11355869849fbeb2",
+  "reference_record": "sonar-inspection-scene-20261031/scene-assessment-only.npz",
+  "reference_sha256": "e47b848bd28c46911ee7b4a455343e786b1382737e937f6b8dba0b4e6a6e1678",
+  "vertices": 16384,
+  "triangles": 32258,
+  "triangle_order_and_coordinates_equal": true,
+  "maximum_coordinate_delta_m": 0.0,
+  "triangle_bytes_sha256": "364869635308ec49e76bff7d80e49f7b446349021ebe54c8850b18745f042bfc",
+  "native_unit_m": 1.0,
+  "native_up_axis": "Z_UP",
+  "native_link_and_model_pose_identity": true,
+  "live_sdk_or_record_mutated": false
+}

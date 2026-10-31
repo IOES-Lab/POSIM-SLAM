@@ -6,9 +6,11 @@ are exact, clean checkouts; keep this source directory beside build receipts.
 import argparse
 import hashlib
 import json
+import os
 from pathlib import Path
 import shutil
 import subprocess
+import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 RECIPE = ROOT / 'native/basalt'
@@ -90,7 +92,16 @@ def build(engine, source, output, jobs=2):
          '-DCMAKE_BUILD_TYPE=Release', '-DCMAKE_POLICY_VERSION_MINIMUM=3.5', '-DCMAKE_PREFIX_PATH=' + str(engine),
          '-DSOURCE_ROOT=' + str(source)])
     run([cmake, '--build', output / 'build', '--parallel', jobs])
+    run([cmake, '--build', output / 'build', '--parallel', jobs,
+         '--target', 'basalt_surface_owner_probe'])
+    run([sys.executable, RECIPE / 'test_surface_owner.py'], timeout=120,
+        env={**os.environ, 'POSIM_SLAM_SURFACE_OWNER_PROBE': str(output / 'build/basalt_surface_owner_probe'),
+             'PYTHONPATH': str(ROOT / 'src') + os.pathsep + os.environ.get('PYTHONPATH', '')})
+    run([sys.executable, RECIPE / 'test_surface_stream_native.py'], timeout=120,
+        env={**os.environ, 'POSIM_SLAM_STREAM_BINARY': str(output / 'build/basalt_stream'),
+             'PYTHONPATH': str(ROOT / 'src') + os.pathsep + os.environ.get('PYTHONPATH', '')})
     run([output / 'build/basalt_initial_prior_probe'], timeout=30)
+    run([output / 'build/basalt_reference_patch_probe'], timeout=60)
     results = {}
     for mode in ('tracks', 'images'):
         path = output / (mode + '.csv')
@@ -105,6 +116,9 @@ def build(engine, source, output, jobs=2):
         shutil.copyfile(source / name / pin['notice'], notices / (name + '.txt'))
     receipt = dict(schema='posim-slam-basalt-research-1', passed=True,
                    initial_bias_prior_check='actual_constructor_and_physical_state_increments_v1',
+                   reference_patch_check='retire_unobserved_all_camera_union_400_frames_v1',
+                   surface_owner_check='synthetic_joint_marginal_late_increment_trial_retirement_v1',
+                   surface_transport_check='snapshot_increment_owner_queue_expiry_v1',
                    scope='12-second synthetic 6DoF VIO; no ROS/native-world or package acceptance',
                    camera_hz=5, imu_hz=200, truth_input=False,
                    source_root=str(source), sources=pins, results=results,

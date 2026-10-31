@@ -1,0 +1,124 @@
+{
+  "results": [
+    {
+      "mode": "dvl",
+      "states": 175,
+      "trajectory": {
+        "evaluated": true,
+        "states": 175,
+        "duration_s": 54.010000000000005,
+        "evaluation_alignment": {
+          "rotation": [
+            [
+              -0.794350513454175,
+              -0.6074596791352399,
+              0.0
+            ],
+            [
+              0.6074596791352399,
+              -0.794350513454175,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "translation": [
+            -0.051464367066218486,
+            0.015250348367048477,
+            -1.624220323616775
+          ],
+          "scale": 1.0
+        },
+        "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+        "position_rmse_m": 0.013608256303578405,
+        "position_max_m": 0.02493680335156994,
+        "rotation_rmse_rad": 0.0020395537646329003,
+        "rotation_max_rad": 0.006548103773872457,
+        "truth_distance_m": 13.194138741922266,
+        "estimated_distance_m": 13.20655718919101,
+        "rpe_1s_pairs": 172,
+        "rpe_1s_position_rmse_m": 0.004728554937357505,
+        "rpe_1s_rotation_rmse_rad": 0.002579546829506837,
+        "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+      },
+      "dvl_packets_supplied": 55,
+      "dvl_owner_received_states": 55,
+      "dvl_optimization_states": 55,
+      "pressure_optimization_states": 54,
+      "worker_sha256": "a5dd4a904bfc29718803a9b851e30f3308f11218e0d49628e711e9123b0c4ece",
+      "worker_exit_code": -15,
+      "frontend_sha256": "2021520928b9db074b60edf843299f69a8cc1afc846c958a79660b833759d84f",
+      "all_states_assessed": true,
+      "truth_is_estimator_input": false,
+      "scope": "Offline DVL likelihood omission on identical recorded timestamps; no physical bottom-lock-loss or absent-hardware qualification",
+      "qualified": false
+    },
+    {
+      "mode": "clock-only",
+      "states": 175,
+      "trajectory": {
+        "evaluated": true,
+        "states": 175,
+        "duration_s": 54.010000000000005,
+        "evaluation_alignment": {
+          "rotation": [
+            [
+              -0.794350513454175,
+              -0.6074596791352399,
+              0.0
+            ],
+            [
+              0.6074596791352399,
+              -0.794350513454175,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "translation": [
+            -0.051464367066218486,
+            0.015250348367048477,
+            -1.624220323616775
+          ],
+          "scale": 1.0
+        },
+        "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+        "position_rmse_m": 19.223638483603917,
+        "position_max_m": 41.58224532529253,
+        "rotation_rmse_rad": 0.003528001589921478,
+        "rotation_max_rad": 0.007641521156037976,
+        "truth_distance_m": 13.194138741922266,
+        "estimated_distance_m": 43.47472754618042,
+        "rpe_1s_pairs": 172,
+        "rpe_1s_position_rmse_m": 0.891153256248553,
+        "rpe_1s_rotation_rmse_rad": 0.0023793683995734054,
+        "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+      },
+      "dvl_packets_supplied": 0,
+      "dvl_owner_received_states": 0,
+      "dvl_optimization_states": 0,
+      "pressure_optimization_states": 54,
+      "worker_sha256": "a5dd4a904bfc29718803a9b851e30f3308f11218e0d49628e711e9123b0c4ece",
+      "worker_exit_code": -15,
+      "frontend_sha256": "2021520928b9db074b60edf843299f69a8cc1afc846c958a79660b833759d84f",
+      "all_states_assessed": true,
+      "truth_is_estimator_input": false,
+      "scope": "Offline DVL likelihood omission on identical recorded timestamps; no physical bottom-lock-loss or absent-hardware qualification",
+      "qualified": false
+    }
+  ],
+  "identical_state_clocks": true,
+  "identical_raw_inputs": true,
+  "identical_frontend": true,
+  "baseline_means_match_original": true,
+  "ground_truth_used_only_here": true,
+  "physical_dvl_failure_tested": false,
+  "acoustic_factors_used": false,
+  "qualified": false
+}

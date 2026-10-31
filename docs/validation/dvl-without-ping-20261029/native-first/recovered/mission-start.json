@@ -1,0 +1,892 @@
+{
+  "request": {
+    "depth_m": 0.6,
+    "distance_m": 7.0,
+    "hold_seconds": 3,
+    "session_nonce": "4cde2ba0057e4746bbc5dfd23369e48c",
+    "return_home": false,
+    "waypoints": [
+      {
+        "latitude": 47.630200817280404,
+        "longitude": -122.39823963532537,
+        "depth_m": 1.2,
+        "hold_seconds": 3,
+        "yaw_rad": 0.346182860249695
+      },
+      {
+        "latitude": 47.630200817280404,
+        "longitude": -122.39823963532537,
+        "depth_m": 0.6,
+        "hold_seconds": 0,
+        "yaw_rad": 0.346182860249695
+      },
+      {
+        "latitude": 47.63021773845856,
+        "longitude": -122.39824866467127,
+        "depth_m": 0.6,
+        "hold_seconds": 0,
+        "yaw_rad": 0.346182860249695
+      },
+      {
+        "latitude": 47.63022841977996,
+        "longitude": -122.39820485826768,
+        "depth_m": 0.6,
+        "hold_seconds": 0,
+        "yaw_rad": 0.346182860249695
+      },
+      {
+        "latitude": 47.63022841977996,
+        "longitude": -122.39820485826768,
+        "depth_m": 1.2,
+        "hold_seconds": 3,
+        "yaw_rad": 0.346182860249695
+      },
+      {
+        "latitude": 47.63023910108463,
+        "longitude": -122.39816105184624,
+        "depth_m": 1.2,
+        "hold_seconds": 0,
+        "yaw_rad": 0.346182860249695
+      },
+      {
+        "latitude": 47.6302052587277,
+        "longitude": -122.3981429931529,
+        "depth_m": 1.2,
+        "hold_seconds": 0,
+        "yaw_rad": 0.346182860249695
+      },
+      {
+        "latitude": 47.63019457742298,
+        "longitude": -122.39818679957803,
+        "depth_m": 1.2,
+        "hold_seconds": 0,
+        "yaw_rad": 0.346182860249695
+      },
+      {
+        "latitude": 47.63019457742298,
+        "longitude": -122.39818679957803,
+        "depth_m": 0.6,
+        "hold_seconds": 3,
+        "yaw_rad": 0.346182860249695
+      },
+      {
+        "latitude": 47.63018389610151,
+        "longitude": -122.39823060598529,
+        "depth_m": 0.6,
+        "hold_seconds": 0,
+        "yaw_rad": 0.346182860249695
+      },
+      {
+        "latitude": 47.630200817280404,
+        "longitude": -122.39823963532537,
+        "depth_m": 0.6,
+        "hold_seconds": 0,
+        "yaw_rad": 0.346182860249695
+      },
+      {
+        "latitude": 47.63021773845856,
+        "longitude": -122.39824866467127,
+        "depth_m": 0.6,
+        "hold_seconds": 0,
+        "yaw_rad": 0.346182860249695
+      },
+      {
+        "latitude": 47.63022841977996,
+        "longitude": -122.39820485826768,
+        "depth_m": 0.6,
+        "hold_seconds": 0,
+        "yaw_rad": 0.346182860249695
+      },
+      {
+        "latitude": 47.63022841977996,
+        "longitude": -122.39820485826768,
+        "depth_m": 1.2,
+        "hold_seconds": 3,
+        "yaw_rad": 0.346182860249695
+      },
+      {
+        "latitude": 47.63023910108463,
+        "longitude": -122.39816105184624,
+        "depth_m": 1.2,
+        "hold_seconds": 0,
+        "yaw_rad": 0.346182860249695
+      },
+      {
+        "latitude": 47.6302052587277,
+        "longitude": -122.3981429931529,
+        "depth_m": 1.2,
+        "hold_seconds": 0,
+        "yaw_rad": 0.346182860249695
+      },
+      {
+        "latitude": 47.63019457742298,
+        "longitude": -122.39818679957803,
+        "depth_m": 1.2,
+        "hold_seconds": 0,
+        "yaw_rad": 0.346182860249695
+      },
+      {
+        "latitude": 47.63019457742298,
+        "longitude": -122.39818679957803,
+        "depth_m": 0.6,
+        "hold_seconds": 3,
+        "yaw_rad": 0.346182860249695
+      },
+      {
+        "latitude": 47.63018389610151,
+        "longitude": -122.39823060598529,
+        "depth_m": 0.6,
+        "hold_seconds": 0,
+        "yaw_rad": 0.346182860249695
+      },
+      {
+        "latitude": 47.630200817280404,
+        "longitude": -122.39823963532537,
+        "depth_m": 0.6,
+        "hold_seconds": 0,
+        "yaw_rad": 0.346182860249695
+      }
+    ]
+  },
+  "preview": {
+    "session_nonce": "4cde2ba0057e4746bbc5dfd23369e48c",
+    "job_id": null,
+    "start": [
+      -0.03838756204937165,
+      0.08709103493189822,
+      -0.09238211059444534
+    ],
+    "start_geographic": {
+      "longitude": -122.39823961076428,
+      "latitude": 47.630200783311636
+    },
+    "yaw_rad": 0.34173995417516223,
+    "depth_m": 1.2,
+    "distance_m": 7.280819533076373,
+    "hold_seconds": 3.0,
+    "minimum_planned_clearance_m": 2.346367050314435,
+    "waypoints": [
+      {
+        "phase": "waypoint",
+        "number": 1,
+        "position": [
+          -0.04023350104801408,
+          0.09086778977638421,
+          -1.2
+        ],
+        "hold_seconds": 3.0,
+        "yaw_rad": 0.346182860249695,
+        "yaw_current_follow": false,
+        "latitude": 47.630200817280404,
+        "longitude": -122.39823963532537,
+        "depth_m": 1.2
+      },
+      {
+        "phase": "waypoint",
+        "number": 2,
+        "position": [
+          -0.04023350104801408,
+          0.09086778977638421,
+          -0.6
+        ],
+        "hold_seconds": 0.0,
+        "yaw_rad": 0.346182860249695,
+        "yaw_current_follow": false,
+        "latitude": 47.630200817280404,
+        "longitude": -122.39823963532537,
+        "depth_m": 0.6
+      },
+      {
+        "phase": "waypoint",
+        "number": 3,
+        "position": [
+          -0.7188527030598124,
+          1.9722173010382713,
+          -0.6
+        ],
+        "hold_seconds": 0.0,
+        "yaw_rad": 0.346182860249695,
+        "yaw_current_follow": false,
+        "latitude": 47.63021773845857,
+        "longitude": -122.39824866467126,
+        "depth_m": 0.6
+      },
+      {
+        "phase": "waypoint",
+        "number": 4,
+        "position": [
+          2.57350787613539,
+          3.1598005224185557,
+          -0.6
+        ],
+        "hold_seconds": 0.0,
+        "yaw_rad": 0.346182860249695,
+        "yaw_current_follow": false,
+        "latitude": 47.630228419779975,
+        "longitude": -122.39820485826769,
+        "depth_m": 0.6
+      },
+      {
+        "phase": "waypoint",
+        "number": 5,
+        "position": [
+          2.57350787613539,
+          3.1598005224185557,
+          -1.2
+        ],
+        "hold_seconds": 3.0,
+        "yaw_rad": 0.346182860249695,
+        "yaw_current_follow": false,
+        "latitude": 47.630228419779975,
+        "longitude": -122.39820485826769,
+        "depth_m": 1.2
+      },
+      {
+        "phase": "waypoint",
+        "number": 6,
+        "position": [
+          5.865868455136874,
+          4.347383742803797,
+          -1.2
+        ],
+        "hold_seconds": 0.0,
+        "yaw_rad": 0.346182860249695,
+        "yaw_current_follow": false,
+        "latitude": 47.63023910108463,
+        "longitude": -122.39816105184624,
+        "depth_m": 1.2
+      },
+      {
+        "phase": "waypoint",
+        "number": 7,
+        "position": [
+          7.223111111275602,
+          0.5846862538331349,
+          -1.2
+        ],
+        "hold_seconds": 0.0,
+        "yaw_rad": 0.346182860249695,
+        "yaw_current_follow": false,
+        "latitude": 47.630205258727685,
+        "longitude": -122.3981429931529,
+        "depth_m": 1.2
+      },
+      {
+        "phase": "waypoint",
+        "number": 8,
+        "position": [
+          3.9307484058080813,
+          -0.6028977316160707,
+          -1.2
+        ],
+        "hold_seconds": 0.0,
+        "yaw_rad": 0.346182860249695,
+        "yaw_current_follow": false,
+        "latitude": 47.630194577422984,
+        "longitude": -122.39818679957804,
+        "depth_m": 1.2
+      },
+      {
+        "phase": "waypoint",
+        "number": 9,
+        "position": [
+          3.9307484058080813,
+          -0.6028977316160707,
+          -0.6
+        ],
+        "hold_seconds": 3.0,
+        "yaw_rad": 0.346182860249695,
+        "yaw_current_follow": false,
+        "latitude": 47.630194577422984,
+        "longitude": -122.39818679957804,
+        "depth_m": 0.6
+      },
+      {
+        "phase": "waypoint",
+        "number": 10,
+        "position": [
+          0.638385701010533,
+          -1.790481719733426,
+          -0.6
+        ],
+        "hold_seconds": 0.0,
+        "yaw_rad": 0.346182860249695,
+        "yaw_current_follow": false,
+        "latitude": 47.63018389610151,
+        "longitude": -122.3982306059853,
+        "depth_m": 0.6
+      },
+      {
+        "phase": "waypoint",
+        "number": 11,
+        "position": [
+          -0.04023350104801408,
+          0.09086778977638421,
+          -0.6
+        ],
+        "hold_seconds": 0.0,
+        "yaw_rad": 0.346182860249695,
+        "yaw_current_follow": false,
+        "latitude": 47.630200817280404,
+        "longitude": -122.39823963532537,
+        "depth_m": 0.6
+      },
+      {
+        "phase": "waypoint",
+        "number": 12,
+        "position": [
+          -0.7188527030598124,
+          1.9722173010382713,
+          -0.6
+        ],
+        "hold_seconds": 0.0,
+        "yaw_rad": 0.346182860249695,
+        "yaw_current_follow": false,
+        "latitude": 47.63021773845857,
+        "longitude": -122.39824866467126,
+        "depth_m": 0.6
+      },
+      {
+        "phase": "waypoint",
+        "number": 13,
+        "position": [
+          2.57350787613539,
+          3.1598005224185557,
+          -0.6
+        ],
+        "hold_seconds": 0.0,
+        "yaw_rad": 0.346182860249695,
+        "yaw_current_follow": false,
+        "latitude": 47.630228419779975,
+        "longitude": -122.39820485826769,
+        "depth_m": 0.6
+      },
+      {
+        "phase": "waypoint",
+        "number": 14,
+        "position": [
+          2.57350787613539,
+          3.1598005224185557,
+          -1.2
+        ],
+        "hold_seconds": 3.0,
+        "yaw_rad": 0.346182860249695,
+        "yaw_current_follow": false,
+        "latitude": 47.630228419779975,
+        "longitude": -122.39820485826769,
+        "depth_m": 1.2
+      },
+      {
+        "phase": "waypoint",
+        "number": 15,
+        "position": [
+          5.865868455136874,
+          4.347383742803797,
+          -1.2
+        ],
+        "hold_seconds": 0.0,
+        "yaw_rad": 0.346182860249695,
+        "yaw_current_follow": false,
+        "latitude": 47.63023910108463,
+        "longitude": -122.39816105184624,
+        "depth_m": 1.2
+      },
+      {
+        "phase": "waypoint",
+        "number": 16,
+        "position": [
+          7.223111111275602,
+          0.5846862538331349,
+          -1.2
+        ],
+        "hold_seconds": 0.0,
+        "yaw_rad": 0.346182860249695,
+        "yaw_current_follow": false,
+        "latitude": 47.630205258727685,
+        "longitude": -122.3981429931529,
+        "depth_m": 1.2
+      },
+      {
+        "phase": "waypoint",
+        "number": 17,
+        "position": [
+          3.9307484058080813,
+          -0.6028977316160707,
+          -1.2
+        ],
+        "hold_seconds": 0.0,
+        "yaw_rad": 0.346182860249695,
+        "yaw_current_follow": false,
+        "latitude": 47.630194577422984,
+        "longitude": -122.39818679957804,
+        "depth_m": 1.2
+      },
+      {
+        "phase": "waypoint",
+        "number": 18,
+        "position": [
+          3.9307484058080813,
+          -0.6028977316160707,
+          -0.6
+        ],
+        "hold_seconds": 3.0,
+        "yaw_rad": 0.346182860249695,
+        "yaw_current_follow": false,
+        "latitude": 47.630194577422984,
+        "longitude": -122.39818679957804,
+        "depth_m": 0.6
+      },
+      {
+        "phase": "waypoint",
+        "number": 19,
+        "position": [
+          0.638385701010533,
+          -1.790481719733426,
+          -0.6
+        ],
+        "hold_seconds": 0.0,
+        "yaw_rad": 0.346182860249695,
+        "yaw_current_follow": false,
+        "latitude": 47.63018389610151,
+        "longitude": -122.3982306059853,
+        "depth_m": 0.6
+      },
+      {
+        "phase": "waypoint",
+        "number": 20,
+        "position": [
+          -0.04023350104801408,
+          0.09086778977638421,
+          -0.6
+        ],
+        "hold_seconds": 0.0,
+        "yaw_rad": 0.346182860249695,
+        "yaw_current_follow": false,
+        "latitude": 47.630200817280404,
+        "longitude": -122.39823963532537,
+        "depth_m": 0.6
+      },
+      {
+        "phase": "surface",
+        "position": [
+          -0.04023350104801408,
+          0.09086778977638421,
+          0.0
+        ],
+        "latitude": 47.630200817280404,
+        "longitude": -122.39823963532537,
+        "depth_m": 0.0
+      }
+    ],
+    "routing": {
+      "algorithm": "buffered-terrain-a-star",
+      "detoured_legs": 0,
+      "transit_points": 0,
+      "grid_step_m": 4.0,
+      "maximum_radius_m": 600.0,
+      "maximum_length_m": 2000.0,
+      "hull_radius_m": 0.5,
+      "tracking_margin_m": 2.0,
+      "search_nodes": 0,
+      "minimum_clearance_m": 2.346367050314435,
+      "route_length_m": 48.70762587182024,
+      "scope": "confirmed static terrain only; no AIS or unrepresented obstacles"
+    },
+    "route_length_m": 48.70762587182024,
+    "route_kind": "map",
+    "arrival_policy": {
+      "horizontal_tolerance_m": 0.4,
+      "depth_acquire_tolerance_m": 0.2,
+      "depth_hold_tolerance_m": 0.5
+    },
+    "controller": "ArduSub GUIDED via MAVROS",
+    "surface_vehicle": false,
+    "streaming": false,
+    "position_source": "simulated Gazebo external navigation",
+    "validation_source": "Gazebo odometry",
+    "status": "preview",
+    "active": false,
+    "trace": []
+  },
+  "clearance": {
+    "clear": true,
+    "minimum_centerline_clearance_m": 0.8752042483660132,
+    "required_body_margin_m": 0.5,
+    "closest": {
+      "actor": "acoustic_validation_wall_1/body/collision",
+      "segment": 7
+    },
+    "segments": 22,
+    "collision_boxes": 5,
+    "method": "exact segment-to-oriented-box distance; spherical body envelope",
+    "scope": "authored targets only; terrain checked separately by mission planner"
+  },
+  "result": {
+    "session_nonce": "4cde2ba0057e4746bbc5dfd23369e48c",
+    "job_id": null,
+    "start": [
+      -0.02921167935706521,
+      0.08369894277641253,
+      -0.1204554447758519
+    ],
+    "start_geographic": {
+      "longitude": -122.39823948867493,
+      "latitude": 47.63020075280257
+    },
+    "yaw_rad": 0.3313940505560396,
+    "depth_m": 1.2,
+    "distance_m": 7.2753678852749175,
+    "hold_seconds": 3.0,
+    "minimum_planned_clearance_m": 2.346367050314435,
+    "waypoints": [
+      {
+        "phase": "waypoint",
+        "number": 1,
+        "position": [
+          -0.04023350104801408,
+          0.09086778977638421,
+          -1.2
+        ],
+        "hold_seconds": 3.0,
+        "yaw_rad": 0.346182860249695,
+        "yaw_current_follow": false,
+        "latitude": 47.630200817280404,
+        "longitude": -122.39823963532537,
+        "depth_m": 1.2
+      },
+      {
+        "phase": "waypoint",
+        "number": 2,
+        "position": [
+          -0.04023350104801408,
+          0.09086778977638421,
+          -0.6
+        ],
+        "hold_seconds": 0.0,
+        "yaw_rad": 0.346182860249695,
+        "yaw_current_follow": false,
+        "latitude": 47.630200817280404,
+        "longitude": -122.39823963532537,
+        "depth_m": 0.6
+      },
+      {
+        "phase": "waypoint",
+        "number": 3,
+        "position": [
+          -0.7188527030598124,
+          1.9722173010382713,
+          -0.6
+        ],
+        "hold_seconds": 0.0,
+        "yaw_rad": 0.346182860249695,
+        "yaw_current_follow": false,
+        "latitude": 47.63021773845857,
+        "longitude": -122.39824866467126,
+        "depth_m": 0.6
+      },
+      {
+        "phase": "waypoint",
+        "number": 4,
+        "position": [
+          2.57350787613539,
+          3.1598005224185557,
+          -0.6
+        ],
+        "hold_seconds": 0.0,
+        "yaw_rad": 0.346182860249695,
+        "yaw_current_follow": false,
+        "latitude": 47.630228419779975,
+        "longitude": -122.39820485826769,
+        "depth_m": 0.6
+      },
+      {
+        "phase": "waypoint",
+        "number": 5,
+        "position": [
+          2.57350787613539,
+          3.1598005224185557,
+          -1.2
+        ],
+        "hold_seconds": 3.0,
+        "yaw_rad": 0.346182860249695,
+        "yaw_current_follow": false,
+        "latitude": 47.630228419779975,
+        "longitude": -122.39820485826769,
+        "depth_m": 1.2
+      },
+      {
+        "phase": "waypoint",
+        "number": 6,
+        "position": [
+          5.865868455136874,
+          4.347383742803797,
+          -1.2
+        ],
+        "hold_seconds": 0.0,
+        "yaw_rad": 0.346182860249695,
+        "yaw_current_follow": false,
+        "latitude": 47.63023910108463,
+        "longitude": -122.39816105184624,
+        "depth_m": 1.2
+      },
+      {
+        "phase": "waypoint",
+        "number": 7,
+        "position": [
+          7.223111111275602,
+          0.5846862538331349,
+          -1.2
+        ],
+        "hold_seconds": 0.0,
+        "yaw_rad": 0.346182860249695,
+        "yaw_current_follow": false,
+        "latitude": 47.630205258727685,
+        "longitude": -122.3981429931529,
+        "depth_m": 1.2
+      },
+      {
+        "phase": "waypoint",
+        "number": 8,
+        "position": [
+          3.9307484058080813,
+          -0.6028977316160707,
+          -1.2
+        ],
+        "hold_seconds": 0.0,
+        "yaw_rad": 0.346182860249695,
+        "yaw_current_follow": false,
+        "latitude": 47.630194577422984,
+        "longitude": -122.39818679957804,
+        "depth_m": 1.2
+      },
+      {
+        "phase": "waypoint",
+        "number": 9,
+        "position": [
+          3.9307484058080813,
+          -0.6028977316160707,
+          -0.6
+        ],
+        "hold_seconds": 3.0,
+        "yaw_rad": 0.346182860249695,
+        "yaw_current_follow": false,
+        "latitude": 47.630194577422984,
+        "longitude": -122.39818679957804,
+        "depth_m": 0.6
+      },
+      {
+        "phase": "waypoint",
+        "number": 10,
+        "position": [
+          0.638385701010533,
+          -1.790481719733426,
+          -0.6
+        ],
+        "hold_seconds": 0.0,
+        "yaw_rad": 0.346182860249695,
+        "yaw_current_follow": false,
+        "latitude": 47.63018389610151,
+        "longitude": -122.3982306059853,
+        "depth_m": 0.6
+      },
+      {
+        "phase": "waypoint",
+        "number": 11,
+        "position": [
+          -0.04023350104801408,
+          0.09086778977638421,
+          -0.6
+        ],
+        "hold_seconds": 0.0,
+        "yaw_rad": 0.346182860249695,
+        "yaw_current_follow": false,
+        "latitude": 47.630200817280404,
+        "longitude": -122.39823963532537,
+        "depth_m": 0.6
+      },
+      {
+        "phase": "waypoint",
+        "number": 12,
+        "position": [
+          -0.7188527030598124,
+          1.9722173010382713,
+          -0.6
+        ],
+        "hold_seconds": 0.0,
+        "yaw_rad": 0.346182860249695,
+        "yaw_current_follow": false,
+        "latitude": 47.63021773845857,
+        "longitude": -122.39824866467126,
+        "depth_m": 0.6
+      },
+      {
+        "phase": "waypoint",
+        "number": 13,
+        "position": [
+          2.57350787613539,
+          3.1598005224185557,
+          -0.6
+        ],
+        "hold_seconds": 0.0,
+        "yaw_rad": 0.346182860249695,
+        "yaw_current_follow": false,
+        "latitude": 47.630228419779975,
+        "longitude": -122.39820485826769,
+        "depth_m": 0.6
+      },
+      {
+        "phase": "waypoint",
+        "number": 14,
+        "position": [
+          2.57350787613539,
+          3.1598005224185557,
+          -1.2
+        ],
+        "hold_seconds": 3.0,
+        "yaw_rad": 0.346182860249695,
+        "yaw_current_follow": false,
+        "latitude": 47.630228419779975,
+        "longitude": -122.39820485826769,
+        "depth_m": 1.2
+      },
+      {
+        "phase": "waypoint",
+        "number": 15,
+        "position": [
+          5.865868455136874,
+          4.347383742803797,
+          -1.2
+        ],
+        "hold_seconds": 0.0,
+        "yaw_rad": 0.346182860249695,
+        "yaw_current_follow": false,
+        "latitude": 47.63023910108463,
+        "longitude": -122.39816105184624,
+        "depth_m": 1.2
+      },
+      {
+        "phase": "waypoint",
+        "number": 16,
+        "position": [
+          7.223111111275602,
+          0.5846862538331349,
+          -1.2
+        ],
+        "hold_seconds": 0.0,
+        "yaw_rad": 0.346182860249695,
+        "yaw_current_follow": false,
+        "latitude": 47.630205258727685,
+        "longitude": -122.3981429931529,
+        "depth_m": 1.2
+      },
+      {
+        "phase": "waypoint",
+        "number": 17,
+        "position": [
+          3.9307484058080813,
+          -0.6028977316160707,
+          -1.2
+        ],
+        "hold_seconds": 0.0,
+        "yaw_rad": 0.346182860249695,
+        "yaw_current_follow": false,
+        "latitude": 47.630194577422984,
+        "longitude": -122.39818679957804,
+        "depth_m": 1.2
+      },
+      {
+        "phase": "waypoint",
+        "number": 18,
+        "position": [
+          3.9307484058080813,
+          -0.6028977316160707,
+          -0.6
+        ],
+        "hold_seconds": 3.0,
+        "yaw_rad": 0.346182860249695,
+        "yaw_current_follow": false,
+        "latitude": 47.630194577422984,
+        "longitude": -122.39818679957804,
+        "depth_m": 0.6
+      },
+      {
+        "phase": "waypoint",
+        "number": 19,
+        "position": [
+          0.638385701010533,
+          -1.790481719733426,
+          -0.6
+        ],
+        "hold_seconds": 0.0,
+        "yaw_rad": 0.346182860249695,
+        "yaw_current_follow": false,
+        "latitude": 47.63018389610151,
+        "longitude": -122.3982306059853,
+        "depth_m": 0.6
+      },
+      {
+        "phase": "waypoint",
+        "number": 20,
+        "position": [
+          -0.04023350104801408,
+          0.09086778977638421,
+          -0.6
+        ],
+        "hold_seconds": 0.0,
+        "yaw_rad": 0.346182860249695,
+        "yaw_current_follow": false,
+        "latitude": 47.630200817280404,
+        "longitude": -122.39823963532537,
+        "depth_m": 0.6
+      },
+      {
+        "phase": "surface",
+        "position": [
+          -0.04023350104801408,
+          0.09086778977638421,
+          0.0
+        ],
+        "latitude": 47.630200817280404,
+        "longitude": -122.39823963532537,
+        "depth_m": 0.0
+      }
+    ],
+    "routing": {
+      "algorithm": "buffered-terrain-a-star",
+      "detoured_legs": 0,
+      "transit_points": 0,
+      "grid_step_m": 4.0,
+      "maximum_radius_m": 600.0,
+      "maximum_length_m": 2000.0,
+      "hull_radius_m": 0.5,
+      "tracking_margin_m": 2.0,
+      "search_nodes": 0,
+      "minimum_clearance_m": 2.346367050314435,
+      "route_length_m": 48.6796246250282,
+      "scope": "confirmed static terrain only; no AIS or unrepresented obstacles"
+    },
+    "route_length_m": 48.6796246250282,
+    "route_kind": "map",
+    "arrival_policy": {
+      "horizontal_tolerance_m": 0.4,
+      "depth_acquire_tolerance_m": 0.2,
+      "depth_hold_tolerance_m": 0.5
+    },
+    "controller": "ArduSub GUIDED via MAVROS",
+    "surface_vehicle": false,
+    "streaming": false,
+    "position_source": "simulated Gazebo external navigation",
+    "validation_source": "Gazebo odometry",
+    "id": "7c45cc7d15d0449ba860d6100fe1178f",
+    "status": "starting",
+    "active": true,
+    "phase": "starting",
+    "paused": false,
+    "waypoint_index": 0,
+    "arrivals": [],
+    "error": null,
+    "trace": [],
+    "trace_points_total": 0,
+    "trace_sampled": false
+  }
+}

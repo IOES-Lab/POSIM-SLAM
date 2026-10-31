@@ -1,0 +1,15 @@
+{
+  "README.ko.md": "484713f2c4661f45d1578921d579cb6e271984c5545e2c8ca8543b54fcf490f2",
+  "README.md": "cb93ac2546b5d64911ebdaa299ba00828938217b4718062ca98d3c91d7b70144",
+  "benchmark_moments.py": "9615194df30e1362a4fcb88cbadedd9f7fa352804f91bf73b210a84a9a40f3e4",
+  "component-source.json": "6e9664db01bf29cb00f8d7ab3332cecd0d0b6862a10edd2ede55534d1c1bcf81",
+  "moment-control.json": "c525f4ff98371792f9c62329e73cd44924fcb9b0fa6cec2ffbcc41be8ea5a312",
+  "moment-control.npz": "f5de7e39a4472e751d5dd1c2af66d03fb5f17b3504754cc242e906f3592649c5",
+  "native-normals.npz": "52dec5241e44fcbd41a804efa95e29f22c4d28f4ddeed839754d39a66a065a64",
+  "normal-corrected-comparison.json": "876e1e07f876891b518ec6d21b9d6c61a066330a33b6f6cb41a1d97f43a14b01",
+  "normal-reference-first-comparison.json": "4dfc698bfd08afb8c17b7a8b706aa0caab8b2721aa4106ee0cd001451051c768",
+  "normal_reference.cc": "3cee68fdca55e384f2f75af12bea9826cb8703d561799adeeca44a269a5e4efb",
+  "protocol.json": "3b26ca602260fd26f05022d60959516d901ea6e93f01c0f82d11b4efefc36772",
+  "run_controls.py": "02a7d7b76d62e3922e57fb43143089a5ac1a4a17eff8bbb89442fc2c15481e4d",
+  "verify.py": "77a1004e306a1601a6a63fe02dab188dfcec612161581b1f081166e598e2a55b"
+}

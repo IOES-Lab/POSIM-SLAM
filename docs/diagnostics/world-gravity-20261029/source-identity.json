@@ -1,0 +1,36 @@
+{
+  "application_base_commit": "6fef53197ad54a2622dd5408df6a5eaf72ee199a",
+  "world_gravity_candidate": true,
+  "library_measured_commit": "d5d7a81abef983aa72baefb2cd3c2c4d63950ac0",
+  "engine_sdk_commit": "8c47601c7dd4729e3edeabef79665760268fdbc4",
+  "native_binary_sha256": "cb5cbc7c254b668ea0b0e3c7ac0f2fe8dac0d4f07810bab2e8d3237ca18d1d87",
+  "shader_override_commit": "0d075c9d63762aba3e401c3c8d5a52f36a4145db",
+  "asyncio_upstream_commit": "23dc7c9f05c6e85033dba4ca7a0c807cbede2a8f",
+  "installed_qualified": false,
+  "sonar_native_runtime_requalified": false,
+  "source_sha256": {
+    "runtime/worlds/world_physics.py": "29bc58c2002a202e2262a15c281d2030ed504f2eb96f5cc8b73921208f0dc354",
+    "runtime/worlds/launch.py": "ebaec44032479ec996f8a4191fdd44e597f9079e0e76b151f5542fff14b9b0dc",
+    "runtime/worlds/practice_vrx_launch.py": "37b8ce7102840b9c13198f5dccad28890b611f9a200a79b8c13b5d803fcb2f01",
+    "runtime/worlds/inertial_source.py": "63f4578f02ab9c749049411b3a1057b053f1312f29d818fb3612cf45d721370d",
+    "runtime/worlds/practice_inertial.py": "1e71c3eea3d2ac8401c6776a4053516a3592830e55b0ab48da32cea7050a6172",
+    "runtime/worlds/practice_vio.py": "543dae030c2868e2390eafbc9059d5053a2e8a293eb693d7f90bf2264e44ac5b",
+    "runtime/worlds/practice_sonar_inertial.py": "c4232142c0d06e7eabb2698c670fd962d67f585d49e6e5e9ceb289ffe5a4f275",
+    "runtime/practice_slam/vio_live.py": "b5e4e077746f4edb122cb5dede10f3ea02b525fc53926eccdc2a1d3e36a25249",
+    "runtime/practice_slam/sonar_live.py": "ea8efd5f9e8db847ca86d943f1f864f075a0fdd890fb0639bdab3b004a2e3221",
+    "runtime/water_pressure/WaterPressure.cc": "6a4f6410f7b23d0020fd42c08b542f78902ac8204eacc00ca2748451ca14eeee",
+    "runtime/worlds/practice_surface.py": "32af6ecca5527f53ddd54fdf2265215d7a8e788524cac3e2f08bb79022a3bf72",
+    "scripts/check_vio_joint_ros.py": "ae87ff7c68857ec3c3d069773adea36c1d0564d886fc0e0cf3fbb93df04352a2",
+    "scripts/prepare_vio_development_provider.py": "b9ca31eecde4fbc8385bb68c59c9a5dfabe5c68581e95514cb1d25a1f53ae89b"
+  },
+  "unchanged": [
+    "native binary",
+    "noise densities",
+    "map admission",
+    "queues",
+    "freshness limits",
+    "world physics",
+    "pressure reference conversion"
+  ],
+  "raw_record": "Existing canonical vertical-pressure-default-patch-20261028 input archive, reused without duplication"
+}

@@ -10,8 +10,14 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - run: sudo apt-get update -qq && sudo apt-get install -y libeigen3-dev
+      - run: sudo apt-get update -qq && sudo apt-get install -y libeigen3-dev nlohmann-json3-dev
       - run: python -m pip install -e .
+      - name: Check sampled sonar ranges and physical point visibility
+        run: |
+          c++ -std=c++17 -O2 -UNDEBUG -DEIGEN_MPL2_ONLY -DEIGEN_DONT_PARALLELIZE \
+            -I/usr/include/eigen3 native/basalt/sonar_geometry_probe.cc \
+            -o "$RUNNER_TEMP/sonar_geometry_probe"
+          "$RUNNER_TEMP/sonar_geometry_probe"
       - name: Compile grouped Ping elimination probe
         run: >-
           c++ -std=c++17 -O2 -DEIGEN_MPL2_ONLY -DEIGEN_DONT_PARALLELIZE
@@ -19,12 +25,33 @@ jobs:
           -o "$RUNNER_TEMP/ping_joint_probe"
       - name: Compare native and reference solutions
         run: POSIM_SLAM_PING_PROBE="$RUNNER_TEMP/ping_joint_probe" python native/basalt/test_ping_joint_native.py
+      - name: Compare rank-aware conditional information splits
+        run: |
+          c++ -std=c++17 -O2 -DEIGEN_MPL2_ONLY -DEIGEN_DONT_PARALLELIZE \
+            -I/usr/include/eigen3 native/basalt/joint_information_probe.cc \
+            -o "$RUNNER_TEMP/joint_information_probe"
+          POSIM_SLAM_JOINT_INFORMATION_PROBE="$RUNNER_TEMP/joint_information_probe" \
+            python native/basalt/test_joint_information_native.py
       - name: Check joint map covariance against dense and coordinate controls
         run: |
           c++ -std=c++17 -O2 -DEIGEN_MPL2_ONLY -DEIGEN_DONT_PARALLELIZE \
             -I/usr/include/eigen3 native/basalt/map_information_probe.cc \
             -o "$RUNNER_TEMP/map_information_probe"
           "$RUNNER_TEMP/map_information_probe"
+      - name: Compare native finite-cone and sonar-fan joint surface ranges
+        run: |
+          c++ -std=c++17 -O2 -DEIGEN_MPL2_ONLY -DEIGEN_DONT_PARALLELIZE \
+            -I/usr/include/eigen3 native/basalt/range_surface_probe.cc \
+            -o "$RUNNER_TEMP/range_surface_probe"
+          POSIM_SLAM_RANGE_SURFACE_PROBE="$RUNNER_TEMP/range_surface_probe" \
+            python native/basalt/test_range_surface_native.py
+      - name: Compare persistent joint surface priors and original-reading ownership
+        run: |
+          c++ -std=c++17 -O2 -DEIGEN_MPL2_ONLY -DEIGEN_DONT_PARALLELIZE \
+            -I/usr/include/eigen3 native/basalt/surface_prior_probe.cc \
+            -o "$RUNNER_TEMP/surface_prior_probe"
+          POSIM_SLAM_SURFACE_PRIOR_PROBE="$RUNNER_TEMP/surface_prior_probe" \
+            python native/basalt/test_surface_prior_native.py
   independent-python:
     runs-on: ubuntu-latest
     strategy:
@@ -38,6 +65,48 @@ jobs:
       - run: python -m pip install 'setuptools>=68' wheel
       - run: python -m pip install -e '.[research,diagnostics]'
       - run: python -m unittest discover -s tests
+      - name: Verify complete recorded sonar input and map assessments
+        run: python docs/diagnostics/sonar-input-contract-20261030/verify.py
+      - name: Check native range response and conditional power moments
+        run: python docs/diagnostics/sonar-range-response-20261030/verify.py
+      - name: Verify corrected acoustic source and replacement sensor reference
+        run: python docs/diagnostics/sonar-floating-spectrum-20261031/verify.py
+      - name: Verify complete inspection maps and exact-pose diagnostic
+        run: python docs/diagnostics/sonar-inspection-scene-20261031/verify.py
+      - name: Check projective association and all conditional outputs
+        run: |
+          python docs/diagnostics/sonar-return-support-20261031/test_projective_assoc.py
+          python docs/diagnostics/sonar-return-support-20261031/verify.py
+      - name: Verify close-view support and complete unqualified maps
+        run: python docs/diagnostics/sonar-close-view-20261031/verify.py
+      - name: Check conditional shadow geometry and complete observations
+        run: |
+          python docs/diagnostics/sonar-shadow-support-20261031/test_shadow_geometry.py
+          python docs/diagnostics/sonar-shadow-support-20261031/test_shadow_extract.py
+          python docs/diagnostics/sonar-shadow-support-20261031/test_reproduction_precision.py
+          python docs/diagnostics/sonar-shadow-support-20261031/verify.py
+      - name: Verify frozen DVL calibration against all original plane ranges
+        run: python docs/diagnostics/dvl-plane-calibration-20261031/verify.py
+      - name: Verify actual translated views and every failed-map point
+        run: python docs/diagnostics/sonar-translated-view-20261031/verify.py
+      - name: Verify translated shadow observations and image-boundary controls
+        run: python docs/diagnostics/sonar-translated-shadow-20261031/verify.py
+      - name: Verify source-local normals and correlated acoustic powers
+        run: python docs/diagnostics/sonar-source-local-power-20261031/verify.py
+      - name: Verify native power moments and reflectivity baselines
+        run: python docs/diagnostics/sonar-native-power-moments-20261031/verify.py
+      - name: Verify sealed finite-geometry fit and complete shape assessments
+        run: python docs/diagnostics/sonar-finite-geometry-fit-20261031/verify.py
+      - name: Verify height-diversity and assessment-only scene-support controls
+        run: python docs/diagnostics/sonar-height-diversity-fit-20261031/verify.py
+      - name: Verify finite partial-scene inverse fit and every model sample
+        run: |
+          python -m unittest discover -s docs/diagnostics/sonar-partial-scene-fit-20261031 -p test_replay_arithmetic.py
+          python docs/diagnostics/sonar-partial-scene-fit-20261031/verify.py
+      - name: Verify multiview births and complete native/field image controls
+        run: |
+          python -m unittest discover -s docs/diagnostics/sonar-reflector-birth-20261031 -p test_full_image_audit.py
+          python docs/diagnostics/sonar-reflector-birth-20261031/verify.py --full-image
       - run: python tools/evaluate_inertial_filter.py --output "$RUNNER_TEMP/inertial-filter.json"
       - run: python tools/evaluate_stationary_initialization.py --output "$RUNNER_TEMP/inertial-initialization.json"
       - run: python tools/evaluate_moving_initialization.py --output "$RUNNER_TEMP/moving-initialization.json"

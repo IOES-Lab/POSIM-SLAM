@@ -1,0 +1,26 @@
+{
+  "objects": {
+    "acoustic_validation_object_0/body/collision": {
+      "sampled_surface_points": 542,
+      "geometrically_visible_frames": 41,
+      "longest_consecutive_visible_frames": 23,
+      "geometrically_visible_unique_points": 442
+    },
+    "acoustic_validation_object_1/body/collision": {
+      "sampled_surface_points": 478,
+      "geometrically_visible_frames": 54,
+      "longest_consecutive_visible_frames": 36,
+      "geometrically_visible_unique_points": 273
+    },
+    "acoustic_validation_object_2/body/collision": {
+      "sampled_surface_points": 546,
+      "geometrically_visible_frames": 44,
+      "longest_consecutive_visible_frames": 28,
+      "geometrically_visible_unique_points": 324
+    }
+  },
+  "trajectory_source": "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/sonar-wall-corner-20261030c/record",
+  "assessment_only": true,
+  "scope": "geometric fan/range/occlusion test; no acoustic detectability or correspondence claim",
+  "truth_is_estimator_input": false
+}

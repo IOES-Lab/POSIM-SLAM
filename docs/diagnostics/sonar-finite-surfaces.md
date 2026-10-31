@@ -53,7 +53,20 @@ The comparison uses one identical recorded camera pose/perspective, 64 pt² mark
 
 For marine state-estimation and teaching context, see the ROS Maritime [learning resources](https://ros-maritime.oceansoft.org/education_and_tutorials/#courses-and-open-course-material), [navigation](https://ros-maritime.oceansoft.org/navigation/) and [perception](https://ros-maritime.oceansoft.org/perception/) guides. The examples are references; this component does not import their implementations.
 
+A separate [original-image source-normal fit](sonar-finite-geometry-fit-20261031/README.md)
+estimates a shared plane and one opaque prism from three sensor-only initialized
+views, with three unused temporal views. Composite image scores improve while
+complete surface RMSE changes 5.39 to 5.65 cm. All 548 model samples per shape,
+correlated moment records and the exact-camera RGB comparison remain. This is
+a restrictive, fixed-navigation shape diagnostic, without map admission.
+
 ## 한국어
+
+[원본 영상의 소스 법선 형상 적합](sonar-finite-geometry-fit-20261031/README.ko.md)은
+센서만으로 초기화한 시점 3개에서 공통 평면·불투명 직육면체를 맞추고 미사용 시간
+시점 3개와 비교합니다. 복합 영상 점수는 좋아지지만 전체 표면 RMSE는 5.39에서
+5.65 cm로 늘어납니다. 형상당 가설 점 548개 전체·상관 모멘트·같은 카메라의 RGB
+비교를 보존하며, 제한된 고정 항법 진단이므로 지도로 수용하지 않습니다.
 
 유한한 불투명 삼각형 표면, 구면 광선과 고정 자세로 소나 전력의 평균을 예측합니다. 입력 형상은 호출자가 제공합니다. 반사율을 적용하기 전에 가장 가까운 교차면으로 가림을 정하므로, 반사율이 0인 앞면도 뒷면을 가립니다. 입사각 제곱·거리 감쇠·흡수·빔 혼합·Hamming 거리 응답과 DFT 뒤 주파수 간격을 반영합니다. 면에 실제로 닿는 광선을 더하므로 유한 면적과 시야각 경계를 함께 처리합니다.
 

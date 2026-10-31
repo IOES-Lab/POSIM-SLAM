@@ -1,0 +1,18 @@
+{
+  "passed": false,
+  "error": "<HTTPError 409: 'Conflict'>",
+  "session_nonce": "b569d8bfe0e14254b465ee1134e5a048",
+  "minimum_observed_clearance": {
+    "clear": true,
+    "minimum_centerline_clearance_m": 4.0019972843248945,
+    "required_body_margin_m": 0.5,
+    "closest": {
+      "actor": "acoustic_validation_target_0/body/collision",
+      "segment": 0
+    },
+    "segments": 118,
+    "collision_boxes": 5,
+    "method": "exact segment-to-oriented-box distance; spherical body envelope",
+    "scope": "authored targets only; terrain checked separately by mission planner"
+  }
+}

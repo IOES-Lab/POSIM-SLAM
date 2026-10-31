@@ -1,0 +1,10 @@
+{
+  "points": 664,
+  "all_predictions_retained": true,
+  "within_010_m": 624,
+  "negative_beyond_010_m": 35,
+  "positive_beyond_010_m": 5,
+  "map_qualified": false,
+  "figure_sha256": "1e95fce19f4b02edecba35bea697d0ea88edffe1861127e4b74aec277053cf59",
+  "source_sha256": "2f231838d1c30defaf2fafad1b1710f6972232397eac8d5dbaca97141f769ca8"
+}

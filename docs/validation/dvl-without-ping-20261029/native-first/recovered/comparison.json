@@ -1,0 +1,129 @@
+{
+  "phase": "recovered",
+  "total_points": 1870,
+  "points_in_view": 1662,
+  "coordinates_filtered": false,
+  "marker_area_pt2": 64,
+  "height_limits_m": [
+    -4.0,
+    -1.5
+  ],
+  "camera": {
+    "eye": [
+      0.0,
+      -4.0,
+      -0.15
+    ],
+    "camera_to_world": [
+      [
+        0.5773502691896258,
+        -0.7071067811865475,
+        0.408248290463863
+      ],
+      [
+        0.5773502691896257,
+        0.7071067811865476,
+        0.40824829046386296
+      ],
+      [
+        -0.5773502691896257,
+        0,
+        0.816496580927726
+      ]
+    ],
+    "horizontal_fov": 1.35,
+    "width": 1000,
+    "height": 800,
+    "stamp_ns": 241000000000,
+    "projection": "perspective",
+    "viewpoint": "isometric direction; positive X forward, Y left, Z up",
+    "partition": "slam-cold-d801dbbe46404c2f85e6c985c54a9dc3",
+    "topic": "/validation/slam/isometric_rgb"
+  },
+  "metrics": {
+    "evaluated": true,
+    "states": 577,
+    "duration_s": 115.2,
+    "evaluation_alignment": {
+      "rotation": [
+        [
+          -0.8650629237241816,
+          -0.5016633711940417,
+          0.0
+        ],
+        [
+          0.5016633711940417,
+          -0.8650629237241816,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "translation": [
+        -0.0016451591194673286,
+        0.11014471404656362,
+        -0.6759858783154626
+      ],
+      "scale": 1.0
+    },
+    "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+    "position_rmse_m": 0.021692611622302904,
+    "position_max_m": 0.040427267296144306,
+    "rotation_rmse_rad": 0.005604204130176048,
+    "rotation_max_rad": 0.022430764331676758,
+    "truth_distance_m": 45.82864516383665,
+    "estimated_distance_m": 45.78722373634179,
+    "rpe_1s_pairs": 572,
+    "rpe_1s_position_rmse_m": 0.007194689550985903,
+    "rpe_1s_rotation_rmse_rad": 0.00441930795902828,
+    "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+  },
+  "reference_capture": {
+    "reference_stamp_ns": 241000000000,
+    "mapping_stamp_ns": 241000000000,
+    "vehicle_truth": [
+      240980000000,
+      1.4440997893914194,
+      2.5840368429710217,
+      -0.6030071456409793,
+      -0.0033515209635504983,
+      0.0007403464250956161,
+      0.17478825527446595,
+      0.984600063483905
+    ],
+    "scope": "Independent assessment camera; truth never sent to estimator"
+  },
+  "camera_optical_origin_world": [
+    1.3502100858503636,
+    2.5496180337804386,
+    -0.6027441953132026
+  ],
+  "camera_optical_direction_world": [
+    -0.00028627727082872694,
+    -0.0068586232268411694,
+    -0.9999764383888039
+  ],
+  "source_sha256": {
+    ".local/dvl-without-ping-20261029/native-dvl/demo-runtime/4cde2ba0057e4746bbc5dfd23369e48c/orca5-seafloor.dae": "277c49dd9c3b2ec1c9d3c3754be9d076c7b0438ccd29e9ae11355869849fbeb2",
+    ".local/vertical-pressure-default-patch-20261028/physical-targets.sdf": "d4795f6c127d739cc1fa4e75eb0329ed55ac3f67d4e593555ae033e06e0bebf6",
+    ".local/vertical-pressure-default-patch-20261028/demo-runtime/8114b37d2a684ee5a7c9a0fe30ba46fe/world-waves-underwater-sonar.sdf": "74e5108a6667112d0c87734d1c2f3371209486c19ab7faccc45088d9741a26f3",
+    ".local/vertical-pressure-default-patch-20261028/demo-runtime/8114b37d2a684ee5a7c9a0fe30ba46fe/orca5-seafloor.dae": "277c49dd9c3b2ec1c9d3c3754be9d076c7b0438ccd29e9ae11355869849fbeb2",
+    ".local/dvl-without-ping-20261029/native-dvl/case/isometric-rgb.png": "3aade5c9d209d944eee5f3d313af247da4b0e5b8c9081084338bee8a1821d0ad",
+    ".local/dvl-without-ping-20261029/native-dvl/case/mapping-camera-rgb.png": "87139aa326700149c1d4b618580b9929d08a853b7d21a3ab263a14475437b087",
+    ".local/dvl-without-ping-20261029/native-dvl/case/recovered/map.ply": "f8a7cb395741d57008469ee62293f031b82e8bcacf7ce1e7949c1fd5c7912538"
+  },
+  "scope": "Native generated selected-sensor model; independent assessment only; single Ping physically absent",
+  "reference_provenance": {
+    "reference_kind": "same_recording_scene_reference",
+    "exposure_ns": 241000000000,
+    "state_interval_ns": [
+      346800000000,
+      462000000000
+    ],
+    "within_exported_segment": false,
+    "scope": "Original one-capture-per-start observer; no separately recorded reset-segment identity. Outside-interval RGB is scene context, not input to the exported segment."
+  }
+}

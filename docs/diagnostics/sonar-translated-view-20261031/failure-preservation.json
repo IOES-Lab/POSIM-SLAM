@@ -1,0 +1,24 @@
+{
+  "pre_mission_fixture": {
+    "raw_location": "/Volumes/ExternalHDD/POSIM/validation-data/posim-slam/sonar-translated-view-20261031",
+    "mission_started": false,
+    "variable_collision": "optical profile list reused as mission configuration",
+    "corrected_variable": "capture_config",
+    "raw_preserved": true
+  },
+  "original_postcompute_failure": {
+    "folder": "replay-default-navigation",
+    "states": 286,
+    "driver_exit": 1,
+    "complete_receipt_available": false,
+    "cause": "Receipt hashed a guessed checkout directory instead of the imported package",
+    "raw_states_and_map_preserved": true
+  },
+  "fixed_replay": {
+    "driver_exit": 0,
+    "native_worker_exit": -15,
+    "worker_shutdown": "Existing LiveClient.close controlled SIGTERM after all state acknowledgements",
+    "normal_zero_exit_qualified": false,
+    "algorithm_changed": false
+  }
+}

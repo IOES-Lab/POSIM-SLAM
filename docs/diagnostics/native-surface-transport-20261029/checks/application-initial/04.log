@@ -1,0 +1,8 @@
+{
+  "passed": false,
+  "project_documents": 590,
+  "reachable_documents": 590,
+  "errors": [
+    "docs/validation/README.md: missing tracked Markdown target docs/validation/native-surface-transport-20261029/README.md"
+  ]
+}

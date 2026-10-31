@@ -1,0 +1,15 @@
+{
+  "passed": true,
+  "phase": 5,
+  "joint_ping": false,
+  "segment": 5,
+  "frame": "vehicle/vio_d969a1f1192b4e2eadbdb72c6b18366e_segment_5",
+  "first_seed_s": 4.692038708017208,
+  "elapsed_s": 117.56562704098178,
+  "points": 2908,
+  "ping_received": 1168,
+  "ping_fused_states": 0,
+  "pressure_fused_states": 112,
+  "failures": [],
+  "max_tick_ms": 371.9248750130646
+}

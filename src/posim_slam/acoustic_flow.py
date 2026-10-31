@@ -3,7 +3,7 @@
 OpenCV 4.10 reference implementation; planar estimates do not resolve elevation.
 """
 from .acoustic_backend import cv as cv2
-from .sonar_input import validate_frame
+from .sonar_input import validate_frame,log_image_values
 import numpy as np
 
 FILTERS = ('raw', 'smooth', 'contrast', 'whiten', 'range_whiten')
@@ -13,9 +13,14 @@ def image(frame, variant):
     if variant=='echo_boundary':
         from .sonar_edges import echo_tracking_image
         return echo_tracking_image(frame)[0]
-    power = np.asarray(frame['intensity_db'], dtype=np.float32)
+    power,support = log_image_values(frame['intensity_db'],dtype=np.float32)
     if variant == 'raw':
-        return cv2.GaussianBlur(np.uint8(np.clip((power - 20) * 255 / 70, 0, 255)), (5, 5), 0)
+        # Zero acoustic power maps directly to black before filtering. Do not
+        # substitute a finite log value into the raw-to-image conversion.
+        raw=np.asarray(frame['intensity_db'],dtype=np.float32)
+        result=cv2.GaussianBlur(np.uint8(np.clip((raw - 20) * 255 / 70, 0, 255)), (5, 5), 0)
+        result[~support]=0
+        return result
     power = cv2.GaussianBlur(power, (0, 0), sigmaX=1, sigmaY=2.5)
     if variant == 'contrast':
         power = (power - cv2.GaussianBlur(power, (0, 0), sigmaX=8, sigmaY=8) + 8) * 10
@@ -27,7 +32,8 @@ def image(frame, variant):
         power = (power - np.median(power, axis=0)[None, :] + 15) * 5
     else:
         power = (power - 20) * 255 / 70
-    return np.uint8(np.clip(power, 0, 255))
+    result=np.uint8(np.clip(power, 0, 255));result[~support]=0
+    return result
 
 
 def polar_observations(pixels, frame):
@@ -57,7 +63,23 @@ def fit(source, target):
 
 
 def corner_pixels(frame,variant='raw',*,mask=None):
-    return _corner_pixels(image(frame,variant),frame['ranges'],mask=mask)
+    support=np.isfinite(frame['intensity_db'])
+    if mask is not None:
+        mask=np.asarray(mask)
+        if mask.shape!=support.shape or mask.dtype!=bool:raise ValueError('invalid_acoustic_seed_mask')
+        support&=mask
+    return _corner_pixels(image(frame,variant),frame['ranges'],mask=support)
+
+
+def return_support(frame,pixels):
+    """A candidate's nearest native bin must contain a measured finite echo."""
+    points=np.asarray(pixels).reshape(-1,2)
+    height,width=frame['intensity_db'].shape
+    inside=(np.isfinite(points).all(axis=1)&(points>=0).all(axis=1)&(points<[width-1,height-1]).all(axis=1))
+    result=np.zeros(len(points),dtype=bool)
+    indices=np.rint(points[inside]).astype(int)
+    result[inside]=np.isfinite(frame['intensity_db'][indices[:,1],indices[:,0]])
+    return result
 
 
 def _corner_pixels(a,ranges,*,mask=None):
@@ -88,7 +110,7 @@ def correspondences(previous, current, variant='raw', *, seed_pixels=None):
                 previous_pixels=[],current_pixels=[],previous_range_azimuth=[],current_range_azimuth=[],
                 forward_backward_error_pixels=[],previous_indices=[])
     a, b = image(previous, variant), image(current, variant)
-    seeds=_corner_pixels(a,previous['ranges']) if seed_pixels is None else np.asarray(seed_pixels,dtype=np.float32)
+    seeds=_corner_pixels(a,previous['ranges'],mask=np.isfinite(previous['intensity_db'])) if seed_pixels is None else np.asarray(seed_pixels,dtype=np.float32)
     if seeds.ndim!=2 or seeds.shape[1]!=2 or len(seeds)>300:
         raise ValueError('invalid_acoustic_seeds')
     if seed_pixels is not None:polar_observations(seeds,previous)
@@ -107,6 +129,7 @@ def correspondences(previous, current, variant='raw', *, seed_pixels=None):
                         & (p < [width - 1, height - 1]).all(axis=(1, 2)))
     good = (forward.ravel().astype(bool) & backward.ravel().astype(bool)
             & inside(pixels) & inside(moved) & inside(back)
+            & return_support(previous,pixels) & return_support(current,moved)
             & (np.linalg.norm(back - pixels, axis=2).ravel() < .5))
     return dict(result,matched=int(good.sum()),previous_indices=np.flatnonzero(good).tolist(),
         previous_pixels=pixels[good].reshape(-1,2).tolist(),current_pixels=moved[good].reshape(-1,2).tolist(),

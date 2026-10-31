@@ -1,0 +1,11 @@
+{
+  "source": "Captured generated physical vehicle model",
+  "model_sha256": "381eabdfc3e034011f48af86aee770b828d4eb72765473a22250b9b6700169fe",
+  "calibration": {
+    "beams": 256,
+    "horizontal_fov": 2.0943951023931953,
+    "range_max": 15.0,
+    "bandwidth_hz": 29900.0,
+    "sound_speed_m_s": 1500.0
+  }
+}

@@ -35,10 +35,12 @@ def point_return_factor(*, position, attitude, imu_to_sonar, sonar_to_imu,
     mount=rotation(sonar_to_imu);point=vector(landmark)
     scalars=(measured_range,measured_azimuth,range_min,range_max,horizontal_fov,vertical_fov)
     if (not all(math.isfinite(v) for v in scalars) or
-            not 0<range_min<range_max or not range_min<=measured_range<=range_max or
+            not 0<range_min<range_max or measured_range<=0 or
             not 0<horizontal_fov<=math.pi or not 0<vertical_fov<math.pi or
             not within_fov(measured_azimuth,horizontal_fov)):
         raise ValueError('invalid_sonar_measurement')
+    # The interval constrains the latent physical point, not its noisy sampled
+    # range. The source input contract checks valid published coordinates.
     relative=r.T@(point-p)
     local=mount.T@(relative-lever)
     x,y,z=local;horizontal2=x*x+y*y

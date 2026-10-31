@@ -1,0 +1,325 @@
+{
+  "scope": "Known single reflector, full physical-range search; no truth-centered bracket",
+  "rows": [
+    {
+      "samples": 598,
+      "seed": 73,
+      "actual_distance_m": 0.2,
+      "grid_distance_m": 0.2,
+      "grid_profile_residual": 3.710359215136985e-07,
+      "fitted_distance_m": 0.2000000109073315,
+      "range_error_m": 1.0907331482457039e-08,
+      "normalized_power_residual": 6.190622879587153e-08
+    },
+    {
+      "samples": 598,
+      "seed": 73,
+      "actual_distance_m": 1.0,
+      "grid_distance_m": 1.0026755852842804,
+      "grid_profile_residual": 0.10269268016130388,
+      "fitted_distance_m": 1.0000000793111725,
+      "range_error_m": 7.931117251835929e-08,
+      "normalized_power_residual": 1.2167412057837066e-07
+    },
+    {
+      "samples": 598,
+      "seed": 73,
+      "actual_distance_m": 5.213,
+      "grid_distance_m": 5.216722408026753,
+      "grid_profile_residual": 0.14654242336173093,
+      "fitted_distance_m": 5.213000185789981,
+      "range_error_m": 1.8578998073337516e-07,
+      "normalized_power_residual": 1.6508384006463792e-06
+    },
+    {
+      "samples": 598,
+      "seed": 73,
+      "actual_distance_m": 7.5,
+      "grid_distance_m": 7.499331103678925,
+      "grid_profile_residual": 0.02454645054942353,
+      "fitted_distance_m": 7.500000519778515,
+      "range_error_m": 5.197785153399082e-07,
+      "normalized_power_residual": 2.0305917054203392e-06
+    },
+    {
+      "samples": 598,
+      "seed": 73,
+      "actual_distance_m": 14.95,
+      "grid_distance_m": 14.949163879598652,
+      "grid_profile_residual": 0.03065293782100299,
+      "fitted_distance_m": 14.950000396817543,
+      "range_error_m": 3.96817544157102e-07,
+      "normalized_power_residual": 2.313684145848757e-06
+    },
+    {
+      "samples": 598,
+      "seed": 73,
+      "actual_distance_m": 14.99,
+      "grid_distance_m": 14.986789297658852,
+      "grid_profile_residual": 0.20662761021611678,
+      "fitted_distance_m": 14.990000568892444,
+      "range_error_m": 5.688924442637244e-07,
+      "normalized_power_residual": 1.0125473387035937e-06
+    },
+    {
+      "samples": 598,
+      "seed": 73,
+      "actual_distance_m": 14.999,
+      "grid_distance_m": 14.99933110367892,
+      "grid_profile_residual": 0.012210845449754681,
+      "fitted_distance_m": 14.999000344200768,
+      "range_error_m": 3.442007674436809e-07,
+      "normalized_power_residual": 1.948254083911064e-06
+    },
+    {
+      "samples": 598,
+      "seed": 73,
+      "actual_distance_m": 15.0,
+      "grid_distance_m": 15.0,
+      "grid_profile_residual": 4.5502117600944505e-05,
+      "fitted_distance_m": 14.999999710073876,
+      "range_error_m": 2.8992612399747486e-07,
+      "normalized_power_residual": 5.6091890428833235e-05
+    },
+    {
+      "samples": 598,
+      "seed": 9173,
+      "actual_distance_m": 0.2,
+      "grid_distance_m": 0.2,
+      "grid_profile_residual": 3.348619498944913e-07,
+      "fitted_distance_m": 0.2000000109073315,
+      "range_error_m": 1.0907331482457039e-08,
+      "normalized_power_residual": 6.627451782271066e-08
+    },
+    {
+      "samples": 598,
+      "seed": 9173,
+      "actual_distance_m": 1.0,
+      "grid_distance_m": 1.0026755852842804,
+      "grid_profile_residual": 0.1026926374338386,
+      "fitted_distance_m": 1.0000000802336977,
+      "range_error_m": 8.023369768572763e-08,
+      "normalized_power_residual": 1.1840968956982863e-07
+    },
+    {
+      "samples": 598,
+      "seed": 9173,
+      "actual_distance_m": 5.213,
+      "grid_distance_m": 5.216722408026753,
+      "grid_profile_residual": 0.14654290676356235,
+      "fitted_distance_m": 5.213000175184887,
+      "range_error_m": 1.7518488704126867e-07,
+      "normalized_power_residual": 1.7174168346950284e-06
+    },
+    {
+      "samples": 598,
+      "seed": 9173,
+      "actual_distance_m": 7.5,
+      "grid_distance_m": 7.499331103678925,
+      "grid_profile_residual": 0.024546269147966142,
+      "fitted_distance_m": 7.500000513461141,
+      "range_error_m": 5.134611411605761e-07,
+      "normalized_power_residual": 1.926353119870372e-06
+    },
+    {
+      "samples": 598,
+      "seed": 9173,
+      "actual_distance_m": 14.95,
+      "grid_distance_m": 14.949163879598652,
+      "grid_profile_residual": 0.030653834518409598,
+      "fitted_distance_m": 14.950000424032302,
+      "range_error_m": 4.24032302603905e-07,
+      "normalized_power_residual": 1.7674629086620091e-06
+    },
+    {
+      "samples": 598,
+      "seed": 9173,
+      "actual_distance_m": 14.99,
+      "grid_distance_m": 14.986789297658852,
+      "grid_profile_residual": 0.20663052886585026,
+      "fitted_distance_m": 14.990000609756013,
+      "range_error_m": 6.097560127926727e-07,
+      "normalized_power_residual": 9.54107478953572e-07
+    },
+    {
+      "samples": 598,
+      "seed": 9173,
+      "actual_distance_m": 14.999,
+      "grid_distance_m": 14.99933110367892,
+      "grid_profile_residual": 0.012207550917512739,
+      "fitted_distance_m": 14.999000444037993,
+      "range_error_m": 4.440379921533122e-07,
+      "normalized_power_residual": 2.8929479907929796e-06
+    },
+    {
+      "samples": 598,
+      "seed": 9173,
+      "actual_distance_m": 15.0,
+      "grid_distance_m": 15.0,
+      "grid_profile_residual": 4.2679370961247535e-05,
+      "fitted_distance_m": 14.999999710073876,
+      "range_error_m": 2.8992612399747486e-07,
+      "normalized_power_residual": 5.32941829133899e-05
+    },
+    {
+      "samples": 599,
+      "seed": 73,
+      "actual_distance_m": 0.2,
+      "grid_distance_m": 0.2,
+      "grid_profile_residual": 2.1439037576225637e-07,
+      "fitted_distance_m": 0.2000000067411016,
+      "range_error_m": 6.741101593599197e-09,
+      "normalized_power_residual": 4.8873325224681714e-08
+    },
+    {
+      "samples": 599,
+      "seed": 73,
+      "actual_distance_m": 1.0,
+      "grid_distance_m": 1.0026755852842804,
+      "grid_profile_residual": 0.10269338669579242,
+      "fitted_distance_m": 1.000000062195822,
+      "range_error_m": 6.21958220481389e-08,
+      "normalized_power_residual": 1.319530421817106e-07
+    },
+    {
+      "samples": 599,
+      "seed": 73,
+      "actual_distance_m": 5.213,
+      "grid_distance_m": 5.216722408026753,
+      "grid_profile_residual": 0.14654670531137526,
+      "fitted_distance_m": 5.213000084204575,
+      "range_error_m": 8.420457486835176e-08,
+      "normalized_power_residual": 1.5303763594129763e-06
+    },
+    {
+      "samples": 599,
+      "seed": 73,
+      "actual_distance_m": 7.5,
+      "grid_distance_m": 7.499331103678925,
+      "grid_profile_residual": 0.024538444389849416,
+      "fitted_distance_m": 7.500000400615223,
+      "range_error_m": 4.0061522277312633e-07,
+      "normalized_power_residual": 1.8366293971040653e-06
+    },
+    {
+      "samples": 599,
+      "seed": 73,
+      "actual_distance_m": 14.95,
+      "grid_distance_m": 14.949163879598652,
+      "grid_profile_residual": 0.0306468056857829,
+      "fitted_distance_m": 14.950000240490802,
+      "range_error_m": 2.404908023834196e-07,
+      "normalized_power_residual": 4.1966884061922295e-06
+    },
+    {
+      "samples": 599,
+      "seed": 73,
+      "actual_distance_m": 14.99,
+      "grid_distance_m": 14.986789297658852,
+      "grid_profile_residual": 0.20660908319976187,
+      "fitted_distance_m": 14.990000237406042,
+      "range_error_m": 2.3740604149224964e-07,
+      "normalized_power_residual": 2.484846569347146e-06
+    },
+    {
+      "samples": 599,
+      "seed": 73,
+      "actual_distance_m": 14.999,
+      "grid_distance_m": 14.99933110367892,
+      "grid_profile_residual": 0.012220593672527823,
+      "fitted_distance_m": 14.999000053021833,
+      "range_error_m": 5.302183225808221e-08,
+      "normalized_power_residual": 5.116729071747669e-06
+    },
+    {
+      "samples": 599,
+      "seed": 73,
+      "actual_distance_m": 15.0,
+      "grid_distance_m": 15.0,
+      "grid_profile_residual": 3.077501074388206e-05,
+      "fitted_distance_m": 14.999999710073876,
+      "range_error_m": 2.8992612399747486e-07,
+      "normalized_power_residual": 4.1390155741352244e-05
+    },
+    {
+      "samples": 599,
+      "seed": 9173,
+      "actual_distance_m": 0.2,
+      "grid_distance_m": 0.2,
+      "grid_profile_residual": 1.8250120749944285e-07,
+      "fitted_distance_m": 0.20000000377428878,
+      "range_error_m": 3.774288770408418e-09,
+      "normalized_power_residual": 4.667362193827372e-08
+    },
+    {
+      "samples": 599,
+      "seed": 9173,
+      "actual_distance_m": 1.0,
+      "grid_distance_m": 1.0026755852842804,
+      "grid_profile_residual": 0.10269348319800083,
+      "fitted_distance_m": 1.0000000598502101,
+      "range_error_m": 5.985021012122616e-08,
+      "normalized_power_residual": 1.3286957111213517e-07
+    },
+    {
+      "samples": 599,
+      "seed": 9173,
+      "actual_distance_m": 5.213,
+      "grid_distance_m": 5.216722408026753,
+      "grid_profile_residual": 0.14654749298584033,
+      "fitted_distance_m": 5.213000067609702,
+      "range_error_m": 6.760970183705695e-08,
+      "normalized_power_residual": 1.5854763693051487e-06
+    },
+    {
+      "samples": 599,
+      "seed": 9173,
+      "actual_distance_m": 7.5,
+      "grid_distance_m": 7.499331103678925,
+      "grid_profile_residual": 0.024540029084646944,
+      "fitted_distance_m": 7.500000446463339,
+      "range_error_m": 4.464633391876305e-07,
+      "normalized_power_residual": 1.872232308913916e-06
+    },
+    {
+      "samples": 599,
+      "seed": 9173,
+      "actual_distance_m": 14.95,
+      "grid_distance_m": 14.949163879598652,
+      "grid_profile_residual": 0.03064568258019581,
+      "fitted_distance_m": 14.950000205195114,
+      "range_error_m": 2.0519511423344738e-07,
+      "normalized_power_residual": 1.8719781698767457e-06
+    },
+    {
+      "samples": 599,
+      "seed": 9173,
+      "actual_distance_m": 14.99,
+      "grid_distance_m": 14.986789297658852,
+      "grid_profile_residual": 0.2066169450770326,
+      "fitted_distance_m": 14.99000047133255,
+      "range_error_m": 4.7133254987841156e-07,
+      "normalized_power_residual": 4.5686024651822964e-06
+    },
+    {
+      "samples": 599,
+      "seed": 9173,
+      "actual_distance_m": 14.999,
+      "grid_distance_m": 14.99933110367892,
+      "grid_profile_residual": 0.012219911991942034,
+      "fitted_distance_m": 14.999000076164185,
+      "range_error_m": 7.616418429279292e-08,
+      "normalized_power_residual": 2.555509500426336e-06
+    },
+    {
+      "samples": 599,
+      "seed": 9173,
+      "actual_distance_m": 15.0,
+      "grid_distance_m": 15.0,
+      "grid_profile_residual": 3.0079310657716546e-05,
+      "fitted_distance_m": 14.999999710073876,
+      "range_error_m": 2.8992612399747486e-07,
+      "normalized_power_residual": 4.0681337855262564e-05
+    }
+  ]
+}

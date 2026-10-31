@@ -1,0 +1,18 @@
+[
+  {
+    "source": "candidate-input-only",
+    "exit": 1,
+    "results": {
+      "sampled_ranges_accepted": 0,
+      "outside_physical_points_rejected": 2
+    }
+  },
+  {
+    "source": "candidate",
+    "exit": 0,
+    "results": {
+      "sampled_ranges_accepted": 2,
+      "outside_physical_points_rejected": 2
+    }
+  }
+]

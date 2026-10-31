@@ -10,7 +10,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 import math
 import numpy as np
-from .sonar_input import validate_frame
+from .sonar_input import validate_frame,log_quantile
 from .sonar_surface import _median, _runs, ground_entry_band
 
 
@@ -73,11 +73,11 @@ def ground_entries(frame, *, config=GroundEntryConfig(), source_bounds=None, amp
         # returns as well. Q95 avoids treating one isolated peak as its scale.
         # This may censor a weak bottom under a stronger object; it does not
         # prove that the resulting edge is a physical first arrival.
-        floor=np.maximum(floor,np.quantile(smooth[ranges>config.noise_range_max_m],.95,axis=0)
+        floor=np.maximum(floor,log_quantile(smooth[ranges>config.noise_range_max_m],.95,axis=0)
                          -config.beam_relative_margin_db)
     onsets=np.full(len(angles),np.nan)
     for beam in range(len(angles)):
-        for lo,hi in _runs((smooth[:,beam]>floor[beam])&(ranges>config.noise_range_max_m)):
+        for lo,hi in _runs(np.isfinite(noise)&(smooth[:,beam]>floor[beam])&(ranges>config.noise_range_max_m)):
             if (ranges[hi-1]-ranges[lo]>=config.sustained_return_m and lo>0
                     and smooth[lo-1,beam]<=floor[beam]):
                 onsets[beam]=ranges[lo];break
@@ -100,7 +100,8 @@ def ground_entries(frame, *, config=GroundEntryConfig(), source_bounds=None, amp
             rejected=indices[interval['lower']<=0];excluded=len(rejected);onsets[rejected]=np.nan
         bound_report=dict(source_bound_tested=len(indices),source_bound_excluded=excluded)
     return dict(azimuth_rad=angles,range_m=onsets,selected_beams=np.asarray(selected,dtype=int),
-                noise_db=noise,return_floor_db=floor,**bound_report)
+                noise_db=noise if np.isfinite(noise) else None,noise_available=bool(np.isfinite(noise)),
+                return_floor_db=floor,**bound_report)
 
 
 def ground_entry_curve(frame, *, vertical_fov_rad, up_sonar, config=GroundEntryConfig(),

@@ -1,0 +1,223 @@
+{
+  "schema": "posim-orb-redetection-control-1",
+  "scope": "Conditional native IPC frontend/processing-budget control; no provider, initialization covariance, ROS recovery or installed-app qualification",
+  "original_camera_frames": 1219,
+  "startup_images": 16,
+  "estimator_inputs": [
+    "camera",
+    "raw_imu",
+    "single_ping"
+  ],
+  "original_times": true,
+  "truth_input": false,
+  "candidate_source_base": "714dba7bc592efc0317b4e07d4cdcded41cb28f1",
+  "candidate_source_patch_sha256": "960119a43254db55f07f3aba06f5fdd2071516f814a101e8c410459bc8a50d35",
+  "shared_worker_sha256": "2597a178d92901978bc378d0acbf78152093cb9cfae16a44131609916fba5d34",
+  "shared_measured_seed_sha256": "be308b9c3ed7237798d5fb41a6d3687697c2a509965bda3d44d513a9de2de38c",
+  "source_snapshot_sha256": {
+    "README.ko.md": "580b061d39fb2ca9cbd7dba8d571d0b61175573d5ab57df9d1e863356bfb1d1e",
+    "README.md": "3a1e9023df81393c6f132f5becb08e091f5d57045bd3e7cf21d5a825a8a42e41",
+    "THIRD_PARTY.md": "f4a67786baa8c8edd530d219db63a1703fe5aba4e4fee0305056106ada051af5",
+    "native/basalt/CMakeLists.txt": "9ddb72518a66604303e3b5418471d33776d5a792169b6c086c9a376e3440a493",
+    "native/basalt/README.md": "f5c3dc76da52e0fa3d1ecd2c30b80b26166a07b1371ab2c8aaede22efe28b3a5",
+    "native/basalt/calibration.hpp": "85f96b761bbd30f218ffe4ee1dbbec2d0e761220849feb2eee21ff9619832dba",
+    "native/basalt/prepare_joint_headers.py": "a155e75275735fe730635c6ae4b106d8435c29528be5b2eeafe6006b667a2391",
+    "native/basalt/replay.cc": "9a14ec2c1c7213c7f458def023aaaa850efd5872a94a7e6e043982ca92893073",
+    "native/basalt/stream.cc": "e316565600d09f6dd1f89ad3e288c9e962ac93802a4a3cb96dcb2e880444817d",
+    "native/basalt/synthetic_probe.cc": "3e5444071623f9741430ee866c284aac69eb808b3abd90c3c1055456b6217b83",
+    "src/posim_slam/live_client.py": "6bdd9f42980179e8ff90a7c9d355a32d7b0d1450003c2bd65ac65569dddff640",
+    "tests/test_live_frontend.py": "69bc06d4dea6a7392d9e0395a380b18f8ccd4f5ef5073f6c63ad33824b8d3fd2",
+    "tools/build_basalt.py": "bff136b4269f23e790a04778f06c847588bc23a7fe2efa3115bae8729211077d",
+    "native/basalt/fixtures/orb-geometry-degeneracy.json": "65a7101760b77063447b8946b4d51daa5b202417cf9f33532867e8cac7a0706e",
+    "native/basalt/orb_reference_flow.hpp": "33393f6d70327f1089eda56bf0279983cc668b01f43923ba889551a647ea5f52",
+    "native/basalt/orb_reference_probe.cc": "047289c78f9e0b9611c915ad7717574d67305215cf0d128122ad30c208f41792"
+  },
+  "runs": {
+    "orb-reference-v2": {
+      "processed_resolution": [
+        400,
+        300
+      ],
+      "feature_grid": 25,
+      "observations_median": 82,
+      "observations_peak": 101,
+      "window_landmarks_peak": 63,
+      "reference_descriptors_peak": 101,
+      "geometry_solver_failures": 5,
+      "feature_ids": 40998,
+      "ids_observed_20_times": 92,
+      "export": {
+        "reason": "map_unavailable",
+        "request_id": 1,
+        "success": false,
+        "type": "export"
+      },
+      "runtime_passed": false,
+      "map_qualified": false,
+      "points": 0,
+      "surface": null,
+      "trajectory_rmse_m": null
+    },
+    "orb-keyframes-v3": {
+      "processed_resolution": [
+        400,
+        300
+      ],
+      "feature_grid": 25,
+      "observations_median": 82,
+      "observations_peak": 101,
+      "window_landmarks_peak": 73,
+      "reference_descriptors_peak": 914,
+      "geometry_solver_failures": 160,
+      "feature_ids": 31540,
+      "ids_observed_20_times": 818,
+      "export": {
+        "reason": "map_unavailable",
+        "request_id": 1,
+        "success": false,
+        "type": "export"
+      },
+      "runtime_passed": false,
+      "map_qualified": false,
+      "points": 0,
+      "surface": null,
+      "trajectory_rmse_m": null
+    },
+    "patch-v3": {
+      "processed_resolution": [
+        400,
+        300
+      ],
+      "feature_grid": 25,
+      "observations_median": 303,
+      "observations_peak": 406,
+      "window_landmarks_peak": 352,
+      "reference_descriptors_peak": 0,
+      "geometry_solver_failures": 0,
+      "feature_ids": 41057,
+      "ids_observed_20_times": 3677,
+      "export": {
+        "points": 1497,
+        "request_id": 1,
+        "stamp_ns": 136300000000,
+        "success": true,
+        "type": "export"
+      },
+      "runtime_passed": true,
+      "map_qualified": false,
+      "trajectory_rmse_m": 0.023946290123515852,
+      "points": 1497,
+      "identical_existing_ply_sha256": "6372b01f4a632b3416beeb5c0edcaffcb9139ab3dc01cac5bd60686b21e1b56c",
+      "full_map_reference": "../reference-patch-control-20261028/patch/worker-map.ply",
+      "all_point_reference": "../reference-patch-control-20261028/patch/visual-surface-evaluation.json",
+      "surface": {
+        "minimum": 8.377087731092165e-08,
+        "median": 0.013667808559864625,
+        "p90": 0.02246651890357288,
+        "maximum": 0.35920969910333067
+      },
+      "outside_10cm": 3,
+      "nearest_surface_counts_within_10cm": {
+        "acoustic_validation_target_0": 58,
+        "acoustic_validation_target_1": 93,
+        "acoustic_validation_target_2": 41,
+        "acoustic_validation_wall_0": 36,
+        "acoustic_validation_wall_1": 31,
+        "seabed": 1235
+      }
+    },
+    "orb_reference-native-resolution": {
+      "processed_resolution": [
+        800,
+        600
+      ],
+      "feature_grid": 31,
+      "observations_median": 216,
+      "observations_peak": 250,
+      "window_landmarks_peak": 139,
+      "reference_descriptors_peak": 2278,
+      "geometry_solver_failures": 153,
+      "feature_ids": 93465,
+      "ids_observed_20_times": 2028,
+      "export": {
+        "points": 183,
+        "request_id": 1,
+        "stamp_ns": 136300000000,
+        "success": true,
+        "type": "export"
+      },
+      "runtime_passed": true,
+      "map_qualified": false,
+      "trajectory_rmse_m": 0.07386122677309753,
+      "points": 183,
+      "surface": {
+        "minimum": 9.604864847956307e-05,
+        "median": 0.01027331813635997,
+        "p90": 0.021857776173031085,
+        "maximum": 0.030113280275961607
+      },
+      "outside_10cm": 0,
+      "nearest_surface_counts_within_10cm": {
+        "acoustic_validation_target_0": 29,
+        "acoustic_validation_target_1": 0,
+        "acoustic_validation_target_2": 0,
+        "acoustic_validation_wall_0": 0,
+        "acoustic_validation_wall_1": 0,
+        "seabed": 154
+      }
+    },
+    "patch-native-resolution": {
+      "processed_resolution": [
+        800,
+        600
+      ],
+      "feature_grid": 31,
+      "observations_median": 790,
+      "observations_peak": 1144,
+      "window_landmarks_peak": 970,
+      "reference_descriptors_peak": 0,
+      "geometry_solver_failures": 0,
+      "feature_ids": 80397,
+      "ids_observed_20_times": 10335,
+      "export": {
+        "points": 6213,
+        "request_id": 1,
+        "stamp_ns": 136300000000,
+        "success": true,
+        "type": "export"
+      },
+      "runtime_passed": true,
+      "map_qualified": false,
+      "trajectory_rmse_m": 0.024162975733152323,
+      "points": 6213,
+      "surface": {
+        "minimum": 5.7040733064155625e-06,
+        "median": 0.005571856263732624,
+        "p90": 0.012799417711874385,
+        "maximum": 0.1683054561594693
+      },
+      "outside_10cm": 3,
+      "nearest_surface_counts_within_10cm": {
+        "acoustic_validation_target_0": 197,
+        "acoustic_validation_target_1": 267,
+        "acoustic_validation_target_2": 122,
+        "acoustic_validation_wall_0": 80,
+        "acoustic_validation_wall_1": 115,
+        "seabed": 5429
+      }
+    }
+  },
+  "default_changed": false,
+  "pin_changed": false,
+  "map_qualified": false,
+  "native_regression": {
+    "total": 53,
+    "passed": 47,
+    "skipped": 6
+  },
+  "native_probe": {
+    "passed": true,
+    "occluded_frames": 30,
+    "translation_p90_px": 0.00244312
+  }
+}

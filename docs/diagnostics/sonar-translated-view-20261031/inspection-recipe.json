@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "vehicle": "bluerov2",
+  "sensors": [
+    "camera",
+    "multibeam_forward",
+    "dvl"
+  ],
+  "settings": {
+    "multibeam_forward": {
+      "pose": [
+        0.24,
+        0.0,
+        -0.1,
+        0.0,
+        0.6108652381980153,
+        0.0
+      ]
+    }
+  },
+  "control_mode": "autopilot",
+  "gnss": false
+}

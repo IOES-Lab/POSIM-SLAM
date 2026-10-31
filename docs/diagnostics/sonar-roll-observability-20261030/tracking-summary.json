@@ -1,0 +1,133 @@
+{
+  "results": [
+    {
+      "variant": "lk_source_positive",
+      "initial_pairs": 35,
+      "observations_total": 161,
+      "tracks_with_at_least": {
+        "3": 18,
+        "5": 9,
+        "9": 5,
+        "17": 0,
+        "25": 0
+      },
+      "maximum_observations": 14,
+      "maximum_span_s": 6.49,
+      "stopped_at_ns": 38500000000,
+      "record_end_ns": 38500000000,
+      "stop_reason": "record_end",
+      "frames": [
+        {
+          "stamp_ns": 33010000000,
+          "surviving": 18
+        },
+        {
+          "stamp_ns": 33500000000,
+          "surviving": 12
+        },
+        {
+          "stamp_ns": 34010000000,
+          "surviving": 9
+        },
+        {
+          "stamp_ns": 34500000000,
+          "surviving": 8
+        },
+        {
+          "stamp_ns": 35010000000,
+          "surviving": 8
+        },
+        {
+          "stamp_ns": 35500000000,
+          "surviving": 6
+        },
+        {
+          "stamp_ns": 36010000000,
+          "surviving": 5
+        },
+        {
+          "stamp_ns": 36500000000,
+          "surviving": 5
+        },
+        {
+          "stamp_ns": 37010000000,
+          "surviving": 5
+        },
+        {
+          "stamp_ns": 37500000000,
+          "surviving": 5
+        },
+        {
+          "stamp_ns": 38010000000,
+          "surviving": 5
+        },
+        {
+          "stamp_ns": 38500000000,
+          "surviving": 5
+        }
+      ],
+      "source_supported_observations": {
+        "positive": 130,
+        "contrast": 42
+      },
+      "original_pixel_duplicate_groups": [],
+      "no_pose_or_truth_used": true,
+      "qualified": false
+    },
+    {
+      "variant": "lk_source_contrast",
+      "initial_pairs": 5,
+      "observations_total": 25,
+      "tracks_with_at_least": {
+        "3": 4,
+        "5": 2,
+        "9": 0,
+        "17": 0,
+        "25": 0
+      },
+      "maximum_observations": 8,
+      "maximum_span_s": 3.49,
+      "stopped_at_ns": 36010000000,
+      "record_end_ns": 38500000000,
+      "stop_reason": "all_original_chains_lost",
+      "frames": [
+        {
+          "stamp_ns": 33010000000,
+          "surviving": 4
+        },
+        {
+          "stamp_ns": 33500000000,
+          "surviving": 4
+        },
+        {
+          "stamp_ns": 34010000000,
+          "surviving": 2
+        },
+        {
+          "stamp_ns": 34500000000,
+          "surviving": 2
+        },
+        {
+          "stamp_ns": 35010000000,
+          "surviving": 2
+        },
+        {
+          "stamp_ns": 35500000000,
+          "surviving": 1
+        },
+        {
+          "stamp_ns": 36010000000,
+          "surviving": 0
+        }
+      ],
+      "source_supported_observations": {
+        "positive": 20,
+        "contrast": 16
+      },
+      "original_pixel_duplicate_groups": [],
+      "no_pose_or_truth_used": true,
+      "qualified": false
+    }
+  ],
+  "qualified": false
+}

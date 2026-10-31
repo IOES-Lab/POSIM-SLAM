@@ -1,0 +1,1613 @@
+{
+  "scope": "Post-estimation diagnostics only; vertex indices preserve complete export order",
+  "worst": [
+    {
+      "surface": {
+        "export_vertex_index": 550,
+        "world": [
+          5.128189617175561,
+          0.9894196687541275,
+          -4.019539764462808
+        ],
+        "nearest_surface": "acoustic_validation_target_1",
+        "distance_m": 0.35920969910333067
+      },
+      "source_id": 13290,
+      "observations": [
+        {
+          "stamp_ns": 49100000000,
+          "archived": false,
+          "full_weight": false,
+          "id": 13290,
+          "pixel": [
+            308.0,
+            69.0
+          ],
+          "point": null,
+          "reprojection_error_px": null
+        },
+        {
+          "stamp_ns": 49200000000,
+          "archived": false,
+          "full_weight": false,
+          "id": 13290,
+          "pixel": [
+            298.5805358886719,
+            63.68114471435547
+          ],
+          "point": null,
+          "reprojection_error_px": null
+        },
+        {
+          "stamp_ns": 49300000000,
+          "archived": false,
+          "full_weight": false,
+          "id": 13290,
+          "pixel": [
+            287.8299255371094,
+            59.83298110961914
+          ],
+          "point": null,
+          "reprojection_error_px": null
+        },
+        {
+          "stamp_ns": 49400000000,
+          "archived": false,
+          "full_weight": false,
+          "id": 13290,
+          "pixel": [
+            277.6351318359375,
+            57.54032516479492
+          ],
+          "point": null,
+          "reprojection_error_px": null
+        },
+        {
+          "stamp_ns": 49500000000,
+          "archived": false,
+          "full_weight": false,
+          "id": 13290,
+          "pixel": [
+            267.05828857421875,
+            57.84038543701172
+          ],
+          "point": null,
+          "reprojection_error_px": null
+        },
+        {
+          "stamp_ns": 49600000000,
+          "archived": false,
+          "full_weight": false,
+          "id": 13290,
+          "pixel": [
+            264.3398742675781,
+            69.2845687866211
+          ],
+          "point": null,
+          "reprojection_error_px": null
+        },
+        {
+          "stamp_ns": 49700000000,
+          "archived": false,
+          "conditional_host_position_sigma_m": 0.2186504385115378,
+          "full_weight": true,
+          "id": 13290,
+          "joint_host_position_observed": true,
+          "joint_host_position_sigma_m": 0.22092428699106098,
+          "joint_position_observed": true,
+          "joint_position_sigma_m": 0.2206857375212756,
+          "pixel": [
+            263.2770080566406,
+            75.30799102783203
+          ],
+          "point": [
+            -3.0478624691133205,
+            -4.464346428547606,
+            -3.470422531323618
+          ],
+          "reprojection_error_px": 0.013931533480417094
+        },
+        {
+          "stamp_ns": 49800000000,
+          "archived": false,
+          "conditional_host_position_sigma_m": 0.2069249144120121,
+          "full_weight": true,
+          "id": 13290,
+          "joint_host_position_observed": true,
+          "joint_host_position_sigma_m": 0.20913773225390855,
+          "joint_position_observed": true,
+          "joint_position_sigma_m": 0.20890185853784668,
+          "pixel": [
+            262.87060546875,
+            80.99730682373047
+          ],
+          "point": [
+            -3.04802863523487,
+            -4.464545436255945,
+            -3.47078868051268
+          ],
+          "reprojection_error_px": 0.005260860297341833
+        },
+        {
+          "stamp_ns": 49900000000,
+          "archived": false,
+          "conditional_host_position_sigma_m": 0.19487464075579747,
+          "full_weight": true,
+          "id": 13290,
+          "joint_host_position_observed": true,
+          "joint_host_position_sigma_m": 0.19705043230698255,
+          "joint_position_observed": true,
+          "joint_position_sigma_m": 0.19682025439784495,
+          "pixel": [
+            262.640625,
+            88.05331420898438
+          ],
+          "point": [
+            -3.05397997565093,
+            -4.465770804785801,
+            -3.458259918566103
+          ],
+          "reprojection_error_px": 0.017676641108860344
+        },
+        {
+          "stamp_ns": 50000000000,
+          "archived": false,
+          "conditional_host_position_sigma_m": 0.44726081497256864,
+          "full_weight": false,
+          "id": 13290,
+          "joint_host_position_observed": true,
+          "joint_host_position_sigma_m": 0.4491800327299999,
+          "joint_position_observed": true,
+          "joint_position_sigma_m": 0.4489761215805266,
+          "pixel": [
+            261.4793701171875,
+            74.25761413574219
+          ],
+          "point": [
+            -2.470755711988308,
+            -4.3727144103258615,
+            -4.699668774999806
+          ],
+          "reprojection_error_px": 16.752076551046013
+        },
+        {
+          "stamp_ns": 50100000000,
+          "archived": false,
+          "conditional_host_position_sigma_m": 18.45051751516932,
+          "full_weight": true,
+          "id": 13290,
+          "joint_host_position_observed": true,
+          "joint_host_position_sigma_m": 18.835076430727806,
+          "joint_position_observed": true,
+          "joint_position_sigma_m": 18.835021500682053,
+          "pixel": [
+            261.54638671875,
+            79.31399536132812
+          ],
+          "point": [
+            15.049216146772968,
+            -1.3180346812088126,
+            -41.20716765677092
+          ],
+          "reprojection_error_px": 0.4352855386039778
+        },
+        {
+          "stamp_ns": 50200000000,
+          "archived": false,
+          "conditional_host_position_sigma_m": 5.328846923468971,
+          "full_weight": false,
+          "id": 13290,
+          "joint_host_position_observed": true,
+          "joint_host_position_sigma_m": 5.433377589284692,
+          "joint_position_observed": true,
+          "joint_position_sigma_m": 5.433219773179352,
+          "pixel": [
+            261.74371337890625,
+            82.71570587158203
+          ],
+          "point": [
+            6.539079225187081,
+            -2.7594152392200213,
+            -23.35524944043682
+          ],
+          "reprojection_error_px": 3.7827180417243995
+        },
+        {
+          "stamp_ns": 50300000000,
+          "archived": false,
+          "conditional_host_position_sigma_m": 0.9888469675322592,
+          "full_weight": false,
+          "id": 13290,
+          "joint_host_position_observed": true,
+          "joint_host_position_sigma_m": 1.0103264941007393,
+          "joint_position_observed": true,
+          "joint_position_sigma_m": 1.009982214247075,
+          "pixel": [
+            261.9671630859375,
+            84.13755798339844
+          ],
+          "point": [
+            0.7829431994639534,
+            -3.7887883129789373,
+            -11.415799695541327
+          ],
+          "reprojection_error_px": 2.3126460647650937
+        },
+        {
+          "stamp_ns": 50400000000,
+          "archived": false,
+          "conditional_host_position_sigma_m": 0.5073027940223039,
+          "full_weight": false,
+          "id": 13290,
+          "joint_host_position_observed": true,
+          "joint_host_position_sigma_m": 0.5197647944779001,
+          "joint_position_observed": true,
+          "joint_position_sigma_m": 0.5192878605783591,
+          "pixel": [
+            262.1359558105469,
+            85.21404266357422
+          ],
+          "point": [
+            -0.39391216092228676,
+            -3.9981018162294824,
+            -8.981833394425312
+          ],
+          "reprojection_error_px": 1.5702919257319874
+        },
+        {
+          "stamp_ns": 50500000000,
+          "archived": false,
+          "conditional_host_position_sigma_m": 0.3431055384241858,
+          "full_weight": false,
+          "id": 13290,
+          "joint_host_position_observed": true,
+          "joint_host_position_sigma_m": 0.35229632530945404,
+          "joint_position_observed": true,
+          "joint_position_sigma_m": 0.3519314942568224,
+          "pixel": [
+            262.3804931640625,
+            86.36177062988281
+          ],
+          "point": [
+            -0.8877839675954993,
+            -4.0884086404632685,
+            -7.959562421983019
+          ],
+          "reprojection_error_px": 1.0976615018449254
+        },
+        {
+          "stamp_ns": 50600000000,
+          "archived": false,
+          "conditional_host_position_sigma_m": 0.2710045280147775,
+          "full_weight": false,
+          "id": 13290,
+          "joint_host_position_observed": true,
+          "joint_host_position_sigma_m": 0.2789019598737261,
+          "joint_position_observed": true,
+          "joint_position_sigma_m": 0.27848867650997894,
+          "pixel": [
+            262.5003662109375,
+            88.70529174804688
+          ],
+          "point": [
+            -1.1517711495418004,
+            -4.137747815128654,
+            -7.410690839188338
+          ],
+          "reprojection_error_px": 1.209098629927687
+        },
+        {
+          "stamp_ns": 50700000000,
+          "archived": false,
+          "conditional_host_position_sigma_m": 0.23470396486864595,
+          "full_weight": false,
+          "id": 13290,
+          "joint_host_position_observed": true,
+          "joint_host_position_sigma_m": 0.24175392801424594,
+          "joint_position_observed": true,
+          "joint_position_sigma_m": 0.24130828609392105,
+          "pixel": [
+            262.7320556640625,
+            92.70044708251953
+          ],
+          "point": [
+            -1.2975066524646173,
+            -4.160663038958411,
+            -7.103108761781358
+          ],
+          "reprojection_error_px": 2.3993244917082777
+        },
+        {
+          "stamp_ns": 50800000000,
+          "archived": false,
+          "conditional_host_position_sigma_m": 0.18815663545039185,
+          "full_weight": false,
+          "id": 13290,
+          "joint_host_position_observed": true,
+          "joint_host_position_sigma_m": 0.19402036075347978,
+          "joint_position_observed": true,
+          "joint_position_sigma_m": 0.1935422198348587,
+          "pixel": [
+            262.89117431640625,
+            98.25575256347656
+          ],
+          "point": [
+            -1.55515237681452,
+            -4.205076871925474,
+            -6.564271813561205
+          ],
+          "reprojection_error_px": 3.0056301446868448
+        },
+        {
+          "stamp_ns": 50900000000,
+          "archived": false,
+          "conditional_host_position_sigma_m": 0.1474481637723423,
+          "full_weight": false,
+          "id": 13290,
+          "joint_host_position_observed": true,
+          "joint_host_position_sigma_m": 0.1522120497493942,
+          "joint_position_observed": true,
+          "joint_position_sigma_m": 0.15170725639385554,
+          "pixel": [
+            263.31402587890625,
+            105.05220794677734
+          ],
+          "point": [
+            -1.828794960150288,
+            -4.252091973564574,
+            -5.995686067722992
+          ],
+          "reprojection_error_px": 3.649666943953003
+        },
+        {
+          "stamp_ns": 51000000000,
+          "archived": false,
+          "conditional_host_position_sigma_m": 0.10893545539505013,
+          "full_weight": false,
+          "id": 13290,
+          "joint_host_position_observed": true,
+          "joint_host_position_sigma_m": 0.11318933426124855,
+          "joint_position_observed": true,
+          "joint_position_sigma_m": 0.11264684165713085,
+          "pixel": [
+            263.5804138183594,
+            109.35460662841797
+          ],
+          "point": [
+            -2.063525108042506,
+            -4.292633423183077,
+            -5.506639555909992
+          ],
+          "reprojection_error_px": 1.3032675605422375
+        },
+        {
+          "stamp_ns": 51100000000,
+          "archived": false,
+          "conditional_host_position_sigma_m": 0.0902009555725016,
+          "full_weight": true,
+          "id": 13290,
+          "joint_host_position_observed": true,
+          "joint_host_position_sigma_m": 0.09413923405327368,
+          "joint_position_observed": true,
+          "joint_position_sigma_m": 0.09365431921424319,
+          "pixel": [
+            264.0411071777344,
+            114.18159484863281
+          ],
+          "point": [
+            -2.159432812570398,
+            -4.311166080648945,
+            -5.308684033783715
+          ],
+          "reprojection_error_px": 0.8911906871780525
+        },
+        {
+          "stamp_ns": 51200000000,
+          "archived": false,
+          "conditional_host_position_sigma_m": 0.08320636685789183,
+          "full_weight": false,
+          "id": 13290,
+          "joint_host_position_observed": true,
+          "joint_host_position_sigma_m": 0.08697599187282394,
+          "joint_position_observed": true,
+          "joint_position_sigma_m": 0.08648596069857652,
+          "pixel": [
+            264.733642578125,
+            119.30000305175781
+          ],
+          "point": [
+            -2.208666854762065,
+            -4.317702035907347,
+            -5.204721711621286
+          ],
+          "reprojection_error_px": 1.8866458569855387
+        },
+        {
+          "stamp_ns": 51300000000,
+          "archived": false,
+          "conditional_host_position_sigma_m": 0.06909244790144586,
+          "full_weight": true,
+          "id": 13290,
+          "joint_host_position_observed": true,
+          "joint_host_position_sigma_m": 0.07297323624354889,
+          "joint_position_observed": true,
+          "joint_position_sigma_m": 0.07247831038688234,
+          "pixel": [
+            265.0164794921875,
+            122.43120574951172
+          ],
+          "point": [
+            -2.282281694918655,
+            -4.329059933578691,
+            -5.052828277976887
+          ],
+          "reprojection_error_px": 0.7579465843545876
+        },
+        {
+          "stamp_ns": 51400000000,
+          "archived": false,
+          "conditional_host_position_sigma_m": 0.06503392903061136,
+          "full_weight": false,
+          "id": 13290,
+          "joint_host_position_observed": true,
+          "joint_host_position_sigma_m": 0.06880179024189621,
+          "joint_position_observed": true,
+          "joint_position_sigma_m": 0.06830604269353592,
+          "pixel": [
+            266.1698913574219,
+            128.01739501953125
+          ],
+          "point": [
+            -2.3149196085751407,
+            -4.3333145440764245,
+            -4.981419417773547
+          ],
+          "reprojection_error_px": 3.22723183662851
+        },
+        {
+          "stamp_ns": 51500000000,
+          "archived": false,
+          "conditional_host_position_sigma_m": 0.06067673308111819,
+          "full_weight": false,
+          "id": 13290,
+          "joint_host_position_observed": true,
+          "joint_host_position_sigma_m": 0.0642815203358908,
+          "joint_position_observed": true,
+          "joint_position_sigma_m": 0.06378164768811498,
+          "pixel": [
+            266.9616394042969,
+            132.44125366210938
+          ],
+          "point": [
+            -2.3706380343174738,
+            -4.339702663973637,
+            -4.863790058875754
+          ],
+          "reprojection_error_px": 3.997617397060639
+        },
+        {
+          "stamp_ns": 51600000000,
+          "archived": false,
+          "conditional_host_position_sigma_m": 0.0537670707459127,
+          "full_weight": false,
+          "id": 13290,
+          "joint_host_position_observed": true,
+          "joint_host_position_sigma_m": 0.05707371814747487,
+          "joint_position_observed": true,
+          "joint_position_sigma_m": 0.0566854637734809,
+          "pixel": [
+            268.7356872558594,
+            159.44346618652344
+          ],
+          "point": [
+            -2.4936000003357184,
+            -4.358352005461121,
+            -4.5968478415814795
+          ],
+          "reprojection_error_px": 24.981463717984138
+        },
+        {
+          "stamp_ns": 51700000000,
+          "archived": false,
+          "conditional_host_position_sigma_m": 0.0648471906359551,
+          "full_weight": false,
+          "id": 13290,
+          "joint_host_position_observed": true,
+          "joint_host_position_sigma_m": 0.06721075582948981,
+          "joint_position_observed": true,
+          "joint_position_sigma_m": 0.06691941745034619,
+          "pixel": [
+            269.3750305175781,
+            164.66622924804688
+          ],
+          "point": [
+            -2.590720896483949,
+            -4.36290390049081,
+            -4.369734785651768
+          ],
+          "reprojection_error_px": 24.0494057166194
+        },
+        {
+          "stamp_ns": 51800000000,
+          "archived": false,
+          "conditional_host_position_sigma_m": 0.031818634272836044,
+          "full_weight": true,
+          "id": 13290,
+          "joint_host_position_observed": true,
+          "joint_host_position_sigma_m": 0.033646371226178855,
+          "joint_position_observed": true,
+          "joint_position_sigma_m": 0.034412498708727174,
+          "pixel": [
+            269.966796875,
+            170.566162109375
+          ],
+          "point": [
+            -3.073811456112301,
+            -4.438732038907318,
+            -3.3572995588050336
+          ],
+          "reprojection_error_px": 0.04809378189221804
+        },
+        {
+          "stamp_ns": 51900000000,
+          "archived": false,
+          "conditional_host_position_sigma_m": 0.03144122032420091,
+          "full_weight": true,
+          "id": 13290,
+          "joint_host_position_observed": true,
+          "joint_host_position_sigma_m": 0.033268916320100976,
+          "joint_position_observed": true,
+          "joint_position_sigma_m": 0.03413999883472872,
+          "pixel": [
+            270.4994201660156,
+            177.41717529296875
+          ],
+          "point": [
+            -3.0749634563651123,
+            -4.432466101758808,
+            -3.339125499719612
+          ],
+          "reprojection_error_px": 0.03849485708424371
+        },
+        {
+          "stamp_ns": 52000000000,
+          "archived": false,
+          "conditional_host_position_sigma_m": 0.032525062984404614,
+          "full_weight": true,
+          "id": 13290,
+          "joint_host_position_observed": true,
+          "joint_host_position_sigma_m": 0.03425911417011172,
+          "joint_position_observed": true,
+          "joint_position_sigma_m": 0.035208987848128516,
+          "pixel": [
+            270.7735900878906,
+            185.03811645507812
+          ],
+          "point": [
+            -3.081177026204215,
+            -4.415500434657015,
+            -3.2812689732845395
+          ],
+          "reprojection_error_px": 0.17446339982202871
+        },
+        {
+          "stamp_ns": 52100000000,
+          "archived": false,
+          "conditional_host_position_sigma_m": 0.030714912461175022,
+          "full_weight": true,
+          "id": 13290,
+          "joint_host_position_observed": true,
+          "joint_host_position_sigma_m": 0.032585912827287455,
+          "joint_position_observed": true,
+          "joint_position_sigma_m": 0.03365577999851095,
+          "pixel": [
+            270.5301513671875,
+            191.2714080810547
+          ],
+          "point": [
+            -3.0815568356699794,
+            -4.411026849170547,
+            -3.2691056564529273
+          ],
+          "reprojection_error_px": 0.4638861268315608
+        },
+        {
+          "stamp_ns": 52200000000,
+          "archived": false,
+          "conditional_host_position_sigma_m": 0.029151333220305813,
+          "full_weight": true,
+          "id": 13290,
+          "joint_host_position_observed": true,
+          "joint_host_position_sigma_m": 0.031130916070357704,
+          "joint_position_observed": true,
+          "joint_position_sigma_m": 0.032331421252600454,
+          "pixel": [
+            270.7755126953125,
+            194.9197235107422
+          ],
+          "point": [
+            -3.0775417155544718,
+            -4.40731053508144,
+            -3.2699674645974905
+          ],
+          "reprojection_error_px": 0.4258247173618739
+        },
+        {
+          "stamp_ns": 52300000000,
+          "archived": false,
+          "conditional_host_position_sigma_m": 0.028061945953744546,
+          "full_weight": true,
+          "id": 13290,
+          "joint_host_position_observed": true,
+          "joint_host_position_sigma_m": 0.030106279649218286,
+          "joint_position_observed": true,
+          "joint_position_sigma_m": 0.031426083023061026,
+          "pixel": [
+            270.15753173828125,
+            197.14599609375
+          ],
+          "point": [
+            -3.0747498078035305,
+            -4.401732234293604,
+            -3.2638402085680065
+          ],
+          "reprojection_error_px": 0.3864267155099634
+        },
+        {
+          "stamp_ns": 52400000000,
+          "archived": true,
+          "conditional_host_position_sigma_m": 0.02722063034578356,
+          "full_weight": true,
+          "id": 13290,
+          "joint_host_position_observed": true,
+          "joint_host_position_sigma_m": 0.02930736936503277,
+          "joint_position_observed": true,
+          "joint_position_sigma_m": 0.030733596761745266,
+          "pixel": [
+            270.1235656738281,
+            199.1372528076172
+          ],
+          "point": [
+            -3.0730942896587043,
+            -4.394432625681629,
+            -3.251249417755381
+          ],
+          "reprojection_error_px": 0.35670019550689086
+        },
+        {
+          "stamp_ns": 52500000000,
+          "archived": true,
+          "conditional_host_position_sigma_m": 0.026444784576636564,
+          "full_weight": true,
+          "id": 13290,
+          "joint_host_position_observed": true,
+          "joint_host_position_sigma_m": 0.028173639229269975,
+          "joint_position_observed": true,
+          "joint_position_sigma_m": 0.029767751253898852,
+          "pixel": [
+            269.46575927734375,
+            201.16653442382812
+          ],
+          "point": [
+            -3.0743542797235968,
+            -4.37709562877452,
+            -3.2073009419186826
+          ],
+          "reprojection_error_px": 0.36656335564135123
+        },
+        {
+          "stamp_ns": 52600000000,
+          "archived": true,
+          "conditional_host_position_sigma_m": 0.02546850884164097,
+          "full_weight": true,
+          "id": 13290,
+          "joint_host_position_observed": true,
+          "joint_host_position_sigma_m": 0.027241389716371456,
+          "joint_position_observed": true,
+          "joint_position_sigma_m": 0.028939852556794043,
+          "pixel": [
+            269.34735107421875,
+            204.99522399902344
+          ],
+          "point": [
+            -3.0729757099450876,
+            -4.368212799239428,
+            -3.190058122996697
+          ],
+          "reprojection_error_px": 0.36560432154276135
+        },
+        {
+          "stamp_ns": 52700000000,
+          "archived": true,
+          "conditional_host_position_sigma_m": 0.024443153904218702,
+          "full_weight": true,
+          "id": 13290,
+          "joint_host_position_observed": true,
+          "joint_host_position_sigma_m": 0.026273756533315804,
+          "joint_position_observed": true,
+          "joint_position_sigma_m": 0.028078382754008414,
+          "pixel": [
+            269.3523254394531,
+            209.58465576171875
+          ],
+          "point": [
+            -3.0717297889118327,
+            -4.359273955243062,
+            -3.1724350943879505
+          ],
+          "reprojection_error_px": 0.36513405529611986
+        },
+        {
+          "stamp_ns": 52800000000,
+          "archived": true,
+          "conditional_host_position_sigma_m": 0.023593612220917142,
+          "full_weight": true,
+          "id": 13290,
+          "joint_host_position_observed": true,
+          "joint_host_position_sigma_m": 0.02546471552341842,
+          "joint_position_observed": true,
+          "joint_position_sigma_m": 0.02738663386276515,
+          "pixel": [
+            269.3352355957031,
+            216.1378631591797
+          ],
+          "point": [
+            -3.0704868052386844,
+            -4.356324144968095,
+            -3.168632977215951
+          ],
+          "reprojection_error_px": 0.5552222498580658
+        },
+        {
+          "stamp_ns": 52900000000,
+          "archived": true,
+          "conditional_host_position_sigma_m": 0.023186491638873034,
+          "full_weight": true,
+          "id": 13290,
+          "joint_host_position_observed": true,
+          "joint_host_position_sigma_m": 0.025113552345965715,
+          "joint_position_observed": true,
+          "joint_position_sigma_m": 0.027097747171169525,
+          "pixel": [
+            269.62579345703125,
+            223.11163330078125
+          ],
+          "point": [
+            -3.067477196121445,
+            -4.359562815566114,
+            -3.184165278073181
+          ],
+          "reprojection_error_px": 0.5658239188620123
+        },
+        {
+          "stamp_ns": 53000000000,
+          "archived": true,
+          "conditional_host_position_sigma_m": 0.02289376510547937,
+          "full_weight": true,
+          "id": 13290,
+          "joint_host_position_observed": true,
+          "joint_host_position_sigma_m": 0.02489764425361758,
+          "joint_position_observed": true,
+          "joint_position_sigma_m": 0.02693746121518472,
+          "pixel": [
+            270.0079345703125,
+            230.5397186279297
+          ],
+          "point": [
+            -3.0633080321658017,
+            -4.370686241514377,
+            -3.2210688092351005
+          ],
+          "reprojection_error_px": 0.6087564247243652
+        },
+        {
+          "stamp_ns": 53100000000,
+          "archived": false,
+          "conditional_host_position_sigma_m": 0.02314103831518393,
+          "full_weight": false,
+          "id": 13290,
+          "joint_host_position_observed": true,
+          "joint_host_position_sigma_m": 0.02520666357241498,
+          "joint_position_observed": true,
+          "joint_position_sigma_m": 0.027179921613512983,
+          "pixel": [
+            269.5544738769531,
+            214.49758911132812
+          ],
+          "point": [
+            -3.0567466710484794,
+            -4.391803553982063,
+            -3.2875648323454323
+          ],
+          "reprojection_error_px": 23.786667940167128
+        },
+        {
+          "stamp_ns": 53200000000,
+          "archived": false,
+          "conditional_host_position_sigma_m": 0.020214102960832783,
+          "full_weight": false,
+          "id": 13290,
+          "joint_host_position_observed": true,
+          "joint_host_position_sigma_m": 0.02280122839358196,
+          "joint_position_observed": true,
+          "joint_position_sigma_m": 0.024162563033936244,
+          "pixel": [
+            270.1539306640625,
+            221.42095947265625
+          ],
+          "point": [
+            -3.0179768827374738,
+            -4.444729925178972,
+            -3.51092665215044
+          ],
+          "reprojection_error_px": 19.741951350165998
+        },
+        {
+          "stamp_ns": 53300000000,
+          "archived": false,
+          "conditional_host_position_sigma_m": 0.014868045823859838,
+          "full_weight": true,
+          "id": 13290,
+          "joint_host_position_observed": true,
+          "joint_host_position_sigma_m": 0.0191680417233632,
+          "joint_position_observed": true,
+          "joint_position_sigma_m": 0.0211582278983012,
+          "pixel": [
+            270.9233703613281,
+            228.0978240966797
+          ],
+          "point": [
+            -2.824096374752897,
+            -4.4214591271537245,
+            -3.9281255043712155
+          ],
+          "reprojection_error_px": 0.31039413128252785
+        },
+        {
+          "stamp_ns": 53400000000,
+          "archived": false,
+          "conditional_host_position_sigma_m": 0.014323030511260281,
+          "full_weight": true,
+          "id": 13290,
+          "joint_host_position_observed": true,
+          "joint_host_position_sigma_m": 0.0187212740731222,
+          "joint_position_observed": true,
+          "joint_position_sigma_m": 0.020832205811425832,
+          "pixel": [
+            271.6640625,
+            234.67637634277344
+          ],
+          "point": [
+            -2.831649158741549,
+            -4.4227536340284175,
+            -3.9120686856040656
+          ],
+          "reprojection_error_px": 0.5425100639852906
+        },
+        {
+          "stamp_ns": 53500000000,
+          "archived": true,
+          "conditional_host_position_sigma_m": 0.0136562492925242,
+          "full_weight": true,
+          "id": 13290,
+          "joint_host_position_observed": true,
+          "joint_host_position_sigma_m": 0.018160156817175522,
+          "joint_position_observed": true,
+          "joint_position_sigma_m": 0.020490939017394565,
+          "pixel": [
+            272.3572692871094,
+            240.41140747070312
+          ],
+          "point": [
+            -2.8348656466888076,
+            -4.423218005541583,
+            -3.9037898401067848
+          ],
+          "reprojection_error_px": 0.6489445136332092
+        },
+        {
+          "stamp_ns": 53600000000,
+          "archived": true,
+          "conditional_host_position_sigma_m": 0.013378931152688355,
+          "full_weight": true,
+          "id": 13290,
+          "joint_host_position_observed": true,
+          "joint_host_position_sigma_m": 0.017920024199072137,
+          "joint_position_observed": true,
+          "joint_position_sigma_m": 0.020349978962924196,
+          "pixel": [
+            272.88018798828125,
+            246.66566467285156
+          ],
+          "point": [
+            -2.8433406853268393,
+            -4.424124012638969,
+            -3.885792609777265
+          ],
+          "reprojection_error_px": 0.8386262134340664
+        },
+        {
+          "stamp_ns": 53700000000,
+          "archived": true,
+          "conditional_host_position_sigma_m": 0.013310875805623784,
+          "full_weight": true,
+          "id": 13290,
+          "joint_host_position_observed": true,
+          "joint_host_position_sigma_m": 0.01782644673389601,
+          "joint_position_observed": true,
+          "joint_position_sigma_m": 0.020360685762568297,
+          "pixel": [
+            273.3535461425781,
+            252.946533203125
+          ],
+          "point": [
+            -2.8498795713062908,
+            -4.424522092081047,
+            -3.8699395605202698
+          ],
+          "reprojection_error_px": 0.8088516473305752
+        },
+        {
+          "stamp_ns": 53800000000,
+          "archived": true,
+          "conditional_host_position_sigma_m": 0.013155476117623514,
+          "full_weight": true,
+          "id": 13290,
+          "joint_host_position_observed": true,
+          "joint_host_position_sigma_m": 0.017666978296888278,
+          "joint_position_observed": true,
+          "joint_position_sigma_m": 0.02031992257481436,
+          "pixel": [
+            273.7684326171875,
+            260.24884033203125
+          ],
+          "point": [
+            -2.8571498282819503,
+            -4.424981882570755,
+            -3.852383163601849
+          ],
+          "reprojection_error_px": 0.8604838697253643
+        }
+      ]
+    },
+    {
+      "surface": {
+        "export_vertex_index": 531,
+        "world": [
+          6.489586947705789,
+          0.03110238461411227,
+          -2.2685543804753814
+        ],
+        "nearest_surface": "acoustic_validation_target_2",
+        "distance_m": 0.1265016652762525
+      },
+      "source_id": 12463,
+      "observations": [
+        {
+          "stamp_ns": 47100000000,
+          "archived": false,
+          "full_weight": false,
+          "id": 12463,
+          "pixel": [
+            260.0,
+            69.0
+          ],
+          "point": null,
+          "reprojection_error_px": null
+        },
+        {
+          "stamp_ns": 47200000000,
+          "archived": false,
+          "full_weight": false,
+          "id": 12463,
+          "pixel": [
+            258.491455078125,
+            74.2264404296875
+          ],
+          "point": null,
+          "reprojection_error_px": null
+        },
+        {
+          "stamp_ns": 47300000000,
+          "archived": false,
+          "full_weight": false,
+          "id": 12463,
+          "pixel": [
+            258.8163146972656,
+            82.56631469726562
+          ],
+          "point": null,
+          "reprojection_error_px": null
+        },
+        {
+          "stamp_ns": 47400000000,
+          "archived": false,
+          "full_weight": false,
+          "id": 12463,
+          "pixel": [
+            260.0715026855469,
+            89.94400024414062
+          ],
+          "point": null,
+          "reprojection_error_px": null
+        },
+        {
+          "stamp_ns": 47500000000,
+          "archived": false,
+          "full_weight": false,
+          "id": 12463,
+          "pixel": [
+            260.53839111328125,
+            95.50154876708984
+          ],
+          "point": null,
+          "reprojection_error_px": null
+        },
+        {
+          "stamp_ns": 47600000000,
+          "archived": false,
+          "conditional_host_position_sigma_m": 0.10496930929122363,
+          "full_weight": true,
+          "id": 12463,
+          "joint_host_position_observed": true,
+          "joint_host_position_sigma_m": 0.10636992228148937,
+          "joint_position_observed": true,
+          "joint_position_sigma_m": 0.10665122921040114,
+          "pixel": [
+            260.31744384765625,
+            100.79012298583984
+          ],
+          "point": [
+            -4.495686192796046,
+            -4.69132201212723,
+            -2.2280430174246213
+          ],
+          "reprojection_error_px": 0.3988794024789471
+        },
+        {
+          "stamp_ns": 47700000000,
+          "archived": false,
+          "conditional_host_position_sigma_m": 0.10037841219397925,
+          "full_weight": true,
+          "id": 12463,
+          "joint_host_position_observed": true,
+          "joint_host_position_sigma_m": 0.10179205174302658,
+          "joint_position_observed": true,
+          "joint_position_sigma_m": 0.10207491894834701,
+          "pixel": [
+            260.5286865234375,
+            105.0223159790039
+          ],
+          "point": [
+            -4.4967124576951685,
+            -4.697803368027104,
+            -2.213365382739719
+          ],
+          "reprojection_error_px": 0.3710069669290991
+        },
+        {
+          "stamp_ns": 47800000000,
+          "archived": false,
+          "conditional_host_position_sigma_m": 0.10500952238083036,
+          "full_weight": true,
+          "id": 12463,
+          "joint_host_position_observed": true,
+          "joint_host_position_sigma_m": 0.10643162605725691,
+          "joint_position_observed": true,
+          "joint_position_sigma_m": 0.10667515914040014,
+          "pixel": [
+            261.5669250488281,
+            109.05992889404297
+          ],
+          "point": [
+            -4.49763638236336,
+            -4.6734397602028945,
+            -2.278089199799103
+          ],
+          "reprojection_error_px": 0.2363916353182797
+        },
+        {
+          "stamp_ns": 47900000000,
+          "archived": false,
+          "conditional_host_position_sigma_m": 0.06307045944040397,
+          "full_weight": true,
+          "id": 12463,
+          "joint_host_position_observed": true,
+          "joint_host_position_sigma_m": 0.06454710046219597,
+          "joint_position_observed": true,
+          "joint_position_sigma_m": 0.06494295777829023,
+          "pixel": [
+            262.21234130859375,
+            113.97978973388672
+          ],
+          "point": [
+            -4.4970866556380225,
+            -4.688146595197485,
+            -2.2373303981315016
+          ],
+          "reprojection_error_px": 0.286776435309666
+        },
+        {
+          "stamp_ns": 48000000000,
+          "archived": false,
+          "conditional_host_position_sigma_m": 0.04853926918782194,
+          "full_weight": true,
+          "id": 12463,
+          "joint_host_position_observed": true,
+          "joint_host_position_sigma_m": 0.05012991912887562,
+          "joint_position_observed": true,
+          "joint_position_sigma_m": 0.050610392059699603,
+          "pixel": [
+            262.1047058105469,
+            107.88016510009766
+          ],
+          "point": [
+            -4.49580061196308,
+            -4.680735201197366,
+            -2.2523677786416894
+          ],
+          "reprojection_error_px": 0.2401173606328446
+        },
+        {
+          "stamp_ns": 48100000000,
+          "archived": false,
+          "conditional_host_position_sigma_m": 0.0414316562280089,
+          "full_weight": false,
+          "id": 12463,
+          "joint_host_position_observed": true,
+          "joint_host_position_sigma_m": 0.04294745822401292,
+          "joint_position_observed": true,
+          "joint_position_sigma_m": 0.04353803577190542,
+          "pixel": [
+            260.5724182128906,
+            111.52635192871094
+          ],
+          "point": [
+            -4.495884628919043,
+            -4.708741226796811,
+            -2.179259104373939
+          ],
+          "reprojection_error_px": 3.9042616403475523
+        },
+        {
+          "stamp_ns": 48200000000,
+          "archived": false,
+          "conditional_host_position_sigma_m": 0.026154473968741352,
+          "full_weight": true,
+          "id": 12463,
+          "joint_host_position_observed": true,
+          "joint_host_position_sigma_m": 0.028106674659459728,
+          "joint_position_observed": true,
+          "joint_position_sigma_m": 0.029083854706451823,
+          "pixel": [
+            261.23907470703125,
+            109.33097839355469
+          ],
+          "point": [
+            -4.4929492717395965,
+            -4.765618888829085,
+            -2.0411171600431754
+          ],
+          "reprojection_error_px": 0.054430106808861574
+        },
+        {
+          "stamp_ns": 48300000000,
+          "archived": false,
+          "conditional_host_position_sigma_m": 0.02338911735906816,
+          "full_weight": true,
+          "id": 12463,
+          "joint_host_position_observed": true,
+          "joint_host_position_sigma_m": 0.025454419243615512,
+          "joint_position_observed": true,
+          "joint_position_sigma_m": 0.02649753375688215,
+          "pixel": [
+            258.6297302246094,
+            106.87528991699219
+          ],
+          "point": [
+            -4.491555134041806,
+            -4.763536701151762,
+            -2.05102035601009
+          ],
+          "reprojection_error_px": 0.5000576953891577
+        },
+        {
+          "stamp_ns": 48400000000,
+          "archived": true,
+          "conditional_host_position_sigma_m": 0.021835124159051558,
+          "full_weight": true,
+          "id": 12463,
+          "joint_host_position_observed": true,
+          "joint_host_position_sigma_m": 0.024032813694452478,
+          "joint_position_observed": true,
+          "joint_position_sigma_m": 0.025099467664374573,
+          "pixel": [
+            255.2420196533203,
+            104.22573852539062
+          ],
+          "point": [
+            -4.492160534728379,
+            -4.756775469291176,
+            -2.0694609106167774
+          ],
+          "reprojection_error_px": 0.515894959183191
+        },
+        {
+          "stamp_ns": 48500000000,
+          "archived": true,
+          "conditional_host_position_sigma_m": 0.020690362524044104,
+          "full_weight": true,
+          "id": 12463,
+          "joint_host_position_observed": true,
+          "joint_host_position_sigma_m": 0.023003380139753647,
+          "joint_position_observed": true,
+          "joint_position_sigma_m": 0.024087851306740217,
+          "pixel": [
+            251.87564086914062,
+            101.28609466552734
+          ],
+          "point": [
+            -4.492427672256494,
+            -4.751380249473198,
+            -2.0837261240150604
+          ],
+          "reprojection_error_px": 0.4237537811774335
+        },
+        {
+          "stamp_ns": 48600000000,
+          "archived": true,
+          "conditional_host_position_sigma_m": 0.019570166241162177,
+          "full_weight": true,
+          "id": 12463,
+          "joint_host_position_observed": true,
+          "joint_host_position_sigma_m": 0.022128783333608938,
+          "joint_position_observed": true,
+          "joint_position_sigma_m": 0.023243390183901178,
+          "pixel": [
+            247.51902770996094,
+            98.83162689208984
+          ],
+          "point": [
+            -4.492098695258267,
+            -4.748696919824801,
+            -2.090557007658009
+          ],
+          "reprojection_error_px": 0.44563750923814055
+        },
+        {
+          "stamp_ns": 48700000000,
+          "archived": true,
+          "conditional_host_position_sigma_m": 0.018905809955850186,
+          "full_weight": true,
+          "id": 12463,
+          "joint_host_position_observed": true,
+          "joint_host_position_sigma_m": 0.021539272820807386,
+          "joint_position_observed": true,
+          "joint_position_sigma_m": 0.022677334466790006,
+          "pixel": [
+            242.52413940429688,
+            97.20947265625
+          ],
+          "point": [
+            -4.4918057954639865,
+            -4.74611494225114,
+            -2.096562488206907
+          ],
+          "reprojection_error_px": 0.34792647067656496
+        },
+        {
+          "stamp_ns": 48800000000,
+          "archived": true,
+          "conditional_host_position_sigma_m": 0.018303763489298824,
+          "full_weight": true,
+          "id": 12463,
+          "joint_host_position_observed": true,
+          "joint_host_position_sigma_m": 0.02101151989057257,
+          "joint_position_observed": true,
+          "joint_position_sigma_m": 0.022196333201799066,
+          "pixel": [
+            236.75296020507812,
+            96.57991790771484
+          ],
+          "point": [
+            -4.491171451826901,
+            -4.743962487353537,
+            -2.101397812031525
+          ],
+          "reprojection_error_px": 0.493563055296458
+        }
+      ]
+    },
+    {
+      "surface": {
+        "export_vertex_index": 1092,
+        "world": [
+          4.606661909138084,
+          -1.865518457746816,
+          -3.261182001172403
+        ],
+        "nearest_surface": "acoustic_validation_target_0",
+        "distance_m": 0.12517759850109828
+      },
+      "source_id": 21747,
+      "observations": [
+        {
+          "stamp_ns": 70600000000,
+          "archived": false,
+          "full_weight": false,
+          "id": 21747,
+          "pixel": [
+            189.0,
+            84.0
+          ],
+          "point": null,
+          "reprojection_error_px": null
+        },
+        {
+          "stamp_ns": 70700000000,
+          "archived": false,
+          "full_weight": false,
+          "id": 21747,
+          "pixel": [
+            188.98086547851562,
+            88.74623107910156
+          ],
+          "point": null,
+          "reprojection_error_px": null
+        },
+        {
+          "stamp_ns": 70800000000,
+          "archived": false,
+          "conditional_host_position_sigma_m": 0.2903124947057273,
+          "full_weight": true,
+          "id": 21747,
+          "joint_host_position_observed": true,
+          "joint_host_position_sigma_m": 0.29125391746071777,
+          "joint_position_observed": true,
+          "joint_position_sigma_m": 0.2915707852766689,
+          "pixel": [
+            188.83155822753906,
+            93.74671173095703
+          ],
+          "point": [
+            -4.636224992001912,
+            -2.198082858142846,
+            -3.5955910601932866
+          ],
+          "reprojection_error_px": 0.04685428241895493
+        },
+        {
+          "stamp_ns": 70900000000,
+          "archived": false,
+          "conditional_host_position_sigma_m": 0.26730922753045905,
+          "full_weight": true,
+          "id": 21747,
+          "joint_host_position_observed": true,
+          "joint_host_position_sigma_m": 0.2682119322924061,
+          "joint_position_observed": true,
+          "joint_position_sigma_m": 0.2685651187204819,
+          "pixel": [
+            188.640869140625,
+            99.0911636352539
+          ],
+          "point": [
+            -4.640838902603933,
+            -2.2045419965728597,
+            -3.62292292375377
+          ],
+          "reprojection_error_px": 0.045985903000080895
+        },
+        {
+          "stamp_ns": 71000000000,
+          "archived": false,
+          "conditional_host_position_sigma_m": 0.23707584010098715,
+          "full_weight": true,
+          "id": 21747,
+          "joint_host_position_observed": true,
+          "joint_host_position_sigma_m": 0.237933265087039,
+          "joint_position_observed": true,
+          "joint_position_sigma_m": 0.23833796086660816,
+          "pixel": [
+            188.2490997314453,
+            105.06959533691406
+          ],
+          "point": [
+            -4.634140275521926,
+            -2.193837738844943,
+            -3.5815524644270402
+          ],
+          "reprojection_error_px": 0.01983688010215585
+        },
+        {
+          "stamp_ns": 71100000000,
+          "archived": false,
+          "conditional_host_position_sigma_m": 0.14229847005138027,
+          "full_weight": true,
+          "id": 21747,
+          "joint_host_position_observed": true,
+          "joint_host_position_sigma_m": 0.14308889967861727,
+          "joint_position_observed": true,
+          "joint_position_sigma_m": 0.14374530079238193,
+          "pixel": [
+            187.86683654785156,
+            111.79039001464844
+          ],
+          "point": [
+            -4.630303572116605,
+            -2.1873890727617584,
+            -3.5559697885612094
+          ],
+          "reprojection_error_px": 0.04449588191970245
+        },
+        {
+          "stamp_ns": 71200000000,
+          "archived": false,
+          "conditional_host_position_sigma_m": 0.10441655714165883,
+          "full_weight": true,
+          "id": 21747,
+          "joint_host_position_observed": true,
+          "joint_host_position_sigma_m": 0.10523857977602043,
+          "joint_position_observed": true,
+          "joint_position_sigma_m": 0.10611357964160781,
+          "pixel": [
+            187.41415405273438,
+            119.28422546386719
+          ],
+          "point": [
+            -4.629878578953241,
+            -2.18635109711352,
+            -3.553233952107773
+          ],
+          "reprojection_error_px": 0.016958732964290832
+        },
+        {
+          "stamp_ns": 71300000000,
+          "archived": false,
+          "conditional_host_position_sigma_m": 0.08013875496372982,
+          "full_weight": true,
+          "id": 21747,
+          "joint_host_position_observed": true,
+          "joint_host_position_sigma_m": 0.08103885560073716,
+          "joint_position_observed": true,
+          "joint_position_sigma_m": 0.0821525734018181,
+          "pixel": [
+            186.92733764648438,
+            127.76969909667969
+          ],
+          "point": [
+            -4.628954227728288,
+            -2.1848552951110323,
+            -3.5481133944989267
+          ],
+          "reprojection_error_px": 0.029929605195910404
+        },
+        {
+          "stamp_ns": 71400000000,
+          "archived": false,
+          "conditional_host_position_sigma_m": 0.06416957224572065,
+          "full_weight": true,
+          "id": 21747,
+          "joint_host_position_observed": true,
+          "joint_host_position_sigma_m": 0.06518891203204503,
+          "joint_position_observed": true,
+          "joint_position_sigma_m": 0.06654588396330062,
+          "pixel": [
+            186.44667053222656,
+            136.9261016845703
+          ],
+          "point": [
+            -4.628746296174389,
+            -2.1849729776963853,
+            -3.547259550455954
+          ],
+          "reprojection_error_px": 0.016912699884268304
+        },
+        {
+          "stamp_ns": 71500000000,
+          "archived": false,
+          "conditional_host_position_sigma_m": 0.05294641383493256,
+          "full_weight": true,
+          "id": 21747,
+          "joint_host_position_observed": true,
+          "joint_host_position_sigma_m": 0.05412004146719861,
+          "joint_position_observed": true,
+          "joint_position_sigma_m": 0.05572351774363542,
+          "pixel": [
+            186.0061798095703,
+            146.73983764648438
+          ],
+          "point": [
+            -4.6282369015195695,
+            -2.1834301714232454,
+            -3.5425770741185225
+          ],
+          "reprojection_error_px": 0.033207937656109125
+        },
+        {
+          "stamp_ns": 71600000000,
+          "archived": false,
+          "conditional_host_position_sigma_m": 0.04924702237409051,
+          "full_weight": false,
+          "id": 21747,
+          "joint_host_position_observed": true,
+          "joint_host_position_sigma_m": 0.05042643499104396,
+          "joint_position_observed": true,
+          "joint_position_sigma_m": 0.05214126174932582,
+          "pixel": [
+            185.59669494628906,
+            167.12533569335938
+          ],
+          "point": [
+            -4.618499215486993,
+            -2.1669205770661937,
+            -3.468096349557012
+          ],
+          "reprojection_error_px": 9.512234653029992
+        },
+        {
+          "stamp_ns": 71700000000,
+          "archived": false,
+          "conditional_host_position_sigma_m": 0.02802489360929229,
+          "full_weight": true,
+          "id": 21747,
+          "joint_host_position_observed": true,
+          "joint_host_position_sigma_m": 0.029557544295543404,
+          "joint_position_observed": true,
+          "joint_position_sigma_m": 0.03240802421566942,
+          "pixel": [
+            185.12001037597656,
+            176.4610137939453
+          ],
+          "point": [
+            -4.54798655703593,
+            -2.06075129567431,
+            -3.047105671499956
+          ],
+          "reprojection_error_px": 0.14788092303646547
+        },
+        {
+          "stamp_ns": 71800000000,
+          "archived": false,
+          "conditional_host_position_sigma_m": 0.024559049750434537,
+          "full_weight": true,
+          "id": 21747,
+          "joint_host_position_observed": true,
+          "joint_host_position_sigma_m": 0.026243649489326806,
+          "joint_position_observed": true,
+          "joint_position_sigma_m": 0.02936093806249347,
+          "pixel": [
+            184.80870056152344,
+            183.01319885253906
+          ],
+          "point": [
+            -4.550566451259393,
+            -2.063940321887494,
+            -3.063486501504563
+          ],
+          "reprojection_error_px": 0.4404215746568945
+        },
+        {
+          "stamp_ns": 71900000000,
+          "archived": true,
+          "conditional_host_position_sigma_m": 0.02274872978068602,
+          "full_weight": true,
+          "id": 21747,
+          "joint_host_position_observed": true,
+          "joint_host_position_sigma_m": 0.024554451046841695,
+          "joint_position_observed": true,
+          "joint_position_sigma_m": 0.0278315236635943,
+          "pixel": [
+            184.52334594726562,
+            185.92970275878906
+          ],
+          "point": [
+            -4.556284561108587,
+            -2.0721956394698298,
+            -3.0940253016578416
+          ],
+          "reprojection_error_px": 0.682790135490679
+        }
+      ]
+    }
+  ]
+}
