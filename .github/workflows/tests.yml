@@ -85,6 +85,8 @@ jobs:
           python docs/diagnostics/sonar-shadow-support-20261031/test_shadow_extract.py
           python docs/diagnostics/sonar-shadow-support-20261031/test_reproduction_precision.py
           python docs/diagnostics/sonar-shadow-support-20261031/verify.py
+      - name: Verify frozen DVL calibration against all original plane ranges
+        run: python docs/diagnostics/dvl-plane-calibration-20261031/verify.py
       - run: python tools/evaluate_inertial_filter.py --output "$RUNNER_TEMP/inertial-filter.json"
       - run: python tools/evaluate_stationary_initialization.py --output "$RUNNER_TEMP/inertial-initialization.json"
       - run: python tools/evaluate_moving_initialization.py --output "$RUNNER_TEMP/moving-initialization.json"

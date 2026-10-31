@@ -1,0 +1,504 @@
+<?xml version='1.0' encoding='utf-8'?>
+<sdf xmlns:gz="http://gazebosim.org" version="1.10">
+  <world name="dvl_calibration">
+    <gravity>0 0 -9.8</gravity>
+    <physics name="default" type="ignored">
+      <max_step_size>0.01</max_step_size>
+      <real_time_factor>1</real_time_factor>
+    </physics>
+    <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics" />
+    <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster" />
+    <plugin filename="gz-sim-dvl-system" name="gz::sim::systems::DopplerVelocityLogSystem" />
+    <plugin filename="/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/sonar-current-main-20261029/assembled-gz-render-init/build/libgz-sim-sensors-system.10.5.0.dylib" name="gz::sim::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+    <scene>
+      <ambient>0.6 0.6 0.6 1</ambient>
+      <background>0.1 0.1 0.1 1</background>
+      <shadows>false</shadows>
+    </scene>
+    <model name="known_ground">
+      <static>true</static>
+      <pose>0 0 -0.1 0 0 0</pose>
+      <link name="ground">
+        <collision name="floor">
+          <geometry>
+            <box>
+              <size>150 150 .2</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="floor">
+          <geometry>
+            <box>
+              <size>150 150 .2</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.5 .5 .5 1</ambient>
+            <diffuse>.5 .5 .5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="dvl_fixture_00">
+      <static>true</static>
+      <pose>-24 0 0.75 0.0 0.0 0</pose>
+      <link name="carrier">
+        <sensor name="calibration_dvl" type="custom" gz:type="dvl">
+          <pose>0 0 0 0 0 0</pose>
+          <always_on>true</always_on>
+          <update_rate>1</update_rate>
+          <topic>/calibration/dvl/00</topic>
+          <gz:dvl>
+            <type>phased_array</type>
+            <arrangement degrees="true">
+              <beam id="1">
+                <aperture>2</aperture>
+                <rotation>45</rotation>
+                <tilt>30</tilt>
+              </beam>
+              <beam id="2">
+                <aperture>2</aperture>
+                <rotation>135</rotation>
+                <tilt>30</tilt>
+              </beam>
+              <beam id="3">
+                <aperture>2</aperture>
+                <rotation>-45</rotation>
+                <tilt>30</tilt>
+              </beam>
+              <beam id="4">
+                <aperture>2</aperture>
+                <rotation>-135</rotation>
+                <tilt>30</tilt>
+              </beam>
+            </arrangement>
+            <tracking>
+              <bottom_mode>
+                <when>best</when>
+                <noise type="gaussian">
+                  <stddev>0.002</stddev>
+                </noise>
+                <visualize>false</visualize>
+              </bottom_mode>
+            </tracking>
+            <resolution>0.01</resolution>
+            <maximum_range>20</maximum_range>
+            <minimum_range>0.1</minimum_range>
+            <reference_frame>0 0 0 0 0 0</reference_frame>
+          </gz:dvl>
+          <frame_id>dvl_fixture_00</frame_id>
+        </sensor>
+      </link>
+    </model>
+    <model name="dvl_fixture_01">
+      <static>true</static>
+      <pose>-18 0 0.75 0.0 0.13962634015954636 0</pose>
+      <link name="carrier">
+        <sensor name="calibration_dvl" type="custom" gz:type="dvl">
+          <pose>0 0 0 0 0 0</pose>
+          <always_on>true</always_on>
+          <update_rate>1</update_rate>
+          <topic>/calibration/dvl/01</topic>
+          <gz:dvl>
+            <type>phased_array</type>
+            <arrangement degrees="true">
+              <beam id="1">
+                <aperture>2</aperture>
+                <rotation>45</rotation>
+                <tilt>30</tilt>
+              </beam>
+              <beam id="2">
+                <aperture>2</aperture>
+                <rotation>135</rotation>
+                <tilt>30</tilt>
+              </beam>
+              <beam id="3">
+                <aperture>2</aperture>
+                <rotation>-45</rotation>
+                <tilt>30</tilt>
+              </beam>
+              <beam id="4">
+                <aperture>2</aperture>
+                <rotation>-135</rotation>
+                <tilt>30</tilt>
+              </beam>
+            </arrangement>
+            <tracking>
+              <bottom_mode>
+                <when>best</when>
+                <noise type="gaussian">
+                  <stddev>0.002</stddev>
+                </noise>
+                <visualize>false</visualize>
+              </bottom_mode>
+            </tracking>
+            <resolution>0.01</resolution>
+            <maximum_range>20</maximum_range>
+            <minimum_range>0.1</minimum_range>
+            <reference_frame>0 0 0 0 0 0</reference_frame>
+          </gz:dvl>
+          <frame_id>dvl_fixture_01</frame_id>
+        </sensor>
+      </link>
+    </model>
+    <model name="dvl_fixture_02">
+      <static>true</static>
+      <pose>-12 0 0.75 -0.12217304763960307 0.08726646259971647 0</pose>
+      <link name="carrier">
+        <sensor name="calibration_dvl" type="custom" gz:type="dvl">
+          <pose>0 0 0 0 0 0</pose>
+          <always_on>true</always_on>
+          <update_rate>1</update_rate>
+          <topic>/calibration/dvl/02</topic>
+          <gz:dvl>
+            <type>phased_array</type>
+            <arrangement degrees="true">
+              <beam id="1">
+                <aperture>2</aperture>
+                <rotation>45</rotation>
+                <tilt>30</tilt>
+              </beam>
+              <beam id="2">
+                <aperture>2</aperture>
+                <rotation>135</rotation>
+                <tilt>30</tilt>
+              </beam>
+              <beam id="3">
+                <aperture>2</aperture>
+                <rotation>-45</rotation>
+                <tilt>30</tilt>
+              </beam>
+              <beam id="4">
+                <aperture>2</aperture>
+                <rotation>-135</rotation>
+                <tilt>30</tilt>
+              </beam>
+            </arrangement>
+            <tracking>
+              <bottom_mode>
+                <when>best</when>
+                <noise type="gaussian">
+                  <stddev>0.002</stddev>
+                </noise>
+                <visualize>false</visualize>
+              </bottom_mode>
+            </tracking>
+            <resolution>0.01</resolution>
+            <maximum_range>20</maximum_range>
+            <minimum_range>0.1</minimum_range>
+            <reference_frame>0 0 0 0 0 0</reference_frame>
+          </gz:dvl>
+          <frame_id>dvl_fixture_02</frame_id>
+        </sensor>
+      </link>
+    </model>
+    <model name="dvl_fixture_03">
+      <static>true</static>
+      <pose>-6 0 2.0 0.0 0.0 0</pose>
+      <link name="carrier">
+        <sensor name="calibration_dvl" type="custom" gz:type="dvl">
+          <pose>0 0 0 0 0 0</pose>
+          <always_on>true</always_on>
+          <update_rate>1</update_rate>
+          <topic>/calibration/dvl/03</topic>
+          <gz:dvl>
+            <type>phased_array</type>
+            <arrangement degrees="true">
+              <beam id="1">
+                <aperture>2</aperture>
+                <rotation>45</rotation>
+                <tilt>30</tilt>
+              </beam>
+              <beam id="2">
+                <aperture>2</aperture>
+                <rotation>135</rotation>
+                <tilt>30</tilt>
+              </beam>
+              <beam id="3">
+                <aperture>2</aperture>
+                <rotation>-45</rotation>
+                <tilt>30</tilt>
+              </beam>
+              <beam id="4">
+                <aperture>2</aperture>
+                <rotation>-135</rotation>
+                <tilt>30</tilt>
+              </beam>
+            </arrangement>
+            <tracking>
+              <bottom_mode>
+                <when>best</when>
+                <noise type="gaussian">
+                  <stddev>0.002</stddev>
+                </noise>
+                <visualize>false</visualize>
+              </bottom_mode>
+            </tracking>
+            <resolution>0.01</resolution>
+            <maximum_range>20</maximum_range>
+            <minimum_range>0.1</minimum_range>
+            <reference_frame>0 0 0 0 0 0</reference_frame>
+          </gz:dvl>
+          <frame_id>dvl_fixture_03</frame_id>
+        </sensor>
+      </link>
+    </model>
+    <model name="dvl_fixture_04">
+      <static>true</static>
+      <pose>0 0 2.0 0.0 0.13962634015954636 0</pose>
+      <link name="carrier">
+        <sensor name="calibration_dvl" type="custom" gz:type="dvl">
+          <pose>0 0 0 0 0 0</pose>
+          <always_on>true</always_on>
+          <update_rate>1</update_rate>
+          <topic>/calibration/dvl/04</topic>
+          <gz:dvl>
+            <type>phased_array</type>
+            <arrangement degrees="true">
+              <beam id="1">
+                <aperture>2</aperture>
+                <rotation>45</rotation>
+                <tilt>30</tilt>
+              </beam>
+              <beam id="2">
+                <aperture>2</aperture>
+                <rotation>135</rotation>
+                <tilt>30</tilt>
+              </beam>
+              <beam id="3">
+                <aperture>2</aperture>
+                <rotation>-45</rotation>
+                <tilt>30</tilt>
+              </beam>
+              <beam id="4">
+                <aperture>2</aperture>
+                <rotation>-135</rotation>
+                <tilt>30</tilt>
+              </beam>
+            </arrangement>
+            <tracking>
+              <bottom_mode>
+                <when>best</when>
+                <noise type="gaussian">
+                  <stddev>0.002</stddev>
+                </noise>
+                <visualize>false</visualize>
+              </bottom_mode>
+            </tracking>
+            <resolution>0.01</resolution>
+            <maximum_range>20</maximum_range>
+            <minimum_range>0.1</minimum_range>
+            <reference_frame>0 0 0 0 0 0</reference_frame>
+          </gz:dvl>
+          <frame_id>dvl_fixture_04</frame_id>
+        </sensor>
+      </link>
+    </model>
+    <model name="dvl_fixture_05">
+      <static>true</static>
+      <pose>6 0 2.0 -0.12217304763960307 0.08726646259971647 0</pose>
+      <link name="carrier">
+        <sensor name="calibration_dvl" type="custom" gz:type="dvl">
+          <pose>0 0 0 0 0 0</pose>
+          <always_on>true</always_on>
+          <update_rate>1</update_rate>
+          <topic>/calibration/dvl/05</topic>
+          <gz:dvl>
+            <type>phased_array</type>
+            <arrangement degrees="true">
+              <beam id="1">
+                <aperture>2</aperture>
+                <rotation>45</rotation>
+                <tilt>30</tilt>
+              </beam>
+              <beam id="2">
+                <aperture>2</aperture>
+                <rotation>135</rotation>
+                <tilt>30</tilt>
+              </beam>
+              <beam id="3">
+                <aperture>2</aperture>
+                <rotation>-45</rotation>
+                <tilt>30</tilt>
+              </beam>
+              <beam id="4">
+                <aperture>2</aperture>
+                <rotation>-135</rotation>
+                <tilt>30</tilt>
+              </beam>
+            </arrangement>
+            <tracking>
+              <bottom_mode>
+                <when>best</when>
+                <noise type="gaussian">
+                  <stddev>0.002</stddev>
+                </noise>
+                <visualize>false</visualize>
+              </bottom_mode>
+            </tracking>
+            <resolution>0.01</resolution>
+            <maximum_range>20</maximum_range>
+            <minimum_range>0.1</minimum_range>
+            <reference_frame>0 0 0 0 0 0</reference_frame>
+          </gz:dvl>
+          <frame_id>dvl_fixture_05</frame_id>
+        </sensor>
+      </link>
+    </model>
+    <model name="dvl_fixture_06">
+      <static>true</static>
+      <pose>12 0 4.0 0.0 0.0 0</pose>
+      <link name="carrier">
+        <sensor name="calibration_dvl" type="custom" gz:type="dvl">
+          <pose>0 0 0 0 0 0</pose>
+          <always_on>true</always_on>
+          <update_rate>1</update_rate>
+          <topic>/calibration/dvl/06</topic>
+          <gz:dvl>
+            <type>phased_array</type>
+            <arrangement degrees="true">
+              <beam id="1">
+                <aperture>2</aperture>
+                <rotation>45</rotation>
+                <tilt>30</tilt>
+              </beam>
+              <beam id="2">
+                <aperture>2</aperture>
+                <rotation>135</rotation>
+                <tilt>30</tilt>
+              </beam>
+              <beam id="3">
+                <aperture>2</aperture>
+                <rotation>-45</rotation>
+                <tilt>30</tilt>
+              </beam>
+              <beam id="4">
+                <aperture>2</aperture>
+                <rotation>-135</rotation>
+                <tilt>30</tilt>
+              </beam>
+            </arrangement>
+            <tracking>
+              <bottom_mode>
+                <when>best</when>
+                <noise type="gaussian">
+                  <stddev>0.002</stddev>
+                </noise>
+                <visualize>false</visualize>
+              </bottom_mode>
+            </tracking>
+            <resolution>0.01</resolution>
+            <maximum_range>20</maximum_range>
+            <minimum_range>0.1</minimum_range>
+            <reference_frame>0 0 0 0 0 0</reference_frame>
+          </gz:dvl>
+          <frame_id>dvl_fixture_06</frame_id>
+        </sensor>
+      </link>
+    </model>
+    <model name="dvl_fixture_07">
+      <static>true</static>
+      <pose>18 0 4.0 0.0 0.13962634015954636 0</pose>
+      <link name="carrier">
+        <sensor name="calibration_dvl" type="custom" gz:type="dvl">
+          <pose>0 0 0 0 0 0</pose>
+          <always_on>true</always_on>
+          <update_rate>1</update_rate>
+          <topic>/calibration/dvl/07</topic>
+          <gz:dvl>
+            <type>phased_array</type>
+            <arrangement degrees="true">
+              <beam id="1">
+                <aperture>2</aperture>
+                <rotation>45</rotation>
+                <tilt>30</tilt>
+              </beam>
+              <beam id="2">
+                <aperture>2</aperture>
+                <rotation>135</rotation>
+                <tilt>30</tilt>
+              </beam>
+              <beam id="3">
+                <aperture>2</aperture>
+                <rotation>-45</rotation>
+                <tilt>30</tilt>
+              </beam>
+              <beam id="4">
+                <aperture>2</aperture>
+                <rotation>-135</rotation>
+                <tilt>30</tilt>
+              </beam>
+            </arrangement>
+            <tracking>
+              <bottom_mode>
+                <when>best</when>
+                <noise type="gaussian">
+                  <stddev>0.002</stddev>
+                </noise>
+                <visualize>false</visualize>
+              </bottom_mode>
+            </tracking>
+            <resolution>0.01</resolution>
+            <maximum_range>20</maximum_range>
+            <minimum_range>0.1</minimum_range>
+            <reference_frame>0 0 0 0 0 0</reference_frame>
+          </gz:dvl>
+          <frame_id>dvl_fixture_07</frame_id>
+        </sensor>
+      </link>
+    </model>
+    <model name="dvl_fixture_08">
+      <static>true</static>
+      <pose>24 0 4.0 -0.12217304763960307 0.08726646259971647 0</pose>
+      <link name="carrier">
+        <sensor name="calibration_dvl" type="custom" gz:type="dvl">
+          <pose>0 0 0 0 0 0</pose>
+          <always_on>true</always_on>
+          <update_rate>1</update_rate>
+          <topic>/calibration/dvl/08</topic>
+          <gz:dvl>
+            <type>phased_array</type>
+            <arrangement degrees="true">
+              <beam id="1">
+                <aperture>2</aperture>
+                <rotation>45</rotation>
+                <tilt>30</tilt>
+              </beam>
+              <beam id="2">
+                <aperture>2</aperture>
+                <rotation>135</rotation>
+                <tilt>30</tilt>
+              </beam>
+              <beam id="3">
+                <aperture>2</aperture>
+                <rotation>-45</rotation>
+                <tilt>30</tilt>
+              </beam>
+              <beam id="4">
+                <aperture>2</aperture>
+                <rotation>-135</rotation>
+                <tilt>30</tilt>
+              </beam>
+            </arrangement>
+            <tracking>
+              <bottom_mode>
+                <when>best</when>
+                <noise type="gaussian">
+                  <stddev>0.002</stddev>
+                </noise>
+                <visualize>false</visualize>
+              </bottom_mode>
+            </tracking>
+            <resolution>0.01</resolution>
+            <maximum_range>20</maximum_range>
+            <minimum_range>0.1</minimum_range>
+            <reference_frame>0 0 0 0 0 0</reference_frame>
+          </gz:dvl>
+          <frame_id>dvl_fixture_08</frame_id>
+        </sensor>
+      </link>
+    </model>
+  </world>
+</sdf>

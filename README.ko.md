@@ -44,6 +44,8 @@ Householder QR과 유효 정보 방향을 구분하는 SVD로 자세·평면·�
 
 [조건부 그림자 기하](docs/diagnostics/sonar-shadow-support-20261031/README.ko.md)는 각도·물리 평면 배경을 비교하며 모든 관측 가설과 미해결 평면·자세 불확실성을 보존합니다.
 
+[알려진 평면의 DVL 보정](docs/diagnostics/dvl-plane-calibration-20261031/README.ko.md)은 조건부 반사 방향 평균과 미확정 거리 불확실성을 구분하고 정적 관측 모델 대조군을 전체 보존합니다.
+
 `sonar_input`은 전력 0인 `-inf` 표본을 보존하고 대역폭·음속으로 광대역 소나의
 물리 거리 격자를 검사합니다. 특징점 후보에는 측정된 반사 지지가 필요하며,
 영상 처리용 값으로 원본 관측을 바꾸지 않습니다.

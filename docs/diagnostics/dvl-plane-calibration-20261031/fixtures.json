@@ -1,0 +1,191 @@
+{
+  "reference_cases": [
+    {
+      "index": 0,
+      "name": "dvl_fixture_00",
+      "topic": "/calibration/dvl/00",
+      "height_m": 0.75,
+      "roll_deg": 0.0,
+      "pitch_deg": 0.0,
+      "sensor_pose": "identity for explicit static fixture only"
+    },
+    {
+      "index": 1,
+      "name": "dvl_fixture_01",
+      "topic": "/calibration/dvl/01",
+      "height_m": 0.75,
+      "roll_deg": 0.0,
+      "pitch_deg": 8.0,
+      "sensor_pose": "identity for explicit static fixture only"
+    },
+    {
+      "index": 2,
+      "name": "dvl_fixture_02",
+      "topic": "/calibration/dvl/02",
+      "height_m": 0.75,
+      "roll_deg": -7.0,
+      "pitch_deg": 5.0,
+      "sensor_pose": "identity for explicit static fixture only"
+    },
+    {
+      "index": 3,
+      "name": "dvl_fixture_03",
+      "topic": "/calibration/dvl/03",
+      "height_m": 2.0,
+      "roll_deg": 0.0,
+      "pitch_deg": 0.0,
+      "sensor_pose": "identity for explicit static fixture only"
+    },
+    {
+      "index": 4,
+      "name": "dvl_fixture_04",
+      "topic": "/calibration/dvl/04",
+      "height_m": 2.0,
+      "roll_deg": 0.0,
+      "pitch_deg": 8.0,
+      "sensor_pose": "identity for explicit static fixture only"
+    },
+    {
+      "index": 5,
+      "name": "dvl_fixture_05",
+      "topic": "/calibration/dvl/05",
+      "height_m": 2.0,
+      "roll_deg": -7.0,
+      "pitch_deg": 5.0,
+      "sensor_pose": "identity for explicit static fixture only"
+    },
+    {
+      "index": 6,
+      "name": "dvl_fixture_06",
+      "topic": "/calibration/dvl/06",
+      "height_m": 4.0,
+      "roll_deg": 0.0,
+      "pitch_deg": 0.0,
+      "sensor_pose": "identity for explicit static fixture only"
+    },
+    {
+      "index": 7,
+      "name": "dvl_fixture_07",
+      "topic": "/calibration/dvl/07",
+      "height_m": 4.0,
+      "roll_deg": 0.0,
+      "pitch_deg": 8.0,
+      "sensor_pose": "identity for explicit static fixture only"
+    },
+    {
+      "index": 8,
+      "name": "dvl_fixture_08",
+      "topic": "/calibration/dvl/08",
+      "height_m": 4.0,
+      "roll_deg": -7.0,
+      "pitch_deg": 5.0,
+      "sensor_pose": "identity for explicit static fixture only"
+    }
+  ],
+  "unused_cases": [
+    {
+      "index": 0,
+      "name": "dvl_fixture_00",
+      "topic": "/calibration/dvl/00",
+      "height_m": 1.3,
+      "roll_deg": 8.0,
+      "pitch_deg": 0.0,
+      "sensor_pose": "identity fixture"
+    },
+    {
+      "index": 1,
+      "name": "dvl_fixture_01",
+      "topic": "/calibration/dvl/01",
+      "height_m": 1.3,
+      "roll_deg": 0.0,
+      "pitch_deg": -8.0,
+      "sensor_pose": "identity fixture"
+    },
+    {
+      "index": 2,
+      "name": "dvl_fixture_02",
+      "topic": "/calibration/dvl/02",
+      "height_m": 1.3,
+      "roll_deg": 5.0,
+      "pitch_deg": -5.0,
+      "sensor_pose": "identity fixture"
+    },
+    {
+      "index": 3,
+      "name": "dvl_fixture_03",
+      "topic": "/calibration/dvl/03",
+      "height_m": 1.3,
+      "roll_deg": -5.0,
+      "pitch_deg": -5.0,
+      "sensor_pose": "identity fixture"
+    },
+    {
+      "index": 4,
+      "name": "dvl_fixture_04",
+      "topic": "/calibration/dvl/04",
+      "height_m": 3.3,
+      "roll_deg": 4.0,
+      "pitch_deg": -3.0,
+      "sensor_pose": "identity fixture"
+    },
+    {
+      "index": 5,
+      "name": "dvl_fixture_05",
+      "topic": "/calibration/dvl/05",
+      "height_m": 3.3,
+      "roll_deg": -4.0,
+      "pitch_deg": 3.0,
+      "sensor_pose": "identity fixture"
+    }
+  ],
+  "original_world_sha256": "6c093f6df95ac8a488ca27d278c19fdfe053e56977c965e63a7f2490f547e7de",
+  "unused_world_sha256": "27a9426908fdddc432900c65efd9dc75e9ac8efcf43f40076dd5ffe3a0062a49",
+  "frozen_before_unused_sha256": "fe5e3b10dd05d02ab4c340832b584b7d3bb1bf25325918cdae3942d77651e763",
+  "settings": {
+    "aperture_deg": 2.0,
+    "tilt_deg": 30.0,
+    "rotations_deg": [
+      45.0,
+      135.0,
+      -45.0,
+      -135.0
+    ],
+    "resolution_m_at_1m": 0.01,
+    "minimum_range_m": 0.1,
+    "maximum_range_m": 20.0,
+    "rate_hz": 1.0,
+    "velocity_noise_stddev_m_s": 0.002
+  },
+  "sdk_sensor_pkg": "gz-sensors10.1.1",
+  "loaded_binary_identities": [
+    {
+      "path": "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/posim332f629-sdk/lib/gz-sim-10/plugins/libgz-sim-dvl-system.10.5.0.dylib",
+      "resolved_path": "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/posim332f629-sdk/lib/gz-sim-10/plugins/libgz-sim-dvl-system.10.5.0.dylib",
+      "sha256": "ea1b3614331175f9328f900dafa94a856ea026c2cff85d20f3a4d2205917427d"
+    },
+    {
+      "path": "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/posim332f629-sdk/lib/libgz-rendering.10.0.2.dylib",
+      "resolved_path": "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/posim332f629-sdk/lib/libgz-rendering.10.0.2.dylib",
+      "sha256": "5273e28dccd49268beec9238a14e752b718e835dae6f7bf87478fe5e3f8f9afa"
+    },
+    {
+      "path": "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/posim332f629-sdk/lib/libgz-sensors-dvl.10.1.1.dylib",
+      "resolved_path": "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/posim332f629-sdk/lib/libgz-sensors-dvl.10.1.1.dylib",
+      "sha256": "ccf443a8611545c8fee2ab515781eddc74584fd0c21fc3f4ce90532231a25424"
+    },
+    {
+      "path": "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/posim332f629-sdk/lib/libgz-sensors.10.1.1.dylib",
+      "resolved_path": "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/posim332f629-sdk/lib/libgz-sensors.10.1.1.dylib",
+      "sha256": "47a7592c0339b53df6329da90a2bf6a80ab6b82568aa438ec84281947c03706b"
+    },
+    {
+      "path": "/Volumes/ExternalHDD/POSIM/host/Users/ioes/Library/Caches/WWW-POSIM/review-0510-ff1bc653/engine/lib/libgz-rendering-ogre2.10.0.2.dylib",
+      "resolved_path": "/Volumes/ExternalHDD/POSIM/host/Users/ioes/Library/Caches/WWW-POSIM/review-0510-ff1bc653/engine/lib/libgz-rendering-ogre2.10.0.2.dylib",
+      "sha256": "14c6ae4c3d65427b4dda7175974fb75064d4a44e1e1d65fcda470aace5fac681"
+    }
+  ],
+  "no_sdk_or_physical_settings_changed": true,
+  "no_field_movie_captured": true,
+  "source_plane_is_calibration_fixture": true,
+  "physical_branch_outside_tested_controls_unqualified": true
+}
