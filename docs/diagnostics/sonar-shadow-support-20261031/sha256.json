@@ -1,6 +1,6 @@
 {
-  "README.ko.md": "7f1c7ae885f7d142324abf30d1ffef9e79fcaf42dad93e233ca6bb86c6dc9d3c",
-  "README.md": "efbb876d05c0944f1cab8a83fa73eca86948d4a86cf3aeb09adedf9d356178f5",
+  "README.ko.md": "db7a7dd8870a8f2c82c6714d5d3291db5614035cfbde030d2698a7cbd795da27",
+  "README.md": "e8fe68c5f3ab0fbcec4e732e5a3395df3a1432dd03bd89440a943a48b5b33f53",
   "angular_median-all.ply": "fb136581358ec279bd04b141fecd35fcd88af3dbfec5a9fa4dc1d67ce0b8e51a",
   "angular_median-assessed.npz": "f53e527f4bdd462cd578d4e53ad8b493a7df9982f63427f57dc1b9fea17370eb",
   "angular_median-complete.json.gz": "1d29d7d92bf0201ea5ef46393b0eba022a1091ae3d6d7a7337d58a89d6f8ed3f",
@@ -22,7 +22,8 @@
   "shadow-observations.png": "7e3fbdfd7a42ae07c2ba213437d6a598444b27195e99ee32c94e0ab60860d5a8",
   "shadow_extract.py": "75b651550a612a303a46fff18d785602eedd3e34778b89ad51a1b03e88159790",
   "shadow_geometry.py": "8b0fda6c15d1fb179d9526bcfedaa0a9577861e3afaf3a4e3447a48e7d644e2d",
+  "test_reproduction_precision.py": "ee0582e2fff56da74566461de6338219e5197a5dc2b113caf5706cd4bd0438d1",
   "test_shadow_extract.py": "dcc4d9bb1c4c217f73cbd79d28baa1f8e07f6f26b9d2d7e0f0c307ec202d6944",
   "test_shadow_geometry.py": "cbb25bf1654799a24791e4fa881871b2f84b3438e2636a874fc44f18bd386c3b",
-  "verify.py": "e16aab270901b1d4a53fc11a7b5a3142151f0be97118005ca8bd94ad3b05bfd6"
+  "verify.py": "c3d0c0caf6f805563ae1c64a369d99a0afd8b800e166178c130df3810dc30bd3"
 }

@@ -54,9 +54,10 @@ POSIM-SLAM 소스에서 `pip install -e '.[diagnostics]'` 후 실행합니다.
 ```sh
 python docs/diagnostics/sonar-shadow-support-20261031/test_shadow_geometry.py
 python docs/diagnostics/sonar-shadow-support-20261031/test_shadow_extract.py
+python docs/diagnostics/sonar-shadow-support-20261031/test_reproduction_precision.py
 python docs/diagnostics/sonar-shadow-support-20261031/verify.py
 ```
 
-검증기는 지원되는 DVL 평면 74개를 다시 맞추고 과거 입력만 사용했는지 확인합니다. 조건부 출력 5,339개와 전체 PLY, 모든 표면 평가, 좁은 시점에서의 높이 분할 결과를 재현합니다. 원본 영상 추출 재현은 전체 대표 프레임 세 개를 대상으로 하며 나머지 원본 해시와 파생 후보 목록도 보존합니다. 전체 원본 영상·네이티브 수집·센서 보정을 다시 실행하는 검사는 아닙니다. 전체 원본은 외장 디스크의 기준 기록 한 곳에 유지합니다. `plot_comparison.py`와 `plot_observations.py`로 그림을 다시 그립니다. 공유한 Orca5 유래 장면·RGB는 연결한 기록의 [MIT 고지](../sonar-inspection-scene-20261031/Orca5-LICENSE.txt)를 유지합니다.
+검증기는 지원되는 DVL 평면 74개를 다시 맞추고 과거 입력만 사용했는지 확인합니다. 조건부 출력 5,339개와 전체 PLY, 모든 표면 평가, 좁은 시점에서의 높이 분할 결과를 재현합니다. 원본 해시·검출 구간·내보낸 좌표는 정확히 비교하고, 재계산 좌표는 부동소수점 정밀도로 비교합니다. 원본 영상 추출 재현은 전체 대표 프레임 세 개를 대상으로 하며 나머지 원본 해시와 파생 후보 목록도 보존합니다. 전체 원본 영상·네이티브 수집·센서 보정을 다시 실행하는 검사는 아닙니다. 전체 원본은 외장 디스크의 기준 기록 한 곳에 유지합니다. `plot_comparison.py`와 `plot_observations.py`로 그림을 다시 그립니다. 공유한 Orca5 유래 장면·RGB는 연결한 기록의 [MIT 고지](../sonar-inspection-scene-20261031/Orca5-LICENSE.txt)를 유지합니다.
 
 다음에는 공유 가림·바닥면 관측에 결합 불확실성과 실제 병진 시점 변화를 적용합니다. 이전 표면·structureless 실패를 검토하고 그림자 경계를 또 다른 고정점 제약식으로 바꾸지 않습니다. 실제 DVL 손실·부재, 초기화, 센서 조합, 플랫폼, VRX와 후속 WAM-V 측량 검증은 남아 있습니다.

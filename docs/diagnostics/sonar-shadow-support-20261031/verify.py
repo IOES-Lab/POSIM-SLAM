@@ -13,6 +13,25 @@ from posim_slam.sonar_surface_power import SurfacePowerModel
 ROOT=Path(__file__).resolve().parent
 
 
+def assert_derived(actual,expected):
+    """Roundoff only for recomputed floats; discrete observations stay exact.
+
+    Original packets, hashes and exported coordinates are checked separately,
+    without this comparison. No saved physical measurement is substituted.
+    """
+    if isinstance(expected,dict):
+        assert actual.keys()==expected.keys()
+        for key in expected:assert_derived(actual[key],expected[key])
+    elif isinstance(expected,(list,tuple)):
+        assert len(actual)==len(expected)
+        for a,b in zip(actual,expected):assert_derived(a,b)
+    elif isinstance(expected,float):
+        tolerance=32*np.finfo(float).eps
+        np.testing.assert_allclose(actual,expected,rtol=tolerance,atol=tolerance)
+    else:
+        assert actual==expected
+
+
 def rotation(q):
     x,y,z,w=np.asarray(q)/np.linalg.norm(q)
     return np.array([[1-2*(y*y+z*z),2*(x*y-z*w),2*(x*z+y*w)],
@@ -77,7 +96,7 @@ def main():
         rs=r@np.array(cal['sonar']['sonar_to_imu']);origin=p+r@cal['sonar']['imu_to_sonar']
         np.testing.assert_allclose(row['plane_normal'],rs.T@n,atol=2e-14)
         np.testing.assert_allclose(row['plane_distance_m'],distance-n@origin,atol=2e-14)
-        np.testing.assert_array_equal(row['origin'],origin)
+        assert_derived(row['origin'],origin.tolist())
     assert len(provenance['frames'])==147 and len(inputs['raw_sonar_index'])==150
     provenance_by_stamp={r['stamp_ns']:r for r in provenance['frames']}
     documents={}
@@ -130,7 +149,7 @@ def main():
             # Ignore attached geometry when comparing raw extracted observations.
             for c in stored['components']:
                 for obs in c['observations']:obs.pop('geometry',None)
-            assert current['components']==stored['components'],(mode,stamp)
+            assert_derived(current['components'],stored['components'])
     # Scene/truth enter only this separate all-point assessment section.
     assert hashlib.sha256((ROOT/references['scene']).read_bytes()).hexdigest()==references['scene_sha256']
     spec=importlib.util.spec_from_file_location('surface_distance_check',ROOT.parent/'sonar-inspection-scene-20261031/verify.py')
@@ -147,12 +166,13 @@ def main():
         with np.load(ROOT/(mode+'-assessed.npz'),allow_pickle=False) as z:
             np.testing.assert_allclose(world,z['world'],atol=2e-13)
             np.testing.assert_allclose(errors,z['error_m'],atol=2e-12)
+            stored_world=z['world'].copy()
         for name,mask in [('all',np.ones(len(world),dtype='bool')),('paired',np.array([r['paired'] for r in document['points']]))]:
             saved=summary['results'][mode][name]
             assert saved['count']==int(mask.sum()) and saved['beyond_10cm']==int((errors[mask]>.1).sum())
             np.testing.assert_allclose(np.sqrt(np.mean(errors[mask]**2)),saved['surface_rmse_m'],atol=2e-12)
         ply=(ROOT/(mode+'-all.ply')).read_text().split('end_header\n',1)[1]
-        np.testing.assert_array_equal(np.array([[float(v) for v in row.split()] for row in ply.splitlines()]),world)
+        np.testing.assert_array_equal(np.array([[float(v) for v in row.split()] for row in ply.splitlines()]),stored_world)
     # Restore complete geometry after representative comparison removed it.
     with gzip.open(ROOT/'physical_plane-complete.json.gz','rt') as f:physical=json.load(f)
     original=read('height-persistence.json');result=persistence(physical,provenance)

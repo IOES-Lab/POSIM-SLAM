@@ -54,9 +54,10 @@ From a POSIM-SLAM source checkout with `pip install -e '.[diagnostics]'`:
 ```sh
 python docs/diagnostics/sonar-shadow-support-20261031/test_shadow_geometry.py
 python docs/diagnostics/sonar-shadow-support-20261031/test_shadow_extract.py
+python docs/diagnostics/sonar-shadow-support-20261031/test_reproduction_precision.py
 python docs/diagnostics/sonar-shadow-support-20261031/verify.py
 ```
 
-The verifier refits all 74 supported DVL planes, checks causal transport, reproduces all 5,339 conditional outputs and full PLYs, checks every surface assessment and the narrow-view height split. Raw extraction is reproduced on three complete representative frames; all other raw hashes and derived candidate lists remain. This does not rerun all original images, native acquisition or sensor calibration. Full raw data stays once in the external canonical recording. `plot_comparison.py` and `plot_observations.py` redraw the figures. Shared Orca5-derived scene/RGB assets remain in the referenced records with their [MIT notice](../sonar-inspection-scene-20261031/Orca5-LICENSE.txt).
+The verifier refits all 74 supported DVL planes, checks causal transport, reproduces all 5,339 conditional outputs and full PLYs, checks every surface assessment and the narrow-view height split. Original hashes, discrete detections and exported coordinates stay exact; recomputed coordinates use floating-point precision. Raw extraction is reproduced on three complete representative frames; all other raw hashes and derived candidate lists remain. This does not rerun all original images, native acquisition or sensor calibration. Full raw data stays once in the external canonical recording. `plot_comparison.py` and `plot_observations.py` redraw the figures. Shared Orca5-derived scene/RGB assets remain in the referenced records with their [MIT notice](../sonar-inspection-scene-20261031/Orca5-LICENSE.txt).
 
 Next evaluate an explicit shared occlusion/ground-surface observation with joint uncertainty and real translational view support. Review earlier surface/structureless failures; do not turn shadow boundaries into another fixed-point factor. Actual DVL loss/absence, initialization, combinations, platform, VRX and later WAM-V survey gates remain open.
