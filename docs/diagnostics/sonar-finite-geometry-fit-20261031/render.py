@@ -20,7 +20,7 @@ def matrix(q):
         [2*(x*z-y*w),2*(y*z+x*w),1-2*(x*x+y*y)]])
 
 
-def main(records):
+def main(records, families=None):
     from fit import sha
     seal = json.loads((ROOT/'construction-seal.json').read_text())
     for name,digest in seal['files'].items():assert sha(ROOT/name)==digest
@@ -52,7 +52,8 @@ def main(records):
     camera_direction = attitude@matrix(cam['rotation'])[:,2]
     arrows = [(origin,origin+1.5*direction,'#ee9822'),
               (camera_origin,camera_origin+1.5*camera_direction,'#168bb7')]
-    allpoints = np.vstack([clouds[k+'_world'] for k in ['initial_prism','fitted_prism']])
+    families = ['initial_prism','fitted_prism'] if families is None else families
+    allpoints = np.vstack([clouds[k+'_world'] for k in families])
     references = np.vstack([v.reshape(-1,3) for k,v in scene.items() if k!='seabed']+
         [allpoints,np.array([body]+[end for _,end,_ in arrows])])
     bounds = project(references)
@@ -60,10 +61,10 @@ def main(records):
     ylim = min(image.shape[0],bounds[:,1].max()+45),max(0,bounds[:,1].min()-45)
     colours = ListedColormap(plt.get_cmap('turbo')(np.linspace(.10,.95,256)),name='turbo_blue_red')
     norm = Normalize(allpoints[:,2].min(),allpoints[:,2].max())
-    fig,axes = plt.subplots(1,3,figsize=(20,8),layout='constrained')
+    fig,axes = plt.subplots(1,1+len(families),figsize=(20/3*(1+len(families)),8),layout='constrained')
     axes[0].imshow(image)
     axes[0].set_title('Retained native field RGB\nExact recorded isometric camera',fontsize=13)
-    for ax,label in zip(axes[1:],['initial_prism','fitted_prism']):
+    for ax,label in zip(axes[1:],families):
         ax.set_facecolor('#f5f7f8')
         for name,triangles in scene.items():
             if name=='seabed':continue
@@ -74,7 +75,9 @@ def main(records):
         ax.scatter(*xy.T,c=points[:,2],cmap=colours,norm=norm,s=64,
                    alpha=.75,edgecolors='none')
         s = assessment['families'][label]
-        title = 'Initial finite shape' if label=='initial_prism' else 'Fitted finite shape'
+        title = {'initial_prism':'Initial finite shape','fitted_prism':'Fitted finite shape',
+                 'three_view_control':'Same-schedule three-view control',
+                 'height_diverse_fit':'Five-view height-diverse fit'}.get(label,label.replace('_',' '))
         e = s['all_surface_error_m']
         ax.set_title(f'{title}: all {len(points)} model samples\nSurface RMSE {e["rmse"]*100:.2f} cm; '
                      f'{e["beyond_10cm"]} above diagnostic 10 cm',fontsize=12)
@@ -96,15 +99,18 @@ def main(records):
     fig.savefig(ROOT/'full-cloud-comparison.png',dpi=140,bbox_inches='tight',pad_inches=.12)
     plt.close(fig)
     inputs = json.loads((ROOT/'inputs.json').read_text())
-    fig,axes = plt.subplots(2,3,figsize=(15,10),layout='constrained')
     frames = inputs['frames']
+    rows = (len(frames)+2)//3
+    fig,axes = plt.subplots(rows,3,figsize=(15,5*rows),layout='constrained',squeeze=False)
+    def raw_path(frame):
+        return ROOT.parent/frame['raw_record']/'raw'/frame['file'] if 'raw_record' in frame else ROOT/'raw'/frame['file']
     dbs = []
     for frame in frames:
-        with np.load(ROOT/'raw'/frame['file'],allow_pickle=False) as z:dbs.append(z['intensity_db'].copy())
+        with np.load(raw_path(frame),allow_pickle=False) as z:dbs.append(z['intensity_db'].copy())
     finite = np.concatenate([a[np.isfinite(a)] for a in dbs])
     low,high = np.quantile(finite,[.02,.998])
     for ax,frame,db in zip(axes.ravel(),frames,dbs):
-        with np.load(ROOT/'raw'/frame['file'],allow_pickle=False) as z:
+        with np.load(raw_path(frame),allow_pickle=False) as z:
             r = z['ranges'];a = np.arctan2(z['beam_directions'][:,1],z['beam_directions'][:,0])
         re = np.r_[0.,(r[:-1]+r[1:])/2,r[-1]+(r[-1]-r[-2])/2]
         ae = np.r_[a[0],(a[:-1]+a[1:])/2,a[-1]]
@@ -114,11 +120,13 @@ def main(records):
                             shading='flat',rasterized=True)
         q = np.array(frame['pixels']);x = -r[q[:,0]]*np.sin(a[q[:,1]]);y = r[q[:,0]]*np.cos(a[q[:,1]])
         ax.scatter(x,y,s=10,facecolors='none',edgecolors='#25bdd7',linewidths=.6)
-        group = 'Fit' if frame['index'] in [49,88,151] else 'Unused temporal view'
+        training = json.loads((ROOT/'protocol.json').read_text()).get('training_height_diverse_indices',[49,88,151])
+        group = 'Fit' if frame['index'] in training else 'Unused temporal view'
         ax.set_title(f'{group}: frame {frame["index"]}, {frame["stamp_ns"]/1e9:.2f} s',fontsize=11)
         ax.set(xlim=(-13.1,13.1),ylim=(0,15),aspect='equal',xlabel='Starboard distance (m)',ylabel='Forward slant projection (m)')
+    for ax in axes.ravel()[len(frames):]:ax.axis('off')
     fig.colorbar(last,ax=list(axes.ravel()),shrink=.7,pad=.015,label='Raw power (dB), one shared display scale')
-    fig.suptitle('Original 15 m sonar images and frozen 48 queries per view\n'
+    fig.suptitle('Original 15 m sonar images and frozen queries per view\n'
                  'Distance axes: near at bottom; far at top. No image-derived XYZ point factor.',fontsize=15)
     fig.supxlabel('Cyan circles: fixed queries chosen before fitting, including broad ground controls. All 599×256 raw values remain in each NPZ.\n'
                   'Display levels use shared finite-power 2% / 99.8% quantiles; absent returns remain black. The comparison is development evidence, not independent-scene validation.',fontsize=10)

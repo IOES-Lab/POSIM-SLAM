@@ -80,6 +80,12 @@ Better image scores do not improve complete shape RMSE; all model samples and
 matched field RGB remain. 원본 영상의 해저·유한 물체 적합은 영상 점수가 좋아져도
 전체 형상 RMSE를 개선하지 못하며, 모든 표면 가설 점과 같은 카메라의 현장 RGB를 보존합니다.
 
+[Height-diversity and scene-support controls](docs/diagnostics/sonar-height-diversity-fit-20261031/README.md)
+retain matched-search comparisons and post-seal reference-geometry ablations.
+Missing reflectors can be absorbed by a wrong flat background; adding views
+alone does not repair that model. 높이 관측·장면 범위 대조군은 누락 반사체를 잘못된
+평면이 대신 설명할 수 있음을 보존하며, 관측 추가만으로 모델을 고치지 못합니다.
+
 [Conditional sonar-row diagnostics](docs/diagnostics/sonar-structureless-update-20261030/README.md)
 provide a public numerical reproduction of single-posterior conditioning,
 retained weak-height modes and identical-clock DVL omission controls.

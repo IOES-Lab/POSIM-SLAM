@@ -1,0 +1,328 @@
+{
+  "scope": "Post-seal, assessment-only scene/pose forward-model audit, not inference.",
+  "assessment_only": true,
+  "inferred_geometry_unchanged": true,
+  "map_accepted": false,
+  "native_fusion": false,
+  "protocol_sha256": "6afcd6073ecbc8ebdd5b48021373c308f57c5fa4e53afa1de5e24fd49395b655",
+  "source_sha256": "4ca04d6cedc3f9ad7083069a3e648594473220521085643ae4fdf104657d1fa9",
+  "full_scene_triangles": 32318,
+  "frames": [
+    {
+      "index": 27,
+      "arm": "full_scene_true_pose",
+      "available": true,
+      "gain": 1.2004544443464356,
+      "composite_score": 214.65320540111003,
+      "normalized_residual_rms": 1.5585100908778522,
+      "normalized_residual_max": 6.307210445426417,
+      "first_hits": [
+        {
+          "surface": "seabed",
+          "triangles": 32258,
+          "first_hit_rays": 64125
+        },
+        {
+          "surface": "inspection_block_0",
+          "triangles": 12,
+          "first_hit_rays": 607
+        },
+        {
+          "surface": "inspection_block_1",
+          "triangles": 12,
+          "first_hit_rays": 0
+        },
+        {
+          "surface": "inspection_block_2",
+          "triangles": 12,
+          "first_hit_rays": 0
+        },
+        {
+          "surface": "inspection_wall_0",
+          "triangles": 12,
+          "first_hit_rays": 0
+        },
+        {
+          "surface": "inspection_wall_1",
+          "triangles": 12,
+          "first_hit_rays": 0
+        }
+      ],
+      "truth_bracket": {
+        "lower_ns": 15510000000,
+        "upper_ns": 15510000000,
+        "fraction": 0.0
+      },
+      "elapsed_s": 1.4571142920176499
+    },
+    {
+      "index": 27,
+      "arm": "full_scene_navigation_pose",
+      "available": true,
+      "gain": 1.2390592613369142,
+      "composite_score": 215.71679002706864,
+      "normalized_residual_rms": 1.593601004153537,
+      "normalized_residual_max": 6.100574101770007,
+      "first_hits": [
+        {
+          "surface": "seabed",
+          "triangles": 32258,
+          "first_hit_rays": 64104
+        },
+        {
+          "surface": "inspection_block_0",
+          "triangles": 12,
+          "first_hit_rays": 612
+        },
+        {
+          "surface": "inspection_block_1",
+          "triangles": 12,
+          "first_hit_rays": 0
+        },
+        {
+          "surface": "inspection_block_2",
+          "triangles": 12,
+          "first_hit_rays": 0
+        },
+        {
+          "surface": "inspection_wall_0",
+          "triangles": 12,
+          "first_hit_rays": 0
+        },
+        {
+          "surface": "inspection_wall_1",
+          "triangles": 12,
+          "first_hit_rays": 0
+        }
+      ],
+      "truth_bracket": {
+        "lower_ns": 15510000000,
+        "upper_ns": 15510000000,
+        "fraction": 0.0
+      },
+      "elapsed_s": 1.2551745420205407
+    },
+    {
+      "index": 27,
+      "arm": "sealed_finite_fit_navigation_pose",
+      "available": true,
+      "gain": 28.065896509584196,
+      "composite_score": 332.02363802156583,
+      "normalized_residual_rms": 5.048008394713158,
+      "normalized_residual_max": 33.941871846906665
+    },
+    {
+      "index": 81,
+      "arm": "full_scene_true_pose",
+      "available": true,
+      "gain": 1.5924079817778445,
+      "composite_score": 333.8768168189051,
+      "normalized_residual_rms": 2.20225642945942,
+      "normalized_residual_max": 14.23032473009203,
+      "first_hits": [
+        {
+          "surface": "seabed",
+          "triangles": 32258,
+          "first_hit_rays": 52341
+        },
+        {
+          "surface": "inspection_block_0",
+          "triangles": 12,
+          "first_hit_rays": 6937
+        },
+        {
+          "surface": "inspection_block_1",
+          "triangles": 12,
+          "first_hit_rays": 3880
+        },
+        {
+          "surface": "inspection_block_2",
+          "triangles": 12,
+          "first_hit_rays": 30
+        },
+        {
+          "surface": "inspection_wall_0",
+          "triangles": 12,
+          "first_hit_rays": 8
+        },
+        {
+          "surface": "inspection_wall_1",
+          "triangles": 12,
+          "first_hit_rays": 2340
+        }
+      ],
+      "truth_bracket": {
+        "lower_ns": 42510000000,
+        "upper_ns": 42510000000,
+        "fraction": 0.0
+      },
+      "elapsed_s": 1.3290697500342503
+    },
+    {
+      "index": 81,
+      "arm": "full_scene_navigation_pose",
+      "available": true,
+      "gain": 1.1108091887482037,
+      "composite_score": 323.3007006516714,
+      "normalized_residual_rms": 1.2017539594736235,
+      "normalized_residual_max": 4.844011860810517,
+      "first_hits": [
+        {
+          "surface": "seabed",
+          "triangles": 32258,
+          "first_hit_rays": 52453
+        },
+        {
+          "surface": "inspection_block_0",
+          "triangles": 12,
+          "first_hit_rays": 6882
+        },
+        {
+          "surface": "inspection_block_1",
+          "triangles": 12,
+          "first_hit_rays": 3949
+        },
+        {
+          "surface": "inspection_block_2",
+          "triangles": 12,
+          "first_hit_rays": 63
+        },
+        {
+          "surface": "inspection_wall_0",
+          "triangles": 12,
+          "first_hit_rays": 25
+        },
+        {
+          "surface": "inspection_wall_1",
+          "triangles": 12,
+          "first_hit_rays": 2164
+        }
+      ],
+      "truth_bracket": {
+        "lower_ns": 42510000000,
+        "upper_ns": 42510000000,
+        "fraction": 0.0
+      },
+      "elapsed_s": 1.184131417016033
+    },
+    {
+      "index": 81,
+      "arm": "sealed_finite_fit_navigation_pose",
+      "available": true,
+      "gain": 2.498385764296382,
+      "composite_score": 368.45596288656446,
+      "normalized_residual_rms": 3.5572077951351018,
+      "normalized_residual_max": 23.840129239735134
+    },
+    {
+      "index": 88,
+      "arm": "full_scene_true_pose",
+      "available": true,
+      "gain": 1.523532044538974,
+      "composite_score": 350.5572227534364,
+      "normalized_residual_rms": 1.1416681575627619,
+      "normalized_residual_max": 4.9787764783826685,
+      "first_hits": [
+        {
+          "surface": "seabed",
+          "triangles": 32258,
+          "first_hit_rays": 50917
+        },
+        {
+          "surface": "inspection_block_0",
+          "triangles": 12,
+          "first_hit_rays": 5973
+        },
+        {
+          "surface": "inspection_block_1",
+          "triangles": 12,
+          "first_hit_rays": 4779
+        },
+        {
+          "surface": "inspection_block_2",
+          "triangles": 12,
+          "first_hit_rays": 776
+        },
+        {
+          "surface": "inspection_wall_0",
+          "triangles": 12,
+          "first_hit_rays": 2029
+        },
+        {
+          "surface": "inspection_wall_1",
+          "triangles": 12,
+          "first_hit_rays": 1062
+        }
+      ],
+      "truth_bracket": {
+        "lower_ns": 45990000000,
+        "upper_ns": 46030000000,
+        "fraction": 0.5
+      },
+      "elapsed_s": 1.1940985000110231
+    },
+    {
+      "index": 88,
+      "arm": "full_scene_navigation_pose",
+      "available": true,
+      "gain": 1.8144902330642552,
+      "composite_score": 358.83991997720887,
+      "normalized_residual_rms": 1.7871145435721782,
+      "normalized_residual_max": 10.562120652213618,
+      "first_hits": [
+        {
+          "surface": "seabed",
+          "triangles": 32258,
+          "first_hit_rays": 50113
+        },
+        {
+          "surface": "inspection_block_0",
+          "triangles": 12,
+          "first_hit_rays": 6104
+        },
+        {
+          "surface": "inspection_block_1",
+          "triangles": 12,
+          "first_hit_rays": 4805
+        },
+        {
+          "surface": "inspection_block_2",
+          "triangles": 12,
+          "first_hit_rays": 1116
+        },
+        {
+          "surface": "inspection_wall_0",
+          "triangles": 12,
+          "first_hit_rays": 2597
+        },
+        {
+          "surface": "inspection_wall_1",
+          "triangles": 12,
+          "first_hit_rays": 801
+        }
+      ],
+      "truth_bracket": {
+        "lower_ns": 45990000000,
+        "upper_ns": 46030000000,
+        "fraction": 0.5
+      },
+      "elapsed_s": 1.1855226659681648
+    },
+    {
+      "index": 88,
+      "arm": "sealed_finite_fit_navigation_pose",
+      "available": true,
+      "gain": 4.933599853243523,
+      "composite_score": 412.2383019103928,
+      "normalized_residual_rms": 3.041531945075095,
+      "normalized_residual_max": 14.228024266049387
+    }
+  ],
+  "references": {
+    "sonar-inspection-scene-20261031/scene-assessment-only.npz": "e47b848bd28c46911ee7b4a455343e786b1382737e937f6b8dba0b4e6a6e1678",
+    "sonar-translated-view-20261031/trajectory-assessment.npz": "f925a6db242e571784df77f4a7ab3334f8aa583e595ec28b640139ec97ce283e",
+    "sonar-translated-view-20261031/calibration.json": "ca182e637bb52644c1fa81bcdd5d9f4984eeb2e7f6712de9427c407c6c1a9dd2",
+    "sonar-translated-shadow-20261031/assessment-summary.json": "d731e1aa71f694d1b151739c267dd6e71cc6fbf92bffc6f561f8d8f0b4df9a27"
+  },
+  "elapsed_s": 7.836884957971051
+}

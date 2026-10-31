@@ -1,0 +1,98 @@
+{
+  "scope": "Post-seal reference-scene support ablations; never estimator inputs.",
+  "assessment_only": true,
+  "adaptive_after_full_scene_audit": true,
+  "inferred_geometry_unchanged": true,
+  "map_accepted": false,
+  "native_fusion": false,
+  "frames": [
+    {
+      "index": 27,
+      "arm": "reference_ground",
+      "gain": 1.0688472545678789,
+      "composite_score": 215.11026361800992,
+      "normalized_residual_rms": 1.649192975957758,
+      "hit_rays": 64716,
+      "triangles": 32258
+    },
+    {
+      "index": 27,
+      "arm": "reference_ground_and_target",
+      "gain": 1.2390592613369142,
+      "composite_score": 215.71679002706864,
+      "normalized_residual_rms": 1.593601004153537,
+      "hit_rays": 64716,
+      "triangles": 32270
+    },
+    {
+      "index": 27,
+      "arm": "fitted_plane_and_reference_target",
+      "gain": 27.190766314210876,
+      "composite_score": 336.1107285990199,
+      "normalized_residual_rms": 5.207664851065481,
+      "hit_rays": 64962,
+      "triangles": 14
+    },
+    {
+      "index": 81,
+      "arm": "reference_ground",
+      "gain": 364.94239913289397,
+      "composite_score": 591.2829357394712,
+      "normalized_residual_rms": 5.164808266096608,
+      "hit_rays": 65536,
+      "triangles": 32258
+    },
+    {
+      "index": 81,
+      "arm": "reference_ground_and_target",
+      "gain": 1.1342613169398985,
+      "composite_score": 327.6864178207494,
+      "normalized_residual_rms": 1.3095102521159374,
+      "hit_rays": 65536,
+      "triangles": 32270
+    },
+    {
+      "index": 81,
+      "arm": "fitted_plane_and_reference_target",
+      "gain": 2.5468111214621443,
+      "composite_score": 378.9840919411704,
+      "normalized_residual_rms": 3.630255114360972,
+      "hit_rays": 65536,
+      "triangles": 14
+    },
+    {
+      "index": 88,
+      "arm": "reference_ground",
+      "gain": 310.92113139139184,
+      "composite_score": 603.4180510246406,
+      "normalized_residual_rms": 6.53226664304123,
+      "hit_rays": 65536,
+      "triangles": 32258
+    },
+    {
+      "index": 88,
+      "arm": "reference_ground_and_target",
+      "gain": 12.231476228118579,
+      "composite_score": 452.76352013091616,
+      "normalized_residual_rms": 5.569041289505432,
+      "hit_rays": 65536,
+      "triangles": 32270
+    },
+    {
+      "index": 88,
+      "arm": "fitted_plane_and_reference_target",
+      "gain": 5.581711984891391,
+      "composite_score": 417.13415845916865,
+      "normalized_residual_rms": 2.753993550781229,
+      "hit_rays": 65514,
+      "triangles": 14
+    }
+  ],
+  "protocol_sha256": "7b5e1cb2de9718f81aff69bb2cbf0779e7408303570601097d70ad39771d5db3",
+  "source_sha256": "fac3fdfad4727ece9f9f675708859aefe8852d5d964010f7377591a704fd51f3",
+  "references": {
+    "sonar-inspection-scene-20261031/scene-assessment-only.npz": "e47b848bd28c46911ee7b4a455343e786b1382737e937f6b8dba0b4e6a6e1678",
+    "sonar-translated-shadow-20261031/assessment-summary.json": "d731e1aa71f694d1b151739c267dd6e71cc6fbf92bffc6f561f8d8f0b4df9a27"
+  },
+  "elapsed_s": 13.15682991599897
+}

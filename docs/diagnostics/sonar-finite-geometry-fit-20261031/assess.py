@@ -14,7 +14,7 @@ def samples(vertices):
     return np.vstack((vertices,np.einsum('ki,tij->tkj',weights,vertices[FACES]).reshape(-1,3)))
 
 
-def evaluate(records, save=True):
+def evaluate(records, save=True, families=None):
     seal = json.loads((ROOT/'construction-seal.json').read_text())
     for name,digest in seal['files'].items():assert sha(ROOT/name)==digest
     geometry_path = records/'sonar-inspection-scene-20261031/verify.py'
@@ -33,7 +33,7 @@ def evaluate(records, save=True):
                   references={str(p.relative_to(records)):sha(p) for p in [geometry_path,scene_path,alignment_path]})
     arrays = {}
     with np.load(ROOT/'fit-output.npz',allow_pickle=False) as z:
-        for name in ['initial_prism','fitted_prism']:
+        for name in ['initial_prism','fitted_prism'] if families is None else families:
             points = samples(z[name+'_vertices'])
             world = points@rotation.T+translation
             errors = np.column_stack([module.surface_distances(world,triangles) for triangles in scene.values()])

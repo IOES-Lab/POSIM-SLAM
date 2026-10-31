@@ -1,0 +1,118 @@
+{
+  "map_accepted": false,
+  "native_fusion": false,
+  "construction_was_sealed": true,
+  "geometry_is_restrictive_one_prism_hypothesis": true,
+  "points_are_model_surface_samples_not_measured_landmarks": true,
+  "alignment": {
+    "rotation": [
+      [
+        -0.9903724594049796,
+        -0.13842829064946172,
+        0.0
+      ],
+      [
+        0.13842829064946172,
+        -0.9903724594049796,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "translation": [
+      -0.02274078061066737,
+      0.010448829452008833,
+      -1.2924615732501334
+    ],
+    "scale": 1.0
+  },
+  "diagnostic_10cm_not_universal_acceptance": true,
+  "families": {
+    "initial_prism": {
+      "points": 548,
+      "all_surface_error_m": {
+        "rmse": 0.056534733325007795,
+        "median": 0.06262762755277265,
+        "p90": 0.08599776018645144,
+        "maximum": 0.10248601699311842,
+        "beyond_10cm": 3
+      },
+      "nearest_surface_counts": {
+        "seabed": 57,
+        "inspection_block_0": 491,
+        "inspection_block_1": 0,
+        "inspection_block_2": 0,
+        "inspection_wall_0": 0,
+        "inspection_wall_1": 0
+      },
+      "assessment_nearest_center_object": "inspection_block_0",
+      "target_surface_error_m": {
+        "rmse": 0.05988334286330105,
+        "median": 0.06271119360609845,
+        "p90": 0.0863068367287152,
+        "maximum": 0.12803853566142065,
+        "beyond_10cm": 32
+      }
+    },
+    "three_view_control": {
+      "points": 548,
+      "all_surface_error_m": {
+        "rmse": 0.05321458634960602,
+        "median": 0.04635823576713882,
+        "p90": 0.07906768022936284,
+        "maximum": 0.10265979456767571,
+        "beyond_10cm": 5
+      },
+      "nearest_surface_counts": {
+        "seabed": 82,
+        "inspection_block_0": 466,
+        "inspection_block_1": 0,
+        "inspection_block_2": 0,
+        "inspection_wall_0": 0,
+        "inspection_wall_1": 0
+      },
+      "assessment_nearest_center_object": "inspection_block_0",
+      "target_surface_error_m": {
+        "rmse": 0.057921684996829446,
+        "median": 0.05201019673805396,
+        "p90": 0.08804945706320698,
+        "maximum": 0.1027033147043408,
+        "beyond_10cm": 9
+      }
+    },
+    "height_diverse_fit": {
+      "points": 548,
+      "all_surface_error_m": {
+        "rmse": 0.08761498037994683,
+        "median": 0.07709630820513924,
+        "p90": 0.13098949586857309,
+        "maximum": 0.14418893300230756,
+        "beyond_10cm": 174
+      },
+      "nearest_surface_counts": {
+        "seabed": 55,
+        "inspection_block_0": 493,
+        "inspection_block_1": 0,
+        "inspection_block_2": 0,
+        "inspection_wall_0": 0,
+        "inspection_wall_1": 0
+      },
+      "assessment_nearest_center_object": "inspection_block_0",
+      "target_surface_error_m": {
+        "rmse": 0.09028726216911102,
+        "median": 0.07709630820513924,
+        "p90": 0.1332758852854361,
+        "maximum": 0.1636737425467958,
+        "beyond_10cm": 174
+      }
+    }
+  },
+  "references": {
+    "sonar-inspection-scene-20261031/verify.py": "bcde76abfff75d519f941921db46604566ef07c5d2ffc4c057549f1e4fd7192f",
+    "sonar-inspection-scene-20261031/scene-assessment-only.npz": "e47b848bd28c46911ee7b4a455343e786b1382737e937f6b8dba0b4e6a6e1678",
+    "sonar-translated-shadow-20261031/assessment-summary.json": "d731e1aa71f694d1b151739c267dd6e71cc6fbf92bffc6f561f8d8f0b4df9a27"
+  }
+}

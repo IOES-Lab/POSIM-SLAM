@@ -1,0 +1,21 @@
+{
+  "scope": "Post-seal assessment-only field forward audit, never estimator inputs",
+  "frozen_before_scene_or_pose_truth_for_this_audit": true,
+  "indices": [
+    27,
+    81,
+    88
+  ],
+  "queries": "Use the exact frozen48 queries from each selected raw image",
+  "arms": [
+    "full retained acoustic reference mesh at true recorded body/sonar poses",
+    "same full mesh at recorded sensor-navigation poses under the existing evaluation gauge",
+    "sealed finite height_diverse_fit at recorded navigation poses (already retained)"
+  ],
+  "material": "Uniform .001 per triangle; profile one positive common brightness gain per view in every arm. No per-pixel gain, threshold or sensor change.",
+  "retention": "Complete selected power, exact mean/covariance, predicted range grid/source-normal outputs, first-hit inventory, all missing-pose cases. Reuse original raw, scene and truth files by hash.",
+  "interpretation": "Compare full scene vs finite family at identical nav pose; compare true vs nav pose with identical full scene. If true-scene/true-pose prediction also fails, audit reference inventory, rasterization and time/geometry convention before inverse mapping. These paired source-model conditions are diagnostic, not a hardware calibration or new field.",
+  "no_new_optimization": true,
+  "inferred_geometry_remains_sealed": true,
+  "pose_time_policy": "Linear translation and quaternion Slerp of original bracketing body truth at raw acquisition stamp; retain bracket IDs and offsets, require gap<=0.1s, no extrapolation or fitted time offset. Exact-stamp matches stay exact. The earlier nearest<=25ms context proof is not relabeled exact."
+}
