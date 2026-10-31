@@ -77,8 +77,10 @@ jobs:
         run: |
           python docs/diagnostics/sonar-return-support-20261031/test_projective_assoc.py
           python docs/diagnostics/sonar-return-support-20261031/verify.py
-      - name: Verify close-view support and complete unqualified maps
-        run: python docs/diagnostics/sonar-close-view-20261031/verify.py
+      # Dated source guards retain their original modules. Current source runs
+      # in the unit suite and complete renderer-sampling controls separately.
+      - name: Replay recorded sources for close-view support and complete maps
+        run: python tools/verify_recorded_diagnostic.py docs/diagnostics/sonar-close-view-20261031/verify.py
       - name: Check conditional shadow geometry and complete observations
         run: |
           python docs/diagnostics/sonar-shadow-support-20261031/test_shadow_geometry.py
@@ -90,23 +92,23 @@ jobs:
       - name: Verify actual translated views and every failed-map point
         run: python docs/diagnostics/sonar-translated-view-20261031/verify.py
       - name: Verify translated shadow observations and image-boundary controls
-        run: python docs/diagnostics/sonar-translated-shadow-20261031/verify.py
+        run: python tools/verify_recorded_diagnostic.py docs/diagnostics/sonar-translated-shadow-20261031/verify.py
       - name: Verify source-local normals and correlated acoustic powers
-        run: python docs/diagnostics/sonar-source-local-power-20261031/verify.py
+        run: python tools/verify_recorded_diagnostic.py docs/diagnostics/sonar-source-local-power-20261031/verify.py
       - name: Verify native power moments and reflectivity baselines
-        run: python docs/diagnostics/sonar-native-power-moments-20261031/verify.py
+        run: python tools/verify_recorded_diagnostic.py docs/diagnostics/sonar-native-power-moments-20261031/verify.py
       - name: Verify sealed finite-geometry fit and complete shape assessments
-        run: python docs/diagnostics/sonar-finite-geometry-fit-20261031/verify.py
+        run: python tools/verify_recorded_diagnostic.py docs/diagnostics/sonar-finite-geometry-fit-20261031/verify.py
       - name: Verify height-diversity and assessment-only scene-support controls
-        run: python docs/diagnostics/sonar-height-diversity-fit-20261031/verify.py
+        run: python tools/verify_recorded_diagnostic.py docs/diagnostics/sonar-height-diversity-fit-20261031/verify.py
       - name: Verify finite partial-scene inverse fit and every model sample
         run: |
           python -m unittest discover -s docs/diagnostics/sonar-partial-scene-fit-20261031 -p test_replay_arithmetic.py
-          python docs/diagnostics/sonar-partial-scene-fit-20261031/verify.py
+          python tools/verify_recorded_diagnostic.py docs/diagnostics/sonar-partial-scene-fit-20261031/verify.py
       - name: Verify multiview births and complete native/field image controls
         run: |
           python -m unittest discover -s docs/diagnostics/sonar-reflector-birth-20261031 -p test_full_image_audit.py
-          python docs/diagnostics/sonar-reflector-birth-20261031/verify.py --full-image
+          python tools/verify_recorded_diagnostic.py docs/diagnostics/sonar-reflector-birth-20261031/verify.py --full-image
       - name: Verify exact native trace bytes and bounded C++ recording
         run: python docs/diagnostics/sonar-native-input-trace-20261031/verify.py --native-unit
       - name: Verify every actual renderer ray and complete acoustic power image

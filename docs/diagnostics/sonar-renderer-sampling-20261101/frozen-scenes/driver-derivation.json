@@ -1,0 +1,6 @@
+{
+  "original_driver_sha256": "15240ca0fc656a5dff1374d47790bee40ccd6bceaf61e5cbc91bbda89fe34f61",
+  "portable_driver_sha256": "ddaee64aa6a6685958cbb9e26f0c00c9edd3715f44f1d5a737aaaa43946f9ff0",
+  "changes": "Only portable input/output paths and argument parsing; same numerical operations",
+  "all_16_ideal_control_scores_match_original": true
+}

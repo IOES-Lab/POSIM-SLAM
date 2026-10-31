@@ -1,0 +1,403 @@
+{
+  "protocol": {
+    "scope": "Freeze earlier inferred scenes; change only source-calibrated sampling.\n\nNo scene oracle, renderer pose, new parameter fit or native update is used.\nTraining/unused frames and the earlier selected false birth stay unchanged.\n",
+    "frames": [
+      27,
+      49,
+      81,
+      88,
+      151,
+      51,
+      90,
+      153
+    ],
+    "training": [
+      27,
+      49,
+      81,
+      88,
+      151
+    ],
+    "unused": [
+      51,
+      90,
+      153
+    ],
+    "scenes": [
+      0,
+      3
+    ],
+    "arms": [
+      "ideal",
+      "sampled"
+    ],
+    "map_accepted": false,
+    "geometry_unchanged": true,
+    "navigation_unchanged": true,
+    "truth_scene_pose_rgb_used": false,
+    "selected_pixels": false,
+    "profiled_parameters": "One scalar gain per complete image",
+    "source_sha256": "15240ca0fc656a5dff1374d47790bee40ccd6bceaf61e5cbc91bbda89fe34f61",
+    "references": {
+      "construction-seal.json": "982f3bd3ccc611f6adfd6845782c2646e2490d048a2f39b037afb0f15fced0a0",
+      "inputs.json": "10b8b21aed879c65211f4c3162d4099fb5d015998021d1d62a041b3784801a69",
+      "fit-output.json": "3b7952d639dc8208abc7d5c62fb42c95b6657860bb52e11cd0c0930a6bd4c55e",
+      "scenes.npz": "2e8f91e49b619b8ea56270db48c2304b8b5d5936ba7b6d8d5d1d8a71d4f58dc3"
+    },
+    "calibration_sha256": "eb0d455a53bb78780c6a981f779c671eaad98308c895a64a9d233a44215f8464"
+  },
+  "results": [
+    {
+      "frame": 27,
+      "group": "train",
+      "arm": "ideal",
+      "scene": 0,
+      "pixels": 153344,
+      "gain": 10.645892649080078,
+      "score": 495979.3892162902,
+      "residual_rms": 31.144257617344522,
+      "elapsed_s": 5.550360416993499
+    },
+    {
+      "frame": 27,
+      "group": "train",
+      "arm": "ideal",
+      "scene": 3,
+      "pixels": 153344,
+      "gain": 10.694433149148026,
+      "score": 496589.81975296384,
+      "residual_rms": 31.006864331362905,
+      "elapsed_s": 5.263986833044328
+    },
+    {
+      "frame": 27,
+      "group": "train",
+      "arm": "sampled",
+      "scene": 0,
+      "pixels": 153344,
+      "gain": 11.443030642062148,
+      "score": 489387.980879436,
+      "residual_rms": 29.247535800908686,
+      "elapsed_s": 5.224625332979485
+    },
+    {
+      "frame": 27,
+      "group": "train",
+      "arm": "sampled",
+      "scene": 3,
+      "pixels": 153344,
+      "gain": 11.444180297179228,
+      "score": 490182.49076600873,
+      "residual_rms": 29.24530359683659,
+      "elapsed_s": 5.217899209004827
+    },
+    {
+      "frame": 49,
+      "group": "train",
+      "arm": "ideal",
+      "scene": 0,
+      "pixels": 153344,
+      "gain": 3.6135401514647736,
+      "score": 381838.64100478834,
+      "residual_rms": 36.646475226933916,
+      "elapsed_s": 5.496169166988693
+    },
+    {
+      "frame": 49,
+      "group": "train",
+      "arm": "ideal",
+      "scene": 3,
+      "pixels": 153344,
+      "gain": 2.288593254248074,
+      "score": 315194.1327284107,
+      "residual_rms": 22.267327180746268,
+      "elapsed_s": 5.3161266669631
+    },
+    {
+      "frame": 49,
+      "group": "train",
+      "arm": "sampled",
+      "scene": 0,
+      "pixels": 153344,
+      "gain": 10.689411279126858,
+      "score": 541674.7785742416,
+      "residual_rms": 27.876922938549548,
+      "elapsed_s": 5.116718375007622
+    },
+    {
+      "frame": 49,
+      "group": "train",
+      "arm": "sampled",
+      "scene": 3,
+      "pixels": 153344,
+      "gain": 9.277940547783802,
+      "score": 528673.3600183798,
+      "residual_rms": 30.58254002688854,
+      "elapsed_s": 5.32695225009229
+    },
+    {
+      "frame": 81,
+      "group": "train",
+      "arm": "ideal",
+      "scene": 0,
+      "pixels": 153344,
+      "gain": 5.9022612257676315,
+      "score": 463963.72069427423,
+      "residual_rms": 37.44909438400074,
+      "elapsed_s": 5.490509458933957
+    },
+    {
+      "frame": 81,
+      "group": "train",
+      "arm": "ideal",
+      "scene": 3,
+      "pixels": 153344,
+      "gain": 1.9643144035881028,
+      "score": 300691.85384745337,
+      "residual_rms": 13.813521627272978,
+      "elapsed_s": 5.578881916007958
+    },
+    {
+      "frame": 81,
+      "group": "train",
+      "arm": "sampled",
+      "scene": 0,
+      "pixels": 153344,
+      "gain": 5.6124897720876445,
+      "score": 460642.020211932,
+      "residual_rms": 31.659138784453486,
+      "elapsed_s": 5.16184204199817
+    },
+    {
+      "frame": 81,
+      "group": "train",
+      "arm": "sampled",
+      "scene": 3,
+      "pixels": 153344,
+      "gain": 2.598352702552036,
+      "score": 348568.2840252905,
+      "residual_rms": 33.82457502846615,
+      "elapsed_s": 5.167744167032652
+    },
+    {
+      "frame": 88,
+      "group": "train",
+      "arm": "ideal",
+      "scene": 0,
+      "pixels": 153344,
+      "gain": 4.4187477776717135,
+      "score": 419398.3873204435,
+      "residual_rms": 18.24339118965225,
+      "elapsed_s": 5.18691179191228
+    },
+    {
+      "frame": 88,
+      "group": "train",
+      "arm": "ideal",
+      "scene": 3,
+      "pixels": 153344,
+      "gain": 3.7793622899456043,
+      "score": 407450.16047291417,
+      "residual_rms": 17.190669831876065,
+      "elapsed_s": 5.73003766592592
+    },
+    {
+      "frame": 88,
+      "group": "train",
+      "arm": "sampled",
+      "scene": 0,
+      "pixels": 153344,
+      "gain": 4.875904575960337,
+      "score": 440761.2196686104,
+      "residual_rms": 15.873364183319719,
+      "elapsed_s": 5.493621208006516
+    },
+    {
+      "frame": 88,
+      "group": "train",
+      "arm": "sampled",
+      "scene": 3,
+      "pixels": 153344,
+      "gain": 4.455907157527434,
+      "score": 438843.6918609669,
+      "residual_rms": 16.101808725789706,
+      "elapsed_s": 4.912530834088102
+    },
+    {
+      "frame": 151,
+      "group": "train",
+      "arm": "ideal",
+      "scene": 0,
+      "pixels": 153344,
+      "gain": 7.855858397712451,
+      "score": 501272.8875754622,
+      "residual_rms": 52.08164972688314,
+      "elapsed_s": 5.053975958027877
+    },
+    {
+      "frame": 151,
+      "group": "train",
+      "arm": "ideal",
+      "scene": 3,
+      "pixels": 153344,
+      "gain": 2.488295390247345,
+      "score": 340336.5826058284,
+      "residual_rms": 30.13045063161188,
+      "elapsed_s": 5.083049457985908
+    },
+    {
+      "frame": 151,
+      "group": "train",
+      "arm": "sampled",
+      "scene": 0,
+      "pixels": 153344,
+      "gain": 6.936239027413225,
+      "score": 485358.5796920456,
+      "residual_rms": 41.93227480270736,
+      "elapsed_s": 5.066039082943462
+    },
+    {
+      "frame": 151,
+      "group": "train",
+      "arm": "sampled",
+      "scene": 3,
+      "pixels": 153344,
+      "gain": 3.168997707908069,
+      "score": 381660.8992608071,
+      "residual_rms": 37.33984143557715,
+      "elapsed_s": 5.089869667077437
+    },
+    {
+      "frame": 51,
+      "group": "unused",
+      "arm": "ideal",
+      "scene": 0,
+      "pixels": 153344,
+      "gain": 2.0117234255042677,
+      "score": 290893.167939387,
+      "residual_rms": 18.680557024755398,
+      "elapsed_s": 5.170967416022904
+    },
+    {
+      "frame": 51,
+      "group": "unused",
+      "arm": "ideal",
+      "scene": 3,
+      "pixels": 153344,
+      "gain": 2.1588092387087108,
+      "score": 302625.1542996521,
+      "residual_rms": 17.842643574367713,
+      "elapsed_s": 5.276095083914697
+    },
+    {
+      "frame": 51,
+      "group": "unused",
+      "arm": "sampled",
+      "scene": 0,
+      "pixels": 153344,
+      "gain": 5.192866655752072,
+      "score": 436784.85770894284,
+      "residual_rms": 36.75533954992316,
+      "elapsed_s": 5.084126666071825
+    },
+    {
+      "frame": 51,
+      "group": "unused",
+      "arm": "sampled",
+      "scene": 3,
+      "pixels": 153344,
+      "gain": 5.257044548328057,
+      "score": 444637.2830279779,
+      "residual_rms": 36.289770765784255,
+      "elapsed_s": 5.198224166058935
+    },
+    {
+      "frame": 90,
+      "group": "unused",
+      "arm": "ideal",
+      "scene": 0,
+      "pixels": 153344,
+      "gain": 4.975171530454916,
+      "score": 444168.76033867046,
+      "residual_rms": 23.51749583519136,
+      "elapsed_s": 5.967531790956855
+    },
+    {
+      "frame": 90,
+      "group": "unused",
+      "arm": "ideal",
+      "scene": 3,
+      "pixels": 153344,
+      "gain": 3.658996753838483,
+      "score": 409348.25575232256,
+      "residual_rms": 17.096600780909515,
+      "elapsed_s": 5.216054624994285
+    },
+    {
+      "frame": 90,
+      "group": "unused",
+      "arm": "sampled",
+      "scene": 0,
+      "pixels": 153344,
+      "gain": 6.110898283840848,
+      "score": 479499.83513508004,
+      "residual_rms": 20.249275896052758,
+      "elapsed_s": 5.226376250036992
+    },
+    {
+      "frame": 90,
+      "group": "unused",
+      "arm": "sampled",
+      "scene": 3,
+      "pixels": 153344,
+      "gain": 5.136845110865405,
+      "score": 465746.1658588578,
+      "residual_rms": 21.007227109074307,
+      "elapsed_s": 5.513473208062351
+    },
+    {
+      "frame": 153,
+      "group": "unused",
+      "arm": "ideal",
+      "scene": 0,
+      "pixels": 153344,
+      "gain": 21.37155360761675,
+      "score": 684825.3393265409,
+      "residual_rms": 35.80027714860454,
+      "elapsed_s": 5.1335071249632165
+    },
+    {
+      "frame": 153,
+      "group": "unused",
+      "arm": "ideal",
+      "scene": 3,
+      "pixels": 153344,
+      "gain": 3.438081715690513,
+      "score": 409976.59845669137,
+      "residual_rms": 33.68574011106577,
+      "elapsed_s": 5.112248957972042
+    },
+    {
+      "frame": 153,
+      "group": "unused",
+      "arm": "sampled",
+      "scene": 0,
+      "pixels": 153344,
+      "gain": 22.013681581740787,
+      "score": 687703.8712532729,
+      "residual_rms": 26.873545888555874,
+      "elapsed_s": 5.364292541053146
+    },
+    {
+      "frame": 153,
+      "group": "unused",
+      "arm": "sampled",
+      "scene": 3,
+      "pixels": 153344,
+      "gain": 7.781896171834637,
+      "score": 534462.4380584374,
+      "residual_rms": 36.5171084594907,
+      "elapsed_s": 5.334581332979724
+    }
+  ]
+}

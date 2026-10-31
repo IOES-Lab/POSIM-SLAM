@@ -84,6 +84,9 @@ provides bounded operand/output byte controls before actual field-input qualific
 separates calibrated intersection rays from nominal beam angles and retains all
 four traced fields and complete power comparisons. `SurfacePowerModel` accepts
 an optional sampled unit-ray grid; scene and render poses remain assessment-only.
+Source-bound older experiments use [their retained original modules](docs/diagnostics/recorded-source-20261031/README.md)
+through `tools/verify_recorded_diagnostic.py`. Current implementation tests and
+the new field verifier run separately; original experiment hashes are preserved.
 
 `sonar_power_evidence` profiles common reflectivity and preserves pixel
 correlations and gain nullspaces in conditional score information. [Native

@@ -41,6 +41,11 @@ The C++ normal helper is exact on this record. Its NumPy approximation retains
 some corner sensitivity, including a maximum component difference of 0.847;
 that difference and all previous failed maps remain explicit.
 
+The [frozen inferred-scene control](frozen-scenes/README.md) retains five training
+and three unused frames. Corrected sampling still prefers the same false birth;
+all 32 complete-image scores are preserved. Source agreement alone does not
+qualify the partial-scene inverse or a SLAM map.
+
 ## Reproduce
 
 ```sh

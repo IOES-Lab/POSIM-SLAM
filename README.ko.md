@@ -80,6 +80,9 @@ Householder QR과 유효 정보 방향을 구분하는 SVD로 자세·평면·�
 교점 계산의 보정 음선과 명목 빔 각도를 구분하고 네 프레임의 전체 입력·
 전력 대조를 보존합니다. `SurfacePowerModel`은 선택형 단위 음선 격자를
 받으며 장면·렌더러 자세는 평가용입니다.
+과거 소스에 고정된 실험은 [보존한 원본 모듈](docs/diagnostics/recorded-source-20261031/README.md)과
+`tools/verify_recorded_diagnostic.py`로 재현합니다. 현재 구현과 새 현장 검사는
+별도로 실행하며 과거 실험 해시는 유지합니다.
 
 `sonar_power_evidence`는 공통 반사율을 추정하고 조건부 점수 정보에서 픽셀
 상관관계와 배율 영공간을 유지합니다. [네이티브 전력 대조와 원본 영상의 기준 모델](docs/diagnostics/sonar-native-power-moments-20261031/README.ko.md)에서
