@@ -1,0 +1,258 @@
+{
+  "native_fusion": false,
+  "map_accepted": false,
+  "conditional_fixed_navigation": true,
+  "field_accuracy_accepted": false,
+  "training_indices": [
+    49,
+    88,
+    151
+  ],
+  "unused_temporal_indices": [
+    51,
+    90,
+    153
+  ],
+  "families": {
+    "causal_plane": {
+      "parameters": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.9060717079407222,
+        0.5267140348184154,
+        0.36868381366914327,
+        -1.4333662393773814,
+        0.0
+      ],
+      "frames": [
+        {
+          "index": 49,
+          "score": 341.4926704171222,
+          "gain": 1.1806293694840246,
+          "pixels": 48,
+          "normalized_residual_rms": 1.228789505973939
+        },
+        {
+          "index": 88,
+          "score": 610.6151353696894,
+          "gain": 385.4643479141419,
+          "pixels": 48,
+          "normalized_residual_rms": 6.588187338665155
+        },
+        {
+          "index": 151,
+          "score": 605.3676017484429,
+          "gain": 330.93074968606066,
+          "pixels": 48,
+          "normalized_residual_rms": 5.0881531013371
+        },
+        {
+          "index": 51,
+          "score": 372.3253041948378,
+          "gain": 2.0015828239448825,
+          "pixels": 48,
+          "normalized_residual_rms": 1.4778087409593628
+        },
+        {
+          "index": 90,
+          "score": 541.2290841584866,
+          "gain": 110.02483527969848,
+          "pixels": 48,
+          "normalized_residual_rms": 4.554020017473187
+        },
+        {
+          "index": 153,
+          "score": 731.2601292692194,
+          "gain": 9197.91334621476,
+          "pixels": 48,
+          "normalized_residual_rms": 6.745110193957492
+        }
+      ],
+      "train_score": 1557.4754075352544,
+      "unused_temporal_score": 1644.814517622544
+    },
+    "shared_plane": {
+      "parameters": [
+        0.02,
+        0.0,
+        0.1,
+        0.0,
+        0.0,
+        0.9060717079407222,
+        0.5267140348184154,
+        0.36868381366914327,
+        -1.4333662393773814,
+        0.0
+      ],
+      "frames": [
+        {
+          "index": 49,
+          "score": 346.40680741178755,
+          "gain": 1.0446150415134303,
+          "pixels": 48,
+          "normalized_residual_rms": 1.525342141778624
+        },
+        {
+          "index": 88,
+          "score": 444.4224187096369,
+          "gain": 8.227637253646535,
+          "pixels": 48,
+          "normalized_residual_rms": 4.355701176691963
+        },
+        {
+          "index": 151,
+          "score": 353.7912419876363,
+          "gain": 0.9741903421221426,
+          "pixels": 48,
+          "normalized_residual_rms": 1.0962046700685972
+        },
+        {
+          "index": 51,
+          "score": 374.2632643914963,
+          "gain": 1.4312913796304263,
+          "pixels": 48,
+          "normalized_residual_rms": 1.5770957602798477
+        },
+        {
+          "index": 90,
+          "score": 468.0206517398046,
+          "gain": 14.450743410400742,
+          "pixels": 48,
+          "normalized_residual_rms": 5.886992526746575
+        },
+        {
+          "index": 153,
+          "score": 715.0860109064492,
+          "gain": 3584.2714485350684,
+          "pixels": 48,
+          "normalized_residual_rms": 6.731571156474451
+        }
+      ],
+      "train_score": 1144.6204681090608,
+      "unused_temporal_score": 1557.3699270377501
+    },
+    "initial_prism": {
+      "parameters": [
+        0.02,
+        0.0,
+        0.1,
+        0.0,
+        0.0,
+        0.9060717079407222,
+        0.5267140348184154,
+        0.36868381366914327,
+        -1.4333662393773814,
+        0.0
+      ],
+      "frames": [
+        {
+          "index": 49,
+          "score": 326.91365151346577,
+          "gain": 1.013696361304185,
+          "pixels": 48,
+          "normalized_residual_rms": 1.9451271389600762
+        },
+        {
+          "index": 88,
+          "score": 429.536966793768,
+          "gain": 7.930282769996656,
+          "pixels": 48,
+          "normalized_residual_rms": 4.730653328277232
+        },
+        {
+          "index": 151,
+          "score": 330.1751236431943,
+          "gain": 0.9913932476685936,
+          "pixels": 48,
+          "normalized_residual_rms": 0.9676546605970471
+        },
+        {
+          "index": 51,
+          "score": 356.57338106149007,
+          "gain": 1.4553565974306732,
+          "pixels": 48,
+          "normalized_residual_rms": 1.5155130334699787
+        },
+        {
+          "index": 90,
+          "score": 459.1355315424611,
+          "gain": 16.313049129284433,
+          "pixels": 48,
+          "normalized_residual_rms": 5.498030248225117
+        },
+        {
+          "index": 153,
+          "score": 351.53496948023883,
+          "gain": 1.579479550863817,
+          "pixels": 48,
+          "normalized_residual_rms": 1.8061095875023876
+        }
+      ],
+      "train_score": 1086.6257419504282,
+      "unused_temporal_score": 1167.2438820841899
+    },
+    "fitted_prism": {
+      "parameters": [
+        0.030000000000000002,
+        -0.030000000000000002,
+        0.1,
+        0.0,
+        0.0,
+        0.8560717079407223,
+        0.5767140348184153,
+        0.36868381366914327,
+        -1.4333662393773814,
+        1.0
+      ],
+      "frames": [
+        {
+          "index": 49,
+          "score": 312.4335705195747,
+          "gain": 0.7184190024368302,
+          "pixels": 48,
+          "normalized_residual_rms": 0.9015885727906916
+        },
+        {
+          "index": 88,
+          "score": 370.8496374087913,
+          "gain": 1.8366266990785887,
+          "pixels": 48,
+          "normalized_residual_rms": 1.636670829910352
+        },
+        {
+          "index": 151,
+          "score": 337.1291894908742,
+          "gain": 0.8538545274847605,
+          "pixels": 48,
+          "normalized_residual_rms": 1.1133320276865188
+        },
+        {
+          "index": 51,
+          "score": 383.61387256327924,
+          "gain": 2.528033284104607,
+          "pixels": 48,
+          "normalized_residual_rms": 3.3955147395513503
+        },
+        {
+          "index": 90,
+          "score": 415.6168343742488,
+          "gain": 5.695401087423626,
+          "pixels": 48,
+          "normalized_residual_rms": 3.7987283716312095
+        },
+        {
+          "index": 153,
+          "score": 353.55795324072926,
+          "gain": 1.3655380133873383,
+          "pixels": 48,
+          "normalized_residual_rms": 2.09188507853902
+        }
+      ],
+      "train_score": 1020.4123974192402,
+      "unused_temporal_score": 1152.7886601782573
+    }
+  }
+}

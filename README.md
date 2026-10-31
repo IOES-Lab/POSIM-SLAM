@@ -74,6 +74,12 @@ correlations and gain nullspaces in conditional score information. [Native
 power controls and original-image baselines](docs/diagnostics/sonar-native-power-moments-20261031/README.md)
 qualify its source model before finite-geometry fitting.
 
+[Original-image finite-geometry fitting](docs/diagnostics/sonar-finite-geometry-fit-20261031/README.md)
+compares ground and opaque-prism hypotheses with explicit material gains.
+Better image scores do not improve complete shape RMSE; all model samples and
+matched field RGB remain. 원본 영상의 해저·유한 물체 적합은 영상 점수가 좋아져도
+전체 형상 RMSE를 개선하지 못하며, 모든 표면 가설 점과 같은 카메라의 현장 RGB를 보존합니다.
+
 [Conditional sonar-row diagnostics](docs/diagnostics/sonar-structureless-update-20261030/README.md)
 provide a public numerical reproduction of single-posterior conditioning,
 retained weak-height modes and identical-clock DVL omission controls.
