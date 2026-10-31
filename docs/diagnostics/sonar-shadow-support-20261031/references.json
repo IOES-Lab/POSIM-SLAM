@@ -1,0 +1,30 @@
+{
+  "representative_raw": [
+    {
+      "index": 30,
+      "path": "field/sonar-0030.npz",
+      "sha256": "6959b1f496c3643347015a9457d3e80b447a5351de3fe5b59d4a841641feb48c"
+    },
+    {
+      "index": 53,
+      "path": "../sonar-close-view-20261031/field/sonar-0053.npz",
+      "sha256": "7bb497750230a9a479d1633b3901dfbd677aa84eab544787e3063989c3085309"
+    },
+    {
+      "index": 80,
+      "path": "field/sonar-0080.npz",
+      "sha256": "9290e3f77d5911d2418ff5dfb288590215cb882ed312a18418af19c89529f82c"
+    }
+  ],
+  "scene": "../sonar-inspection-scene-20261031/scene-assessment-only.npz",
+  "scene_sha256": "e47b848bd28c46911ee7b4a455343e786b1382737e937f6b8dba0b4e6a6e1678",
+  "native_context": "../sonar-close-view-20261031/isometric-rgb.png",
+  "original_rgb_sonar": "../sonar-close-view-20261031/sensor-comparison.png",
+  "geometry_assumptions": [
+    "opaque edge and planar ground",
+    "near boundary is actual occluding edge",
+    "far boundary is ground recovery",
+    "unknown reflectivity/pose/plane/association uncertainty"
+  ],
+  "private_source_included": false
+}

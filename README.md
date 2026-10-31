@@ -46,6 +46,8 @@ matching worker must acknowledge this calibration.
 
 [Close-view support](docs/diagnostics/sonar-close-view-20261031/README.md) separates actual target visibility from persistent feature correspondence and preserves complete unqualified native and offline maps.
 
+[Conditional shadow geometry](docs/diagnostics/sonar-shadow-support-20261031/README.md) compares angular and physical-plane backgrounds, preserving every observation hypothesis and the unresolved plane/pose uncertainty.
+
 `sonar_input` preserves zero-power `-inf` bins and validates the broadband source's
 physical range grid from bandwidth and sound speed. Feature candidates require
 measured echo support; image working values never replace raw observations.
