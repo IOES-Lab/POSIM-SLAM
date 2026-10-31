@@ -50,6 +50,8 @@ matching worker must acknowledge this calibration.
 
 [Known-plane DVL calibration](docs/diagnostics/dvl-plane-calibration-20261031/README.md) separates conditional return-direction means from unknown range uncertainty and retains all static forward-model controls.
 
+[Translated-view control](docs/diagnostics/sonar-translated-view-20261031/README.md) retains the measured 62.87° viewing baseline, matched sensors and every failed-map point; wider motion alone does not qualify the existing point model.
+
 `sonar_input` preserves zero-power `-inf` bins and validates the broadband source's
 physical range grid from bandwidth and sound speed. Feature candidates require
 measured echo support; image working values never replace raw observations.

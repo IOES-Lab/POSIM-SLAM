@@ -1,0 +1,45 @@
+{
+  "waypoints_xyz_depth_yaw": [
+    [
+      5.5,
+      -2.85,
+      1.5,
+      0.5070985043923371
+    ],
+    [
+      5.5,
+      -1.35,
+      1.5,
+      0.0
+    ],
+    [
+      5.5,
+      0.15,
+      1.5,
+      -0.5070985043923371
+    ],
+    [
+      5.5,
+      -1.35,
+      1.5,
+      0.0
+    ],
+    [
+      5.5,
+      -2.85,
+      1.5,
+      0.5070985043923371
+    ],
+    [
+      5.5,
+      -1.35,
+      1.5,
+      0.0
+    ]
+  ],
+  "depth_m": 1.5,
+  "hold_seconds": 6.0,
+  "waypoint_hold_seconds": 6.0,
+  "return_home": true,
+  "reason": "Translated west-side inspection; intended bearing span 58.1 degrees. Complete target/flat-shadow design envelope, actual physical visibility unverified. Same source, physical intrinsics, noise and admission."
+}

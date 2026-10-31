@@ -1,0 +1,27 @@
+{
+  "field-audit.json": {
+    "stored": "field-audit.json.gz",
+    "uncompressed_bytes": 119767,
+    "uncompressed_sha256": "382befb1c9b3524098e120e71f2f6fe4def78fd37467e96be37de217c13a223e"
+  },
+  "measured-view-assessment.json": {
+    "stored": "measured-view-assessment.json.gz",
+    "uncompressed_bytes": 128656,
+    "uncompressed_sha256": "b1367c2058a33346a06de54bf369b5ff9244079da546e8a40f533e65be4eb08c"
+  },
+  "replay-navigation-receipt.json": {
+    "stored": "replay-navigation-receipt.json.gz",
+    "uncompressed_bytes": 68538,
+    "uncompressed_sha256": "5219ba9dde43042f5ebb2259a7c6ac289a93cbccaddb432ec7b313934154d27b"
+  },
+  "replay-point-receipt.json": {
+    "stored": "replay-point-receipt.json.gz",
+    "uncompressed_bytes": 69014,
+    "uncompressed_sha256": "55af99fc1ad3a2c2279af0e276ad3d8b8c2bf546f971508849ae4a123064a891"
+  },
+  "native-dvl.json": {
+    "stored": "native-dvl.json.gz",
+    "uncompressed_bytes": 405321,
+    "uncompressed_sha256": "b6cdf7d4b3156754733060e1a3c5fb983982f99e805e06897b1725120b516e42"
+  }
+}

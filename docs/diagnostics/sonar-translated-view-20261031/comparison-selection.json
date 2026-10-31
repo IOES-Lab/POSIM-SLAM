@@ -1,0 +1,50 @@
+{
+  "selected": {
+    "stamp_ns": 29010000000,
+    "file": "sonar-0054.npz",
+    "sha256": "c003aa52efd0483770110c7c2ed6373e5ab162b584f7c3d5fbefc04628e06638",
+    "shape": [
+      599,
+      256
+    ],
+    "finite_returns": 153344,
+    "negative_infinity_no_return": 0,
+    "reference_rgb": {
+      "file": "sonar-reference-0055.npz",
+      "stamp_ns": 29000000000
+    },
+    "reference_delta_ns": -10000000,
+    "isometric_rgb": {
+      "file": "isometric-0028.npz",
+      "stamp_ns": 29000000000
+    },
+    "isometric_delta_ns": -10000000,
+    "truth_bracket_ns": 40000000
+  },
+  "measured_pose": {
+    "stamp_ns": 29010000000,
+    "body_position": [
+      5.563121682033663,
+      -2.8450431230318984,
+      -1.4657573465128357
+    ],
+    "source_origin": [
+      5.772350905321738,
+      -2.7268408844401684,
+      -1.56501137874414
+    ],
+    "body_yaw_deg": 29.56163503597266,
+    "viewing_bearing_rad": -2.6256779616988957,
+    "in_planned_inspection_corridor": true,
+    "target_center_in_fan": true,
+    "all_top_and_flat_shadow_corners_in_fan": true,
+    "target_range_m": 3.2545057656780423,
+    "target_elevation_deg": 3.865273957324325,
+    "maximum_corner_abs_elevation_deg": 7.735094037459415
+  },
+  "rule": "First recorded sonar in the planned inspection corridor, at least 20 s after mission start, with isometric within 50 ms",
+  "rgb_shared_mount": true,
+  "field_pixels_recorded": false,
+  "native_scene_render": true,
+  "context_haze_absorption_off": true
+}

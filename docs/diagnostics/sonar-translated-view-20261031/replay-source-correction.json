@@ -1,0 +1,10 @@
+{
+  "capture_application_parent": "06ad1d2b1bebdb5af9b299a592d37b601d120f3a",
+  "analysis_application_commit": "1e9cb573",
+  "library_revision": "7f48596463fbff92818b4f4b0316ebe50c552303",
+  "original_reporting_failure_preserved": true,
+  "old_navigation_outputs_retained": true,
+  "physical_recording_unchanged": true,
+  "algorithm_noise_admission_unchanged": true,
+  "scope": "Common source-layout/provenance correction only; rerun uses the same recorded inputs/settings/native binary"
+}
