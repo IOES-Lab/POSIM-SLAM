@@ -17,12 +17,14 @@
   "render-receipt.json": "851caa969cb6f664b13e0f8b82b0f73eceadbd98ead4a39a0d81305d517210d6",
   "complete-scene-comparison.png": "0050838087ed4b3782b4c2f260b2b401017224a876f9e444315a233d1a7428c6",
   "object-camera-comparison.png": "7875ddead7f1d8ca8bacff3b04115479cfdfc4e2ba50f1d68d5eaab9099976d9",
-  "verify.py": "80f7414094a5576edd5cf7fb3092219162f53925308467b86e5ed46525c186b9",
-  "README.md": "2c214db130c13ff536790fbcd0ac7a05c632e5d0df446b947cd5ab6138b0c196",
-  "README.ko.md": "e2accb97ece0f77baa41ab384123cb539e9c2f18b126d09b25cabc8be97b7fc7",
+  "verify.py": "17191eda150b1583c55cb0630c433666a22194a268fc2e7c4305d8e0548ba892",
+  "README.md": "d8b07bf95688d983eae29abcd9dc50d238c035b4a936f926011c24648301dc3f",
+  "README.ko.md": "c4bf0316357573bb70c1552c7b387b6292a044e8b74714dba8a872d09beb2258",
   "fit-support-summary.json": "223448a70307a386695a040faab84acbf4aae9707ec20f9a7a9139d21695c90c",
   "setup-failure.json": "6f079975d2c90864a4744fe9cc1a6e6351d75bba220f94f3c75eb015a876d4be",
   "local-test-environment.json": "764cc9fecc1ba1112f376e96075a3d8eefb77f9d02af18f660bd9014e441b6c5",
   "initial_multiple_reflectors-complete.ply": "af00693614792f11efb7fe36754b528fe63d4486aa17483e0e5412146c1042d4",
-  "fitted_partial_scene-complete.ply": "51fa49a15ba89fa34750d2d45866364656b033ed5bb7d53a6bddeda4e160bf6d"
+  "fitted_partial_scene-complete.ply": "51fa49a15ba89fa34750d2d45866364656b033ed5bb7d53a6bddeda4e160bf6d",
+  "test_replay_arithmetic.py": "5d66a9bc9477a82a7b636bd1f118a8efd9660e8f4ea363d1186cbe0a41206bea",
+  "replay-arithmetic-failure.json": "de4cdc12cb2801c5e8e301c53901bee37b93f5c034ed407574f118f2f6fdfde4"
 }

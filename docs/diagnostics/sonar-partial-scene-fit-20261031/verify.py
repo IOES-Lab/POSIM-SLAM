@@ -9,6 +9,21 @@ from run_fit import ROOT, FAMILIES, BASE, PREVIOUS, sha, build
 from assess import evaluate
 
 
+def derived_power_equal(actual, expected):
+    """Compare recomputed float64 powers, never original serialized observations.
+
+    np.power/libm can round the same hashed dB input by one ULP differently on
+    x86/ARM. Eight float64 epsilons bound this derived arithmetic, with no
+    absolute floor that could hide an absent or weak return. Raw NPZ/dB identity
+    is still checked exactly by SHA-256 before conversion in build().
+    """
+    actual, expected = np.asarray(actual), np.asarray(expected)
+    if (actual.shape != expected.shape or not np.isfinite(actual).all()
+            or not np.isfinite(expected).all()):
+        raise AssertionError('same_shape_finite_derived_powers_required')
+    np.testing.assert_allclose(actual, expected, rtol=8*np.finfo(float).eps, atol=0.)
+
+
 def main(records):
     for name, digest in json.loads((ROOT/'sha256.json').read_text()).items():
         assert (ROOT/name).resolve().is_relative_to(ROOT.resolve())
@@ -53,8 +68,8 @@ def main(records):
             np.testing.assert_array_equal(actual['face_ray_counts'],saved[name+'_face_ray_counts'])
             for frame, row, old in zip(frames, actual['views'], report['families'][name]['frames']):
                 prefix = name+f'_frame{frame["index"]}_'
-                for key in ['pixels','observed']:
-                    np.testing.assert_array_equal(row[key], saved[prefix+key])
+                np.testing.assert_array_equal(row['pixels'], saved[prefix+'pixels'])
+                derived_power_equal(row['observed'], saved[prefix+'observed'])
                 for key in ['mean','residual']:
                     np.testing.assert_allclose(row[key],saved[prefix+key],rtol=budget,
                         atol=budget*max(float(np.max(abs(saved[prefix+key]))),1e-30))

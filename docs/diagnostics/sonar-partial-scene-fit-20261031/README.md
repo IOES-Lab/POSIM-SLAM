@@ -97,5 +97,11 @@ it starts no fit and changes no raw data. The retained SDK lacks optional cv2:
 59 local neighbouring tests pass and one unrelated session-test import fails;
 hosted CI installs the declared research dependencies. No SDK is changed.
 
+The first Linux replay exposes an incorrect bit-equality check on derived
+`10**(dB/10)` powers: one of 48 values differs by 1 ULP. Original raw/output
+hashes remain exact. Only this recomputed float64 arithmetic uses eight machine
+epsilons relative with zero absolute floor; 64-epsilon and missing/created weak
+return controls fail. The sealed fit, sensor noise and map criteria are unchanged.
+
 Code and record are Apache-2.0. No new third-party dependency, forward acoustic
 model, SDK, renderer run, downloaded artifact or service restart is introduced.
