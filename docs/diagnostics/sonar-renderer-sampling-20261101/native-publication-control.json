@@ -1,0 +1,78 @@
+{
+  "source_revision": "8d131df47fd745815bd15f36365a4bd49aa13e47",
+  "conversion_source_sha256": "f333155dbb56cf7685c0b9211ebab47c45c446171f3ae91ef68dd677b2fef29a",
+  "results": [
+    {
+      "trace": 0,
+      "stamp_ns": 25010000000,
+      "raw_cpp_conversion_bit_exact": true,
+      "raw_cpp_conversion_delta_db": {
+        "count": 153344,
+        "rms": 0.0,
+        "minimum": 0.0,
+        "maximum": 0.0,
+        "absolute_quantiles": {
+          "50": 0.0,
+          "90": 0.0,
+          "95": 0.0,
+          "99": 0.0,
+          "100": 0.0
+        }
+      }
+    },
+    {
+      "trace": 1,
+      "stamp_ns": 45010000000,
+      "raw_cpp_conversion_bit_exact": true,
+      "raw_cpp_conversion_delta_db": {
+        "count": 153344,
+        "rms": 0.0,
+        "minimum": 0.0,
+        "maximum": 0.0,
+        "absolute_quantiles": {
+          "50": 0.0,
+          "90": 0.0,
+          "95": 0.0,
+          "99": 0.0,
+          "100": 0.0
+        }
+      }
+    },
+    {
+      "trace": 2,
+      "stamp_ns": 65010000000,
+      "raw_cpp_conversion_bit_exact": true,
+      "raw_cpp_conversion_delta_db": {
+        "count": 153344,
+        "rms": 0.0,
+        "minimum": 0.0,
+        "maximum": 0.0,
+        "absolute_quantiles": {
+          "50": 0.0,
+          "90": 0.0,
+          "95": 0.0,
+          "99": 0.0,
+          "100": 0.0
+        }
+      }
+    },
+    {
+      "trace": 3,
+      "stamp_ns": 85010000000,
+      "raw_cpp_conversion_bit_exact": true,
+      "raw_cpp_conversion_delta_db": {
+        "count": 153344,
+        "rms": 0.0,
+        "minimum": 0.0,
+        "maximum": 0.0,
+        "absolute_quantiles": {
+          "50": 0.0,
+          "90": 0.0,
+          "95": 0.0,
+          "99": 0.0,
+          "100": 0.0
+        }
+      }
+    }
+  ]
+}

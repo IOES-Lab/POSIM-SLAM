@@ -1,0 +1,45 @@
+{
+  "scope": "Plot retained RGB and complete conditional mean images, not a SLAM map.",
+  "frames": [
+    {
+      "trace": 0,
+      "sonar_stamp_ns": 25010000000,
+      "sonar_origin_rgb_stamp_ns": 25000000000,
+      "isometric_stamp_ns": 25000000000,
+      "rgb_sha256": "6df00dd30c3c5aaf517cc7fe8d15b3fb12f2abd087f2af17a491138a1435755d",
+      "isometric_sha256": "f674786733a6ca82ab7dfc8ab5afeac6f48fd716c699b281d7b3fa140a3b0c9a"
+    },
+    {
+      "trace": 1,
+      "sonar_stamp_ns": 45010000000,
+      "sonar_origin_rgb_stamp_ns": 45000000000,
+      "isometric_stamp_ns": 45000000000,
+      "rgb_sha256": "7251c6e6551e9485a60455a4d3bad0d209453e75ba91cdf8ecd550282dddda30",
+      "isometric_sha256": "9d74348420b633bafe516d5095c8b80936571006d34fac15adf80181bdd3141d"
+    },
+    {
+      "trace": 2,
+      "sonar_stamp_ns": 65010000000,
+      "sonar_origin_rgb_stamp_ns": 65000000000,
+      "isometric_stamp_ns": 65000000000,
+      "rgb_sha256": "19dddd5de0af001d2735f0fdd45726c1bfb8f4105147a29eabb5ff159179f5af",
+      "isometric_sha256": "011573e210489f226115926f876a675379d59c3db47b8a4dc8ac3e1e632236ca"
+    },
+    {
+      "trace": 3,
+      "sonar_stamp_ns": 85010000000,
+      "sonar_origin_rgb_stamp_ns": 85000000000,
+      "isometric_stamp_ns": 85000000000,
+      "rgb_sha256": "157cd8ef32507c7788524d71ef340c7d8739bf3c241c9403b87769f505de6957",
+      "isometric_sha256": "8862c868862f7fcfe9b2d5f0bfac0b2e3a81918ac7c55358d5b1e061344f0a9e"
+    }
+  ],
+  "raw_display_db": [
+    -70.0,
+    70.0
+  ],
+  "pixels_selected": false,
+  "map_accepted": false,
+  "source_sha256": "1cd742296a6143187f1170d0e820b999488e2e05c0265ab38848cabb0a9e40ff",
+  "image_sha256": "0ce8ea39765c11b35129dee0a3ea90d1ac4815e90a673d78c55b11c9eae84e62"
+}

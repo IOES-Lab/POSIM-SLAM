@@ -36,6 +36,22 @@ class SourceSurfaceTests(unittest.TestCase):
                                      np.linspace(-.2, .2, 5), 15.)
         np.testing.assert_array_equal(normal, 0.)
 
+    def test_sampling_calibration_preserves_nominal_normal_convention(self):
+        az, el = np.linspace(-.25, .25, 7), np.linspace(-.1, .1, 5)
+        rr = np.arange(80)*.1
+        nominal = SurfacePowerModel(az, el, rr, maximum_range_m=7.9)
+        directions = nominal.directions.reshape(5, 7, 3).copy()
+        angle = .06
+        r = np.array([[np.cos(angle), 0., np.sin(angle)], [0., 1., 0.],
+                      [-np.sin(angle), 0., np.cos(angle)]])
+        model = SurfacePowerModel(az, el, rr, maximum_range_m=7.9,
+                                  sampled_ray_directions=directions@r.T)
+        observation = SourceSurfaceObservation(model, TriangleSurface(plane(3.)))
+        expected = ray_surface_normals((3./(directions@r.T)[..., 0]).astype(np.float32),
+                                       az, el, 7.9)
+        np.testing.assert_array_equal(observation.normals, expected)
+        self.assertGreater(observation.moments([.001, .001], np.array([[30, 3]]))['mean'][0], 0.)
+
     def test_complete_native_reference_cases_include_discontinuities_and_dense_fan(self):
         root = Path(__file__).resolve().parents[1]
         fixture = root/'docs/diagnostics/sonar-source-local-power-20261031/native-normals.npz'

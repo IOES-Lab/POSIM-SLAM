@@ -219,12 +219,17 @@ class SurfacePowerModel:
     POSIM source's (ray_skips + 1) area factor, hence a factor of two. It does not
     supply a commercial device calibration. Grouping averages power after beam
     mixing, preserving the recorded diagnostic's 4-range/3-beam convention.
+    Optional sampled_ray_directions supplies a calibrated [elevation, beam, 3]
+    unit-ray grid for geometric intersections. Nominal angles still define beam
+    mixing, integration weights and the source-normal convention. The caller
+    supplies this calibration independently of the observed image or scene fit.
     """
 
     def __init__(self, azimuth_rad, elevation_rad, native_ranges_m, *,
                  minimum_range_m=.2, maximum_range_m=10., source_level_db=220.,
                  sound_speed_m_s=1500., absorption_db_m=.0354,
-                 fractional_samples=8, range_group=1, beam_group=1):
+                 fractional_samples=8, range_group=1, beam_group=1,
+                 sampled_ray_directions=None):
         az, el, rr = (np.array(x, dtype=float, copy=True)
                       for x in (azimuth_rad, elevation_rad, native_ranges_m))
         if (any(x.ndim != 1 or not np.isfinite(x).all() or not np.all(np.diff(x) > 0)
@@ -253,15 +258,30 @@ class SurfacePowerModel:
             raise ValueError('surface_range_alias_period_exceeded')
         self.nbeams = len(az)
         self.azimuth_rad = az
+        self.elevation_rad = el
         self.native_ranges_m = rr
         self.fractional_samples = fractional_samples
-        for value in (self.azimuth_rad, self.native_ranges_m):
+        for value in (self.azimuth_rad, self.elevation_rad, self.native_ranges_m):
             value.setflags(write=False)
         self.ray_shape = (len(el), len(az))
         self.minimum_range_m, self.maximum_range_m = minimum_range_m, maximum_range_m
         self.directions = np.stack(np.broadcast_arrays(
             np.cos(el[:, None]) * np.cos(az), np.cos(el[:, None]) * np.sin(az),
             np.sin(el[:, None])), axis=-1).reshape(-1, 3)
+        # A renderer or sensor calibration can sample directions different from
+        # its declared beam grid. Keep intersection rays separate from acoustic
+        # beam labels, angular integration weights and source-normal angles.
+        if sampled_ray_directions is not None:
+            sampled = np.asarray(sampled_ray_directions)
+            if (sampled.shape != (*self.ray_shape, 3) or sampled.dtype.kind not in 'fiu'
+                    or not np.isfinite(sampled).all()):
+                raise ValueError('finite_calibrated_ray_grid_required')
+            sampled = sampled.astype(float, copy=True).reshape(-1, 3)
+            length = np.linalg.norm(sampled, axis=1)
+            if not np.allclose(length, 1., atol=1e-6, rtol=0):
+                raise ValueError('unit_calibrated_ray_grid_required')
+            self.directions = sampled / length[:, None]
+        self.directions.setflags(write=False)
         self.fine_bins = len(rr) * fractional_samples
         self.fine_step_m = steps[2] / fractional_samples
         if len(rr) * self.fine_bins > 8_388_608:

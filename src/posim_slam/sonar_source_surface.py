@@ -30,9 +30,7 @@ class SourceSurfaceObservation:
         self.model, self.size = model, len(surface.triangles)
         self.ranges = np.where(finite, trace.ranges, 0.).astype(np.float32)
         self.hit_triangles = trace.hit_triangles.copy()
-        grid = model.directions.reshape(*model.ray_shape, 3)
-        elevation = np.arctan2(grid[:, 0, 2], np.hypot(grid[:, 0, 0], grid[:, 0, 1]))
-        self.normals = ray_surface_normals(self.ranges, model.azimuth_rad, elevation,
+        self.normals = ray_surface_normals(self.ranges, model.azimuth_rad, model.elevation_rad,
                                            model.maximum_range_m)
         keep = ((self.hit_triangles >= 0) & (self.ranges > 0)
                 & (self.ranges <= model.maximum_range_m))

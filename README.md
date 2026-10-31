@@ -80,6 +80,10 @@ support until scene/pose/time agreement and joint uncertainty are established.
 [Failed birth and whole-image controls](docs/diagnostics/sonar-reflector-birth-20261031/README.md).
 [Exact native input recording](docs/diagnostics/sonar-native-input-trace-20261031/README.md)
 provides bounded operand/output byte controls before actual field-input qualification.
+[Actual renderer sampling](docs/diagnostics/sonar-renderer-sampling-20261101/README.md)
+separates calibrated intersection rays from nominal beam angles and retains all
+four traced fields and complete power comparisons. `SurfacePowerModel` accepts
+an optional sampled unit-ray grid; scene and render poses remain assessment-only.
 
 `sonar_power_evidence` profiles common reflectivity and preserves pixel
 correlations and gain nullspaces in conditional score information. [Native

@@ -76,6 +76,10 @@ Householder QR과 유효 정보 방향을 구분하는 SVD로 자세·평면·�
 [잘못된 후보와 전체 영상 대조](docs/diagnostics/sonar-reflector-birth-20261031/README.ko.md).
 [정확한 네이티브 입력 기록](docs/diagnostics/sonar-native-input-trace-20261031/README.ko.md)은
 실제 현장 입력 검증에 앞서 제한된 입력·출력의 바이트 대조를 제공합니다.
+[실제 렌더러의 음선 샘플링](docs/diagnostics/sonar-renderer-sampling-20261101/README.ko.md)은
+교점 계산의 보정 음선과 명목 빔 각도를 구분하고 네 프레임의 전체 입력·
+전력 대조를 보존합니다. `SurfacePowerModel`은 선택형 단위 음선 격자를
+받으며 장면·렌더러 자세는 평가용입니다.
 
 `sonar_power_evidence`는 공통 반사율을 추정하고 조건부 점수 정보에서 픽셀
 상관관계와 배율 영공간을 유지합니다. [네이티브 전력 대조와 원본 영상의 기준 모델](docs/diagnostics/sonar-native-power-moments-20261031/README.ko.md)에서
@@ -174,7 +178,7 @@ POSIM 애플리케이션에서 사용하는 독립 센서 추정 라이브러리
 시뮬레이터의 정답 위치·자세를 위치 추정 관측으로 사용하지 않습니다.
 소나 강도 특징점은 분류된 3D 장애물이 아닙니다.
 
-Ping 축척 관측은 모든 광선 교점이 관측 평면의 볼록 껍질 안에 있고, 각 교점에서 평면 거리의 5% 이내에 특징점이 있어야 합니다. `ping_factor` 모듈은 공동 최적화를 위한 자세·평면 거리 미분과 관측 영역 검사를 제공하며, 네이티브 워커는 대응하는 공동 관측을 `native/basalt/ping_factors.hpp`와 `ping_linearization.hpp`에 구현합니다. `ping_joint`는 거리·표면 잡음을 명시적으로 받아 공동 선형화와 상관관계를 보존하는 평면·특징점 변수 제거의 제한된 참조 구현을 제공합니다.
+Ping 축척 관측은 모든 음선 교점이 관측 평면의 볼록 껍질 안에 있고, 각 교점에서 평면 거리의 5% 이내에 특징점이 있어야 합니다. `ping_factor` 모듈은 공동 최적화를 위한 자세·평면 거리 미분과 관측 영역 검사를 제공하며, 네이티브 워커는 대응하는 공동 관측을 `native/basalt/ping_factors.hpp`와 `ping_linearization.hpp`에 구현합니다. `ping_joint`는 거리·표면 잡음을 명시적으로 받아 공동 선형화와 상관관계를 보존하는 평면·특징점 변수 제거의 제한된 참조 구현을 제공합니다.
 
 ## 공동 융합 구성 요소
 
