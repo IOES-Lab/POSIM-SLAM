@@ -78,6 +78,8 @@ fixed navigation, unmeasured prior surfaces and residual echoes remain explicit.
 whole-elevation region overlap across distinct views. Its output remains search
 support until scene/pose/time agreement and joint uncertainty are established.
 [Failed birth and whole-image controls](docs/diagnostics/sonar-reflector-birth-20261031/README.md).
+[Exact native input recording](docs/diagnostics/sonar-native-input-trace-20261031/README.md)
+provides bounded operand/output byte controls before actual field-input qualification.
 
 `sonar_power_evidence` profiles common reflectivity and preserves pixel
 correlations and gain nullspaces in conditional score information. [Native

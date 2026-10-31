@@ -1,0 +1,9 @@
+{
+  "configuration": "Release",
+  "test": "bounded_native_trace",
+  "passed": true,
+  "source_commit": "8d131df47fd745815bd15f36365a4bd49aa13e47",
+  "tests": 1,
+  "assertions_enabled": true,
+  "installed_sdk_changed": false
+}

@@ -74,6 +74,8 @@ Householder QR과 유효 정보 방향을 구분하는 SVD로 자세·평면·�
 유한한 반사 표면을 제안합니다. 장면·자세·시각의 일치와 공통 불확실성을
 확인할 때까지 검색 후보로 유지합니다.
 [잘못된 후보와 전체 영상 대조](docs/diagnostics/sonar-reflector-birth-20261031/README.ko.md).
+[정확한 네이티브 입력 기록](docs/diagnostics/sonar-native-input-trace-20261031/README.ko.md)은
+실제 현장 입력 검증에 앞서 제한된 입력·출력의 바이트 대조를 제공합니다.
 
 `sonar_power_evidence`는 공통 반사율을 추정하고 조건부 점수 정보에서 픽셀
 상관관계와 배율 영공간을 유지합니다. [네이티브 전력 대조와 원본 영상의 기준 모델](docs/diagnostics/sonar-native-power-moments-20261031/README.ko.md)에서
