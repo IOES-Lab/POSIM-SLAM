@@ -1,0 +1,817 @@
+{
+  "rows": [
+    {
+      "stamp_ns": 16510000000,
+      "component": 19,
+      "observation_count": 3,
+      "median_height_m": 0.3806067847500801,
+      "height_mad_m": 0.005203051060670649,
+      "centroid_world": [
+        8.548456853854194,
+        -1.3725022153040678,
+        -3.271484136795662
+      ],
+      "assessment_nearest_surface_majority": "inspection_block_0",
+      "actual_assessment_viewing_bearing_rad": 2.9813910307437497,
+      "physical_identity_verified": false
+    },
+    {
+      "stamp_ns": 17500000000,
+      "component": 19,
+      "observation_count": 3,
+      "median_height_m": 0.4160897970708924,
+      "height_mad_m": 0.0040531223622081725,
+      "centroid_world": [
+        8.481398018332234,
+        -1.4216866223070654,
+        -3.229683386462051
+      ],
+      "assessment_nearest_surface_majority": "inspection_block_0",
+      "actual_assessment_viewing_bearing_rad": 2.990605941259659,
+      "physical_identity_verified": false
+    },
+    {
+      "stamp_ns": 25010000000,
+      "component": 3,
+      "observation_count": 10,
+      "median_height_m": 0.35690089281856957,
+      "height_mad_m": 0.050357757413174636,
+      "centroid_world": [
+        8.341239677540084,
+        -0.9633894685759389,
+        -3.339131344582561
+      ],
+      "assessment_nearest_surface_majority": "inspection_block_0",
+      "actual_assessment_viewing_bearing_rad": -2.8792909369918585,
+      "physical_identity_verified": false
+    },
+    {
+      "stamp_ns": 26010000000,
+      "component": 4,
+      "observation_count": 7,
+      "median_height_m": 0.39197162747669906,
+      "height_mad_m": 0.010666317475972908,
+      "centroid_world": [
+        8.408915905977711,
+        -1.2819784881470218,
+        -3.3220474016474215
+      ],
+      "assessment_nearest_surface_majority": "inspection_block_0",
+      "actual_assessment_viewing_bearing_rad": -2.778982699737565,
+      "physical_identity_verified": false
+    },
+    {
+      "stamp_ns": 26500000000,
+      "component": 3,
+      "observation_count": 12,
+      "median_height_m": 0.3671275528686908,
+      "height_mad_m": 0.03329474620675735,
+      "centroid_world": [
+        8.337101904112155,
+        -1.0614731600590663,
+        -3.366115658966218
+      ],
+      "assessment_nearest_surface_majority": "inspection_block_0",
+      "actual_assessment_viewing_bearing_rad": -2.7274234129177475,
+      "physical_identity_verified": false
+    },
+    {
+      "stamp_ns": 27500000000,
+      "component": 1,
+      "observation_count": 14,
+      "median_height_m": 0.4032362862125597,
+      "height_mad_m": 0.012332509532071462,
+      "centroid_world": [
+        8.475863678151944,
+        -1.3932470019061556,
+        -3.286057838203656
+      ],
+      "assessment_nearest_surface_majority": "inspection_block_0",
+      "actual_assessment_viewing_bearing_rad": -2.63341688896069,
+      "physical_identity_verified": false
+    },
+    {
+      "stamp_ns": 28010000000,
+      "component": 5,
+      "observation_count": 12,
+      "median_height_m": 0.39334110556603596,
+      "height_mad_m": 0.013075320488393272,
+      "centroid_world": [
+        8.35567347229196,
+        -1.1432060290822903,
+        -3.2936369019131213
+      ],
+      "assessment_nearest_surface_majority": "inspection_block_0",
+      "actual_assessment_viewing_bearing_rad": -2.6081168336195653,
+      "physical_identity_verified": false
+    },
+    {
+      "stamp_ns": 28510000000,
+      "component": 2,
+      "observation_count": 17,
+      "median_height_m": 0.38846604788365285,
+      "height_mad_m": 0.0151961066680123,
+      "centroid_world": [
+        8.376490656908524,
+        -1.2201954103284016,
+        -3.3217184906066035
+      ],
+      "assessment_nearest_surface_majority": "inspection_block_0",
+      "actual_assessment_viewing_bearing_rad": -2.603570895965573,
+      "physical_identity_verified": false
+    },
+    {
+      "stamp_ns": 29010000000,
+      "component": 0,
+      "observation_count": 11,
+      "median_height_m": 0.3888600519698025,
+      "height_mad_m": 0.020164762640213052,
+      "centroid_world": [
+        8.38133481875615,
+        -1.1345224893167833,
+        -3.3065626787816274
+      ],
+      "assessment_nearest_surface_majority": "inspection_block_0",
+      "actual_assessment_viewing_bearing_rad": -2.6256779616988957,
+      "physical_identity_verified": false
+    },
+    {
+      "stamp_ns": 29510000000,
+      "component": 2,
+      "observation_count": 9,
+      "median_height_m": 0.3797921742659403,
+      "height_mad_m": 0.012268353785666375,
+      "centroid_world": [
+        8.366694074965126,
+        -1.1125610931006158,
+        -3.3610525869416326
+      ],
+      "assessment_nearest_surface_majority": "inspection_block_0",
+      "actual_assessment_viewing_bearing_rad": -2.6493110342368693,
+      "physical_identity_verified": false
+    },
+    {
+      "stamp_ns": 30010000000,
+      "component": 2,
+      "observation_count": 15,
+      "median_height_m": 0.3893020485095389,
+      "height_mad_m": 0.014234159639928468,
+      "centroid_world": [
+        8.340730481349302,
+        -1.0954973333313207,
+        -3.3150995651504354
+      ],
+      "assessment_nearest_surface_majority": "inspection_block_0",
+      "actual_assessment_viewing_bearing_rad": -2.662518155947612,
+      "physical_identity_verified": false
+    },
+    {
+      "stamp_ns": 31010000000,
+      "component": 1,
+      "observation_count": 9,
+      "median_height_m": 0.3306487892893344,
+      "height_mad_m": 0.07323304191553981,
+      "centroid_world": [
+        8.511301244627766,
+        -1.3886265707988386,
+        -3.3997901810337776
+      ],
+      "assessment_nearest_surface_majority": "inspection_block_0",
+      "actual_assessment_viewing_bearing_rad": -2.6550007949318144,
+      "physical_identity_verified": false
+    },
+    {
+      "stamp_ns": 31510000000,
+      "component": 2,
+      "observation_count": 8,
+      "median_height_m": 0.38032387655934324,
+      "height_mad_m": 0.014923273095786282,
+      "centroid_world": [
+        8.408659487456267,
+        -1.3100351743560747,
+        -3.3430448699206505
+      ],
+      "assessment_nearest_surface_majority": "inspection_block_0",
+      "actual_assessment_viewing_bearing_rad": -2.645501932721862,
+      "physical_identity_verified": false
+    },
+    {
+      "stamp_ns": 32010000000,
+      "component": 3,
+      "observation_count": 11,
+      "median_height_m": 0.3890360583448658,
+      "height_mad_m": 0.017252031091524955,
+      "centroid_world": [
+        8.47974199930765,
+        -1.3446259094435626,
+        -3.32260626175992
+      ],
+      "assessment_nearest_surface_majority": "inspection_block_0",
+      "actual_assessment_viewing_bearing_rad": -2.6418459155600753,
+      "physical_identity_verified": false
+    },
+    {
+      "stamp_ns": 32510000000,
+      "component": 4,
+      "observation_count": 12,
+      "median_height_m": 0.36251614626530027,
+      "height_mad_m": 0.03298918711720636,
+      "centroid_world": [
+        8.41670423367543,
+        -1.1292528087820506,
+        -3.331519200454485
+      ],
+      "assessment_nearest_surface_majority": "inspection_block_0",
+      "actual_assessment_viewing_bearing_rad": -2.6327435019465293,
+      "physical_identity_verified": false
+    },
+    {
+      "stamp_ns": 33010000000,
+      "component": 6,
+      "observation_count": 6,
+      "median_height_m": 0.39353988727269384,
+      "height_mad_m": 0.029601256627624806,
+      "centroid_world": [
+        8.307713630892843,
+        -1.094913482845649,
+        -3.314889138928797
+      ],
+      "assessment_nearest_surface_majority": "inspection_block_0",
+      "actual_assessment_viewing_bearing_rad": -2.617116440899044,
+      "physical_identity_verified": false
+    },
+    {
+      "stamp_ns": 35510000000,
+      "component": 1,
+      "observation_count": 4,
+      "median_height_m": 0.41166143596606364,
+      "height_mad_m": 0.0037972620991214845,
+      "centroid_world": [
+        8.409702396126058,
+        -1.3456003841312913,
+        -3.294121514728165
+      ],
+      "assessment_nearest_surface_majority": "inspection_block_0",
+      "actual_assessment_viewing_bearing_rad": -2.9009048128837045,
+      "physical_identity_verified": false
+    },
+    {
+      "stamp_ns": 36010000000,
+      "component": 0,
+      "observation_count": 8,
+      "median_height_m": 0.41121933143667233,
+      "height_mad_m": 0.002029513135149541,
+      "centroid_world": [
+        8.45986557255729,
+        -1.3715639788878229,
+        -3.2876756054698357
+      ],
+      "assessment_nearest_surface_majority": "inspection_block_0",
+      "actual_assessment_viewing_bearing_rad": -2.971731397885985,
+      "physical_identity_verified": false
+    },
+    {
+      "stamp_ns": 37500000000,
+      "component": 0,
+      "observation_count": 6,
+      "median_height_m": 0.4132217662419806,
+      "height_mad_m": 0.0011070177556430638,
+      "centroid_world": [
+        8.501352919432238,
+        -1.6187509963071862,
+        -3.273470450095187
+      ],
+      "assessment_nearest_surface_majority": "inspection_block_0",
+      "actual_assessment_viewing_bearing_rad": 3.131410962582213,
+      "physical_identity_verified": false
+    },
+    {
+      "stamp_ns": 38510000000,
+      "component": 0,
+      "observation_count": 5,
+      "median_height_m": 0.40822648467486705,
+      "height_mad_m": 0.006310111400711971,
+      "centroid_world": [
+        8.476209105201704,
+        -1.606286534342265,
+        -3.380987343650844
+      ],
+      "assessment_nearest_surface_majority": "inspection_block_0",
+      "actual_assessment_viewing_bearing_rad": 3.1256018069165235,
+      "physical_identity_verified": false
+    },
+    {
+      "stamp_ns": 45500000000,
+      "component": 1,
+      "observation_count": 13,
+      "median_height_m": 0.3901901405597256,
+      "height_mad_m": 0.006038107950838867,
+      "centroid_world": [
+        8.416354291875507,
+        -1.577200385741663,
+        -3.3130262636945704
+      ],
+      "assessment_nearest_surface_majority": "inspection_block_0",
+      "actual_assessment_viewing_bearing_rad": 2.7419428546118936,
+      "physical_identity_verified": false
+    },
+    {
+      "stamp_ns": 46010000000,
+      "component": 1,
+      "observation_count": 14,
+      "median_height_m": 0.3700335798829025,
+      "height_mad_m": 0.022891098075922878,
+      "centroid_world": [
+        8.326812746837492,
+        -1.604905816072068,
+        -3.3587331357100716
+      ],
+      "assessment_nearest_surface_majority": "inspection_block_0",
+      "actual_assessment_viewing_bearing_rad": 2.67539878477707,
+      "physical_identity_verified": false
+    },
+    {
+      "stamp_ns": 46500000000,
+      "component": 2,
+      "observation_count": 8,
+      "median_height_m": 0.3757302533792076,
+      "height_mad_m": 0.011379300765483824,
+      "centroid_world": [
+        8.445889583098861,
+        -1.5356295047831066,
+        -3.358344599577912
+      ],
+      "assessment_nearest_surface_majority": "inspection_block_0",
+      "actual_assessment_viewing_bearing_rad": 2.638796174434818,
+      "physical_identity_verified": false
+    },
+    {
+      "stamp_ns": 47010000000,
+      "component": 4,
+      "observation_count": 11,
+      "median_height_m": 0.3698307544749668,
+      "height_mad_m": 0.024762501109903634,
+      "centroid_world": [
+        8.306581490967202,
+        -1.6139704423950285,
+        -3.34073466166234
+      ],
+      "assessment_nearest_surface_majority": "inspection_block_0",
+      "actual_assessment_viewing_bearing_rad": 2.6429382155130723,
+      "physical_identity_verified": false
+    },
+    {
+      "stamp_ns": 47500000000,
+      "component": 2,
+      "observation_count": 12,
+      "median_height_m": 0.3868003955115032,
+      "height_mad_m": 0.014357393379180544,
+      "centroid_world": [
+        8.39283666499547,
+        -1.4478993852850561,
+        -3.325056569908522
+      ],
+      "assessment_nearest_surface_majority": "inspection_block_0",
+      "actual_assessment_viewing_bearing_rad": 2.661445219386097,
+      "physical_identity_verified": false
+    },
+    {
+      "stamp_ns": 48010000000,
+      "component": 2,
+      "observation_count": 12,
+      "median_height_m": 0.3899300293924941,
+      "height_mad_m": 0.009095147095298545,
+      "centroid_world": [
+        8.397349502739724,
+        -1.6342811245457145,
+        -3.3309924122533694
+      ],
+      "assessment_nearest_surface_majority": "inspection_block_0",
+      "actual_assessment_viewing_bearing_rad": 2.6790363372572825,
+      "physical_identity_verified": false
+    },
+    {
+      "stamp_ns": 48510000000,
+      "component": 2,
+      "observation_count": 10,
+      "median_height_m": 0.3789290310278439,
+      "height_mad_m": 0.016650471967004282,
+      "centroid_world": [
+        8.382668266368677,
+        -1.5256276443570789,
+        -3.3588988854510604
+      ],
+      "assessment_nearest_surface_majority": "inspection_block_0",
+      "actual_assessment_viewing_bearing_rad": 2.682084096624971,
+      "physical_identity_verified": false
+    },
+    {
+      "stamp_ns": 49010000000,
+      "component": 3,
+      "observation_count": 3,
+      "median_height_m": 0.6375022825201675,
+      "height_mad_m": 0.0001619631437350666,
+      "centroid_world": [
+        9.947265186396535,
+        1.1091773391045212,
+        -3.052882757343309
+      ],
+      "assessment_nearest_surface_majority": "inspection_block_1",
+      "actual_assessment_viewing_bearing_rad": 2.6768937884150894,
+      "physical_identity_verified": false
+    },
+    {
+      "stamp_ns": 49010000000,
+      "component": 4,
+      "observation_count": 6,
+      "median_height_m": 0.3270330139105116,
+      "height_mad_m": 0.04186605673169225,
+      "centroid_world": [
+        8.338870098931839,
+        -1.5702953001213034,
+        -3.4086839808183043
+      ],
+      "assessment_nearest_surface_majority": "inspection_block_0",
+      "actual_assessment_viewing_bearing_rad": 2.6768937884150894,
+      "physical_identity_verified": false
+    },
+    {
+      "stamp_ns": 49510000000,
+      "component": 1,
+      "observation_count": 11,
+      "median_height_m": 0.39347398320981186,
+      "height_mad_m": 0.01568861045370279,
+      "centroid_world": [
+        8.343926049955456,
+        -1.5638166034577052,
+        -3.380285090715455
+      ],
+      "assessment_nearest_surface_majority": "inspection_block_0",
+      "actual_assessment_viewing_bearing_rad": 2.669737910065857,
+      "physical_identity_verified": false
+    },
+    {
+      "stamp_ns": 50010000000,
+      "component": 1,
+      "observation_count": 7,
+      "median_height_m": 0.31207308885587387,
+      "height_mad_m": 0.03518061934429462,
+      "centroid_world": [
+        8.204635839191962,
+        -1.9392913347273593,
+        -3.45088299143048
+      ],
+      "assessment_nearest_surface_majority": "inspection_block_0",
+      "actual_assessment_viewing_bearing_rad": 2.6506453792801787,
+      "physical_identity_verified": false
+    },
+    {
+      "stamp_ns": 50500000000,
+      "component": 4,
+      "observation_count": 10,
+      "median_height_m": 0.37934997348395016,
+      "height_mad_m": 0.01147201124960509,
+      "centroid_world": [
+        8.387524425290135,
+        -1.5035573544838061,
+        -3.371127568018289
+      ],
+      "assessment_nearest_surface_majority": "inspection_block_0",
+      "actual_assessment_viewing_bearing_rad": 2.6407899163202804,
+      "physical_identity_verified": false
+    },
+    {
+      "stamp_ns": 51010000000,
+      "component": 7,
+      "observation_count": 9,
+      "median_height_m": 0.36236548336740354,
+      "height_mad_m": 0.017789983442216162,
+      "centroid_world": [
+        8.371007113158932,
+        -1.7091266735551127,
+        -3.380245029531963
+      ],
+      "assessment_nearest_surface_majority": "inspection_block_0",
+      "actual_assessment_viewing_bearing_rad": 2.6375246967554875,
+      "physical_identity_verified": false
+    },
+    {
+      "stamp_ns": 51500000000,
+      "component": 2,
+      "observation_count": 15,
+      "median_height_m": 0.4038665208366953,
+      "height_mad_m": 0.014556739493966853,
+      "centroid_world": [
+        8.395435720531085,
+        -1.690147966529539,
+        -3.368704788410793
+      ],
+      "assessment_nearest_surface_majority": "inspection_block_0",
+      "actual_assessment_viewing_bearing_rad": 2.6370753069880766,
+      "physical_identity_verified": false
+    },
+    {
+      "stamp_ns": 53010000000,
+      "component": 0,
+      "observation_count": 10,
+      "median_height_m": 0.3920621523755202,
+      "height_mad_m": 0.010609904311252721,
+      "centroid_world": [
+        8.431415617153892,
+        -1.4694473259815668,
+        -3.3299023537310513
+      ],
+      "assessment_nearest_surface_majority": "inspection_block_0",
+      "actual_assessment_viewing_bearing_rad": 2.6391253259497196,
+      "physical_identity_verified": false
+    },
+    {
+      "stamp_ns": 53500000000,
+      "component": 0,
+      "observation_count": 6,
+      "median_height_m": 0.3838978210867275,
+      "height_mad_m": 0.02447049555690256,
+      "centroid_world": [
+        8.42362324604648,
+        -1.3779603463631975,
+        -3.3811763830312387
+      ],
+      "assessment_nearest_surface_majority": "inspection_block_0",
+      "actual_assessment_viewing_bearing_rad": 2.724671197475381,
+      "physical_identity_verified": false
+    },
+    {
+      "stamp_ns": 55510000000,
+      "component": 0,
+      "observation_count": 3,
+      "median_height_m": 0.4065826565789256,
+      "height_mad_m": 0.00016717797662330058,
+      "centroid_world": [
+        8.518180630424803,
+        -1.1811270935589728,
+        -3.28810555023232
+      ],
+      "assessment_nearest_surface_majority": "inspection_block_0",
+      "actual_assessment_viewing_bearing_rad": 3.0231411709985143,
+      "physical_identity_verified": false
+    },
+    {
+      "stamp_ns": 56510000000,
+      "component": 0,
+      "observation_count": 3,
+      "median_height_m": 0.4137339678927276,
+      "height_mad_m": 0.0013046550672619617,
+      "centroid_world": [
+        8.504302681484411,
+        -1.5179522734834856,
+        -3.2633386772735373
+      ],
+      "assessment_nearest_surface_majority": "inspection_block_0",
+      "actual_assessment_viewing_bearing_rad": 3.14129549755517,
+      "physical_identity_verified": false
+    },
+    {
+      "stamp_ns": 64010000000,
+      "component": 0,
+      "observation_count": 6,
+      "median_height_m": 0.35952603525648064,
+      "height_mad_m": 0.010286600979421107,
+      "centroid_world": [
+        8.388704677451528,
+        -1.3577478424010743,
+        -3.3115785340258377
+      ],
+      "assessment_nearest_surface_majority": "inspection_block_0",
+      "actual_assessment_viewing_bearing_rad": -2.8781307867315338,
+      "physical_identity_verified": false
+    },
+    {
+      "stamp_ns": 64500000000,
+      "component": 0,
+      "observation_count": 6,
+      "median_height_m": 0.31828628338949194,
+      "height_mad_m": 0.04049870751296211,
+      "centroid_world": [
+        8.333278794939432,
+        -1.2330555163597978,
+        -3.367728521448582
+      ],
+      "assessment_nearest_surface_majority": "inspection_block_0",
+      "actual_assessment_viewing_bearing_rad": -2.8033450545053853,
+      "physical_identity_verified": false
+    },
+    {
+      "stamp_ns": 65010000000,
+      "component": 1,
+      "observation_count": 17,
+      "median_height_m": 0.39277827487927125,
+      "height_mad_m": 0.02232435635306418,
+      "centroid_world": [
+        8.451445535041232,
+        -1.3758417653862096,
+        -3.2944503550583866
+      ],
+      "assessment_nearest_surface_majority": "inspection_block_0",
+      "actual_assessment_viewing_bearing_rad": -2.7348987105483165,
+      "physical_identity_verified": false
+    },
+    {
+      "stamp_ns": 65510000000,
+      "component": 1,
+      "observation_count": 12,
+      "median_height_m": 0.3904494683757197,
+      "height_mad_m": 0.023731863570582157,
+      "centroid_world": [
+        8.375953051721375,
+        -1.294685367107703,
+        -3.3551247193426246
+      ],
+      "assessment_nearest_surface_majority": "inspection_block_0",
+      "actual_assessment_viewing_bearing_rad": -2.6849510942382557,
+      "physical_identity_verified": false
+    },
+    {
+      "stamp_ns": 66010000000,
+      "component": 1,
+      "observation_count": 10,
+      "median_height_m": 0.3865933342815481,
+      "height_mad_m": 0.024323806366115114,
+      "centroid_world": [
+        8.385171197588944,
+        -1.2214906016004152,
+        -3.3124175327865637
+      ],
+      "assessment_nearest_surface_majority": "inspection_block_0",
+      "actual_assessment_viewing_bearing_rad": -2.6582606907560304,
+      "physical_identity_verified": false
+    },
+    {
+      "stamp_ns": 66510000000,
+      "component": 2,
+      "observation_count": 8,
+      "median_height_m": 0.34874666815239486,
+      "height_mad_m": 0.010846360107106101,
+      "centroid_world": [
+        8.266031942185418,
+        -0.9771083432108862,
+        -3.334735062705717
+      ],
+      "assessment_nearest_surface_majority": "inspection_block_0",
+      "actual_assessment_viewing_bearing_rad": -2.6501430670346147,
+      "physical_identity_verified": false
+    },
+    {
+      "stamp_ns": 67010000000,
+      "component": 3,
+      "observation_count": 4,
+      "median_height_m": 0.4077888781940656,
+      "height_mad_m": 0.004569285329177303,
+      "centroid_world": [
+        8.471331452836754,
+        -1.508326879424503,
+        -3.2798913521950497
+      ],
+      "assessment_nearest_surface_majority": "inspection_block_0",
+      "actual_assessment_viewing_bearing_rad": -2.6525387559771794,
+      "physical_identity_verified": false
+    },
+    {
+      "stamp_ns": 67510000000,
+      "component": 0,
+      "observation_count": 11,
+      "median_height_m": 0.3627138987882645,
+      "height_mad_m": 0.027189600149658488,
+      "centroid_world": [
+        8.380655619876798,
+        -1.100680867314384,
+        -3.3667888941563477
+      ],
+      "assessment_nearest_surface_majority": "inspection_block_0",
+      "actual_assessment_viewing_bearing_rad": -2.6530265451889448,
+      "physical_identity_verified": false
+    },
+    {
+      "stamp_ns": 68010000000,
+      "component": 3,
+      "observation_count": 12,
+      "median_height_m": 0.38452090455165067,
+      "height_mad_m": 0.008071463222740105,
+      "centroid_world": [
+        8.416994987652982,
+        -1.4617118778172502,
+        -3.3773736732989863
+      ],
+      "assessment_nearest_surface_majority": "inspection_block_0",
+      "actual_assessment_viewing_bearing_rad": -2.6467628429300376,
+      "physical_identity_verified": false
+    },
+    {
+      "stamp_ns": 68500000000,
+      "component": 3,
+      "observation_count": 5,
+      "median_height_m": 0.35803108628648905,
+      "height_mad_m": 0.03795688165224803,
+      "centroid_world": [
+        8.33098272551356,
+        -1.0601786118819825,
+        -3.3736824006096997
+      ],
+      "assessment_nearest_surface_majority": "inspection_block_0",
+      "actual_assessment_viewing_bearing_rad": -2.6376248118852206,
+      "physical_identity_verified": false
+    },
+    {
+      "stamp_ns": 69010000000,
+      "component": 0,
+      "observation_count": 16,
+      "median_height_m": 0.38559120617384385,
+      "height_mad_m": 0.018410453371516172,
+      "centroid_world": [
+        8.407800516719247,
+        -1.1288167460265817,
+        -3.33202997061732
+      ],
+      "assessment_nearest_surface_majority": "inspection_block_0",
+      "actual_assessment_viewing_bearing_rad": -2.6275245591797094,
+      "physical_identity_verified": false
+    },
+    {
+      "stamp_ns": 69510000000,
+      "component": 1,
+      "observation_count": 12,
+      "median_height_m": 0.3572906442340362,
+      "height_mad_m": 0.034461898813797326,
+      "centroid_world": [
+        8.315872501739607,
+        -1.199983613461001,
+        -3.33345561959403
+      ],
+      "assessment_nearest_surface_majority": "inspection_block_0",
+      "actual_assessment_viewing_bearing_rad": -2.622735344390428,
+      "physical_identity_verified": false
+    },
+    {
+      "stamp_ns": 70010000000,
+      "component": 4,
+      "observation_count": 11,
+      "median_height_m": 0.3489174663772534,
+      "height_mad_m": 0.019459721761434956,
+      "centroid_world": [
+        8.33428102058324,
+        -1.3228355047359441,
+        -3.335890528645685
+      ],
+      "assessment_nearest_surface_majority": "inspection_block_0",
+      "actual_assessment_viewing_bearing_rad": -2.625720444848247,
+      "physical_identity_verified": false
+    },
+    {
+      "stamp_ns": 79500000000,
+      "component": 1,
+      "observation_count": 3,
+      "median_height_m": 0.4017310497513386,
+      "height_mad_m": 0.0001765195908203787,
+      "centroid_world": [
+        8.491478400871252,
+        -1.6477326446959164,
+        -3.2677133823424787
+      ],
+      "assessment_nearest_surface_majority": "inspection_block_0",
+      "actual_assessment_viewing_bearing_rad": -3.130793598084414,
+      "physical_identity_verified": false
+    },
+    {
+      "stamp_ns": 81010000000,
+      "component": 0,
+      "observation_count": 6,
+      "median_height_m": 0.3499845411465311,
+      "height_mad_m": 0.06556229819468656,
+      "centroid_world": [
+        8.403759846580984,
+        -1.7223175783684634,
+        -3.4017569931463085
+      ],
+      "assessment_nearest_surface_majority": "inspection_block_0",
+      "actual_assessment_viewing_bearing_rad": 3.128019083848812,
+      "physical_identity_verified": false
+    },
+    {
+      "stamp_ns": 82500000000,
+      "component": 1,
+      "observation_count": 6,
+      "median_height_m": 0.6412980353238964,
+      "height_mad_m": 0.0840906690134885,
+      "centroid_world": [
+        9.446564172407887,
+        1.2951026024320653,
+        -3.0198452592145095
+      ],
+      "assessment_nearest_surface_majority": "inspection_block_1",
+      "actual_assessment_viewing_bearing_rad": 3.067884557006314,
+      "physical_identity_verified": false
+    }
+  ],
+  "cross_frame_identity_verified": false,
+  "scene_used_only_to_annotate_after_construction": true,
+  "scope": "Every component with at least three paired observations; not physical object correspondences"
+}

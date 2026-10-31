@@ -1,0 +1,7 @@
+{
+  "../sonar-translated-view-20261031/calibration.json": "ca182e637bb52644c1fa81bcdd5d9f4984eeb2e7f6712de9427c407c6c1a9dd2",
+  "../sonar-translated-view-20261031/trajectory-assessment.npz": "f925a6db242e571784df77f4a7ab3334f8aa583e595ec28b640139ec97ce283e",
+  "../sonar-translated-view-20261031/raw-input-hashes.json": "e7ec79d7ca6c50f45283294e1554e5dd1c4d28bdc5c650d35ca645a78bb0b1ac",
+  "../sonar-translated-view-20261031/measured-view-assessment.json.gz": "05aa7c803502687f329ca77c49a8032b93a9e1e16c26cc577da905646b08c53d",
+  "../sonar-inspection-scene-20261031/scene-assessment-only.npz": "e47b848bd28c46911ee7b4a455343e786b1382737e937f6b8dba0b4e6a6e1678"
+}

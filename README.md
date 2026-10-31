@@ -52,6 +52,8 @@ matching worker must acknowledge this calibration.
 
 [Translated-view control](docs/diagnostics/sonar-translated-view-20261031/README.md) retains the measured 62.87° viewing baseline, matched sensors and every failed-map point; wider motion alone does not qualify the existing point model.
 
+[Translated shadow measurements](docs/diagnostics/sonar-translated-shadow-20261031/README.md) retain every conditional region observation and supplied-edge/mean-image controls. Intensity boundaries do not certify corresponding physical edges.
+
 `sonar_input` preserves zero-power `-inf` bins and validates the broadband source's
 physical range grid from bandwidth and sound speed. Feature candidates require
 measured echo support; image working values never replace raw observations.

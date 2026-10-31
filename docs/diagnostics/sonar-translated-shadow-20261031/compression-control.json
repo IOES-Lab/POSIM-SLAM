@@ -1,0 +1,21 @@
+{
+  "lossless": true,
+  "rows": [
+    {
+      "mode": "angular_median",
+      "uncompressed_bytes": 38408281,
+      "uncompressed_sha256": "ac6e0929342370e7cfd8949dc8c851c521766563a1bb6e94876d6f61efeaba06",
+      "gzip_bytes": 8085241,
+      "xz_bytes": 6226188,
+      "elapsed_s": 22.764530417000003
+    },
+    {
+      "mode": "physical_plane",
+      "uncompressed_bytes": 32811907,
+      "uncompressed_sha256": "4c9bfa277c7ec972e92bb131d0f44f7de2ec003a5e6d571d577ee999c7ceef6f",
+      "gzip_bytes": 7454187,
+      "xz_bytes": 5778748,
+      "elapsed_s": 19.842060291000003
+    }
+  ]
+}
