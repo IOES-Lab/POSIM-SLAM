@@ -1,0 +1,15 @@
+{
+  "schema": 1,
+  "frozen_before_new_fit": true,
+  "source_integration": "ffecee9be9976f68c9e883d6cf3bbd6d40eb7729",
+  "source_prs": [6,31,32,33,34,35,36],
+  "training_indices": [27,49,81,88,151],
+  "unused_temporal_indices": [51,90,153],
+  "inputs": "Reuse all eight original raw inputs, navigation means and exactly frozen pixels of the height-diversity record. No raw copies. Keep all sensor-only seed candidates and both single-link clusters of the preceding finite-fit record, rather than selecting only its largest cluster.",
+  "initialization": "Each candidate cluster seeds one finite PCA rectangular prism with its own median conditional height over the same causal-DVL-mean seed plane. This is not verified correspondence. Initialize a finite 2 m grid of that plane over the XY bounding box of all training sonar origins and 15 m fan endpoints (51 azimuths, both vertical edges), rounded outwards to a 2 m grid plus 2 m margin. The extrapolated grid is a shape prior, not measured ground. Mesh absence beyond its edges is unknown, not free space.",
+  "families": ["initial_multiple_reflectors", "fitted_partial_scene"],
+  "fit": "Change only shared world-z vertex heights, fixed XY/topology/reflectivity (.001 per triangle). One positive common brightness per view. Composite exponential marginal score plus explicit neighbour-height-change shape prior (weight 10 per squared metre). Existing exact source observation for every proposal, including all 256x256 rays, float32 normals, opaque first hits and Fourier response. Frozen-normal radial surrogate proposes steps; no information/covariance claim. Twelve iterations, 0.05 m normalized maximum step, up to five halvings, at most 0.4 m change per vertex. Accept only strictly lower actual penalized objective. Preserve every proposal and unassigned residual; no per-pixel gains or variance inflation.",
+  "evidence": "Seal code, seeds, fit, trace, all eight final original-power/mean/full-covariance/residual records and complete mesh before opening assessment geometry/truth/RGB. Retain full initial/final finite surfaces, all object faces and unsupported prior ground. Every surface sample remains; do not trim to improve metrics. Physical support is not proved by ray-hit counts.",
+  "scope": "Conditional fixed navigation and DVL means; finite explicit scene family with unresolved pose/map/reflectivity/visibility uncertainty. No native updates, calibrated joint confidence, live map or acceptance. Same development scene, not independent validation. DVL ranges have unknown variance; no replacement by resolution or zero noise.",
+  "resources": "Reuse original records; no renderer, native field, SDK mutation, artifact download, deletion, service restart or Mac CI retry. Preserve user files and Git automatic-maintenance/GC disabled."
+}

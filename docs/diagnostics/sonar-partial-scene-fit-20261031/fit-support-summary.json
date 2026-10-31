@@ -1,0 +1,13 @@
+{
+  "iterations": 9,
+  "proposals": 17,
+  "accepted_steps": 8,
+  "maximum_height_change_m": 0.12813914576683527,
+  "ground_maximum_change_m": 0.056007992239723414,
+  "object_maximum_change_m": 0.12813914576683527,
+  "ground_faces_hit": 186,
+  "ground_faces_total": 576,
+  "object_faces_hit": 12,
+  "object_faces_total": 24,
+  "ray_hits_are_not_calibrated_support": true
+}

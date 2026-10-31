@@ -1,0 +1,8 @@
+{
+  "phase": "prepare_before_fit",
+  "error": "TypeError: dict() got multiple values for keyword argument 'protocol_sha256'",
+  "cause": "New inputs inherited a previous protocol identity while constructing a dictionary with duplicate keyword arguments.",
+  "correction": "Use explicit dictionary replacement for the new protocol identity. Verify already written seed arrays exactly instead of overwriting them.",
+  "fit_was_started": false,
+  "raw_or_sensor_or_admission_changed": false
+}

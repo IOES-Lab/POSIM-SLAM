@@ -1,0 +1,127 @@
+{
+  "map_accepted": false,
+  "native_fusion": false,
+  "fixed_navigation": true,
+  "truth_scene_rgb_used": false,
+  "elapsed_s": 169.07351808296517,
+  "families": {
+    "initial_multiple_reflectors": {
+      "frames": [
+        {
+          "index": 27,
+          "score": 212.67148504099325,
+          "gain": 1.1331489239023171,
+          "normalized_residual_rms": 1.572535400288033
+        },
+        {
+          "index": 49,
+          "score": 316.7060529467769,
+          "gain": 0.9267332366934521,
+          "normalized_residual_rms": 1.0678898181937684
+        },
+        {
+          "index": 81,
+          "score": 515.1501848462324,
+          "gain": 91.48308710297925,
+          "normalized_residual_rms": 5.079751881203517
+        },
+        {
+          "index": 88,
+          "score": 445.0198329397541,
+          "gain": 12.548312456421748,
+          "normalized_residual_rms": 5.278510987365236
+        },
+        {
+          "index": 151,
+          "score": 537.3939902047468,
+          "gain": 122.28400566209079,
+          "normalized_residual_rms": 4.929239917557929
+        },
+        {
+          "index": 51,
+          "score": 352.8171048967114,
+          "gain": 1.7915468890386872,
+          "normalized_residual_rms": 1.3661724326571414
+        },
+        {
+          "index": 90,
+          "score": 478.6514856582776,
+          "gain": 30.108293729017365,
+          "normalized_residual_rms": 6.002172610082566
+        },
+        {
+          "index": 153,
+          "score": 627.2793921984767,
+          "gain": 1048.843624711558,
+          "normalized_residual_rms": 6.459509528539341
+        }
+      ],
+      "prior_penalty": 0.0,
+      "training_score": 2026.9415459785034,
+      "unused_temporal_score": 1458.7479827534657,
+      "vertices": 339,
+      "faces": 600,
+      "outside_mesh_support": "unknown",
+      "ray_counts_are_not_physical_identity": true
+    },
+    "fitted_partial_scene": {
+      "frames": [
+        {
+          "index": 27,
+          "score": 211.07858460932727,
+          "gain": 1.0577203475927888,
+          "normalized_residual_rms": 1.5525687410752769
+        },
+        {
+          "index": 49,
+          "score": 308.3307903595679,
+          "gain": 0.8069186331010497,
+          "normalized_residual_rms": 0.8333353050648311
+        },
+        {
+          "index": 81,
+          "score": 481.7249302258347,
+          "gain": 54.10959200461554,
+          "normalized_residual_rms": 4.740023509964337
+        },
+        {
+          "index": 88,
+          "score": 445.1846099889099,
+          "gain": 11.19161426502337,
+          "normalized_residual_rms": 5.540975849766669
+        },
+        {
+          "index": 151,
+          "score": 332.23554347864456,
+          "gain": 0.9903019066756448,
+          "normalized_residual_rms": 0.8375968680315012
+        },
+        {
+          "index": 51,
+          "score": 388.5335337797989,
+          "gain": 4.19566741769427,
+          "normalized_residual_rms": 4.36738284259724
+        },
+        {
+          "index": 90,
+          "score": 480.9649916598233,
+          "gain": 28.673336935267724,
+          "normalized_residual_rms": 6.122232766556742
+        },
+        {
+          "index": 153,
+          "score": 346.45881622786385,
+          "gain": 1.5743903065839193,
+          "normalized_residual_rms": 1.8851714968478988
+        }
+      ],
+      "prior_penalty": 0.606206972825143,
+      "training_score": 1778.5544586622843,
+      "unused_temporal_score": 1215.9573416674862,
+      "vertices": 339,
+      "faces": 600,
+      "outside_mesh_support": "unknown",
+      "ray_counts_are_not_physical_identity": true
+    }
+  }
+}

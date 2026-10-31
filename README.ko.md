@@ -65,6 +65,11 @@ Householder QR과 유효 정보 방향을 구분하는 SVD로 자세·평면·�
 상관관계를 포함한 전력 모멘트를 유지합니다. 형상과 반사율은 호출자가 제공하는
 가설입니다. [소스와 수치 대조](docs/diagnostics/sonar-source-local-power-20261031/README.ko.md).
 
+`sonar_scene_fit.SceneHeightFit`는 원본 전력으로 여러 반사체를 포함한 유한 장면
+가설의 공통 높이를 맞춥니다. 매 이동을 정확한 소스 재계산으로 검사하며,
+고정 항법·측정되지 않은 사전 표면·설명되지 않는 잔차를 명시합니다.
+[역추정 실행과 전체 결과](docs/diagnostics/sonar-partial-scene-fit-20261031/README.ko.md).
+
 `sonar_power_evidence`는 공통 반사율을 추정하고 조건부 점수 정보에서 픽셀
 상관관계와 배율 영공간을 유지합니다. [네이티브 전력 대조와 원본 영상의 기준 모델](docs/diagnostics/sonar-native-power-moments-20261031/README.ko.md)에서
 유한 형상 적합에 앞서 소스 모델을 확인합니다.

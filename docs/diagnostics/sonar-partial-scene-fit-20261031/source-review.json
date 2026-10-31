@@ -1,0 +1,72 @@
+{
+  "source_integration": "ffecee9be9976f68c9e883d6cf3bbd6d40eb7729",
+  "published_integration_branch": "codex/sonar-slam-source-20261030",
+  "main": "8c47601c7dd4729e3edeabef79665760268fdbc4",
+  "source_scope": [
+    {
+      "number": 6,
+      "title": "Migrate WGPU sonar backend from DAVE #44",
+      "head": "d51d7b85d7224d7b8420015a63e0f6896ddaa7a7",
+      "url": "https://github.com/IOES-Lab/POSIM/pull/6",
+      "state": "open",
+      "merged": false
+    },
+    {
+      "number": 31,
+      "title": "fix(sonar): create each sensor once with its configured mount pose",
+      "head": "7dc9602142cc66d043b53f9a275448867b5c665e",
+      "url": "https://github.com/IOES-Lab/POSIM/pull/31",
+      "state": "open",
+      "merged": false
+    },
+    {
+      "number": 32,
+      "title": "fix(sonar): own ROS context lifetime and captured frame timestamps",
+      "head": "f1055f48ebe57d7ea12d9009ce9cd4d554f72364",
+      "url": "https://github.com/IOES-Lab/POSIM/pull/32",
+      "state": "open",
+      "merged": false
+    },
+    {
+      "number": 33,
+      "title": "fix(wgpu): correct shared input loads on partial matrix tiles",
+      "head": "5f327fd55d4301e4fed125b2a64bead6d5d4ceba",
+      "url": "https://github.com/IOES-Lab/POSIM/pull/33",
+      "state": "open",
+      "merged": false
+    },
+    {
+      "number": 34,
+      "title": "fix(wgpu): preserve range transforms and weak acoustic returns",
+      "head": "801f886605f138ff22b8d714a13885d84f36e577",
+      "url": "https://github.com/IOES-Lab/POSIM/pull/34",
+      "state": "open",
+      "merged": false
+    },
+    {
+      "number": 35,
+      "title": "fix(sonar): keep empty-return images black",
+      "head": "02f6dccd57eee0e0c2dd417317d4a06ee65b907f",
+      "url": "https://github.com/IOES-Lab/POSIM/pull/35",
+      "state": "open",
+      "merged": false
+    },
+    {
+      "number": 36,
+      "title": "fix(sonar): include the maximum-range sample in the range grid",
+      "head": "fbfd000d094675fd301b51ccc29c07a40cc51c15",
+      "url": "https://github.com/IOES-Lab/POSIM/pull/36",
+      "state": "open",
+      "merged": false
+    }
+  ],
+  "review": "Fresh connector PR reads and direct remote refs match the already qualified source. All original PRs remain open/unmerged. No new producer patch is established; the inverse scene fit belongs to POSIM-SLAM, not these producer fixes.",
+  "responsibilities": {
+    "31": "single creation and configured mount",
+    "32": "owned ROS context, lifetime and original frame clock",
+    "33": "partial shared matrix tiles",
+    "34": "original transform length and floating weak returns",
+    "35": "empty-return preview",
+    "36": "physical sample coordinates and maximum-range endpoint"
+  }
+}

@@ -69,6 +69,11 @@ surfaces in the sonar frame, retaining opaque first-hit visibility, POSIM's
 range-derived ray normals and correlated power moments. Geometry and
 reflectivity remain caller-supplied hypotheses. [Source and numerical controls](docs/diagnostics/sonar-source-local-power-20261031/README.md).
 
+`sonar_scene_fit.SceneHeightFit` fits shared heights of finite multiple-reflector
+scene hypotheses to original power. Exact source re-tracing checks every step;
+fixed navigation, unmeasured prior surfaces and residual echoes remain explicit.
+[Inverse operation and complete outputs](docs/diagnostics/sonar-partial-scene-fit-20261031/README.md).
+
 `sonar_power_evidence` profiles common reflectivity and preserves pixel
 correlations and gain nullspaces in conditional score information. [Native
 power controls and original-image baselines](docs/diagnostics/sonar-native-power-moments-20261031/README.md)
