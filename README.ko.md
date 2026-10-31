@@ -60,6 +60,11 @@ Householder QR과 유효 정보 방향을 구분하는 SVD로 자세·평면·�
 거리·빔 픽셀의 의존 관계를 유지합니다.
 [가정과 보정 대조](docs/diagnostics/sonar-range-response-20261030/README.ko.md).
 
+`sonar_source_surface.SourceSurfaceObservation`은 소나 좌표계에 주어진 유한한
+표면을 계산합니다. 불투명한 첫 교차점의 가림, POSIM의 거리 격자 법선과 픽셀
+상관관계를 포함한 전력 모멘트를 유지합니다. 형상과 반사율은 호출자가 제공하는
+가설입니다. [소스와 수치 대조](docs/diagnostics/sonar-source-local-power-20261031/README.ko.md).
+
 [소나 관측식의 조건부 결합 진단](docs/diagnostics/sonar-structureless-update-20261030/README.ko.md)은
 하나의 추정 분포에 관측을 결합하는 수치 계산, 높이가 불확실한 모드와
 같은 시각을 유지한 DVL 생략 대조군을 공개 코드로 재현합니다.

@@ -64,6 +64,11 @@ aperture and conditional diffuse-return power moments. Explicit scattering
 geometry, variances and beam mixing preserve dependence between range/beam
 pixels. [Assumptions and calibration controls](docs/diagnostics/sonar-range-response-20261030/README.md).
 
+`sonar_source_surface.SourceSurfaceObservation` evaluates supplied finite
+surfaces in the sonar frame, retaining opaque first-hit visibility, POSIM's
+range-derived ray normals and correlated power moments. Geometry and
+reflectivity remain caller-supplied hypotheses. [Source and numerical controls](docs/diagnostics/sonar-source-local-power-20261031/README.md).
+
 [Conditional sonar-row diagnostics](docs/diagnostics/sonar-structureless-update-20261030/README.md)
 provide a public numerical reproduction of single-posterior conditioning,
 retained weak-height modes and identical-clock DVL omission controls.

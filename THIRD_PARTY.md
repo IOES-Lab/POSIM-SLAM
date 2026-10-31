@@ -25,6 +25,21 @@ depth-support comparison figures.
 라이선스, 원본 소스 리비전을 위 고지 파일에 보존합니다. 시각 지도의 깊이 지지
 비교 그림에도 같은 고지가 적용됩니다.
 
+## POSIM acoustic-model adaptation / POSIM 음향 모델 이식
+
+`sonar_source_normals.py` adapts
+[POSIM RaySurfaceNormals.hh](https://github.com/IOES-Lab/POSIM/blob/ffecee9be9976f68c9e883d6cf3bbd6d40eb7729/gazebo/posim_gz_multibeam_sonar/multibeam_sonar/RaySurfaceNormals.hh),
+revision `ffecee9be9976f68c9e883d6cf3bbd6d40eb7729`, under Apache-2.0.
+The NumPy adaptation preserves the spherical range geometry, one-sided
+tangents, 1.5° support and local plane-fit rule. The source SPDX notice and
+[Apache-2.0 license](LICENSE) are retained. This utility adds no native POSIM or
+OpenCV binary to the Python wheel.
+
+`sonar_source_normals.py`는 위 POSIM 고정 리비전의 Apache-2.0 함수를 NumPy로
+이식합니다. 구면 거리 격자, 한쪽 접선 선택, 1.5° 이웃 범위와 국소 평면 적합
+규칙을 유지합니다. 원본 SPDX 고지와 Apache-2.0 라이선스를 보존합니다.
+이 유틸리티는 Python wheel에 네이티브 POSIM·OpenCV 바이너리를 추가하지 않습니다.
+
 ## Estimator dependencies / 추정기 의존성
 
 The offline [CPU depth reference](docs/validation/visual-dense-reference-20261027/README.md)
