@@ -28,6 +28,42 @@ def fixture():
 
 
 class NativeSurfaceRangeTests(unittest.TestCase):
+    def test_owned_surface_constant_cost_does_not_hide_new_plane_progress(self):
+        for offset in (1e-5,1e-6,1e-7):
+            packet,request,_=fixture();plane=request['planes'][0]
+            packet['variables'].append(dict(kind='plane',ident=1,size=3,
+                reference=[*plane['initial_normal'],plane['initial_distance']]))
+            packet['delta']+=[0.,0.,0.]
+            request['planes'][1]={key:copy.deepcopy(plane[key]) for key in
+                ('support_keys','max_plane_deviation','max_support_distance')}
+            plane['initial_distance']+=offset
+            row=copy.deepcopy(request['observations'][0]);row.update(plane_id=1,sensor_id=99)
+            row['measured_range']+=1.;request['observations'].append(row)
+            noise=np.pad(request['measurement_covariance'],((0,1),(0,1)));noise[-1,-1]=1e-8
+            request['measurement_covariance']=noise
+            result=prepare_native_surface_ranges(NativeSurfaceSnapshot.read(packet),**request)
+            self.assertTrue(result.diagnostics['all_support_checked'])
+            np.testing.assert_allclose(result.diagnostics['unwhitened_residual'][:2],0,atol=1e-9)
+            self.assertEqual(len(result.increment.original_keys),3)
+            self.assertFalse(result.diagnostics['initialization']['added_prior'])
+
+    def test_coarse_plane_seed_is_initialized_before_final_support_admission(self):
+        packet,request,_=fixture();snapshot=NativeSurfaceSnapshot.read(packet)
+        request['planes'][0]['initial_distance']+=.2
+        with self.assertRaisesRegex(ValueError,'support_not_planar'):
+            linearize_native_surface_ranges(snapshot,**request)
+        result=prepare_native_surface_ranges(snapshot,**request)
+        self.assertTrue(result.diagnostics['all_support_checked'])
+        self.assertLess(result.diagnostics['initialization']['final_cost'],1e-16)
+        self.assertFalse(result.diagnostics['initialization']['added_prior'])
+        self.assertEqual(len(result.increment.original_keys),2)
+        self.assertFalse(snapshot.ledger.recent)
+        # An actually inconsistent fitted surface still fails the same guard.
+        packet,bad,_=fixture()
+        for row in bad['observations'][:2]:row['measured_range']+=1.
+        with self.assertRaisesRegex(ValueError,'support_not_planar'):
+            prepare_native_surface_ranges(NativeSurfaceSnapshot.read(packet),**bad)
+
     def test_sampled_range_rows_keep_original_ownership_without_plane_prior(self):
         packet,request,_=fixture();snapshot=NativeSurfaceSnapshot.read(packet)
         for row in request['observations']:

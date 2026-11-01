@@ -157,18 +157,28 @@ def prepare_native_surface_ranges(snapshot,*,planes,observations,measurement_cov
     # support-only seeds cannot supply missing probability information. This
     # solve sets an initial reference only; its Hessian/covariance/damping never
     # becomes a prior or an extra native observation.
-    initial=linearize_native_surface_ranges(snapshot,planes=planes,require_support=require_support,**options)
+    # A coarse initial reference is not the solved surface. Evaluate its raw
+    # likelihood first; apply the unchanged spatial guard to the final fitted
+    # reference below, before any increment or reading-ledger update is prepared.
+    initial=linearize_native_surface_ranges(snapshot,planes=planes,require_support=False,**options)
     owned={v.ident for v in snapshot.order if v.kind=='plane'}
     new=sorted(set(planes)-owned);candidate={ident:dict(p) for ident,p in planes.items()}
     initialization=dict(new_planes=new,initial_cost=float(initial.residual@initial.residual)/2,
-        final_cost=float(initial.residual@initial.residual)/2,iterations=0,added_prior=False)
+        final_cost=float(initial.residual@initial.residual)/2,iterations=0,added_prior=False,termination=None)
     if new:
         plane_ids=sorted(planes);start=6*sum(v.kind=='state' for v in initial.order)
         columns=[start+3*plane_ids.index(ident)+axis for ident in new for axis in range(3)]
         block=initial;damping=1e-3;converged=False
         for iteration in range(50):
             j=block.jacobian[:,columns];gradient=j.T@block.residual
-            if np.linalg.norm(gradient,np.inf)<1e-9:converged=True;break
+            if np.linalg.norm(gradient,np.inf)<1e-9:
+                converged=True;initialization['termination']='gradient';break
+            # A large damping value can manufacture a tiny LM step. Test the
+            # undamped minimum-norm problem instead, before asking a rounded
+            # scalar objective to show another strictly positive decrease.
+            undamped=np.linalg.lstsq(j,-block.residual,rcond=None)[0]
+            if np.linalg.norm(undamped)<1e-9:
+                converged=True;initialization['termination']='undamped_step';break
             h=j.T@j;scale=max(float(np.trace(h))/len(columns),1.)
             step=np.linalg.solve(h+damping*scale*np.eye(len(columns)),-gradient)
             trial={ident:dict(p) for ident,p in candidate.items()}
@@ -178,12 +188,12 @@ def prepare_native_surface_ranges(snapshot,*,planes,observations,measurement_cov
                 trial[ident]['initial_distance']=candidate[ident]['initial_distance']+step[3*index+2]
             try:proposed=linearize_native_surface_ranges(snapshot,planes=trial,require_support=False,**options)
             except ValueError:proposed=None
-            old_cost=float(block.residual@block.residual)
-            cost=float(proposed.residual@proposed.residual) if proposed is not None else float('inf')
+            # Difference of squares retains a small improvement when other
+            # owned-surface rows contribute a large, unchanged residual.
+            reduction=float((block.residual-proposed.residual)@(block.residual+proposed.residual)) if proposed is not None else -float('inf')
             initialization['iterations']=iteration+1
-            if cost<old_cost:
+            if reduction>0:
                 candidate=trial;block=proposed;damping=max(damping/3,1e-12)
-                if np.linalg.norm(step)<1e-9 or old_cost-cost<1e-12*max(1.,old_cost):converged=True;break
             else:damping=min(damping*10,1e15)
         if not converged:raise ValueError('native_surface_nonlinear_seed_not_converged')
         initialization['final_cost']=float(block.residual@block.residual)/2
