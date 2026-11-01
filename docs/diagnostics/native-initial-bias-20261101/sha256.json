@@ -1,0 +1,13 @@
+{
+  "README.md": "27e85a9cd4b7120c4ac94e4e43701f9f97e1cfcdbfce8e88a065347f18c3a376",
+  "all-271-aligned-states.csv": "8a052aa1c5d827aa45fdc80fbc8e84c101d436ba6cacd2ffc55e9e48fe4101e3",
+  "assessment.json": "375e16e9631cab58b5e48bfec9f4546407a0a75f74f6cdb194c3e2fe42bbcfa9",
+  "configuration-certified.json": "9b6f95fd468c7789eac48ec787d77b857c1c4bd9ea8217290c1711725d25bf25",
+  "configuration-unknown.json": "c7a0b6b03209856bba27369a725db4ec3afb8ecb4d1928bfc69f59c199ce4469",
+  "expected-marginal.npz": "70f60d204e5c0245d7ff4ab717ffc47491ee10a07af391ee3da42494c3e25fe8",
+  "input-certificate.json": "59291c2c98f5732a0918b15ae447fd7da4c9f6d096562150735a8303eae12577",
+  "mean-pose-power-assessment.json": "8edf5fdb108b0bc3ee8bd781cdf384f671bb62f333ef0381051570332f62d77e",
+  "native-snapshot.json.gz": "9109f6e7e9281ecd1495de46b3c22164f503680e3dd3fc64e51b25268b82c9c0",
+  "states-certified.csv": "2d7b0539e34da1259f982f36dbf1591650f55ce55bb9b9d3be32cbf1cf712ff2",
+  "verify.py": "906f50bdf6242c802b6e14b672153159eb450147b2a58d776a8095e93a3c6ef6"
+}

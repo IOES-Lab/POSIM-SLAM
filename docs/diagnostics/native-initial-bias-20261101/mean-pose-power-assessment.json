@@ -1,0 +1,201 @@
+{
+  "protocol": {
+    "scope": "Assess the unchanged IMU/DVL/pressure replay and four paired power controls.\n\nTruth and source scene enter this assessment only. Initial yaw/translation fix\nthe gauge; no scale, trajectory, time or range-bias fit. No map is accepted.\n",
+    "assessment_only": true,
+    "map_accepted": false,
+    "fitted_parameters": "Initial gauge yaw/translation and one scalar image gain; no trajectory or geometry fit",
+    "reference_scene": "same full captured source scene for every case",
+    "raw_pixels_selected": false,
+    "calibration_changed": false,
+    "native_pose_uncertainty": "Mean-pose image control only; joint uncertainty is assessed separately, never fabricated as independent poses",
+    "source_sha256": "f280d23a96e2716c4d1061baf191eda95db27036372fb6f86aaea7daa9c7e307",
+    "evaluation_helper_sha256": "8f384a2edbc0026782017679d11c8da46b451f1377af4c5a14f3de1c10317b04",
+    "source_hashes": {
+      "field-input-20261101/record/inputs/truth-assessment-only.json": "0bafa86ab76614011b0fa50d13e5a35e9c7b7fe4cd2e914cdd85f50539472f41",
+      "field-replay-certified-initial-bias/states.csv": "2d7b0539e34da1259f982f36dbf1591650f55ce55bb9b9d3be32cbf1cf712ff2",
+      "field-replay-certified-initial-bias/receipt.json": "70a0099ee9821a0a20dc31250bf53f982975f723910c72bf7aa97e8fea6afcda",
+      "field-input-20261101/record/calibration.json": "ca182e637bb52644c1fa81bcdd5d9f4984eeb2e7f6712de9427c407c6c1a9dd2",
+      "field-portable/inputs.json": "40e8457cb51f090fdcbfc85f454b06393d166c6f0e19405e23dc041949f270a1",
+      "field-portable/calibration.npz": "eb0d455a53bb78780c6a981f779c671eaad98308c895a64a9d233a44215f8464"
+    }
+  },
+  "trajectory": {
+    "evaluated": true,
+    "states": 271,
+    "duration_s": 89.99000000000001,
+    "evaluation_alignment": {
+      "rotation": [
+        [
+          -0.3500267890356228,
+          0.9367396900726539,
+          0.0
+        ],
+        [
+          -0.9367396900726539,
+          -0.3500267890356228,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "translation": [
+        -0.03615098629101532,
+        0.013741345638258146,
+        -1.4421382325049623
+      ],
+      "scale": 1.0
+    },
+    "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+    "position_rmse_m": 0.02724117341689089,
+    "position_max_m": 0.049269579853497954,
+    "rotation_rmse_rad": 0.0017642385578589888,
+    "rotation_max_rad": 0.008080040043586822,
+    "truth_distance_m": 24.247508589442198,
+    "estimated_distance_m": 24.336956220229595,
+    "rpe_1s_pairs": 268,
+    "rpe_1s_position_rmse_m": 0.005563488927308843,
+    "rpe_1s_rotation_rmse_rad": 0.002312610453137629,
+    "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+  },
+  "controls": [
+    {
+      "frame": 0,
+      "stamp_ns": 25010000000,
+      "pixels": 153344,
+      "sonar_position_error_m": 0.015340247633797733,
+      "sonar_rotation_error_deg": 0.03466756507868238,
+      "predicted_sonar_origin": [
+        5.7389807316166905,
+        -2.76031433492415,
+        -1.5364823333395266
+      ],
+      "predicted_sonar_rotation": [
+        [
+          0.712218627352611,
+          -0.4889276744867551,
+          0.503680807628141
+        ],
+        [
+          0.3968001738476466,
+          0.8723168733316429,
+          0.2856797062015153
+        ],
+        [
+          -0.579045981668503,
+          -0.003605776182770965,
+          0.815286912376054
+        ]
+      ],
+      "power_gain": 3.2117464012438806,
+      "power_score": 361863.20625980024,
+      "power_residual_rms": 20.087009345168735
+    },
+    {
+      "frame": 1,
+      "stamp_ns": 45010000000,
+      "pixels": 153344,
+      "sonar_position_error_m": 0.024720869181676937,
+      "sonar_rotation_error_deg": 0.05051435791088632,
+      "predicted_sonar_origin": [
+        5.779961452723257,
+        0.11995995565290031,
+        -1.52853174107646
+      ],
+      "predicted_sonar_rotation": [
+        [
+          0.7119140242648785,
+          0.49108767020152444,
+          0.502007293005814
+        ],
+        [
+          -0.40999905294152794,
+          0.8710107925799481,
+          -0.270630700025516
+        ],
+        [
+          -0.5701571701224465,
+          -0.01315672395733765,
+          0.8214302782176186
+        ]
+      ],
+      "power_gain": 1.1092737704005322,
+      "power_score": 190003.73092935962,
+      "power_residual_rms": 2.2075043736132196
+    },
+    {
+      "frame": 2,
+      "stamp_ns": 65010000000,
+      "pixels": 153344,
+      "sonar_position_error_m": 0.03292208853660951,
+      "sonar_rotation_error_deg": 0.11258483679800578,
+      "predicted_sonar_origin": [
+        5.709706011259841,
+        -2.6821998853496316,
+        -1.5223748659331648
+      ],
+      "predicted_sonar_rotation": [
+        [
+          0.7205876482529022,
+          -0.48861252928923293,
+          0.49194637655635864
+        ],
+        [
+          0.3997783187338582,
+          0.8724815704509019,
+          0.28098612971792414
+        ],
+        [
+          -0.5665074907321901,
+          -0.005805639078209284,
+          0.8240361384667618
+        ]
+      ],
+      "power_gain": 1.9792106729732024,
+      "power_score": 297743.1655424351,
+      "power_residual_rms": 42.05180640159328
+    },
+    {
+      "frame": 3,
+      "stamp_ns": 85010000000,
+      "pixels": 153344,
+      "sonar_position_error_m": 0.04787792732616655,
+      "sonar_rotation_error_deg": 0.027013015390617,
+      "predicted_sonar_origin": [
+        0.14637007958912354,
+        -0.018432486409775285,
+        -1.5143439829043608
+      ],
+      "predicted_sonar_rotation": [
+        [
+          -0.8413306596296557,
+          -0.22582678610497645,
+          -0.4910855158163656
+        ],
+        [
+          0.19884911140590608,
+          -0.97413947955758,
+          0.10729075104765079
+        ],
+        [
+          -0.5026149142835001,
+          -0.007384920093314119,
+          0.8644788666560944
+        ]
+      ],
+      "power_gain": 2.114179512758537,
+      "power_score": 307406.5703521039,
+      "power_residual_rms": 74.29818877728114
+    }
+  ],
+  "native_worker_exit": -15,
+  "native_replay_driver_exit": 0,
+  "map_accepted": false,
+  "all_states_assessed": 271,
+  "files": {
+    "profiles.npz": "8dfd44be12dbe6e883c30d21a44e6cdcbf838d886e1fec69b206926ca62aa85f",
+    "all-271-aligned-states.csv": "8a052aa1c5d827aa45fdc80fbc8e84c101d436ba6cacd2ffc55e9e48fe4101e3"
+  }
+}

@@ -84,7 +84,7 @@ provides bounded operand/output byte controls before actual field-input qualific
 separates calibrated intersection rays from nominal beam angles and retains all
 four traced fields and complete power comparisons. `SurfacePowerModel` accepts
 an optional sampled unit-ray grid; scene and render poses remain assessment-only.
-Source-bound older experiments use [their retained original modules](docs/diagnostics/recorded-source-20261031/README.md)
+Source-bound older experiments use [their retained complete public package](docs/diagnostics/recorded-source-20261031/README.md)
 through `tools/verify_recorded_diagnostic.py`. Current implementation tests and
 the new field verifier run separately; original experiment hashes are preserved.
 
@@ -92,9 +92,12 @@ the new field verifier run separately; original experiment hashes are preserved.
 backwards through the conditional graph, retaining shared noise and free
 directions within the default 32 MiB recovery budget. The
 [recorded joint-pose query](docs/diagnostics/native-joint-query-20261101/README.md)
-compares the original calculation and the same native states. 필요한 변수의
-계수만 조건부 그래프에 역전파해 시점 간 상관과 자유 방향을 유지하며,
-기본 복원 예산은 32 MiB입니다. 실제 기록의 기존 계산·동일 상태를 함께 검사합니다.
+compares the original calculation and the same native states.
+
+`InitialImuBiasCalibration` supplies an explicit first-state bias mean and full
+covariance to the native surface profile. A verified noiseless-model certificate
+can supply exact initial bias; subsequent stochastic evolution remains unchanged.
+[Calibration and paired uncertainty controls](docs/diagnostics/native-initial-bias-20261101/README.md).
 
 `sonar_power_evidence` profiles common reflectivity and preserves pixel
 correlations and gain nullspaces in conditional score information. [Native

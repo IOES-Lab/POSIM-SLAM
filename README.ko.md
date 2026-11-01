@@ -80,9 +80,19 @@ Householder QR과 유효 정보 방향을 구분하는 SVD로 자세·평면·�
 교점 계산의 보정 음선과 명목 빔 각도를 구분하고 네 프레임의 전체 입력·
 전력 대조를 보존합니다. `SurfacePowerModel`은 선택형 단위 음선 격자를
 받으며 장면·렌더러 자세는 평가용입니다.
-과거 소스에 고정된 실험은 [보존한 원본 모듈](docs/diagnostics/recorded-source-20261031/README.md)과
+과거 소스에 고정된 실험은 [보존한 공개 패키지 전체](docs/diagnostics/recorded-source-20261031/README.md)와
 `tools/verify_recorded_diagnostic.py`로 재현합니다. 현재 구현과 새 현장 검사는
 별도로 실행하며 과거 실험 해시는 유지합니다.
+
+`NativeSurfaceSnapshot.joint_marginal`은 조회할 변수의 계수를 조건부 그래프에
+역전파해 시점 간 상관과 자유 방향을 유지합니다. 기본 복원 예산은 32 MiB입니다.
+[실제 기록의 결합 자세 조회](docs/diagnostics/native-joint-query-20261101/README.md)에서
+기존 계산과 같은 네이티브 상태를 대조합니다.
+
+`InitialImuBiasCalibration`은 명시적인 첫 상태의 바이어스 평균과 전체 공분산을
+네이티브 표면 프로필에 전달합니다. 검증된 무잡음 모델 인증으로 초기 바이어스를
+지정할 수 있으며 이후 확률적 변화는 유지합니다.
+[보정과 결합 불확실성 대조](docs/diagnostics/native-initial-bias-20261101/README.md).
 
 `sonar_power_evidence`는 공통 반사율을 추정하고 조건부 점수 정보에서 픽셀
 상관관계와 배율 영공간을 유지합니다. [네이티브 전력 대조와 원본 영상의 기준 모델](docs/diagnostics/sonar-native-power-moments-20261031/README.ko.md)에서
