@@ -15,12 +15,17 @@ require qualification. [Streaming API and recorded controls](docs/diagnostics/na
 [native owner API](docs/diagnostics/native-surface-owner-20261029/README.md),
 [reference method](docs/diagnostics/delayed-surface-update-20261029/README.md).
 
-`native_surface_ranges` forms joint original cone/fan rows at native-owned
+`native_surface_ranges` forms joint original cone, sampled-ray and fan rows at native-owned
 coordinates. It initializes new unknown planes with the actual correlated
 factor rows and rechecks their complete support before preparing an update.
 Support-only range seeds add no likelihood. Read-only inspection preserves
 unbounded plane modes and reevaluates the nonlinear range equations.
 [Original-input initialization and rejected correspondence](docs/diagnostics/native-surface-ranges-20261029/README.md).
+
+`gazebo_sampling.dvl_beam_rays` supplies a source-versioned sampled-ray hypothesis
+for Gazebo DVL ranges. `NativeSurfaceSnapshot.recover_modes` retrieves conditional
+poses without covariance expansion; uncertainty queries remain separate and
+retain shared native dependence. [Recorded DVL background and rejected support](docs/diagnostics/sampled-dvl-background-20261101/README.md).
 
 `NativeSurfaceSnapshot.joint_marginal` reads the same native owner's undamped
 information and propagates live-state uncertainty through shared retiring-state

@@ -168,11 +168,71 @@ class RetiredPoseArchive:
     def _workspace_bytes(self):
         return sum(x.nbytes for r in self._memo.values() for x in (r['mean'],*r['noise'].values(),*r['free'].values()))
 
-    def recover(self,stamps):
+    def _pose_queries(self,stamps):
         stamps=list(stamps)
         if (not 1<=len(stamps)<=64 or len(set(stamps))!=len(stamps)
                 or any(type(t) is not int or t<=0 or (t<=self.closed_through_ns and ('state',t) not in self.protected) for t in stamps)):
             raise ValueError('distinct_admissible_pose_queries_required')
+        return stamps
+
+    def _pose_values(self,stamps,mean):
+        poses=[]
+        for i,stamp in enumerate(stamps):
+            reference=np.array(self.references[('state',stamp)].reference);delta=mean[6*i:6*i+6]
+            poses.append(dict(stamp_ns=stamp,position=reference[:3]+delta[:3],
+                attitude=exp_so3(delta[3:])@reference[3:12].reshape(3,3)))
+        return poses
+
+    def recover_modes(self,stamps):
+        """Conditional modes without expanding any noise/covariance ancestry.
+
+        These values only choose nonlinear linearization points. They carry no
+        uncertainty assessment and must never become independent pose factors.
+        Use recover or a native joint marginal when uncertainty is required.
+        The same expiry and numeric workspace limits apply to this read-only
+        query; its temporary means do not populate the covariance memo.
+        """
+        stamps=self._pose_queries(stamps);needed=set();pending=[]
+        for stamp in stamps:
+            if ('state',stamp) not in self.references:raise ValueError('pose_not_owned_by_conditional_archive')
+            for component in range(6):
+                key=('state',stamp,component)
+                if key in self.root:continue
+                if key not in self.producers:raise ValueError('pose_coordinate_expired_or_never_retained')
+                pending.append(self.producers[key][0])
+        while pending:
+            ident=pending.pop()
+            if ident in needed:continue
+            needed.add(ident);node=self.nodes[ident];columns=node.source_coordinates
+            pending.extend(self.producers[columns[i]][0] for i in node.kept if columns[i] not in self.root)
+        # Cache only one mode vector per needed node. Reserve output deltas,
+        # physical poses, the largest multiply temporary and SO(3) scratch.
+        sizes=[len(self.nodes[i].removed) for i in needed]
+        bound=self._workspace_bytes()+8*(sum(sizes)+max(sizes,default=0)+18*len(stamps)+96)
+        if bound>self.max_recovery_bytes:raise ValueError('conditional_recovery_workspace_capacity')
+        modes={}
+        for ident in sorted(needed,reverse=True):
+            node=self.nodes[ident];columns=node.source_coordinates;mode=node.offset.copy()
+            for i,index in enumerate(node.kept):
+                key=columns[index]
+                if key in self.root:value=self.root[key]
+                else:
+                    parent,row=self.producers[key];value=modes[parent][row]
+                mode+=node.regression[:,i]*value
+            modes[ident]=mode
+        mean=np.empty(6*len(stamps))
+        for i,stamp in enumerate(stamps):
+            for component in range(6):
+                key=('state',stamp,component)
+                if key in self.root:mean[6*i+component]=self.root[key]
+                else:
+                    ident,row=self.producers[key];mean[6*i+component]=modes[ident][row]
+        return dict(poses=self._pose_values(stamps,mean),deltas=mean,conditional_modes_only=True,
+            uncertainty_computed=False,independent_pose_observations=False,map_qualified=False,
+            workspace_bound_bytes=bound,source_epoch=self.epoch,source_stamp_ns=self.stamp_ns)
+
+    def recover(self,stamps):
+        stamps=self._pose_queries(stamps)
         if (6*len(stamps))**2*8+6*len(stamps)*8>self.max_recovery_bytes:
             raise ValueError('conditional_recovery_workspace_capacity')
         mean=np.zeros(6*len(stamps));noise={};free={}
@@ -200,12 +260,7 @@ class RetiredPoseArchive:
         covariance=np.zeros((len(mean),len(mean)))
         for coefficient in noise.values():covariance+=coefficient@coefficient.T
         unbounded=np.column_stack(list(free.values())) if free else np.zeros((len(mean),0))
-        poses=[]
-        for i,stamp in enumerate(stamps):
-            reference=np.array(self.references[('state',stamp)].reference);delta=mean[6*i:6*i+6]
-            poses.append(dict(stamp_ns=stamp,position=reference[:3]+delta[:3],
-                attitude=exp_so3(delta[3:])@reference[3:12].reshape(3,3)))
-        return dict(poses=poses,deltas=mean,observable_conditional_covariance=covariance,unbounded_basis=unbounded,
+        return dict(poses=self._pose_values(stamps,mean),deltas=mean,observable_conditional_covariance=covariance,unbounded_basis=unbounded,
             live_coordinates_treated_as_known=True,independent_pose_observations=False,map_qualified=False,
             source_epoch=self.epoch,source_stamp_ns=self.stamp_ns)
 

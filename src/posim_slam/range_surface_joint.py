@@ -15,6 +15,7 @@ from .dvl_surface import cone_plane_range_factor,require_cone_surface_support
 from .inertial import exp_so3,left_jacobian_so3,skew
 from .inertial_filter import covariance
 from .surface_support import require_surface_support
+from .ground_surface_return import plane_returns
 
 
 def normal_basis(normal):
@@ -77,6 +78,46 @@ def _pose(state):
     return p,r,left_jacobian_so3(delta)
 
 
+def sampled_ray_plane_factor(*,position,attitude,imu_to_sensor,sensor_to_imu,
+                             ray_directions,plane_normal,plane_distance,
+                             measured_range,range_min,range_max):
+    """Minimum over calibrated rays, with derivatives on the selected branch.
+
+    The immutable authored order resolves ties. All possible plane hits remain
+    available for spatial support checks; the selected hit is conditional on
+    the plane and is never an observed Cartesian landmark.
+    """
+    p=vector(position);r=rotation(attitude);lever=vector(imu_to_sensor)
+    mount=rotation(sensor_to_imu);n=vector(plane_normal);normal_basis(n)
+    rays=np.asarray(ray_directions,dtype=float)
+    if (rays.ndim!=2 or rays.shape[1:]!=(3,) or not 1<=len(rays)<=512
+            or not np.isfinite(rays).all()
+            or not np.allclose(np.linalg.norm(rays,axis=1),1.,rtol=0,atol=1e-8)
+            or not np.isfinite([plane_distance,measured_range,range_min,range_max]).all()
+            or not 0<range_min<range_max or not range_min<=measured_range<=range_max):
+        raise ValueError('bounded_calibrated_surface_rays_required')
+    origin=p+r@lever
+    if abs(plane_distance-n@origin)<1e-9:raise ValueError('surface_origin_on_plane')
+    body=rays@mount.T;world=body@r.T
+    chunks=[plane_returns(origin,world[start:start+128,None,:],n,plane_distance,
+        range_min=range_min,range_max=range_max) for start in range(0,len(rays),128)]
+    valid=np.concatenate([row['valid'] for row in chunks])
+    values=np.concatenate([row['range_m'] for row in chunks])
+    index=int(np.argmin(np.where(valid,values,np.inf)))
+    if not valid[index]:raise ValueError('surface_first_return_out_of_range')
+    jo=np.concatenate([row['origin_jacobian'] for row in chunks])[index]
+    jd=np.concatenate([row['direction_jacobian'] for row in chunks])[index]
+    ambient=np.concatenate([row['normal_jacobian'] for row in chunks])[index]
+    hit=np.concatenate([row['points'] for row in chunks])
+    pose=np.r_[jo,-jo@r@skew(lever)-jd@r@skew(body[index])]
+    denominator=float(n@world[index]);predicted=float(values[index])
+    return dict(predicted_range=predicted,residual=float(measured_range-predicted),
+        pose_jacobian=pose,plane_jacobian=np.r_[-ambient@skew(n),1/denominator],
+        conditional_hit=hit[index],conditional_support_hits=hit[valid],
+        all_calibrated_rays_return=bool(np.all(valid)),selected_ray_index=index,
+        supported=False,map_qualified=False,physical_identity_verified=False)
+
+
 def _plane(plane):
     if 'support_points' in plane:raise ValueError('frozen_surface_support_points_not_allowed')
     if 'normal_reference' in plane:
@@ -107,15 +148,16 @@ def linearize_surface_ranges(*,states,planes,observations,measurement_covariance
     original readings are errors, including readings assigned to two planes.
 
     Factor observations declare association='surface_hypothesis', model='cone'
-    or 'fan', stamp_ns, sensor_id, beam_id, plane_id, measured_range, limits
+    or 'fan' or 'sampled', stamp_ns, sensor_id, beam_id, plane_id, measured_range, limits
     and mounting. Cone rows add beam_axis/aperture_rad; fan rows add azimuth_rad
-    and vertical_fov_rad. role='support_only' permits raw cone readings to guard
+    and vertical_fov_rad. Sampled rows carry calibrated ray_directions and a
+    nominal beam_axis for support seeds. role='support_only' permits raw readings to guard
     another return without manufacturing a plane association or a factor.
     Every input reading remains represented once. Full covariance follows ALL
     reading rows; use its active principal submatrix, not a covariance
     conditioned on unfused readings.
 
-    Plane support_keys refer to CONE rows in this same block. Their immutable
+    Plane support_keys refer to cone or sampled rows in this same block. Their immutable
     ranges/axes generate nominal seeds at current poses, preserving gauge.
     Guards supply no extra information rows. Missing/retired support cannot be
     replaced by frozen map XYZ. require_support=False is diagnostic-only.
@@ -148,13 +190,21 @@ def linearize_surface_ranges(*,states,planes,observations,measurement_covariance
                 or not 0<minimum<maximum or not minimum<=measured<=maximum):
             raise ValueError('invalid_surface_range_measurement')
         vector(o['imu_to_sensor']);rotation(o['sensor_to_imu'])
+        if o['model']=='sampled':
+            rays=np.asarray(o['ray_directions'],dtype=float);axis=vector(o['beam_axis'])
+            if (rays.ndim!=2 or rays.shape[1:]!=(3,) or not 1<=len(rays)<=512
+                    or not np.isfinite(rays).all()
+                    or not np.allclose(np.linalg.norm(rays,axis=1),1.,rtol=0,atol=1e-8)
+                    or not np.isclose(axis@axis,1.,rtol=0,atol=1e-8)):
+                raise ValueError('bounded_calibrated_surface_rays_required')
         role=o.get('role','factor')
         if role=='support_only':
-            if o['model']!='cone':raise ValueError('unmeasured_fan_elevation_is_not_surface_support')
-            axis=vector(o['beam_axis']);aperture=o['aperture_rad']
-            if (not np.isclose(axis@axis,1.,atol=1e-8,rtol=0)
-                    or not math.isfinite(aperture) or not 0<=aperture<math.pi):
-                raise ValueError('invalid_raw_surface_support_cone')
+            if o['model'] not in ('cone','sampled'):raise ValueError('unmeasured_fan_elevation_is_not_surface_support')
+            if o['model']=='cone':
+                axis=vector(o['beam_axis']);aperture=o['aperture_rad']
+                if (not np.isclose(axis@axis,1.,atol=1e-8,rtol=0)
+                        or not math.isfinite(aperture) or not 0<=aperture<math.pi):
+                    raise ValueError('invalid_raw_surface_support_cone')
             support_only.append(row)
         elif (role=='factor' and type(o.get('plane_id')) is int and o['plane_id'] in surfaces
                 and o.get('association')=='surface_hypothesis'):
@@ -174,6 +224,9 @@ def linearize_surface_ranges(*,states,planes,observations,measurement_covariance
         elif o['model']=='fan':
             f=vertical_fan_plane_factor(**common,imu_to_sensor=o['imu_to_sensor'],sensor_to_imu=o['sensor_to_imu'],
                 azimuth_rad=o['azimuth_rad'],vertical_fov_rad=o['vertical_fov_rad'])
+        elif o['model']=='sampled':
+            f=sampled_ray_plane_factor(**common,imu_to_sensor=o['imu_to_sensor'],sensor_to_imu=o['sensor_to_imu'],
+                ray_directions=o['ray_directions'])
         else:raise ValueError('unknown_surface_range_model')
         pc=pose_columns[key[0]];nc=plane_columns[o['plane_id']]
         residual[row]=-f['residual']
@@ -192,7 +245,7 @@ def linearize_surface_ranges(*,states,planes,observations,measurement_covariance
             for key in map(tuple,support):
                 if key not in lookup:raise ValueError('surface_support_pose_or_measurement_retired')
                 source=observations[lookup[key]]
-                if source['model']!='cone':raise ValueError('unmeasured_fan_elevation_is_not_surface_support')
+                if source['model'] not in ('cone','sampled'):raise ValueError('unmeasured_fan_elevation_is_not_surface_support')
                 p,r,_=poses[key[0]]
                 points.append(p+r@(vector(source['imu_to_sensor'])+source['measured_range']*
                     rotation(source['sensor_to_imu'])@vector(source['beam_axis'])))
@@ -207,7 +260,12 @@ def linearize_surface_ranges(*,states,planes,observations,measurement_covariance
             else:
                 if (not math.isfinite(deviation) or deviation<=0 or np.max(abs(points@n-d))>deviation):
                     raise ValueError('surface_support_not_planar')
-                require_surface_support(points,[f['conditional_hit']],n,max_distance=radius)
+                if o['model']=='sampled':
+                    if not f['all_calibrated_rays_return']:raise ValueError('incomplete_sampled_surface_support')
+                    hits=f['conditional_support_hits']
+                    for start in range(0,len(hits),256):
+                        require_surface_support(points,hits[start:start+256],n,max_distance=radius)
+                else:require_surface_support(points,[f['conditional_hit']],n,max_distance=radius)
     active_noise=noise[np.ix_(factor_indices,factor_indices)]
     lower=np.linalg.cholesky(active_noise)
     return dict(residual=np.linalg.solve(lower,residual),jacobian=np.linalg.solve(lower,j),

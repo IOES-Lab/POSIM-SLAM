@@ -1,0 +1,19 @@
+{
+  "schema": "posim-slam-gazebo-sampling-notices-1",
+  "sources": {
+    "gz_sensors": {
+      "url": "https://github.com/gazebosim/gz-sensors/blob/gz-sensors10_10.1.1/src/DopplerVelocityLog.cc",
+      "git_blob": "ca56a926e318b106e2f38eea66ecf7927f4ba935",
+      "sha256": "a070ffe031a4c25d0dcc8c91252c0759c3aafaf35f396a56a6ba95ed2160ea86",
+      "bytes": 81311
+    },
+    "gz_rendering": {
+      "url": "https://github.com/gazebosim/gz-rendering/blob/gz-rendering10_10.0.2/ogre2/src/Ogre2GpuRays.cc",
+      "git_blob": "7365a9a621a320c57107240a6d009be0085a26bb",
+      "sha256": "2378fc57f4691c49795aa44df9aed1ca73be29dfc370638e809763d877754ca0",
+      "bytes": 50222
+    }
+  },
+  "notice": "gazebo-sampling.txt",
+  "notice_sha256": "ae80c0a8d35598818000a73ac3c859364a71d7583da1446f2d47470080e8aa20"
+}

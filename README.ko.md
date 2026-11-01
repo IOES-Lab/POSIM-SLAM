@@ -13,12 +13,17 @@
 [네이티브 소유자 API](docs/diagnostics/native-surface-owner-20261029/README.md),
 [참조 계산 방법](docs/diagnostics/delayed-surface-update-20261029/README.md).
 
-`native_surface_ranges`는 네이티브 소유 좌표에서 원본 원뿔·팬 거리 제약을
+`native_surface_ranges`는 네이티브 소유 좌표에서 원본 원뿔·표본 음선·팬 거리 제약을
 함께 계산합니다. 실제 상관된 거리 제약으로 새 미지 평면을 초기화한 뒤,
 전체 지지 범위를 다시 확인하고 갱신을 준비합니다. 지지 확인용 거리 표본은
 추가 확률 정보를 만들지 않습니다. 읽기 전용 검사는 평면의 관측 불가능한
 방향을 보존하고 비선형 거리식을 다시 평가합니다.
 [원본 초기화 검사와 거부된 대응](docs/diagnostics/native-surface-ranges-20261029/README.md).
+
+`gazebo_sampling.dvl_beam_rays`는 소스 버전에 따른 Gazebo DVL 표본 음선 가설을
+계산합니다. `NativeSurfaceSnapshot.recover_modes`는 공분산을 전개하지 않고
+조건부 자세값을 조회합니다. 불확실성 조회는 별도이며 네이티브 자세의 공유된
+의존 관계를 유지합니다. [DVL 배경과 거부된 관측 영역 기록](docs/diagnostics/sampled-dvl-background-20261101/README.md).
 
 `NativeSurfaceSnapshot.joint_marginal`은 같은 네이티브 소유자의 수치 감쇠 없는
 정보를 읽고, 공유된 과거 상태의 조건부 관계에 현재 상태의 불확실성을 전파합니다.

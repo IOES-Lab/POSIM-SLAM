@@ -1,0 +1,2048 @@
+{
+  "schema": "posim-slam-sampled-dvl-background-1",
+  "training": {
+    "count": 32,
+    "rms_m": 0.007643872033771009,
+    "maximum_absolute_m": 0.021228546491133482
+  },
+  "unused": {
+    "count": 300,
+    "rms_m": 0.030105384250131935,
+    "maximum_absolute_m": 0.06676109700930999
+  },
+  "strict_support": {
+    "passed": false,
+    "reason": "surface_does_not_cover_ping"
+  },
+  "support": {
+    "calibrated_ray_hits": 176,
+    "outside_nominal_hull": 38,
+    "maximum_extrapolation_m": 0.08964251352535084,
+    "maximum_nearest_seed_distance_m": 0.09450820103414531,
+    "maximum_plane_deviation_m": 0.032164609411806655
+  },
+  "old_full_recovery_rejection": "conditional_recovery_workspace_capacity",
+  "mode_query_workspace_bound_bytes": 29880,
+  "joint_query_workspace_bound_bytes": 18357888,
+  "likelihood_workspace_bound_bytes": 9961320,
+  "original_range_rows": 32,
+  "new_likelihood_rows": 32,
+  "changed_conditionals": 232,
+  "root_rank": 229,
+  "root_columns": 229,
+  "unbounded_columns": 0,
+  "plane_normal": [
+    0.02794559511674686,
+    0.003476848075723073,
+    0.999603398974328
+  ],
+  "plane_distance_m": -2.205980330964725,
+  "initial_seed": {
+    "new_planes": [
+      0
+    ],
+    "initial_cost": 11.85405954507821,
+    "final_cost": 2.291393052290821,
+    "iterations": 4,
+    "added_prior": false
+  },
+  "original_native_information_used_once": true,
+  "source_exactness": "source_referenced_hypothesis_from_supplied_sensor_axes",
+  "noise_calibrated": false,
+  "native_owner_updated": false,
+  "map_accepted": false,
+  "range_cases": [
+    {
+      "stamp_ns": 3010000000,
+      "beam_id": 1,
+      "training": true,
+      "residual_m": 0.006462195632358725
+    },
+    {
+      "stamp_ns": 3010000000,
+      "beam_id": 2,
+      "training": true,
+      "residual_m": -0.004069726793350714
+    },
+    {
+      "stamp_ns": 3010000000,
+      "beam_id": 3,
+      "training": true,
+      "residual_m": -0.0010439297740219011
+    },
+    {
+      "stamp_ns": 3010000000,
+      "beam_id": 4,
+      "training": true,
+      "residual_m": 0.00419900708150589
+    },
+    {
+      "stamp_ns": 4010000000,
+      "beam_id": 1,
+      "training": true,
+      "residual_m": 0.007056887590086269
+    },
+    {
+      "stamp_ns": 4010000000,
+      "beam_id": 2,
+      "training": true,
+      "residual_m": -0.006643110778621342
+    },
+    {
+      "stamp_ns": 4010000000,
+      "beam_id": 3,
+      "training": true,
+      "residual_m": -0.006071174023961845
+    },
+    {
+      "stamp_ns": 4010000000,
+      "beam_id": 4,
+      "training": true,
+      "residual_m": 0.0031742051144196815
+    },
+    {
+      "stamp_ns": 5010000000,
+      "beam_id": 1,
+      "training": true,
+      "residual_m": 0.008078462012962362
+    },
+    {
+      "stamp_ns": 5010000000,
+      "beam_id": 2,
+      "training": true,
+      "residual_m": -0.00956512762155537
+    },
+    {
+      "stamp_ns": 5010000000,
+      "beam_id": 3,
+      "training": true,
+      "residual_m": -0.008125584307933753
+    },
+    {
+      "stamp_ns": 5010000000,
+      "beam_id": 4,
+      "training": true,
+      "residual_m": 0.0012060578077903727
+    },
+    {
+      "stamp_ns": 6010000000,
+      "beam_id": 1,
+      "training": true,
+      "residual_m": 0.006954243024186457
+    },
+    {
+      "stamp_ns": 6010000000,
+      "beam_id": 2,
+      "training": true,
+      "residual_m": -0.007160145077532487
+    },
+    {
+      "stamp_ns": 6010000000,
+      "beam_id": 3,
+      "training": true,
+      "residual_m": -0.01240092706496565
+    },
+    {
+      "stamp_ns": 6010000000,
+      "beam_id": 4,
+      "training": true,
+      "residual_m": 0.003244526732093078
+    },
+    {
+      "stamp_ns": 7010000000,
+      "beam_id": 1,
+      "training": true,
+      "residual_m": 0.005776885640843332
+    },
+    {
+      "stamp_ns": 7010000000,
+      "beam_id": 2,
+      "training": true,
+      "residual_m": -0.00827309434042478
+    },
+    {
+      "stamp_ns": 7010000000,
+      "beam_id": 3,
+      "training": true,
+      "residual_m": -0.008807453643078667
+    },
+    {
+      "stamp_ns": 7010000000,
+      "beam_id": 4,
+      "training": true,
+      "residual_m": 0.005322659158627729
+    },
+    {
+      "stamp_ns": 8010000000,
+      "beam_id": 1,
+      "training": true,
+      "residual_m": 0.01140254499822646
+    },
+    {
+      "stamp_ns": 8010000000,
+      "beam_id": 2,
+      "training": true,
+      "residual_m": -0.008024772335942565
+    },
+    {
+      "stamp_ns": 8010000000,
+      "beam_id": 3,
+      "training": true,
+      "residual_m": -0.006955699592967157
+    },
+    {
+      "stamp_ns": 8010000000,
+      "beam_id": 4,
+      "training": true,
+      "residual_m": 0.0016361023914206463
+    },
+    {
+      "stamp_ns": 9010000000,
+      "beam_id": 1,
+      "training": true,
+      "residual_m": 0.00866128778480757
+    },
+    {
+      "stamp_ns": 9010000000,
+      "beam_id": 2,
+      "training": true,
+      "residual_m": -0.005625908851712325
+    },
+    {
+      "stamp_ns": 9010000000,
+      "beam_id": 3,
+      "training": true,
+      "residual_m": -0.004079770653845571
+    },
+    {
+      "stamp_ns": 9010000000,
+      "beam_id": 4,
+      "training": true,
+      "residual_m": 0.010388557392736253
+    },
+    {
+      "stamp_ns": 10010000000,
+      "beam_id": 1,
+      "training": true,
+      "residual_m": -0.0007811228065301989
+    },
+    {
+      "stamp_ns": 10010000000,
+      "beam_id": 2,
+      "training": true,
+      "residual_m": -0.004806487380746294
+    },
+    {
+      "stamp_ns": 10010000000,
+      "beam_id": 3,
+      "training": true,
+      "residual_m": -0.0022019097669518928
+    },
+    {
+      "stamp_ns": 10010000000,
+      "beam_id": 4,
+      "training": true,
+      "residual_m": 0.021228546491133482
+    },
+    {
+      "stamp_ns": 11010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": 0.00910051016413238
+    },
+    {
+      "stamp_ns": 11010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": -0.010993852472425125
+    },
+    {
+      "stamp_ns": 11010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": -0.00474114234730072
+    },
+    {
+      "stamp_ns": 11010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": 0.0027206236698988917
+    },
+    {
+      "stamp_ns": 12010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": -0.01635635435737992
+    },
+    {
+      "stamp_ns": 12010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": -9.855857559992742e-05
+    },
+    {
+      "stamp_ns": 12010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": -0.026982986889173333
+    },
+    {
+      "stamp_ns": 12010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": 0.008119673942448724
+    },
+    {
+      "stamp_ns": 13010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": 0.0017303250550750882
+    },
+    {
+      "stamp_ns": 13010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": -0.012761894372576688
+    },
+    {
+      "stamp_ns": 13010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": -0.01557333703307906
+    },
+    {
+      "stamp_ns": 13010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": -0.002328843466875341
+    },
+    {
+      "stamp_ns": 14010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": -0.0014586529920936897
+    },
+    {
+      "stamp_ns": 14010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": -0.007310782961632345
+    },
+    {
+      "stamp_ns": 14010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": -0.018993541776714196
+    },
+    {
+      "stamp_ns": 14010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": 0.010876624870820084
+    },
+    {
+      "stamp_ns": 15010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": 0.0012470413690959248
+    },
+    {
+      "stamp_ns": 15010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": -0.008981373295756434
+    },
+    {
+      "stamp_ns": 15010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": -0.0098678133300929
+    },
+    {
+      "stamp_ns": 15010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": 0.018592269856149368
+    },
+    {
+      "stamp_ns": 16010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": -0.0023219035202770577
+    },
+    {
+      "stamp_ns": 16010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": 0.003057328858252717
+    },
+    {
+      "stamp_ns": 16010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": -0.017398822984481477
+    },
+    {
+      "stamp_ns": 16010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": 0.02090642602130588
+    },
+    {
+      "stamp_ns": 17010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": 0.0009097906756636576
+    },
+    {
+      "stamp_ns": 17010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": 0.008357048412747314
+    },
+    {
+      "stamp_ns": 17010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": -0.018933417383235618
+    },
+    {
+      "stamp_ns": 17010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": 0.021524511703302274
+    },
+    {
+      "stamp_ns": 18010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": 0.006257959057732965
+    },
+    {
+      "stamp_ns": 18010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": 0.015812606280024788
+    },
+    {
+      "stamp_ns": 18010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": -0.02832284098856741
+    },
+    {
+      "stamp_ns": 18010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": 0.013551449119032721
+    },
+    {
+      "stamp_ns": 19010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": 0.004140270871756613
+    },
+    {
+      "stamp_ns": 19010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": 0.02339124224868927
+    },
+    {
+      "stamp_ns": 19010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": -0.03251836303121802
+    },
+    {
+      "stamp_ns": 19010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": 0.014570633581006742
+    },
+    {
+      "stamp_ns": 20010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": 0.009100768551679739
+    },
+    {
+      "stamp_ns": 20010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": 0.03201375670491524
+    },
+    {
+      "stamp_ns": 20010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": -0.037937777298314046
+    },
+    {
+      "stamp_ns": 20010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": 0.0034031053148932955
+    },
+    {
+      "stamp_ns": 21010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": 0.010366786331031719
+    },
+    {
+      "stamp_ns": 21010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": 0.033411540681551166
+    },
+    {
+      "stamp_ns": 21010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": -0.04306061050143484
+    },
+    {
+      "stamp_ns": 21010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": -0.0017714058092583862
+    },
+    {
+      "stamp_ns": 22010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": 0.012561950808783529
+    },
+    {
+      "stamp_ns": 22010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": 0.03273909459929358
+    },
+    {
+      "stamp_ns": 22010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": -0.03757221760496199
+    },
+    {
+      "stamp_ns": 22010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": -0.008411337838734934
+    },
+    {
+      "stamp_ns": 23010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": 0.006404830113817539
+    },
+    {
+      "stamp_ns": 23010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": 0.035351760379828345
+    },
+    {
+      "stamp_ns": 23010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": -0.05106203491562766
+    },
+    {
+      "stamp_ns": 23010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": -0.010302165737265057
+    },
+    {
+      "stamp_ns": 24010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": -0.0007995293142419868
+    },
+    {
+      "stamp_ns": 24010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": 0.02375251492097563
+    },
+    {
+      "stamp_ns": 24010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": -0.05404862378780173
+    },
+    {
+      "stamp_ns": 24010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": -0.021318362811629132
+    },
+    {
+      "stamp_ns": 25010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": -0.003121526421833387
+    },
+    {
+      "stamp_ns": 25010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": 0.02184782676683339
+    },
+    {
+      "stamp_ns": 25010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": -0.05740030840505117
+    },
+    {
+      "stamp_ns": 25010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": -0.021244671545118443
+    },
+    {
+      "stamp_ns": 26010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": 0.003082896114556366
+    },
+    {
+      "stamp_ns": 26010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": 0.027967590193025416
+    },
+    {
+      "stamp_ns": 26010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": -0.05149152143644997
+    },
+    {
+      "stamp_ns": 26010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": -0.01546526341063359
+    },
+    {
+      "stamp_ns": 27010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": 0.010493972507519267
+    },
+    {
+      "stamp_ns": 27010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": 0.03117510072087626
+    },
+    {
+      "stamp_ns": 27010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": -0.0455153995177624
+    },
+    {
+      "stamp_ns": 27010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": -0.01719465922769592
+    },
+    {
+      "stamp_ns": 28010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": 0.005379144248252921
+    },
+    {
+      "stamp_ns": 28010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": 0.03097889358724526
+    },
+    {
+      "stamp_ns": 28010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": -0.05020941534470724
+    },
+    {
+      "stamp_ns": 28010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": -0.011526811611214605
+    },
+    {
+      "stamp_ns": 29010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": 0.018564252148577598
+    },
+    {
+      "stamp_ns": 29010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": 0.024479030004189717
+    },
+    {
+      "stamp_ns": 29010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": -0.04207773976640583
+    },
+    {
+      "stamp_ns": 29010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": -0.026642213086464306
+    },
+    {
+      "stamp_ns": 30010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": 0.026866261241205613
+    },
+    {
+      "stamp_ns": 30010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": 0.03233877338253244
+    },
+    {
+      "stamp_ns": 30010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": -0.022387443882623703
+    },
+    {
+      "stamp_ns": 30010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": -0.01620604851532015
+    },
+    {
+      "stamp_ns": 31010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": 0.03182268611616523
+    },
+    {
+      "stamp_ns": 31010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": 0.0367461600934349
+    },
+    {
+      "stamp_ns": 31010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": -0.0035050660636408715
+    },
+    {
+      "stamp_ns": 31010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": -0.003791489052261454
+    },
+    {
+      "stamp_ns": 32010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": 0.03361787262603633
+    },
+    {
+      "stamp_ns": 32010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": 0.042925194334881844
+    },
+    {
+      "stamp_ns": 32010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": 0.004865850206059008
+    },
+    {
+      "stamp_ns": 32010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": 0.006128253911697801
+    },
+    {
+      "stamp_ns": 33010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": 0.03280371278040972
+    },
+    {
+      "stamp_ns": 33010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": 0.044758418638164876
+    },
+    {
+      "stamp_ns": 33010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": 0.010690600069263034
+    },
+    {
+      "stamp_ns": 33010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": 0.01648251189467409
+    },
+    {
+      "stamp_ns": 34010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": 0.033752920115781126
+    },
+    {
+      "stamp_ns": 34010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": 0.04302250306410693
+    },
+    {
+      "stamp_ns": 34010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": 0.010069151355472261
+    },
+    {
+      "stamp_ns": 34010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": 0.011755429647684057
+    },
+    {
+      "stamp_ns": 35010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": 0.031179714526618163
+    },
+    {
+      "stamp_ns": 35010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": 0.04241331614133692
+    },
+    {
+      "stamp_ns": 35010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": 0.007172929207202472
+    },
+    {
+      "stamp_ns": 35010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": 0.012094204406119857
+    },
+    {
+      "stamp_ns": 36010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": 0.03519857646105784
+    },
+    {
+      "stamp_ns": 36010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": 0.04297621254785344
+    },
+    {
+      "stamp_ns": 36010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": 0.010121439091239637
+    },
+    {
+      "stamp_ns": 36010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": 0.011582656796047086
+    },
+    {
+      "stamp_ns": 37010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": 0.03789742153833897
+    },
+    {
+      "stamp_ns": 37010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": 0.04301440022409553
+    },
+    {
+      "stamp_ns": 37010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": 0.02092016170800859
+    },
+    {
+      "stamp_ns": 37010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": 0.017979504905188737
+    },
+    {
+      "stamp_ns": 38010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": 0.037599758672670625
+    },
+    {
+      "stamp_ns": 38010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": 0.048166261770951735
+    },
+    {
+      "stamp_ns": 38010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": 0.01138981676373163
+    },
+    {
+      "stamp_ns": 38010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": 0.014259937716109228
+    },
+    {
+      "stamp_ns": 39010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": 0.0424610289580043
+    },
+    {
+      "stamp_ns": 39010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": 0.03790054563157108
+    },
+    {
+      "stamp_ns": 39010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": 0.027537413976177483
+    },
+    {
+      "stamp_ns": 39010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": 0.009422487236390609
+    },
+    {
+      "stamp_ns": 40010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": 0.04050153141887236
+    },
+    {
+      "stamp_ns": 40010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": 0.052023401796669866
+    },
+    {
+      "stamp_ns": 40010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": 0.025349319954679483
+    },
+    {
+      "stamp_ns": 40010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": 0.02766340517862842
+    },
+    {
+      "stamp_ns": 41010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": 0.04457033964117674
+    },
+    {
+      "stamp_ns": 41010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": 0.057449599396828255
+    },
+    {
+      "stamp_ns": 41010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": 0.024569730449933935
+    },
+    {
+      "stamp_ns": 41010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": 0.03304040171710687
+    },
+    {
+      "stamp_ns": 42010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": 0.04812039773253041
+    },
+    {
+      "stamp_ns": 42010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": 0.05901669874733706
+    },
+    {
+      "stamp_ns": 42010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": 0.029712714721044087
+    },
+    {
+      "stamp_ns": 42010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": 0.037123197179658174
+    },
+    {
+      "stamp_ns": 43010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": 0.044690739396870516
+    },
+    {
+      "stamp_ns": 43010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": 0.06501432722703004
+    },
+    {
+      "stamp_ns": 43010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": 0.028535170040321134
+    },
+    {
+      "stamp_ns": 43010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": 0.047665388204410686
+    },
+    {
+      "stamp_ns": 44010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": 0.05051375257986068
+    },
+    {
+      "stamp_ns": 44010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": 0.056968419897365674
+    },
+    {
+      "stamp_ns": 44010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": 0.03673345995478794
+    },
+    {
+      "stamp_ns": 44010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": 0.041955177552877476
+    },
+    {
+      "stamp_ns": 45010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": 0.04871819752886619
+    },
+    {
+      "stamp_ns": 45010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": 0.060286153801688336
+    },
+    {
+      "stamp_ns": 45010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": 0.03067327462234637
+    },
+    {
+      "stamp_ns": 45010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": 0.04252196512920303
+    },
+    {
+      "stamp_ns": 46010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": 0.05182880670358925
+    },
+    {
+      "stamp_ns": 46010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": 0.06134212134431616
+    },
+    {
+      "stamp_ns": 46010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": 0.03205754286754603
+    },
+    {
+      "stamp_ns": 46010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": 0.04317525217221796
+    },
+    {
+      "stamp_ns": 47010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": 0.05052001719091992
+    },
+    {
+      "stamp_ns": 47010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": 0.06215555841758791
+    },
+    {
+      "stamp_ns": 47010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": 0.03090467663413543
+    },
+    {
+      "stamp_ns": 47010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": 0.042300977667473205
+    },
+    {
+      "stamp_ns": 48010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": 0.04002773330767573
+    },
+    {
+      "stamp_ns": 48010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": 0.06676109700930999
+    },
+    {
+      "stamp_ns": 48010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": 0.03466289737694872
+    },
+    {
+      "stamp_ns": 48010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": 0.04617959399271765
+    },
+    {
+      "stamp_ns": 49010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": 0.04015069659055337
+    },
+    {
+      "stamp_ns": 49010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": 0.05961472522096933
+    },
+    {
+      "stamp_ns": 49010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": 0.0326843685542908
+    },
+    {
+      "stamp_ns": 49010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": 0.038732622598339095
+    },
+    {
+      "stamp_ns": 50010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": 0.03641082410469654
+    },
+    {
+      "stamp_ns": 50010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": 0.05407809210025416
+    },
+    {
+      "stamp_ns": 50010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": 0.025001336030558097
+    },
+    {
+      "stamp_ns": 50010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": 0.02978854417722454
+    },
+    {
+      "stamp_ns": 51010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": 0.03421777251841762
+    },
+    {
+      "stamp_ns": 51010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": 0.04713633998271094
+    },
+    {
+      "stamp_ns": 51010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": 0.015831676731359767
+    },
+    {
+      "stamp_ns": 51010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": 0.021351615949356972
+    },
+    {
+      "stamp_ns": 52010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": 0.03742392799421923
+    },
+    {
+      "stamp_ns": 52010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": 0.04835055327231874
+    },
+    {
+      "stamp_ns": 52010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": 0.012579742779056602
+    },
+    {
+      "stamp_ns": 52010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": 0.01391122630048125
+    },
+    {
+      "stamp_ns": 53010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": 0.03740907558456197
+    },
+    {
+      "stamp_ns": 53010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": 0.04779988939589064
+    },
+    {
+      "stamp_ns": 53010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": 0.013292985084570663
+    },
+    {
+      "stamp_ns": 53010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": 0.01782219261989404
+    },
+    {
+      "stamp_ns": 54010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": 0.034894445782752914
+    },
+    {
+      "stamp_ns": 54010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": 0.05176576447398418
+    },
+    {
+      "stamp_ns": 54010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": 0.0046406331431025905
+    },
+    {
+      "stamp_ns": 54010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": 0.01581276523521913
+    },
+    {
+      "stamp_ns": 55010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": 0.034434204059310414
+    },
+    {
+      "stamp_ns": 55010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": 0.04723473285535684
+    },
+    {
+      "stamp_ns": 55010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": 0.011293458246492527
+    },
+    {
+      "stamp_ns": 55010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": 0.017060769196910908
+    },
+    {
+      "stamp_ns": 56010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": 0.03986790606266055
+    },
+    {
+      "stamp_ns": 56010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": 0.04646136273553125
+    },
+    {
+      "stamp_ns": 56010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": 0.014914408451698336
+    },
+    {
+      "stamp_ns": 56010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": 0.01438851291744836
+    },
+    {
+      "stamp_ns": 57010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": 0.024104491107953763
+    },
+    {
+      "stamp_ns": 57010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": 0.05048309804541651
+    },
+    {
+      "stamp_ns": 57010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": 0.0045309513069664575
+    },
+    {
+      "stamp_ns": 57010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": 0.036671525664367266
+    },
+    {
+      "stamp_ns": 58010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": 0.024858468510895904
+    },
+    {
+      "stamp_ns": 58010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": 0.044150530783562125
+    },
+    {
+      "stamp_ns": 58010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": -0.007055352645088497
+    },
+    {
+      "stamp_ns": 58010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": 0.019185695515842482
+    },
+    {
+      "stamp_ns": 59010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": 0.014216035084364531
+    },
+    {
+      "stamp_ns": 59010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": 0.04409690263439758
+    },
+    {
+      "stamp_ns": 59010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": -0.024503766803217086
+    },
+    {
+      "stamp_ns": 59010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": 0.009726443020737108
+    },
+    {
+      "stamp_ns": 60010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": 0.008127544929449115
+    },
+    {
+      "stamp_ns": 60010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": 0.031232648425920218
+    },
+    {
+      "stamp_ns": 60010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": -0.043138689959411725
+    },
+    {
+      "stamp_ns": 60010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": -0.010903659176298763
+    },
+    {
+      "stamp_ns": 61010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": -0.0007583695326074391
+    },
+    {
+      "stamp_ns": 61010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": 0.025464429331737204
+    },
+    {
+      "stamp_ns": 61010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": -0.05313791051311911
+    },
+    {
+      "stamp_ns": 61010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": -0.01680507963616007
+    },
+    {
+      "stamp_ns": 62010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": 0.004158306993065519
+    },
+    {
+      "stamp_ns": 62010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": 0.027766763211165113
+    },
+    {
+      "stamp_ns": 62010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": -0.050970925152335145
+    },
+    {
+      "stamp_ns": 62010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": -0.01709022611775346
+    },
+    {
+      "stamp_ns": 63010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": 0.005172479795227947
+    },
+    {
+      "stamp_ns": 63010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": 0.02842776078239062
+    },
+    {
+      "stamp_ns": 63010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": -0.0508734247185747
+    },
+    {
+      "stamp_ns": 63010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": -0.016422911820740627
+    },
+    {
+      "stamp_ns": 64010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": 0.0019077281728514528
+    },
+    {
+      "stamp_ns": 64010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": 0.02806360046047418
+    },
+    {
+      "stamp_ns": 64010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": -0.05324644159377856
+    },
+    {
+      "stamp_ns": 64010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": -0.016861331173159577
+    },
+    {
+      "stamp_ns": 65010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": -0.003917718255836089
+    },
+    {
+      "stamp_ns": 65010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": 0.025891347583350655
+    },
+    {
+      "stamp_ns": 65010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": -0.05641145815517934
+    },
+    {
+      "stamp_ns": 65010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": -0.016894866359416838
+    },
+    {
+      "stamp_ns": 66010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": 0.008533116845923061
+    },
+    {
+      "stamp_ns": 66010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": 0.0192048472531261
+    },
+    {
+      "stamp_ns": 66010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": -0.05171723165797504
+    },
+    {
+      "stamp_ns": 66010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": -0.029320786412123212
+    },
+    {
+      "stamp_ns": 67010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": 0.019808696838268247
+    },
+    {
+      "stamp_ns": 67010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": 0.0226928522230323
+    },
+    {
+      "stamp_ns": 67010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": -0.030323390583232968
+    },
+    {
+      "stamp_ns": 67010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": -0.02712291043317716
+    },
+    {
+      "stamp_ns": 68010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": 0.021482003094754898
+    },
+    {
+      "stamp_ns": 68010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": 0.033401738315232965
+    },
+    {
+      "stamp_ns": 68010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": -0.01593910215795935
+    },
+    {
+      "stamp_ns": 68010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": -0.005595972835884755
+    },
+    {
+      "stamp_ns": 69010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": 0.03769886956844859
+    },
+    {
+      "stamp_ns": 69010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": 0.041918658581501234
+    },
+    {
+      "stamp_ns": 69010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": 0.0062594371903381685
+    },
+    {
+      "stamp_ns": 69010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": 0.003901286829028905
+    },
+    {
+      "stamp_ns": 70010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": 0.038068789714961415
+    },
+    {
+      "stamp_ns": 70010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": 0.048162369192167986
+    },
+    {
+      "stamp_ns": 70010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": 0.014451952616782116
+    },
+    {
+      "stamp_ns": 70010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": 0.01621036357345007
+    },
+    {
+      "stamp_ns": 71010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": 0.039555613925130295
+    },
+    {
+      "stamp_ns": 71010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": 0.04530411491835551
+    },
+    {
+      "stamp_ns": 71010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": 0.015063453949004213
+    },
+    {
+      "stamp_ns": 71010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": 0.015490712981820032
+    },
+    {
+      "stamp_ns": 72010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": 0.042880071783676144
+    },
+    {
+      "stamp_ns": 72010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": 0.04598186247770064
+    },
+    {
+      "stamp_ns": 72010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": 0.011715639149543655
+    },
+    {
+      "stamp_ns": 72010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": 0.005793044137603509
+    },
+    {
+      "stamp_ns": 73010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": 0.03154228425843719
+    },
+    {
+      "stamp_ns": 73010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": 0.04730439576733625
+    },
+    {
+      "stamp_ns": 73010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": 0.0037529420504220923
+    },
+    {
+      "stamp_ns": 73010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": 0.013849080971229721
+    },
+    {
+      "stamp_ns": 74010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": 0.03647493091432352
+    },
+    {
+      "stamp_ns": 74010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": 0.04468890951246207
+    },
+    {
+      "stamp_ns": 74010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": 0.012893111471849128
+    },
+    {
+      "stamp_ns": 74010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": 0.012524334166581053
+    },
+    {
+      "stamp_ns": 75010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": 0.04074342355172833
+    },
+    {
+      "stamp_ns": 75010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": 0.04793688080928815
+    },
+    {
+      "stamp_ns": 75010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": 0.012077171907630468
+    },
+    {
+      "stamp_ns": 75010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": 0.012425748543607895
+    },
+    {
+      "stamp_ns": 76010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": 0.02593618826307953
+    },
+    {
+      "stamp_ns": 76010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": 0.04405883626969542
+    },
+    {
+      "stamp_ns": 76010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": 0.008194824126320999
+    },
+    {
+      "stamp_ns": 76010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": 0.035010073413314746
+    },
+    {
+      "stamp_ns": 77010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": 0.009538134353165084
+    },
+    {
+      "stamp_ns": 77010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": 0.02483014771384262
+    },
+    {
+      "stamp_ns": 77010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": 0.02663092285705826
+    },
+    {
+      "stamp_ns": 77010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": 0.04287058481608197
+    },
+    {
+      "stamp_ns": 78010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": 0.01774374333019413
+    },
+    {
+      "stamp_ns": 78010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": 0.016456626281222686
+    },
+    {
+      "stamp_ns": 78010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": 0.04153328964999359
+    },
+    {
+      "stamp_ns": 78010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": 0.02438941932673755
+    },
+    {
+      "stamp_ns": 79010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": 0.019327536321790184
+    },
+    {
+      "stamp_ns": 79010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": 0.011040198906881571
+    },
+    {
+      "stamp_ns": 79010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": 0.03484358394697917
+    },
+    {
+      "stamp_ns": 79010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": 0.012445141707247753
+    },
+    {
+      "stamp_ns": 80010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": 0.018831395918969207
+    },
+    {
+      "stamp_ns": 80010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": 0.011832660127881311
+    },
+    {
+      "stamp_ns": 80010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": 0.03242234974932323
+    },
+    {
+      "stamp_ns": 80010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": 0.008975114082896862
+    },
+    {
+      "stamp_ns": 81010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": 0.015351526716062214
+    },
+    {
+      "stamp_ns": 81010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": 0.009071652588861223
+    },
+    {
+      "stamp_ns": 81010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": 0.01944813673497725
+    },
+    {
+      "stamp_ns": 81010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": 0.0014391083919447212
+    },
+    {
+      "stamp_ns": 82010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": 0.011220333466319232
+    },
+    {
+      "stamp_ns": 82010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": -0.00244679149395699
+    },
+    {
+      "stamp_ns": 82010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": 0.014091919696127775
+    },
+    {
+      "stamp_ns": 82010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": -0.00742522033718096
+    },
+    {
+      "stamp_ns": 83010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": 0.006102232205357883
+    },
+    {
+      "stamp_ns": 83010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": -0.00043914011881973636
+    },
+    {
+      "stamp_ns": 83010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": -0.0003550134110272829
+    },
+    {
+      "stamp_ns": 83010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": -0.003347831825633474
+    },
+    {
+      "stamp_ns": 84010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": 0.008955929268942509
+    },
+    {
+      "stamp_ns": 84010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": -0.0025317803634221647
+    },
+    {
+      "stamp_ns": 84010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": 0.00025360502594340417
+    },
+    {
+      "stamp_ns": 84010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": -0.004187913657516695
+    },
+    {
+      "stamp_ns": 85010000000,
+      "beam_id": 1,
+      "training": false,
+      "residual_m": 0.0008186292560008468
+    },
+    {
+      "stamp_ns": 85010000000,
+      "beam_id": 2,
+      "training": false,
+      "residual_m": -0.0008678046911962944
+    },
+    {
+      "stamp_ns": 85010000000,
+      "beam_id": 3,
+      "training": false,
+      "residual_m": -0.0034294388084683547
+    },
+    {
+      "stamp_ns": 85010000000,
+      "beam_id": 4,
+      "training": false,
+      "residual_m": 0.004826982234556354
+    }
+  ]
+}

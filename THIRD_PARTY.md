@@ -27,16 +27,20 @@ depth-support comparison figures.
 
 ## POSIM acoustic-model adaptation / POSIM 음향 모델 이식
 
-The documentation-only `sampling.py` adapter in the
+The `gazebo_sampling.py` runtime adapter and the retained `sampling.py` in the
 [renderer-sampling record](docs/diagnostics/sonar-renderer-sampling-20261101/README.md)
 follows Gazebo Rendering 10.0.2 `Ogre2GpuRays.cc`, upstream blob
 `7365a9a621a320c57107240a6d009be0085a26bb`, Copyright 2018 Open Source Robotics
 Foundation, under Apache-2.0. Its notice and source link are retained in the
-adapter and record. It adds no Gazebo binary dependency to the wheel.
+adapters and record. The DVL scan/cone interpretation also follows gz-sensors
+10.1.1 `DopplerVelocityLog.cc`, Copyright 2022 Open Source Robotics Foundation.
+The wheel retains their [source attribution and Apache-2.0 license](src/posim_slam/data/notices/gazebo-sampling.txt).
+It adds no Gazebo binary dependency to the wheel.
 
-문서용 `sampling.py`는 위 Gazebo Rendering 고정 소스의 cubemap 샘플링을
-참조합니다. Open Source Robotics Foundation의 저작권과 Apache-2.0 고지를
-보존하며 wheel에 Gazebo 바이너리 의존성을 추가하지 않습니다.
+실행 모듈 `gazebo_sampling.py`와 보존한 문서용 `sampling.py`는 위 Gazebo
+Rendering 고정 소스의 cubemap 샘플링을 참조합니다. DVL 격자·원뿔 해석은
+gz-sensors 10.1.1을 따릅니다. Open Source Robotics Foundation의 저작권과
+Apache-2.0 라이선스를 wheel에 보존하며 Gazebo 바이너리 의존성은 추가하지 않습니다.
 
 `sonar_source_normals.py` adapts
 [POSIM RaySurfaceNormals.hh](https://github.com/IOES-Lab/POSIM/blob/ffecee9be9976f68c9e883d6cf3bbd6d40eb7729/gazebo/posim_gz_multibeam_sonar/multibeam_sonar/RaySurfaceNormals.hh),

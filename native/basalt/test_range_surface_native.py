@@ -11,12 +11,26 @@ import numpy as np
 
 sys.path.insert(0,str(Path(__file__).resolve().parents[2]/'tests'))
 from test_range_surface_joint import fixture,supported_fixture
+from test_sampled_surface_ranges import sampled_fixture,sampled_supported_fixture
 from posim_slam.inertial import exp_so3
 from posim_slam.range_surface_joint import linearize_surface_ranges
 
 
 @unittest.skipUnless(os.environ.get('POSIM_SLAM_RANGE_SURFACE_PROBE'),'compiled native surface-range probe required')
 class NativeSurfaceRangeTests(unittest.TestCase):
+    def test_sampled_rays_full_covariance_support_and_accumulated_coordinates(self):
+        self.compare(sampled_fixture());self.compare(sampled_supported_fixture())
+        args=sampled_supported_fixture()
+        args['observations'][0]['ray_directions']=np.array([[0.,0.,-1.],[.3,0.,-np.sqrt(1-.3**2)]])
+        with self.assertRaises(ValueError):linearize_surface_ranges(**args)
+        self.assertEqual(self.probe(args).returncode,2)
+        args=sampled_supported_fixture()
+        args['observations'][0]['ray_directions']=np.tile([0.,0.,-1.],(512,1))
+        self.compare(args)
+        args['observations'][0]['ray_directions'][-1]=[.3,0.,-np.sqrt(1-.3**2)]
+        with self.assertRaises(ValueError):linearize_surface_ranges(**args)
+        self.assertEqual(self.probe(args).returncode,2)
+
     def probe(self,args):
         text=json.dumps(args,default=lambda value:value.tolist(),allow_nan=False)
         return subprocess.run([os.environ['POSIM_SLAM_RANGE_SURFACE_PROBE']],input=text,

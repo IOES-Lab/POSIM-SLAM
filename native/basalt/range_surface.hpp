@@ -5,6 +5,7 @@
 #include <cmath>
 #include <cstdint>
 #include <map>
+#include <limits>
 #include <set>
 #include <stdexcept>
 #include <string>
@@ -57,7 +58,7 @@ struct Plane {
   std::vector<Key> support_keys;
   double max_plane_deviation=0.,max_support_distance=0.;
 };
-enum class Model {Cone,Fan};
+enum class Model {Cone,Fan,Sampled};
 enum class Role {Factor,SupportOnly};
 struct Observation {
   Key key;Model model=Model::Cone;Role role=Role::Factor;
@@ -65,12 +66,20 @@ struct Observation {
   double measured=0.,minimum=0.,maximum=0.;
   V3 lever=V3::Zero(),axis=-V3::UnitZ();M3 mount=M3::Identity();
   double aperture=0.,azimuth=0.,vertical_fov=0.;
+  Eigen::MatrixXd rays;
 };
 struct Prediction {
   double range=0.;Eigen::Matrix<double,1,6> pose_jacobian;
   Eigen::Matrix<double,1,4> plane_jacobian;
   V3 hit,footprint_center;B32 footprint_basis;Eigen::Matrix2d footprint_shape;
+  Eigen::MatrixXd support_hits;bool all_rays_return=false;
 };
+inline void requireSampledRays(const Observation& o) {
+  if(o.rays.cols()!=3 || o.rays.rows()<1 || o.rays.rows()>512 || !o.rays.allFinite() ||
+     (o.rays.rowwise().squaredNorm().array()-1.).abs().maxCoeff()>2e-8 ||
+     !o.axis.allFinite() || std::abs(o.axis.squaredNorm()-1)>1e-8)
+    throw std::invalid_argument("bounded_calibrated_surface_rays_required");
+}
 inline Prediction predict(const Pose& pose,const Plane& plane,const Observation& o) {
   const V3 origin=pose.position+pose.attitude*o.lever;
   const V3 n0=plane.normal;const double h0=plane.distance-n0.dot(origin);
@@ -125,6 +134,28 @@ inline Prediction predict(const Pose& pose,const Plane& plane,const Observation&
     out.hit=origin+out.range*world;
     const V3 ambient=-out.hit/denominator;
     out.plane_jacobian.head<3>()=-ambient.transpose()*cross(n0);out.plane_jacobian[3]=1/denominator;
+  } else if(o.model==Model::Sampled) {
+    requireSampledRays(o);
+    out.range=std::numeric_limits<double>::infinity();
+    out.support_hits.resize(o.rays.rows(),3);Eigen::Index valid=0;V3 selected_body=V3::Zero(),selected_world=V3::Zero();
+    for(Eigen::Index i=0;i<o.rays.rows();++i) {
+      const V3 body=o.mount*o.rays.row(i).transpose(),world=pose.attitude*body;
+      const double denominator=n0.dot(world);
+      if(std::abs(denominator)<=1e-8)continue;
+      const double range=h0/denominator;
+      if(!std::isfinite(range) || range<o.minimum || range>o.maximum)continue;
+      out.support_hits.row(valid++)=(origin+range*world).transpose();
+      if(range<out.range) {out.range=range;selected_body=body;selected_world=world;}
+    }
+    if(!valid)throw std::invalid_argument("surface_first_return_out_of_range");
+    out.all_rays_return=valid==o.rays.rows();out.support_hits.conservativeResize(valid,3);
+    const double denominator=n0.dot(selected_world);
+    const Eigen::RowVector3d jo=-n0.transpose()/denominator,jd=out.range*jo;
+    out.pose_jacobian.head<3>()=jo;
+    out.pose_jacobian.tail<3>()=(-jo*pose.attitude*cross(o.lever)-jd*pose.attitude*cross(selected_body))*pose.attitude.transpose();
+    out.hit=origin+out.range*selected_world;
+    const V3 ambient=-out.hit/denominator;
+    out.plane_jacobian.head<3>()=-ambient.transpose()*cross(n0);out.plane_jacobian[3]=1/denominator;
   } else throw std::invalid_argument("unknown_surface_range_model");
   if(!std::isfinite(out.range) || out.range<o.minimum || out.range>o.maximum)
     throw std::invalid_argument("surface_first_return_out_of_range");
@@ -174,13 +205,20 @@ inline void requireSupport(const Plane& plane,const Observation& o,const Predict
   } else {
     const B32 basis=normalBasis(plane.normal);const V3 center=points.colwise().mean().transpose();
     const Eigen::MatrixXd samples=(points.rowwise()-center.transpose())*basis/scale;
-    const Point query=basis.transpose()*(f.hit-center)/scale;const auto boundary=hull(samples);
+    const auto boundary=hull(samples);
     if(boundary.size()<3)throw std::invalid_argument("degenerate_surface_support");
-    for(size_t k=0;k<boundary.size();++k)
-      if(cross2(boundary[k],boundary[(k+1)%boundary.size()],query)<-1e-10)
-        throw std::invalid_argument("surface_does_not_cover_ping");
-    if((samples.rowwise()-query.transpose()).rowwise().squaredNorm().minCoeff()>1+1e-10)
-      throw std::invalid_argument("surface_support_gap");
+    if(o.model==Model::Sampled && !f.all_rays_return)throw std::invalid_argument("incomplete_sampled_surface_support");
+    Eigen::MatrixXd hits;
+    if(o.model==Model::Sampled)hits=f.support_hits;
+    else {hits.resize(1,3);hits.row(0)=f.hit.transpose();}
+    for(Eigen::Index i=0;i<hits.rows();++i) {
+      const Point query=basis.transpose()*(hits.row(i).transpose()-center)/scale;
+      for(size_t k=0;k<boundary.size();++k)
+        if(cross2(boundary[k],boundary[(k+1)%boundary.size()],query)<-1e-10)
+          throw std::invalid_argument("surface_does_not_cover_ping");
+      if((samples.rowwise()-query.transpose()).rowwise().squaredNorm().minCoeff()>1+1e-10)
+        throw std::invalid_argument("surface_support_gap");
+    }
   }
 }
 struct Block {
@@ -224,9 +262,10 @@ inline Block linearize(const std::map<int64_t,Pose>& poses,const std::map<int,Pl
     if(!std::isfinite(o.minimum) || !std::isfinite(o.maximum) || !std::isfinite(o.measured) ||
        !(0<o.minimum && o.minimum<o.maximum) || o.measured<o.minimum || o.measured>o.maximum ||
        !o.lever.allFinite() || !rotation(o.mount))throw std::invalid_argument("invalid_surface_range_measurement");
+    if(o.model==Model::Sampled)requireSampledRays(o);
     if(o.role==Role::SupportOnly) {
-      if(o.model!=Model::Cone || !o.axis.allFinite() || std::abs(o.axis.squaredNorm()-1)>1e-8 ||
-         !std::isfinite(o.aperture) || o.aperture<0 || o.aperture>=pi)
+      if((o.model!=Model::Cone && o.model!=Model::Sampled) || !o.axis.allFinite() || std::abs(o.axis.squaredNorm()-1)>1e-8 ||
+         (o.model==Model::Cone && (!std::isfinite(o.aperture) || o.aperture<0 || o.aperture>=pi)))
         throw std::invalid_argument("invalid_raw_surface_support_cone");
       out.support_only_indices.push_back(i);
     } else if(o.role==Role::Factor && o.surface_hypothesis && planes.count(o.plane_id))out.factor_indices.push_back(i);
@@ -257,7 +296,7 @@ inline Block linearize(const std::map<int64_t,Pose>& poses,const std::map<int,Pl
       for(const auto& key:plane.support_keys) {
         if(!lookup.count(key))throw std::invalid_argument("surface_support_pose_or_measurement_retired");
         const auto& o=observations[lookup.at(key)];const auto& p=poses.at(key.stamp);
-        if(o.model!=Model::Cone)throw std::invalid_argument("unmeasured_fan_elevation_is_not_surface_support");
+        if(o.model!=Model::Cone && o.model!=Model::Sampled)throw std::invalid_argument("unmeasured_fan_elevation_is_not_surface_support");
         points.row(row++)=(p.position+p.attitude*(o.lever+o.measured*o.mount*o.axis)).transpose();
       }
       out.support_seeds[id]=points;

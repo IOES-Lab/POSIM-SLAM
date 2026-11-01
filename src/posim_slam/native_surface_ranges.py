@@ -68,6 +68,17 @@ def conditional_surface_observability(block,observations):
         result[ident]=dict(cone_rows=len(cones),all_rows=len(selected),cone_information=cone_info,
             all_range_information=all_info,fan_predictions=predictions,
             scope='Selected rows with poses fixed; support-only seeds add no information; excludes owner prior and joint pose uncertainty')
+        sampled=[i for i in selected if observations[indices[i]]['model']=='sampled']
+        if sampled:
+            sources=sorted(cones+sampled)
+            source_info=_plane_information(j[sources,columns],cov[np.ix_(sources,sources)])
+            result[ident].update(sampled_rows=len(sampled),source_range_information=source_info)
+            for i,prediction in zip((i for i in selected if observations[indices[i]]['model']=='fan'),predictions):
+                gradient=j[i,columns];free=gradient@source_info['unbounded_basis']
+                tolerance=100*np.finfo(float).eps*max(1.,float(np.linalg.norm(gradient)))
+                unbounded=bool(np.linalg.norm(free)>tolerance)
+                prediction.update(unbounded_from_source_ranges=unbounded,
+                    conditional_source_range_stddev_m=None if unbounded else float(np.linalg.norm(gradient@source_info['noise_factor'])))
     return result
 
 
@@ -93,7 +104,7 @@ def linearize_native_surface_ranges(snapshot,*,planes,observations,
     stamps=sorted({o['stamp_ns'] for o in observations})
     if not 1<=len(stamps)<=16 or any(type(t) is not int or not 0<t<=snapshot.stamp_ns for t in stamps):
         raise ValueError('exact_owned_surface_measurement_stamps_required')
-    recovered=snapshot.recover(stamps)['deltas']
+    recovered=snapshot.recover_modes(stamps)['deltas']
     states={};order=[];deltas=[]
     for index,stamp in enumerate(stamps):
         reference=snapshot.reference('state',stamp)

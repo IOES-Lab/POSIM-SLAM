@@ -6,6 +6,7 @@ import numpy as np
 from posim_slam.native_surface import NativeSurfaceSnapshot
 from posim_slam.native_surface_ranges import prepare_native_surface_ranges,linearize_native_surface_ranges
 from posim_slam.range_surface_joint import linearize_surface_ranges,normal_basis
+from posim_slam.retired_pose_archive import coordinates
 from test_range_surface_joint import supported_fixture
 
 
@@ -27,6 +28,29 @@ def fixture():
 
 
 class NativeSurfaceRangeTests(unittest.TestCase):
+    def test_sampled_range_rows_keep_original_ownership_without_plane_prior(self):
+        packet,request,_=fixture();snapshot=NativeSurfaceSnapshot.read(packet)
+        for row in request['observations']:
+            if row['model']=='cone':
+                row.update(model='sampled',ray_directions=[[0.,0.,-1.],[.02,0.,-np.sqrt(1-.02**2)]])
+                row.pop('aperture_rad')
+        result=prepare_native_surface_ranges(snapshot,**request)
+        direct=linearize_native_surface_ranges(snapshot,**request)
+        actual=result.increment.new_live_rows
+        # The native owner also owns the pressure datum, even though these
+        # new rows contain no pressure measurement. Retain that zero column.
+        columns={key:i for i,key in enumerate(coordinates(actual.order))}
+        expected=np.zeros_like(actual.jacobian)
+        expected[:,[columns[key] for key in coordinates(direct.order)]]=direct.jacobian
+        np.testing.assert_allclose(actual.jacobian.T@actual.jacobian,expected.T@expected,atol=1e-9)
+        self.assertEqual(result.increment.original_keys,((1,0,0),(1,1,0)))
+        self.assertEqual(snapshot.ledger.recent,frozenset())
+        info=result.diagnostics['conditional_plane_information'][0]
+        self.assertEqual(info['sampled_rows'],1)
+        self.assertFalse(info['fan_predictions'][0]['unbounded_from_source_ranges'])
+        self.assertFalse(result.diagnostics['initialization']['added_prior'])
+        self.assertNotIn('prior',result.increment.as_packet())
+
     def test_raw_joint_rows_match_direct_information_with_free_unknown_plane(self):
         packet,request,args=fixture();snapshot=NativeSurfaceSnapshot.read(packet)
         result=prepare_native_surface_ranges(snapshot,**request)

@@ -49,6 +49,8 @@ class NativeSurfaceSnapshot:
 
     def recover(self,stamps):return self._archive.recover(stamps)
 
+    def recover_modes(self,stamps):return self._archive.recover_modes(stamps)
+
     def joint_marginal(self,order,*,relative_tolerance=1e-10):
         return joint_surface_marginal(self,order,relative_tolerance=relative_tolerance)
 

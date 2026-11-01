@@ -10,6 +10,7 @@ import numpy as np
 
 sys.path.insert(0,str(Path(__file__).resolve().parents[2]/'tests'))
 from test_range_surface_joint import fixture,supported_fixture
+from test_sampled_surface_ranges import sampled_fixture,sampled_supported_fixture
 from posim_slam.ping_joint import eliminate_patch
 from posim_slam.range_surface_joint import linearize_surface_ranges
 
@@ -53,6 +54,10 @@ class RangeSurfaceOwnerTests(unittest.TestCase):
 
     def test_raw_support_sources_are_owner_dependencies(self):
         self.compare(supported_fixture())
+
+    def test_sampled_ranges_share_native_state_trial_and_retirement(self):
+        self.compare(sampled_fixture(),prior=True)
+        self.compare(sampled_supported_fixture())
 
 
 if __name__=='__main__':unittest.main()

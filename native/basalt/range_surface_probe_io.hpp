@@ -91,6 +91,7 @@ inline Input read(const Json& input) {
       const auto model=row.at("model").get<std::string>();
       if(model=="cone") {o.model=sr::Model::Cone;o.axis=vector<3>(row.at("beam_axis"));o.aperture=row.at("aperture_rad").get<double>();}
       else if(model=="fan") {o.model=sr::Model::Fan;o.azimuth=row.at("azimuth_rad").get<double>();o.vertical_fov=row.at("vertical_fov_rad").get<double>();}
+      else if(model=="sampled") {o.model=sr::Model::Sampled;o.rays=matrix(row.at("ray_directions"));o.axis=vector<3>(row.at("beam_axis"));}
       else throw std::invalid_argument("unknown_surface_range_model");
       const auto role=row.value("role",std::string("factor"));
       if(role=="support_only")o.role=sr::Role::SupportOnly;
