@@ -18,6 +18,16 @@ def geometry():
 
 
 class GazeboSamplingTests(unittest.TestCase):
+    def test_wire_angle_storage_preserves_unit_directions_and_source_texels(self):
+        azimuth=np.linspace(-np.pi/3,np.pi/3,256,dtype=np.float32)
+        elevation=np.linspace(-np.pi/18,np.pi/18,256,dtype=np.float32)
+        actual,texels=cubemap_rays(azimuth,elevation,256)
+        reference,reference_texels=cubemap_rays(azimuth.astype(float),elevation.astype(float),256)
+        self.assertEqual(actual.dtype,np.dtype('float64'))
+        np.testing.assert_array_equal(texels,reference_texels)
+        np.testing.assert_array_equal(actual,reference)
+        np.testing.assert_allclose(np.linalg.norm(actual,axis=1),1.,rtol=0,atol=1e-15)
+
     def test_runtime_adaptation_notice_is_packaged_and_hash_bound(self):
         record=json.loads((resources.NOTICES/'gazebo-sampling.json').read_text())
         self.assertEqual(hashlib.sha256((resources.NOTICES/record['notice']).read_bytes()).hexdigest(),record['notice_sha256'])

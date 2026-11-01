@@ -11,6 +11,8 @@ def cubemap_rays(azimuth, elevation, size):
     https://github.com/gazebosim/gz-rendering/blob/gz-rendering10_10.0.2/ogre2/src/Ogre2GpuRays.cc
     The standard cube is Y-up; local sonar coordinates are X-forward/Z-up.
     Texel centres are used to reconstruct the first-pass camera rays.
+    Angle values retain their supplied precision; geometric evaluation and
+    returned unit directions use float64, including float32 wire arrays.
     """
     az, el = np.asarray(azimuth), np.asarray(elevation)
     if (az.ndim!=1 or el.ndim!=1 or not 1<=len(az)<=2049 or not 1<=len(el)<=2049
@@ -19,6 +21,7 @@ def cubemap_rays(azimuth, elevation, size):
             or np.any(abs(az)>np.pi) or np.any(abs(el)>np.pi/2)
             or type(size) is not int or not 128<=size<=1024 or size&(size-1)):
         raise ValueError('bounded_gazebo_cubemap_calibration_required')
+    az=az.astype(float,copy=False);el=el.astype(float,copy=False)
     local = np.stack(np.broadcast_arrays(np.cos(el[:, None])*np.cos(az),
         np.cos(el[:, None])*np.sin(az), np.sin(el[:, None])), axis=-1)
     cube = local[..., [1, 2, 0]].copy()
