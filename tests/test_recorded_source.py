@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
+import zipfile
 import numpy as np
 from posim_slam.sonar_surface_power import SurfacePowerModel, TriangleSurface
 from posim_slam.sonar_source_surface import SourceSurfaceObservation
@@ -53,6 +54,39 @@ class RecordedSourceTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, 'hash_mismatch'):
                 helper.prepare(root/'missing-package', snapshot, {'example.py': '0'*64}, target)
             self.assertFalse(target.exists())
+
+    def test_complete_snapshot_does_not_mix_in_current_or_untracked_modules(self):
+        helper=load('recorded_complete_runner',ROOT/'tools/verify_recorded_diagnostic.py')
+        with tempfile.TemporaryDirectory() as temporary:
+            root=Path(temporary);snapshot=root/'snapshot';snapshot.mkdir()
+            current=root/'current';current.mkdir();(current/'private.py').write_text('private = True\n')
+            data={'__init__.py':b'', 'example.py':b'value = 1\n'}
+            archive=snapshot/'package.zip'
+            with zipfile.ZipFile(archive,'w') as out:
+                for name,raw in data.items():out.writestr(name,raw)
+            profile=dict(archive=archive.name,sha256=hashlib.sha256(archive.read_bytes()).hexdigest(),
+                files={name:hashlib.sha256(raw).hexdigest() for name,raw in data.items()},
+                uncompressed_bytes=sum(map(len,data.values())))
+            target=root/'target'
+            helper.prepare(current,snapshot,{},target,package_snapshot=profile)
+            self.assertEqual((target/'example.py').read_bytes(),data['example.py'])
+            self.assertFalse((target/'private.py').exists())
+            self.assertEqual(sorted(p.name for p in target.iterdir()),sorted(data))
+
+    def test_archive_hash_and_member_escape_fail_before_output(self):
+        helper=load('recorded_package_rejections',ROOT/'tools/verify_recorded_diagnostic.py')
+        with tempfile.TemporaryDirectory() as temporary:
+            root=Path(temporary);archive=root/'package.zip'
+            with zipfile.ZipFile(archive,'w') as out:out.writestr('../escape.py',b'bad\n')
+            profile=dict(archive=archive.name,sha256='0'*64,
+                files={'../escape.py':hashlib.sha256(b'bad\n').hexdigest()},uncompressed_bytes=4)
+            for digest,error in [('0'*64,'hash_mismatch'),
+                    (hashlib.sha256(archive.read_bytes()).hexdigest(),'invalid_recorded_package_member')]:
+                with self.subTest(error=error),self.assertRaisesRegex(ValueError,error):
+                    helper.prepare(root/'missing',root,{},root/'target',
+                        package_snapshot=dict(profile,sha256=digest))
+                self.assertFalse((root/'target').exists())
+                self.assertFalse((root.parent/'escape.py').exists())
 
 
 if __name__ == '__main__':
