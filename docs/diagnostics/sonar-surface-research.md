@@ -107,7 +107,7 @@ Xie 등(2024)의 신경망 해저 복원은 정확한 항법과 주로 오프라
 평평한 해저의 중심 방위각에서 첫 교차 경사거리는
 `r_near = h / sin(alpha + beta)`로 예측할 수 있습니다. `h`는 해저 위 고도,
 `alpha`는 하향 중심각, `beta`는 수직 반시야각입니다. 기울어진 해저·차량 자세와
-다른 방위각은 보정된 광선과 국소 평면의 교차로 계산합니다. 단일 Ping 관측만으로
+다른 방위각은 보정된 음선과 국소 평면의 교차로 계산합니다. 단일 Ping 관측만으로
 평면 법선을 정할 수 없으며 압력 수심도 해저 위 고도와 다릅니다.
 
 예측 부근에서 어두움이 밝음으로 바뀌면 해저 반사의 시작을 뒷받침하지만,
@@ -183,7 +183,7 @@ The overview shows the physical vehicle and targets. Speckle and optical/wave
 phase differ from the archived left image. This is a static sensor check, not a
 new multi-view map or an accuracy result. Corrected moving data are still needed.
 
-오른쪽 소나는 같은 기록 자세에서 수정된 20°·256광선으로 다시 촬영했습니다.
+오른쪽 소나는 같은 기록 자세에서 수정된 20°·256음선으로 다시 촬영했습니다.
 좁아진 시야에 맞게 해저 반사 시작점이 먼 쪽으로 이동합니다. RGB는 소나와
 위치·방향이 같고 주황색 경계는 ±10°입니다. 개요에 차량과 물체를 함께 표시합니다.
 왼쪽 보존 영상과 스펙클·광학 효과·파도의 위상은 다릅니다. 정적 센서 검사이며
