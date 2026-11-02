@@ -2,7 +2,6 @@
 #include "persistent_mapper.hpp"
 #include <Eigen/Cholesky>
 #include <chrono>
-#include <cstring>
 #include <numeric>
 
 namespace posim_slam {
@@ -87,29 +86,16 @@ MappingInformationResult information(basalt::NfrMapper& mapper,
   return graph.evaluate(three_sigma_m);
 }
 
-bool sameImage(const basalt::ManagedImage<uint16_t>& first,
-               const basalt::ManagedImage<uint16_t>& second) {
-  if(first.w!=second.w || first.h!=second.h)return false;
-  for(size_t y=0;y<first.h;++y)
-    if(std::memcmp(first.RowPtr(y),second.RowPtr(y),first.w*sizeof(uint16_t)))return false;
-  return true;
-}
 } // namespace
 
 PersistentMapper::PersistentMapper(const basalt::Calibration<double>& calibration,
     const basalt::VioConfig& config,double three_sigma_m,PersistentMapLimits limits)
-    :calibration_(calibration),config_(config),three_sigma_m_(three_sigma_m),limits_(limits),
+    :calibration_(calibration),config_(MappingInputStore::configuration(config)),three_sigma_m_(three_sigma_m),limits_(limits),
+     store_(calibration_,config_,limits),
      latest_(std::make_shared<PersistentMapSnapshot>()) {
-  if(calibration.intrinsics.size()!=1 || calibration.T_i_c.size()!=1 ||
-      !std::isfinite(three_sigma_m) || three_sigma_m<=0 || three_sigma_m>1 ||
-      limits.keyframes<2 || limits.keyframes>size_t(kMaxJointColumns/6) ||
-      limits.image_bytes<2 || limits.image_bytes>96*1024*1024 || limits.retirements<1 || limits.retirements>512 ||
-      limits.update_retirements<1 || limits.update_retirements>limits.retirements ||
-      !config.mapper_use_factors || config.mapper_no_factor_weights)
+  if(!std::isfinite(three_sigma_m) || three_sigma_m<=0 || three_sigma_m>1)
     throw std::invalid_argument("invalid_persistent_mapping_configuration");
-  config_.mapper_min_track_length=2;
-  config_.mapper_obs_std_dev=config_.vio_obs_std_dev;
-  config_.mapper_obs_huber_thresh=config_.vio_obs_huber_thresh;
+  retained_.input=store_.snapshot();
   input.set_capacity(2);
   ingest_thread_=std::thread(&PersistentMapper::ingest,this);
   try {mapper_thread_=std::thread(&PersistentMapper::optimize,this);}
@@ -153,66 +139,11 @@ void PersistentMapper::ingest() {
       std::lock_guard<std::mutex> lock(mutex_);input_finished_=true;changed_.notify_one();return;
     }
     try {
+      {std::lock_guard<std::mutex> lock(mutex_);if(!error_.empty())continue;}
+      const auto committed=store_.append(*source);
       std::lock_guard<std::mutex> lock(mutex_);
       if(!error_.empty())continue;
-      if(!source->use_imu || source->kfs_all.size()<2 || source->kfs_to_marg.empty() ||
-          !source->abs_H.allFinite() || !source->abs_b.allFinite() ||
-          source->abs_H.rows()!=source->abs_H.cols() || source->abs_H.rows()!=source->abs_b.size() ||
-          source->abs_H.rows()!=Eigen::Index(source->aom.total_size) ||
-          source->aom.total_size>size_t(kMaxJointColumns) ||
-          source->opt_flow_res.size()!=source->kfs_all.size())
-        throw std::invalid_argument("invalid_persistent_mapping_input");
-      std::vector<bool> coordinates(source->aom.total_size,false);
-      for(const auto& [stamp,block]:source->aom.abs_order_map) {
-        const auto [offset,width]=block;
-        if((width!=6 && width!=15) || width>source->aom.total_size || offset>source->aom.total_size-width ||
-            (width==6 && (!source->frame_poses.count(stamp) || source->frame_states.count(stamp))) ||
-            (width==15 && (!source->frame_states.count(stamp) || source->frame_poses.count(stamp))))
-          throw std::invalid_argument("invalid_mapping_state_layout");
-        for(size_t column=offset;column<offset+width;++column) {
-          if(coordinates[column])throw std::invalid_argument("overlapping_mapping_state_coordinates");
-          coordinates[column]=true;
-        }
-        const auto pose=width==6?source->frame_poses.at(stamp).getPose():source->frame_states.at(stamp).getState().T_w_i;
-        if(!pose.matrix().allFinite())throw std::invalid_argument("invalid_mapping_state_pose");
-      }
-      if(std::find(coordinates.begin(),coordinates.end(),false)!=coordinates.end())
-        throw std::invalid_argument("incomplete_mapping_state_layout");
-      for(int64_t stamp:source->kfs_all)
-        if(!source->aom.abs_order_map.count(stamp))throw std::invalid_argument("missing_mapping_keyframe_state");
-      if(retained_.factors.size()>=limits_.retirements)throw std::runtime_error("mapping_retirement_capacity");
-      for(int64_t stamp:source->kfs_to_marg)
-        if(!source->kfs_all.count(stamp) || retired_.count(stamp))
-          throw std::invalid_argument("mapping_retirement_reused");
-      auto images=retained_.images;size_t bytes=image_bytes_;std::set<int64_t> stamps;
-      for(const auto& flow:source->opt_flow_res) {
-        if(!flow || !flow->input_images || flow->t_ns!=flow->input_images->t_ns ||
-            !source->kfs_all.count(flow->t_ns) || !stamps.insert(flow->t_ns).second ||
-            flow->input_images->img_data.size()!=1 || !flow->input_images->img_data[0].img)
-          throw std::invalid_argument("invalid_persistent_mapping_image");
-        const auto& image=*flow->input_images->img_data[0].img;
-        if(image.w<1 || image.h<1 || image.w>1920 || image.h>1080 ||
-            int(image.w)!=calibration_.resolution[0].x() || int(image.h)!=calibration_.resolution[0].y())
-          throw std::invalid_argument("invalid_persistent_mapping_image_shape");
-        auto found=images.find(flow->t_ns);
-        if(found!=images.end()) {
-          if(!sameImage(*found->second->img_data[0].img,image))
-            throw std::invalid_argument("mapping_image_identity_changed");
-          continue;
-        }
-        bytes+=size_t(image.w)*image.h*sizeof(uint16_t);
-        if(images.size()>=limits_.keyframes || bytes>limits_.image_bytes)
-          throw std::runtime_error("mapping_image_capacity");
-        auto owned=std::make_shared<basalt::OpticalFlowInput>(*flow->input_images);
-        owned->img_data[0].img=std::make_shared<basalt::ManagedImage<uint16_t>>(image.w,image.h);
-        owned->img_data[0].img->CopyFrom(image);images.emplace(flow->t_ns,std::move(owned));
-      }
-      // Neither the producer's snapshot nor its image storage is mutated.
-      auto factor=std::make_shared<basalt::MargData>(*source);factor->opt_flow_res.clear();
-      retained_.factors.push_back(std::move(factor));
-      retained_.images.swap(images);image_bytes_=bytes;
-      retired_.insert(source->kfs_to_marg.begin(),source->kfs_to_marg.end());
-      ++retained_.revision;changed_.notify_one();
+      retained_.input=committed;retained_.revision=committed->revision;changed_.notify_one();
     } catch(const std::exception& error){invalidate(error.what());}
   }
 }
@@ -243,18 +174,10 @@ void PersistentMapper::optimize() {
 }
 std::shared_ptr<PersistentMapSnapshot> PersistentMapper::build(const Batch& batch) const {
   const auto started=std::chrono::steady_clock::now();
-  basalt::NfrMapper mapper(calibration_,config_);
-  for(const auto& factor:batch.factors) {
-    auto owned=std::make_shared<basalt::MargData>(*factor);
-    const auto count=mapper.roll_pitch_factors.size();mapper.addMargData(owned);
-    if(mapper.roll_pitch_factors.size()!=count+1)
-      throw std::runtime_error("mapping_recovered_information_singular");
-  }
-  if(mapper.getFramePoses().size()!=batch.images.size() ||
-      !mapper.getFramePoses().count(batch.reference_stamp))
+  auto restored=store_.makeMapper(batch.input);auto& mapper=*restored;
+  if(!mapper.getFramePoses().count(batch.reference_stamp))
     throw std::runtime_error("mapping_pose_image_or_reference_mismatch");
-  for(const auto& [stamp,image]:batch.images)mapper.img_data.emplace(stamp,image);
-  mapper.detect_keypoints();mapper.match_all();mapper.build_tracks();mapper.setup_opt();
+  mapper.match_all();mapper.build_tracks();mapper.setup_opt();
   mapper.optimize(10);
   const auto quality=information(mapper,calibration_,config_,batch.reference_stamp,three_sigma_m_);
   const auto reference=mapper.getFramePoses().at(batch.reference_stamp).getPose();
@@ -263,8 +186,11 @@ std::shared_ptr<PersistentMapSnapshot> PersistentMapper::build(const Batch& batc
   const Sophus::SO3d rotation=Sophus::SO3d::exp(Eigen::Vector3d(0,0,yaw));
   const Sophus::SE3d gauge(rotation,batch.reference_pose.translation()-rotation*reference.translation());
   auto result=std::make_shared<PersistentMapSnapshot>();
-  result->revision=batch.revision;result->optimized_through_ns=batch.images.rbegin()->first;
-  result->keyframes=batch.images.size();result->retirements=batch.factors.size();
+  result->revision=batch.revision;result->optimized_through_ns=batch.input->frames.rbegin()->first;
+  result->keyframes=batch.input->frames.size();result->retirements=batch.input->revision;
+  result->source_image_bytes=batch.input->source_image_bytes;
+  result->source_factor_matrix_bytes=batch.input->source_factor_matrix_bytes;
+  result->compact_input_bytes=batch.input->compactPayloadBytes();
   result->observations=quality.observations;result->factors=quality.pose_factors;
   for(const auto& [id,landmark]:mapper.lmdb.getLandmarks()) {
     const auto host=mapper.getFramePoses().at(landmark.host_kf_id.frame_id).getPose()

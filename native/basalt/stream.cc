@@ -769,6 +769,8 @@ int main(int argc,char** argv) {
             {"eligible_points",m.points.size()},{"world_observed_points",m.observed},{"nonfinite_candidates",m.nonfinite},
             {"optimization_revision",m.revision},{"optimized_through_ns",m.optimized_through_ns},
             {"keyframes",m.keyframes},{"retirements",m.retirements},{"optimize_seconds",m.optimize_seconds},
+            {"source_image_bytes",m.source_image_bytes},{"source_factor_matrix_bytes",m.source_factor_matrix_bytes},
+            {"compact_input_bytes",m.compact_input_bytes},
             {"pending",m.revision==0},{"error",m.error.empty()?Json(nullptr):Json(m.error)}};
         }
         emit({{"type","map"},{"stamp_ns",data->t_ns},{"point_geometry",geometry},

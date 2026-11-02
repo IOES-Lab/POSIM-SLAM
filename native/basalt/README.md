@@ -22,7 +22,10 @@ When a mapping output queue is attached, joint factor retirement supplies a
 detached keyframe snapshot after the marginal prior commits. The snapshot keeps
 pose information and eliminates velocity, bias and the unknown pressure datum
 with their cross-information. Its images have separate storage. `PersistentMapper` consumes the queue when `persistent_mapping: true`; it
-rebuilds and reoptimizes a retained NFR graph on a separate thread. Input
+rebuilds and reoptimizes a retained NFR graph on a separate thread. The compact
+input store recovers each retirement and extracts each new keyframe once, retaining
+features, nonlinear factors and pose seeds instead of raw images or large marginal
+matrices. Immutable revisions let optimization run independently of ingestion. Input
 overflow invalidates mapping without blocking the navigation estimator.
 [Persistent-map contract and bounds](../../docs/diagnostics/visual-map-quality.md).
 
@@ -31,6 +34,9 @@ overflow invalidates mapping without blocking the navigation estimator.
 수심은 교차정보와 함께 제거합니다. 영상 저장 공간은 별도이며, 큐 수신 측이
 지속 지도 최적화와 출력 시점을 담당합니다. `persistent_mapping: true`이면
 `PersistentMapper`가 별도 스레드에서 보존한 NFR 그래프를 다시 최적화합니다.
+입력 저장소는 전달 정보별 제약 복원과 새 키프레임의 특징 검출을 한 번만 수행하고,
+원본 영상·큰 주변화 행렬 대신 특징·비선형 제약·자세 초기값을 보존합니다.
+불변 입력 회차로 수신 처리와 지도 최적화를 분리합니다.
 입력 큐 한도를 넘으면 항법 추정을 막지 않고 지도 출력을 무효화합니다.
 
 `mapping_information.hpp`는 지도 최적화용으로 크기가 제한된 정보 계산을

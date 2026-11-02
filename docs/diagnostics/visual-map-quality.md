@@ -34,10 +34,14 @@ or detectors alone do not measure cross-layer error covariance.
 
 Input ingestion and optimization use separate threads. The input queue holds two
 snapshots. Optimization runs after eight new snapshots, after a five-second wait
-with pending input, or at end of input. Keyframe images are deduplicated by
-original timestamp and checked for identical pixels. Limits are 203 keyframes,
-96 MiB of retained images, 512 retirement snapshots and 100,000 point-information
-candidates. A bound or malformed input invalidates map output while the navigation
+with pending input, or at end of input. `MappingInputStore` recovers each retirement's
+nonlinear factors and detects each keyframe's descriptor features once. Immutable
+in-memory snapshots retain those features, factors and the latest pose seeds;
+raw images and marginalization matrices are released after ingestion. SHA-256 of
+image dimensions and visible uint16 pixels checks repeated timestamps. Limits are
+203 keyframes, 96 MiB of processed-image-equivalent input, 96 MiB of compact logical
+payload, 512 retirement records and 100,000 point-information candidates. Logical
+payload bytes exclude allocator overhead and are reported separately from process RSS. A bound or malformed input invalidates map output while the navigation
 estimator can continue. Long-run rollover beyond these bounds remains unsupported.
 
 `validate_geometry(report, window, total_points=..., stamp_ns=...)` validates
@@ -103,7 +107,7 @@ scope; legacy file readers retain the file's declared scope.
 
 `PersistentMapper`는 VIO 주변화 확정 뒤 전달한 불변 사본을 받습니다. 공유
 속도·바이어스·미지 압력 기준값은 교차정보와 함께 소거합니다. Basalt NfrMapper가
-비선형 자세 제약을 근사 복원하고 보존한 영상으로 번들 조정을 수행합니다.
+비선형 자세 제약을 근사 복원하고 보존한 특징으로 번들 조정을 수행합니다.
 중복 없는 입력으로 매번 그래프를 재구성하고, 추정한 초기 위치·방위 기준을
 한 번만 사용합니다.
 
@@ -115,8 +119,13 @@ scope; legacy file readers retain the file's declared scope.
 
 입력 수신과 지도 최적화는 별도 스레드입니다. 입력 큐는 사본 두 건을 보관하고,
 새 입력 8건, 남은 입력의 5초 대기 또는 입력 종료 시 최적화합니다. 원래 시각으로
-영상을 중복 제거하고 같은 시각의 픽셀 일치를 확인합니다. 한도는 키프레임 203개,
-영상 96MiB, 전달 사본 512건과 점 정보 후보 100,000개입니다. 초과·입력 오류 시
+입력 영상을 구분합니다. `MappingInputStore`는 전달 정보별 비선형 제약 복원과
+키프레임별 기술자 특징 검출을 한 번만 수행합니다. 불변 메모리 사본은 특징·복원
+제약·최신 자세 초기값을 보존하며 원본 영상과 주변화 행렬은 수신 처리 후 놓습니다.
+같은 시각의 영상은 크기와 유효 uint16 픽셀의 SHA-256으로 일치를 확인합니다.
+한도는 키프레임 203개, 처리 영상 환산 입력 96MiB, 특징·제약 논리 데이터 96MiB,
+전달 정보 512건과 점 정보 후보 100,000개입니다. 논리 데이터 크기는 할당기 부가
+메모리를 제외하며 프로세스 RSS와 별도로 보고합니다. 초과·입력 오류 시
 지도는 무효화하고 항법 추정은 계속할 수 있습니다. 한도 이후의 장기 지도 전환은
 지원하지 않습니다.
 

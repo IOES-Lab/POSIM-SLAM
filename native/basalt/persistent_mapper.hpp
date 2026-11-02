@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 #pragma once
 #include "mapping_information.hpp"
-#include <basalt/vi_estimator/nfr_mapper.h>
+#include "mapping_input_store.hpp"
 #include <condition_variable>
 #include <mutex>
 #include <thread>
@@ -20,21 +20,18 @@ struct PersistentMapSnapshot {
   int64_t optimized_through_ns=0;
   size_t keyframes=0, retirements=0, observations=0, factors=0, observed=0;
   size_t nonfinite=0;
+  size_t source_image_bytes=0,source_factor_matrix_bytes=0,compact_input_bytes=0;
   double optimize_seconds=0;
   std::string error;
   std::vector<PersistentMapCandidate> candidates;
   std::vector<std::array<float,3>> points;
   std::vector<int> ids;
 };
-struct PersistentMapLimits {
-  size_t keyframes=kMaxJointColumns/6;
-  size_t image_bytes=96*1024*1024;
-  size_t retirements=512;
-  size_t update_retirements=8;
-};
+using PersistentMapLimits=MappingInputLimits;
 
-// The ingest thread only validates and retains immutable input. The mapper
-// rebuilds a graph from a snapshot of that input, so an old graph's observations
+// The ingest thread recovers each retirement's factors and extracts each new
+// image's features once. The mapper rebuilds a graph from immutable compact
+// snapshots, so an old graph's observations
 // are never appended again. Intermediate optimization requests may coalesce;
 // input measurements never do. A budget/input failure invalidates map output
 // without stopping the caller's independently valid navigation estimator.
@@ -58,8 +55,7 @@ class PersistentMapper {
 
  private:
   struct Batch {
-    std::vector<basalt::MargData::Ptr> factors;
-    std::map<int64_t,basalt::OpticalFlowInput::Ptr> images;
+    MappingInputStore::Snapshot input;
     int64_t reference_stamp=0;
     Sophus::SE3d reference_pose;
     uint64_t revision=0;
@@ -71,11 +67,10 @@ class PersistentMapper {
   basalt::VioConfig config_;
   double three_sigma_m_;
   PersistentMapLimits limits_;
+  MappingInputStore store_;
   mutable std::mutex mutex_;
   std::condition_variable changed_;
   Batch retained_;
-  std::set<int64_t> retired_;
-  size_t image_bytes_=0;
   bool input_finished_=false,finished_=false;
   std::string error_;
   Snapshot latest_;
