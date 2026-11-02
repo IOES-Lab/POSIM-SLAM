@@ -189,6 +189,8 @@ preserves original-time images until received IMU samples cover each exposure.
 The camera-free `SonarSession` requires an explicit pressure-enabled native calibration by default. Explicit pressure-off configurations are research ablations. The application requires raw IMU and pressure depth for sonar SLAM, with optional DVL. It checks recent acknowledged pressure fusion separately from sensor reception and waits for valid pressure before worker startup. Multiple-view tracks constrain shared point hypotheses; pressure constrains vehicle depth, not seabed distance. Repeated observations from a single pose do not resolve elevation, and physical correspondence/map accuracy remain unqualified.
 
 `SensorEvents.advance` records a validated but intentionally omitted observation without creating a factor or repeating a measurement. It keeps input ordering independent of factor rate limits. Shared auxiliary acknowledgement and freshness checks distinguish received measurements from recent optimization on both sensor and wall clocks.
+
+`SensorEvents` supports explicitly selected optional auxiliary streams. After the caller detects an outage, `suspend` removes that stream from the ordering barrier while preserving real measurements and required IMU coverage. A returning packet resumes the stream only beyond the submitted-state horizon; older packets are counted and discarded without retiming. The caller keeps freshness and output eligibility checks separate.
 [Mixed camera/sonar pressure input and same-view maps](docs/diagnostics/mixed-sonar-pressure.md).
 
 [한국어](README.ko.md) · [Third-party notices](THIRD_PARTY.md)

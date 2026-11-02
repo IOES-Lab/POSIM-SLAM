@@ -8,7 +8,8 @@ or reused. The caller separately enforces wall-clock liveness and IMU coverage.
 
 
 class SensorEvents:
-    def __init__(self, *, capacity=16, state_clock='camera', sonar=True, dvl=False, pressure=False, ping=False):
+    def __init__(self, *, capacity=16, state_clock='camera', sonar=True, dvl=False, pressure=False, ping=False,
+                 optional_streams=()):
         if type(capacity) is not int or not 2 <= capacity <= 256:
             raise ValueError('sensor_events_capacity')
         self.capacity = capacity
@@ -22,6 +23,14 @@ class SensorEvents:
             raise ValueError('sensor_events_sonar_clock_requires_sensor')
         self.dvl_enabled = dvl
         self.auxiliary_streams = tuple(kind for kind, enabled in (('dvl', dvl), ('pressure', pressure), ('ping', ping)) if enabled)
+        if (not isinstance(optional_streams, (tuple, list))
+                or any(not isinstance(kind, str) for kind in optional_streams)
+                or len(set(optional_streams)) != len(optional_streams)
+                or any(kind not in self.auxiliary_streams for kind in optional_streams)):
+            raise ValueError('sensor_events_optional_streams')
+        self.optional_streams = frozenset(optional_streams)
+        self.suspended = set()
+        self.late_optional_dropped = 0
         self.streams = ('sonar',) if state_clock == 'sonar' else ('camera',) + (('sonar',) if sonar else ())
         self.streams += self.auxiliary_streams
         self.pending = {'camera': {}, 'sonar': {}}
@@ -55,17 +64,40 @@ class SensorEvents:
         IMU samples stay in the caller's bounded integration buffer. Payloads
         must be validated, size-bounded and immutable while queued by callers.
         A DVL loss-status payload advances its stream clock but must not be
-        submitted as a native velocity factor. Silence is not a loss status.
+        submitted as a native velocity factor. An optional stream may instead
+        be suspended by its owner after an independently detected outage.
+        Returns False for a resumed optional packet older than an already
+        submitted state; it is counted, never retimed or reused.
         """
         self._check_input(kind, stamp_ns)
         if kind != 'imu':
             if payload is None:
                 self._fail('sensor_events_payload_required')
+            if kind in self.suspended:
+                horizon = max(self.last, (self.awaiting or {}).get('stamp_ns', 0))
+                if stamp_ns <= horizon:
+                    self.latest[kind] = stamp_ns
+                    self.late_optional_dropped += 1
+                    return False
             if sum(map(len, self.pending.values())) >= self.capacity:
                 self._fail('sensor_events_backlog')
             self.pending[kind][stamp_ns] = payload
             self.peak_pending = max(self.peak_pending, sum(map(len, self.pending.values())))
         self.latest[kind] = stamp_ns
+        self.suspended.discard(kind)
+        return True
+
+    def suspend(self, kind):
+        """Stop waiting on an optional stream after the owner detects an outage.
+
+        No clock or measurement is fabricated. Already queued real packets keep
+        their original times. A fresh packet beyond the submitted-state horizon
+        resumes the stream. Required sensors and IMU cannot be suspended.
+        """
+        self._healthy()
+        if kind not in self.optional_streams or kind in self.closed:
+            self._fail('sensor_events_suspend_required_or_closed')
+        self.suspended.add(kind)
 
     def _check_input(self, kind, stamp_ns):
         self._healthy()
@@ -94,7 +126,7 @@ class SensorEvents:
     def next_event(self):
         """Release at most one event, requiring its exact native state ack.
 
-        All selected streams must have advanced through the event timestamp, and raw
+        All active selected streams must have advanced through the event timestamp, and raw
         IMU must extend strictly beyond it. Equal-time camera/sonar packets form
         one event. The native worker accepts at most one auxiliary sonar state
         between consecutive images; excess sonar packets are explicitly counted
@@ -111,7 +143,7 @@ class SensorEvents:
         if self.awaiting is not None:
             return None
         watermark = min([self.latest['imu'] - 1] + [
-            self.latest[kind] for kind in self.streams if kind not in self.closed])
+            self.latest[kind] for kind in self.streams if kind not in self.closed and kind not in self.suspended])
         while any(self.pending.values()):
             stamp = min(t for queue in self.pending.values() for t in queue)
             if stamp > watermark:
