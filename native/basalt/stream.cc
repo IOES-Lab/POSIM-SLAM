@@ -125,7 +125,8 @@ int main(int argc,char** argv) {
     if(persistent_mapping && (!joint_map_information || sonar_clock || map_point_three_sigma_m<=0))
       fail("invalid_persistent_mapping_request");
     std::unique_ptr<posim_slam::PersistentMapper> persistent_map;
-    if(persistent_mapping)persistent_map=std::make_unique<posim_slam::PersistentMapper>(c.cal,config,map_point_three_sigma_m);
+    if(persistent_mapping)persistent_map=std::make_unique<posim_slam::PersistentMapper>(c.cal,config,map_point_three_sigma_m,
+      posim_slam::PersistentMapLimits{},input_settings.value("map_epoch",std::string()));
     owner->posim_map_information_enabled=joint_map_information && !persistent_mapping;
     owner->posim_map_point_three_sigma_m=map_point_three_sigma_m;
     const bool dvl_enabled=input_settings.value("enable_joint_dvl",false);
@@ -590,13 +591,16 @@ int main(int argc,char** argv) {
         }
         file.flush();if(!file)fail("snapshot_write_failed");file.close();
         fs::rename(temporary,target_file);
+        if(refresh && full->mapping) {
+          posim_slam::MappingGraphRegistry::write(export_file.parent_path()/"worker-map.graph.pmap",full->mapping->graph,request,full->stamp);
+        }
         if(refresh && record_mapping_candidates && full->mapping) {
           const fs::path target=export_file.parent_path()/"worker-map.candidates.json";
           const fs::path pending=target.string()+".tmp";
           if(fs::is_symlink(target) || fs::is_symlink(pending))fail("mapping_candidate_path");
           Json rows=Json::array();
           for(const auto& point:full->mapping->candidates)
-            rows.push_back({{"id",point.id},{"xyz",vector3(point.position)},{"finite",point.finite},
+            rows.push_back({{"id",point.id},{"native_id",point.native_id},{"xyz",vector3(point.position)},{"finite",point.finite},
               {"eligible",point.eligible},{"observed",point.observed},{"mature",point.mature},
               {"maximum_sigma_m",point.maximum_sigma_m}});
           std::ofstream diagnostic(pending);
@@ -622,6 +626,12 @@ int main(int argc,char** argv) {
           {"optimized_through_ns",full->mapping->optimized_through_ns}});
         emit(response);
     };
+    auto write_snapshot_result=[&](uint64_t request,uint64_t required,const std::shared_ptr<const Snapshot>& full,bool refresh=true) {
+      try {write_snapshot(request,required,full,refresh);}
+      catch(const std::exception& error) {
+        emit({{"type","export"},{"request_id",request},{"success",false},{"reason","map_snapshot_write_failed"},{"detail",error.what()}});
+      }
+    };
     // A viewer reads the immutable published map. It neither wakes the mapper
     // nor occupies the refresh writer while an explicit export awaits input.
     std::thread view_writer([&] {
@@ -632,7 +642,7 @@ int main(int argc,char** argv) {
         if(owner->posim_mapping_handoff_failed.load())persistent_map->invalidate("mapping_handoff_backlog");
         if(!full || !full->mapping || full->points.empty() || !persistent_map->snapshot()->error.empty())
           emit({{"type","export"},{"request_id",request},{"success",false},{"reason","map_unavailable"}});
-        else write_snapshot(request,full->mapping->revision,full,false);
+        else write_snapshot_result(request,full->mapping->revision,full,false);
         view_busy.store(false);
       }} catch(const std::exception& error){fail(error.what());}
     });
@@ -657,7 +667,7 @@ int main(int argc,char** argv) {
           snapshot_changed.wait_for(lock,std::chrono::milliseconds(20));
         }
         if(error.empty() && (!full || full->points.empty()))error="map_unavailable";
-        if(error.empty())write_snapshot(request.id,request.revision,full);
+        if(error.empty())write_snapshot_result(request.id,request.revision,full);
         else emit({{"type","export"},{"request_id",request.id},{"success",false},{"reason",error}});
         export_busy.store(false);
       }} catch(const std::exception& error){fail(error.what());}
@@ -805,6 +815,9 @@ int main(int argc,char** argv) {
           {"persistent_map_transport",persistent_mapping?Json("retained_keyframe_reoptimization_v1"):Json(nullptr)},
           {"map_snapshot_update",persistent_mapping?Json("retained_revision_v1"):Json(nullptr)},
           {"map_snapshot_view",persistent_mapping?Json("published_snapshot_v1"):Json(nullptr)},
+          {"map_graph_snapshot",persistent_mapping?Json("original_measurements_cbor_v1"):Json(nullptr)},
+          {"map_point_identity",persistent_mapping?Json("original_observation_anchor_v1"):Json(nullptr)},
+          {"mapping_epoch",persistent_mapping?Json(persistent_map->epoch()):Json(nullptr)},
           {"map_snapshot_timeout_ms",persistent_mapping?Json(10000):Json(nullptr)},
           {"map_observation_culling",map_observation_culling},
           {"map_information_enabled",joint_map_information},{"map_point_three_sigma_m",map_point_three_sigma_m},

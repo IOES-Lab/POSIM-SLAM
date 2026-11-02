@@ -2,6 +2,7 @@
 #pragma once
 #include "mapping_information.hpp"
 #include "mapping_input_store.hpp"
+#include "mapping_graph.hpp"
 #include <condition_variable>
 #include <mutex>
 #include <thread>
@@ -11,6 +12,7 @@
 namespace posim_slam {
 struct PersistentMapCandidate {
   int64_t id;
+  int64_t native_id=-1;
   Eigen::Vector3d position;
   bool eligible=false, finite=false, observed=false, mature=false;
   double maximum_sigma_m=std::numeric_limits<double>::infinity();
@@ -26,6 +28,7 @@ struct PersistentMapSnapshot {
   std::vector<PersistentMapCandidate> candidates;
   std::vector<std::array<float,3>> points;
   std::vector<int> ids;
+  MappingGraphRegistry::Snapshot graph;
 };
 using PersistentMapLimits=MappingInputLimits;
 
@@ -41,7 +44,7 @@ class PersistentMapper {
   tbb::concurrent_bounded_queue<basalt::MargData::Ptr> input;
   PersistentMapper(const basalt::Calibration<double>& calibration,
                    const basalt::VioConfig& config,double three_sigma_m,
-                   PersistentMapLimits limits={});
+                   PersistentMapLimits limits={},std::string epoch={});
   ~PersistentMapper();
   PersistentMapper(const PersistentMapper&)=delete;
   PersistentMapper& operator=(const PersistentMapper&)=delete;
@@ -51,6 +54,7 @@ class PersistentMapper {
   // Pin accepted input, not a moving "latest" target. Wake the optimizer
   // without blocking ingestion or waiting for a complete batch.
   uint64_t requestUpdate();
+  const std::string& epoch() const {return graph_registry_.epoch();}
   void finish();
 
  private:
@@ -62,12 +66,13 @@ class PersistentMapper {
   };
   void ingest();
   void optimize();
-  std::shared_ptr<PersistentMapSnapshot> build(const Batch& batch) const;
+  std::shared_ptr<PersistentMapSnapshot> build(const Batch& batch);
   basalt::Calibration<double> calibration_;
   basalt::VioConfig config_;
   double three_sigma_m_;
   PersistentMapLimits limits_;
   MappingInputStore store_;
+  MappingGraphRegistry graph_registry_;
   mutable std::mutex mutex_;
   std::condition_variable changed_;
   Batch retained_;

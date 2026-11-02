@@ -172,3 +172,16 @@ persistent native mapper retains its existing keyframe/input bounds. See the
 아핀 제약을 유지합니다. 기존 QR/SVD 계산을 재사용하며 호출자가 일관된 접선
 좌표와 원래 기준 좌표 제약을 제공합니다. 메모리 수치 인터페이스이며 현재
 네이티브 지도 워커의 키프레임·입력 한도는 유지합니다.
+
+
+## Original observation graph / 원본 관측 그래프
+
+
+The mapper identifies observations by original image timestamp, camera and feature index. Rebuilding tracks replaces the complete association graph and rejects duplicate pixel ownership. Point IDs follow each track's earliest original observation rather than internal track numbering.
+
+A full PLY refresh also saves `worker-map.graph.pmap` in the native output directory. Its SHA-256-checked CBOR payload retains camera calibration, original pixel observations, recovered factors, current poses/landmarks, optimizer controls and segment identity. The optimizer can reload and relinearize the saved associations. The archive excludes raw images, feature descriptors and live VIO/IMU history; descriptor paging, automatic rollover and live navigation restart remain separate. Viewer-only requests do not write this archive. Snapshot write failures fail the request while sensor processing continues.
+
+
+관측은 원본 영상 시각·카메라·특징 번호로 구분합니다. 트랙을 재구성하면 전체 관측 연결을 교체하고 픽셀의 중복 배정을 거부합니다. 점 ID는 내부 트랙 번호 대신 각 트랙의 가장 이른 원본 관측을 기준으로 유지합니다.
+
+전체 PLY 갱신은 네이티브 출력 디렉터리에 `worker-map.graph.pmap`도 저장합니다. SHA-256으로 검사하는 CBOR 데이터는 카메라 보정·원본 픽셀·복원 제약·현재 자세와 지도점·최적화 설정·구간 식별자를 보존합니다. 저장한 관측 연결을 불러와 최적화 정보를 다시 계산할 수 있습니다. 원본 영상·특징 기술자·라이브 VIO/IMU 이력은 포함하지 않으며 기술자 페이징·자동 전환·라이브 항법 재시작은 별도 작업입니다. 화면 조회는 이 파일을 기록하지 않습니다. 파일 기록 오류는 해당 요청을 실패 처리하며 센서 처리는 계속합니다.

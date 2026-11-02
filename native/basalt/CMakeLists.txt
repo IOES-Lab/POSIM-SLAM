@@ -70,6 +70,7 @@ add_library(basalt_core STATIC
  ${B}/src/vi_estimator/marg_helper.cpp
  ${B}/src/vi_estimator/nfr_mapper.cpp
  ${CMAKE_CURRENT_SOURCE_DIR}/persistent_mapper.cc
+ ${CMAKE_CURRENT_SOURCE_DIR}/mapping_graph.cc
  ${B}/src/vi_estimator/sc_ba_base.cpp
  ${B}/src/vi_estimator/sqrt_ba_base.cpp
  ${JOINT_HEADERS}/sqrt_keypoint_vio.cpp
@@ -115,6 +116,9 @@ target_compile_options(basalt_input_digest_probe PRIVATE -UNDEBUG)
 add_executable(basalt_submap_information_probe submap_information_probe.cc)
 target_link_libraries(basalt_submap_information_probe PRIVATE Eigen3::Eigen)
 target_compile_options(basalt_submap_information_probe PRIVATE -UNDEBUG)
+add_executable(basalt_mapping_graph_probe mapping_graph_probe.cc)
+target_link_libraries(basalt_mapping_graph_probe PRIVATE basalt_core)
+target_compile_options(basalt_mapping_graph_probe PRIVATE -UNDEBUG)
 add_executable(basalt_archive_observation_probe archive_observation_probe.cc)
 target_link_libraries(basalt_archive_observation_probe PRIVATE basalt_core)
 target_compile_options(basalt_archive_observation_probe PRIVATE -UNDEBUG)

@@ -36,12 +36,18 @@ class MapQualityTests(unittest.TestCase):
         self.assertIs(native_settings()['persistent_mapping'],True)
         value=dict(map_information_transport='persistent_nfr_world_v1',
             persistent_map_transport='retained_keyframe_reoptimization_v1',
+            map_graph_snapshot='original_measurements_cbor_v1',map_point_identity='original_observation_anchor_v1',
+            mapping_epoch='fixture-segment',
             map_snapshot_view='published_snapshot_v1',map_snapshot_update='retained_revision_v1',map_snapshot_timeout_ms=10000,
             map_information_enabled=True,map_point_three_sigma_m=.1)
         validate_ready(value)
+        validate_ready(value,epoch='fixture-segment')
+        with self.assertRaisesRegex(ValueError,'information_contract'):
+            validate_ready(value,epoch='another-segment')
         for key,invalid in [('map_information_transport','joint_linearized_world_v1'),
                 ('map_snapshot_update',None),('map_snapshot_view',None),('map_snapshot_timeout_ms',True),('map_snapshot_timeout_ms',2000),
                 ('persistent_map_transport',None),('map_information_enabled',False),
+                ('map_graph_snapshot',None),('map_point_identity',None),('mapping_epoch',''),('mapping_epoch',None),
                 ('map_point_three_sigma_m',True),('map_point_three_sigma_m',0),
                 ('map_point_three_sigma_m',float('nan'))]:
             with self.subTest(key=key),self.assertRaisesRegex(ValueError,'information_contract'):

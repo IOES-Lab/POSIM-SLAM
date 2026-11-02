@@ -1669,3 +1669,18 @@ owner transaction. [Source/native and delayed-owner controls](../../docs/diagnos
 실제 Basalt의 6/15차원 상태 참조와 누적 좌표를 읽는 연결부는 읽기 전용입니다.
 라이브 적용에는 모든 원본 제약의 폐기·보관된 지원 관측·사전정보 설치를 묶는
 완전한 소유자 처리가 필요합니다.
+
+
+## Reloadable mapping graph / 재로딩 가능한 지도 그래프
+
+
+The mapper identifies observations by original image timestamp, camera and feature index. Rebuilding tracks replaces the complete association graph and rejects duplicate pixel ownership. Point IDs follow each track's earliest original observation rather than internal track numbering.
+
+A full PLY refresh also saves `worker-map.graph.pmap` in the native output directory. Its SHA-256-checked CBOR payload retains camera calibration, original pixel observations, recovered factors, current poses/landmarks, optimizer controls and segment identity. The optimizer can reload and relinearize the saved associations. The archive excludes raw images, feature descriptors and live VIO/IMU history; descriptor paging, automatic rollover and live navigation restart remain separate. Viewer-only requests do not write this archive. Snapshot write failures fail the request while sensor processing continues.
+
+
+관측은 원본 영상 시각·카메라·특징 번호로 구분합니다. 트랙을 재구성하면 전체 관측 연결을 교체하고 픽셀의 중복 배정을 거부합니다. 점 ID는 내부 트랙 번호 대신 각 트랙의 가장 이른 원본 관측을 기준으로 유지합니다.
+
+전체 PLY 갱신은 네이티브 출력 디렉터리에 `worker-map.graph.pmap`도 저장합니다. SHA-256으로 검사하는 CBOR 데이터는 카메라 보정·원본 픽셀·복원 제약·현재 자세와 지도점·최적화 설정·구간 식별자를 보존합니다. 저장한 관측 연결을 불러와 최적화 정보를 다시 계산할 수 있습니다. 원본 영상·특징 기술자·라이브 VIO/IMU 이력은 포함하지 않으며 기술자 페이징·자동 전환·라이브 항법 재시작은 별도 작업입니다. 화면 조회는 이 파일을 기록하지 않습니다. 파일 기록 오류는 해당 요청을 실패 처리하며 센서 처리는 계속합니다.
+
+`MappingGraphRegistry::capture` replaces one optimized graph atomically. `write` and `read` bind its checksum, request, input revision and tracking timestamp. `restore` rebuilds the NFR optimizer with saved associations; `adopt` restores the identity ledger only into an empty registry with matching epoch/calibration/configuration. `mappingGraphInformation` is shared by the live mapper and restored-graph uncertainty calculation. The existing native keyframe/input and 100,000-identity bounds apply.

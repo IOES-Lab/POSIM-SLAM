@@ -14,8 +14,12 @@ def native_settings():
                 map_point_three_sigma_m=WORLD_THREE_SIGMA_M)
 
 
-def validate_ready(value):
+def validate_ready(value, *, epoch=None):
     if (value.get('map_information_transport') != 'persistent_nfr_world_v1'
+            or value.get('map_graph_snapshot') != 'original_measurements_cbor_v1'
+            or value.get('map_point_identity') != 'original_observation_anchor_v1'
+            or not isinstance(value.get('mapping_epoch'), str) or not 0 < len(value['mapping_epoch']) <= 256
+            or (epoch is not None and value['mapping_epoch'] != epoch)
             or value.get('map_snapshot_update') != 'retained_revision_v1'
             or value.get('map_snapshot_view') != 'published_snapshot_v1'
             or type(value.get('map_snapshot_timeout_ms')) is not int
