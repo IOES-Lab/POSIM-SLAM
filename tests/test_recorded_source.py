@@ -2,6 +2,7 @@ import hashlib
 import importlib.util
 import json
 from pathlib import Path
+import re
 import tempfile
 import unittest
 import zipfile
@@ -21,6 +22,31 @@ def load(name, path):
 
 
 class RecordedSourceTests(unittest.TestCase):
+    def test_source_bound_ci_verifiers_use_the_recorded_package(self):
+        package = json.loads((SNAPSHOT/'package.json').read_text())['files']
+        workflow = (ROOT/'.github/workflows/tests.yml').read_text()
+        checked = []
+        for line in workflow.splitlines():
+            if line.lstrip().startswith('#'):
+                continue
+            for runner, verifier in re.findall(
+                    r'python\s+(?:(tools/verify_recorded_diagnostic\.py)\s+)?'
+                    r'(docs/diagnostics/[^\s]+/verify\.py)', line):
+                manifest = ROOT/verifier
+                manifest = manifest.parent/'component-source.json'
+                if not manifest.is_file():
+                    continue
+                expected = {name: digest for name, digest in json.loads(manifest.read_text()).items()
+                            if name.endswith('.py') and isinstance(digest, str)}
+                if not expected:
+                    continue
+                with self.subTest(verifier=verifier):
+                    self.assertEqual({name: package.get(name) for name in expected}, expected)
+                    self.assertEqual(runner, 'tools/verify_recorded_diagnostic.py',
+                                     'A source-bound historical record must use its recorded package')
+                checked.append(verifier)
+        self.assertTrue(checked)
+
     def test_default_observations_match_exact_original_modules(self):
         profile = json.loads((SNAPSHOT/'sources.json').read_text())['files']
         for name, digest in profile.items():

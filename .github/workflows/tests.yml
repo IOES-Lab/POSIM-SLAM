@@ -82,7 +82,7 @@ jobs:
       - name: Check projective association and all conditional outputs
         run: |
           python docs/diagnostics/sonar-return-support-20261031/test_projective_assoc.py
-          python docs/diagnostics/sonar-return-support-20261031/verify.py
+          python tools/verify_recorded_diagnostic.py docs/diagnostics/sonar-return-support-20261031/verify.py
       # Dated source guards retain their original modules. Current source runs
       # in the unit suite and complete renderer-sampling controls separately.
       - name: Replay recorded sources for close-view support and complete maps
@@ -96,7 +96,7 @@ jobs:
       - name: Verify frozen DVL calibration against all original plane ranges
         run: python docs/diagnostics/dvl-plane-calibration-20261031/verify.py
       - name: Verify actual translated views and every failed-map point
-        run: python docs/diagnostics/sonar-translated-view-20261031/verify.py
+        run: python tools/verify_recorded_diagnostic.py docs/diagnostics/sonar-translated-view-20261031/verify.py
       - name: Verify translated shadow observations and image-boundary controls
         run: python tools/verify_recorded_diagnostic.py docs/diagnostics/sonar-translated-shadow-20261031/verify.py
       - name: Verify source-local normals and correlated acoustic powers
