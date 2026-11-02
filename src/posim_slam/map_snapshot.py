@@ -8,8 +8,9 @@ import numpy as np
 
 MAX_POINTS=100000
 MAX_BYTES=MAX_POINTS*12+4096
+VIO_MAP_SCOPE='reoptimized_sparse_mapping_landmarks'
 SCOPES={'complete_active_local_vio_window','accumulated_local_vio_landmarks',
-        'accumulated_local_sonar_hypotheses','reoptimized_sparse_mapping_landmarks'}
+        'accumulated_local_sonar_hypotheses',VIO_MAP_SCOPE}
 
 
 def sonar_snapshot(points, *, request_id, stamp_ns):
@@ -55,7 +56,7 @@ def validate_snapshot(data,expected):
             raise ValueError('snapshot_identity')
     if any(metadata.get(key)!=str(value) for key,value in expected.items()):
         raise ValueError('snapshot_provenance')
-    if metadata['scope']=='reoptimized_sparse_mapping_landmarks':
+    if metadata['scope']==VIO_MAP_SCOPE:
         if (metadata.get('map_qualified')!='false' or any(
                 not metadata.get(k,'').isdigit() or not 0<int(metadata[k])<2**63
                 for k in ('optimization_revision','optimized_through_ns'))

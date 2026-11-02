@@ -22,6 +22,16 @@ reference camera profile uses 0.5 px noise and 1 px Huber threshold. Calibration
 is fixed; NFR is approximate and cross-layer statistical independence remains
 unverified. `map_qualified` stays false.
 
+The two-layer design follows [Usenko et al., section V-A](https://www.usenko.net/pdf/usenko2020nfr.pdf):
+mapping detects descriptor features separately from VIO patch tracking.
+Independent observation errors are a model assumption; different feature IDs
+or detectors alone do not measure cross-layer error covariance.
+
+두 단계 구조는 [Usenko 외, V-A절](https://www.usenko.net/pdf/usenko2020nfr.pdf)을
+따릅니다. 지도는 VIO 패치 추적과 별도로 기술자 특징을 검출합니다. 관측 오차의
+독립성은 모델 가정이며, 다른 특징 ID나 검출기만으로 단계 간 오차 공분산을
+측정한 것은 아닙니다.
+
 Input ingestion and optimization use separate threads. The input queue holds two
 snapshots. Optimization runs after eight new snapshots, after a five-second wait
 with pending input, or at end of input. Keyframe images are deduplicated by
@@ -45,6 +55,8 @@ sample. PLY scope `reoptimized_sparse_mapping_landmarks` requires
 including nonfinite coordinates encoded as JSON null. Neither that option nor
 viewer density changes estimator observations or export admission. Legacy
 `persistent_mapping: false` archive scopes remain readable.
+Application consumers use `map_snapshot.VIO_MAP_SCOPE` for this current visual
+scope; legacy file readers retain the file's declared scope.
 
 `native_settings()`는 지속 지도 생성, 복원한 결합 정보와 세계 좌표 위치의
 3시그마 한도 0.1m를 요청합니다. 워커 자체의 기본값은 지속 지도 비활성이며
