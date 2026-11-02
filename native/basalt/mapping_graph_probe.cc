@@ -61,26 +61,36 @@ int main(int argc,char** argv) {
   Registry registry(fixture.calibration,fixture.config,"fixture-segment");auto original=fixture.mapper();
   const auto first=registry.capture(fixture.input,*original,10,original->getFramePoses().at(10).getPose(),Sophus::SE3d());
   assert(first->stable_ids.at(42)==0 && first->stable_ids.at(99)==1);
-  auto restored=Registry::restore(first->data);compare(*original,*restored);
+  auto restored=Registry::restore(Registry::document(first));compare(*original,*restored);
   auto renumbered=fixture.mapper(7,3);const auto second=registry.capture(fixture.input,*renumbered,10,renumbered->getFramePoses().at(10).getPose(),Sophus::SE3d());
-  assert(second->stable_ids.at(7)==0 && second->stable_ids.at(3)==1 && first->data.at("graph_revision")==1);
+  assert(second->stable_ids.at(7)==0 && second->stable_ids.at(3)==1 && Registry::document(first).at("graph_revision")==1);
   auto duplicate=fixture.mapper();duplicate->feature_tracks[99].at(basalt::TimeCamId(20,0))=0;
   rejects([&]{registry.capture(fixture.input,*duplicate,10,Sophus::SE3d(),Sophus::SE3d());},"mapping_graph_observation_reused");
   auto changed=fixture.mapper();changed->feature_corners.at(basalt::TimeCamId(10,0)).corners[0].x()+=.01;
   rejects([&]{registry.capture(fixture.input,*changed,10,Sophus::SE3d(),Sophus::SE3d());},"mapping_source_pixel_changed");
-  const auto third=registry.capture(fixture.input,*renumbered,10,renumbered->getFramePoses().at(10).getPose(),Sophus::SE3d());assert(third->data.at("graph_revision")==3);
+  auto invalid_information=fixture.mapper();invalid_information->rel_pose_factors[0].cov_inv(0,0)=-1;
+  rejects([&]{registry.capture(fixture.input,*invalid_information,10,Sophus::SE3d(),Sophus::SE3d());},"mapping_graph_information");
+  auto invalid_pose=fixture.mapper();invalid_pose->getFramePoses().at(20)=basalt::PoseStateWithLin<double>(20,
+    Sophus::SE3d(Sophus::SO3d(),Eigen::Vector3d(std::numeric_limits<double>::quiet_NaN(),0,0)));
+  rejects([&]{registry.capture(fixture.input,*invalid_pose,10,Sophus::SE3d(),Sophus::SE3d());},"mapping_graph_nonfinite_input");
+  auto invalid_optimizer=fixture.mapper();invalid_optimizer->lambda=-1;
+  rejects([&]{registry.capture(fixture.input,*invalid_optimizer,10,Sophus::SE3d(),Sophus::SE3d());},"mapping_graph_optimizer");
+  const auto frozen=Registry::document(first);
+  original->getFramePoses().clear();original->feature_tracks.clear();original.reset();
+  assert(Registry::document(first)==frozen); // Snapshot owns its values, independent of the source mapper.
+  const auto third=registry.capture(fixture.input,*renumbered,10,renumbered->getFramePoses().at(10).getPose(),Sophus::SE3d());assert(Registry::document(third).at("graph_revision")==3);
   const auto path=directory/"fixture.graph.pmap";Registry::write(path,third,123,30);const auto loaded=Registry::read(path,"fixture-segment");
-  assert(loaded.request==123 && loaded.tracking_stamp==30 && loaded.graph->data==third->data);auto recovered=Registry::restore(loaded.graph->data);compare(*renumbered,*recovered);
+  assert(loaded.request==123 && loaded.tracking_stamp==30 && Registry::document(loaded.graph)==Registry::document(third));auto recovered=Registry::restore(Registry::document(loaded.graph));compare(*renumbered,*recovered);
   Registry reloaded(fixture.calibration,fixture.config,"fixture-segment");reloaded.adopt(loaded.graph);
-  const auto fourth=reloaded.capture(fixture.input,*renumbered,10,renumbered->getFramePoses().at(10).getPose(),Sophus::SE3d());assert(fourth->data.at("graph_revision")==4 && fourth->stable_ids==third->stable_ids);
+  const auto fourth=reloaded.capture(fixture.input,*renumbered,10,renumbered->getFramePoses().at(10).getPose(),Sophus::SE3d());assert(Registry::document(fourth).at("graph_revision")==4 && fourth->stable_ids==third->stable_ids);
   rejects([&]{reloaded.adopt(loaded.graph);},"mapping_graph_adoption_requires_empty_registry");
   rejects([&]{Registry::read(path,"wrong-segment");},"mapping_graph_epoch_mismatch");
-  auto malformed=third->data;malformed["pixels"][0][3]=Json::binary(std::vector<uint8_t>(1));
+  auto malformed=Registry::document(third);malformed["pixels"][0][3]=Json::binary(std::vector<uint8_t>(1));
   rejects([&]{Registry::restore(malformed);},"mapping_graph_binary_shape");
   std::ifstream input(path,std::ios::binary);std::vector<char> bytes((std::istreambuf_iterator<char>(input)),{});
-  const auto legacy=Json::to_cbor(Json{{"graph",third->data},{"request_id",uint64_t(123)},{"tracking_stamp_ns",int64_t(30)}});
+  const auto legacy=Json::to_cbor(Json{{"graph",Registry::document(third)},{"request_id",uint64_t(123)},{"tracking_stamp_ns",int64_t(30)}});
   assert(bytes.size()==legacy.size()+48 && std::memcmp(bytes.data()+48,legacy.data(),legacy.size())==0);
-  assert(third->data==loaded.graph->data); // Export leaves the immutable snapshot intact.
+  assert(Registry::document(third)==Registry::document(loaded.graph)); // Export leaves the immutable snapshot intact.
   bytes.back()^=1;
   const auto corrupt=directory/"corrupt.graph.pmap";std::ofstream output(corrupt,std::ios::binary);output.write(bytes.data(),bytes.size());output.close();
   rejects([&]{Registry::read(corrupt);},"mapping_graph_archive_digest");

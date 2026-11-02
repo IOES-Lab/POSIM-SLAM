@@ -84,11 +84,26 @@ inline basalt::VioConfig config(const Json& value) {
 } // namespace mapping_graph_detail
 
 struct MappingGraph {
-  using Json=nlohmann::json;
-  Json data;
   std::map<int64_t,int> stable_ids;
  private:
   friend class MappingGraphRegistry;
+  using Json=nlohmann::json;
+  using Ledger=std::map<MappingObservation,int>;
+  struct Captured {
+    struct Frame {int64_t stamp;int width,height;size_t corners;InputDigest::Value digest;};
+    struct Pixel {MappingObservation identity;Eigen::Vector2d value;};
+    struct Track {int64_t native;int stable;std::vector<size_t> pixels;};
+    struct Landmark {int64_t native,host;int camera;Eigen::Vector3d parameters;std::vector<size_t> pixels;};
+    std::string epoch;uint64_t input_revision=0,graph_revision=0;
+    basalt::Calibration<double> calibration;basalt::VioConfig config;
+    std::vector<Frame> frames;Eigen::aligned_vector<std::pair<int64_t,Sophus::SE3d>> poses;
+    Eigen::aligned_vector<basalt::RelPoseFactor> relative;Eigen::aligned_vector<basalt::RollPitchFactor> roll_pitch;
+    Eigen::aligned_vector<Pixel> pixels;std::vector<Track> tracks;Eigen::aligned_vector<Landmark> landmarks;
+    std::shared_ptr<const Ledger> identities;
+    int64_t reference_stamp=0;Sophus::SE3d reference_pose,gauge;std::array<double,4> optimizer;
+  };
+  std::shared_ptr<const Captured> captured;
+  Json imported;
   bool validated=false;
 };
 
@@ -105,85 +120,10 @@ class MappingGraphRegistry {
       throw std::invalid_argument("mapping_graph_configuration");
   }
   Snapshot capture(const MappingInputStore::Snapshot& input,basalt::NfrMapper& mapper,
-      int64_t reference_stamp,const Sophus::SE3d& reference_pose,const Sophus::SE3d& gauge) {
-    using namespace mapping_graph_detail;
-    if(!input || input->revision<last_input_ || !mapper.getFramePoses().count(reference_stamp) ||
-        mapper.getFramePoses().size()!=input->frames.size() || mapper.feature_tracks.size()>100000 ||
-        mapping_graph_detail::config(mapper.config)!=mapping_graph_detail::config(config_))
-      throw std::invalid_argument("mapping_graph_source");
-    auto anchors=anchors_;int next_id=next_id_;
-    Json frames=Json::array(),poses=Json::array(),relative=Json::array(),roll_pitch=Json::array(),pixels=Json::array(),tracks=Json::array(),landmarks=Json::array();
-    for(const auto& [stamp,frame]:input->frames) {
-      if(calibration_.resolution[0]!=Eigen::Vector2i(frame->width,frame->height))throw std::invalid_argument("mapping_graph_frame_shape");
-      frames.push_back({stamp,frame->width,frame->height,frame->features.corners.size(),Json::binary(std::vector<uint8_t>(frame->digest.begin(),frame->digest.end()))});
-      const auto value=mapper.getFramePoses().at(stamp).getPose();poses.push_back({stamp,doubles(value.data(),7)});
-    }
-    std::set<std::pair<int64_t,int64_t>> factor_ids;
-    for(const auto& factor:mapper.rel_pose_factors) {
-      if(!factor_ids.emplace(factor.t_i_ns,factor.t_j_ns).second)throw std::invalid_argument("mapping_graph_factor_reused");
-      relative.push_back({factor.t_i_ns,factor.t_j_ns,doubles(factor.T_i_j.data(),7),doubles(factor.cov_inv.data(),36)});
-    }
-    std::set<int64_t> roll_ids;
-    for(const auto& factor:mapper.roll_pitch_factors) {
-      if(!roll_ids.insert(factor.t_ns).second)throw std::invalid_argument("mapping_graph_factor_reused");
-      roll_pitch.push_back({factor.t_ns,doubles(factor.R_w_i_meas.data(),4),doubles(factor.cov_inv.data(),4)});
-    }
-    auto result=std::make_shared<MappingGraph>();std::map<MappingObservation,size_t> owners;
-    std::map<MappingObservation,std::pair<int64_t,const basalt::FeatureTrack*>> ordered;
-    for(const auto& [native,track]:mapper.feature_tracks) {
-      if(native<0 || native>INT32_MAX || track.size()<2)throw std::invalid_argument("mapping_graph_track");
-      const auto& first=*track.begin();MappingObservation anchor{first.first.frame_id,first.first.cam_id,first.second};
-      if(!ordered.emplace(anchor,std::make_pair(native,&track)).second)throw std::invalid_argument("mapping_graph_observation_reused");
-    }
-    for(const auto& [anchor,item]:ordered) {
-      const auto [native,track]=item;auto found=anchors.find(anchor);
-      if(found==anchors.end()) {
-        if(anchors.size()>=100000)throw std::runtime_error("mapping_graph_identity_capacity");
-        found=anchors.emplace(anchor,next_id++).first;
-      }
-      result->stable_ids.emplace(native,found->second);Json members=Json::array();
-      for(const auto& [image,feature]:*track) {
-        const auto frame=input->frames.find(image.frame_id);
-        if(image.cam_id!=0 || frame==input->frames.end() || feature<0 || size_t(feature)>=frame->second->features.corners.size())
-          throw std::invalid_argument("mapping_graph_observation_source");
-        const auto& pixel=frame->second->features.corners[feature];
-        if(!pixel.allFinite() || !same(pixel,mapper.feature_corners.at(image).corners.at(feature)))
-          throw std::invalid_argument("mapping_source_pixel_changed");
-        MappingObservation identity{image.frame_id,image.cam_id,feature};
-        if(owners.size()>=1000000 || !owners.emplace(identity,pixels.size()).second)
-          throw std::invalid_argument("mapping_graph_observation_reused");
-        members.push_back(pixels.size());auto row=key(identity);row.push_back(doubles(pixel.data(),2));pixels.push_back(std::move(row));
-      }
-      auto row=Json::array({native,found->second});row.push_back(std::move(members));tracks.push_back(std::move(row));
-    }
-    for(const auto& [native,landmark]:mapper.lmdb.getLandmarks()) {
-      if(!result->stable_ids.count(native))throw std::invalid_argument("mapping_graph_landmark_track");
-      Json observations=Json::array();const auto& track=mapper.feature_tracks.at(native);
-      for(const auto& [image,pixel]:landmark.obs) {
-        const auto feature=track.at(image);MappingObservation identity{image.frame_id,image.cam_id,feature};
-        if(!same(pixel,input->frames.at(image.frame_id)->features.corners.at(feature)))throw std::invalid_argument("mapping_source_pixel_changed");
-        observations.push_back(owners.at(identity));
-      }
-      const double parameters[3]={landmark.direction.x(),landmark.direction.y(),landmark.inv_dist};
-      auto row=Json::array({native,landmark.host_kf_id.frame_id,landmark.host_kf_id.cam_id,doubles(parameters,3)});
-      row.push_back(std::move(observations));landmarks.push_back(std::move(row));
-    }
-    const auto& camera=calibration_.intrinsics[0];const auto parameters=camera.getParam();Json ledger=Json::array();
-    for(const auto& [anchor,id]:anchors){auto row=key(anchor);row.push_back(id);ledger.push_back(std::move(row));}
-    result->data={{"schema","posim-slam-mapping-graph-1"},{"posim_slam_version","0.1.0"},{"epoch",epoch_},{"input_revision",input->revision},{"graph_revision",revision_+1},
-      {"basalt_revision","0f3b2b52c807f70ff4e2973ce253c73329eea7bc"},{"coordinates","native_vio_world"},{"map_qualified",false},
-      {"camera",{camera.getName(),doubles(parameters.data(),parameters.size()),doubles(calibration_.T_i_c[0].data(),7)}},
-      {"config",mapping_graph_detail::config(config_)},{"reference",{reference_stamp,doubles(reference_pose.data(),7)}},{"gauge",doubles(gauge.data(),7)},
-      {"optimizer",{mapper.lambda,mapper.min_lambda,mapper.max_lambda,mapper.lambda_vee}}};
-    // Transfer owned arrays; an initializer-list object copies its children.
-    result->data["frames"]=std::move(frames);result->data["poses"]=std::move(poses);
-    result->data["relative"]=std::move(relative);result->data["roll_pitch"]=std::move(roll_pitch);
-    result->data["pixels"]=std::move(pixels);result->data["tracks"]=std::move(tracks);
-    result->data["landmarks"]=std::move(landmarks);result->data["identities"]=std::move(ledger);
-    // Validate the complete replacement before advancing original identity state.
-    restore(result->data);result->validated=true;anchors_.swap(anchors);next_id_=next_id;last_input_=input->revision;++revision_;
-    return result;
-  }
+      int64_t reference_stamp,const Sophus::SE3d& reference_pose,const Sophus::SE3d& gauge);
+  // Captured snapshots own typed immutable values. JSON is materialized only
+  // for explicit serialization/inspection, never for normal map publication.
+  static nlohmann::json document(const Snapshot& graph);
   static std::unique_ptr<basalt::NfrMapper> restore(const nlohmann::json& data,basalt::Calibration<double>* calibration_out=nullptr);
   void adopt(const Snapshot& graph);
   static void write(const std::filesystem::path& path,const Snapshot& graph,uint64_t request,int64_t tracking_stamp);
@@ -192,6 +132,7 @@ class MappingGraphRegistry {
   const std::string& epoch() const {return epoch_;}
  private:
   basalt::Calibration<double> calibration_;basalt::VioConfig config_;std::string epoch_;
-  std::map<MappingObservation,int> anchors_;int next_id_=0;uint64_t revision_=0,last_input_=0;
+  std::shared_ptr<const MappingGraph::Ledger> anchors_=std::make_shared<const MappingGraph::Ledger>();
+  int next_id_=0;uint64_t revision_=0,last_input_=0;
 };
 } // namespace posim_slam
