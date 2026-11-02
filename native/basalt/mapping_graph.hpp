@@ -18,7 +18,7 @@ inline Json doubles(const double* values,size_t count) {
     uint64_t bits;std::memcpy(&bits,values+i,8);
     for(int j=0;j<8;++j)bytes[8*i+j]=uint8_t(bits>>(8*j));
   }
-  return Json::binary(bytes);
+  return Json::binary(std::move(bytes));
 }
 inline std::vector<double> doubles(const Json& value,size_t count,bool finite=true) {
   if(!value.is_binary() || value.get_binary().size()!=8*count)throw std::invalid_argument("mapping_graph_binary_shape");
@@ -154,7 +154,7 @@ class MappingGraphRegistry {
           throw std::invalid_argument("mapping_graph_observation_reused");
         members.push_back(pixels.size());auto row=key(identity);row.push_back(doubles(pixel.data(),2));pixels.push_back(std::move(row));
       }
-      tracks.push_back({native,found->second,members});
+      auto row=Json::array({native,found->second});row.push_back(std::move(members));tracks.push_back(std::move(row));
     }
     for(const auto& [native,landmark]:mapper.lmdb.getLandmarks()) {
       if(!result->stable_ids.count(native))throw std::invalid_argument("mapping_graph_landmark_track");
@@ -165,7 +165,8 @@ class MappingGraphRegistry {
         observations.push_back(owners.at(identity));
       }
       const double parameters[3]={landmark.direction.x(),landmark.direction.y(),landmark.inv_dist};
-      landmarks.push_back({native,landmark.host_kf_id.frame_id,landmark.host_kf_id.cam_id,doubles(parameters,3),observations});
+      auto row=Json::array({native,landmark.host_kf_id.frame_id,landmark.host_kf_id.cam_id,doubles(parameters,3)});
+      row.push_back(std::move(observations));landmarks.push_back(std::move(row));
     }
     const auto& camera=calibration_.intrinsics[0];const auto parameters=camera.getParam();Json ledger=Json::array();
     for(const auto& [anchor,id]:anchors){auto row=key(anchor);row.push_back(id);ledger.push_back(std::move(row));}
@@ -173,8 +174,12 @@ class MappingGraphRegistry {
       {"basalt_revision","0f3b2b52c807f70ff4e2973ce253c73329eea7bc"},{"coordinates","native_vio_world"},{"map_qualified",false},
       {"camera",{camera.getName(),doubles(parameters.data(),parameters.size()),doubles(calibration_.T_i_c[0].data(),7)}},
       {"config",mapping_graph_detail::config(config_)},{"reference",{reference_stamp,doubles(reference_pose.data(),7)}},{"gauge",doubles(gauge.data(),7)},
-      {"optimizer",{mapper.lambda,mapper.min_lambda,mapper.max_lambda,mapper.lambda_vee}},
-      {"frames",frames},{"poses",poses},{"relative",relative},{"roll_pitch",roll_pitch},{"pixels",pixels},{"tracks",tracks},{"landmarks",landmarks},{"identities",ledger}};
+      {"optimizer",{mapper.lambda,mapper.min_lambda,mapper.max_lambda,mapper.lambda_vee}}};
+    // Transfer owned arrays; an initializer-list object copies its children.
+    result->data["frames"]=std::move(frames);result->data["poses"]=std::move(poses);
+    result->data["relative"]=std::move(relative);result->data["roll_pitch"]=std::move(roll_pitch);
+    result->data["pixels"]=std::move(pixels);result->data["tracks"]=std::move(tracks);
+    result->data["landmarks"]=std::move(landmarks);result->data["identities"]=std::move(ledger);
     // Validate the complete replacement before advancing original identity state.
     restore(result->data);result->validated=true;anchors_.swap(anchors);next_id_=next_id;last_input_=input->revision;++revision_;
     return result;

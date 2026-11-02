@@ -152,7 +152,12 @@ void MappingGraphRegistry::write(const std::filesystem::path& path,const Snapsho
   if(!graph || !graph->validated || !request || tracking_stamp<=0)throw std::invalid_argument("mapping_graph_export");
   for(const auto& frame:graph->data.at("frames"))
     if(frame[0].get<int64_t>()>tracking_stamp)throw std::invalid_argument("mapping_graph_export_timing");
-  const auto bytes=Json::to_cbor(Json{{"graph",graph->data},{"request_id",request},{"tracking_stamp_ns",tracking_stamp}});
+  // Definite-length three-entry CBOR map, in the existing sorted-key order.
+  // Serialize the immutable graph directly instead of copying it into an envelope.
+  std::vector<uint8_t> bytes{0xa3};
+  Json::to_cbor("graph",bytes);Json::to_cbor(graph->data,bytes);
+  Json::to_cbor("request_id",bytes);Json::to_cbor(request,bytes);
+  Json::to_cbor("tracking_stamp_ns",bytes);Json::to_cbor(tracking_stamp,bytes);
   if(bytes.size()>archive_limit)throw std::runtime_error("mapping_graph_archive_capacity");
   InputDigest hash;hash.update(bytes.data(),bytes.size());const auto digest=hash.finish();const auto temporary=path.string()+".tmp";
   if(std::filesystem::is_symlink(path) || std::filesystem::is_symlink(temporary))throw std::invalid_argument("mapping_graph_archive_path");
@@ -177,7 +182,8 @@ MappingGraphRegistry::Restored MappingGraphRegistry::read(const std::filesystem:
   std::vector<uint8_t> bytes(count);input.read(reinterpret_cast<char*>(bytes.data()),bytes.size());
   InputDigest digest;digest.update(bytes.data(),bytes.size());
   if(!input || digest.finish()!=expected)throw std::invalid_argument("mapping_graph_archive_digest");
-  const auto document=Json::from_cbor(bytes);auto graph=std::make_shared<MappingGraph>();graph->data=document.at("graph");restore(graph->data);graph->validated=true;
+  auto document=Json::from_cbor(bytes);auto graph=std::make_shared<MappingGraph>();
+  graph->data=std::move(document.at("graph"));restore(graph->data);graph->validated=true;
   if(!expected_epoch.empty() && graph->data.at("epoch")!=expected_epoch)throw std::invalid_argument("mapping_graph_epoch_mismatch");
   for(const auto& row:graph->data.at("tracks"))graph->stable_ids.emplace(integer(row[0],0,INT32_MAX),integer(row[1],0,99999));
   const auto tracking_stamp=integer(document.at("tracking_stamp_ns"),1,INT64_MAX);

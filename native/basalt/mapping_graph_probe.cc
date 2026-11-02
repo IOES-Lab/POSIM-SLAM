@@ -77,7 +77,11 @@ int main(int argc,char** argv) {
   rejects([&]{Registry::read(path,"wrong-segment");},"mapping_graph_epoch_mismatch");
   auto malformed=third->data;malformed["pixels"][0][3]=Json::binary(std::vector<uint8_t>(1));
   rejects([&]{Registry::restore(malformed);},"mapping_graph_binary_shape");
-  std::ifstream input(path,std::ios::binary);std::vector<char> bytes((std::istreambuf_iterator<char>(input)),{});bytes.back()^=1;
+  std::ifstream input(path,std::ios::binary);std::vector<char> bytes((std::istreambuf_iterator<char>(input)),{});
+  const auto legacy=Json::to_cbor(Json{{"graph",third->data},{"request_id",uint64_t(123)},{"tracking_stamp_ns",int64_t(30)}});
+  assert(bytes.size()==legacy.size()+48 && std::memcmp(bytes.data()+48,legacy.data(),legacy.size())==0);
+  assert(third->data==loaded.graph->data); // Export leaves the immutable snapshot intact.
+  bytes.back()^=1;
   const auto corrupt=directory/"corrupt.graph.pmap";std::ofstream output(corrupt,std::ios::binary);output.write(bytes.data(),bytes.size());output.close();
   rejects([&]{Registry::read(corrupt);},"mapping_graph_archive_digest");
   Registry::write(path,fourth,124,30);assert(Registry::read(path).request==124);
