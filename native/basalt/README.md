@@ -18,6 +18,17 @@ world translation or yaw cannot be certified by a pseudoinverse. The caller owns
 the world reference and must establish independence from recovered VIO factors.
 This interface is separate from the live worker's segment archive.
 
+When a mapping output queue is attached, joint factor retirement supplies a
+detached keyframe snapshot after the marginal prior commits. The snapshot keeps
+pose information and eliminates velocity, bias and the unknown pressure datum
+with their cross-information. Its images have separate storage. The queue
+consumer owns persistent mapping and output scheduling.
+
+지도 출력 큐를 연결하면 결합 제약을 제거할 때 주변화 사전정보가 확정된 뒤
+키프레임 사본을 전달합니다. 자세 정보를 보존하고 속도·편향·미지 압력 기준
+수심은 교차정보와 함께 제거합니다. 영상 저장 공간은 별도이며, 큐 수신 측이
+지속 지도 최적화와 출력 시점을 담당합니다.
+
 `mapping_information.hpp`는 지도 최적화용으로 크기가 제한된 정보 계산을
 제공합니다. 잡음으로 정규화한 자세·지도점 야코비안을 받아 영상 관측과 제약의
 중복 사용을 거부하고, 공유 자세 오차를 세계 좌표 지도점 공분산에 반영합니다.

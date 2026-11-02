@@ -107,8 +107,10 @@ class PingFactorStore {
       basalt::MargLinData<double>& prior,ImuMap& measurements,
       const basalt::ImuLinData<double>& imu,const std::set<int64_t>& removed,
       const std::set<int64_t>& pose_only,const std::unordered_set<basalt::KeypointId>& lost,
-      SonarFactorStore* sonar=nullptr,DvlFactorStore* dvl=nullptr,PressureFactorStore* pressure=nullptr) {
+      SonarFactorStore* sonar=nullptr,DvlFactorStore* dvl=nullptr,PressureFactorStore* pressure=nullptr,
+      MappingHandoffRequest* mapping=nullptr) {
     if(surface_) {
+      if(mapping)throw std::invalid_argument("surface_mapping_handoff_not_supported");
       if(!pressure || !definitions_.empty() || ground_.size() || (sonar && sonar->size()) || !lost.empty())
         throw std::invalid_argument("exclusive_native_surface_retirement_required");
       return surface_->marginalize(owner_,order,prior,measurements,imu,removed,pose_only,dvl,*pressure);
@@ -118,7 +120,7 @@ class PingFactorStore {
       if(!imu.imu_meas.count(stamp) || imu.imu_meas.at(stamp)!=&measurement)
         throw std::invalid_argument("changed_ping_factor_imu_owner");
     auto groups=specs(order);
-    auto prepared=preparePingPrior(owner_,order,groups,prior,imu,removed,pose_only,lost,sonar,dvl,pressure,capture_pose_conditionals_);
+    auto prepared=preparePingPrior(owner_,order,groups,prior,imu,removed,pose_only,lost,sonar,dvl,pressure,capture_pose_conditionals_,mapping);
     auto pending=pose_conditionals_;auto next_id=next_pose_conditional_id_;
     if(prepared.pose_conditional) {
       if(pending.size()>=16)throw std::invalid_argument("pose_conditional_capture_backlog");
@@ -132,6 +134,7 @@ class PingFactorStore {
     auto with_velocity=[&] {if(dvl)dvl->retireWith(*prepared.dvl,with_acoustic);else with_acoustic();};
     if(pressure)pressure->retireWith(*prepared.pressure,prepared.pressure_prior,with_velocity);else with_velocity();
     pose_conditionals_.swap(pending);next_pose_conditional_id_=next_id;
+    if(mapping)mapping->committed.swap(prepared.mapping_handoff);
     for(int id:prepared.retirement.planes){definitions_.erase(id);ground_.erase(id);}
     return std::move(prepared.retirement);
   }

@@ -257,8 +257,17 @@ def prepare(source,destination):
       for (int64_t stamp : removed) states_to_marg_vel_bias.erase(stamp);
       ImuLinData<double> imu = {g, gyro_bias_sqrt_weight, accel_bias_sqrt_weight, {}};
       for (const auto& [stamp, measurement] : imu_meas) imu.imu_meas[stamp] = &measurement;
+      std::optional<posim_slam::MappingHandoffRequest> mapping;
+      if (out_marg_queue && !kfs_to_marg.empty()) {
+        mapping.emplace(); mapping->keyframes = kf_ids_all; mapping->retired = kfs_to_marg;
+        for (int64_t stamp : kf_ids_all) mapping->images.push_back(prev_opt_flow_res.at(stamp));
+      }
       posim_ping_factors->marginalize(aom, marg_data, imu_meas, imu, removed,
-                                    states_to_marg_vel_bias, lost_landmaks, posim_sonar_factors.get(), posim_dvl_factors.get(), posim_pressure_factors.get());
+                                    states_to_marg_vel_bias, lost_landmaks, posim_sonar_factors.get(), posim_dvl_factors.get(), posim_pressure_factors.get(), mapping ? &*mapping : nullptr);
+      if (mapping) {
+        if (!mapping->committed) throw std::logic_error("mapping_handoff_without_commit");
+        out_marg_queue->push(mapping->committed);
+      }
       for (int64_t stamp : removed) {
         kf_ids.erase(stamp); num_points_kf.erase(stamp); prev_opt_flow_res.erase(stamp);
       }

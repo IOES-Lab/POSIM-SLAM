@@ -6,6 +6,7 @@
 #include "dvl_factors.hpp"
 #include "pressure_factors.hpp"
 #include "retired_pose_conditional.hpp"
+#include "mapping_handoff.hpp"
 #include <memory>
 #include <basalt/imu/preintegration.h>
 
@@ -19,6 +20,7 @@ struct PreparedPingPrior {
   PingMarginalLayout layout;
   basalt::MargLinData<double> prior;
   std::optional<RetiredPoseConditional> pose_conditional;
+  basalt::MargData::Ptr mapping_handoff;
 };
 
 // Read-only preparation on the estimator thread. Specs must have been rebuilt
@@ -29,7 +31,8 @@ inline PreparedPingPrior preparePingPrior(basalt::BundleAdjustmentBase<double>& 
     const basalt::MargLinData<double>& previous,const basalt::ImuLinData<double>& imu,
     const std::set<int64_t>& removed,const std::set<int64_t>& pose_only,
     const std::unordered_set<basalt::KeypointId>& lost,SonarFactorStore* sonar=nullptr,DvlFactorStore* dvl=nullptr,
-    PressureFactorStore* pressure=nullptr,bool capture_pose_conditional=false) {
+    PressureFactorStore* pressure=nullptr,bool capture_pose_conditional=false,
+    const MappingHandoffRequest* mapping=nullptr) {
   PreparedPingPrior result;
   if(capture_pose_conditional && (!groups.empty() || !owner.lmdb.getLandmarks().empty() || (sonar && sonar->size())))
     throw std::invalid_argument("pose_conditional_capture_requires_no_acoustic_or_visual_factors");
@@ -118,6 +121,7 @@ inline PreparedPingPrior preparePingPrior(basalt::BundleAdjustmentBase<double>& 
     const auto reduced=marginalizePressureSystem(j,r,result.layout.source,result.layout.retained,delta,pressure->datum());
     result.prior=reduced.states;result.pressure_prior=reduced.datum;
   } else result.prior=marginalizeJointSystem(j,r,result.layout.source,result.layout.retained,delta);
+  if(mapping)result.mapping_handoff=prepareMappingHandoff(owner,result.layout.source,j,r,*mapping);
   if(capture_pose_conditional) {
     Eigen::MatrixXd actual=result.prior.H;Eigen::VectorXd offset=result.prior.b;
     if(pressure) {
