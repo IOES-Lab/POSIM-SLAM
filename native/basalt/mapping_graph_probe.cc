@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 #include "mapping_graph.hpp"
+#include "native_mapping_linearization.hpp"
 #include <cassert>
 #include <iostream>
 
@@ -54,10 +55,91 @@ void compare(basalt::NfrMapper& first,basalt::NfrMapper& second) {
     assert(std::memcmp(a.T_i_j.data(),b.T_i_j.data(),7*sizeof(double))==0 && std::memcmp(a.cov_inv.data(),b.cov_inv.data(),36*sizeof(double))==0);
   }
 }
+void nativeRowsControls(const Fixture& fixture) {
+  auto mapper=fixture.mapper();auto untouched=fixture.mapper();
+  const auto rows=posim_slam::nativeMappingRows(*mapper);
+  assert(rows.points.size()==2 && rows.originals==6 && rows.valid_projections==6 && rows.factors.size()==2);
+  const auto offsets=posim_slam::nativeMappingPoseOffsets(rows.poses);
+  double maximum=0;const double epsilon=1e-6;
+  auto project=[&](const basalt::Keypoint<double>& point,const basalt::TimeCamId& image,
+                   const Eigen::aligned_map<int64_t,basalt::PoseStateWithLin<double>>& poses) {
+    const auto host=poses.at(point.host_kf_id.frame_id).getPose()*mapper->calib.T_i_c.at(point.host_kf_id.cam_id);
+    const auto target=poses.at(image.frame_id).getPose()*mapper->calib.T_i_c.at(image.cam_id);
+    Eigen::Vector4d local=basalt::StereographicParam<double>::unproject(point.direction);local[3]=point.inv_dist;
+    Eigen::Vector2d pixel;const bool valid=mapper->calib.intrinsics.at(image.cam_id).project((target.inverse()*host)*local,pixel);
+    assert(valid);return Eigen::Vector2d(pixel-point.obs.at(image));
+  };
+  for(const auto& group:rows.points) {
+    const auto& point=mapper->lmdb.getLandmark(group.id);
+    assert(point.inv_dist>0 || (group.landmark.col(2).norm()>0 && group.pose.norm()>0));
+    const auto reduced=posim_slam::reduceNativeMappingPoint(group,offsets);
+    assert(reduced.likelihood.originals.size()==3 && reduced.backsub.rows()==3);
+    for(size_t i=0;i<group.originals.size();++i) {
+      const auto [stamp,camera,feature]=group.originals[i];const basalt::TimeCamId image(stamp,camera);
+      const auto base=project(point,image,mapper->getFramePoses());
+      const double weight=std::sqrt(base.norm()<mapper->huber_thresh?1:mapper->huber_thresh/base.norm())/mapper->obs_std_dev;
+      assert((weight*base-group.residual.segment<2>(2*i)).norm()<1e-10);
+      for(size_t p=0;p<group.poses.size();++p)for(int axis=0;axis<6;++axis) {
+        auto plus=mapper->getFramePoses(),minus=plus;Sophus::Vector6d increment=Sophus::Vector6d::Zero();increment[axis]=epsilon;
+        plus.at(group.poses[p]).applyInc(increment);minus.at(group.poses[p]).applyInc(-increment);
+        const Eigen::Vector2d numeric=weight*(project(point,image,plus)-project(point,image,minus))/(2*epsilon);
+        maximum=std::max(maximum,(numeric-group.pose.block<2,1>(2*i,6*p+axis)).norm());
+      }
+      for(int axis=0;axis<3;++axis) {
+        auto plus=point,minus=point;
+        if(axis<2){plus.direction[axis]+=epsilon;minus.direction[axis]-=epsilon;}
+        else{plus.inv_dist+=epsilon;minus.inv_dist-=epsilon;}
+        const Eigen::Vector2d numeric=weight*(project(plus,image,mapper->getFramePoses())-project(minus,image,mapper->getFramePoses()))/(2*epsilon);
+        maximum=std::max(maximum,(numeric-group.landmark.block<2,1>(2*i,axis)).norm());
+      }
+    }
+  }
+  assert(maximum<2e-7);compare(*mapper,*untouched);
+  Eigen::VectorXd trial(6*rows.poses.size());
+  for(Eigen::Index i=0;i<trial.size();++i)trial[i]=.03*std::sin(double(i+1));
+  const auto normalized=posim_slam::nativeMappingReferenceIncrement(*mapper,rows.poses,trial,10);
+  assert(normalized.head<3>().norm()==0 && std::abs(normalized[5])<1e-15);
+  assert((posim_slam::nativeMappingReferenceIncrement(*mapper,rows.poses,normalized,10)-normalized).norm()<1e-15);
+  const Eigen::VectorXd removed=trial-normalized;
+  for(const auto& group:rows.points) {
+    Eigen::VectorXd local(group.pose.cols());
+    for(size_t i=0;i<group.poses.size();++i)local.segment<6>(6*i)=removed.segment<6>(offsets.at(group.poses[i]));
+    assert((group.pose*local).norm()<1e-10);
+  }
+  for(const auto& group:rows.factors) {
+    Eigen::VectorXd local(group.jacobian.cols());
+    for(size_t i=0;i<group.poses.size();++i)local.segment<6>(6*i)=removed.segment<6>(offsets.at(group.poses[i]));
+    assert((group.jacobian*local).norm()<1e-10);
+  }
+  auto tilted=fixture.mapper();auto& reference=tilted->getFramePoses().at(10);
+  Sophus::Vector6d tilt=Sophus::Vector6d::Zero();tilt.tail<3>()=Eigen::Vector3d(.2,-.1,.3);reference.applyInc(tilt);
+  const auto aligned=posim_slam::nativeMappingReferenceIncrement(*tilted,rows.poses,trial,10);
+  auto plus=reference,minus=reference;plus.applyInc(epsilon*aligned.head<6>());minus.applyInc(-epsilon*aligned.head<6>());
+  auto yaw=[](const auto& state){const auto rotation=state.getPose().rotationMatrix();return std::atan2(rotation(1,0),rotation(0,0));};
+  assert(std::abs(yaw(plus)-yaw(minus))/(2*epsilon)<1e-8);
+  mapper->config.mapper_use_factors=false;assert(posim_slam::nativeMappingRows(*mapper).factors.empty());
+  auto invalid=fixture.mapper();invalid->lmdb.getLandmark(42).direction=Eigen::Vector2d(2,0);
+  const auto invalid_rows=posim_slam::nativeMappingRows(*invalid);
+  bool retained=false;
+  for(const auto& group:invalid_rows.points)if(group.id==42) {
+    retained=true;assert(group.originals.size()==3 && !group.pose.norm() && !group.landmark.norm() && !group.residual.norm());
+    for(bool valid:group.valid)assert(!valid);
+    const auto reduced=posim_slam::reduceNativeMappingPoint(group,offsets);assert(reduced.unbounded.cols()==3);
+  }
+  assert(retained && invalid_rows.originals==6 && invalid_rows.valid_projections==3);
+  auto frozen=fixture.mapper();frozen->getFramePoses().at(10).setLinTrue();
+  rejects([&]{posim_slam::nativeMappingRows(*frozen);},"native_mapping_current_tangent_required");
+  auto duplicate=fixture.mapper();duplicate->feature_tracks[99].at(basalt::TimeCamId(20,0))=0;
+  rejects([&]{posim_slam::nativeMappingRows(*duplicate);},"native_mapping_original_reused");
+  auto invalid_factor=fixture.mapper();invalid_factor->rel_pose_factors[0].cov_inv(0,0)=-1;
+  rejects([&]{posim_slam::nativeMappingRows(*invalid_factor);},"native_mapping_factor_information");
+  std::cout<<"Native mapping rows: finite/infinite original observations, analytic pose/landmark derivatives, invalid-row ownership and current-tangent checks pass; derivative error "<<maximum<<".\n";
+}
 } // namespace
 
 int main(int argc,char** argv) {
   if(argc!=2)return 2;const std::filesystem::path directory=argv[1];Fixture fixture;
+  nativeRowsControls(fixture);
   Registry registry(fixture.calibration,fixture.config,"fixture-segment");auto original=fixture.mapper();
   const auto first=registry.capture(fixture.input,*original,10,original->getFramePoses().at(10).getPose(),Sophus::SE3d());
   assert(first->stable_ids.at(42)==0 && first->stable_ids.at(99)==1);

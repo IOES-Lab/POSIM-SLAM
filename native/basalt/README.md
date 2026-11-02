@@ -125,6 +125,49 @@ existing map-uncertainty calculation.
 기존 지도 불확실성 계산에 쓰는 원본 관측 식별자와 잡음으로 정규화한 야코비안
 블록을 제공합니다.
 
+`native_mapping_linearization.hpp::nativeMappingRows` exposes the native
+optimizer's original likelihoods. It uses Basalt's host stereographic direction
+and inverse-distance coordinates, mounted camera calibration, pixel noise and
+Huber weights. Pose increments use world translation and left rotation. A zero
+inverse distance remains a projective observation; it does not become a finite
+exported map point. Invalid projections keep their original identities and zero
+row slots. The input mapper is unchanged. Frozen first-estimate pose references
+are rejected because this interface requires one current tangent.
+
+`reduceNativeMappingPoint` eliminates each landmark with the shared SVD routine
+and returns pose residuals, landmark back-substitution and unobserved directions.
+The owning mapper keeps stable timestamp/coordinate identities, transports
+sealed priors when changing tangent references and supplies its original world
+reference once. These optional numerical interfaces add no prior or damping;
+the default native mapper still uses its existing optimizer and keyframe bounds.
+
+For a relative/gravity NFR graph, `nativeMappingReferenceIncrement` expresses a
+mean pose update with zero position/yaw change at the existing reference pose.
+It removes only common translation and world-yaw gauge freedoms, including the
+yaw derivative of a tilted reference. This coordinate convention adds no
+covariance information. Graphs with absolute position or yaw measurements must
+retain those measurements instead of applying this gauge-only helper.
+
+`native_mapping_linearization.hpp::nativeMappingRows`는 네이티브 최적화기의
+원본 관측 우도를 제공합니다. Basalt의 기준 영상 내 평사투영 방향·역거리 좌표,
+카메라 장착 보정, 픽셀 잡음과 Huber 가중치를 사용합니다. 자세 증분은 세계 좌표
+이동과 왼쪽 회전입니다. 역거리가 0인 특징도 투영 관측으로 보존하지만 유한한
+지도점으로 내보내지는 않습니다. 투영 불가 관측은 원본 식별자와 0으로 채운 행을
+유지합니다. 입력 지도는 바꾸지 않습니다. 하나의 현재 접선 좌표를 사용하므로
+최초 추정 기준에 고정된 자세는 거부합니다.
+
+`reduceNativeMappingPoint`는 공유 SVD 계산으로 랜드마크를 소거하고 자세 잔차,
+랜드마크 역대입과 미관측 방향을 제공합니다. 지도 소유자가 시각·좌표 식별자를
+일관되게 유지하고, 접선 기준 변경 시 확정된 정보를 변환하며, 원래 세계 기준을
+한 번 반영해야 합니다. 이 선택형 수치 인터페이스는 사전정보나 감쇠를 추가하지
+않습니다. 기본 네이티브 지도는 기존 최적화기와 키프레임 한도를 사용합니다.
+
+상대 자세·중력 NFR 그래프의 `nativeMappingReferenceIncrement`는 기존 기준
+자세의 위치·방위 증분이 0인 좌표로 평균 자세 갱신을 표현합니다. 기울어진 기준
+자세의 방위 미분을 포함해 전체 공통 이동과 세계 수직축 회전 자유도만 제거합니다.
+공분산 정보는 추가하지 않습니다. 절대 위치나 방위 측정이 있는 그래프에는 이
+자유도 정렬 함수를 적용하지 않고 해당 측정 정보를 유지해야 합니다.
+
 The build-local adapter maps initial gyro/accelerometer information weights
 to their physical state coordinates. Fresh builds check the actual constructor
 before visual-inertial qualification. [Initial bias prior and recorded limits](../../docs/diagnostics/imu-initial-prior.md).
