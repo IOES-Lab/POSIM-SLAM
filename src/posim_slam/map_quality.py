@@ -4,6 +4,7 @@ World uncertainty conditions on the native gauge, declared observation noise
 and approximate recovered factors. It is not a calibrated accuracy claim.
 """
 import math
+from .map_snapshot import VIO_EXPORT_WORKER_SECONDS
 
 WORLD_THREE_SIGMA_M = .1
 
@@ -15,6 +16,9 @@ def native_settings():
 
 def validate_ready(value):
     if (value.get('map_information_transport') != 'persistent_nfr_world_v1'
+            or value.get('map_snapshot_update') != 'retained_revision_v1'
+            or type(value.get('map_snapshot_timeout_ms')) is not int
+            or value['map_snapshot_timeout_ms'] != VIO_EXPORT_WORKER_SECONDS*1000
             or value.get('persistent_map_transport') != 'retained_keyframe_reoptimization_v1'
             or value.get('map_information_enabled') is not True
             or type(value.get('map_point_three_sigma_m')) not in (int, float)

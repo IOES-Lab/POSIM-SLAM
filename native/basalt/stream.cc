@@ -562,6 +562,87 @@ int main(int argc,char** argv) {
         vio->vision_data_queue.push(result);
       }
     });
+    std::condition_variable snapshot_changed;
+    struct ExportRequest {uint64_t id,revision;};
+    tbb::concurrent_bounded_queue<ExportRequest> exports;exports.set_capacity(1);
+    std::atomic<bool> export_busy{false};
+    auto write_snapshot=[&](uint64_t request,uint64_t required,const std::shared_ptr<const Snapshot>& full) {
+        const fs::path temporary=export_file.string()+".tmp";
+        if(fs::is_symlink(export_file) || fs::is_symlink(temporary))fail("snapshot_path");
+        std::ofstream file(temporary,std::ios::binary|std::ios::trunc);
+        if(!file)fail("snapshot_unwritable");
+        file<<"ply\nformat binary_little_endian 1.0\n"
+            <<"comment scope "<<(persistent_mapping?"reoptimized_sparse_mapping_landmarks":"accumulated_local_vio_landmarks")<<'\n';
+        if(full->mapping)file<<"comment map_qualified false\ncomment optimization_revision "<<full->mapping->revision
+            <<"\ncomment requested_mapping_revision "<<required
+            <<"\ncomment optimized_through_ns "<<full->mapping->optimized_through_ns<<'\n';
+        file<<"comment request_id "<<request<<"\ncomment stamp_ns "<<full->stamp<<'\n'
+            <<"element vertex "<<full->points.size()<<"\nproperty float x\nproperty float y\nproperty float z\nend_header\n";
+        // The wire/file format is little endian even on other host byte orders.
+        for(const auto& point:full->points)for(float coordinate:point) {
+          uint32_t bits;std::memcpy(&bits,&coordinate,4);
+          char bytes[4];for(int i=0;i<4;++i)bytes[i]=char((bits>>(8*i))&255);
+          file.write(bytes,4);
+        }
+        file.flush();if(!file)fail("snapshot_write_failed");file.close();
+        fs::rename(temporary,export_file);
+        if(record_mapping_candidates && full->mapping) {
+          const fs::path target=export_file.parent_path()/"worker-map.candidates.json";
+          const fs::path pending=target.string()+".tmp";
+          if(fs::is_symlink(target) || fs::is_symlink(pending))fail("mapping_candidate_path");
+          Json rows=Json::array();
+          for(const auto& point:full->mapping->candidates)
+            rows.push_back({{"id",point.id},{"xyz",vector3(point.position)},{"finite",point.finite},
+              {"eligible",point.eligible},{"observed",point.observed},{"mature",point.mature},
+              {"maximum_sigma_m",point.maximum_sigma_m}});
+          std::ofstream diagnostic(pending);
+          diagnostic<<Json({{"schema","posim-persistent-mapping-candidates-1"},{"request_id",request},
+            {"tracking_stamp_ns",full->stamp},{"optimized_through_ns",full->mapping->optimized_through_ns},
+            {"revision",full->mapping->revision},{"candidates",rows}}).dump()<<'\n';
+          diagnostic.flush();if(!diagnostic)fail("mapping_candidate_write_failed");diagnostic.close();fs::rename(pending,target);
+        }
+        if(record_visual_tracks) {
+          if(full->ids.size()!=full->points.size())fail("archive_trace_identity");
+          auto path=fs::path(argv[1]);path.replace_extension(".archive-export-"+std::to_string(request)+".json");
+          if(fs::exists(path) || fs::is_symlink(path))fail("archive_trace_path");
+          std::ofstream diagnostic(path);
+          diagnostic<<Json({{"schema","posim-visual-archive-trace-1"},{"stamp_ns",full->stamp},
+            {"request_id",request},{"ids",full->ids},{"points",full->points}}).dump()<<'\n';
+          diagnostic.flush();if(!diagnostic)fail("archive_trace_write_failed");
+        }
+        Json response={{"type","export"},{"request_id",request},{"success",true},
+              {"stamp_ns",full->stamp},{"points",full->points.size()}};
+        if(full->mapping)response.update({{"requested_mapping_revision",required},
+          {"optimization_revision",full->mapping->revision},
+          {"optimized_through_ns",full->mapping->optimized_through_ns}});
+        emit(response);
+    };
+    std::thread export_writer([&] {
+      try {for(;;) {
+        ExportRequest request;exports.pop(request);
+        const auto deadline=std::chrono::steady_clock::now()+std::chrono::seconds(10);
+        std::shared_ptr<const Snapshot> full;std::string error;
+        for(;;) {
+          {std::lock_guard<std::mutex> lock(snapshot_mutex);full=snapshot;}
+          if(!persistent_map)break;
+          if(owner->posim_mapping_handoff_failed.load())persistent_map->invalidate("mapping_handoff_backlog");
+          const auto mapping=persistent_map->snapshot();
+          if(!mapping->error.empty()){error="map_unavailable";break;}
+          if(full && mapping->revision>=request.revision && mapping->optimized_through_ns<=full->stamp) {
+            auto updated=std::make_shared<Snapshot>(*full);
+            updated->mapping=mapping;updated->points=mapping->points;updated->ids=mapping->ids;
+            full=std::move(updated);break;
+          }
+          if(std::chrono::steady_clock::now()>=deadline){error="map_update_timeout";break;}
+          std::unique_lock<std::mutex> lock(snapshot_mutex);
+          snapshot_changed.wait_for(lock,std::chrono::milliseconds(20));
+        }
+        if(error.empty() && (!full || full->points.empty()))error="map_unavailable";
+        if(error.empty())write_snapshot(request.id,request.revision,full);
+        else emit({{"type","export"},{"request_id",request.id},{"success",false},{"reason",error}});
+        export_busy.store(false);
+      }} catch(const std::exception& error){fail(error.what());}
+    });
     std::thread state_reader([&] {
       bool mapping_reference_sent=false;
       for(;;) {
@@ -640,6 +721,7 @@ int main(int argc,char** argv) {
           if(!visual_trace)fail("visual_trace_write_failed");
         }
         {std::lock_guard<std::mutex> lock(snapshot_mutex);snapshot=full;}
+        snapshot_changed.notify_all();
         Json points=Json::array();
         const size_t count=full->points.size();
         for(const auto& point:LandmarkArchive::display_sample(full->points))points.push_back(point);
@@ -700,6 +782,8 @@ int main(int argc,char** argv) {
     emit({{"type","ready"},{"startup_tracks_transport",!sonar_clock && require_gravity_seed ? Json("preinitialize_camera_tracks_v1") : Json(nullptr)},{"inertial_seed_transport","first_imu_state_v1"},{"state_clock",state_clock},{"gravity_seed_transport",sonar_clock ? "first_sensor_direction_v1" : "first_image_direction_v1"},{"gravity_seed_required",require_gravity_seed},{"protocol",1},{"inertial_fused",true},{"map_export",sonar_clock ? Json(nullptr) : Json("segment_landmark_archive_ply_1")},
           {"map_information_transport",persistent_mapping?"persistent_nfr_world_v1":"joint_linearized_world_v1"},
           {"persistent_map_transport",persistent_mapping?Json("retained_keyframe_reoptimization_v1"):Json(nullptr)},
+          {"map_snapshot_update",persistent_mapping?Json("retained_revision_v1"):Json(nullptr)},
+          {"map_snapshot_timeout_ms",persistent_mapping?Json(10000):Json(nullptr)},
           {"map_observation_culling",map_observation_culling},
           {"map_information_enabled",joint_map_information},{"map_point_three_sigma_m",map_point_three_sigma_m},
           {"sonar_clock_transport",sonar_clock ? Json("ordered_sonar_state_v1") : Json(nullptr)},
@@ -855,57 +939,15 @@ int main(int argc,char** argv) {
         if(size!=8)fail("snapshot_request_size");
         const uint64_t request=u64(bytes.data());
         if(!request)fail("snapshot_request_id");
-        std::shared_ptr<const Snapshot> full;
-        {std::lock_guard<std::mutex> lock(snapshot_mutex);full=snapshot;}
-        if(persistent_map && owner->posim_mapping_handoff_failed.load())persistent_map->invalidate("mapping_handoff_backlog");
-        if(!full || full->points.empty() || (persistent_map && !persistent_map->snapshot()->error.empty())) {
-          emit({{"type","export"},{"request_id",request},{"success",false},{"reason","map_unavailable"}});
+        if(export_busy.exchange(true)) {
+          emit({{"type","export"},{"request_id",request},{"success",false},{"reason","map_export_busy"}});
           continue;
         }
-        const fs::path temporary=export_file.string()+".tmp";
-        if(fs::is_symlink(export_file) || fs::is_symlink(temporary))fail("snapshot_path");
-        std::ofstream file(temporary,std::ios::binary|std::ios::trunc);
-        if(!file)fail("snapshot_unwritable");
-        file<<"ply\nformat binary_little_endian 1.0\n"
-            <<"comment scope "<<(persistent_mapping?"reoptimized_sparse_mapping_landmarks":"accumulated_local_vio_landmarks")<<'\n';
-        if(full->mapping)file<<"comment map_qualified false\ncomment optimization_revision "<<full->mapping->revision
-            <<"\ncomment optimized_through_ns "<<full->mapping->optimized_through_ns<<'\n';
-        file<<"comment request_id "<<request<<"\ncomment stamp_ns "<<full->stamp<<'\n'
-            <<"element vertex "<<full->points.size()<<"\nproperty float x\nproperty float y\nproperty float z\nend_header\n";
-        // The wire/file format is little endian even on other host byte orders.
-        for(const auto& point:full->points)for(float coordinate:point) {
-          uint32_t bits;std::memcpy(&bits,&coordinate,4);
-          char bytes[4];for(int i=0;i<4;++i)bytes[i]=char((bits>>(8*i))&255);
-          file.write(bytes,4);
-        }
-        file.flush();if(!file)fail("snapshot_write_failed");file.close();
-        fs::rename(temporary,export_file);
-        if(record_mapping_candidates && full->mapping) {
-          const fs::path target=export_file.parent_path()/"worker-map.candidates.json";
-          const fs::path pending=target.string()+".tmp";
-          if(fs::is_symlink(target) || fs::is_symlink(pending))fail("mapping_candidate_path");
-          Json rows=Json::array();
-          for(const auto& point:full->mapping->candidates)
-            rows.push_back({{"id",point.id},{"xyz",vector3(point.position)},{"finite",point.finite},
-              {"eligible",point.eligible},{"observed",point.observed},{"mature",point.mature},
-              {"maximum_sigma_m",point.maximum_sigma_m}});
-          std::ofstream diagnostic(pending);
-          diagnostic<<Json({{"schema","posim-persistent-mapping-candidates-1"},{"request_id",request},
-            {"tracking_stamp_ns",full->stamp},{"optimized_through_ns",full->mapping->optimized_through_ns},
-            {"revision",full->mapping->revision},{"candidates",rows}}).dump()<<'\n';
-          diagnostic.flush();if(!diagnostic)fail("mapping_candidate_write_failed");diagnostic.close();fs::rename(pending,target);
-        }
-        if(record_visual_tracks) {
-          if(full->ids.size()!=full->points.size())fail("archive_trace_identity");
-          auto path=fs::path(argv[1]);path.replace_extension(".archive-export-"+std::to_string(request)+".json");
-          if(fs::exists(path) || fs::is_symlink(path))fail("archive_trace_path");
-          std::ofstream diagnostic(path);
-          diagnostic<<Json({{"schema","posim-visual-archive-trace-1"},{"stamp_ns",full->stamp},
-            {"request_id",request},{"ids",full->ids},{"points",full->points}}).dump()<<'\n';
-          diagnostic.flush();if(!diagnostic)fail("archive_trace_write_failed");
-        }
-        emit({{"type","export"},{"request_id",request},{"success",true},
-              {"stamp_ns",full->stamp},{"points",full->points.size()}});
+        const uint64_t required=persistent_map?persistent_map->requestUpdate():0;
+        if(persistent_map && !required) {
+          export_busy.store(false);
+          emit({{"type","export"},{"request_id",request},{"success",false},{"reason","map_unavailable"}});
+        } else if(!exports.try_push({request,required}))fail("snapshot_export_queue");
       } else if(type==1) {
         if(size!=56)fail("imu_packet_size");
         auto d=std::make_shared<basalt::ImuData<double>>();

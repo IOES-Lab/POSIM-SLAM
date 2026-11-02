@@ -127,6 +127,12 @@ void PersistentMapper::setReference(int64_t stamp,const Sophus::SE3d& pose) {
   if(retained_.reference_stamp)throw std::invalid_argument("mapping_reference_already_set");
   retained_.reference_stamp=stamp;retained_.reference_pose=pose;changed_.notify_one();
 }
+uint64_t PersistentMapper::requestUpdate() {
+  std::lock_guard<std::mutex> lock(mutex_);
+  if(finished_ || !error_.empty())return 0;
+  requested_revision_=std::max(requested_revision_,retained_.revision);
+  changed_.notify_all();return requested_revision_;
+}
 void PersistentMapper::invalidate(const std::string& error) {
   std::lock_guard<std::mutex> lock(mutex_);
   if(!error_.empty())return;
@@ -217,7 +223,8 @@ void PersistentMapper::optimize() {
     {
       std::unique_lock<std::mutex> lock(mutex_);
       changed_.wait_for(lock,std::chrono::seconds(5),[&]{return input_finished_ || !error_.empty() ||
-        (retained_.reference_stamp && retained_.revision>=completed+limits_.update_retirements);});
+        (retained_.reference_stamp && (requested_revision_>completed ||
+         retained_.revision>=completed+limits_.update_retirements));});
       if(!error_.empty())return;
       if(retained_.revision==completed){if(input_finished_)return;continue;}
       if(!retained_.reference_stamp) {

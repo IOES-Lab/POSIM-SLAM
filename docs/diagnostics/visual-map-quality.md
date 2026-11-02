@@ -47,8 +47,32 @@ publication timestamp remains synchronized with the current pose;
 `optimized_through_ns` records the latest keyframe input used by the background
 map. A map cannot claim inputs newer than its paired tracking publication.
 
-`LiveClient.snapshot()` exports all eligible points independently of the display
-sample. PLY scope `reoptimized_sparse_mapping_landmarks` requires
+`LiveClient.snapshot()` pins the mapper's currently accepted retirement revision,
+wakes pending optimization and exports an immutable result covering that target.
+A separate bounded writer keeps camera/IMU input and state processing active.
+The native computation deadline is 10 seconds, the ROS owner deadline is 11
+seconds and the browser adapter service deadline is 12 seconds. Larger visual
+views allow 15 seconds at the HTTP client. These job bounds are distinct from
+existing state, sensor, segment and completed-snapshot freshness checks. Only one
+native export is active; another request reports busy. Session changes cancel
+owner admission and cannot relabel an old map.
+
+PLY and the export response carry `requested_mapping_revision`,
+`optimization_revision` and `optimized_through_ns`. The result revision must
+cover the fixed request target; its input timestamp cannot exceed tracking time.
+The adapter reports server `processing_seconds`; the client deducts transport
+latency from the completed snapshot's lifetime instead of counting computation
+as stale transport. The three-second freshness budget remains bounded.
+
+전체 지도 요청은 수신 완료된 입력 회차를 고정하고 최적화를 깨웁니다. 별도 출력
+스레드가 그 기준을 반영한 결과를 기다리는 동안 센서 수신과 항법은 계속합니다.
+계산 대기는 네이티브 10초·ROS 소유자 11초·브라우저 서비스 12초이며 확장 뷰의
+HTTP 요청은 15초입니다. 상태·센서·구간·완료된 결과의 신선도 검사는 별도입니다.
+한 번에 하나의 내보내기를 처리하며 구간이 바뀐 이전 결과는 수용하지 않습니다.
+요청 회차·완료 회차·지도 입력 시각을 검증합니다. 서버 계산 시간을 구분해 응답
+전송 지연만 결과의 유효 시간에서 차감하며 3초 신선도 한도를 유지합니다.
+
+The export contains all eligible points independently of the display sample. PLY scope `reoptimized_sparse_mapping_landmarks` requires
 `map_qualified false`, a positive `optimization_revision` and a positive
 `optimized_through_ns` no later than `stamp_ns`. A diagnostic
 `record_mapping_candidates: true` additionally writes every candidate row,

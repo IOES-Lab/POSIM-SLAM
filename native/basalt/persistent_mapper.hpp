@@ -51,6 +51,9 @@ class PersistentMapper {
   void setReference(int64_t stamp,const Sophus::SE3d& pose);
   void invalidate(const std::string& error);
   Snapshot snapshot() const;
+  // Pin accepted input, not a moving "latest" target. Wake the optimizer
+  // without blocking ingestion or waiting for a complete batch.
+  uint64_t requestUpdate();
   void finish();
 
  private:
@@ -76,6 +79,7 @@ class PersistentMapper {
   bool input_finished_=false,finished_=false;
   std::string error_;
   Snapshot latest_;
+  uint64_t requested_revision_=0;
   std::thread ingest_thread_,mapper_thread_;
 };
 } // namespace posim_slam

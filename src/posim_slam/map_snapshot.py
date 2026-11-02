@@ -9,8 +9,21 @@ import numpy as np
 MAX_POINTS=100000
 MAX_BYTES=MAX_POINTS*12+4096
 VIO_MAP_SCOPE='reoptimized_sparse_mapping_landmarks'
+VIO_EXPORT_WORKER_SECONDS=10
+VIO_EXPORT_OWNER_SECONDS=11
+VIO_EXPORT_SERVICE_SECONDS=12
 SCOPES={'complete_active_local_vio_window','accumulated_local_vio_landmarks',
         'accumulated_local_sonar_hypotheses',VIO_MAP_SCOPE}
+
+
+def update_provenance(value):
+    """Validate the pinned request target separately from the tracking clock."""
+    names=('requested_mapping_revision','optimization_revision','optimized_through_ns')
+    if (any(type(value.get(k)) is not int or not 0<value[k]<2**63 for k in (*names,'stamp_ns'))
+            or value['optimization_revision']<value['requested_mapping_revision']
+            or value['optimized_through_ns']>value['stamp_ns']):
+        raise ValueError('snapshot_update_provenance')
+    return {k:value[k] for k in names}
 
 
 def sonar_snapshot(points, *, request_id, stamp_ns):
@@ -62,6 +75,10 @@ def validate_snapshot(data,expected):
                 for k in ('optimization_revision','optimized_through_ns'))
                 or int(metadata['optimized_through_ns'])>int(metadata['stamp_ns'])):
             raise ValueError('snapshot_mapping_provenance')
+        if 'requested_mapping_revision' in metadata and (
+                not metadata['requested_mapping_revision'].isdigit()
+                or not 0<int(metadata['requested_mapping_revision'])<=int(metadata['optimization_revision'])):
+            raise ValueError('snapshot_update_provenance')
     if not np.isfinite(np.frombuffer(data[end+11:],dtype='<f4')).all():
         raise ValueError('snapshot_coordinates')
     return dict(scope=metadata['scope'],points=count,stamp_ns=int(metadata['stamp_ns']),request_id=int(metadata['request_id']))

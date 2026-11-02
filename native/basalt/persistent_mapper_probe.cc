@@ -21,6 +21,21 @@ int main() {
  basalt::Calibration<double> calibration;calibration.intrinsics.resize(1);calibration.T_i_c.resize(1);
  calibration.resolution.push_back(Eigen::Vector2i(4,4));
  basalt::VioConfig config;
+ {
+  posim_slam::PersistentMapLimits limits;limits.update_retirements=limits.retirements;
+  posim_slam::PersistentMapper map(calibration,config,.1,limits);map.setReference(10,Sophus::SE3d());
+  map.input.push(sample());
+  const auto deadline=std::chrono::steady_clock::now()+std::chrono::seconds(2);
+  uint64_t requested=0;
+  while(!requested && std::chrono::steady_clock::now()<deadline) {
+   requested=map.requestUpdate();std::this_thread::sleep_for(std::chrono::milliseconds(1));
+  }
+  assert(requested==1);
+  while(map.snapshot()->revision<requested && map.snapshot()->error.empty() &&
+      std::chrono::steady_clock::now()<deadline)std::this_thread::sleep_for(std::chrono::milliseconds(1));
+  assert(map.snapshot()->revision>=requested && map.snapshot()->error.empty());
+  map.finish();assert(map.requestUpdate()==0);
+ }
  auto run=[&](std::vector<basalt::MargData::Ptr> values,const std::string& expected,size_t frames=2) {
   posim_slam::PersistentMapLimits limits;limits.keyframes=frames;limits.update_retirements=limits.retirements;
   posim_slam::PersistentMapper map(calibration,config,.1,limits);map.setReference(10,Sophus::SE3d());
@@ -42,5 +57,5 @@ int main() {
   for(int i=0;i<30;++i)map.input.push(first);
   map.finish();assert(map.snapshot()->error=="mapping_handoff_backlog" && map.snapshot()->points.empty());
  }
- std::cout<<"Persistent mapping: duplicate ownership, image identity, budgets, invalid layout and failure draining pass.\n";
+ std::cout<<"Persistent mapping: partial-batch update, duplicate ownership, image identity, budgets, invalid layout and failure draining pass.\n";
 }
