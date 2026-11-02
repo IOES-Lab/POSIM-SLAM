@@ -49,6 +49,44 @@ overflow invalidates mapping without blocking the navigation estimator.
 대한 관측 독립성은 호출자가 확인해야 합니다. 선택형 지속 지도 워커가 이
 인터페이스를 잠정 점 채택에 사용합니다.
 
+`submap_information.hpp::SubmapInformation` represents one fixed tangent-space
+linearization as a bounded frontier and immutable Gaussian conditionals. It
+reuses the shared QR/SVD elimination and exact affine-support calculation.
+`append` consumes original measurement keys once; `seal` retains the marginal
+rows and removed-variable conditionals. `query` propagates mean, shared noise,
+null directions and cross-output covariance jointly. `appendLate` reconditions
+affected nodes and passes the new marginal message toward the frontier, where
+the original prior enters once. No world reference or damping is added.
+
+Defaults are 256 active scalar coordinates, 4,096 conditional nodes, 65,536 total
+coordinates and original keys, and 96 MiB of numeric payload. The frontier can
+be configured up to the shared 1,218-column bound. Queries return at most 24
+joint scalar outputs. Numeric payload excludes allocation and identity storage;
+coordinate/key/node quotas also apply. Failed updates leave prior snapshots
+intact. Nonfinite query moments fail explicitly. The caller supplies whitened
+rows, exact constraints and consistent original tangent coordinates. Start a
+new instance for a new segment. The store is in-memory; durable paging,
+nonlinear relinearization and automatic native-map rollover are separate work.
+[Gaussian conditional elimination](https://borglab.github.io/gtsam/inference/)
+is the established method; GTSAM code is not a dependency of this utility.
+
+`SubmapInformation`은 하나의 고정 접선 좌표 선형화를 제한된 경계 상태와 불변
+가우스 조건부 정보로 표현합니다. 공통 QR/SVD 소거와 정확한 아핀 지지 계산을
+재사용합니다. `append`는 원본 측정 키를 한 번만 받으며 `seal`은 주변 정보와
+제거한 좌표의 조건부 정보를 보존합니다. `query`는 평균·공유 잡음·관측 불가
+방향·출력 간 교차 공분산을 함께 전파합니다. `appendLate`는 영향을 받은 조건부
+정보를 다시 계산하고 새 주변 정보를 경계까지 전달하며 기존 사전정보는 한 번만
+사용합니다. 새 기준 좌표 제약이나 감쇠항을 추가하지 않습니다.
+
+기본 한도는 활성 스칼라 좌표 256개, 조건부 노드 4,096개, 전체 좌표와 원본 키
+각 65,536개, 수치 데이터 96MiB입니다. 활성 한도는 공통 1,218열 한도 안에서
+설정합니다. 조회는 스칼라 출력 최대 24개의 결합 공분산을 제공합니다. 수치 크기는
+할당기·식별 정보 저장 공간을 제외하며 별도의 좌표·키·노드 한도도 적용합니다.
+실패한 갱신은 이전 사본을 바꾸지 않고 비정상 평균·공분산은 오류로 반환합니다.
+호출자가 잡음으로 정규화한 행·정확한 제약·일관된 원래 접선 좌표를 제공하며 새
+구간은 새 인스턴스를 사용합니다. 저장소는 메모리 기반이며 영속 저장·비선형
+재선형화·네이티브 지도 자동 전환은 별도 작업입니다.
+
 The build-local adapter maps initial gyro/accelerometer information weights
 to their physical state coordinates. Fresh builds check the actual constructor
 before visual-inertial qualification. [Initial bias prior and recorded limits](../../docs/diagnostics/imu-initial-prior.md).

@@ -153,3 +153,22 @@ The information graph accumulates reduced pose normals without retaining a full 
 감소시킨 자세 정보행렬을 누적하며 전체 자세 공분산이나 모든 시각 제약 야코비안을 보존하지 않습니다. LDLT의 채움 구조에서 역행렬 항을 계산하고 누락한 항은 교차 자세 공분산을 포함해 직접 풉니다. 이 경로는 양의 정부호 분해가 필요합니다. 작은 그래프의 관측 불가 방향은 기존 고유값 계산으로 보존하고, 큰 그래프에서 관측 가능성을 판별할 수 없으면 지도 실패로 처리합니다. 공분산 계산부가 새 기준 좌표 제약이나 감쇠항을 더하지 않습니다. 보정·NFR 근사·센서 오차 상관의 한계는 그대로 적용합니다.
 
 [Covariance recovery method](https://dellaert.github.io/files/Kaess09ras.pdf) · [Sparse information implementation](../../native/basalt/sparse_normal_information.hpp) · [Analytic and dense controls](../../native/basalt/sparse_normal_information_probe.cc)
+
+
+## Linearized submap information / 선형화한 부분 지도 정보
+
+The optional `SubmapInformation` utility stores fixed-linearization marginal rows
+and removed-variable conditionals with original measurement ownership. Late
+factors recondition the affected chain; joint queries retain cross-point noise,
+null directions and exact affine constraints. It reuses the component's existing
+QR/SVD operations. The caller supplies one consistent tangent reference and its
+original world-reference rows. It is an in-memory numerical interface; the
+persistent native mapper retains its existing keyframe/input bounds. See the
+[native input and bounds](../../native/basalt/README.md).
+
+선택형 `SubmapInformation`은 고정 선형화의 주변 정보와 제거한 변수의 조건부
+정보를 원본 측정 소유권과 함께 보존합니다. 늦게 온 제약은 영향을 받은 연결
+정보를 다시 계산하고, 결합 조회는 점 사이 공유 잡음·관측 불가 방향·정확한
+아핀 제약을 유지합니다. 기존 QR/SVD 계산을 재사용하며 호출자가 일관된 접선
+좌표와 원래 기준 좌표 제약을 제공합니다. 메모리 수치 인터페이스이며 현재
+네이티브 지도 워커의 키프레임·입력 한도는 유지합니다.
