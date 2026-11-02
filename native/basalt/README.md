@@ -8,6 +8,26 @@ biases. `basalt_stream` and `LiveClient` provide the live worker interface; the
 host application supplies ROS transport, registration and session supervision.
 The worker maintains a sparse segment map without loop closure.
 
+`mapping_information.hpp` provides a bounded graph information calculation for
+mapping backends. It accepts whitened pose and point Jacobians, rejects reused
+image observations and factor identities, and includes shared pose uncertainty
+in world-point covariance. Rebuild the graph after each optimization. Two-view
+tracks may constrain the graph; retained points require three distinct qualified
+exposures, geometric support and the caller's world three-sigma limit. Unobserved
+world translation or yaw cannot be certified by a pseudoinverse. The caller owns
+the world reference and must establish independence from recovered VIO factors.
+This interface is separate from the live worker's segment archive.
+
+`mapping_information.hpp`는 지도 최적화용으로 크기가 제한된 정보 계산을
+제공합니다. 잡음으로 정규화한 자세·지도점 야코비안을 받아 영상 관측과 제약의
+중복 사용을 거부하고, 공유 자세 오차를 세계 좌표 지도점 공분산에 반영합니다.
+최적화 후에는 그래프를 새로 구성합니다. 두 시점 트랙은 그래프를 구속할 수
+있으며, 점 저장에는 서로 다른 세 시점의 유효 관측, 기하 조건, 호출자가 지정한
+세계 좌표 3시그마 한도를 요구합니다. 관측되지 않은 전역 위치나 방위는
+의사역행렬만으로 유효 판정을 받지 못합니다. 세계 좌표 기준과 복원된 VIO 제약에
+대한 관측 독립성은 호출자가 제공해야 합니다. 이 인터페이스와 실시간 워커의
+구간 지도 저장은 별도입니다.
+
 The build-local adapter maps initial gyro/accelerometer information weights
 to their physical state coordinates. Fresh builds check the actual constructor
 before visual-inertial qualification. [Initial bias prior and recorded limits](../../docs/diagnostics/imu-initial-prior.md).

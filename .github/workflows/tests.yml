@@ -38,6 +38,12 @@ jobs:
             -I/usr/include/eigen3 native/basalt/map_information_probe.cc \
             -o "$RUNNER_TEMP/map_information_probe"
           "$RUNNER_TEMP/map_information_probe"
+      - name: Check mapping observation ownership and world covariance
+        run: |
+          c++ -std=c++17 -O2 -UNDEBUG -DEIGEN_MPL2_ONLY -DEIGEN_DONT_PARALLELIZE \
+            -I/usr/include/eigen3 native/basalt/mapping_information_probe.cc \
+            -o "$RUNNER_TEMP/mapping_information_probe"
+          "$RUNNER_TEMP/mapping_information_probe"
       - name: Compare native finite-cone and sonar-fan joint surface ranges
         run: |
           c++ -std=c++17 -O2 -DEIGEN_MPL2_ONLY -DEIGEN_DONT_PARALLELIZE \
