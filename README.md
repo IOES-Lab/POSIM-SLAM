@@ -225,6 +225,8 @@ version; acoustic/DVL fusion retains its algorithm version **0.2.1**.
 | Inertial core | Raw gyro/accelerometer midpoint SO(3) preintegration, bias Jacobian and 15-state error covariance; preparation code, not a complete fused estimator |
 | Experimental inertial filter | Algorithm 0.1.0: 15-state right-error EKF, raw-IMU prediction, mounted DVL velocity, calibrated pressure height and correlated cloned planar relative-pose updates; explicit initialization/calibration; streaming IMU/DVL session owner |
 
+`SurfaceCalibration` accepts a positive `gravity_m_s2` in m/s², defaulting to 9.80665. Use the same calibrated value as the pressure measurement model so depth conversion and the mean-water plane share one scale.
+
 The native Basalt camera path jointly fuses raw IMU and visual observations; optional single-Ping factors participate in the same optimization and marginalization. Stella-only visual and planar acoustic/DVL paths remain separate from this VIO path.
 No estimator accepts simulator pose or ideal orientation as a localization
 measurement. Sonar intensity features are not classified 3D obstacles.
