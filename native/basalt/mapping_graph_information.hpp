@@ -5,13 +5,13 @@
 #include <numeric>
 
 namespace posim_slam {
-inline MappingInformationResult mappingGraphInformation(basalt::NfrMapper& mapper,
+template<class Consumer>
+inline void mappingGraphRows(basalt::NfrMapper& mapper,
     const basalt::Calibration<double>& calibration,const basalt::VioConfig& config,
-    int64_t reference_stamp,double three_sigma_m) {
+    int64_t reference_stamp,Consumer& graph) {
   const auto& poses=mapper.getFramePoses();
   std::map<int64_t,int> offsets;
   for(const auto& [stamp,pose]:poses)offsets.emplace(stamp,6*offsets.size());
-  MappingInformation graph(6*offsets.size());
   auto columns=[&](int64_t stamp) {
     std::vector<int> cols(6);std::iota(cols.begin(),cols.end(),offsets.at(stamp));return cols;
   };
@@ -60,8 +60,8 @@ inline MappingInformationResult mappingGraphInformation(basalt::NfrMapper& mappe
                            /config.mapper_obs_std_dev;
       Row row;row.key={image.frame_id,image.cam_id,mapper.feature_tracks.at(id).at(image)};
       row.point=derivative.leftCols<3>()*inverse.rotationMatrix();
-      row.pose.leftCols<3>()=-row.point;
-      row.pose.rightCols<3>()=row.point*Sophus::SO3d::hat(world-pose.translation());
+      row.pose.template leftCols<3>()=-row.point;
+      row.pose.template rightCols<3>()=row.point*Sophus::SO3d::hat(world-pose.translation());
       row.point*=weight;row.pose*=weight;row.full=error<=config.mapper_obs_huber_thresh;
       rows.push_back(row);
     }
@@ -82,6 +82,12 @@ inline MappingInformationResult mappingGraphInformation(basalt::NfrMapper& mappe
   reference.topLeftCorner<3,3>().setIdentity();reference(3,5)=1;
   reference*=std::sqrt(config.vio_init_pose_weight);
   graph.addPoseFactor("initial-vio-world-reference",columns(reference_stamp),reference);
+}
+inline MappingInformationResult mappingGraphInformation(basalt::NfrMapper& mapper,
+    const basalt::Calibration<double>& calibration,const basalt::VioConfig& config,
+    int64_t reference_stamp,double three_sigma_m) {
+  MappingInformation graph(6*mapper.getFramePoses().size());
+  mappingGraphRows(mapper,calibration,config,reference_stamp,graph);
   return graph.evaluate(three_sigma_m);
 }
 } // namespace posim_slam

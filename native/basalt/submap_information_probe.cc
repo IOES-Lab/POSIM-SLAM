@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 #include "submap_information.hpp"
+#include "submap_linearization.hpp"
 #include <cassert>
 #include <iostream>
 #include <numeric>
@@ -171,8 +172,122 @@ void longChain() {
   assert(store.snapshot()->measurements.size()==count+3);
   std::cout<<"SUBMAP_CHAIN poses="<<count+1<<" maximum_active_columns="<<maximum_active<<" numeric_bytes="<<store.snapshot()->numericBytes()<<" maximum_covariance_error="<<maximum_error<<'\n';
 }
+using Active=posim_slam::SubmapLinearization;
+Active::Rows likelihood(std::vector<std::string> keys,std::vector<int64_t> ids,
+    const Eigen::MatrixXd& j,const Eigen::VectorXd& r) {
+  Active::Rows out;out.originals=std::move(keys);out.columns=std::move(ids);
+  out.jacobian=j;out.residual=r;return out;
+}
+void replaceOriginalLikelihoods() {
+  Store base;Eigen::Matrix2d j;j<<1,0,-1,1;Eigen::Vector2d r(-.2,-1.5);
+  base.append({"world","motion"},{0,1},j,r);base.seal({1});
+  const auto original=base.snapshot();Active active(base,original,Store::Limits{});
+  auto first=likelihood({"pixel-a","pixel-b"},{1},Eigen::Vector2d(2,3),Eigen::Vector2d(-4,-6));
+  active.append({first});const auto before=active.snapshot();const auto before_solution=active.solve(before);
+  const auto old=active.query(before_solution,{0,1},Eigen::Matrix2d::Identity());
+  auto replacement=likelihood(first.originals,{1},Eigen::Vector2d(.5,1),Eigen::Vector2d(-.3,-.7));
+  active.replace(first.originals,{replacement});
+  auto check=[&](double late_weight=0.,double late_value=0.) {
+    Eigen::Matrix<double,5,2> all;all.topRows(2)=j;all.block<2,2>(2,0).setZero();
+    all.block<2,1>(2,1)=replacement.jacobian;all.row(4)<<late_weight,0;
+    Eigen::Matrix<double,5,1> residual;residual<<r,replacement.residual,late_value;
+    const Eigen::Matrix2d normal=all.transpose()*all;
+    const auto actual=active.query(active.solve(active.snapshot()),{0,1},Eigen::Matrix2d::Identity());
+    assert(actual.observed);close(actual.mean,-normal.ldlt().solve(all.transpose()*residual));
+    close(actual.covariance,normal.ldlt().solve(Eigen::Matrix2d::Identity()));return actual;
+  };
+  const auto weaker=check();assert(weaker.covariance(1,1)>old.covariance(1,1));
+  close(active.query(before_solution,{0,1},Eigen::Matrix2d::Identity()).covariance,old.covariance);
+  assert(base.snapshot()==original && active.snapshot()->information->measurements.size()==4);
+  const auto stable=active.snapshot();
+  rejects([&]{active.replace({"pixel-a"},{replacement});},"submap_replacement_partial_group");
+  auto missing=replacement;missing.originals={"pixel-a"};
+  rejects([&]{active.replace(first.originals,{missing});},"submap_replacement_original_missing");
+  rejects([&]{active.replace({"world"},{replacement});},"submap_replacement_requires_active_originals");
+  rejects([&]{active.append({replacement});},"submap_measurement_reused");
+  auto invalid=replacement;invalid.jacobian(0,0)=std::numeric_limits<double>::quiet_NaN();
+  rejects([&]{active.replace(first.originals,{invalid});},"submap_information_rows");
+  assert(active.snapshot()==stable);
+  // Split/recombine source groups atomically without reusing or losing a pixel.
+  active.replace(first.originals,{
+    likelihood({"pixel-a"},{1},replacement.jacobian.topRows(1),replacement.residual.head(1)),
+    likelihood({"pixel-b"},{1},replacement.jacobian.bottomRows(1),replacement.residual.tail(1))});check();
+  active.appendLate(likelihood({"new-past-reading"},{0},Eigen::MatrixXd::Constant(1,1,4),Eigen::VectorXd::Constant(1,-2)));
+  check(4,-2);
+  auto revised=replacement;revised.residual*=2;replacement=revised;
+  active.replace(first.originals,{revised});check(4,-2);
+  active.seal({});check(4,-2);
+  const auto sealed=active.snapshot();
+  rejects([&]{active.replace(first.originals,{replacement});},"submap_replacement_requires_active_originals");
+  assert(active.snapshot()==sealed && sealed->active.empty());
+  Active other;rejects([&]{other.solve(before);},"submap_linearization_owner");
+  rejects([&]{other.query(before_solution,{1},Eigen::MatrixXd::Identity(1,1));},"submap_snapshot_owner");
+  auto fork=base.fork(original);fork->append({"fork-only"},{1},Eigen::MatrixXd::Identity(1,1),Eigen::VectorXd::Zero(1));
+  assert(base.snapshot()==original && !original->measurements.count("fork-only"));
+}
+void replaceRankAndExactSupport() {
+  Store base;Eigen::Matrix<double,1,2> relative;relative<<-1,1;
+  base.append({"relative"},{0,1},relative,Eigen::VectorXd::Constant(1,-2));base.seal({1});
+  Active active(base,base.snapshot(),Store::Limits{});
+  auto exact=likelihood({"support"},{1},Eigen::MatrixXd::Zero(0,1),Eigen::VectorXd());
+  exact.constraints=Eigen::MatrixXd::Ones(1,1);exact.target=Eigen::VectorXd::Constant(1,3);
+  active.append({exact});const auto observed=active.query(active.solve(active.snapshot()),{0,1},Eigen::Matrix2d::Identity());
+  assert(observed.observed);close(observed.mean,Eigen::Vector2d(1,3));
+  Eigen::Matrix2d expected=Eigen::Matrix2d::Zero();expected(0,0)=1;close(observed.covariance,expected);
+  auto free=likelihood({"support"},{1},Eigen::MatrixXd::Zero(0,1),Eigen::VectorXd());
+  active.replace({"support"},{free});
+  const auto no_reference=active.solve(active.snapshot());
+  assert(!active.query(no_reference,{1},Eigen::MatrixXd::Identity(1,1)).observed);
+  const auto difference=active.query(no_reference,{0,1},relative);
+  assert(difference.observed);close(difference.mean,Eigen::VectorXd::Constant(1,2));
+  close(difference.covariance,Eigen::MatrixXd::Identity(1,1));
+  exact.target[0]=5;active.replace({"support"},{exact});
+  close(active.query(active.solve(active.snapshot()),{0,1},Eigen::Matrix2d::Identity()).mean,Eigen::Vector2d(3,5));
+  // Caller mutation cannot alter the retained source likelihood.
+  exact.target[0]=100;
+  close(active.query(active.solve(active.snapshot()),{0,1},Eigen::Matrix2d::Identity()).mean,Eigen::Vector2d(3,5));
+  Store::Limits tiny;tiny.numeric_bytes=64;Active bounded(tiny);
+  const auto empty=bounded.snapshot();
+  rejects([&]{bounded.append({likelihood({"too-large"},{0,1},Eigen::Matrix2d::Identity(),Eigen::Vector2d::Zero())});},"submap_linearization_capacity");
+  assert(bounded.snapshot()==empty);
+  Active coordinates_kept;coordinates_kept.append({likelihood({"original"},{0},Eigen::MatrixXd::Identity(1,1),Eigen::VectorXd::Zero(1))});
+  const auto stable=coordinates_kept.snapshot();
+  rejects([&]{coordinates_kept.replace({"original"},{likelihood({"original"},{1},Eigen::MatrixXd::Identity(1,1),Eigen::VectorXd::Zero(1))});},"submap_replacement_coordinate_missing");
+  assert(coordinates_kept.snapshot()==stable);
+}
+void boundedReplacements() {
+  Store::Limits limits;limits.active_columns=2;Active active(limits);
+  active.append({likelihood({"world"},{0},Eigen::MatrixXd::Constant(1,1,2),Eigen::VectorXd::Zero(1))});
+  std::vector<double> means{0},variances{.25};size_t maximum_active=1,maximum_groups=1;
+  constexpr int count=1000;
+  for(int i=1;i<=count;++i) {
+    const double increment=.01+.001*std::sin(i),variance=.02+.001*std::cos(i);
+    Eigen::Matrix<double,1,2> derivative;derivative<<-1,1;
+    const std::string key="motion:"+std::to_string(i);
+    auto rows=likelihood({key},{i-1,i},derivative/std::sqrt(variance*2),Eigen::VectorXd::Constant(1,-increment/std::sqrt(variance*2)));
+    active.append({rows});
+    rows.jacobian=derivative/std::sqrt(variance);rows.residual=Eigen::VectorXd::Constant(1,-increment/std::sqrt(variance));
+    active.replace({key},{rows});active.replace({key},{rows});
+    maximum_active=std::max(maximum_active,active.snapshot()->information->order.size());
+    maximum_groups=std::max(maximum_groups,active.snapshot()->active.size());
+    active.seal({i});means.push_back(means.back()+increment);variances.push_back(variances.back()+variance);
+  }
+  double maximum_error=0;
+  const auto solution=active.solve(active.snapshot());
+  for(int first:{0,1,100,500,999}) {
+    const auto result=active.query(solution,{first,count},Eigen::Matrix2d::Identity());
+    Eigen::Matrix2d covariance;covariance<<variances[first],variances[first],variances[first],variances[count];
+    assert(result.observed);close(result.mean,Eigen::Vector2d(means[first],means[count]),1e-8);
+    close(result.covariance,covariance,1e-8);maximum_error=std::max(maximum_error,(result.covariance-covariance).norm());
+  }
+  assert(maximum_active==2 && maximum_groups==2);
+  assert(active.snapshot()->information->measurements.size()==count+1);
+  std::cout<<"SUBMAP_REPLACEMENTS poses="<<count+1<<" maximum_active_columns="<<maximum_active
+    <<" numeric_bytes="<<active.snapshot()->numericBytes()<<" maximum_covariance_error="<<maximum_error<<'\n';
+}
 } // namespace
 int main() {
   denseAndLateAdjustment();unobservedReference();exactConstraintsAndCapacity();pressureDatumAndClosedFrontier();longChain();
+  replaceOriginalLikelihoods();replaceRankAndExactSupport();boundedReplacements();
   std::cout<<"Submap information: batch mean/covariance, shared noise, unobserved gauge, exact support, immutable ownership and bounded-frontier chain pass.\n";
 }

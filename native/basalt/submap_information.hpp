@@ -69,16 +69,38 @@ class SubmapInformation {
     data_=empty;
   }
   Snapshot snapshot() const {return std::atomic_load(&data_);}
+  // Independent writer over the same immutable information lineage. This
+  // permits an atomic caller transaction to rebuild only unsealed factors;
+  // the published source snapshot and its conditional owners stay unchanged.
+  std::unique_ptr<SubmapInformation> fork(const Snapshot& input) const {
+    return fork(input,limits_);
+  }
+  std::unique_ptr<SubmapInformation> fork(const Snapshot& input,Limits limits) const {
+    requireOwner(input);
+    auto branch=std::make_unique<SubmapInformation>(limits);
+    if(input->order.size()>limits.active_columns || input->nodes.size()>limits.nodes ||
+        input->known.size()>limits.coordinates || input->measurements.size()>limits.measurements ||
+        input->numericBytes()>limits.numeric_bytes)throw std::runtime_error("submap_fork_capacity");
+    branch->identity_=identity_;branch->data_=input;
+    return branch;
+  }
+  static void validateRows(const std::vector<Coordinate>& columns,
+      const Eigen::MatrixXd& j,const Eigen::VectorXd& r,
+      const Eigen::MatrixXd& c,const Eigen::VectorXd& target) {
+    if(columns.empty() || columns.size()>size_t(kMaxJointColumns) ||
+        j.cols()!=Eigen::Index(columns.size()) || j.rows()>4096 ||
+        r.size()!=j.rows() || !j.allFinite() || !r.allFinite() ||
+        (c.rows() && (c.cols()!=j.cols() || c.rows()>1024 || target.size()!=c.rows() || !c.allFinite() || !target.allFinite())) ||
+        (!c.rows() && target.size()))throw std::invalid_argument("submap_information_rows");
+  }
   // Whitened rows J*x+r and optional exact C*x=target. Each original key is
   // consumed once. Use appendLate for factors touching archived coordinates.
   Snapshot append(const std::vector<std::string>& originals,const std::vector<Coordinate>& columns,
       const Eigen::MatrixXd& j,const Eigen::VectorXd& r,
       const Eigen::MatrixXd& c=Eigen::MatrixXd(),const Eigen::VectorXd& target=Eigen::VectorXd()) {
     std::lock_guard<std::mutex> writer(writer_);auto next=std::make_shared<Data>(*snapshot());
-    if(originals.empty() || columns.empty() || j.cols()!=Eigen::Index(columns.size()) || j.rows()>4096 ||
-        r.size()!=j.rows() || !j.allFinite() || !r.allFinite() ||
-        (c.rows() && (c.cols()!=j.cols() || c.rows()>1024 || target.size()!=c.rows() || !c.allFinite() || !target.allFinite())) ||
-        (!c.rows() && target.size()))throw std::invalid_argument("submap_information_rows");
+    if(originals.empty())throw std::invalid_argument("submap_information_rows");
+    validateRows(columns,j,r,c,target);
     std::set<std::string> keys;
     for(const auto& key:originals)
       if(key.empty() || key.size()>256 || next->measurements.count(key) || !keys.insert(key).second)

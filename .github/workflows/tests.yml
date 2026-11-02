@@ -44,6 +44,12 @@ jobs:
             -I/usr/include/eigen3 native/basalt/mapping_information_probe.cc \
             -o "$RUNNER_TEMP/mapping_information_probe"
           "$RUNNER_TEMP/mapping_information_probe"
+      - name: Check submap conditionals and original-likelihood replacement
+        run: |
+          c++ -std=c++17 -O2 -UNDEBUG -DEIGEN_MPL2_ONLY -DEIGEN_DONT_PARALLELIZE \
+            -I/usr/include/eigen3 native/basalt/submap_information_probe.cc \
+            -o "$RUNNER_TEMP/submap_information_probe"
+          "$RUNNER_TEMP/submap_information_probe"
       - name: Compare native finite-cone and sonar-fan joint surface ranges
         run: |
           c++ -std=c++17 -O2 -DEIGEN_MPL2_ONLY -DEIGEN_DONT_PARALLELIZE \

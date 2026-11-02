@@ -87,6 +87,44 @@ is the established method; GTSAM code is not a dependency of this utility.
 구간은 새 인스턴스를 사용합니다. 저장소는 메모리 기반이며 영속 저장·비선형
 재선형화·네이티브 지도 자동 전환은 별도 작업입니다.
 
+`submap_linearization.hpp::SubmapLinearization` keeps a sealed conditional base
+and replaceable active likelihood groups. `replace` removes complete selected
+groups and rebuilds the active frontier from the base and replacement rows.
+Every removed original key must appear exactly once in the new groups; new
+measurements may join them. Previously published coordinates are preserved.
+`seal` incorporates active groups into the fixed conditional base. `appendLate`
+updates that base before applying active groups once. Immutable snapshots retain
+their original answers when another revision is published.
+Use the `SubmapLinearization` revision for publication identity; information
+forks have branch-local revision counters.
+
+The same coordinate, key and node quotas apply. The 96 MiB numeric budget counts
+retained active rows, both distinct frontier matrices and shared conditional
+nodes once; caller-held old snapshots consume additional memory. Replacements
+must use consistent original tangent coordinates and residuals. Rehydrating
+sealed nonlinear factors, transporting a changed tangent reference and enabling
+automatic native rollover require the owning mapper. `mappingGraphRows` exposes
+the original observation identities and whitened Jacobian blocks used by the
+existing map-uncertainty calculation.
+
+`SubmapLinearization`은 확정된 조건부 정보와 교체 가능한 활성 관측 그룹을
+보존합니다. `replace`는 선택한 그룹 전체를 새 관측 행으로 바꾸고, 기존 조건부
+정보에서 활성 경계 상태를 다시 계산합니다. 교체한 원본 키는 새 그룹에 각각
+한 번씩 있어야 하며 새 측정도 추가할 수 있습니다. 이미 공개한 좌표는 유지합니다.
+`seal`은 활성 그룹을 고정 조건부 정보에 반영합니다. `appendLate`는 기존 조건부
+정보를 갱신한 뒤 활성 그룹을 한 번씩 적용합니다. 새 개정본이 나와도 이전 불변
+사본의 조회 결과는 유지됩니다.
+공개 개정본은 `SubmapLinearization`의 개정 번호로 식별합니다. 하위 정보 분기의
+개정 번호는 각 분기 안에서만 증가합니다.
+
+좌표·원본 키·노드 한도는 같습니다. 수치 데이터 96MiB 한도에는 활성 관측 행,
+서로 다른 두 경계 행렬과 공유 조건부 노드가 각각 한 번씩 포함됩니다. 호출자가
+보관한 이전 사본은 추가 메모리를 사용합니다. 교체 행과 잔차는 일관된 원래 접선
+좌표로 표현해야 합니다. 확정된 비선형 제약 복원, 접선 기준 변경에 따른 변환과
+네이티브 자동 구간 전환은 지도 소유자가 구현해야 합니다. `mappingGraphRows`는
+기존 지도 불확실성 계산에 쓰는 원본 관측 식별자와 잡음으로 정규화한 야코비안
+블록을 제공합니다.
+
 The build-local adapter maps initial gyro/accelerometer information weights
 to their physical state coordinates. Fresh builds check the actual constructor
 before visual-inertial qualification. [Initial bias prior and recorded limits](../../docs/diagnostics/imu-initial-prior.md).
