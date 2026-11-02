@@ -132,3 +132,15 @@ scope; legacy file readers retain the file's declared scope.
 - [Threaded ownership and failure controls](../../native/basalt/persistent_mapper_probe.cc)
 - [Contract tests](../../tests/test_map_quality.py)
 - [Export tests](../../tests/test_map_snapshot.py)
+
+## Sparse covariance computation / 희소 공분산 계산
+
+World-point uncertainty uses Eigen sparse LDLT and selected inverse entries, with exact solves for entries outside that set. Small rank-deficient graphs use a dense spectral calculation that preserves unobserved directions. Larger unresolved rank deficiencies invalidate map output. The keyframe, image and retirement limits still apply.
+
+세계 좌표 점의 불확실성은 Eigen 희소 LDLT와 필요한 공분산 항의 선택 역계산을 사용합니다. 그 집합 밖의 항은 선형계를 직접 풉니다. 작은 특이 그래프는 관측 불가 방향을 보존하는 밀집 고유값 계산으로 처리하며, 큰 그래프의 관측 가능성을 판별할 수 없으면 지도 출력을 무효화합니다. 키프레임·영상·전달 정보 한도는 유지합니다.
+
+The information graph accumulates reduced pose normals without retaining a full pose covariance or every reduced visual Jacobian. Selected inverse entries follow the filled LDLT pattern; missing entries use exact solves, including cross-pose covariance. A positive-definite factorization is required for that path. Rank-deficient graphs within the live joint-column budget use the existing spectral nullspace calculation; larger unresolved ranks fail closed. No gauge prior or damping is added by the covariance backend. Calibration, NFR approximation and sensor-error correlations retain their stated scope.
+
+감소시킨 자세 정보행렬을 누적하며 전체 자세 공분산이나 모든 시각 제약 야코비안을 보존하지 않습니다. LDLT의 채움 구조에서 역행렬 항을 계산하고 누락한 항은 교차 자세 공분산을 포함해 직접 풉니다. 이 경로는 양의 정부호 분해가 필요합니다. 작은 그래프의 관측 불가 방향은 기존 고유값 계산으로 보존하고, 큰 그래프에서 관측 가능성을 판별할 수 없으면 지도 실패로 처리합니다. 공분산 계산부가 새 기준 좌표 제약이나 감쇠항을 더하지 않습니다. 보정·NFR 근사·센서 오차 상관의 한계는 그대로 적용합니다.
+
+[Covariance recovery method](https://dellaert.github.io/files/Kaess09ras.pdf) · [Sparse information implementation](../../native/basalt/sparse_normal_information.hpp) · [Analytic and dense controls](../../native/basalt/sparse_normal_information_probe.cc)

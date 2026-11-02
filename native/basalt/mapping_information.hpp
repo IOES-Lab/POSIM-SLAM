@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 #pragma once
 #include "map_information.hpp"
+#include "sparse_normal_information.hpp"
 #include "visual_geometry.hpp"
 #include <cstdint>
 #include <map>
@@ -38,10 +39,7 @@ struct MappingInformationResult {
 // but do not establish independence from a separately recovered VIO prior.
 class MappingInformation {
  public:
-  explicit MappingInformation(int pose_columns) : columns_(pose_columns) {
-    if (columns_ < 1 || columns_ > kMaxJointColumns)
-      throw std::invalid_argument("mapping_pose_budget");
-    normal_ = Eigen::MatrixXd::Zero(columns_, columns_);
+  explicit MappingInformation(int pose_columns) : columns_(pose_columns),normal_(pose_columns) {
     unreduced_diagonal_ = Eigen::VectorXd::Zero(columns_);
   }
   void addPoseFactor(const std::string& identity, const std::vector<int>& columns,
@@ -103,22 +101,39 @@ class MappingInformation {
     Eigen::VectorXd scale(columns_);
     for (int i = 0; i < columns_; ++i)
       scale[i] = unreduced_diagonal_[i] > 0 ? 1 / std::sqrt(unreduced_diagonal_[i]) : 1;
-    const auto joint = mapPoseInformation(normal_, scale);
+    const bool sparse=normal_.factorize(scale);
+    MapPoseInformation joint;
+    if(!sparse) {
+      if(columns_>kMaxJointColumns)throw std::runtime_error("mapping_sparse_rank_unresolved");
+      joint=mapPoseInformation(Eigen::MatrixXd(normal_.unscaledNormal()),scale);
+    }
     MappingInformationResult result;
-    result.pose_nullity = joint.nullspace.cols();
+    result.pose_nullity = sparse?0:joint.nullspace.cols();
     result.observations = owners_.size(); result.pose_factors = factors_.size();
     for (const auto& [id, local] : points_) {
-      MapPoseInformation pose;
-      pose.covariance_root.resize(local.columns.size(), joint.covariance_root.cols());
-      pose.nullspace.resize(local.columns.size(), joint.nullspace.cols());
-      for (size_t i = 0; i < local.columns.size(); ++i) {
-        pose.covariance_root.row(i) = joint.covariance_root.row(local.columns[i]);
-        pose.nullspace.row(i) = joint.nullspace.row(local.columns[i]);
-      }
       MappingPointCertificate certificate;
       certificate.geometry = local.geometry;
-      certificate.world = mapPointInformation(pose, local.nuisance,
-          Eigen::MatrixXd::Zero(3, local.columns.size()), Eigen::Matrix3d::Identity());
+      if(sparse && !local.nuisance.nullspace.cols()) {
+        const auto selected=normal_.covariance(local.columns,local.nuisance.backsub);
+        if(selected.observed) {
+          certificate.world.covariance=local.nuisance.conditional_root*local.nuisance.conditional_root.transpose()+selected.covariance;
+          Eigen::SelfAdjointEigenSolver<Eigen::Matrix3d> eigen(certificate.world.covariance);
+          if(eigen.info()!=Eigen::Success || !certificate.world.covariance.allFinite())
+            throw std::runtime_error("invalid_map_point_covariance");
+          certificate.world.maximum_sigma_m=std::sqrt(std::max(0.,eigen.eigenvalues().maxCoeff()));
+          certificate.world.observed=std::isfinite(certificate.world.maximum_sigma_m);
+        }
+      }else if(!sparse) {
+        MapPoseInformation pose;
+        pose.covariance_root.resize(local.columns.size(), joint.covariance_root.cols());
+        pose.nullspace.resize(local.columns.size(), joint.nullspace.cols());
+        for(size_t i=0;i<local.columns.size();++i) {
+          pose.covariance_root.row(i)=joint.covariance_root.row(local.columns[i]);
+          pose.nullspace.row(i)=joint.nullspace.row(local.columns[i]);
+        }
+        certificate.world=mapPointInformation(pose,local.nuisance,
+          Eigen::MatrixXd::Zero(3,local.columns.size()),Eigen::Matrix3d::Identity());
+      }
       // Match the archive's three-exposure maturity requirement. A two-view
       // component may constrain the graph without becoming a retained point.
       certificate.mature = local.geometry.exposures >= 3;
@@ -128,7 +143,10 @@ class MappingInformation {
     }
     return result;
   }
-  const Eigen::MatrixXd& poseNormal() const { return normal_; }
+  const Eigen::MatrixXd& poseNormal() const {
+    if(columns_>kMaxJointColumns)throw std::runtime_error("dense_mapping_diagnostic_budget");
+    diagnostic_normal_=Eigen::MatrixXd(normal_.unscaledNormal());return diagnostic_normal_;
+  }
 
  private:
   struct Local {
@@ -145,12 +163,11 @@ class MappingInformation {
         throw std::invalid_argument("mapping_columns");
   }
   void scatter(const std::vector<int>& columns, const Eigen::MatrixXd& normal) {
-    for (size_t i = 0; i < columns.size(); ++i)
-      for (size_t j = 0; j < columns.size(); ++j)
-        normal_(columns[i], columns[j]) += normal(i,j);
+    normal_.addNormal(columns,normal);
   }
   int columns_;
-  Eigen::MatrixXd normal_;
+  mutable SparseNormalInformation normal_;
+  mutable Eigen::MatrixXd diagnostic_normal_;
   Eigen::VectorXd unreduced_diagonal_;
   std::set<std::string> factors_;
   std::set<MappingObservation> owners_;
