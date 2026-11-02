@@ -4,6 +4,7 @@
 #include "calibration.hpp"
 #include "visual_support.hpp"
 #include "landmark_archive.hpp"
+#include "persistent_mapper.hpp"
 #include "ping_input.hpp"
 #include "ping_factors.hpp"
 #include "sonar_packet.hpp"
@@ -69,7 +70,10 @@ int main(int argc,char** argv) {
   };
   try {
     auto c=input_calibration(argv[1]);
-    struct Snapshot {int64_t stamp;std::vector<std::array<float,3>> points;std::vector<int> ids;};
+    struct Snapshot {
+      int64_t stamp;std::vector<std::array<float,3>> points;std::vector<int> ids;
+      posim_slam::PersistentMapper::Snapshot mapping;
+    };
     // Exact image/Ping pairs travel atomically. This is observation transport;
     // the joint optimizer must explicitly consume them before claiming fusion.
     std::mutex ping_mutex;
@@ -111,12 +115,18 @@ int main(int argc,char** argv) {
     auto owner=std::dynamic_pointer_cast<basalt::SqrtKeypointVioEstimator<double>>(vio);
     if(!owner)throw std::runtime_error("unsupported_ping_estimator_owner");
     const bool joint_map_information=input_settings.value("joint_map_information",false);
+    const bool persistent_mapping=input_settings.value("persistent_mapping",false);
+    const bool record_mapping_candidates=input_settings.value("record_mapping_candidates",false);
     const bool map_observation_culling=input_settings.value("map_observation_culling",false);
     const double map_point_three_sigma_m=input_settings.value("map_point_three_sigma_m",0.);
     if(!std::isfinite(map_point_three_sigma_m) || map_point_three_sigma_m<0 || map_point_three_sigma_m>1 ||
         (!joint_map_information && map_point_three_sigma_m>0) || (joint_map_information && sonar_clock))
       fail("invalid_joint_map_information_request");
-    owner->posim_map_information_enabled=joint_map_information;
+    if(persistent_mapping && (!joint_map_information || sonar_clock || map_point_three_sigma_m<=0))
+      fail("invalid_persistent_mapping_request");
+    std::unique_ptr<posim_slam::PersistentMapper> persistent_map;
+    if(persistent_mapping)persistent_map=std::make_unique<posim_slam::PersistentMapper>(c.cal,config,map_point_three_sigma_m);
+    owner->posim_map_information_enabled=joint_map_information && !persistent_mapping;
     owner->posim_map_point_three_sigma_m=map_point_three_sigma_m;
     const bool dvl_enabled=input_settings.value("enable_joint_dvl",false);
     const bool pressure_enabled=input_settings.value("enable_joint_pressure",false);
@@ -514,6 +524,7 @@ int main(int argc,char** argv) {
     vio->vision_data_queue.set_capacity(2);
     vio->imu_data_queue.set_capacity(256);
     vio->out_state_queue=&states;vio->out_vis_queue=&maps;
+    if(persistent_map)vio->out_marg_queue=&persistent_map->input;
     struct SensorEvent {int64_t stamp;bool image;bool startup=false;uint64_t control=0;};
     tbb::concurrent_bounded_queue<SensorEvent> events;
     tbb::concurrent_bounded_queue<basalt::OpticalFlowResult::Ptr> tracked;
@@ -552,11 +563,16 @@ int main(int argc,char** argv) {
       }
     });
     std::thread state_reader([&] {
+      bool mapping_reference_sent=false;
       for(;;) {
         basalt::PoseVelBiasState<double>::Ptr s;states.pop(s);
         if(!s)fail("estimator_finished");
         if(!s->T_w_i.matrix().allFinite() || !s->vel_w_i.allFinite() ||
            !s->bias_gyro.allFinite() || !s->bias_accel.allFinite())fail("invalid_estimate");
+        if(persistent_map && !mapping_reference_sent) {
+          try {persistent_map->setReference(s->t_ns,s->T_w_i);mapping_reference_sent=true;}
+          catch(const std::exception& error){persistent_map->invalidate(error.what());}
+        }
         Json ping=nullptr,candidate=nullptr,initialization=nullptr,acoustic=nullptr,dvl=nullptr,pressure=nullptr,ground=nullptr;bool owner_received=false,fused=false;
         {std::lock_guard<std::mutex> lock(ping_mutex);
          auto surface=ground_reports.find(s->t_ns);if(surface!=ground_reports.end())ground=surface->second;
@@ -586,6 +602,7 @@ int main(int argc,char** argv) {
     });
     std::thread map_reader([&] {
       LandmarkArchive archive;
+      auto current_mapping=persistent_map?persistent_map->snapshot():posim_slam::PersistentMapper::Snapshot{};
       size_t traced_frames=0;
       for(;;) {
         basalt::VioVisualizationData::Ptr data;maps.pop(data);
@@ -596,15 +613,21 @@ int main(int argc,char** argv) {
         std::vector<LandmarkArchive::Point> active;
         for(const auto& point:data->points)active.push_back({float(point.x()),float(point.y()),float(point.z())});
         std::set<int> unqualified;
-        try {
+        try {if(!persistent_map) {
           unqualified=unqualified_visual_points(*data);
           archive.update(data->t_ns,data->point_ids,active,
               mapping_inliers(*data,c.processed_width,c.processed_height,config.vio_obs_huber_thresh),unqualified);
           if(map_observation_culling)archive.withdraw_observed_outliers(
               archive_observation_outliers(archive,*data,c.cal,c.processed_width,c.processed_height,config.vio_obs_huber_thresh));
-        } catch(const std::exception& error) {fail(error.what());}
+        }} catch(const std::exception& error) {fail(error.what());}
         full->points=archive.points();
         if(record_visual_tracks)full->ids=archive.mature_ids();
+        if(persistent_map) {
+          if(owner->posim_mapping_handoff_failed.load())persistent_map->invalidate("mapping_handoff_backlog");
+          const auto proposed=persistent_map->snapshot();
+          if(!proposed->error.empty() || proposed->optimized_through_ns<=data->t_ns)current_mapping=proposed;
+          full->mapping=current_mapping;full->points=full->mapping->points;full->ids=full->mapping->ids;
+        }
         if(record_visual_tracks && traced_frames<=1800) {
           Json trace={{"stamp_ns",data->t_ns},{"width",c.processed_width},{"height",c.processed_height}};
           if(traced_frames==1800)trace["truncated"]=true;
@@ -624,7 +647,7 @@ int main(int argc,char** argv) {
           {"pose_uncertainty_included",joint_map_information},{"pixel_sigma",config.vio_obs_std_dev},
           {"observed_reprojection_culling",map_observation_culling},{"observed_outliers_withdrawn",archive.withdrawn()},
           {"active_eligible",data->point_ids.size()-unqualified.size()},{"active_unqualified",unqualified.size()}};
-        if(joint_map_information) {
+        if(joint_map_information && !persistent_map) {
           size_t observed=0;
           for(const auto& [id,quality]:data->map_quality)observed+=quality.joint_position_observed;
           geometry.update({{"calibration_uncertainty_included",false},{"map_qualified",false},
@@ -633,6 +656,19 @@ int main(int argc,char** argv) {
             {"gauge","native_initial_position_and_yaw_prior"},{"damping_included",false}});
           geometry["admission_coordinate"]="world_position";
           geometry["host_camera_uncertainty_scope"]="diagnostic_only";
+        }
+        if(full->mapping) {
+          const auto& m=*full->mapping;
+          geometry={{"policy","persistent_nfr_world_information"},{"pose_uncertainty_included",true},
+            {"calibration_uncertainty_included",false},{"map_qualified",false},{"damping_included",false},
+            {"gauge","native_initial_position_and_yaw_prior"},{"admission_coordinate","world_position"},
+            {"metric_three_sigma_limit_m",map_point_three_sigma_m},{"pixel_sigma",config.vio_obs_std_dev},
+            {"reprojection_policy","robust_multiview_reoptimization"},{"nfr_approximation",true},
+            {"cross_layer_statistical_independence_verified",false},{"candidate_points",m.candidates.size()},
+            {"eligible_points",m.points.size()},{"world_observed_points",m.observed},{"nonfinite_candidates",m.nonfinite},
+            {"optimization_revision",m.revision},{"optimized_through_ns",m.optimized_through_ns},
+            {"keyframes",m.keyframes},{"retirements",m.retirements},{"optimize_seconds",m.optimize_seconds},
+            {"pending",m.revision==0},{"error",m.error.empty()?Json(nullptr):Json(m.error)}};
         }
         emit({{"type","map"},{"stamp_ns",data->t_ns},{"point_geometry",geometry},
               {"optical_flow_type",config.optical_flow_type},
@@ -662,7 +698,8 @@ int main(int argc,char** argv) {
                       initial_gyro_bias,initial_accel_bias);
     };
     emit({{"type","ready"},{"startup_tracks_transport",!sonar_clock && require_gravity_seed ? Json("preinitialize_camera_tracks_v1") : Json(nullptr)},{"inertial_seed_transport","first_imu_state_v1"},{"state_clock",state_clock},{"gravity_seed_transport",sonar_clock ? "first_sensor_direction_v1" : "first_image_direction_v1"},{"gravity_seed_required",require_gravity_seed},{"protocol",1},{"inertial_fused",true},{"map_export",sonar_clock ? Json(nullptr) : Json("segment_landmark_archive_ply_1")},
-          {"map_information_transport","joint_linearized_world_v1"},
+          {"map_information_transport",persistent_mapping?"persistent_nfr_world_v1":"joint_linearized_world_v1"},
+          {"persistent_map_transport",persistent_mapping?Json("retained_keyframe_reoptimization_v1"):Json(nullptr)},
           {"map_observation_culling",map_observation_culling},
           {"map_information_enabled",joint_map_information},{"map_point_three_sigma_m",map_point_three_sigma_m},
           {"sonar_clock_transport",sonar_clock ? Json("ordered_sonar_state_v1") : Json(nullptr)},
@@ -820,7 +857,8 @@ int main(int argc,char** argv) {
         if(!request)fail("snapshot_request_id");
         std::shared_ptr<const Snapshot> full;
         {std::lock_guard<std::mutex> lock(snapshot_mutex);full=snapshot;}
-        if(!full || full->points.empty()) {
+        if(persistent_map && owner->posim_mapping_handoff_failed.load())persistent_map->invalidate("mapping_handoff_backlog");
+        if(!full || full->points.empty() || (persistent_map && !persistent_map->snapshot()->error.empty())) {
           emit({{"type","export"},{"request_id",request},{"success",false},{"reason","map_unavailable"}});
           continue;
         }
@@ -829,8 +867,10 @@ int main(int argc,char** argv) {
         std::ofstream file(temporary,std::ios::binary|std::ios::trunc);
         if(!file)fail("snapshot_unwritable");
         file<<"ply\nformat binary_little_endian 1.0\n"
-            <<"comment scope accumulated_local_vio_landmarks\n"
-            <<"comment request_id "<<request<<"\ncomment stamp_ns "<<full->stamp<<'\n'
+            <<"comment scope "<<(persistent_mapping?"reoptimized_sparse_mapping_landmarks":"accumulated_local_vio_landmarks")<<'\n';
+        if(full->mapping)file<<"comment map_qualified false\ncomment optimization_revision "<<full->mapping->revision
+            <<"\ncomment optimized_through_ns "<<full->mapping->optimized_through_ns<<'\n';
+        file<<"comment request_id "<<request<<"\ncomment stamp_ns "<<full->stamp<<'\n'
             <<"element vertex "<<full->points.size()<<"\nproperty float x\nproperty float y\nproperty float z\nend_header\n";
         // The wire/file format is little endian even on other host byte orders.
         for(const auto& point:full->points)for(float coordinate:point) {
@@ -840,6 +880,21 @@ int main(int argc,char** argv) {
         }
         file.flush();if(!file)fail("snapshot_write_failed");file.close();
         fs::rename(temporary,export_file);
+        if(record_mapping_candidates && full->mapping) {
+          const fs::path target=export_file.parent_path()/"worker-map.candidates.json";
+          const fs::path pending=target.string()+".tmp";
+          if(fs::is_symlink(target) || fs::is_symlink(pending))fail("mapping_candidate_path");
+          Json rows=Json::array();
+          for(const auto& point:full->mapping->candidates)
+            rows.push_back({{"id",point.id},{"xyz",vector3(point.position)},{"finite",point.finite},
+              {"eligible",point.eligible},{"observed",point.observed},{"mature",point.mature},
+              {"maximum_sigma_m",point.maximum_sigma_m}});
+          std::ofstream diagnostic(pending);
+          diagnostic<<Json({{"schema","posim-persistent-mapping-candidates-1"},{"request_id",request},
+            {"tracking_stamp_ns",full->stamp},{"optimized_through_ns",full->mapping->optimized_through_ns},
+            {"revision",full->mapping->revision},{"candidates",rows}}).dump()<<'\n';
+          diagnostic.flush();if(!diagnostic)fail("mapping_candidate_write_failed");diagnostic.close();fs::rename(pending,target);
+        }
         if(record_visual_tracks) {
           if(full->ids.size()!=full->points.size())fail("archive_trace_identity");
           auto path=fs::path(argv[1]);path.replace_extension(".archive-export-"+std::to_string(request)+".json");

@@ -87,7 +87,7 @@ def prepare(source,destination):
             text=replace_once(text,'#pragma once','#pragma once\n#include <map>\n#include "visual_geometry.hpp"')
             text=replace_once(text,'  std::vector<int> point_ids;','  std::vector<int> point_ids;\n  std::map<int,posim_slam::VisualPointSupport> map_quality;\n  std::string map_information_error;')
         elif name.endswith('/sqrt_keypoint_vio.h'):
-            text=replace_once(text,'#pragma once','#pragma once\n#include <functional>\nnamespace posim_slam { class PingFactorStore; class SonarFactorStore; class DvlFactorStore; class PressureFactorStore; struct NativeSurfaceInformation; }')
+            text=replace_once(text,'#pragma once','#pragma once\n#include <functional>\n#include <atomic>\nnamespace posim_slam { class PingFactorStore; class SonarFactorStore; class DvlFactorStore; class PressureFactorStore; struct NativeSurfaceInformation; }')
             text=replace_once(text,'  using Scalar = Scalar_;','''  using Scalar = Scalar_;
   // Configured before input is submitted; called only by the estimator thread.
   std::function<void(SqrtKeypointVioEstimator&, int64_t)> posim_before_marginalization;
@@ -100,6 +100,7 @@ def prepare(source,destination):
   std::shared_ptr<posim_slam::PressureFactorStore> posim_pressure_factors;
   bool posim_joint_started = false;
   bool posim_had_visual_landmarks = false;
+  std::atomic<bool> posim_mapping_handoff_failed{false};
   int posim_joint_last_accepted = 0;
   uint64_t posim_projection_rejections = 0;
   void posim_optimize_joint();
@@ -258,7 +259,7 @@ def prepare(source,destination):
       ImuLinData<double> imu = {g, gyro_bias_sqrt_weight, accel_bias_sqrt_weight, {}};
       for (const auto& [stamp, measurement] : imu_meas) imu.imu_meas[stamp] = &measurement;
       std::optional<posim_slam::MappingHandoffRequest> mapping;
-      if (out_marg_queue && !kfs_to_marg.empty()) {
+      if (out_marg_queue && !posim_mapping_handoff_failed.load() && !kfs_to_marg.empty()) {
         mapping.emplace(); mapping->keyframes = kf_ids_all; mapping->retired = kfs_to_marg;
         for (int64_t stamp : kf_ids_all) mapping->images.push_back(prev_opt_flow_res.at(stamp));
       }
@@ -266,7 +267,7 @@ def prepare(source,destination):
                                     states_to_marg_vel_bias, lost_landmaks, posim_sonar_factors.get(), posim_dvl_factors.get(), posim_pressure_factors.get(), mapping ? &*mapping : nullptr);
       if (mapping) {
         if (!mapping->committed) throw std::logic_error("mapping_handoff_without_commit");
-        out_marg_queue->push(mapping->committed);
+        if (!out_marg_queue->try_push(mapping->committed)) posim_mapping_handoff_failed.store(true);
       }
       for (int64_t stamp : removed) {
         kf_ids.erase(stamp); num_points_kf.erase(stamp); prev_opt_flow_res.erase(stamp);
@@ -278,6 +279,12 @@ def prepare(source,destination):
       return;
     }
     Timer t_actual_marg;''')
+    # A slow mapper must not block navigation. A lost handoff invalidates that
+    # mapping session explicitly; its consumer still drains pending snapshots.
+    text=replace_once(text,'    if (out_marg_queue && !kfs_to_marg.empty()) {',
+        '    if (out_marg_queue && !posim_mapping_handoff_failed.load() && !kfs_to_marg.empty()) {')
+    text=replace_once(text,'        out_marg_queue->push(m);',
+        '        if (!out_marg_queue->try_push(m)) posim_mapping_handoff_failed.store(true);')
     text=replace_once(text,'template <class Scalar_>\nvoid SqrtKeypointVioEstimator<Scalar_>::debug_finalize()', '''template <class Scalar_>
 posim_slam::NativeSurfaceInformation SqrtKeypointVioEstimator<Scalar_>::posim_surface_information() {
   auto& base = static_cast<BundleAdjustmentBase<double>&>(*this);

@@ -16,18 +16,22 @@ tracks may constrain the graph; retained points require three distinct qualified
 exposures, geometric support and the caller's world three-sigma limit. Unobserved
 world translation or yaw cannot be certified by a pseudoinverse. The caller owns
 the world reference and must establish independence from recovered VIO factors.
-This interface is separate from the live worker's segment archive.
+The optional persistent worker uses this interface for provisional admission.
 
 When a mapping output queue is attached, joint factor retirement supplies a
 detached keyframe snapshot after the marginal prior commits. The snapshot keeps
 pose information and eliminates velocity, bias and the unknown pressure datum
-with their cross-information. Its images have separate storage. The queue
-consumer owns persistent mapping and output scheduling.
+with their cross-information. Its images have separate storage. `PersistentMapper` consumes the queue when `persistent_mapping: true`; it
+rebuilds and reoptimizes a retained NFR graph on a separate thread. Input
+overflow invalidates mapping without blocking the navigation estimator.
+[Persistent-map contract and bounds](../../docs/diagnostics/visual-map-quality.md).
 
 지도 출력 큐를 연결하면 결합 제약을 제거할 때 주변화 사전정보가 확정된 뒤
 키프레임 사본을 전달합니다. 자세 정보를 보존하고 속도·편향·미지 압력 기준
 수심은 교차정보와 함께 제거합니다. 영상 저장 공간은 별도이며, 큐 수신 측이
-지속 지도 최적화와 출력 시점을 담당합니다.
+지속 지도 최적화와 출력 시점을 담당합니다. `persistent_mapping: true`이면
+`PersistentMapper`가 별도 스레드에서 보존한 NFR 그래프를 다시 최적화합니다.
+입력 큐 한도를 넘으면 항법 추정을 막지 않고 지도 출력을 무효화합니다.
 
 `mapping_information.hpp`는 지도 최적화용으로 크기가 제한된 정보 계산을
 제공합니다. 잡음으로 정규화한 자세·지도점 야코비안을 받아 영상 관측과 제약의
@@ -36,8 +40,8 @@ consumer owns persistent mapping and output scheduling.
 있으며, 점 저장에는 서로 다른 세 시점의 유효 관측, 기하 조건, 호출자가 지정한
 세계 좌표 3시그마 한도를 요구합니다. 관측되지 않은 전역 위치나 방위는
 의사역행렬만으로 유효 판정을 받지 못합니다. 세계 좌표 기준과 복원된 VIO 제약에
-대한 관측 독립성은 호출자가 제공해야 합니다. 이 인터페이스와 실시간 워커의
-구간 지도 저장은 별도입니다.
+대한 관측 독립성은 호출자가 확인해야 합니다. 선택형 지속 지도 워커가 이
+인터페이스를 잠정 점 채택에 사용합니다.
 
 The build-local adapter maps initial gyro/accelerometer information weights
 to their physical state coordinates. Fresh builds check the actual constructor
@@ -555,7 +559,8 @@ to false and do not enable a qualified application provider.
 제거 근거로 쓰지 않습니다. 두 기능의 기본값은 false이며 앱 공급자의 품질
 검증을 통과시키지 않습니다.
 
-The native archive admits an ID after full-weight reprojection support in three
+With `persistent_mapping: false`, the legacy native archive admits an ID after
+full-weight reprojection support in three
 separate exposures with positive three-sigma inverse-range support. Current
 optimized camera poses and full-weight observations supply a pixel-noise-whitened
 point Jacobian. Thin SVD requires full rank and inverse-range sigma below one
@@ -582,7 +587,7 @@ estimator points; `landmarks_accumulated` reports retained mature points and
 one pending export. Recordings remain read-only. Legacy active-window PLY files
 remain readable by `map_snapshot`, preserving their original scope.
 
-네이티브 누적 저장소는 서로 다른 영상 세 장에서 정상 가중치의 재투영 검사를 통과한
+`persistent_mapping: false`의 기존 누적 저장소는 서로 다른 영상 세 장에서 정상 가중치의 재투영 검사를 통과한
 ID를 채택하며 양의 역거리 3시그마 조건도 요구합니다. 현재 최적화된 카메라 자세와
 정상 가중치 관측으로 픽셀 잡음 백색화 점 Jacobian을 만들고 thin SVD로 완전 계수와
 역거리 표준편차가 추정 역거리의 1/3보다 작은지 확인합니다. 픽셀 표준편차는

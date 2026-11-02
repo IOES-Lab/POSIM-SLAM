@@ -68,6 +68,8 @@ add_library(basalt_core STATIC
  ${CMAKE_CURRENT_BINARY_DIR}/ba_base.cpp
  ${B}/src/vi_estimator/landmark_database.cpp
  ${B}/src/vi_estimator/marg_helper.cpp
+ ${B}/src/vi_estimator/nfr_mapper.cpp
+ ${CMAKE_CURRENT_SOURCE_DIR}/persistent_mapper.cc
  ${B}/src/vi_estimator/sc_ba_base.cpp
  ${B}/src/vi_estimator/sqrt_ba_base.cpp
  ${JOINT_HEADERS}/sqrt_keypoint_vio.cpp
@@ -99,6 +101,9 @@ target_compile_options(basalt_mapping_information_probe PRIVATE -UNDEBUG)
 add_executable(basalt_mapping_handoff_probe mapping_handoff_probe.cc)
 target_link_libraries(basalt_mapping_handoff_probe PRIVATE basalt_core)
 target_compile_options(basalt_mapping_handoff_probe PRIVATE -UNDEBUG)
+add_executable(basalt_persistent_mapper_probe persistent_mapper_probe.cc)
+target_link_libraries(basalt_persistent_mapper_probe PRIVATE basalt_core)
+target_compile_options(basalt_persistent_mapper_probe PRIVATE -UNDEBUG)
 add_executable(basalt_archive_observation_probe archive_observation_probe.cc)
 target_link_libraries(basalt_archive_observation_probe PRIVATE basalt_core)
 target_compile_options(basalt_archive_observation_probe PRIVATE -UNDEBUG)

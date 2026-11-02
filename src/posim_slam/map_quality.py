@@ -1,8 +1,7 @@
-"""Native visual-map information contract, independent of a host application.
+"""Persistent visual-map information contract, independent of the application.
 
-The metric budget conditions on the native gauge and sensor-noise model. It is
-not a calibrated accuracy claim. Empty, unobserved geometry remains a valid
-result; relative camera uncertainty cannot substitute for world uncertainty.
+World uncertainty conditions on the native gauge, declared observation noise
+and approximate recovered factors. It is not a calibrated accuracy claim.
 """
 import math
 
@@ -10,47 +9,60 @@ WORLD_THREE_SIGMA_M = .1
 
 
 def native_settings():
-    return dict(joint_map_information=True,
-                map_point_three_sigma_m=WORLD_THREE_SIGMA_M,
-                map_observation_culling=True)
+    return dict(joint_map_information=True, persistent_mapping=True,
+                map_point_three_sigma_m=WORLD_THREE_SIGMA_M)
 
 
 def validate_ready(value):
-    if (value.get('map_information_transport') != 'joint_linearized_world_v1'
+    if (value.get('map_information_transport') != 'persistent_nfr_world_v1'
+            or value.get('persistent_map_transport') != 'retained_keyframe_reoptimization_v1'
             or value.get('map_information_enabled') is not True
-            or value.get('map_observation_culling') is not True
-            or type(value.get('map_point_three_sigma_m')) not in (int,float)
-            or not math.isclose(value['map_point_three_sigma_m'],WORLD_THREE_SIGMA_M,
-                                rel_tol=0,abs_tol=1e-12)):
+            or type(value.get('map_point_three_sigma_m')) not in (int, float)
+            or not math.isclose(value['map_point_three_sigma_m'], WORLD_THREE_SIGMA_M,
+                                rel_tol=0, abs_tol=1e-12)):
         raise ValueError('worker_visual_map_information_contract')
 
 
-def validate_geometry(value,window):
-    required=dict(policy='joint_linearized_position_information',
-        pose_uncertainty_included=True,calibration_uncertainty_included=False,
-        map_qualified=False,damping_included=False,observed_reprojection_culling=True,
-        gauge='native_initial_position_and_yaw_prior',admission_coordinate='world_position',
-        host_camera_uncertainty_scope='diagnostic_only')
-    if (not isinstance(value,dict) or type(window) is not int or window<0
-            or any(type(value.get(k)) is not type(v) or value[k]!=v for k,v in required.items())
-            or type(value.get('metric_three_sigma_limit_m')) not in (int,float)
-            or not math.isclose(value['metric_three_sigma_limit_m'],WORLD_THREE_SIGMA_M,
-                                rel_tol=0,abs_tol=1e-12)
-            or type(value.get('pixel_sigma')) not in (int,float)
-            or not math.isfinite(value['pixel_sigma']) or value['pixel_sigma']<=0
-            or any(type(value.get(k)) is not int or value[k]<0 for k in
-                   ('active_eligible','active_unqualified','active_joint_observed','observed_outliers_withdrawn'))
-            or value['active_eligible']+value['active_unqualified']!=window
-            or not value['active_eligible']<=value['active_joint_observed']<=window):
+def validate_geometry(value, window, *, total_points=None, stamp_ns=None):
+    required = dict(policy='persistent_nfr_world_information',
+        pose_uncertainty_included=True, calibration_uncertainty_included=False,
+        map_qualified=False, damping_included=False,
+        gauge='native_initial_position_and_yaw_prior', admission_coordinate='world_position',
+        reprojection_policy='robust_multiview_reoptimization', nfr_approximation=True,
+        cross_layer_statistical_independence_verified=False)
+    counts = ('candidate_points', 'eligible_points', 'world_observed_points',
+              'nonfinite_candidates', 'optimization_revision', 'optimized_through_ns',
+              'keyframes', 'retirements')
+    if (not isinstance(value, dict) or type(window) is not int or window < 0
+            or any(type(value.get(k)) is not type(v) or value[k] != v for k, v in required.items())
+            or type(value.get('metric_three_sigma_limit_m')) not in (int, float)
+            or not math.isclose(value['metric_three_sigma_limit_m'], WORLD_THREE_SIGMA_M,
+                                rel_tol=0, abs_tol=1e-12)
+            or type(value.get('pixel_sigma')) not in (int, float)
+            or not math.isfinite(value['pixel_sigma']) or value['pixel_sigma'] <= 0
+            or any(type(value.get(k)) is not int or value[k] < 0 for k in counts)
+            or not value['eligible_points'] <= value['world_observed_points'] <= value['candidate_points']
+            or value['nonfinite_candidates'] + value['world_observed_points'] > value['candidate_points']
+            or type(value.get('pending')) is not bool
+            or value['pending'] != (value['optimization_revision'] == 0)
+            or type(value.get('optimize_seconds')) not in (int, float)
+            or not math.isfinite(value['optimize_seconds']) or value['optimize_seconds'] < 0
+            or 'error' not in value):
         raise ValueError('invalid_visual_geometry_report')
-    if 'error' not in value:
+    if value['pending'] and any(value[k] for k in counts):
         raise ValueError('invalid_visual_geometry_report')
-    error=value['error']
-    if error is not None:
-        # The native owner clears all point information on a failed query and
-        # continues independently valid tracking. No point can be certified by
-        # that query, but this is not a sensor/pose/transport failure.
-        if (not isinstance(error,str) or not error.strip() or len(error)>1024
-                or value['active_eligible'] or value['active_joint_observed']):
-            raise ValueError('invalid_visual_geometry_report')
+    if not value['pending'] and (not value['optimized_through_ns'] or value['keyframes'] < 2
+                                 or not value['retirements']):
+        raise ValueError('invalid_visual_geometry_report')
+    error = value['error']
+    if error is not None and (
+            not isinstance(error, str) or not error.strip() or len(error) > 1024
+            or value['eligible_points'] or value['world_observed_points']):
+        raise ValueError('invalid_visual_geometry_report')
+    if total_points is not None and (type(total_points) is not int
+            or total_points != value['eligible_points']):
+        raise ValueError('invalid_visual_geometry_report')
+    if stamp_ns is not None and (type(stamp_ns) is not int or stamp_ns <= 0
+            or value['optimized_through_ns'] > stamp_ns):
+        raise ValueError('invalid_visual_geometry_report')
     return dict(value)

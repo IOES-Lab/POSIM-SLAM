@@ -1,51 +1,69 @@
 import unittest
-from posim_slam.map_quality import native_settings,validate_ready,validate_geometry
+from posim_slam.map_quality import native_settings, validate_ready, validate_geometry
 
 
 def geometry():
-    return dict(policy='joint_linearized_position_information',pose_uncertainty_included=True,
-        calibration_uncertainty_included=False,map_qualified=False,damping_included=False,
-        observed_reprojection_culling=True,gauge='native_initial_position_and_yaw_prior',
-        admission_coordinate='world_position',host_camera_uncertainty_scope='diagnostic_only',
-        metric_three_sigma_limit_m=.1,pixel_sigma=.5,active_eligible=0,active_unqualified=7,
-        active_joint_observed=0,observed_outliers_withdrawn=0,error=None)
+    return dict(policy='persistent_nfr_world_information', pose_uncertainty_included=True,
+        calibration_uncertainty_included=False, map_qualified=False, damping_included=False,
+        gauge='native_initial_position_and_yaw_prior', admission_coordinate='world_position',
+        reprojection_policy='robust_multiview_reoptimization', nfr_approximation=True,
+        cross_layer_statistical_independence_verified=False,
+        metric_three_sigma_limit_m=.1, pixel_sigma=.5, candidate_points=7, eligible_points=0,
+        world_observed_points=0, nonfinite_candidates=1, optimization_revision=1,
+        optimized_through_ns=100, keyframes=8, retirements=1, optimize_seconds=.2,
+        pending=False, error=None)
 
 
 class MapQualityTests(unittest.TestCase):
-    def test_empty_unobserved_window_is_valid_without_a_false_ready_claim(self):
-        self.assertEqual(validate_geometry(geometry(),7)['active_eligible'],0)
-        value=geometry();value.update(active_unqualified=0)
-        self.assertEqual(validate_geometry(value,0)['active_joint_observed'],0)
+    def test_map_count_and_optimization_cut_must_match_publication(self):
+        value=geometry()
+        validate_geometry(value,12,total_points=0,stamp_ns=110)
+        for total,stamp in [(1,110),(False,110),(0,99),(0,True)]:
+            with self.subTest(total=total,stamp=stamp),self.assertRaisesRegex(ValueError,'geometry_report'):
+                validate_geometry(value,12,total_points=total,stamp_ns=stamp)
 
-    def test_ready_requires_the_requested_metric_policy_and_native_culling(self):
-        settings=native_settings()
-        value=dict(map_information_transport='joint_linearized_world_v1',map_information_enabled=True,
-            map_observation_culling=settings['map_observation_culling'],map_point_three_sigma_m=settings['map_point_three_sigma_m'])
+    def test_pending_and_unobserved_maps_never_claim_points(self):
+        self.assertEqual(validate_geometry(geometry(),12)['eligible_points'],0)
+        value=geometry()
+        for key in ('candidate_points','nonfinite_candidates','optimization_revision',
+                    'optimized_through_ns','keyframes','retirements'):value[key]=0
+        value.update(pending=True,optimize_seconds=0.)
+        validate_geometry(value,0)
+        with self.assertRaisesRegex(ValueError,'geometry_report'):
+            validate_geometry(dict(value,eligible_points=1,world_observed_points=1,candidate_points=1),0)
+
+    def test_ready_requires_persistent_native_mapping_and_the_metric_policy(self):
+        self.assertIs(native_settings()['persistent_mapping'],True)
+        value=dict(map_information_transport='persistent_nfr_world_v1',
+            persistent_map_transport='retained_keyframe_reoptimization_v1',
+            map_information_enabled=True,map_point_three_sigma_m=.1)
         validate_ready(value)
-        for key,invalid in [('map_information_transport',None),('map_information_enabled',False),
-                ('map_observation_culling',False),('map_point_three_sigma_m',True),
-                ('map_point_three_sigma_m',0),('map_point_three_sigma_m',float('nan'))]:
+        for key,invalid in [('map_information_transport','joint_linearized_world_v1'),
+                ('persistent_map_transport',None),('map_information_enabled',False),
+                ('map_point_three_sigma_m',True),('map_point_three_sigma_m',0),
+                ('map_point_three_sigma_m',float('nan'))]:
             with self.subTest(key=key),self.assertRaisesRegex(ValueError,'information_contract'):
                 validate_ready(dict(value,**{key:invalid}))
 
-    def test_relative_uncertainty_damping_and_bad_counts_cannot_pass(self):
+    def test_false_accuracy_claims_and_inconsistent_counts_are_rejected(self):
         for key,invalid in [('admission_coordinate','host_camera'),('pose_uncertainty_included',False),
                 ('damping_included',True),('calibration_uncertainty_included',True),('map_qualified',True),
-                ('active_joint_observed',8),('active_eligible',True),('active_unqualified',6),
-                ('observed_outliers_withdrawn',-1),('metric_three_sigma_limit_m',.2),('pixel_sigma',float('inf'))]:
+                ('cross_layer_statistical_independence_verified',True),('world_observed_points',7),
+                ('eligible_points',True),('candidate_points',-1),('metric_three_sigma_limit_m',.2),
+                ('pixel_sigma',float('inf')),('optimized_through_ns',0),('pending',True),
+                ('optimize_seconds',float('nan'))]:
             with self.subTest(key=key),self.assertRaisesRegex(ValueError,'geometry_report'):
-                validate_geometry(dict(geometry(),**{key:invalid}),7)
-    def test_unavailable_information_is_reported_without_a_point_certificate(self):
-        value=geometry();value['error']='unavailable_factor_information'
-        accepted=validate_geometry(value,7)
-        self.assertEqual(accepted['error'],value['error'])
-        self.assertEqual((accepted['active_eligible'],accepted['active_joint_observed']),(0,0))
+                validate_geometry(dict(geometry(),**{key:invalid}),12)
+
+    def test_mapping_failure_withholds_certificates_without_invalidating_navigation(self):
+        value=geometry();value['error']='mapping_image_capacity'
+        self.assertEqual(validate_geometry(value,12)['error'],value['error'])
         for changes in ({'error':True},{'error':''},{'error':'x'*1025},
-                {'active_joint_observed':1},{'active_joint_observed':1,'active_eligible':1,'active_unqualified':6}):
+                {'world_observed_points':1},{'world_observed_points':1,'eligible_points':1}):
             with self.subTest(changes=changes),self.assertRaisesRegex(ValueError,'geometry_report'):
-                validate_geometry(dict(value,**changes),7)
+                validate_geometry(dict(value,**changes),12)
         del value['error']
-        with self.assertRaisesRegex(ValueError,'geometry_report'):validate_geometry(value,7)
+        with self.assertRaisesRegex(ValueError,'geometry_report'):validate_geometry(value,12)
 
 
 if __name__=='__main__':unittest.main()
