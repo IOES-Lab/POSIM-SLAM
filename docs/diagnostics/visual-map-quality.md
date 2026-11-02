@@ -51,11 +51,19 @@ map. A map cannot claim inputs newer than its paired tracking publication.
 wakes pending optimization and exports an immutable result covering that target.
 A separate bounded writer keeps camera/IMU input and state processing active.
 The native computation deadline is 10 seconds, the ROS owner deadline is 11
-seconds and the browser adapter service deadline is 12 seconds. Larger visual
-views allow 15 seconds at the HTTP client. These job bounds are distinct from
+seconds and the browser adapter service deadline is 12 seconds. These job bounds are distinct from
 existing state, sensor, segment and completed-snapshot freshness checks. Only one
 native export is active; another request reports busy. Session changes cancel
 owner admission and cannot relabel an old map.
+
+`LiveClient.snapshot(id, refresh=False)` reads the immutable published snapshot
+without waking optimization. A separate capacity-one writer produces
+`worker-view.ply`; it can complete while an explicit refresh waits. It does not
+replace the export PLY or candidate diagnostics. The ROS `/snapshot` service
+uses a separate pending request and writes `view.ply`; its owner/adapter/client
+bounds are 2/2.5/3 seconds. The 2,000/5,000/all-points viewer uses this service;
+the 1,000-point ROS sample is unchanged. PLY and replies identify
+`snapshot_policy current` or `snapshot_policy update`.
 
 PLY and the export response carry `requested_mapping_revision`,
 `optimization_revision` and `optimized_through_ns`. The result revision must
@@ -66,11 +74,18 @@ as stale transport. The three-second freshness budget remains bounded.
 
 전체 지도 요청은 수신 완료된 입력 회차를 고정하고 최적화를 깨웁니다. 별도 출력
 스레드가 그 기준을 반영한 결과를 기다리는 동안 센서 수신과 항법은 계속합니다.
-계산 대기는 네이티브 10초·ROS 소유자 11초·브라우저 서비스 12초이며 확장 뷰의
-HTTP 요청은 15초입니다. 상태·센서·구간·완료된 결과의 신선도 검사는 별도입니다.
+다운로드 계산 대기는 네이티브 10초·ROS 소유자 11초·브라우저 서비스 12초입니다.
+상태·센서·구간·완료된 결과의 신선도 검사는 별도입니다.
 한 번에 하나의 내보내기를 처리하며 구간이 바뀐 이전 결과는 수용하지 않습니다.
 요청 회차·완료 회차·지도 입력 시각을 검증합니다. 서버 계산 시간을 구분해 응답
 전송 지연만 결과의 유효 시간에서 차감하며 3초 신선도 한도를 유지합니다.
+
+`refresh=False` 조회는 발행된 불변 지도 사본을 읽으며 최적화를 깨우지 않습니다.
+별도 출력 스레드와 요청 슬롯을 사용해 다운로드 대기 중에도 조회를 처리합니다.
+조회 파일은 전체 다운로드 PLY와 후보 진단을 덮어쓰지 않습니다. ROS `/snapshot`
+조회는 소유자·어댑터·HTTP에서 각각 2초·2.5초·3초로 제한합니다.
+2,000점·5,000점·전체 뷰는 이 경로를 사용하고 1,000점 ROS 표본은 유지합니다.
+PLY와 응답은 `snapshot_policy current` 또는 `snapshot_policy update`를 구분합니다.
 
 The export contains all eligible points independently of the display sample. PLY scope `reoptimized_sparse_mapping_landmarks` requires
 `map_qualified false`, a positive `optimization_revision` and a positive

@@ -17,6 +17,7 @@ def native_settings():
 def validate_ready(value):
     if (value.get('map_information_transport') != 'persistent_nfr_world_v1'
             or value.get('map_snapshot_update') != 'retained_revision_v1'
+            or value.get('map_snapshot_view') != 'published_snapshot_v1'
             or type(value.get('map_snapshot_timeout_ms')) is not int
             or value['map_snapshot_timeout_ms'] != VIO_EXPORT_WORKER_SECONDS*1000
             or value.get('persistent_map_transport') != 'retained_keyframe_reoptimization_v1'

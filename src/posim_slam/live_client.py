@@ -41,6 +41,7 @@ class LiveClient:
         self.ping_transport=False;self.gravity_seed_transport=False;self.sonar_transport=False;self.sonar_auxiliary_transport=False
         self.sonar_clock_transport=False;self.dvl_transport=False;self.sensor_state_transport=False;self.pressure_transport=False;self.terrain_ping_transport=False
         self.ground_transport=False
+        self.map_view_transport=False
         self.surface_transport=False;self.surface_directory=None;self._surface_files={};self._surface_request_id=0
         self._surface_lock=threading.Lock();options={}
         if self.processing_request.get('enable_surface_owner',False):
@@ -104,6 +105,7 @@ class LiveClient:
                     self.dvl_transport=value.get('dvl_measurement_transport')=='body_velocity_gyro_covariance_v1'
                     self.terrain_ping_transport=value.get('terrain_ping_transport')=='exact_sensor_range_v1'
                     self.ground_transport=value.get('ground_transport')=='exact_beam_entries_v1'
+                    self.map_view_transport=value.get('map_snapshot_view')=='published_snapshot_v1'
                     self.surface_transport=value.get('native_surface_transport')=='snapshot_increment_owner_queue_v1'
                     if self.processing_request.get('enable_surface_owner',False) and not self.surface_transport:
                         raise ValueError('worker_surface_owner_unsupported')
@@ -280,10 +282,12 @@ class LiveClient:
         if not getattr(self,'inertial_seed_transport',False):raise ValueError('worker_inertial_seed_unsupported')
         self.send(13,struct.pack('<q12d',stamp_ns,*(x for v in vectors for x in v)))
 
-    def snapshot(self,request_id):
+    def snapshot(self,request_id,*,refresh=True):
         if type(request_id) is not int or not 0<request_id<2**63:
             raise ValueError('invalid_snapshot_request_id')
-        self.send(4,struct.pack('<Q',request_id))
+        if type(refresh) is not bool:raise ValueError('invalid_snapshot_policy')
+        if not refresh and not getattr(self,'map_view_transport',False):raise ValueError('worker_map_view_unsupported')
+        self.send(4,struct.pack('<Q',request_id)+(b'' if refresh else b'\x00'))
 
     def _surface_request(self,request_id):
         if not self.ready.is_set():raise WorkerNotReady('worker_not_ready')

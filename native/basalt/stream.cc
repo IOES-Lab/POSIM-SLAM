@@ -566,14 +566,18 @@ int main(int argc,char** argv) {
     struct ExportRequest {uint64_t id,revision;};
     tbb::concurrent_bounded_queue<ExportRequest> exports;exports.set_capacity(1);
     std::atomic<bool> export_busy{false};
-    auto write_snapshot=[&](uint64_t request,uint64_t required,const std::shared_ptr<const Snapshot>& full) {
-        const fs::path temporary=export_file.string()+".tmp";
-        if(fs::is_symlink(export_file) || fs::is_symlink(temporary))fail("snapshot_path");
+    tbb::concurrent_bounded_queue<uint64_t> views;views.set_capacity(1);
+    std::atomic<bool> view_busy{false};
+    auto write_snapshot=[&](uint64_t request,uint64_t required,const std::shared_ptr<const Snapshot>& full,bool refresh=true) {
+        const fs::path target_file=refresh?export_file:export_file.parent_path()/"worker-view.ply";
+        const fs::path temporary=target_file.string()+".tmp";
+        if(fs::is_symlink(target_file) || fs::is_symlink(temporary))fail("snapshot_path");
         std::ofstream file(temporary,std::ios::binary|std::ios::trunc);
         if(!file)fail("snapshot_unwritable");
         file<<"ply\nformat binary_little_endian 1.0\n"
             <<"comment scope "<<(persistent_mapping?"reoptimized_sparse_mapping_landmarks":"accumulated_local_vio_landmarks")<<'\n';
         if(full->mapping)file<<"comment map_qualified false\ncomment optimization_revision "<<full->mapping->revision
+            <<"\ncomment snapshot_policy "<<(refresh?"update":"current")
             <<"\ncomment requested_mapping_revision "<<required
             <<"\ncomment optimized_through_ns "<<full->mapping->optimized_through_ns<<'\n';
         file<<"comment request_id "<<request<<"\ncomment stamp_ns "<<full->stamp<<'\n'
@@ -585,8 +589,8 @@ int main(int argc,char** argv) {
           file.write(bytes,4);
         }
         file.flush();if(!file)fail("snapshot_write_failed");file.close();
-        fs::rename(temporary,export_file);
-        if(record_mapping_candidates && full->mapping) {
+        fs::rename(temporary,target_file);
+        if(refresh && record_mapping_candidates && full->mapping) {
           const fs::path target=export_file.parent_path()/"worker-map.candidates.json";
           const fs::path pending=target.string()+".tmp";
           if(fs::is_symlink(target) || fs::is_symlink(pending))fail("mapping_candidate_path");
@@ -601,7 +605,7 @@ int main(int argc,char** argv) {
             {"revision",full->mapping->revision},{"candidates",rows}}).dump()<<'\n';
           diagnostic.flush();if(!diagnostic)fail("mapping_candidate_write_failed");diagnostic.close();fs::rename(pending,target);
         }
-        if(record_visual_tracks) {
+        if(refresh && record_visual_tracks) {
           if(full->ids.size()!=full->points.size())fail("archive_trace_identity");
           auto path=fs::path(argv[1]);path.replace_extension(".archive-export-"+std::to_string(request)+".json");
           if(fs::exists(path) || fs::is_symlink(path))fail("archive_trace_path");
@@ -613,10 +617,25 @@ int main(int argc,char** argv) {
         Json response={{"type","export"},{"request_id",request},{"success",true},
               {"stamp_ns",full->stamp},{"points",full->points.size()}};
         if(full->mapping)response.update({{"requested_mapping_revision",required},
+          {"snapshot_policy",refresh?"update":"current"},
           {"optimization_revision",full->mapping->revision},
           {"optimized_through_ns",full->mapping->optimized_through_ns}});
         emit(response);
     };
+    // A viewer reads the immutable published map. It neither wakes the mapper
+    // nor occupies the refresh writer while an explicit export awaits input.
+    std::thread view_writer([&] {
+      try {for(;;) {
+        uint64_t request;views.pop(request);
+        std::shared_ptr<const Snapshot> full;
+        {std::lock_guard<std::mutex> lock(snapshot_mutex);full=snapshot;}
+        if(owner->posim_mapping_handoff_failed.load())persistent_map->invalidate("mapping_handoff_backlog");
+        if(!full || !full->mapping || full->points.empty() || !persistent_map->snapshot()->error.empty())
+          emit({{"type","export"},{"request_id",request},{"success",false},{"reason","map_unavailable"}});
+        else write_snapshot(request,full->mapping->revision,full,false);
+        view_busy.store(false);
+      }} catch(const std::exception& error){fail(error.what());}
+    });
     std::thread export_writer([&] {
       try {for(;;) {
         ExportRequest request;exports.pop(request);
@@ -783,6 +802,7 @@ int main(int argc,char** argv) {
           {"map_information_transport",persistent_mapping?"persistent_nfr_world_v1":"joint_linearized_world_v1"},
           {"persistent_map_transport",persistent_mapping?Json("retained_keyframe_reoptimization_v1"):Json(nullptr)},
           {"map_snapshot_update",persistent_mapping?Json("retained_revision_v1"):Json(nullptr)},
+          {"map_snapshot_view",persistent_mapping?Json("published_snapshot_v1"):Json(nullptr)},
           {"map_snapshot_timeout_ms",persistent_mapping?Json(10000):Json(nullptr)},
           {"map_observation_culling",map_observation_culling},
           {"map_information_enabled",joint_map_information},{"map_point_three_sigma_m",map_point_three_sigma_m},
@@ -936,9 +956,16 @@ int main(int argc,char** argv) {
         if(gravity_stamp<=0 || !gravity_direction.allFinite() || std::abs(gravity_direction.norm()-1)>1e-6)
           fail("invalid_gravity_seed");
       } else if(type==4) {
-        if(size!=8)fail("snapshot_request_size");
+        if(size!=8 && size!=9)fail("snapshot_request_size");
         const uint64_t request=u64(bytes.data());
         if(!request)fail("snapshot_request_id");
+        if(size==9) {
+          if(bytes[8]!=0 || !persistent_map)fail("snapshot_view_contract");
+          if(view_busy.exchange(true))
+            emit({{"type","export"},{"request_id",request},{"success",false},{"reason","map_view_busy"}});
+          else if(!views.try_push(request))fail("snapshot_view_queue");
+          continue;
+        }
         if(export_busy.exchange(true)) {
           emit({{"type","export"},{"request_id",request},{"success",false},{"reason","map_export_busy"}});
           continue;

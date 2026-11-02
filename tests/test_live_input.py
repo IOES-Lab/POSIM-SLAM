@@ -7,6 +7,14 @@ from posim_slam.live_client import LiveClient,WorkerNotReady
 
 
 class LiveInputTests(unittest.TestCase):
+    def test_read_only_snapshot_has_a_distinct_bounded_request(self):
+        c=self.client();c.snapshot(7)
+        with self.assertRaisesRegex(ValueError,'worker_map_view_unsupported'):c.snapshot(8,refresh=False)
+        c.map_view_transport=True;c.snapshot(8,refresh=False)
+        self.assertEqual(c.input.get_nowait(),struct.pack('<IIQ',4,8,7))
+        self.assertEqual(c.input.get_nowait(),struct.pack('<IIQB',4,9,8,0))
+        with self.assertRaisesRegex(ValueError,'snapshot_policy'):c.snapshot(9,refresh=0)
+
     def client(self):
         c=LiveClient.__new__(LiveClient);c.closed=threading.Event();c.fault=None
         c.processing_request={}
