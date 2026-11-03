@@ -26,6 +26,7 @@ class NativeMappingChart {
     }
   }
   const std::vector<int64_t>& poses() const {return poses_;}
+  int64_t reference() const {return reference_;}
   const std::map<int64_t,int>& offsets() const {return offsets_;}
   const Eigen::Vector3d& point(int64_t id) const {return points_.at(id);}
   size_t numericBytes() const {return sizeof(double)*(7*anchors_.size()+3*points_.size()+3);}
@@ -124,9 +125,28 @@ class NativeMappingChart {
 class NativeMappingWindow {
  public:
   struct Step {bool accepted=false;int trials=0;double before=0,after=0;size_t active_originals=0;};
+  struct WorldPoints {
+    // Current nonlinear positions, with the hybrid model's linearized joint
+    // uncertainty. These are not posterior-mean increments or admission flags.
+    Eigen::VectorXd positions;
+    Eigen::MatrixXd covariance,unbounded_gram;
+    bool observed=false;
+  };
+  class WorldLinearization {
+    friend class NativeMappingWindow;
+    SubmapLinearization::Snapshot state;
+    SubmapInformation::Solution solution;
+    Eigen::VectorXd coordinates;
+    WorldLinearization(SubmapLinearization::Snapshot snapshot,SubmapInformation::Solution solved,Eigen::VectorXd value)
+        :state(std::move(snapshot)),solution(std::move(solved)),coordinates(std::move(value)) {}
+   public:
+    WorldLinearization(const WorldLinearization&)=default;
+    WorldLinearization(WorldLinearization&&)=default;
+  };
   NativeMappingWindow(basalt::NfrMapper& mapper,int64_t reference,
       const std::set<int64_t>& active_poses,SubmapInformation::Limits limits={})
-      :mapper_(mapper),chart_(mapper,reference),limits_(limits) {
+      :mapper_(mapper),chart_(mapper,reference),limits_(limits),
+       reference_weight_(mapper.config.vio_init_pose_weight) {
     if(active_poses.empty())throw std::invalid_argument("native_window_empty");
     for(auto stamp:active_poses)if(!chart_.offsets().count(stamp))throw std::invalid_argument("native_window_unknown_pose");
     const auto original=nativeMappingRows(mapper_);const auto source=chart_.rows(mapper_,original);
@@ -151,8 +171,8 @@ class NativeMappingWindow {
     if(active.empty())throw std::invalid_argument("native_window_no_active_likelihoods");
     if(frontier.size()>limits.active_columns)throw std::runtime_error("native_window_separator_capacity");
     // Only the conditional is retained per landmark, not a duplicate copy of
-    // every archived likelihood. Reserve all three possible null directions
-    // so a rank change cannot consume an unaccounted numeric allocation.
+    // every archived likelihood. Finite noise and unbounded directions have
+    // three columns in total, including when the conditional rank changes.
     size_t reserved=chart_.numericBytes();
     for(const auto& [id,point]:points_)reserved+=sizeof(double)*(point.backsub.size()+3+9);
     if(reserved>=limits.numeric_bytes)throw std::runtime_error("native_window_numeric_capacity");
@@ -188,6 +208,80 @@ class NativeMappingWindow {
       out.segment<6>(chart_.offsets().at(stamp))=owner_->query(solution,columns,Eigen::Matrix<double,6,6>::Identity()).mean;
     }
     return out;
+  }
+  // One original position/world-z-rotation reference supplies four shared
+  // latent errors. It is independent of the relative/gravity likelihoods.
+  // Query up to eight distinct finite points together to retain cross-point
+  // covariance; separate per-point priors would lose relative cancellation.
+  // Zero reference weight leaves its gauge unbounded. No reference, damping
+  // or measurement is inserted into the conditional mean optimizer.
+  WorldLinearization worldLinearization() const {
+    const auto state=snapshot();return {state,owner_->solve(state),chart_.coordinates(mapper_)};
+  }
+  WorldPoints worldInformation(const std::vector<int64_t>& ids) const {
+    return worldInformation(worldLinearization(),ids);
+  }
+  // Reuse one solve across a map export. A changed owner rejects the context;
+  // the caller's exclusive mapper ownership also applies while querying it.
+  WorldPoints worldInformation(const WorldLinearization& linearization,const std::vector<int64_t>& ids) const {
+    if(linearization.state!=snapshot())throw std::invalid_argument("native_window_stale_world_linearization");
+    if(ids.empty() || ids.size()>8 || std::set<int64_t>(ids.begin(),ids.end()).size()!=ids.size())
+      throw std::invalid_argument("native_window_world_points");
+    if(!std::isfinite(reference_weight_) || reference_weight_<0)
+      throw std::invalid_argument("native_window_reference_information");
+    const auto& value=linearization.coordinates;
+    const auto reference=mapper_.getFramePoses().at(chart_.reference()).getPose();
+    const auto reference_derivative=chart_.derivative(chart_.reference(),value);
+    const int reference_column=chart_.offsets().at(chart_.reference());
+    const int rows=3*ids.size(),columns=value.size();
+    Eigen::MatrixXd derivative=Eigen::MatrixXd::Zero(rows,columns);
+    Eigen::MatrixXd shared=Eigen::MatrixXd::Zero(rows,4);
+    WorldPoints out;out.positions.resize(rows);
+    out.covariance=Eigen::MatrixXd::Zero(rows,rows);
+    out.unbounded_gram=Eigen::MatrixXd::Zero(rows,rows);bool observed=true;
+    for(size_t i=0;i<ids.size();++i) {
+      const auto found=points_.find(ids[i]);
+      if(found==points_.end())throw std::invalid_argument("native_window_unknown_point");
+      const auto& conditional=found->second;const auto& point=mapper_.lmdb.getLandmark(ids[i]);
+      if(!std::isfinite(point.inv_dist) || point.inv_dist<=0 || !point.direction.allFinite())
+        throw std::invalid_argument("native_window_nonfinite_world_point");
+      const auto host_pose=mapper_.getFramePoses().at(point.host_kf_id.frame_id).getPose();
+      const auto camera=host_pose*mapper_.calib.T_i_c.at(point.host_kf_id.cam_id);
+      Eigen::Matrix<double,4,2> direction;
+      const Eigen::Vector4d ray=basalt::StereographicParam<double>::unproject(point.direction,&direction);
+      const Eigen::Vector3d camera_point=ray.head<3>()/point.inv_dist;
+      const Eigen::Vector3d world=camera*camera_point;
+      Eigen::Matrix3d local;local.leftCols<2>()=direction.topRows<3>()/point.inv_dist;
+      local.col(2)=-camera_point/point.inv_dist;
+      const Eigen::Matrix3d landmark=camera.rotationMatrix()*local;
+      Eigen::Matrix<double,3,6> host;
+      host.leftCols<3>().setIdentity();host.rightCols<3>()=-Sophus::SO3d::hat(world-host_pose.translation());
+      const Eigen::MatrixXd propagated=landmark*conditional.backsub;
+      for(size_t c=0;c<conditional.columns.size();++c)
+        derivative.block<3,1>(3*i,conditional.columns[c])+=propagated.col(c);
+      derivative.block<3,6>(3*i,chart_.offsets().at(point.host_kf_id.frame_id))+=
+        host*chart_.derivative(point.host_kf_id.frame_id,value);
+      out.positions.segment<3>(3*i)=world;
+      shared.block<3,3>(3*i,0).setIdentity();
+      shared.block<3,1>(3*i,3)=Eigen::Vector3d::UnitZ().cross(world-reference.translation());
+      // The original VIO prior is on left-rotation z, not Euler heading.
+      // At tilted reference attitudes its roll coordinate changes that z
+      // component: transfer this shared coupling instead of adding a prior.
+      derivative.block<3,6>(3*i,reference_column)-=
+        shared.block<3,1>(3*i,3)*reference_derivative.row(5);
+      const Eigen::MatrixXd noise=landmark*conditional.noise,free=landmark*conditional.unbounded;
+      out.covariance.block<3,3>(3*i,3*i)=noise*noise.transpose();
+      out.unbounded_gram.block<3,3>(3*i,3*i)=free*free.transpose();
+      if(free.norm()>1e-8*std::max(1.,landmark.norm()*conditional.unbounded.norm()))observed=false;
+    }
+    std::vector<int64_t> order(columns);std::iota(order.begin(),order.end(),0);
+    const auto query=owner_->query(linearization.solution,order,derivative);
+    out.covariance+=query.covariance;out.unbounded_gram+=query.unbounded_gram;
+    if(reference_weight_>0)out.covariance.noalias()+=shared*shared.transpose()/reference_weight_;
+    else {out.unbounded_gram.noalias()+=shared*shared.transpose();observed=false;}
+    if(!out.positions.allFinite() || !out.covariance.allFinite() || !out.unbounded_gram.allFinite())
+      throw std::runtime_error("native_window_nonfinite_world_information");
+    out.observed=observed && query.observed;return out;
   }
   Step step(const std::function<bool()>& cancelled={}) {
     auto check=[&] {if(cancelled && cancelled())throw std::runtime_error("native_window_cancelled");};
@@ -231,10 +325,11 @@ class NativeMappingWindow {
   }
  private:
   struct Conditional {
-    std::vector<int64_t> columns;Eigen::MatrixXd backsub,unbounded;Eigen::VectorXd offset;
+    std::vector<int64_t> columns;Eigen::MatrixXd backsub,noise,unbounded;Eigen::VectorXd offset;
     explicit Conditional(NativeMappingPointReduction value):columns(std::move(value.likelihood.columns)),
-      backsub(std::move(value.backsub)),unbounded(std::move(value.unbounded)),offset(std::move(value.offset)) {}
-    size_t bytes() const {return sizeof(double)*(backsub.size()+unbounded.size()+offset.size());}
+      backsub(std::move(value.backsub)),noise(std::move(value.noise)),
+      unbounded(std::move(value.unbounded)),offset(std::move(value.offset)) {}
+    size_t bytes() const {return sizeof(double)*(backsub.size()+noise.size()+unbounded.size()+offset.size());}
   };
   struct Backup {
     basalt::NfrMapper& mapper;Eigen::aligned_map<int64_t,basalt::PoseStateWithLin<double>> poses;
@@ -280,6 +375,6 @@ class NativeMappingWindow {
   }
   basalt::NfrMapper& mapper_;NativeMappingChart chart_;SubmapInformation::Limits limits_;
   NativeMappingSelection selection_;std::unique_ptr<SubmapLinearization> owner_;
-  std::map<int64_t,Conditional> points_;size_t originals_=0;
+  std::map<int64_t,Conditional> points_;size_t originals_=0;double reference_weight_;
 };
 } // namespace posim_slam

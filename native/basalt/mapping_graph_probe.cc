@@ -189,12 +189,117 @@ void nativeWindowControls(const Fixture& fixture) {
   assert((first->getFramePoses().at(10).getPose().translation()-untouched->getFramePoses().at(10).getPose().translation()).norm()==0);
   std::cout<<"Native active window: fixed-chart derivatives, gauge convention, selected originals, capacity, nonlinear update and cancellation rollback pass; derivative error "<<maximum<<".\n";
 }
+void nativeWorldControls(const Fixture& fixture) {
+  auto mapper=fixture.mapper();mapper->config.vio_init_pose_weight=2.;
+  mapper->calib.T_i_c[0]=Sophus::SE3d(Sophus::SO3d::exp(Eigen::Vector3d(.03,-.06,.02)),Eigen::Vector3d(.12,-.04,.07));
+  mapper->lmdb.getLandmark(99).inv_dist=.2;
+  for(auto& [stamp,state]:mapper->getFramePoses()) {
+    Sophus::Vector6d tilt=Sophus::Vector6d::Zero();tilt.tail<3>()=Eigen::Vector3d(.25,-.3,.4);state.applyInc(tilt);
+  }
+  mapper->rel_pose_factors.clear();
+  for(const auto pair:{std::pair<int64_t,int64_t>{10,20},{20,30}}) {
+    basalt::RelPoseFactor factor;factor.t_i_ns=pair.first;factor.t_j_ns=pair.second;
+    factor.T_i_j=mapper->getFramePoses().at(pair.first).getPose().inverse()*mapper->getFramePoses().at(pair.second).getPose();
+    factor.cov_inv=10*Sophus::Matrix6d::Identity();mapper->rel_pose_factors.push_back(factor);
+  }
+  mapper->roll_pitch_factors[0].R_w_i_meas=mapper->getFramePoses().at(10).getPose().so3();
+  auto world=[&](int64_t id) {
+    const auto& p=mapper->lmdb.getLandmark(id);
+    const auto host=mapper->getFramePoses().at(p.host_kf_id.frame_id).getPose()*mapper->calib.T_i_c.at(p.host_kf_id.cam_id);
+    const Eigen::Vector4d ray=basalt::StereographicParam<double>::unproject(p.direction);
+    return Eigen::Vector3d(host*(ray.head<3>()/p.inv_dist));
+  };
+  for(int64_t id:{42,99}) {
+    const auto point=world(id);auto& p=mapper->lmdb.getLandmark(id);
+    for(auto& [image,pixel]:p.obs) {
+      const auto camera=mapper->getFramePoses().at(image.frame_id).getPose()*mapper->calib.T_i_c.at(image.cam_id);
+      Eigen::Vector4d local;local.head<3>()=camera.inverse()*point;local[3]=1;
+      assert(mapper->calib.intrinsics.at(image.cam_id).project(local,pixel));
+    }
+  }
+  auto dense=[&] {
+    auto rows=posim_slam::nativeMappingRows(*mapper);int count=4;
+    std::sort(rows.points.begin(),rows.points.end(),[](const auto& a,const auto& b){return a.id<b.id;});
+    for(const auto& group:rows.factors)count+=group.jacobian.rows();
+    for(const auto& group:rows.points)count+=group.pose.rows();
+    Eigen::MatrixXd jacobian=Eigen::MatrixXd::Zero(count,24);int offset=0;
+    const auto poses=posim_slam::nativeMappingPoseOffsets(rows.poses);
+    for(const auto& group:rows.factors) {
+      for(size_t i=0;i<group.poses.size();++i)jacobian.block(offset,poses.at(group.poses[i]),group.jacobian.rows(),6)=group.jacobian.middleCols<6>(6*i);
+      offset+=group.jacobian.rows();
+    }
+    for(size_t p=0;p<rows.points.size();++p) {
+      const auto& group=rows.points[p];
+      for(size_t i=0;i<group.poses.size();++i)jacobian.block(offset,poses.at(group.poses[i]),group.pose.rows(),6)=group.pose.middleCols<6>(6*i);
+      jacobian.block(offset,18+3*p,group.pose.rows(),3)=group.landmark;offset+=group.pose.rows();
+    }
+    jacobian.block<3,3>(offset,0)=std::sqrt(2.)*Eigen::Matrix3d::Identity();jacobian(offset+3,5)=std::sqrt(2.);
+    Eigen::JacobiSVD<Eigen::MatrixXd> svd(jacobian,Eigen::ComputeThinV);assert(svd.singularValues().minCoeff()>1e-5);
+    const Eigen::MatrixXd root=svd.matrixV()*svd.singularValues().cwiseInverse().asDiagonal();
+    // Numerical world derivatives independently exercise host, calibration and
+    // inverse-distance transport, without using the window's analytic chain.
+    Eigen::MatrixXd output=Eigen::MatrixXd::Zero(6,24);const double epsilon=1e-6;
+    for(size_t p=0;p<rows.points.size();++p) {
+      const auto id=rows.points[p].id;
+      for(const auto& [stamp,index]:poses)for(int axis=0;axis<6;++axis) {
+        const auto state=mapper->getFramePoses().at(stamp);Sophus::Vector6d d=Sophus::Vector6d::Zero();d[axis]=epsilon;
+        mapper->getFramePoses().at(stamp).applyInc(d);const auto plus=world(id);
+        mapper->getFramePoses().at(stamp)=state;mapper->getFramePoses().at(stamp).applyInc(-d);const auto minus=world(id);
+        mapper->getFramePoses().at(stamp)=state;output.block<3,1>(3*p,index+axis)=(plus-minus)/(2*epsilon);
+      }
+      auto& point=mapper->lmdb.getLandmark(id);const auto direction=point.direction;const double inv=point.inv_dist;
+      for(int axis=0;axis<3;++axis) {
+        if(axis<2)point.direction[axis]+=epsilon;else point.inv_dist+=epsilon;const auto plus=world(id);
+        point.direction=direction;point.inv_dist=inv;
+        if(axis<2)point.direction[axis]-=epsilon;else point.inv_dist-=epsilon;const auto minus=world(id);
+        point.direction=direction;point.inv_dist=inv;output.block<3,1>(3*p,18+3*p+axis)=(plus-minus)/(2*epsilon);
+      }
+    }
+    const Eigen::MatrixXd finite=output*root;return Eigen::MatrixXd(finite*finite.transpose());
+  };
+  posim_slam::NativeMappingWindow window(*mapper,10,{10,20,30});const auto before=window.snapshot();
+  const auto query=window.worldInformation({42,99});const auto expected=dense();
+  assert(query.observed && query.unbounded_gram.norm()<1e-16);
+  assert((query.covariance-expected).norm()/expected.norm()<1e-8);
+  assert((query.positions.head<3>()-world(42)).norm()==0 && window.snapshot()==before);
+  const auto single=window.worldInformation({42});assert((single.covariance-query.covariance.topLeftCorner<3,3>()).norm()<1e-10);
+  rejects([&]{window.worldInformation({42,42});},"native_window_world_points");
+  rejects([&]{window.worldInformation({123});},"native_window_unknown_point");
+  auto& infinite=mapper->lmdb.getLandmark(99);const double inv=infinite.inv_dist;infinite.inv_dist=0;
+  rejects([&]{window.worldInformation({99});},"native_window_nonfinite_world_point");infinite.inv_dist=inv;
+  // Pure translation reference error is shared. Subtracting two world points
+  // cancels it, while independent per-point treatment leaves an extra I.
+  Eigen::Matrix<double,3,6> relative;relative<<Eigen::Matrix3d::Identity(),-Eigen::Matrix3d::Identity();
+  const double relative_error=(relative*(query.covariance-expected)*relative.transpose()).norm()/
+    std::max(1.,(relative*expected*relative.transpose()).norm());
+  assert(relative_error<1e-8);
+  const Eigen::Matrix3d wrong=query.covariance.topLeftCorner<3,3>()+query.covariance.bottomRightCorner<3,3>();
+  assert((wrong-relative*query.covariance*relative.transpose()).norm()>1.);
+  // A changed active tangent must still match the original physical reference.
+  Sophus::Vector6d delta=Sophus::Vector6d::Zero();delta[0]=.004;delta[4]=.002;
+  mapper->getFramePoses().at(30).applyInc(delta);
+  posim_slam::NativeMappingWindow changing(*mapper,10,{10,20,30});
+  const auto stale=changing.worldLinearization();
+  rejects([&]{window.worldInformation(stale,{42});},"native_window_stale_world_linearization");
+  const auto step=changing.step();assert(step.accepted);
+  rejects([&]{changing.worldInformation(stale,{42});},"native_window_stale_world_linearization");
+  const auto changed=changing.worldInformation({42,99});const auto changed_expected=dense();
+  assert(changed.observed && (changed.covariance-changed_expected).norm()/changed_expected.norm()<1e-8);
+  mapper->config.vio_init_pose_weight=0;
+  posim_slam::NativeMappingWindow unreferenced(*mapper,10,{10,20,30});const auto unbounded=unreferenced.worldInformation({42,99});
+  assert(!unbounded.observed && unbounded.unbounded_gram.norm()>1.);
+  // Existing owners retain the original weight instead of rereading settings.
+  assert((changing.worldInformation({42,99}).covariance-changed.covariance).norm()==0);
+  std::cout<<"Native world information: tilted reference, camera extrinsics, shared point covariance, changed chart, missing reference and invalid candidates pass; world covariance relative error "
+    <<(query.covariance-expected).norm()/expected.norm()<<", relative-point covariance error "<<relative_error<<".\n";
+}
 } // namespace
 
 int main(int argc,char** argv) {
   if(argc!=2)return 2;const std::filesystem::path directory=argv[1];Fixture fixture;
   nativeRowsControls(fixture);
   nativeWindowControls(fixture);
+  nativeWorldControls(fixture);
   Registry registry(fixture.calibration,fixture.config,"fixture-segment");auto original=fixture.mapper();
   const auto first=registry.capture(fixture.input,*original,10,original->getFramePoses().at(10).getPose(),Sophus::SE3d());
   assert(first->stable_ids.at(42)==0 && first->stable_ids.at(99)==1);

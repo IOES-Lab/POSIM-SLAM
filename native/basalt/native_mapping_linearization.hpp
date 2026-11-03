@@ -158,7 +158,7 @@ struct NativeMappingPointReduction {
   SubmapLinearization::Rows likelihood;
   Eigen::MatrixXd backsub;
   Eigen::VectorXd offset;
-  Eigen::MatrixXd unbounded;
+  Eigen::MatrixXd noise,unbounded;
 };
 inline std::map<int64_t,int> nativeMappingPoseOffsets(const std::vector<int64_t>& poses) {
   std::map<int64_t,int> offsets;
@@ -224,6 +224,7 @@ inline NativeMappingPointReduction reduceNativeMappingPoint(const NativeMappingP
     out.likelihood.originals.push_back("pixel:"+std::to_string(stamp)+":"+std::to_string(camera)+":"+std::to_string(feature));
   out.likelihood.jacobian=reduced.reduced.jacobian;out.likelihood.residual=reduced.reduced.residual;
   out.backsub=reduced.reduced.backsub_matrix;out.offset=reduced.reduced.backsub_offset;
+  out.noise=reduced.observable_noise_factor;
   out.unbounded=reduced.unobservable_basis;
   return out;
 }

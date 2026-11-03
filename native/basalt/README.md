@@ -158,6 +158,17 @@ reference position and heading select a conditional mean coordinate convention;
 they supply no measurement or world covariance. Reference roll and pitch remain
 variables. This interface applies to relative/gravity NFR graphs.
 
+`worldInformation()` returns current finite world points and their joint
+linearized covariance, including landmark conditional noise and shared old/new
+pose errors. It uses the original VIO position/world-z-rotation reference once,
+with the coupling to reference roll at tilted attitudes. Up to eight points are
+queried jointly; propagate both joint covariance and `unbounded_gram` when
+forming relative coordinates. Finite covariance alone cannot certify an
+unobserved direction. Zero
+reference weight remains unbounded. `worldLinearization()` reuses one solve
+across an export; updates invalidate it. These queries do not establish
+statistical calibration or replace the existing point-admission rules.
+
 `step()` uses backtracking on the hybrid Gaussian/robust objective, rejects a
 step that loses a previously valid projection, and restores poses, landmarks
 and the published owner on cancellation or failure. Callers exclusively own
@@ -198,6 +209,15 @@ existing full-history optimizer and limits; automatic rollover is not enabled.
 확정된 정보와 같은 기준을 사용합니다. 기존 기준 위치·방위는 조건부 평균의
 좌표를 선택하며 측정이나 세계 공분산을 추가하지 않습니다. 기준 자세의 롤·피치는
 계속 추정합니다. 상대 자세·중력 NFR 그래프에 사용하는 인터페이스입니다.
+
+`worldInformation()`은 현재의 유한한 세계 좌표 지도점과 결합 선형 공분산을
+반환합니다. 랜드마크 조건부 잡음과 과거·현재 자세의 공유 오차를 포함합니다.
+원래 VIO의 위치·세계 수직축 회전 기준을 한 번 반영하며, 기울어진 기준 자세의
+롤과 회전 기준 사이의 결합도 처리합니다. 최대 8점을 함께 조회하며 상대 좌표를
+계산할 때 결합 공분산과 `unbounded_gram`을 모두 전파합니다. 유한 공분산만으로
+관측 불가 방향을 유효 판정할 수 없습니다. 기준 가중치가 0이면 해당 자유도는 관측
+불가로 남습니다. `worldLinearization()`은 내보내기 동안 한 번의 풀이를 재사용하며
+갱신 후에는 다시 생성합니다. 통계적 보정이나 기존 점 채택 기준을 대신하지 않습니다.
 
 `step()`은 가우시안·강건 손실을 결합한 목적함수로 갱신 보폭을 조정합니다.
 유효했던 투영이 사라지는 갱신은 거부하며, 취소나 실패 시 자세·랜드마크·발행된
