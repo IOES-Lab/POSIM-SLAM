@@ -27,6 +27,24 @@ class NativeMappingCheckpoint {
     }
     return {{"model",value},{"sha256",digest(value)}};
   }
+  // Called while the registry captures the same exclusively owned mapper.
+  // The resulting graph holds both values even after the live owner advances.
+  static Json capture(const NativeMappingWindow& window,basalt::NfrMapper& mapper,int64_t reference) {
+    if(&mapper!=&window.mapper_ || reference!=window.chart_.reference_)
+      throw std::invalid_argument("native_window_checkpoint_owner");
+    return document(window);
+  }
+  static void validate(basalt::NfrMapper& mapper,const Json& saved,int64_t reference) {
+    if(decode(mapper,saved).reference!=reference)
+      throw std::invalid_argument("native_window_checkpoint_reference");
+  }
+  static std::unique_ptr<NativeMappingWindow> restore(basalt::NfrMapper& mapper,
+      const MappingGraphRegistry::Snapshot& graph,SubmapInformation::Limits limits={},
+      const std::function<bool()>& cancelled={}) {
+    if(!graph || !graph->validated || !graph->hasNativeWindow())
+      throw std::invalid_argument("native_window_checkpoint_missing");
+    return restore(mapper,graph->native_window,limits,cancelled);
+  }
   // The caller restores the matching graph first and exclusively owns it.
   // Rejection or cancellation leaves its poses and landmarks byte-identical.
   // Limits remain caller policy, not a value trusted from the saved document.
@@ -34,6 +52,29 @@ class NativeMappingCheckpoint {
       SubmapInformation::Limits limits={},const std::function<bool()>& cancelled={}) {
     using namespace mapping_graph_detail;
     auto check=[&]{if(cancelled && cancelled())throw std::runtime_error("native_window_cancelled");};check();
+    const auto parsed=decode(mapper,saved);
+    NativeMappingWindow::Backup backup(mapper);
+    for(const auto& [stamp,anchor]:parsed.poses)
+      mapper.getFramePoses().at(stamp)=basalt::PoseStateWithLin<double>(stamp,anchor);
+    for(const auto& [id,parameters]:parsed.points) {
+      auto& point=mapper.lmdb.getLandmark(id);point.direction=parameters.head<2>();point.inv_dist=parameters[2];
+    }
+    check();auto window=std::make_unique<NativeMappingWindow>(mapper,parsed.reference,parsed.active,limits);
+    backup.restore();window->chart_.coordinates(mapper);check();
+    window->replaceActive(nativeMappingRows(mapper,&window->selection_),check);
+    backup.committed=true;return window;
+  }
+ private:
+  struct Parsed {
+    int64_t reference;
+    std::set<int64_t> active;
+    Eigen::aligned_map<int64_t,Sophus::SE3d> poses;
+    Eigen::aligned_map<int64_t,Eigen::Vector3d> points;
+  };
+  // Decode once without mutating the supplied mapper. Archive reads and native
+  // restoration enforce the same bindings and structural checks.
+  static Parsed decode(basalt::NfrMapper& mapper,const Json& saved) {
+    using namespace mapping_graph_detail;
     const auto& value=saved.at("model");
     if(value.at("schema")!="posim-slam-native-window-1" ||
         value.at("basalt_revision")!="0f3b2b52c807f70ff4e2973ce253c73329eea7bc")
@@ -46,33 +87,29 @@ class NativeMappingCheckpoint {
     if(saved.at("sha256")!=digest(value))throw std::invalid_argument("native_window_checkpoint_digest");
     if(value.at("source")!=binary(nativeMappingSourceIdentity(mapper)))throw std::invalid_argument("native_window_checkpoint_source");
     if(value.at("state")!=binary(nativeMappingStateIdentity(mapper)))throw std::invalid_argument("native_window_checkpoint_state");
-    const auto reference=integer(value.at("reference"),1,INT64_MAX);std::set<int64_t> selected,pose_ids,point_ids;
-    for(const auto& stamp:active)if(!selected.insert(integer(stamp,1,INT64_MAX)).second)
+    Parsed result;result.reference=integer(value.at("reference"),1,INT64_MAX);
+    if(!mapper.getFramePoses().count(result.reference))throw std::invalid_argument("native_window_checkpoint_reference");
+    for(const auto& stamp:active)if(!result.active.insert(integer(stamp,1,INT64_MAX)).second)
       throw std::invalid_argument("native_window_checkpoint_active");
-    NativeMappingWindow::Backup backup(mapper);
+    for(auto stamp:result.active)if(!mapper.getFramePoses().count(stamp))throw std::invalid_argument("native_window_unknown_pose");
     for(const auto& row:poses) {
       if(!row.is_array() || row.size()!=2)throw std::invalid_argument("native_window_checkpoint_shape");
       const auto stamp=integer(row[0],1,INT64_MAX);
-      if(!mapper.getFramePoses().count(stamp) || !pose_ids.insert(stamp).second)
+      if(!mapper.getFramePoses().count(stamp) || !result.poses.emplace(stamp,pose(row[1])).second)
         throw std::invalid_argument("native_window_checkpoint_pose");
-      mapper.getFramePoses().at(stamp)=basalt::PoseStateWithLin<double>(stamp,pose(row[1]));
     }
     for(const auto& row:points) {
       if(!row.is_array() || row.size()!=4)throw std::invalid_argument("native_window_checkpoint_shape");
       const auto id=integer(row[0],0,INT32_MAX);
-      if(!mapper.lmdb.getLandmarks().count(id) || !point_ids.insert(id).second)
+      if(!mapper.lmdb.getLandmarks().count(id) || result.points.count(id))
         throw std::invalid_argument("native_window_checkpoint_point");
-      auto& point=mapper.lmdb.getLandmark(id);const auto parameters=doubles(row[3],3);
+      const auto& point=mapper.lmdb.getLandmark(id);const auto parameters=doubles(row[3],3);
       if(point.host_kf_id!=basalt::TimeCamId(integer(row[1],1,INT64_MAX),integer(row[2],0,INT32_MAX)) || parameters[2]<0)
         throw std::invalid_argument("native_window_checkpoint_point");
-      point.direction=Eigen::Vector2d(parameters[0],parameters[1]);point.inv_dist=parameters[2];
+      result.points.emplace(id,Eigen::Vector3d(parameters[0],parameters[1],parameters[2]));
     }
-    check();auto window=std::make_unique<NativeMappingWindow>(mapper,reference,selected,limits);
-    backup.restore();window->chart_.coordinates(mapper);check();
-    window->replaceActive(nativeMappingRows(mapper,&window->selection_),check);
-    backup.committed=true;return window;
+    return result;
   }
- private:
   static Json binary(const InputDigest::Value& value) {return Json::binary(std::vector<uint8_t>(value.begin(),value.end()));}
   static Json digest(const Json& value) {
     const auto bytes=Json::to_cbor(value);

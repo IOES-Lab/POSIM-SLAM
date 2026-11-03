@@ -348,8 +348,62 @@ void nativeCheckpointControls(const Fixture& fixture) {
   std::cout<<"Native window checkpoint: CBOR anchors, shared uncertainty, original ownership, continued optimization, source/state binding, corruption, capacity and cancellation rollback pass.\n";
 }
 
+void nativeArchiveControls(const Fixture& fixture,const std::filesystem::path& directory) {
+  using Checkpoint=posim_slam::NativeMappingCheckpoint;
+  auto mapper=fixture.mapper(),other=fixture.mapper();
+  posim_slam::NativeMappingWindow window(*mapper,10,{10,20,30});assert(window.step().accepted);
+  Registry registry(fixture.calibration,fixture.config,"window-fixture");
+  rejects([&]{registry.capture(fixture.input,*other,10,Sophus::SE3d(),Sophus::SE3d(),&window);},"native_window_checkpoint_owner");
+  rejects([&]{registry.capture(fixture.input,*mapper,20,Sophus::SE3d(),Sophus::SE3d(),&window);},"native_window_checkpoint_owner");
+  const auto noise=mapper->obs_std_dev;mapper->obs_std_dev*=2;
+  rejects([&]{registry.capture(fixture.input,*mapper,10,Sophus::SE3d(),Sophus::SE3d(),&window);},"mapping_graph_source");mapper->obs_std_dev=noise;
+  const auto graph=registry.capture(fixture.input,*mapper,10,Sophus::SE3d(),Sophus::SE3d(),&window);
+  assert(graph->hasNativeWindow() && Registry::document(graph).at("graph_revision")==1);
+  const auto checkpoint=Checkpoint::document(window);const auto quality=window.mapInformation(.1);
+  const auto output=posim_slam::mappingOutput(*mapper,Sophus::SE3d(),quality,graph);
+  const auto path=directory/"window.graph.pmap";
+  assert(window.step().accepted); // The export must retain the earlier state.
+  Registry::write(path,graph,321,30);
+  const auto loaded=Registry::read(path,"window-fixture");assert(loaded.graph->hasNativeWindow());
+  auto restored=Registry::restore(Registry::document(loaded.graph));
+  auto reopened=Checkpoint::restore(*restored,loaded.graph);
+  assert(Checkpoint::document(*reopened)==checkpoint);
+  const auto replay=posim_slam::mappingOutput(*restored,Sophus::SE3d(),reopened->mapInformation(.1),loaded.graph);
+  assert(output.points==replay.points && output.ids==replay.ids && output.nonfinite==replay.nonfinite);
+  const auto bytes=[&]{std::ifstream in(path,std::ios::binary);return std::vector<uint8_t>((std::istreambuf_iterator<char>(in)),{});}();
+  assert(std::string(bytes.begin(),bytes.begin()+8)=="PSIMMAP2");
+  Registry::write(path,loaded.graph,321,30);
+  {std::ifstream in(path,std::ios::binary);assert(std::vector<uint8_t>((std::istreambuf_iterator<char>(in)),{})==bytes);}
+  rejects([&]{Registry::write(path,loaded.graph,322,20);},"mapping_graph_export_timing");assert(Registry::read(path).request==321);
+  auto envelope=Json::from_cbor(bytes.begin()+48,bytes.end());
+  auto malformed=[&](Json value,const char* signature="PSIMMAP2") {
+    const auto body=Json::to_cbor(value);posim_slam::InputDigest digest;digest.update(body.data(),body.size());const auto hash=digest.finish();
+    const auto bad=directory/"bad-window.graph.pmap";std::ofstream out(bad,std::ios::binary);
+    out.write(signature,8);out.write(reinterpret_cast<const char*>(hash.data()),hash.size());
+    uint8_t size[8];for(int i=0;i<8;++i)size[i]=uint8_t(uint64_t(body.size())>>(8*i));out.write(reinterpret_cast<const char*>(size),8);
+    out.write(reinterpret_cast<const char*>(body.data()),body.size());out.close();return bad;
+  };
+  auto changed=envelope;changed["native_window"]=Checkpoint::document(window);
+  rejects([&]{Registry::read(malformed(changed));},"native_window_checkpoint_state");
+  changed=envelope;changed.erase("native_window");
+  rejects([&]{Registry::read(malformed(changed));},"mapping_graph_archive_window");
+  rejects([&]{Registry::read(malformed(envelope,"PSIMMAP1"));},"mapping_graph_archive_window");
+  changed=envelope;changed["native_window"]["model"]["reference"]=20;
+  rejects([&]{Registry::read(malformed(changed));},"native_window_checkpoint_digest");
+  changed=envelope;changed["graph"]["reference"][0]=20;
+  rejects([&]{Registry::read(malformed(changed));},"native_window_checkpoint_reference");
+  auto regular=registry.capture(fixture.input,*mapper,10,Sophus::SE3d(),Sophus::SE3d());
+  assert(!regular->hasNativeWindow());
+  rejects([&]{Checkpoint::restore(*mapper,regular);},"native_window_checkpoint_missing");
+  int cancelled=0;const auto before=posim_slam::nativeMappingStateIdentity(*restored);
+  rejects([&]{Checkpoint::restore(*restored,loaded.graph,{},[&]{return ++cancelled==3;});},"native_window_cancelled");
+  assert(posim_slam::nativeMappingStateIdentity(*restored)==before);
+  std::cout<<"Native archive: immutable graph/window capture, owner binding, versioned export, byte-identical re-export, mismatched pairs and cancellation pass.\n";
+}
+
 int main(int argc,char** argv) {
   if(argc!=2)return 2;const std::filesystem::path directory=argv[1];Fixture fixture;
+  nativeArchiveControls(fixture,directory);
   nativeRowsControls(fixture);
   nativeWindowControls(fixture);
   nativeWorldControls(fixture);

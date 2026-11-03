@@ -10,6 +10,8 @@
 #include <type_traits>
 
 namespace posim_slam {
+class NativeMappingWindow;
+class NativeMappingCheckpoint;
 namespace mapping_graph_detail {
 using Json=nlohmann::json;
 inline Json doubles(const double* values,size_t count) {
@@ -85,8 +87,10 @@ inline basalt::VioConfig config(const Json& value) {
 
 struct MappingGraph {
   std::map<int64_t,int> stable_ids;
+  bool hasNativeWindow() const {return !native_window.is_null();}
  private:
   friend class MappingGraphRegistry;
+  friend class NativeMappingCheckpoint;
   using Json=nlohmann::json;
   using Ledger=std::map<MappingObservation,int>;
   struct Captured {
@@ -104,6 +108,7 @@ struct MappingGraph {
   };
   std::shared_ptr<const Captured> captured;
   Json imported;
+  Json native_window;
   bool validated=false;
 };
 
@@ -120,7 +125,8 @@ class MappingGraphRegistry {
       throw std::invalid_argument("mapping_graph_configuration");
   }
   Snapshot capture(const MappingInputStore::Snapshot& input,basalt::NfrMapper& mapper,
-      int64_t reference_stamp,const Sophus::SE3d& reference_pose,const Sophus::SE3d& gauge);
+      int64_t reference_stamp,const Sophus::SE3d& reference_pose,const Sophus::SE3d& gauge,
+      const NativeMappingWindow* window=nullptr);
   // Captured snapshots own typed immutable values. JSON is materialized only
   // for explicit serialization/inspection, never for normal map publication.
   static nlohmann::json document(const Snapshot& graph);

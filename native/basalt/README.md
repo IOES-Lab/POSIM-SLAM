@@ -183,9 +183,17 @@ calibration, weights and current variables with separate SHA-256 identities.
 Restore reconstructs historical information at its original anchors and
 replaces only active likelihoods at the saved current state. Source/state
 mismatches, corruption, invalid anchors and caller capacity failures are
-rejected; cancellation leaves the supplied graph unchanged. Store the graph
-and checkpoint from the same exclusively owned state. This optional interface
-does not change the default map archive or enable automatic window rollover.
+rejected; cancellation leaves the supplied graph unchanged. Pass the window to
+`MappingGraphRegistry::capture` while exclusively owning its mapper. The
+immutable snapshot keeps both states through later optimizer updates.
+`MappingGraphRegistry::write` stores them together in one checksummed
+`PSIMMAP2` file, published by a single rename. Read validates the original
+measurements, current variables and reference before returning the snapshot;
+`NativeMappingCheckpoint::restore(mapper, graph)` reconstructs its window.
+Point correspondence uses stable IDs, independent of container row order.
+Readers supporting only `PSIMMAP1` reject window archives. Ordinary exports
+retain that existing format. File replacement is atomic; power-loss durability
+is not guaranteed. Automatic window rollover remains disabled.
 
 `step()` uses backtracking on the hybrid Gaussian/robust objective, rejects a
 step that loses a previously valid projection, and restores poses, landmarks
@@ -248,9 +256,16 @@ existing full-history optimizer and limits; automatic rollover is not enabled.
 저장할 수 있는 문서는 원본 관측·보정값·가중치와 현재 변수를 각각 SHA-256으로
 식별합니다. 복원은 원래 기준값에서 과거 정보를 재구성하고 활성 관측만 저장된
 현재 상태에서 다시 계산합니다. 입력·상태 불일치, 손상, 잘못된 기준값과 호출자
-용량 초과를 거부하며 취소 시 입력 그래프를 유지합니다. 그래프와 체크포인트는
-같은 독점 소유 상태에서 저장해야 합니다. 기본 지도 보관 형식과 자동 구간 전환은
-바꾸지 않는 선택형 인터페이스입니다.
+용량 초과를 거부하며 취소 시 입력 그래프를 유지합니다. 지도 소유 스레드에서
+구간을 `MappingGraphRegistry::capture`에 전달하면 두 상태가 같은 불변 스냅샷에
+보존됩니다. 이후 최적화가 진행되어도 `MappingGraphRegistry::write`는 그 스냅샷을
+하나의 체크섬을 가진 `PSIMMAP2` 파일로 저장하고 한 번의 이름 변경으로 교체합니다.
+읽을 때 원본 관측·현재 변수·기준 자세의 일치를 검사하며
+`NativeMappingCheckpoint::restore(mapper, graph)`로 활성 구간을 복원합니다.
+점 대응은 내부 행 순서와 관계없이 고유 ID를 사용합니다. `PSIMMAP1`만 지원하는
+판독기는 구간 파일을 거부하며 일반 지도 출력은 기존 형식을 유지합니다.
+파일 교체는 원자적이지만 전원 차단 시 보존을 보장하지 않습니다.
+자동 구간 전환은 아직 활성화하지 않습니다.
 
 `step()`은 가우시안·강건 손실을 결합한 목적함수로 갱신 보폭을 조정합니다.
 유효했던 투영이 사라지는 갱신은 거부하며, 취소나 실패 시 자세·랜드마크·발행된

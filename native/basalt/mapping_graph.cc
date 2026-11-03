@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 #include "mapping_graph.hpp"
+#include "native_mapping_checkpoint.hpp"
 #include <algorithm>
 #include <cstring>
 #include <limits>
@@ -17,6 +18,7 @@ template<int N> Eigen::Matrix<double,N,N> information(const Json& value) {
 }
 constexpr size_t archive_limit=96*1024*1024;
 constexpr char magic[8]={'P','S','I','M','M','A','P','1'};
+constexpr char window_magic[8]={'P','S','I','M','M','A','P','2'};
 void validPose(const Sophus::SE3d& value) {
   if(!Eigen::Map<const Eigen::Matrix<double,7,1>>(value.data()).allFinite())throw std::invalid_argument("mapping_graph_nonfinite_input");
   if(std::abs(Eigen::Map<const Eigen::Vector4d>(value.data()).squaredNorm()-1)>1e-10)throw std::invalid_argument("mapping_graph_rotation");
@@ -29,11 +31,21 @@ template<int N> void validInformation(const Eigen::Matrix<double,N,N>& value) {
 } // namespace
 
 MappingGraphRegistry::Snapshot MappingGraphRegistry::capture(const MappingInputStore::Snapshot& input,basalt::NfrMapper& mapper,
-    int64_t reference_stamp,const Sophus::SE3d& reference_pose,const Sophus::SE3d& gauge) {
+    int64_t reference_stamp,const Sophus::SE3d& reference_pose,const Sophus::SE3d& gauge,
+    const NativeMappingWindow* window) {
   using namespace mapping_graph_detail;
   if(!input || input->revision<last_input_ || !mapper.getFramePoses().count(reference_stamp) ||
       mapper.getFramePoses().size()!=input->frames.size() || mapper.feature_tracks.size()>100000 ||
       mapping_graph_detail::config(mapper.config)!=mapping_graph_detail::config(config_))
+    throw std::invalid_argument("mapping_graph_source");
+  // The archived calibration/configuration must describe the live likelihood,
+  // including fields that NfrMapper copies out of its configuration.
+  if(mapper.obs_std_dev!=config_.mapper_obs_std_dev || mapper.huber_thresh!=config_.mapper_obs_huber_thresh ||
+      mapper.calib.intrinsics.size()!=1 || mapper.calib.T_i_c.size()!=1 || mapper.calib.resolution.size()!=1 ||
+      mapper.calib.intrinsics[0].getName()!=calibration_.intrinsics[0].getName() ||
+      mapper.calib.intrinsics[0].getParam()!=calibration_.intrinsics[0].getParam() ||
+      !mapper.calib.T_i_c[0].matrix().isApprox(calibration_.T_i_c[0].matrix(),0) ||
+      mapper.calib.resolution[0]!=calibration_.resolution[0])
     throw std::invalid_argument("mapping_graph_source");
   if(input->revision<1 || input->revision>512 || revision_>=uint64_t(INT64_MAX))throw std::invalid_argument("mapping_graph_integer");
   if(input->frames.size()<2 || input->frames.size()>kMaxJointColumns/6 || mapper.rel_pose_factors.size()>65536 ||
@@ -113,6 +125,7 @@ MappingGraphRegistry::Snapshot MappingGraphRegistry::capture(const MappingInputS
     }
     data->landmarks.push_back(std::move(saved));
   }
+  if(window)result->native_window=NativeMappingCheckpoint::capture(*window,mapper,reference_stamp);
   data->identities=anchors;result->captured=std::move(data);result->validated=true;
   // Commit only after all original measurements and typed values are validated.
   anchors_=std::move(anchors);next_id_=next_id;last_input_=input->revision;++revision_;
@@ -276,10 +289,13 @@ void MappingGraphRegistry::write(const std::filesystem::path& path,const Snapsho
   const auto data=document(graph);
   for(const auto& frame:data.at("frames"))
     if(frame[0].get<int64_t>()>tracking_stamp)throw std::invalid_argument("mapping_graph_export_timing");
-  // Definite-length three-entry CBOR map, in the existing sorted-key order.
+  // The optional window belongs to this same immutable graph revision.
+  // A distinct signature makes older readers reject unsupported window state.
+  // Keep the ordinary three-entry CBOR archive byte-for-byte compatible.
   // Serialize the immutable graph directly instead of copying it into an envelope.
-  std::vector<uint8_t> bytes{0xa3};
+  std::vector<uint8_t> bytes{uint8_t(graph->hasNativeWindow()?0xa4:0xa3)};
   Json::to_cbor("graph",bytes);Json::to_cbor(data,bytes);
+  if(graph->hasNativeWindow()) {Json::to_cbor("native_window",bytes);Json::to_cbor(graph->native_window,bytes);}
   Json::to_cbor("request_id",bytes);Json::to_cbor(request,bytes);
   Json::to_cbor("tracking_stamp_ns",bytes);Json::to_cbor(tracking_stamp,bytes);
   if(bytes.size()>archive_limit)throw std::runtime_error("mapping_graph_archive_capacity");
@@ -287,7 +303,7 @@ void MappingGraphRegistry::write(const std::filesystem::path& path,const Snapsho
   if(std::filesystem::is_symlink(path) || std::filesystem::is_symlink(temporary))throw std::invalid_argument("mapping_graph_archive_path");
   std::ofstream output(temporary,std::ios::binary|std::ios::trunc);
   if(!output)throw std::runtime_error("mapping_graph_archive_unwritable");
-  output.write(magic,8);output.write(reinterpret_cast<const char*>(digest.data()),digest.size());
+  output.write(graph->hasNativeWindow()?window_magic:magic,8);output.write(reinterpret_cast<const char*>(digest.data()),digest.size());
   uint8_t size[8];for(int i=0;i<8;++i)size[i]=uint8_t(uint64_t(bytes.size())>>(8*i));output.write(reinterpret_cast<const char*>(size),8);
   output.write(reinterpret_cast<const char*>(bytes.data()),bytes.size());output.flush();
   if(!output)throw std::runtime_error("mapping_graph_archive_write_failed");output.close();
@@ -302,12 +318,19 @@ MappingGraphRegistry::Restored MappingGraphRegistry::read(const std::filesystem:
   std::ifstream input(path,std::ios::binary);char signature[8];std::array<uint8_t,32> expected;uint8_t length[8];
   input.read(signature,8);input.read(reinterpret_cast<char*>(expected.data()),32);input.read(reinterpret_cast<char*>(length),8);
   uint64_t count=0;for(int i=0;i<8;++i)count|=uint64_t(length[i])<<(8*i);
-  if(!input || std::memcmp(signature,magic,8) || count!=size-48)throw std::invalid_argument("mapping_graph_archive_header");
+  const bool with_window=std::memcmp(signature,window_magic,8)==0;
+  if(!input || (!with_window && std::memcmp(signature,magic,8)) || count!=size-48)throw std::invalid_argument("mapping_graph_archive_header");
   std::vector<uint8_t> bytes(count);input.read(reinterpret_cast<char*>(bytes.data()),bytes.size());
   InputDigest digest;digest.update(bytes.data(),bytes.size());
   if(!input || digest.finish()!=expected)throw std::invalid_argument("mapping_graph_archive_digest");
   auto document=Json::from_cbor(bytes);auto graph=std::make_shared<MappingGraph>();
-  graph->imported=std::move(document.at("graph"));restore(graph->imported);graph->validated=true;
+  if(with_window!=document.contains("native_window"))throw std::invalid_argument("mapping_graph_archive_window");
+  graph->imported=std::move(document.at("graph"));auto mapper=restore(graph->imported);
+  if(with_window) {
+    graph->native_window=std::move(document.at("native_window"));
+    NativeMappingCheckpoint::validate(*mapper,graph->native_window,integer(graph->imported.at("reference")[0],1,INT64_MAX));
+  }
+  graph->validated=true;
   if(!expected_epoch.empty() && graph->imported.at("epoch")!=expected_epoch)throw std::invalid_argument("mapping_graph_epoch_mismatch");
   for(const auto& row:graph->imported.at("tracks"))graph->stable_ids.emplace(integer(row[0],0,INT32_MAX),integer(row[1],0,99999));
   const auto tracking_stamp=integer(document.at("tracking_stamp_ns"),1,INT64_MAX);
