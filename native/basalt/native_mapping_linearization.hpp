@@ -35,7 +35,12 @@ struct NativeMappingRows {
   double vision_cost=0,pose_cost=0;
   size_t originals=0,valid_projections=0;
 };
-inline NativeMappingRows nativeMappingRows(basalt::NfrMapper& mapper) {
+struct NativeMappingSelection {
+  std::set<int64_t> points;
+  std::set<std::string> factors;
+};
+inline NativeMappingRows nativeMappingRows(basalt::NfrMapper& mapper,
+    const NativeMappingSelection* selection=nullptr) {
   NativeMappingRows out;
   const auto& states=mapper.getFramePoses();
   if(states.empty() || 6*states.size()>size_t(kMaxJointColumns) ||
@@ -67,6 +72,7 @@ inline NativeMappingRows nativeMappingRows(basalt::NfrMapper& mapper) {
     for(const auto& factor:mapper.rel_pose_factors) {
       Sophus::Matrix6d first,second;NativeMappingPoseRows rows;
       rows.original="relative:"+std::to_string(factor.t_i_ns)+":"+std::to_string(factor.t_j_ns);
+      if(selection && !selection->factors.count(rows.original))continue;
       rows.poses={factor.t_i_ns,factor.t_j_ns};
       if(factor.t_i_ns==factor.t_j_ns)throw std::invalid_argument("native_mapping_relative_identity");
       rows.residual=basalt::relPoseError(factor.T_i_j,states.at(factor.t_i_ns).getPose(),
@@ -77,12 +83,14 @@ inline NativeMappingRows nativeMappingRows(basalt::NfrMapper& mapper) {
     for(const auto& factor:mapper.roll_pitch_factors) {
       Eigen::Matrix<double,2,6> derivative;NativeMappingPoseRows rows;
       rows.original="roll-pitch:"+std::to_string(factor.t_ns);rows.poses={factor.t_ns};
+      if(selection && !selection->factors.count(rows.original))continue;
       rows.residual=basalt::rollPitchError(states.at(factor.t_ns).getPose(),factor.R_w_i_meas,&derivative);
       rows.jacobian=derivative;add_factor(std::move(rows),factor.cov_inv);
     }
   }
   std::set<MappingObservation> owners;
   for(const auto& [id,point]:mapper.lmdb.getLandmarks()) {
+    if(selection && !selection->points.count(id))continue;
     if(id<0 || point.obs.empty() || point.obs.size()>2048 ||
         out.originals+point.obs.size()>1000000 || !point.direction.allFinite() ||
         !std::isfinite(point.inv_dist) || point.inv_dist<0)
@@ -142,6 +150,8 @@ inline NativeMappingRows nativeMappingRows(basalt::NfrMapper& mapper) {
     }
     out.originals+=rows.originals.size();out.vision_cost+=rows.cost;out.points.push_back(std::move(rows));
   }
+  if(selection && (out.points.size()!=selection->points.size() || factors!=selection->factors))
+    throw std::invalid_argument("native_mapping_selection_missing");
   return out;
 }
 struct NativeMappingPointReduction {

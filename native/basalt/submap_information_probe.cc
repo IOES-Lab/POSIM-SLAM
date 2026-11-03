@@ -285,9 +285,39 @@ void boundedReplacements() {
   std::cout<<"SUBMAP_REPLACEMENTS poses="<<count+1<<" maximum_active_columns="<<maximum_active
     <<" numeric_bytes="<<active.snapshot()->numericBytes()<<" maximum_covariance_error="<<maximum_error<<'\n';
 }
+void batchedOriginals() {
+  // Cross both the 4096 likelihood-row and 1024 exact-row batch boundaries.
+  for(bool exact:{false,true}) {
+    Active active;std::vector<Active::Rows> groups;std::vector<std::string> keys;
+    constexpr int count=700;Eigen::Matrix<double,8,2> j;
+    j<<1,0,0,1,1,1,2,-1,0,2,3,1,1,-2,2,2;
+    const Eigen::Vector2d expected(2,-1);
+    for(int i=0;i<count;++i) {
+      auto group=likelihood({"reading:"+std::to_string(i)},{8,3},j,-j*expected);
+      if(exact){group.constraints=Eigen::MatrixXd::Zero(3,2);group.constraints.col(0).setOnes();group.target=Eigen::VectorXd::Constant(3,2);}
+      keys.push_back(group.originals[0]);groups.push_back(std::move(group));
+    }
+    active.append(groups);const auto snapshot=active.snapshot();
+    const auto result=active.query(active.solve(snapshot),{8,3},Eigen::Matrix2d::Identity());
+    assert(result.observed && snapshot->information->measurements.size()==count);close(result.mean,expected);
+    Eigen::Matrix2d covariance=Eigen::Matrix2d::Zero();
+    if(exact)covariance(1,1)=1./(count*j.col(1).squaredNorm());
+    else covariance=(count*j.transpose()*j).inverse();
+    close(result.covariance,covariance,1e-10);
+    for(auto& group:groups){group.jacobian*=.5;group.residual*=.5;}
+    active.replace(keys,groups);
+    const auto weaker=active.query(active.solve(active.snapshot()),{8,3},Eigen::Matrix2d::Identity());
+    close(weaker.mean,expected);close(weaker.covariance,4*covariance,1e-10);
+    const auto stable=active.snapshot();auto duplicate=groups.front();duplicate.columns={8,8};
+    rejects([&]{active.replace(duplicate.originals,{duplicate});},"submap_coordinates");
+    assert(active.snapshot()==stable);duplicate.columns={-1,3};
+    rejects([&]{active.replace(duplicate.originals,{duplicate});},"submap_coordinates");
+    assert(active.snapshot()==stable);
+  }
+}
 } // namespace
 int main() {
   denseAndLateAdjustment();unobservedReference();exactConstraintsAndCapacity();pressureDatumAndClosedFrontier();longChain();
-  replaceOriginalLikelihoods();replaceRankAndExactSupport();boundedReplacements();
+  replaceOriginalLikelihoods();replaceRankAndExactSupport();boundedReplacements();batchedOriginals();
   std::cout<<"Submap information: batch mean/covariance, shared noise, unobserved gauge, exact support, immutable ownership and bounded-frontier chain pass.\n";
 }

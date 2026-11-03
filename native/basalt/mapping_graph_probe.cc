@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 #include "mapping_graph.hpp"
 #include "native_mapping_linearization.hpp"
+#include "native_mapping_window.hpp"
 #include <cassert>
 #include <iostream>
 
@@ -135,11 +136,65 @@ void nativeRowsControls(const Fixture& fixture) {
   rejects([&]{posim_slam::nativeMappingRows(*invalid_factor);},"native_mapping_factor_information");
   std::cout<<"Native mapping rows: finite/infinite original observations, analytic pose/landmark derivatives, invalid-row ownership and current-tangent checks pass; derivative error "<<maximum<<".\n";
 }
+void nativeWindowControls(const Fixture& fixture) {
+  auto mapper=fixture.mapper();
+  for(auto& [stamp,state]:mapper->getFramePoses()) {
+    Sophus::Vector6d tilt=Sophus::Vector6d::Zero();tilt.tail<3>()=Eigen::Vector3d(.2,-.1,.3);state.applyInc(tilt);
+  }
+  posim_slam::NativeMappingChart chart(*mapper,10);
+  Eigen::VectorXd value=Eigen::VectorXd::Zero(18);
+  for(int i=0;i<18;++i)value[i]=.1*std::sin(double(i));value.head<3>().setZero();value[5]=0;
+  chart.apply(*mapper,value);assert((chart.coordinates(*mapper)-value).norm()<1e-14);
+  const auto current=mapper->getFramePoses();const double epsilon=1e-6;double maximum=0;
+  for(const auto& [stamp,index]:chart.offsets())for(int axis=0;axis<6;++axis) {
+    auto plus=value,minus=value;plus[index+axis]+=epsilon;minus[index+axis]-=epsilon;
+    chart.apply(*mapper,plus);const auto p=mapper->getFramePoses().at(stamp).getPose();
+    chart.apply(*mapper,minus);const auto m=mapper->getFramePoses().at(stamp).getPose();
+    Sophus::Vector6d numeric;numeric.head<3>()=(p.translation()-m.translation())/(2*epsilon);
+    numeric.tail<3>()=(p.so3()*m.so3().inverse()).log()/(2*epsilon);
+    maximum=std::max(maximum,(numeric-chart.derivative(stamp,value).col(axis)).norm());
+  }
+  assert(maximum<1e-8);mapper->getFramePoses()=current;
+  auto outside=value;outside[15]=posim_slam::kNativeMappingPi;
+  rejects([&]{chart.apply(*mapper,outside);},"native_window_rotation_chart_boundary");
+  for(const auto& [stamp,state]:current)assert(std::memcmp(state.getPose().data(),mapper->getFramePoses().at(stamp).getPose().data(),7*sizeof(double))==0);
+  mapper->lmdb.getLandmark(42).direction+=Eigen::Vector2d(.002,-.001);
+  const auto source=posim_slam::nativeMappingRows(*mapper),anchored=chart.rows(*mapper,source);
+  for(size_t i=0;i<source.points.size();++i) {
+    const auto& group=anchored.points[i];Eigen::VectorXd local(6*group.poses.size());
+    for(size_t p=0;p<group.poses.size();++p)local.segment<6>(6*p)=value.segment<6>(chart.offsets().at(group.poses[p]));
+    const auto& point=mapper->lmdb.getLandmark(group.id);
+    const Eigen::Vector3d delta=Eigen::Vector3d(point.direction.x(),point.direction.y(),point.inv_dist)-chart.point(group.id);
+    assert((group.residual+group.pose*local+group.landmark*delta-source.points[i].residual).norm()<1e-10);
+  }
+  posim_slam::NativeMappingSelection selected;selected.points.insert(42);
+  const auto subset=posim_slam::nativeMappingRows(*mapper,&selected);
+  assert(subset.points.size()==1 && subset.originals==3 && subset.factors.empty());
+  selected.points.insert(999);rejects([&]{posim_slam::nativeMappingRows(*mapper,&selected);},"native_mapping_selection_missing");
+  auto first=fixture.mapper(),untouched=fixture.mapper();
+  posim_slam::SubmapInformation::Limits limits;limits.active_columns=12;
+  rejects([&]{posim_slam::NativeMappingWindow rejected(*first,10,{10,20,30},limits);},"native_window_separator_capacity");
+  compare(*first,*untouched);
+  limits.active_columns=18;limits.numeric_bytes=1;
+  rejects([&]{posim_slam::NativeMappingWindow rejected(*first,10,{10,20,30},limits);},"native_window_numeric_capacity");
+  compare(*first,*untouched);
+  posim_slam::NativeMappingWindow window(*first,10,{10,20,30});
+  assert(window.proposal().allFinite());const auto before=window.snapshot();
+  int calls=0;rejects([&]{window.step([&]{return ++calls==3;});},"native_window_cancelled");
+  assert(window.snapshot()==before);compare(*first,*untouched);
+  const auto step=window.step();assert(step.accepted && step.after<step.before);
+  assert(window.snapshot()->information->measurements==before->information->measurements);
+  assert(window.snapshot()->information->measurements.size()==8);
+  assert(window.numericBytes()>window.snapshot()->numericBytes() && window.numericBytes()<96*1024*1024);
+  assert((first->getFramePoses().at(10).getPose().translation()-untouched->getFramePoses().at(10).getPose().translation()).norm()==0);
+  std::cout<<"Native active window: fixed-chart derivatives, gauge convention, selected originals, capacity, nonlinear update and cancellation rollback pass; derivative error "<<maximum<<".\n";
+}
 } // namespace
 
 int main(int argc,char** argv) {
   if(argc!=2)return 2;const std::filesystem::path directory=argv[1];Fixture fixture;
   nativeRowsControls(fixture);
+  nativeWindowControls(fixture);
   Registry registry(fixture.calibration,fixture.config,"fixture-segment");auto original=fixture.mapper();
   const auto first=registry.capture(fixture.input,*original,10,original->getFramePoses().at(10).getPose(),Sophus::SE3d());
   assert(first->stable_ids.at(42)==0 && first->stable_ids.at(99)==1);

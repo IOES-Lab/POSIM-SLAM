@@ -148,6 +148,29 @@ yaw derivative of a tilted reference. This coordinate convention adds no
 covariance information. Graphs with absolute position or yaw measurements must
 retain those measurements instead of applying this gauge-only helper.
 
+`NativeMappingWindow` in `native_mapping_window.hpp` optimizes an explicit set
+of active poses. Original factor groups wholly inside that set are relinearized;
+groups crossing its boundary retain a Gaussian conditional and landmark
+back-substitution. Archived poses and landmarks move with the solution. Active
+rows use fixed original coordinates, including the derivative of the current
+rotation, so they remain consistent with the sealed prior. The existing
+reference position and heading select a conditional mean coordinate convention;
+they supply no measurement or world covariance. Reference roll and pitch remain
+variables. This interface applies to relative/gravity NFR graphs.
+
+`step()` uses backtracking on the hybrid Gaussian/robust objective, rejects a
+step that loses a previously valid projection, and restores poses, landmarks
+and the published owner on cancellation or failure. Callers exclusively own
+the mapper during the window's lifetime. The separator defaults to 256 scalar
+coordinates, with the existing 1,218-coordinate hard limit. The 96 MiB logical
+numeric budget includes active/prior rows, conditional nodes, landmark
+back-substitution and coordinate anchors. Caller-owned graphs, temporary solve
+storage and allocator overhead are additional. An undefined reference heading
+or a rotation change reaching the original chart's pi boundary requires a new
+owner. Graph growth, reassociation, rehosting, sealed nonlinear restoration and
+durable paging also require explicit handling. The default mapper retains its
+existing full-history optimizer and limits; automatic rollover is not enabled.
+
 `native_mapping_linearization.hpp::nativeMappingRows`는 네이티브 최적화기의
 원본 관측 우도를 제공합니다. Basalt의 기준 영상 내 평사투영 방향·역거리 좌표,
 카메라 장착 보정, 픽셀 잡음과 Huber 가중치를 사용합니다. 자세 증분은 세계 좌표
@@ -167,6 +190,25 @@ retain those measurements instead of applying this gauge-only helper.
 자세의 방위 미분을 포함해 전체 공통 이동과 세계 수직축 회전 자유도만 제거합니다.
 공분산 정보는 추가하지 않습니다. 절대 위치나 방위 측정이 있는 그래프에는 이
 자유도 정렬 함수를 적용하지 않고 해당 측정 정보를 유지해야 합니다.
+
+`native_mapping_window.hpp`의 `NativeMappingWindow`는 지정한 활성 자세 집합을
+최적화합니다. 집합 내부의 원본 제약 그룹은 다시 선형화하고, 경계를 가로지르는
+그룹은 가우시안 조건부 정보와 랜드마크 역대입을 보존합니다. 과거 자세와 지도점도
+해에 따라 갱신됩니다. 활성 행은 현재 회전의 미분을 포함한 원래 좌표로 변환해
+확정된 정보와 같은 기준을 사용합니다. 기존 기준 위치·방위는 조건부 평균의
+좌표를 선택하며 측정이나 세계 공분산을 추가하지 않습니다. 기준 자세의 롤·피치는
+계속 추정합니다. 상대 자세·중력 NFR 그래프에 사용하는 인터페이스입니다.
+
+`step()`은 가우시안·강건 손실을 결합한 목적함수로 갱신 보폭을 조정합니다.
+유효했던 투영이 사라지는 갱신은 거부하며, 취소나 실패 시 자세·랜드마크·발행된
+정보를 복원합니다. 호출자는 구간 객체가 존재하는 동안 지도를 독점 사용합니다.
+경계는 기본 256개 스칼라 좌표이며 기존 절대 한도는 1,218개입니다. 수치 데이터
+96MiB에는 활성·확정 행렬, 조건부 노드, 랜드마크 역대입과 좌표 기준이 포함됩니다.
+호출자 소유 그래프, 풀이 임시 공간과 할당 오버헤드는 별도입니다. 기준 방위를
+정의할 수 없거나 원래 회전 좌표에서 변화가 pi 경계에 도달하면 새 소유자가
+필요합니다. 그래프 확장, 관측 재연결, 기준 영상 변경, 확정된 비선형 제약 복원과
+디스크 페이징도 별도 처리가 필요합니다. 기본 지도는 기존 전체 기록 최적화기와
+한도를 사용하며 자동 구간 전환은 활성화되지 않습니다.
 
 The build-local adapter maps initial gyro/accelerometer information weights
 to their physical state coordinates. Fresh builds check the actual constructor

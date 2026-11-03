@@ -138,8 +138,42 @@ class SubmapLinearization {
         next.active_bytes>limits_.numeric_bytes-next.base->numericBytes())
       throw std::runtime_error("submap_linearization_capacity");
     auto branch=core_->fork(next.base);
-    for(const auto& group:next.active)
-      branch->append(group->originals,group->columns,group->jacobian,group->residual,group->constraints,group->target);
+    // Preserve original groups for replacement, but factor bounded batches.
+    // Refactoring the entire separator after every two-row pixel group makes
+    // update work grow with groups times the cube of the separator width.
+    std::vector<Coordinate> columns;std::map<Coordinate,size_t> offsets;
+    size_t rows=0,exact=0;
+    for(const auto& group:next.active) {
+      std::set<Coordinate> local;
+      for(Coordinate column:group->columns) {
+        if(column<0 || !local.insert(column).second)throw std::invalid_argument("submap_coordinates");
+        if(offsets.emplace(column,columns.size()).second)columns.push_back(column);
+      }
+      rows+=group->jacobian.rows();exact+=group->constraints.rows();
+    }
+    if(columns.size()>limits_.active_columns)throw std::runtime_error("submap_coordinate_capacity");
+    Eigen::MatrixXd j=Eigen::MatrixXd::Zero(std::min(size_t(4096),rows),columns.size());
+    Eigen::MatrixXd c=Eigen::MatrixXd::Zero(std::min(size_t(1024),exact),columns.size());
+    Eigen::VectorXd r(j.rows()),target(c.rows());Eigen::Index used=0,used_exact=0;
+    std::vector<std::string> originals;
+    auto flush=[&] {
+      if(originals.empty())return;
+      branch->append(originals,columns,j.topRows(used),r.head(used),c.topRows(used_exact),target.head(used_exact));
+      originals.clear();used=used_exact=0;j.setZero();c.setZero();
+    };
+    for(const auto& group:next.active) {
+      const auto n=group->jacobian.rows(),m=group->constraints.rows();
+      if(used+n>j.rows() || used_exact+m>c.rows())flush();
+      for(size_t i=0;i<group->columns.size();++i) {
+        const auto column=offsets.at(group->columns[i]);
+        j.block(used,column,n,1)=group->jacobian.col(i);
+        if(m)c.block(used_exact,column,m,1)=group->constraints.col(i);
+      }
+      r.segment(used,n)=group->residual;target.segment(used_exact,m)=group->target;
+      used+=n;used_exact+=m;
+      originals.insert(originals.end(),group->originals.begin(),group->originals.end());
+    }
+    flush();
     next.information=branch->snapshot();
   }
   void requireOwner(const Snapshot& input) const {
