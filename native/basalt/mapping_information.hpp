@@ -34,6 +34,34 @@ struct MappingInformationResult {
   size_t observations = 0, pose_factors = 0;
 };
 
+// The same current-image support and maturity policy applies to each mapping
+// optimizer. Its world covariance must still come from that optimizer's owner.
+inline VisualPointSupport mappingPointSupport(const MappingPointRows& rows) {
+  const auto count=rows.observations.size();
+  if(count<2 || count>2048 || rows.full_weight.size()!=count ||
+      rows.point.rows()!=2*count || rows.point.cols()!=3 || !rows.point.allFinite() ||
+      !rows.world.allFinite() || !rows.host_origin.allFinite())
+    throw std::invalid_argument("mapping_point_rows");
+  std::set<MappingObservation> observations;
+  std::set<std::pair<int64_t,int>> images;std::set<int64_t> exposures;size_t full=0;
+  for(size_t i=0;i<count;++i) {
+    const auto [stamp,camera,feature]=rows.observations[i];
+    if(stamp<=0 || camera<0 || feature<0 || !observations.insert(rows.observations[i]).second ||
+        !images.emplace(stamp,camera).second)throw std::invalid_argument("mapping_observation_reused");
+    if(rows.full_weight[i]){exposures.insert(stamp);++full;}
+  }
+  Eigen::MatrixXd accepted(2*full,3);size_t j=0;
+  for(size_t i=0;i<count;++i)if(rows.full_weight[i])accepted.middleRows(2*j++,2)=rows.point.middleRows(2*i,2);
+  return visualPointSupport(accepted,rows.world-rows.host_origin,exposures.size());
+}
+inline void certifyMappingPoint(MappingPointCertificate& point,double three_sigma_m) {
+  if(!std::isfinite(three_sigma_m) || three_sigma_m<=0)
+    throw std::invalid_argument("mapping_world_uncertainty_limit");
+  point.mature=point.geometry.exposures>=3;
+  point.eligible=point.mature && point.geometry.eligible && point.world.observed &&
+      3*point.world.maximum_sigma_m<=three_sigma_m;
+}
+
 // One graph linearization. Rebuild it after optimization; never append an old
 // snapshot to a new one. Measurement IDs enforce ownership inside this graph,
 // but do not establish independence from a separately recovered VIO prior.
@@ -66,24 +94,14 @@ class MappingInformation {
         !rows.world.allFinite() || !rows.host_origin.allFinite())
       throw std::invalid_argument("mapping_point_rows");
     std::set<MappingObservation> pending;
-    std::set<std::pair<int64_t,int>> images;
-    std::set<int64_t> exposures;
-    size_t full = 0;
     for (size_t i = 0; i < count; ++i) {
       const auto& key = rows.observations[i];
-      const auto [stamp, camera, feature] = key;
-      if (stamp <= 0 || camera < 0 || feature < 0 || owners_.count(key) ||
-          !pending.insert(key).second || !images.emplace(stamp,camera).second)
+      if (owners_.count(key) || !pending.insert(key).second)
         throw std::invalid_argument("mapping_observation_reused");
-      if (rows.full_weight[i]) { exposures.insert(stamp); ++full; }
     }
-    Eigen::MatrixXd accepted(2 * full, 3);
-    size_t j = 0;
-    for (size_t i = 0; i < count; ++i)
-      if (rows.full_weight[i]) accepted.middleRows(2 * j++, 2) = rows.point.middleRows(2 * i, 2);
     Local local;
     local.columns = rows.pose_columns;
-    local.geometry = visualPointSupport(accepted, rows.world - rows.host_origin, exposures.size());
+    local.geometry = mappingPointSupport(rows);
     local.nuisance = mapNuisanceInformation(rows.pose, rows.point);
     const Eigen::MatrixXd reduced = rows.pose + rows.point * local.nuisance.backsub;
     // QR/SVD projection, without normal-equation subtraction or LM damping.
@@ -136,9 +154,7 @@ class MappingInformation {
       }
       // Match the archive's three-exposure maturity requirement. A two-view
       // component may constrain the graph without becoming a retained point.
-      certificate.mature = local.geometry.exposures >= 3;
-      certificate.eligible = certificate.mature && local.geometry.eligible &&
-          certificate.world.observed && 3 * certificate.world.maximum_sigma_m <= three_sigma_m;
+      certifyMappingPoint(certificate,three_sigma_m);
       result.points.emplace(id, certificate);
     }
     return result;

@@ -3,6 +3,7 @@
 #include "native_mapping_linearization.hpp"
 #include "native_mapping_window.hpp"
 #include "native_mapping_checkpoint.hpp"
+#include "mapping_output.hpp"
 #include <cassert>
 #include <iostream>
 
@@ -356,6 +357,37 @@ int main(int argc,char** argv) {
   Registry registry(fixture.calibration,fixture.config,"fixture-segment");auto original=fixture.mapper();
   const auto first=registry.capture(fixture.input,*original,10,original->getFramePoses().at(10).getPose(),Sophus::SE3d());
   assert(first->stable_ids.at(42)==0 && first->stable_ids.at(99)==1);
+  {
+    posim_slam::NativeMappingWindow window(*original,10,{10,20,30});
+    const auto information=window.mapInformation(.1);
+    const auto output=posim_slam::mappingOutput(*original,Sophus::SE3d(),information,first);
+    assert(output.candidates.size()==2 && output.nonfinite==1 && information.observations==6);
+    assert(output.ids.size()==output.points.size());
+    for(const auto& point:output.candidates) {
+      assert(point.id==first->stable_ids.at(point.native_id));
+      if(!point.finite)assert(!point.eligible && !point.observed && !point.mature);
+    }
+    auto no_reference=fixture.mapper();no_reference->config.vio_init_pose_weight=0;
+    posim_slam::NativeMappingWindow unbounded(*no_reference,10,{10,20,30});
+    const auto uncertain=unbounded.mapInformation(.1);
+    assert(!uncertain.points.at(42).world.observed && !uncertain.points.at(42).eligible);
+    rejects([&]{window.mapInformation(0);},"mapping_world_uncertainty_limit");
+    // NfrMapper copies configuration into its live likelihood parameters.
+    // Geometry must use the same live noise/Huber fields as the optimizer.
+    const auto configured_noise=original->config.mapper_obs_std_dev;
+    original->config.mapper_obs_std_dev*=2;
+    assert(window.mapInformation(.1).points.at(42).geometry.relative_range_sigma==
+        information.points.at(42).geometry.relative_range_sigma);
+    original->config.mapper_obs_std_dev=configured_noise;
+    const auto noise=original->obs_std_dev;original->obs_std_dev*=2;
+    rejects([&]{window.mapInformation(.1);},"native_window_output_source_changed");
+    original->obs_std_dev=noise;
+    // A weak two-view point stays in output; its support cannot be promoted
+    // by the global covariance being finite or by requesting a larger limit.
+    auto support=information.points.at(42);support.geometry.exposures=2;
+    support.geometry.eligible=true;support.world.observed=true;support.world.maximum_sigma_m=0;
+    posim_slam::certifyMappingPoint(support,.1);assert(!support.mature && !support.eligible);
+  }
   auto restored=Registry::restore(Registry::document(first));compare(*original,*restored);
   auto renumbered=fixture.mapper(7,3);const auto second=registry.capture(fixture.input,*renumbered,10,renumbered->getFramePoses().at(10).getPose(),Sophus::SE3d());
   assert(second->stable_ids.at(7)==0 && second->stable_ids.at(3)==1 && Registry::document(first).at("graph_revision")==1);

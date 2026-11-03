@@ -56,13 +56,13 @@ inline void mappingGraphRows(basalt::NfrMapper& mapper,
       if(!calibration.intrinsics.at(image.cam_id).project(camera,projected,&derivative) ||
           !projected.allFinite() || !derivative.allFinite() || camera.z()<=0)continue;
       const double error=(projected-pixel).norm();
-      const double weight=std::sqrt(error<config.mapper_obs_huber_thresh?1:config.mapper_obs_huber_thresh/error)
-                           /config.mapper_obs_std_dev;
+      const double weight=std::sqrt(error<mapper.huber_thresh?1:mapper.huber_thresh/error)
+                           /mapper.obs_std_dev;
       Row row;row.key={image.frame_id,image.cam_id,mapper.feature_tracks.at(id).at(image)};
       row.point=derivative.leftCols<3>()*inverse.rotationMatrix();
       row.pose.template leftCols<3>()=-row.point;
       row.pose.template rightCols<3>()=row.point*Sophus::SO3d::hat(world-pose.translation());
-      row.point*=weight;row.pose*=weight;row.full=error<=config.mapper_obs_huber_thresh;
+      row.point*=weight;row.pose*=weight;row.full=error<=mapper.huber_thresh;
       rows.push_back(row);
     }
     if(rows.size()<2)continue;

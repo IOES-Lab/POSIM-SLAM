@@ -2,6 +2,7 @@
 #pragma once
 #include "native_mapping_linearization.hpp"
 #include "native_mapping_identity.hpp"
+#include "mapping_graph_information.hpp"
 #include <functional>
 #include <numeric>
 
@@ -224,6 +225,47 @@ class NativeMappingWindow {
   }
   WorldPoints worldInformation(const std::vector<int64_t>& ids) const {
     return worldInformation(worldLinearization(),ids);
+  }
+  // Share current-image geometry/maturity with full-graph output, but query
+  // covariance from this hybrid owner. Rebuilding a full-graph covariance at
+  // current poses would discard the retained historical linearization.
+  MappingInformationResult mapInformation(double three_sigma_m) const {
+    if(!std::isfinite(three_sigma_m) || three_sigma_m<=0)
+      throw std::invalid_argument("mapping_world_uncertainty_limit");
+    if(nativeMappingSourceIdentity(mapper_)!=source_identity_)
+      throw std::invalid_argument("native_window_output_source_changed");
+    struct Support {
+      MappingInformationResult result;std::set<MappingObservation> observations;
+      void addPoseFactor(const std::string&,const std::vector<int>&,const Eigen::MatrixXd&) {}
+      void addPoint(const MappingPointRows& rows) {
+        MappingPointCertificate point;point.geometry=mappingPointSupport(rows);
+        if(!result.points.emplace(rows.id,std::move(point)).second)
+          throw std::invalid_argument("mapping_point_rows");
+        for(const auto& key:rows.observations)if(!observations.insert(key).second)
+          throw std::invalid_argument("mapping_observation_reused");
+      }
+    } support;
+    mappingGraphRows(mapper_,mapper_.calib,mapper_.config,chart_.reference(),support);
+    auto& result=support.result;
+    // The native likelihood also retains infinite image features. Count its
+    // owned originals, not just those with finite export geometry.
+    const auto pose_factors=mapper_.rel_pose_factors.size()+mapper_.roll_pitch_factors.size();
+    result.observations=originals_-pose_factors;result.pose_factors=pose_factors+(reference_weight_>0);
+    result.pose_nullity=-1; // Per-point observability is queried below.
+    const auto context=worldLinearization();
+    for(auto& [id,point]:result.points) {
+      const auto query=worldInformation(context,{id});point.world.covariance=query.covariance;
+      point.world.observed=query.observed;
+      if(query.observed) {
+        Eigen::SelfAdjointEigenSolver<Eigen::Matrix3d> eigen(point.world.covariance);
+        if(eigen.info()!=Eigen::Success || !point.world.covariance.allFinite())
+          throw std::runtime_error("invalid_map_point_covariance");
+        point.world.maximum_sigma_m=std::sqrt(std::max(0.,eigen.eigenvalues().maxCoeff()));
+        point.world.observed=std::isfinite(point.world.maximum_sigma_m);
+      }
+      certifyMappingPoint(point,three_sigma_m);
+    }
+    return std::move(result);
   }
   // Reuse one solve across a map export. A changed owner rejects the context;
   // the caller's exclusive mapper ownership also applies while querying it.

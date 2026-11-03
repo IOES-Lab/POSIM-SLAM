@@ -2,7 +2,7 @@
 #pragma once
 #include "mapping_information.hpp"
 #include "mapping_input_store.hpp"
-#include "mapping_graph.hpp"
+#include "mapping_output.hpp"
 #include <condition_variable>
 #include <mutex>
 #include <thread>
@@ -10,24 +10,13 @@
 #include <string>
 
 namespace posim_slam {
-struct PersistentMapCandidate {
-  int64_t id;
-  int64_t native_id=-1;
-  Eigen::Vector3d position;
-  bool eligible=false, finite=false, observed=false, mature=false;
-  double maximum_sigma_m=std::numeric_limits<double>::infinity();
-};
-struct PersistentMapSnapshot {
+struct PersistentMapSnapshot : MappingOutput {
   uint64_t revision=0;
   int64_t optimized_through_ns=0;
-  size_t keyframes=0, retirements=0, observations=0, factors=0, observed=0;
-  size_t nonfinite=0;
+  size_t keyframes=0, retirements=0;
   size_t source_image_bytes=0,source_factor_matrix_bytes=0,compact_input_bytes=0;
   double optimize_seconds=0;
   std::string error;
-  std::vector<PersistentMapCandidate> candidates;
-  std::vector<std::array<float,3>> points;
-  std::vector<int> ids;
   MappingGraphRegistry::Snapshot graph;
 };
 using PersistentMapLimits=MappingInputLimits;

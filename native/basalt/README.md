@@ -169,6 +169,13 @@ reference weight remains unbounded. `worldLinearization()` reuses one solve
 across an export; updates invalidate it. These queries do not establish
 statistical calibration or replace the existing point-admission rules.
 
+`mapInformation()` applies the shared current-image support, three-exposure
+maturity and world three-sigma limit to covariance from the window's own
+retained information. `mappingOutput()` supplies both mapping paths with
+stable point IDs, complete candidates and eligible finite PLY coordinates.
+Weak and infinite candidates remain inspectable. Changed original
+observations or noise require a new owner before output can be certified.
+
 `NativeMappingCheckpoint` in `native_mapping_checkpoint.hpp` saves the original
 pose/landmark anchors and active pose membership alongside the current-state
 mapping graph. Its CBOR-compatible document binds the original observations,
@@ -229,6 +236,12 @@ existing full-history optimizer and limits; automatic rollover is not enabled.
 관측 불가 방향을 유효 판정할 수 없습니다. 기준 가중치가 0이면 해당 자유도는 관측
 불가로 남습니다. `worldLinearization()`은 내보내기 동안 한 번의 풀이를 재사용하며
 갱신 후에는 다시 생성합니다. 통계적 보정이나 기존 점 채택 기준을 대신하지 않습니다.
+
+`mapInformation()`은 공통 영상 지지 조건·세 시점 성숙도·세계 좌표의 3시그마
+한도를 구간 소유자가 보존한 공분산에 적용합니다. `mappingOutput()`은 두 지도
+경로에서 고정 점 식별자·전체 후보·채택한 유한 점의 PLY 좌표를 생성합니다.
+약한 후보와 무한 거리 후보도 조회할 수 있습니다. 원래 관측이나 잡음이 바뀌면
+새 소유자를 구성한 뒤 점 채택을 판정합니다.
 
 `native_mapping_checkpoint.hpp`의 `NativeMappingCheckpoint`는 원래 자세·랜드마크
 기준값과 활성 자세 집합을 현재 상태의 지도 그래프와 함께 보존합니다. CBOR로

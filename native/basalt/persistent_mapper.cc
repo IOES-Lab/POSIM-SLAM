@@ -112,35 +112,8 @@ std::shared_ptr<PersistentMapSnapshot> PersistentMapper::build(const Batch& batc
   result->source_image_bytes=batch.input->source_image_bytes;
   result->source_factor_matrix_bytes=batch.input->source_factor_matrix_bytes;
   result->compact_input_bytes=batch.input->compactPayloadBytes();
-  result->observations=quality.observations;result->factors=quality.pose_factors;
-  for(const auto& [id,landmark]:mapper.lmdb.getLandmarks()) {
-    const auto host=mapper.getFramePoses().at(landmark.host_kf_id.frame_id).getPose()
-                        *calibration_.T_i_c.at(landmark.host_kf_id.cam_id);
-    auto point=basalt::StereographicParam<double>::unproject(landmark.direction);point[3]=landmark.inv_dist;
-    const auto world=(host*point).eval();PersistentMapCandidate candidate;
-    candidate.id=id;candidate.position=gauge*(world.head<3>()/world[3]);
-    candidate.finite=candidate.position.allFinite() && landmark.inv_dist>0;
-    result->nonfinite+=!candidate.finite;
-    const auto found=quality.points.find(id);
-    if(found!=quality.points.end()) {
-      candidate.eligible=found->second.eligible;candidate.observed=found->second.world.observed;
-      candidate.mature=found->second.mature;candidate.maximum_sigma_m=found->second.world.maximum_sigma_m;
-    }
-    result->observed+=candidate.observed;
-    if(candidate.eligible) {
-      if(!candidate.finite || id>std::numeric_limits<int>::max() ||
-          candidate.position.cwiseAbs().maxCoeff()>std::numeric_limits<float>::max())
-        throw std::runtime_error("mapping_certified_point_invalid");
-      result->points.push_back({float(candidate.position.x()),float(candidate.position.y()),float(candidate.position.z())});
-      result->ids.push_back(int(id));
-    }
-    result->candidates.push_back(std::move(candidate));
-  }
   result->graph=graph_registry_.capture(batch.input,mapper,batch.reference_stamp,batch.reference_pose,gauge);
-  for(auto& candidate:result->candidates) {
-    candidate.native_id=candidate.id;candidate.id=result->graph->stable_ids.at(candidate.native_id);
-  }
-  for(auto& id:result->ids)id=result->graph->stable_ids.at(id);
+  static_cast<MappingOutput&>(*result)=mappingOutput(mapper,gauge,quality,result->graph);
   result->optimize_seconds=std::chrono::duration<double>(std::chrono::steady_clock::now()-started).count();
   return result;
 }
