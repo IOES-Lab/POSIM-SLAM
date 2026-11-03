@@ -169,6 +169,17 @@ reference weight remains unbounded. `worldLinearization()` reuses one solve
 across an export; updates invalidate it. These queries do not establish
 statistical calibration or replace the existing point-admission rules.
 
+`NativeMappingCheckpoint` in `native_mapping_checkpoint.hpp` saves the original
+pose/landmark anchors and active pose membership alongside the current-state
+mapping graph. Its CBOR-compatible document binds the original observations,
+calibration, weights and current variables with separate SHA-256 identities.
+Restore reconstructs historical information at its original anchors and
+replaces only active likelihoods at the saved current state. Source/state
+mismatches, corruption, invalid anchors and caller capacity failures are
+rejected; cancellation leaves the supplied graph unchanged. Store the graph
+and checkpoint from the same exclusively owned state. This optional interface
+does not change the default map archive or enable automatic window rollover.
+
 `step()` uses backtracking on the hybrid Gaussian/robust objective, rejects a
 step that loses a previously valid projection, and restores poses, landmarks
 and the published owner on cancellation or failure. Callers exclusively own
@@ -218,6 +229,15 @@ existing full-history optimizer and limits; automatic rollover is not enabled.
 관측 불가 방향을 유효 판정할 수 없습니다. 기준 가중치가 0이면 해당 자유도는 관측
 불가로 남습니다. `worldLinearization()`은 내보내기 동안 한 번의 풀이를 재사용하며
 갱신 후에는 다시 생성합니다. 통계적 보정이나 기존 점 채택 기준을 대신하지 않습니다.
+
+`native_mapping_checkpoint.hpp`의 `NativeMappingCheckpoint`는 원래 자세·랜드마크
+기준값과 활성 자세 집합을 현재 상태의 지도 그래프와 함께 보존합니다. CBOR로
+저장할 수 있는 문서는 원본 관측·보정값·가중치와 현재 변수를 각각 SHA-256으로
+식별합니다. 복원은 원래 기준값에서 과거 정보를 재구성하고 활성 관측만 저장된
+현재 상태에서 다시 계산합니다. 입력·상태 불일치, 손상, 잘못된 기준값과 호출자
+용량 초과를 거부하며 취소 시 입력 그래프를 유지합니다. 그래프와 체크포인트는
+같은 독점 소유 상태에서 저장해야 합니다. 기본 지도 보관 형식과 자동 구간 전환은
+바꾸지 않는 선택형 인터페이스입니다.
 
 `step()`은 가우시안·강건 손실을 결합한 목적함수로 갱신 보폭을 조정합니다.
 유효했던 투영이 사라지는 갱신은 거부하며, 취소나 실패 시 자세·랜드마크·발행된

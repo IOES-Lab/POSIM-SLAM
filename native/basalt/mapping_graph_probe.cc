@@ -2,6 +2,7 @@
 #include "mapping_graph.hpp"
 #include "native_mapping_linearization.hpp"
 #include "native_mapping_window.hpp"
+#include "native_mapping_checkpoint.hpp"
 #include <cassert>
 #include <iostream>
 
@@ -295,11 +296,63 @@ void nativeWorldControls(const Fixture& fixture) {
 }
 } // namespace
 
+void nativeCheckpointControls(const Fixture& fixture) {
+  using Checkpoint=posim_slam::NativeMappingCheckpoint;
+  auto original=fixture.mapper(),restored=fixture.mapper();
+  posim_slam::NativeMappingWindow window(*original,10,{10,20,30});assert(window.step().accepted);
+  const auto document=Checkpoint::document(window);
+  const auto saved=Json::from_cbor(Json::to_cbor(document));assert(saved==document);
+  restored->getFramePoses()=original->getFramePoses();
+  for(const auto& [id,p]:original->lmdb.getLandmarks()) {
+    auto& q=restored->lmdb.getLandmark(id);q.direction=p.direction;q.inv_dist=p.inv_dist;
+  }
+  auto reopened=Checkpoint::restore(*restored,saved);compare(*original,*restored);
+  assert((window.proposal()-reopened->proposal()).norm()<1e-8);
+  assert(window.snapshot()->information->measurements==reopened->snapshot()->information->measurements);
+  const auto a=window.worldInformation({42}),b=reopened->worldInformation({42});
+  assert((a.positions-b.positions).norm()==0 && a.observed==b.observed);
+  assert((a.covariance-b.covariance).norm()<1e-8*std::max(1e-12,a.covariance.norm()));
+  auto corrupted=saved;corrupted["model"]["reference"]=20;
+  rejects([&]{Checkpoint::restore(*restored,corrupted);},"native_window_checkpoint_digest");compare(*original,*restored);
+  auto& pixel=restored->lmdb.getLandmark(42).obs.at(basalt::TimeCamId(20,0));const auto old_pixel=pixel;pixel.x()+=.25;
+  rejects([&]{Checkpoint::restore(*restored,saved);},"native_window_checkpoint_source");assert(pixel.x()==old_pixel.x()+.25);pixel=old_pixel;
+  const double old_noise=restored->obs_std_dev;restored->obs_std_dev*=2;
+  rejects([&]{Checkpoint::restore(*restored,saved);},"native_window_checkpoint_source");restored->obs_std_dev=old_noise;
+  const auto camera=restored->calib.T_i_c[0];restored->calib.T_i_c[0].translation().x()+=.01;
+  rejects([&]{Checkpoint::restore(*restored,saved);},"native_window_checkpoint_source");restored->calib.T_i_c[0]=camera;
+  restored->rel_pose_factors[0].cov_inv(0,0)*=2;
+  rejects([&]{Checkpoint::restore(*restored,saved);},"native_window_checkpoint_source");restored->rel_pose_factors[0].cov_inv(0,0)/=2;
+  const auto host=restored->lmdb.getLandmark(42).host_kf_id;restored->lmdb.getLandmark(42).host_kf_id=basalt::TimeCamId(20,0);
+  rejects([&]{Checkpoint::restore(*restored,saved);},"native_window_checkpoint_source");restored->lmdb.getLandmark(42).host_kf_id=host;
+  Sophus::Vector6d delta=Sophus::Vector6d::Zero();delta[0]=.1;restored->getFramePoses().at(20).applyInc(delta);
+  const auto changed=posim_slam::nativeMappingStateIdentity(*restored);
+  rejects([&]{Checkpoint::restore(*restored,saved);},"native_window_checkpoint_state");
+  assert(posim_slam::nativeMappingStateIdentity(*restored)==changed);restored->getFramePoses()=original->getFramePoses();
+  // Even a self-consistent checksum cannot turn invalid anchor values into a
+  // valid model. Decode failure after earlier pose writes must roll back too.
+  auto invalid=saved;const double bad[]={0,0,-1};
+  invalid["model"]["points"][0][3]=posim_slam::mapping_graph_detail::doubles(bad,3);
+  const auto encoded=Json::to_cbor(invalid["model"]);posim_slam::InputDigest digest;digest.update(encoded.data(),encoded.size());
+  const auto hash=digest.finish();invalid["sha256"]=Json::binary(std::vector<uint8_t>(hash.begin(),hash.end()));
+  rejects([&]{Checkpoint::restore(*restored,invalid);},"native_window_checkpoint_point");compare(*original,*restored);
+  posim_slam::SubmapInformation::Limits small;small.numeric_bytes=1;
+  rejects([&]{Checkpoint::restore(*restored,saved,small);},"native_window_numeric_capacity");compare(*original,*restored);
+  int checks=0;rejects([&]{Checkpoint::restore(*restored,saved,{},[&]{return ++checks==3;});},"native_window_cancelled");compare(*original,*restored);
+  original->huber_thresh*=2;
+  rejects([&]{Checkpoint::document(window);},"native_window_checkpoint_source_changed");original->huber_thresh/=2;
+  const auto first=window.step(),second=reopened->step();assert(first.accepted==second.accepted);
+  assert(std::abs(first.after-second.after)<1e-8);
+  for(const auto& [stamp,state]:original->getFramePoses())
+    assert((state.getPose().matrix()-restored->getFramePoses().at(stamp).getPose().matrix()).norm()<1e-8);
+  std::cout<<"Native window checkpoint: CBOR anchors, shared uncertainty, original ownership, continued optimization, source/state binding, corruption, capacity and cancellation rollback pass.\n";
+}
+
 int main(int argc,char** argv) {
   if(argc!=2)return 2;const std::filesystem::path directory=argv[1];Fixture fixture;
   nativeRowsControls(fixture);
   nativeWindowControls(fixture);
   nativeWorldControls(fixture);
+  nativeCheckpointControls(fixture);
   Registry registry(fixture.calibration,fixture.config,"fixture-segment");auto original=fixture.mapper();
   const auto first=registry.capture(fixture.input,*original,10,original->getFramePoses().at(10).getPose(),Sophus::SE3d());
   assert(first->stable_ids.at(42)==0 && first->stable_ids.at(99)==1);

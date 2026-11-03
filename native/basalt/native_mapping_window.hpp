@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 #pragma once
 #include "native_mapping_linearization.hpp"
+#include "native_mapping_identity.hpp"
 #include <functional>
 #include <numeric>
 
@@ -11,6 +12,7 @@ inline constexpr double kNativeMappingPi=3.14159265358979323846;
 // Its roll/pitch remain variables. World-reference covariance belongs to the
 // information model, and must never be inferred from this mean-only chart.
 class NativeMappingChart {
+  friend class NativeMappingCheckpoint;
  public:
   NativeMappingChart(basalt::NfrMapper& mapper,int64_t reference):reference_(reference) {
     for(const auto& [stamp,state]:mapper.getFramePoses()) {
@@ -123,6 +125,7 @@ class NativeMappingChart {
 // growth, track reassociation, rehosting and sealed-factor rehydration require
 // a new owner built from the original graph; automatic rollover is separate.
 class NativeMappingWindow {
+  friend class NativeMappingCheckpoint;
  public:
   struct Step {bool accepted=false;int trials=0;double before=0,after=0;size_t active_originals=0;};
   struct WorldPoints {
@@ -145,7 +148,8 @@ class NativeMappingWindow {
   };
   NativeMappingWindow(basalt::NfrMapper& mapper,int64_t reference,
       const std::set<int64_t>& active_poses,SubmapInformation::Limits limits={})
-      :mapper_(mapper),chart_(mapper,reference),limits_(limits),
+      :mapper_(mapper),chart_(mapper,reference),limits_(limits),active_poses_(active_poses),
+       source_identity_(nativeMappingSourceIdentity(mapper)),
        reference_weight_(mapper.config.vio_init_pose_weight) {
     if(active_poses.empty())throw std::invalid_argument("native_window_empty");
     for(auto stamp:active_poses)if(!chart_.offsets().count(stamp))throw std::invalid_argument("native_window_unknown_pose");
@@ -308,17 +312,7 @@ class NativeMappingWindow {
         if(before_rows.points[i].valid[k] && !trial_rows.points.at(i).valid.at(k))visible=false;
       const double cost=objective(value,trial_rows);
       if(!visible || !std::isfinite(cost) || cost>result.before)continue;
-      const auto anchored=chart_.rows(mapper_,trial_rows);
-      std::vector<SubmapLinearization::Rows> replacement;std::map<int64_t,Conditional> new_points;
-      for(const auto& group:anchored.factors)replacement.push_back(nativeMappingFactor(group,chart_.offsets()));
-      for(const auto& group:anchored.points) {
-        auto reduced=reduceNativeMappingPoint(group,chart_.offsets());replacement.push_back(reduced.likelihood);
-        new_points.emplace(group.id,Conditional(std::move(reduced)));
-      }
-      std::vector<std::string> remove;
-      for(const auto& group:old_snapshot->active)remove.insert(remove.end(),group->originals.begin(),group->originals.end());
-      check();owner_->replace(remove,replacement);
-      for(auto& [id,reduced]:new_points)points_.at(id)=std::move(reduced);
+      replaceActive(trial_rows,check);
       backup.committed=true;result.accepted=true;result.after=cost;return result;
     }
     return result;
@@ -342,6 +336,22 @@ class NativeMappingWindow {
     }}
     ~Backup(){if(!committed)restore();}
   };
+  // The same replacement transaction is used after a nonlinear step and after
+  // restoring historical anchors. Historical rows are never relinearized at
+  // the latest output state merely because the window was saved and reopened.
+  void replaceActive(const NativeMappingRows& rows,const std::function<void()>& check) {
+    const auto anchored=chart_.rows(mapper_,rows);
+    std::vector<SubmapLinearization::Rows> replacement;std::map<int64_t,Conditional> new_points;
+    for(const auto& group:anchored.factors)replacement.push_back(nativeMappingFactor(group,chart_.offsets()));
+    for(const auto& group:anchored.points) {
+      auto reduced=reduceNativeMappingPoint(group,chart_.offsets());replacement.push_back(reduced.likelihood);
+      new_points.emplace(group.id,Conditional(std::move(reduced)));
+    }
+    std::vector<std::string> remove;
+    for(const auto& group:snapshot()->active)remove.insert(remove.end(),group->originals.begin(),group->originals.end());
+    check();owner_->replace(remove,replacement);
+    for(auto& [id,reduced]:new_points)points_.at(id)=std::move(reduced);
+  }
   static void appendBatches(SubmapInformation& owner,const std::vector<SubmapLinearization::Rows>& groups,int columns) {
     std::vector<int64_t> order(columns);std::iota(order.begin(),order.end(),0);
     Eigen::MatrixXd j=Eigen::MatrixXd::Zero(4096,columns);Eigen::VectorXd r(4096);int used=0;
@@ -374,6 +384,7 @@ class NativeMappingWindow {
     return .5*(base.jacobian*local+base.residual).squaredNorm()+active.vision_cost+.5*active.pose_cost;
   }
   basalt::NfrMapper& mapper_;NativeMappingChart chart_;SubmapInformation::Limits limits_;
+  std::set<int64_t> active_poses_;InputDigest::Value source_identity_;
   NativeMappingSelection selection_;std::unique_ptr<SubmapLinearization> owner_;
   std::map<int64_t,Conditional> points_;size_t originals_=0;double reference_weight_;
 };
