@@ -195,9 +195,10 @@ class NativeMappingWindow {
     }
     if(reserved>=limits.numeric_bytes)throw std::runtime_error("native_window_numeric_capacity");
     auto owner_limits=limits;owner_limits.numeric_bytes-=reserved;
+    if(!owner_limits.temporary_columns)owner_limits.temporary_columns=kMaxJointColumns;
     // Bootstrap keeps the existing temporary-column ceiling. The final active
     // separator still obeys limits.active_columns. Neither is scaled by history.
-    auto initial_limits=owner_limits;initial_limits.active_columns=kMaxJointColumns;
+    auto initial_limits=owner_limits;initial_limits.active_columns=SubmapInformation::temporaryColumns(owner_limits);
     SubmapInformation initial(initial_limits);
     std::unique_ptr<RowBatches> history;int64_t event=0;size_t next_group=0;
     std::vector<SubmapLinearization::Rows> active;

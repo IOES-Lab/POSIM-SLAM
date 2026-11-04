@@ -366,6 +366,88 @@ void selectiveRetirement() {
   rejects([&]{bounded.retire({"c"},{2});},"submap_node_capacity");
   assert(bounded.snapshot()==stable);
 }
+void correlatedReobservation() {
+  Store::Limits limits;limits.active_columns=2;limits.temporary_columns=4;
+  Store base(limits);Eigen::Matrix2d pose;pose<<5,0,-1/.3,1/.3;
+  base.append({"world","motion"},{0,1},pose,Eigen::Vector2d(0,-1/.3));
+  // The marginalized landmark row has no marginal pose information. Its
+  // complementary conditional is y = x0 + 2 + N(0,.16), from that same row.
+  base.append({"landmark"},{0},Eigen::MatrixXd::Zero(0,1),Eigen::VectorXd());base.seal({1});
+  const auto before=base.snapshot();Store::Node point;point.kept={0};point.removed={2};
+  point.regression=Eigen::MatrixXd::Ones(1,1);point.offset=Eigen::VectorXd::Constant(1,2);
+  point.noise=Eigen::MatrixXd::Constant(1,1,.4);point.unbounded.resize(1,0);point.deterministic.resize(1,0);
+  base.includeConditional({"landmark"},point);const auto complete=base.snapshot();
+  assert(complete->measurements==before->measurements && complete->order==before->order);
+  assert(complete->conditional_sources==std::set<std::string>{"landmark"});
+  Active active(base,complete,limits);
+  Eigen::Matrix<double,1,2> direction;direction<<1,-1;
+  auto view=likelihood({"view"},{2,1},direction/.15,Eigen::VectorXd::Constant(1,-1.2/.15));
+  Eigen::MatrixXd originals=Eigen::MatrixXd::Zero(3,3);originals.topLeftCorner<2,2>()=pose;originals.row(2)<<-1/.4,0,1/.4;
+  Eigen::Vector3d residual(0,-1/.3,-2/.4);
+  auto check=[&](const Eigen::MatrixXd& rows,const Eigen::VectorXd& values) {
+    const auto h=(rows.transpose()*rows).eval();const auto result=active.query(active.solve(active.snapshot()),coordinates(0,rows.cols()),Eigen::MatrixXd::Identity(rows.cols(),rows.cols()));
+    assert(result.observed);close(result.mean,-h.ldlt().solve(rows.transpose()*values),1e-9);
+    close(result.covariance,h.ldlt().solve(Eigen::MatrixXd::Identity(rows.cols(),rows.cols())),1e-9);return result;
+  };
+  check(originals,residual);active.append({view});
+  Eigen::MatrixXd all=Eigen::MatrixXd::Zero(4,3);all.topRows(3)=originals;all(3,2)=view.jacobian(0,0);all(3,1)=view.jacobian(0,1);
+  Eigen::VectorXd values(4);values<<residual,view.residual;const auto old=check(all,values);const auto immutable=active.snapshot();const auto old_solution=active.solve(immutable);
+  // Account for both the untouched base and every reconditioned node.
+  std::set<const Store::Node*> nodes;size_t numeric=immutable->active_bytes;
+  for(const auto& snapshot:{immutable->base,immutable->information}) {
+    numeric+=snapshot->numericBytes()-snapshot->history_bytes;
+    for(const auto& node:snapshot->nodes)if(nodes.insert(node.get()).second)numeric+=node->bytes();
+  }
+  assert(numeric==immutable->numericBytes() && nodes.size()>immutable->base->nodes.size());
+  auto small=limits;small.numeric_bytes=numeric-1;Active bounded(base,complete,small);const auto stable=bounded.snapshot();
+  rejects([&]{bounded.append({view});},"submap_linearization_capacity");assert(bounded.snapshot()==stable);
+  view.jacobian=direction/.5;view.residual=Eigen::VectorXd::Constant(1,-1.4/.5);active.replace({"view"},{view});
+  all(3,2)=view.jacobian(0,0);all(3,1)=view.jacobian(0,1);values[3]=view.residual[0];check(all,values);
+  close(active.query(old_solution,{0,1,2},Eigen::Matrix3d::Identity()).covariance,old.covariance);
+  auto motion=likelihood({"new-motion"},{1,3},-direction/.2,Eigen::VectorXd::Constant(1,-1/.2));
+  auto latest=likelihood({"new-view"},{2,3},direction/.3,Eigen::VectorXd::Constant(1,-.1/.3));
+  active.append({motion,latest});Eigen::MatrixXd expanded=Eigen::MatrixXd::Zero(6,4);expanded.topLeftCorner(4,3)=all;
+  expanded(4,1)=motion.jacobian(0,0);expanded(4,3)=motion.jacobian(0,1);
+  expanded(5,2)=latest.jacobian(0,0);expanded(5,3)=latest.jacobian(0,1);
+  Eigen::VectorXd combined(6);combined<<values,motion.residual,latest.residual;check(expanded,combined);
+  active.retire({"view","new-motion"},{3});check(expanded,combined);
+  latest.residual[0]*=2;combined[5]=latest.residual[0];active.replace({"new-view"},{latest});check(expanded,combined);
+  assert(active.snapshot()->information->measurements.size()==6 && active.snapshot()->information->known.size()==4);
+  assert(active.snapshot()->information->order==std::vector<int64_t>{3});
+  const auto unchanged=base.snapshot();auto bad=point;bad.removed={7};
+  rejects([&]{base.includeConditional({"landmark"},bad);},"submap_conditional_originals");
+  rejects([&]{base.includeConditional({"unknown"},bad);},"submap_conditional_originals");
+  rejects([&]{base.includeConditional({"world"},point);},"submap_conditional_coordinate_reused");
+  bad.kept={9};rejects([&]{base.includeConditional({"world"},bad);},"submap_conditional_parent");
+  bad=point;bad.removed={7};bad.noise.setZero();rejects([&]{base.includeConditional({"world"},bad);},"submap_conditional_basis");
+  assert(base.snapshot()==unchanged);
+  // An unbounded conditional does not invent a point prior. A later original
+  // relative reading can make it observable through the existing world frame.
+  Store free(limits);free.append({"pose","unseen"},{0},Eigen::MatrixXd::Ones(1,1),Eigen::VectorXd::Zero(1));
+  point.kept={0};point.removed={1};point.noise.resize(1,0);point.unbounded=Eigen::MatrixXd::Ones(1,1);
+  free.includeConditional({"unseen"},point);Active unbounded(free,free.snapshot(),limits);
+  assert(!unbounded.query(unbounded.solve(unbounded.snapshot()),{1},Eigen::MatrixXd::Identity(1,1)).observed);
+  unbounded.append({likelihood({"observed"},{1,0},direction/.2,Eigen::VectorXd::Constant(1,-3/.2))});
+  const auto known=unbounded.query(unbounded.solve(unbounded.snapshot()),{0,1},Eigen::Matrix2d::Identity());
+  assert(known.observed);close(known.mean,Eigen::Vector2d(0,3));Eigen::Matrix2d covariance;covariance<<1,1,1,1.04;close(known.covariance,covariance);
+  Store exact(limits);exact.append({"pose","exact"},{0},Eigen::MatrixXd::Ones(1,1),Eigen::VectorXd::Zero(1));
+  Active constrained(exact,exact.snapshot(),limits);point.regression=Eigen::MatrixXd::Constant(1,1,2);point.offset=Eigen::VectorXd::Ones(1);
+  point.unbounded.resize(1,0);point.deterministic=Eigen::MatrixXd::Ones(1,1);constrained.includeConditional({"exact"},point);
+  constrained.append({likelihood({"reading"},{1},Eigen::MatrixXd::Constant(1,1,2),Eigen::VectorXd::Constant(1,-6))});
+  const auto deterministic=constrained.query(constrained.solve(constrained.snapshot()),{0,1},Eigen::Matrix2d::Identity());
+  assert(deterministic.observed);close(deterministic.mean,Eigen::Vector2d(16./17,49./17));covariance<<1,2,2,4;close(deterministic.covariance,covariance/17);
+  // The lineage context must not retain the initial base after replacement.
+  // Only caller-held snapshots may keep that older numeric payload alive.
+  std::weak_ptr<const Store::Data> released;std::weak_ptr<const Store::Node> released_node;
+  auto make=[&] {
+    Store initial(limits);initial.append({"world","motion"},{0,1},pose,Eigen::Vector2d(0,-1/.3));initial.seal({1});
+    released=initial.snapshot();released_node=initial.snapshot()->nodes.front();return std::make_unique<Active>(initial,initial.snapshot(),limits);
+  };
+  auto owner=make();assert(!released.expired() && !released_node.expired());
+  owner->appendLate(likelihood({"late"},{0},Eigen::MatrixXd::Ones(1,1),Eigen::VectorXd::Zero(1)));
+  assert(released.expired() && released_node.expired());
+  std::cout<<"Correlated reobservation: complementary source conditional, new/replaced pixels, new pose, retirement, shared covariance, free directions, immutable ownership and exact numeric accounting pass.\n";
+}
 void batchedOriginals() {
   // Cross both the 4096 likelihood-row and 1024 exact-row batch boundaries.
   for(bool exact:{false,true}) {
@@ -399,6 +481,6 @@ void batchedOriginals() {
 } // namespace
 int main() {
   denseAndLateAdjustment();unobservedReference();exactConstraintsAndCapacity();pressureDatumAndClosedFrontier();longChain();
-  replaceOriginalLikelihoods();replaceRankAndExactSupport();boundedReplacements();selectiveRetirement();batchedOriginals();
+  replaceOriginalLikelihoods();replaceRankAndExactSupport();boundedReplacements();selectiveRetirement();correlatedReobservation();batchedOriginals();
   std::cout<<"Submap information: batch mean/covariance, shared noise, unobserved gauge, exact support, immutable ownership and bounded-frontier chain pass.\n";
 }

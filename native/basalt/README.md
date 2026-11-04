@@ -69,9 +69,18 @@ null directions and cross-output covariance jointly. `appendLate` reconditions
 affected nodes and passes the new marginal message toward the frontier, where
 the original prior enters once. No world reference or damping is added.
 
+`includeConditional(originals, node)` exposes coordinates eliminated from an
+already-owned source group. Supply the complementary conditional from the same
+reduction as its retained marginal, including finite, free and deterministic
+directions. This operation adds no measurement. Original keys can supply that
+complement only once. Its pose correlations remain part of later observations.
+
 Defaults are 256 active scalar coordinates, 4,096 conditional nodes, 65,536 total
 coordinates and original keys, and 96 MiB of numeric payload. The frontier can
-be configured up to the shared 1,218-column bound. Queries return at most 24
+be configured up to the shared 1,218-column bound. `temporary_columns=0` uses
+the frontier quota for elimination work; a nonzero value reserves a separate
+workspace at least as large as the frontier and at most 1,218 columns. This does
+not enlarge the retained frontier. Queries return at most 24
 joint scalar outputs. Numeric payload excludes allocation and identity storage;
 coordinate/key/node quotas also apply. Failed updates leave prior snapshots
 intact. Nonfinite query moments fail explicitly. The caller supplies whitened
@@ -89,9 +98,17 @@ is the established method; GTSAM code is not a dependency of this utility.
 정보를 다시 계산하고 새 주변 정보를 경계까지 전달하며 기존 사전정보는 한 번만
 사용합니다. 새 기준 좌표 제약이나 감쇠항을 추가하지 않습니다.
 
+`includeConditional(originals, node)`는 이미 반영한 원본 그룹에서 소거했던
+좌표를 조회·갱신 대상으로 연결합니다. 보존한 주변 정보와 같은 소거 계산에서
+얻은 조건부 정보를 제공하며 유한·관측 불가·결정적 방향을 포함합니다.
+측정을 추가하지 않고 원본 키마다 이 보완 정보를 한 번만 받습니다.
+후속 관측에도 자세와의 상관관계를 유지합니다.
+
 기본 한도는 활성 스칼라 좌표 256개, 조건부 노드 4,096개, 전체 좌표와 원본 키
 각 65,536개, 수치 데이터 96MiB입니다. 활성 한도는 공통 1,218열 한도 안에서
-설정합니다. 조회는 스칼라 출력 최대 24개의 결합 공분산을 제공합니다. 수치 크기는
+설정합니다. `temporary_columns=0`은 소거 작업에도 활성 한도를 사용합니다.
+0보다 큰 값은 활성 한도 이상·1,218열 이하의 임시 작업공간을 지정하며 보존하는
+활성 경계의 한도는 바꾸지 않습니다. 조회는 스칼라 출력 최대 24개의 결합 공분산을 제공합니다. 수치 크기는
 할당기·식별 정보 저장 공간을 제외하며 별도의 좌표·키·노드 한도도 적용합니다.
 실패한 갱신은 이전 사본을 바꾸지 않고 비정상 평균·공분산은 오류로 반환합니다.
 호출자가 잡음으로 정규화한 행·정확한 제약·일관된 원래 접선 좌표를 제공하며 새
@@ -106,16 +123,22 @@ measurements may join them. Previously published coordinates are preserved.
 `seal` incorporates active groups into the fixed conditional base.
 `retire(originals, kept)` transfers selected complete groups into that base and
 eliminates coordinates outside `kept`. Remaining active groups stay replaceable
-and must fit within `kept`; historical coordinates remain queryable with their
-shared uncertainty. `appendLate`
+and their frontier coordinates must fit within `kept`; they may also reference
+historical coordinates with their shared uncertainty. `appendLate`
 updates that base before applying active groups once. Immutable snapshots retain
 their original answers when another revision is published.
+`includeConditional` exposes a complementary source conditional in the base.
+Replaceable new-view groups may reference those old landmark/pose coordinates.
+Each replacement reconditions the affected historical path from the same base,
+so a previous version of the new observation is not retained as extra evidence.
 Use the `SubmapLinearization` revision for publication identity; information
 forks have branch-local revision counters.
 
 The same coordinate, key and node quotas apply. The 96 MiB numeric budget counts
 retained active rows, both distinct frontier matrices and shared conditional
-nodes once; caller-held old snapshots consume additional memory. Replacements
+nodes once. Changed base/active-branch nodes are both counted. The lineage context
+keeps no additional old numeric snapshot; caller-held old snapshots consume
+additional memory. Replacements
 must use consistent original tangent coordinates and residuals. Rehydrating
 sealed nonlinear factors, transporting a changed tangent reference and enabling
 automatic native rollover require the owning mapper. `mappingGraphRows` exposes
@@ -128,17 +151,23 @@ existing map-uncertainty calculation.
 한 번씩 있어야 하며 새 측정도 추가할 수 있습니다. 이미 공개한 좌표는 유지합니다.
 `seal`은 활성 그룹을 고정 조건부 정보에 반영합니다.
 `retire(originals, kept)`는 선택한 관측 그룹 전체를 그 정보에 반영하고
-`kept` 밖의 좌표를 소거합니다. 남은 활성 그룹은 `kept` 안에 있어야 하며
-계속 교체할 수 있습니다. 과거 좌표는 공유 불확실성과 함께 조회할 수 있습니다.
+`kept` 밖의 좌표를 소거합니다. 남은 그룹의 활성 좌표는 `kept` 안에 있어야 하며
+과거 좌표도 공유 불확실성을 유지한 채 참조하고 계속 교체할 수 있습니다.
 `appendLate`는 기존 조건부
 정보를 갱신한 뒤 활성 그룹을 한 번씩 적용합니다. 새 개정본이 나와도 이전 불변
 사본의 조회 결과는 유지됩니다.
+`includeConditional`은 원본 소거 계산의 보완 조건부 정보를 연결합니다.
+새 시점의 교체 가능한 관측 그룹은 과거 지도점·자세 좌표를 참조할 수 있습니다.
+교체할 때마다 같은 기준 정보에서 영향을 받은 과거 경로를 다시 계산하므로
+교체 전 관측이 추가 증거로 남지 않습니다.
 공개 개정본은 `SubmapLinearization`의 개정 번호로 식별합니다. 하위 정보 분기의
 개정 번호는 각 분기 안에서만 증가합니다.
 
 좌표·원본 키·노드 한도는 같습니다. 수치 데이터 96MiB 한도에는 활성 관측 행,
-서로 다른 두 경계 행렬과 공유 조건부 노드가 각각 한 번씩 포함됩니다. 호출자가
-보관한 이전 사본은 추가 메모리를 사용합니다. 교체 행과 잔차는 일관된 원래 접선
+서로 다른 두 경계 행렬과 공유 조건부 노드가 각각 한 번씩 포함됩니다.
+기준 정보와 활성 분기에서 달라진 노드는 양쪽 모두 계산합니다. 계보 관리 객체는
+별도의 이전 수치 사본을 보존하지 않습니다. 호출자가 보관한 이전 사본은 추가
+메모리를 사용합니다. 교체 행과 잔차는 일관된 원래 접선
 좌표로 표현해야 합니다. 확정된 비선형 제약 복원, 접선 기준 변경에 따른 변환과
 네이티브 자동 구간 전환은 지도 소유자가 구현해야 합니다. `mappingGraphRows`는
 기존 지도 불확실성 계산에 쓰는 원본 관측 식별자와 잡음으로 정규화한 야코비안
@@ -261,7 +290,10 @@ and the published owner on cancellation or failure. Callers exclusively own
 the mapper during the window's lifetime. The separator defaults to 256 scalar
 coordinates, with the existing 1,218-coordinate hard limit. The 96 MiB logical
 numeric budget includes active/prior rows, conditional nodes, landmark
-back-substitution and coordinate anchors. Caller-owned graphs, temporary solve
+back-substitution and coordinate anchors. The native owner reserves up to
+1,218 temporary elimination columns by default; an explicit
+`temporary_columns` value also bounds bootstrap work. The retained separator
+keeps its own quota. Caller-owned graphs, temporary solve
 storage and allocator overhead are additional. An undefined reference heading
 or a rotation change reaching the original chart's pi boundary requires a new
 owner. Graph growth, reassociation, rehosting, sealed nonlinear restoration and
@@ -369,6 +401,9 @@ existing full-history optimizer and limits; automatic rollover is not enabled.
 정보를 복원합니다. 호출자는 구간 객체가 존재하는 동안 지도를 독점 사용합니다.
 경계는 기본 256개 스칼라 좌표이며 기존 절대 한도는 1,218개입니다. 수치 데이터
 96MiB에는 활성·확정 행렬, 조건부 노드, 랜드마크 역대입과 좌표 기준이 포함됩니다.
+네이티브 소유자는 기본적으로 최대 1,218열의 소거 임시 공간을 예약합니다.
+`temporary_columns`를 지정하면 초기 구성에도 그 한도를 적용하며,
+보존하는 활성 경계는 별도의 한도를 유지합니다.
 호출자 소유 그래프, 풀이 임시 공간과 할당 오버헤드는 별도입니다. 기준 방위를
 정의할 수 없거나 원래 회전 좌표에서 변화가 pi 경계에 도달하면 새 소유자가
 필요합니다. 그래프 확장, 관측 재연결, 기준 영상 변경, 확정된 비선형 제약 복원과

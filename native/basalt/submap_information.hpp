@@ -15,11 +15,15 @@ namespace posim_slam {
 // Coordinates and original measurement identities belong to the caller. The
 // caller supplies its original world reference once; this class adds no prior.
 class SubmapInformation {
+  friend class SubmapLinearization;
  public:
   using Coordinate=int64_t;
   struct Limits {
     size_t active_columns=256,nodes=4096,coordinates=65536,measurements=65536;
     size_t numeric_bytes=96*1024*1024;
+    // Zero uses the retained-frontier quota. A caller may reserve a distinct
+    // temporary elimination workspace within the same existing hard ceiling.
+    size_t temporary_columns=0;
   };
   struct Node {
     std::vector<Coordinate> kept,removed;
@@ -34,7 +38,7 @@ class SubmapInformation {
     Eigen::VectorXd residual,target;
     std::vector<std::shared_ptr<const Node>> nodes;
     std::set<Coordinate> known;
-    std::set<std::string> measurements;
+    std::set<std::string> measurements,conditional_sources;
     size_t history_bytes=0;
     size_t numericBytes() const {
       return history_bytes+sizeof(double)*size_t(jacobian.size()+constraints.size()+residual.size()+target.size());
@@ -63,12 +67,52 @@ class SubmapInformation {
   explicit SubmapInformation(Limits limits):limits_(limits) {
     if(!limits.active_columns || limits.active_columns>size_t(kMaxJointColumns) ||
         !limits.nodes || limits.nodes>4096 || !limits.coordinates || limits.coordinates>65536 ||
-        !limits.measurements || limits.measurements>65536 || !limits.numeric_bytes || limits.numeric_bytes>96*1024*1024)
+        !limits.measurements || limits.measurements>65536 || !limits.numeric_bytes || limits.numeric_bytes>96*1024*1024 ||
+        (limits.temporary_columns && (limits.temporary_columns<limits.active_columns || limits.temporary_columns>size_t(kMaxJointColumns))))
       throw std::invalid_argument("submap_information_limits");
     auto empty=std::make_shared<Data>();empty->owner=identity_;empty->jacobian.resize(0,0);empty->constraints.resize(0,0);
     data_=empty;
   }
   Snapshot snapshot() const {return std::atomic_load(&data_);}
+  static size_t temporaryColumns(const Limits& limits) {return limits.temporary_columns?limits.temporary_columns:limits.active_columns;}
+  // Restore a conditional complementary to an already-owned marginal. The
+  // caller supplies the conditional from those same original source rows.
+  // No measurement is inserted; this only exposes its eliminated coordinates.
+  Snapshot includeConditional(const std::vector<std::string>& originals,const Node& conditional) {
+    std::lock_guard<std::mutex> writer(writer_);auto next=std::make_shared<Data>(*snapshot());
+    std::set<std::string> keys;
+    if(originals.empty())throw std::invalid_argument("submap_conditional_originals");
+    for(const auto& key:originals)if(!next->measurements.count(key) ||
+        next->conditional_sources.count(key) || !keys.insert(key).second)
+      throw std::invalid_argument("submap_conditional_originals");
+    const auto kept=index(conditional.kept),removed=index(conditional.removed);
+    const auto n=Eigen::Index(removed.size()),k=Eigen::Index(kept.size());
+    if(!n || n+k>temporaryColumns(limits_) || conditional.regression.rows()!=n || conditional.regression.cols()!=k ||
+        conditional.offset.size()!=n || conditional.noise.rows()!=n || conditional.unbounded.rows()!=n ||
+        conditional.deterministic.rows()!=n || conditional.noise.cols()+conditional.unbounded.cols()+conditional.deterministic.cols()!=n ||
+        !conditional.regression.allFinite() || !conditional.offset.allFinite() || !conditional.noise.allFinite() ||
+        !conditional.unbounded.allFinite() || !conditional.deterministic.allFinite())
+      throw std::invalid_argument("submap_conditional_shape");
+    for(auto column:conditional.kept)if(!next->known.count(column))throw std::invalid_argument("submap_conditional_parent");
+    for(auto column:conditional.removed)if(next->known.count(column))throw std::invalid_argument("submap_conditional_coordinate_reused");
+    Eigen::MatrixXd basis(n,n);Eigen::Index offset=0;
+    for(Eigen::Index i=0;i<conditional.noise.cols();++i) {
+      const double norm=conditional.noise.col(i).stableNorm();
+      if(!std::isfinite(norm) || norm<=0)throw std::invalid_argument("submap_conditional_basis");
+      basis.col(offset++)=conditional.noise.col(i)/norm;
+    }
+    basis.middleCols(offset,conditional.unbounded.cols())=conditional.unbounded;offset+=conditional.unbounded.cols();
+    basis.rightCols(conditional.deterministic.cols())=conditional.deterministic;
+    if(!(basis.transpose()*basis).isApprox(Eigen::MatrixXd::Identity(n,n),1e-10))
+      throw std::invalid_argument("submap_conditional_basis");
+    if(next->nodes.size()>=limits_.nodes)throw std::runtime_error("submap_node_capacity");
+    if(next->known.size()+removed.size()>limits_.coordinates)throw std::runtime_error("submap_coordinate_capacity");
+    next->known.insert(conditional.removed.begin(),conditional.removed.end());
+    next->conditional_sources.insert(keys.begin(),keys.end());
+    next->history_bytes+=conditional.bytes();
+    next->nodes.insert(next->nodes.begin(),std::make_shared<const Node>(conditional));
+    return commit(std::move(next));
+  }
   // Independent writer over the same immutable information lineage. This
   // permits an atomic caller transaction to rebuild only unsealed factors;
   // the published source snapshot and its conditional owners stay unchanged.
@@ -165,7 +209,8 @@ class SubmapInformation {
     std::lock_guard<std::mutex> writer(writer_);auto next=std::make_shared<Data>(*snapshot());
     // Reuse append's complete row, key, rank and numeric validation in an
     // isolated message owner. Its input keys are not added to history twice.
-    SubmapInformation message(limits_);message.append(originals,columns,j,r,c,target);
+    auto workspace=limits_;workspace.active_columns=temporaryColumns(limits_);
+    SubmapInformation message(workspace);message.append(originals,columns,j,r,c,target);
     for(const auto& key:originals)if(next->measurements.count(key))throw std::invalid_argument("submap_measurement_reused");
     if(next->measurements.size()+originals.size()>limits_.measurements)throw std::runtime_error("submap_measurement_capacity");
     for(Coordinate coordinate:columns)if(next->known.insert(coordinate).second)next->order.push_back(coordinate);
@@ -193,7 +238,7 @@ class SubmapInformation {
       conditional<<-whitened*original.regression,whitened;
       Eigen::MatrixXd exact(original.deterministic.cols(),order.size());
       exact<<-original.deterministic.transpose()*original.regression,original.deterministic.transpose();
-      SubmapInformation combined(limits_);
+      SubmapInformation combined(workspace);
       combined.append({"original-conditional"},order,conditional,-whitened*original.offset,
         exact,original.deterministic.transpose()*original.offset);
       combined.append({"new-message"},incoming->order,incoming->jacobian,incoming->residual,incoming->constraints,incoming->target);
@@ -277,6 +322,13 @@ class SubmapInformation {
     result.observed=observed;return result;
   }
  private:
+  // The linearization owner holds the actual base/current snapshots. Its
+  // information context needs only the lineage and limits, not an extra old
+  // snapshot that would keep retired numeric payload alive outside its quota.
+  void releaseContextSnapshot() {
+    auto empty=std::make_shared<Data>();empty->owner=identity_;
+    Snapshot immutable=empty;std::atomic_store(&data_,immutable);
+  }
   static std::map<Coordinate,size_t> index(const std::vector<Coordinate>& order) {
     std::map<Coordinate,size_t> out;
     for(size_t i=0;i<order.size();++i)if(order[i]<0 || !out.emplace(order[i],i).second)throw std::invalid_argument("submap_coordinates");
