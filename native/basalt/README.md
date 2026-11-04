@@ -29,7 +29,14 @@ matrices. Immutable revisions let optimization run independently of ingestion. I
 overflow invalidates mapping without blocking the navigation estimator.
 [Persistent-map contract and bounds](../../docs/diagnostics/visual-map-quality.md).
 
-The native stream stores complete detector features, recovered factors, pose seeds and retirement identities in a session-owned `worker-map-inputs-*.sqlite` file beside its output. Each retirement commits in one SQLite transaction before publication. Immutable map snapshots retain page references; a read leases one checked feature frame, while optimization still materializes the bounded graph. The SQLite page cache targets 2 MiB, memory mapping is disabled and the database is bounded to 96 MiB. Input limits and admission checks still apply. A storage error invalidates map output; the navigation estimator can continue. Restoring inputs requires matching epoch, calibration, mapper settings and limits; it does not restart navigation.
+Matching uses two tasks with at most four complete feature frames in use. The
+mapper retains pixel coordinates for optimization and releases descriptor,
+bearing and orientation arrays and the retrieval index after matching.
+
+매칭은 두 작업자가 전체 특징 프레임을 최대 4개까지 읽습니다. 지도는 최적화용
+픽셀 좌표를 보관하고, 매칭 뒤 기술자·방향 벡터·방향값과 검색 색인을 해제합니다.
+
+The native stream stores complete detector features, recovered factors, pose seeds and retirement identities in a session-owned `worker-map-inputs-*.sqlite` file beside its output. Each retirement commits in one SQLite transaction before publication. Immutable map snapshots retain page references; a read leases one checked feature frame, while optimization retains pixel observations and the bounded pose/factor graph. The SQLite page cache targets 2 MiB, memory mapping is disabled and the database is bounded to 96 MiB. Input limits and admission checks still apply. A storage error invalidates map output; the navigation estimator can continue. Restoring inputs requires matching epoch, calibration, mapper settings and limits; it does not restart navigation.
 
 지도 출력 큐를 연결하면 결합 제약을 제거할 때 주변화 사전정보가 확정된 뒤
 키프레임 사본을 전달합니다. 자세 정보를 보존하고 속도·편향·미지 압력 기준
@@ -41,7 +48,7 @@ The native stream stores complete detector features, recovered factors, pose see
 불변 입력 회차로 수신 처리와 지도 최적화를 분리합니다.
 입력 큐 한도를 넘으면 항법 추정을 막지 않고 지도 출력을 무효화합니다.
 
-네이티브 스트림은 모든 검출 특징·복원 제약·자세 초기값·퇴출 식별자를 출력 옆의 세션별 `worker-map-inputs-*.sqlite`에 저장합니다. 전달 정보 한 건을 SQLite 트랜잭션으로 확정한 뒤 지도 생성 쪽에 전달합니다. 불변 지도 사본은 페이지 참조를 보관하고, 읽을 때 검증한 특징 프레임 하나를 임시로 소유합니다. 최적화는 여전히 한도 내 그래프의 특징을 메모리에 구성합니다. SQLite 페이지 캐시 목표는 2MiB이며 메모리 매핑은 끄고 데이터베이스 크기는 96MiB로 제한합니다. 기존 입력 한도와 점 채택 기준은 유지합니다. 저장 오류는 지도 출력을 무효화하며 항법 추정은 계속할 수 있습니다. 입력 복원에는 같은 구간 식별자·보정값·지도 설정·한도가 필요하며 항법을 재시작하지 않습니다.
+네이티브 스트림은 모든 검출 특징·복원 제약·자세 초기값·퇴출 식별자를 출력 옆의 세션별 `worker-map-inputs-*.sqlite`에 저장합니다. 전달 정보 한 건을 SQLite 트랜잭션으로 확정한 뒤 지도 생성 쪽에 전달합니다. 불변 지도 사본은 페이지 참조를 보관하고, 읽을 때 검증한 특징 프레임 하나를 임시로 소유합니다. 최적화는 픽셀 관측과 한도 내 자세·제약 그래프를 메모리에 보관합니다. SQLite 페이지 캐시 목표는 2MiB이며 메모리 매핑은 끄고 데이터베이스 크기는 96MiB로 제한합니다. 기존 입력 한도와 점 채택 기준은 유지합니다. 저장 오류는 지도 출력을 무효화하며 항법 추정은 계속할 수 있습니다. 입력 복원에는 같은 구간 식별자·보정값·지도 설정·한도가 필요하며 항법을 재시작하지 않습니다.
 
 `mapping_information.hpp`는 지도 최적화용으로 크기가 제한된 정보 계산을
 제공합니다. 잡음으로 정규화한 자세·지도점 야코비안을 받아 영상 관측과 제약의

@@ -101,10 +101,12 @@ void PersistentMapper::optimize() {
 }
 std::shared_ptr<PersistentMapSnapshot> PersistentMapper::build(const Batch& batch) {
   const auto started=std::chrono::steady_clock::now();
-  auto restored=store_->makeMapper(batch.input);auto& mapper=*restored;
+  auto restored=store_->makeMatchedMapper(batch.input,[this] {
+    std::lock_guard<std::mutex> lock(mutex_);return !error_.empty();
+  });auto& mapper=*restored;
   if(!mapper.getFramePoses().count(batch.reference_stamp))
     throw std::runtime_error("mapping_pose_image_or_reference_mismatch");
-  mapper.match_all();mapper.build_tracks();mapper.setup_opt();
+  mapper.build_tracks();mapper.setup_opt();
   mapper.optimize(10);
   const auto quality=mappingGraphInformation(mapper,calibration_,config_,batch.reference_stamp,three_sigma_m_);
   const auto reference=mapper.getFramePoses().at(batch.reference_stamp).getPose();

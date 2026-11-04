@@ -2,6 +2,7 @@
 #include "mapping_input_store.hpp"
 #include "mapping_input_archive.hpp"
 #include "mapping_graph.hpp"
+#include "mapping_feature_matcher.hpp"
 
 namespace posim_slam {
 MappingInputStore::MappingInputStore(const basalt::Calibration<double>& calibration,const basalt::VioConfig& config,
@@ -107,6 +108,13 @@ std::unique_ptr<basalt::NfrMapper> MappingInputStore::makeMapper(const Snapshot&
     }
     return mapper;
   }
+std::unique_ptr<basalt::NfrMapper> MappingInputStore::makeMatchedMapper(const Snapshot& input,
+    const std::function<bool()>& cancelled) const {
+  if(!input || input->identity!=identity_)throw std::invalid_argument("mapping_input_snapshot_owner");
+  auto mapper=matchMappingFrames(calibration_,config_,input->frames,cancelled);
+  mapper->getFramePoses()=input->poses;mapper->rel_pose_factors=input->relative;mapper->roll_pitch_factors=input->roll_pitch;
+  return mapper;
+}
 void MappingInputStore::restoreArchive() {
   using namespace mapping_graph_detail;
   auto next=std::make_shared<Data>(*initial());

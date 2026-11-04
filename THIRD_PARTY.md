@@ -180,6 +180,15 @@ notices do not substitute for the experimental SDK's Eigen 5.0.1 notices.
 No GUI/AprilTag/camera-driver target is linked. This research recipe does not
 qualify another dependency closure for application redistribution.
 
+[`mapping_feature_matcher.hpp`](native/basalt/mapping_feature_matcher.hpp) adapts
+the pinned Basalt `NfrMapper::match_all` under BSD-3-Clause and retains its full
+original notice. It changes feature ownership and scheduling; descriptor and
+OpenGV RANSAC calculations still use the pinned upstream functions.
+
+위 매칭 연결부는 고정 Basalt의 `NfrMapper::match_all`에서 파생되며 BSD-3-Clause
+원본 고지를 파일에 보존합니다. 특징 소유권·작업 배치를 변경하고 기술자 대응과
+OpenGV RANSAC 계산에는 고정 원본 함수를 사용합니다.
+
 The build-local IMU interval extension preserves the pinned Basalt header's
 BSD-3-Clause notice. Its source and preparation script are included under
 `native/basalt/imu_continuous.inc` and `prepare_joint_headers.py`; it introduces

@@ -48,6 +48,8 @@ class MappingInputStore {
   Snapshot snapshot() const {return std::atomic_load(&data_);}
   Snapshot append(const basalt::MargData& source);
   std::unique_ptr<basalt::NfrMapper> makeMapper(const Snapshot& input) const;
+  std::unique_ptr<basalt::NfrMapper> makeMatchedMapper(const Snapshot& input,
+      const std::function<bool()>& cancelled={}) const;
   static InputDigest::Value imageDigest(const basalt::ManagedImage<uint16_t>& image) {
     InputDigest digest;const uint32_t dimensions[2]={uint32_t(image.w),uint32_t(image.h)};
     uint8_t bytes[4];for(uint32_t value:dimensions){for(int j=0;j<4;++j)bytes[j]=uint8_t(value>>(8*j));digest.update(bytes,4);}
