@@ -103,6 +103,43 @@ class SubmapLinearization {
     next->active.clear();next->active_bytes=0;
     return commit(std::move(next));
   }
+  // Transfer complete selected active groups into the historical base while
+  // the other original groups remain replaceable. Eliminate only coordinates
+  // outside `kept`; every remaining active group must fit that separator.
+  // The same information lineage and original keys survive the transaction.
+  Snapshot retire(const std::vector<std::string>& originals,const std::vector<Coordinate>& kept) {
+    std::lock_guard<std::mutex> writer(writer_);const auto previous=snapshot();
+    const auto retiring=keys(originals);std::set<std::string> found;
+    const std::set<Coordinate> wanted(kept.begin(),kept.end());
+    const std::set<Coordinate> available(previous->information->order.begin(),previous->information->order.end());
+    if(wanted.size()!=kept.size() || !std::includes(available.begin(),available.end(),wanted.begin(),wanted.end()))
+      throw std::invalid_argument("submap_retire_coordinates");
+    auto next=std::make_shared<Data>(*previous);Data selected=*previous;
+    next->active.clear();selected.active.clear();next->active_bytes=selected.active_bytes=0;
+    for(const auto& group:previous->active) {
+      bool any=false,all=true;
+      for(const auto& key:group->originals){any=any || retiring.count(key);all=all && retiring.count(key);}
+      if(any && !all)throw std::invalid_argument("submap_replacement_partial_group");
+      if(any) {
+        found.insert(group->originals.begin(),group->originals.end());
+        selected.active.push_back(group);selected.active_bytes+=group->bytes();
+      } else {
+        for(auto column:group->columns)if(!wanted.count(column))
+          throw std::invalid_argument("submap_retire_active_coordinate");
+        next->active.push_back(group);next->active_bytes+=group->bytes();
+      }
+    }
+    if(found!=retiring)throw std::invalid_argument("submap_replacement_requires_active_originals");
+    rebuild(selected);auto branch=core_->fork(selected.information);
+    std::vector<Coordinate> base_kept;
+    for(auto column:branch->snapshot()->order)if(wanted.count(column))base_kept.push_back(column);
+    if(base_kept.size()<branch->snapshot()->order.size())branch->seal(base_kept);
+    next->base=branch->snapshot();rebuild(*next);
+    if(next->information->measurements!=previous->information->measurements ||
+        next->information->known!=previous->information->known)
+      throw std::logic_error("submap_retire_original_ownership");
+    return commit(std::move(next));
+  }
   // A genuinely new observation touching archived coordinates updates the
   // sealed base first. The active likelihoods are then applied exactly once.
   Snapshot appendLate(const Rows& rows) {

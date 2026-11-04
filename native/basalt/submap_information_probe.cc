@@ -285,6 +285,87 @@ void boundedReplacements() {
   std::cout<<"SUBMAP_REPLACEMENTS poses="<<count+1<<" maximum_active_columns="<<maximum_active
     <<" numeric_bytes="<<active.snapshot()->numericBytes()<<" maximum_covariance_error="<<maximum_error<<'\n';
 }
+void selectiveRetirement() {
+  // Keep the newest original replaceable while the older edge becomes a
+  // conditional. Query the original gauge and cross-time covariance after
+  // repeated movement; retiring a group must not add a second observation.
+  constexpr int count=300;Eigen::Matrix<double,1,2> relative;relative<<-1,1;
+  for(bool referenced:{true,false}) {
+    Store::Limits limits;limits.active_columns=3;Active active(limits);
+    std::vector<double> means{0},variances{referenced?.04:0.};
+    if(referenced)active.append({likelihood({"world"},{0},Eigen::MatrixXd::Constant(1,1,5),Eigen::VectorXd::Zero(1))});
+    size_t maximum_active=0;double maximum_covariance_error=0;
+    for(int i=1;i<=count;++i) {
+      const std::string key="edge:"+std::to_string(i);
+      const double increment=.2+.01*std::sin(i),variance=.01+.001*std::cos(i);
+      auto rows=likelihood({key},{i-1,i},relative/std::sqrt(2*variance),
+        Eigen::VectorXd::Constant(1,-2*increment/std::sqrt(2*variance)));
+      active.append({rows});maximum_active=std::max(maximum_active,active.snapshot()->information->order.size());
+      rows.jacobian=relative/std::sqrt(variance);rows.residual=Eigen::VectorXd::Constant(1,-increment/std::sqrt(variance));
+      active.replace({key},{rows});
+      means.push_back(means.back()+increment);variances.push_back(variances.back()+variance);
+      const auto immutable=active.snapshot();const auto old_solution=active.solve(immutable);
+      std::vector<std::string> retired;
+      if(i==1 && referenced)retired={"world"};
+      if(i>1)retired={"edge:"+std::to_string(i-1)};
+      const auto old=active.query(old_solution,{0,i},relative);
+      active.retire(retired,{i-1,i});
+      assert(active.snapshot()->active.size()==1);
+      assert(active.snapshot()->information->measurements.size()==size_t(i+referenced));
+      assert(active.snapshot()->information->known.size()==size_t(i+1));
+      // Replacing the remaining group still works after retirement. Repeating
+      // the same replacement changes neither the likelihood nor its identity.
+      active.replace({key},{rows});
+      const auto solved=active.solve(active.snapshot());
+      const auto difference=active.query(solved,{0,i},relative);
+      assert(difference.observed);close(difference.mean,Eigen::VectorXd::Constant(1,means.back()),1e-8);
+      const double expected=variances.back()-variances.front();
+      close(difference.covariance,Eigen::MatrixXd::Constant(1,1,expected),1e-8);
+      maximum_covariance_error=std::max(maximum_covariance_error,std::abs(difference.covariance(0,0)-expected));
+      close(difference.mean,old.mean);close(difference.covariance,old.covariance);
+      close(active.query(old_solution,{0,i},relative).covariance,old.covariance);
+      const auto joint=active.query(solved,{0,i},Eigen::Matrix2d::Identity());
+      assert(joint.observed==referenced);
+      if(referenced) {
+        Eigen::Matrix2d expected_cov;expected_cov<<.04,.04,.04,variances.back();
+        close(joint.mean,Eigen::Vector2d(0,means.back()),1e-8);close(joint.covariance,expected_cov,1e-8);
+      }
+    }
+    assert(maximum_active==3 && active.snapshot()->information->order.size()==2);
+    std::cout<<"SUBMAP_SELECTIVE_RETIREMENT referenced="<<referenced<<" poses="<<count+1
+      <<" maximum_active_columns="<<maximum_active<<" maximum_covariance_error="<<maximum_covariance_error<<'\n';
+  }
+  Active active;
+  const auto pair=likelihood({"a","b"},{0,1},Eigen::Matrix2d::Identity(),Eigen::Vector2d(-1,-2));
+  const auto edge=likelihood({"c"},{1,2},relative,Eigen::VectorXd::Constant(1,-1));
+  active.append({pair,edge});const auto before=active.snapshot();
+  rejects([&]{active.retire({"a"},{1,2});},"submap_replacement_partial_group");
+  rejects([&]{active.retire({"missing"},{0,1,2});},"submap_replacement_requires_active_originals");
+  rejects([&]{active.retire({"a","b"},{2});},"submap_retire_active_coordinate");
+  rejects([&]{active.retire({"a","b"},{1,1,2});},"submap_retire_coordinates");
+  rejects([&]{active.retire({"a","b"},{1,2,3});},"submap_retire_coordinates");
+  assert(active.snapshot()==before);
+  active.retire({"a","b"},{1,2});const auto retired=active.snapshot();
+  rejects([&]{active.retire({"a","b"},{1,2});},"submap_replacement_requires_active_originals");
+  rejects([&]{active.retire({"c"},{0,2});},"submap_retire_coordinates");
+  assert(active.snapshot()==retired);
+  // An independent exact support has no finite noise. Its deterministic
+  // conditional must still constrain the remaining active original.
+  Active exact;auto support=likelihood({"support"},{0},Eigen::MatrixXd::Zero(0,1),Eigen::VectorXd());
+  support.constraints=Eigen::MatrixXd::Ones(1,1);support.target=Eigen::VectorXd::Constant(1,2);
+  exact.append({support,likelihood({"step"},{0,1},relative,Eigen::VectorXd::Constant(1,-3))});
+  exact.retire({"support"},{0,1});exact.retire({"step"},{1});
+  const auto result=exact.query(exact.solve(exact.snapshot()),{0,1},Eigen::Matrix2d::Identity());
+  assert(result.observed);close(result.mean,Eigen::Vector2d(2,5));
+  Eigen::Matrix2d covariance=Eigen::Matrix2d::Zero();covariance(1,1)=1;close(result.covariance,covariance);
+  // A capacity failure after constructing the candidate cannot publish it.
+  Store::Limits limited;limited.nodes=1;Active bounded(limited);
+  bounded.append({likelihood({"origin"},{0},Eigen::MatrixXd::Identity(1,1),Eigen::VectorXd::Zero(1)),
+    likelihood({"one"},{0,1},relative,Eigen::VectorXd::Constant(1,-1)),edge});
+  bounded.retire({"origin","one"},{1,2});const auto stable=bounded.snapshot();
+  rejects([&]{bounded.retire({"c"},{2});},"submap_node_capacity");
+  assert(bounded.snapshot()==stable);
+}
 void batchedOriginals() {
   // Cross both the 4096 likelihood-row and 1024 exact-row batch boundaries.
   for(bool exact:{false,true}) {
@@ -318,6 +399,6 @@ void batchedOriginals() {
 } // namespace
 int main() {
   denseAndLateAdjustment();unobservedReference();exactConstraintsAndCapacity();pressureDatumAndClosedFrontier();longChain();
-  replaceOriginalLikelihoods();replaceRankAndExactSupport();boundedReplacements();batchedOriginals();
+  replaceOriginalLikelihoods();replaceRankAndExactSupport();boundedReplacements();selectiveRetirement();batchedOriginals();
   std::cout<<"Submap information: batch mean/covariance, shared noise, unobserved gauge, exact support, immutable ownership and bounded-frontier chain pass.\n";
 }

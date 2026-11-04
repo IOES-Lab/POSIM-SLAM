@@ -103,7 +103,11 @@ and replaceable active likelihood groups. `replace` removes complete selected
 groups and rebuilds the active frontier from the base and replacement rows.
 Every removed original key must appear exactly once in the new groups; new
 measurements may join them. Previously published coordinates are preserved.
-`seal` incorporates active groups into the fixed conditional base. `appendLate`
+`seal` incorporates active groups into the fixed conditional base.
+`retire(originals, kept)` transfers selected complete groups into that base and
+eliminates coordinates outside `kept`. Remaining active groups stay replaceable
+and must fit within `kept`; historical coordinates remain queryable with their
+shared uncertainty. `appendLate`
 updates that base before applying active groups once. Immutable snapshots retain
 their original answers when another revision is published.
 Use the `SubmapLinearization` revision for publication identity; information
@@ -122,7 +126,11 @@ existing map-uncertainty calculation.
 보존합니다. `replace`는 선택한 그룹 전체를 새 관측 행으로 바꾸고, 기존 조건부
 정보에서 활성 경계 상태를 다시 계산합니다. 교체한 원본 키는 새 그룹에 각각
 한 번씩 있어야 하며 새 측정도 추가할 수 있습니다. 이미 공개한 좌표는 유지합니다.
-`seal`은 활성 그룹을 고정 조건부 정보에 반영합니다. `appendLate`는 기존 조건부
+`seal`은 활성 그룹을 고정 조건부 정보에 반영합니다.
+`retire(originals, kept)`는 선택한 관측 그룹 전체를 그 정보에 반영하고
+`kept` 밖의 좌표를 소거합니다. 남은 활성 그룹은 `kept` 안에 있어야 하며
+계속 교체할 수 있습니다. 과거 좌표는 공유 불확실성과 함께 조회할 수 있습니다.
+`appendLate`는 기존 조건부
 정보를 갱신한 뒤 활성 그룹을 한 번씩 적용합니다. 새 개정본이 나와도 이전 불변
 사본의 조회 결과는 유지됩니다.
 공개 개정본은 `SubmapLinearization`의 개정 번호로 식별합니다. 하위 정보 분기의
