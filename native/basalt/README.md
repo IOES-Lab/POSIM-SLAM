@@ -22,7 +22,7 @@ When a mapping output queue is attached, joint factor retirement supplies a
 detached keyframe snapshot after the marginal prior commits. The snapshot keeps
 pose information and eliminates velocity, bias and the unknown pressure datum
 with their cross-information. Its images have separate storage. `PersistentMapper` consumes the queue when `persistent_mapping: true`; it
-rebuilds and reoptimizes a retained NFR graph on a separate thread. The compact
+updates and reoptimizes one retained NFR graph on a separate thread. The compact
 input store recovers each retirement and extracts each new keyframe once, retaining
 features, nonlinear factors and pose seeds instead of raw images or large marginal
 matrices. Immutable revisions let optimization run independently of ingestion. Input
@@ -43,8 +43,7 @@ default); the 203-frame limit still applies. This counts pixels, BoW/index value
 evaluated pair keys and match data. Container overhead, the transactional index
 copy and caller-held older snapshots are additional. Cancellation or failure
 leaves the previous matching snapshot intact. Matching decisions are kept in
-memory; a new owner evaluates restored inputs again. The nonlinear graph is
-reconstructed and optimized for each map update.
+memory; a new owner evaluates restored inputs again.
 
 `PersistentMapper`는 현재 구간의 HashBoW 색인·픽셀 좌표·영상쌍 평가 결과를
 보존합니다. 시간순 입력에서는 새 영상만 검색합니다. 늦게 도착한 영상은 해당
@@ -58,7 +57,39 @@ reconstructed and optimized for each map update.
 픽셀·BoW와 색인 값·평가한 영상쌍 키·매칭 데이터를 계산하며 컨테이너 부가 공간,
 트랜잭션용 색인 사본과 호출자가 보유한 이전 사본은 별도입니다. 취소나 실패 시
 이전 매칭 사본을 보존합니다. 매칭 판단은 메모리에 유지되며 새 인스턴스는
-복원한 입력을 다시 평가합니다. 비선형 그래프는 지도 갱신마다 재구성·최적화합니다.
+복원한 입력을 다시 평가합니다.
+
+`NativeMappingGraph` keeps optimized poses and landmark parameters between
+updates. The pinned native track builder supplies current associations; original
+pixel identities identify extensions, merges and conflict removals. Surviving
+landmarks retain their host and seed, while new observations replace their source
+membership. Only tracks without a landmark use native triangulation. New frames
+use input pose seeds aligned to the retained map's yaw/translation gauge. Each
+changed likelihood runs the existing native optimizer for at most ten iterations,
+starting with its original trial controls. Failure
+or cancellation restores the previous graph, nonlinear means and solver controls.
+
+The graph reserves numeric storage for every track, including untriangulated
+ones, within the matching owner's compact quota (96 MiB by default). Container
+overhead, transaction copies and optimizer workspace are additional. Original
+inputs and matching results remain separately owned. Full bounded optimization
+and information calculation still run on every update; automatic conditional
+window growth, rollover and durable matching continuation are separate facilities.
+
+`NativeMappingGraph`는 갱신 사이에도 최적화한 자세와 지도점 매개변수를 유지합니다.
+기존 네이티브 트랙 구성기로 현재 대응을 구하고 원본 픽셀 식별자로 트랙 연장·
+병합·충돌 제거를 구분합니다. 남는 지도점은 기준 영상과 초기값을 유지하면서
+관측 연결을 갱신하고, 지도점이 없는 트랙만 기존 삼각측량으로 초기화합니다.
+새 프레임은 입력 자세 초기값을 현재 지도의 방위·위치 기준에 맞춥니다. 변경된
+관측 모형마다 기존 네이티브 최적화를 원래 시도 설정으로 최대 10회 수행합니다.
+실패·취소 시 이전 그래프와
+자세·지도점·최적화 설정으로 복원합니다.
+
+삼각측량 전 트랙도 포함해 모든 트랙의 수치 저장 공간을 매칭 인스턴스의 압축
+데이터 한도(기본 96MiB) 안에서 예약합니다. 컨테이너 부가 공간·트랜잭션 사본·
+최적화 작업공간은 별도이며 원본 입력과 매칭 결과도 각각 보존합니다.
+갱신마다 한도 내 전체 그래프 최적화와 정보 계산을 수행합니다. 조건부 정보 기반
+범위 확장·구간 전환·저장된 매칭을 이어 쓰는 기능은 별도입니다.
 
 The native stream stores complete detector features, recovered factors, pose seeds and retirement identities in a session-owned `worker-map-inputs-*.sqlite` file beside its output. Each retirement commits in one SQLite transaction before publication. Immutable map snapshots retain page references; a read leases one checked feature frame, while optimization retains pixel observations and the bounded pose/factor graph. The SQLite page cache targets 2 MiB, memory mapping is disabled and the database is bounded to 96 MiB. Input limits and admission checks still apply. A storage error invalidates map output; the navigation estimator can continue. Restoring inputs requires matching epoch, calibration, mapper settings and limits; it does not restart navigation.
 
@@ -305,7 +336,7 @@ rehydrates all frames of the current bounded graph, rebuilds retrieval and
 validates tracked pixel ownership before returning a mapper. It rejects
 graph-only archives without inventing descriptors. The 96 MiB archive cap
 includes the graph and all pages. The live mapper still retains its bounded
-input set; automatic eviction, graph growth and navigation resumption require
+input set; automatic eviction, conditional-window growth and navigation resumption require
 their own lifecycle support.
 
 `step()` uses backtracking on the hybrid Gaussian/robust objective, rejects a
@@ -418,7 +449,7 @@ existing full-history optimizer and limits; automatic rollover is not enabled.
 검색 색인·관측 픽셀 소유권을 확인한 뒤 지도를 반환합니다. 기술자가 없는 그래프
 전용 파일은 재매칭용 복원을 거부합니다. 96MiB 파일 한도에는 그래프와 모든
 페이지가 포함됩니다. 라이브 지도는 여전히 제한된 입력 집합을 메모리에 유지하며
-자동 입력 퇴출·그래프 확장·항법 재개에는 별도의 수명 주기 처리가 필요합니다.
+자동 입력 퇴출·조건부 정보 기반 구간 확장·항법 재개에는 별도의 수명 주기 처리가 필요합니다.
 
 `step()`은 가우시안·강건 손실을 결합한 목적함수로 갱신 보폭을 조정합니다.
 유효했던 투영이 사라지는 갱신은 거부하며, 취소나 실패 시 자세·랜드마크·발행된

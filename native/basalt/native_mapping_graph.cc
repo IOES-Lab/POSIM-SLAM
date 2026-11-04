@@ -1,0 +1,165 @@
+// SPDX-License-Identifier: Apache-2.0
+#include "native_mapping_graph.hpp"
+#include <Eigen/Cholesky>
+#include <algorithm>
+#include <climits>
+#include <cmath>
+
+namespace posim_slam {
+NativeMappingGraph::Update NativeMappingGraph::update(const MappingInputStore::Snapshot& input,
+    int iterations,const std::function<bool()>& cancelled) {
+  auto check=[&]{if(cancelled && cancelled())throw std::runtime_error("native_graph_cancelled");};check();
+  if(!input || !input->revision || input->frames.empty() || input->frames.size()!=input->poses.size() ||
+      input->frames.size()>size_t(kMaxJointColumns/6) || iterations<0 || iterations>10 ||
+      (matching_.source_identity_ && input->identity!=matching_.source_identity_))
+    throw std::invalid_argument("native_graph_input");
+  if(input_) {
+    if(input->identity!=input_->identity || input->revision<input_->revision)
+      throw std::invalid_argument("native_graph_source_changed");
+    if(nativeMappingSourceIdentity(mapper_)!=source_identity_)
+      throw std::invalid_argument("native_graph_originals_changed");
+    if(input->revision==input_->revision) {
+      if(input!=input_)throw std::invalid_argument("native_graph_revision");
+      Update reused;reused.revision=last_.revision;reused.numeric_bytes=last_.numeric_bytes;reused.reused=true;return reused;
+    }
+    unchanged(input_->relative,input->relative);unchanged(input_->roll_pitch,input->roll_pitch);
+  }
+  for(const auto& [stamp,pose]:input->poses)
+    if(!input->frames.count(stamp) || !pose.getPose().matrix().allFinite())throw std::invalid_argument("native_graph_pose");
+  std::set<std::pair<int64_t,int64_t>> relative_keys;std::set<int64_t> tilt_keys;
+  for(const auto& factor:input->relative) {
+    if(factor.t_i_ns==factor.t_j_ns || !input->poses.count(factor.t_i_ns) || !input->poses.count(factor.t_j_ns) ||
+        !relative_keys.emplace(factor.t_i_ns,factor.t_j_ns).second || !factor.T_i_j.matrix().allFinite() ||
+        !factor.cov_inv.allFinite() || !factor.cov_inv.isApprox(factor.cov_inv.transpose(),1e-12) ||
+        Eigen::LLT<Eigen::Matrix<double,6,6>>(factor.cov_inv).info()!=Eigen::Success)
+      throw std::invalid_argument("native_graph_factor");
+  }
+  for(const auto& factor:input->roll_pitch) {
+    if(!input->poses.count(factor.t_ns) || !tilt_keys.insert(factor.t_ns).second || !factor.R_w_i_meas.matrix().allFinite() ||
+        !factor.cov_inv.allFinite() || !factor.cov_inv.isApprox(factor.cov_inv.transpose(),1e-12) ||
+        Eigen::LLT<Eigen::Matrix2d>(factor.cov_inv).info()!=Eigen::Success)
+      throw std::invalid_argument("native_graph_factor");
+  }
+  const auto matched=matching_.advance(input->revision,input->frames,cancelled);check();
+
+  // Reconstruct only combinatorial tracks with the pinned native implementation.
+  // Temporary swaps keep the one nonlinear mapper, its means and its database.
+  basalt::Matches pairs;for(const auto& [key,value]:matched->matches)pairs.emplace(key,*value);
+  basalt::FeatureTracks raw_tracks,old_tracks;
+  mapper_.feature_matches.swap(pairs);mapper_.feature_tracks.swap(old_tracks);
+  try {mapper_.build_tracks();raw_tracks.swap(mapper_.feature_tracks);}
+  catch(...) {mapper_.feature_tracks.swap(old_tracks);mapper_.feature_matches.swap(pairs);throw;}
+  mapper_.feature_tracks.swap(old_tracks);mapper_.feature_matches.swap(pairs);
+  pairs.clear();check();
+
+  Update result;result.revision=input->revision;
+  auto next_poses=mapper_.getFramePoses();auto next_corners=mapper_.feature_corners;
+  Sophus::SE3d seed_gauge;
+  if(!next_poses.empty()) {
+    const auto anchor=next_poses.rbegin()->first;
+    const auto current=next_poses.at(anchor).getPose(),seed=input->poses.at(anchor).getPose();
+    const Eigen::Matrix3d difference=current.rotationMatrix()*seed.rotationMatrix().transpose();
+    const auto rotation=Sophus::SO3d::exp(Eigen::Vector3d(0,0,std::atan2(difference(1,0),difference(0,0))));
+    seed_gauge=Sophus::SE3d(rotation,current.translation()-rotation*seed.translation());
+  }
+  for(const auto& [stamp,state]:input->poses)if(!next_poses.count(stamp)) {
+    next_poses.emplace(stamp,basalt::PoseStateWithLin<double>(stamp,seed_gauge*state.getPose()));
+    next_corners[basalt::TimeCamId(stamp,0)].corners=matched->frames.at(stamp).pixels->corners;++result.new_frames;
+  }
+  std::map<basalt::ImageFeaturePair,int64_t> previous_pixels;
+  for(const auto& [id,track]:mapper_.feature_tracks)for(const auto& pixel:track)
+    if(!previous_pixels.emplace(pixel,id).second)throw std::logic_error("native_graph_pixel_reused");
+  std::map<basalt::ImageFeaturePair,const basalt::FeatureTrack*> ordered;
+  for(const auto& [id,track]:raw_tracks)
+    if(!ordered.emplace(first(track),&track).second)throw std::logic_error("native_graph_track_reused");
+  basalt::FeatureTracks next_tracks;std::map<int64_t,std::set<int64_t>> ancestors;std::set<int64_t> consumed;
+  int64_t next_id=next_track_;
+  for(const auto& [first_pixel,track_ptr]:ordered) {
+    const auto& track=*track_ptr;std::set<int64_t> old;
+    for(const auto& pixel:track) {
+      const auto found=previous_pixels.find(pixel);if(found!=previous_pixels.end())old.insert(found->second);
+    }
+    int64_t id;
+    if(old.empty()) {
+      if(next_id>INT_MAX)throw std::runtime_error("native_graph_track_capacity");id=next_id++;++result.new_tracks;
+    } else {
+      id=*std::min_element(old.begin(),old.end(),[&](int64_t a,int64_t b) {
+        return first(mapper_.feature_tracks.at(a))<first(mapper_.feature_tracks.at(b));
+      });
+      for(auto previous:old) {
+        if(!consumed.insert(previous).second)throw std::invalid_argument("native_graph_track_split");
+        const auto& before=mapper_.feature_tracks.at(previous);
+        for(const auto& pixel:before) {
+          const auto found=track.find(pixel.first);
+          if(found==track.end() || found->second!=pixel.second)throw std::invalid_argument("native_graph_track_replaced");
+        }
+      }
+      if(old.size()>1)++result.merged_components;
+      else if(mapper_.feature_tracks.at(id)!=track)++result.extended_tracks;
+    }
+    ancestors.emplace(id,std::move(old));next_tracks.emplace(id,track);
+  }
+  result.removed_tracks=mapper_.feature_tracks.size()-consumed.size();
+  result.numeric_bytes=numericBytes(next_corners,next_tracks,next_poses.size(),input->relative.size(),input->roll_pitch.size());
+  if(result.numeric_bytes>maximum_bytes_)throw std::runtime_error("native_graph_numeric_capacity");
+
+  auto next_landmarks=mapper_.lmdb;
+  for(const auto& [id,point]:mapper_.lmdb.getLandmarks())if(!next_tracks.count(id))next_landmarks.removeLandmark(id);
+  basalt::FeatureTracks pending;
+  for(const auto& [id,track]:next_tracks) {
+    if(!next_landmarks.landmarkExists(int(id))) {
+      for(auto previous:ancestors.at(id))if(mapper_.lmdb.landmarkExists(int(previous))) {
+        auto seed=mapper_.lmdb.getLandmark(previous);seed.obs.clear();next_landmarks.addLandmark(id,seed);break;
+      }
+    }
+    if(!next_landmarks.landmarkExists(int(id))) {pending.emplace(id,track);continue;}
+    auto& point=next_landmarks.getLandmark(id);++result.preserved_landmarks;
+    if(!track.count(point.host_kf_id))throw std::invalid_argument("native_graph_host_missing");
+    for(const auto& [image,feature]:track) {
+      const auto& pixel=next_corners.at(image).corners.at(feature);const auto found=point.obs.find(image);
+      if(found!=point.obs.end()) {
+        if(found->second!=pixel)throw std::invalid_argument("native_graph_pixel_changed");
+      } else {
+        basalt::KeypointObservation<double> observation;observation.kpt_id=int(id);observation.pos=pixel;
+        next_landmarks.addObservation(image,observation);
+      }
+    }
+  }
+  auto next_relative=input->relative;auto next_roll_pitch=input->roll_pitch;
+  const std::array<double,4> old_solver{mapper_.lambda,mapper_.min_lambda,mapper_.max_lambda,mapper_.lambda_vee};
+  auto swap=[&] {
+    mapper_.getFramePoses().swap(next_poses);mapper_.feature_corners.swap(next_corners);
+    mapper_.feature_tracks.swap(next_tracks);std::swap(mapper_.lmdb,next_landmarks);
+    mapper_.rel_pose_factors.swap(next_relative);mapper_.roll_pitch_factors.swap(next_roll_pitch);
+  };
+  check();swap();
+  try {
+    check();
+    // Use the original initializer only for tracks without a landmark. Existing
+    // parameters, including zero inverse distance, remain free optimizer values.
+    mapper_.feature_tracks.swap(pending);
+    try {mapper_.setup_opt();}catch(...){mapper_.feature_tracks.swap(pending);throw;}
+    mapper_.feature_tracks.swap(pending);
+    result.initialized_landmarks=mapper_.lmdb.numLandmarks()-result.preserved_landmarks;
+    if(mapper_.lmdb.numLandmarks()>100000)throw std::runtime_error("native_graph_landmark_capacity");
+    // Initialize the native backup fields even for a caller's zero-step update.
+    mapper_.lmdb.backup();
+    // A changed likelihood starts the same native LM trial policy as a fresh
+    // solve. This resets optimizer controls, not measurements or point means.
+    mapper_.lambda=initial_solver_[0];mapper_.min_lambda=initial_solver_[1];
+    mapper_.max_lambda=initial_solver_[2];mapper_.lambda_vee=initial_solver_[3];
+    if(iterations)mapper_.optimize(iterations);
+    for(const auto& [stamp,pose]:mapper_.getFramePoses())
+      if(!pose.getPose().matrix().allFinite())throw std::runtime_error("native_graph_nonfinite_pose");
+    for(const auto& [id,point]:mapper_.lmdb.getLandmarks())
+      if(!point.direction.allFinite() || !std::isfinite(point.inv_dist) || point.inv_dist<0)
+        throw std::runtime_error("native_graph_nonfinite_landmark");
+    const auto identity=nativeMappingSourceIdentity(mapper_);check();
+    source_identity_=identity;input_=input;matched_=matched;next_track_=next_id;last_=result;
+  } catch(...) {
+    swap();mapper_.lambda=old_solver[0];mapper_.min_lambda=old_solver[1];
+    mapper_.max_lambda=old_solver[2];mapper_.lambda_vee=old_solver[3];throw;
+  }
+  return result;
+}
+} // namespace posim_slam

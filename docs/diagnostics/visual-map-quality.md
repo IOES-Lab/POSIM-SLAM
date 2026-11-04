@@ -9,7 +9,10 @@ acknowledgement with `validate_ready()`.
 Shared velocity, bias and the unknown pressure datum are eliminated together
 with their cross-information. Basalt NfrMapper recovers approximate nonlinear
 pose factors and performs multiview bundle adjustment on retained images.
-Each graph is rebuilt from unique input identities. The original estimated
+One nonlinear graph retains its optimized poses and landmarks. Original pixel
+identities identify new, extended, merged and conflict-removed tracks. Only
+uninitialized tracks are triangulated; existing means remain optimizer variables.
+Each update still optimizes the full bounded graph. The original estimated
 initial position/yaw reference is reused once; truth and damping do not add
 world information. See the [pinned Basalt source](../../native/basalt/sources.json)
 and [implementation](../../native/basalt/persistent_mapper.cc).
@@ -108,8 +111,10 @@ scope; legacy file readers retain the file's declared scope.
 `PersistentMapper`는 VIO 주변화 확정 뒤 전달한 불변 사본을 받습니다. 공유
 속도·바이어스·미지 압력 기준값은 교차정보와 함께 소거합니다. Basalt NfrMapper가
 비선형 자세 제약을 근사 복원하고 보존한 특징으로 번들 조정을 수행합니다.
-중복 없는 입력으로 매번 그래프를 재구성하고, 추정한 초기 위치·방위 기준을
-한 번만 사용합니다.
+하나의 비선형 그래프에서 최적화한 자세와 지도점을 유지합니다. 원본 픽셀 식별자로
+새 트랙·연장·병합·충돌 제거를 구분하고, 지도점이 없는 트랙만 삼각측량합니다.
+기존 추정값도 최적화 변수로 남으며 갱신마다 한도 내 전체 그래프를 최적화합니다.
+추정한 초기 위치·방위 기준은 한 번만 사용합니다.
 
 두 시점 트랙부터 그래프에 참여할 수 있으며 점 채택에는 서로 다른 세 영상의
 정상 가중치 관측, 양의 역거리 지지와 자세 오차를 포함한 세계 좌표 불확실성
@@ -197,17 +202,23 @@ The native stream stores complete detector features, recovered factors, pose see
 The native matcher uses the pinned Basalt HashBoW retrieval, descriptor matching
 and OpenGV RANSAC. Two tasks lease at most four complete feature frames; the
 mapper retains their pixel coordinates for track construction and optimization.
-Descriptors, bearings, orientation arrays and the retrieval index are released
-after matching. The all-frame path retains the upstream Hamming threshold 70
+Descriptors, bearings and orientation arrays are released after use. The segment
+keeps its retrieval index and previously evaluated image-pair decisions, including
+failed attempts. Chronological input queries only new frames; delayed input
+refreshes affected later retrieval while reusing old pair results. The all-frame
+path retains the upstream Hamming threshold 70
 and second-best ratio 1.2. The similarly named configurable fields belong to the
 separate stereo path. Original pixel ownership, NFR factors and map admission
-remain unchanged. Graph growth, active solver paging and rollover still require
-separate qualification.
+remain unchanged. Matching decisions are in memory. Conditional-window growth,
+active solver paging and rollover still require separate qualification.
 
 네이티브 매칭은 고정 Basalt의 HashBoW 검색·기술자 대응과 OpenGV RANSAC을
 사용합니다. 두 작업자가 전체 특징 프레임을 최대 4개까지 임시로 읽고, 지도는
-트랙 구성과 최적화에 필요한 픽셀 좌표를 보관합니다. 매칭이 끝나면 기술자·
-방향 벡터·특징점 방향값과 검색 색인을 해제합니다. 전체 프레임 매칭의 Hamming
+트랙 구성과 최적화에 필요한 픽셀 좌표를 보관합니다. 기술자·방향 벡터·특징점
+방향값은 사용 후 해제하고, 현재 구간의 검색 색인과 영상쌍 평가 결과는 실패한
+결과까지 보존합니다. 시간순 입력은 새 영상만 검색하며 지연 입력은 이후 검색을
+갱신하면서 기존 영상쌍 결과를 재사용합니다. 전체 프레임 매칭의 Hamming
 한도 70과 두 번째 후보 거리 비율 1.2는 원본을 따릅니다. 같은 이름의 설정값은
 별도의 스테레오 경로에 적용됩니다. 원본 픽셀 소유권·NFR 제약·점 채택 기준은
-유지합니다. 그래프 확장·활성 최적화 범위 제한·구간 전환은 별도 검증이 필요합니다.
+유지합니다. 매칭 판단은 메모리에 유지합니다. 조건부 정보 기반 범위 확장·활성
+최적화 범위 제한·구간 전환은 별도 검증이 필요합니다.

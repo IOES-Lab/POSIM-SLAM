@@ -53,6 +53,7 @@ namespace posim_slam {
 // pairs, including unsuccessful ones, are not rerun; valid old pairs remain.
 class MappingMatchHistory {
   friend class MappingInputStore;
+  friend class NativeMappingGraph;
  public:
   using Pair=std::pair<basalt::TimeCamId,basalt::TimeCamId>;
   struct Frame {

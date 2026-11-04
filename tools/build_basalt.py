@@ -104,6 +104,7 @@ def build(engine, source, output, jobs=2):
     run([output / 'build/basalt_reference_patch_probe'], timeout=60)
     run([output / 'build/basalt_mapping_input_store_probe'], timeout=60)
     run([output / 'build/basalt_mapping_feature_matcher_probe'], timeout=60)
+    run([output / 'build/basalt_native_mapping_graph_probe'], timeout=60)
     input_archive = output / 'mapping-inputs.sqlite'
     for mode in ('create', 'resume'):
         run([output / 'build/basalt_mapping_input_store_probe', mode,
@@ -128,6 +129,7 @@ def build(engine, source, output, jobs=2):
                    reference_patch_check='retire_unobserved_all_camera_union_400_frames_v1',
                    mapping_input_check='sqlite_atomic_retirement_exact_features_epoch_relocation_v1',
                    mapping_feature_check='upstream_pairs_pixels_four_frame_leases_failure_atomicity_v1',
+                   mapping_graph_check='persistent_means_observation_growth_nonlinear_rollback_v1',
                    surface_owner_check='synthetic_joint_marginal_late_increment_trial_retirement_v1',
                    surface_transport_check='snapshot_increment_owner_queue_expiry_v1',
                    scope='12-second synthetic 6DoF VIO; no ROS/native-world or package acceptance',

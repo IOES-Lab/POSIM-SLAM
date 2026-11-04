@@ -2,6 +2,7 @@
 #include "persistent_mapper.hpp"
 #include "mapping_graph_information.hpp"
 #include "mapping_feature_matcher.hpp"
+#include "native_mapping_graph.hpp"
 #include <Eigen/Cholesky>
 #include <chrono>
 #include <numeric>
@@ -20,6 +21,7 @@ PersistentMapper::PersistentMapper(const basalt::Calibration<double>& calibratio
   try {
     store_=std::make_unique<MappingInputStore>(calibration_,config_,limits,std::move(input_archive),false,graph_registry_.epoch());
     matching_=store_->makeMatchHistory();
+    graph_=std::make_unique<NativeMappingGraph>(*matching_);
     retained_.input=store_->snapshot();
   } catch(const std::exception& error) {
     // Keep draining the map handoff queue when storage cannot start. This
@@ -103,13 +105,11 @@ void PersistentMapper::optimize() {
 }
 std::shared_ptr<PersistentMapSnapshot> PersistentMapper::build(const Batch& batch) {
   const auto started=std::chrono::steady_clock::now();
-  auto restored=store_->makeMatchedMapper(batch.input,*matching_,[this] {
+  const auto updated=graph_->update(batch.input,10,[this] {
     std::lock_guard<std::mutex> lock(mutex_);return !error_.empty();
-  });auto& mapper=*restored;
+  });auto& mapper=graph_->mapper();
   if(!mapper.getFramePoses().count(batch.reference_stamp))
     throw std::runtime_error("mapping_pose_image_or_reference_mismatch");
-  mapper.build_tracks();mapper.setup_opt();
-  mapper.optimize(10);
   const auto quality=mappingGraphInformation(mapper,calibration_,config_,batch.reference_stamp,three_sigma_m_);
   const auto reference=mapper.getFramePoses().at(batch.reference_stamp).getPose();
   const Eigen::Matrix3d difference=batch.reference_pose.rotationMatrix()*reference.rotationMatrix().transpose();
@@ -122,10 +122,14 @@ std::shared_ptr<PersistentMapSnapshot> PersistentMapper::build(const Batch& batc
   result->source_image_bytes=batch.input->source_image_bytes;
   result->source_factor_matrix_bytes=batch.input->source_factor_matrix_bytes;
   result->compact_input_bytes=batch.input->compactPayloadBytes();
-  const auto matched=matching_->snapshot();result->matching_new_frames=matched->new_frames;
+  const auto matched=graph_->matchingSnapshot();result->matching_new_frames=matched->new_frames;
   result->matching_queried_frames=matched->queried_frames;
   result->matching_new_pairs=matched->new_pairs;result->matching_total_pairs=matched->evaluated_pairs;
   result->matching_numeric_bytes=matched->numeric_bytes;
+  result->graph_new_frames=updated.new_frames;result->graph_new_tracks=updated.new_tracks;
+  result->graph_extended_tracks=updated.extended_tracks;result->graph_merged_components=updated.merged_components;
+  result->graph_removed_tracks=updated.removed_tracks;result->graph_preserved_landmarks=updated.preserved_landmarks;
+  result->graph_initialized_landmarks=updated.initialized_landmarks;result->graph_numeric_bytes=updated.numeric_bytes;
   result->graph=graph_registry_.capture(batch.input,mapper,batch.reference_stamp,batch.reference_pose,gauge);
   static_cast<MappingOutput&>(*result)=mappingOutput(mapper,gauge,quality,result->graph);
   result->optimize_seconds=std::chrono::duration<double>(std::chrono::steady_clock::now()-started).count();

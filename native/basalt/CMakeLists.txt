@@ -71,6 +71,7 @@ add_library(basalt_core STATIC
  ${B}/src/vi_estimator/marg_helper.cpp
  ${B}/src/vi_estimator/nfr_mapper.cpp
  ${CMAKE_CURRENT_SOURCE_DIR}/persistent_mapper.cc
+ ${CMAKE_CURRENT_SOURCE_DIR}/native_mapping_graph.cc
  ${CMAKE_CURRENT_SOURCE_DIR}/mapping_input_store.cc
  ${CMAKE_CURRENT_SOURCE_DIR}/mapping_input_archive.cc
  ${CMAKE_CURRENT_SOURCE_DIR}/mapping_graph.cc
@@ -117,6 +118,9 @@ target_compile_options(basalt_mapping_input_store_probe PRIVATE -UNDEBUG)
 add_executable(basalt_mapping_feature_matcher_probe mapping_feature_matcher_probe.cc)
 target_link_libraries(basalt_mapping_feature_matcher_probe PRIVATE basalt_core)
 target_compile_options(basalt_mapping_feature_matcher_probe PRIVATE -UNDEBUG)
+add_executable(basalt_native_mapping_graph_probe native_mapping_graph_probe.cc)
+target_link_libraries(basalt_native_mapping_graph_probe PRIVATE basalt_core)
+target_compile_options(basalt_native_mapping_graph_probe PRIVATE -UNDEBUG)
 add_executable(basalt_input_digest_probe input_digest_probe.cc)
 target_compile_options(basalt_input_digest_probe PRIVATE -UNDEBUG)
 add_executable(basalt_submap_information_probe submap_information_probe.cc)

@@ -10,12 +10,15 @@
 #include <string>
 
 namespace posim_slam {
+class NativeMappingGraph;
 struct PersistentMapSnapshot : MappingOutput {
   uint64_t revision=0;
   int64_t optimized_through_ns=0;
   size_t keyframes=0, retirements=0;
   size_t source_image_bytes=0,source_factor_matrix_bytes=0,compact_input_bytes=0;
   size_t matching_new_frames=0,matching_queried_frames=0,matching_new_pairs=0,matching_total_pairs=0,matching_numeric_bytes=0;
+  size_t graph_new_frames=0,graph_new_tracks=0,graph_extended_tracks=0,graph_merged_components=0,
+    graph_removed_tracks=0,graph_preserved_landmarks=0,graph_initialized_landmarks=0,graph_numeric_bytes=0;
   double optimize_seconds=0;
   std::string error;
   MappingGraphRegistry::Snapshot graph;
@@ -24,9 +27,9 @@ using PersistentMapLimits=MappingInputLimits;
 
 // The ingest thread recovers each retirement's factors and extracts each new
 // image's features once. A persistent chronological matching owner evaluates
-// only new query frames, preserving old pair results. The bounded nonlinear
-// graph is still rebuilt from the resulting original associations; incremental
-// graph/window ownership is a separate transition. Intermediate requests may coalesce;
+// only new query frames, preserving old pair results. One bounded nonlinear
+// mapper keeps optimized states while source track changes update its graph.
+// Conditional-window integration is separate. Intermediate requests may coalesce;
 // input measurements never do. A budget/input failure invalidates map output
 // without stopping the caller's independently valid navigation estimator.
 class PersistentMapper {
@@ -65,6 +68,7 @@ class PersistentMapper {
   MappingGraphRegistry graph_registry_;
   std::unique_ptr<MappingInputStore> store_;
   std::unique_ptr<MappingMatchHistory> matching_;
+  std::unique_ptr<NativeMappingGraph> graph_;
   mutable std::mutex mutex_;
   std::condition_variable changed_;
   Batch retained_;

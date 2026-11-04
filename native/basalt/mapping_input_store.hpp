@@ -36,6 +36,7 @@ class MappingInputStore {
     }
    private:
     friend class MappingInputStore;
+    friend class NativeMappingGraph;
     std::shared_ptr<const int> identity;
   };
   using Snapshot=std::shared_ptr<const Data>;
