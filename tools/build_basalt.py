@@ -102,6 +102,14 @@ def build(engine, source, output, jobs=2):
              'PYTHONPATH': str(ROOT / 'src') + os.pathsep + os.environ.get('PYTHONPATH', '')})
     run([output / 'build/basalt_initial_prior_probe'], timeout=30)
     run([output / 'build/basalt_reference_patch_probe'], timeout=60)
+    run([output / 'build/basalt_mapping_input_store_probe'], timeout=60)
+    input_archive = output / 'mapping-inputs.sqlite'
+    for mode in ('create', 'resume'):
+        run([output / 'build/basalt_mapping_input_store_probe', mode,
+             input_archive], timeout=60)
+    mapping_directory = output / 'mapping-worker-check'
+    mapping_directory.mkdir()
+    run([output / 'build/basalt_persistent_mapper_probe', mapping_directory], timeout=60)
     results = {}
     for mode in ('tracks', 'images'):
         path = output / (mode + '.csv')
@@ -117,6 +125,7 @@ def build(engine, source, output, jobs=2):
     receipt = dict(schema='posim-slam-basalt-research-1', passed=True,
                    initial_bias_prior_check='actual_constructor_and_physical_state_increments_v1',
                    reference_patch_check='retire_unobserved_all_camera_union_400_frames_v1',
+                   mapping_input_check='sqlite_atomic_retirement_exact_features_epoch_relocation_v1',
                    surface_owner_check='synthetic_joint_marginal_late_increment_trial_retirement_v1',
                    surface_transport_check='snapshot_increment_owner_queue_expiry_v1',
                    scope='12-second synthetic 6DoF VIO; no ROS/native-world or package acceptance',

@@ -2,6 +2,7 @@
 #pragma once
 #include "mapping_input_store.hpp"
 #include "mapping_information.hpp"
+#include "mapping_binary.hpp"
 #include <nlohmann/json.hpp>
 #include <filesystem>
 #include <functional>
@@ -15,30 +16,7 @@ class NativeMappingWindow;
 class NativeMappingCheckpoint;
 class MappingFramePages;
 namespace mapping_graph_detail {
-using Json=nlohmann::json;
-inline Json doubles(const double* values,size_t count) {
-  std::vector<uint8_t> bytes(8*count);
-  for(size_t i=0;i<count;++i) {
-    uint64_t bits;std::memcpy(&bits,values+i,8);
-    for(int j=0;j<8;++j)bytes[8*i+j]=uint8_t(bits>>(8*j));
-  }
-  return Json::binary(std::move(bytes));
-}
-inline std::vector<double> doubles(const Json& value,size_t count,bool finite=true) {
-  if(!value.is_binary() || value.get_binary().size()!=8*count)throw std::invalid_argument("mapping_graph_binary_shape");
-  const auto& bytes=value.get_binary();std::vector<double> out(count);
-  for(size_t i=0;i<count;++i) {
-    uint64_t bits=0;for(int j=0;j<8;++j)bits|=uint64_t(bytes[8*i+j])<<(8*j);
-    std::memcpy(out.data()+i,&bits,8);
-    if(finite && !std::isfinite(out[i]))throw std::invalid_argument("mapping_graph_nonfinite_input");
-  }
-  return out;
-}
-inline int64_t integer(const Json& value,int64_t low,int64_t high) {
-  if(!value.is_number_integer())throw std::invalid_argument("mapping_graph_integer");
-  const auto number=value.get<int64_t>();
-  if(number<low || number>high)throw std::invalid_argument("mapping_graph_integer");return number;
-}
+using namespace mapping_binary;
 inline Sophus::SE3d pose(const Json& value) {
   const auto data=doubles(value,7);Sophus::SE3d out;
   if(std::abs(Eigen::Map<const Eigen::Vector4d>(data.data()).squaredNorm()-1)>1e-10)
@@ -104,7 +82,7 @@ struct MappingGraph {
     std::string epoch;uint64_t input_revision=0,graph_revision=0;
     basalt::Calibration<double> calibration;basalt::VioConfig config;
     std::vector<Frame> frames;Eigen::aligned_vector<std::pair<int64_t,Sophus::SE3d>> poses;
-    std::map<int64_t,std::shared_ptr<const MappingInputStore::Frame>> inputs;
+    std::map<int64_t,MappingFrameReference> inputs;
     Eigen::aligned_vector<basalt::RelPoseFactor> relative;Eigen::aligned_vector<basalt::RollPitchFactor> roll_pitch;
     Eigen::aligned_vector<Pixel> pixels;std::vector<Track> tracks;Eigen::aligned_vector<Landmark> landmarks;
     std::shared_ptr<const Ledger> identities;

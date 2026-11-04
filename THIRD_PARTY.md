@@ -149,6 +149,17 @@ Kimera 기본 빌드의 Triangle 고지에는 상업 시스템 배포 시 저자
 
 ## Experimental Basalt research recipe / 실험적 Basalt 연구
 
+The native continuous-input store links the selected SDK's SQLite library
+(the current development SDK supplies **3.53.4**). SQLite's deliverable code is
+[public domain](https://sqlite.org/copyright.html). The Python wheel does not
+redistribute the SQLite binary. Native packaging retains its SDK version record.
+
+네이티브 연속 입력 저장소는 선택된 SDK의 SQLite를 연결합니다. 현재 개발 SDK는
+**3.53.4**를 제공합니다. 배포되는 SQLite 코드는 위 공식 안내의 퍼블릭 도메인입니다.
+Python wheel은 SQLite 바이너리를 재배포하지 않으며 네이티브 패키지는 SDK 버전
+기록을 보존합니다.
+
+
 The original hydrostatic-height factor and unknown-datum marginalization in
 `native/basalt/pressure_factors.hpp` are POSIM-SLAM Apache-2.0 code. They add no
 third-party dependency; the Basalt and SDK notices below still apply.

@@ -1,7 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
 #include "mapping_input_store.hpp"
+#include "mapping_frame_io.hpp"
+#include <sqlite3.h>
 #include <cassert>
 #include <iostream>
+#include <random>
 
 namespace {
 using Store=posim_slam::MappingInputStore;
@@ -52,9 +55,84 @@ void compare(const Store::Snapshot& compact,const basalt::NfrMapper& raw) {
     assert(a.t_ns==b.t_ns);equal(a.R_w_i_meas.matrix(),b.R_w_i_meas.matrix());equal(a.cov_inv,b.cov_inv);
   }
 }
+void exact(const Store::Snapshot& a,const Store::Snapshot& b) {
+  assert(a->revision==b->revision && a->retired==b->retired && a->frames.size()==b->frames.size());
+  assert(a->source_image_bytes==b->source_image_bytes && a->source_factor_matrix_bytes==b->source_factor_matrix_bytes &&
+    a->feature_payload_bytes==b->feature_payload_bytes);
+  for(const auto& [stamp,reference]:a->frames) {
+    const auto first=reference.read(),second=b->frames.at(stamp).read();
+    assert(posim_slam::mapping_frame_io::encode(*first)==posim_slam::mapping_frame_io::encode(*second));
+    equal(a->poses.at(stamp).getPose().matrix(),b->poses.at(stamp).getPose().matrix());
+  }
+  basalt::Calibration<double> calibration;basalt::VioConfig config;basalt::NfrMapper mapper(calibration,config);
+  mapper.rel_pose_factors=b->relative;mapper.roll_pitch_factors=b->roll_pitch;compare(a,mapper);
+}
+basalt::MargData::Ptr textured(int64_t first,int64_t second) {
+  auto source=sample(first,second,true);
+  for(auto& flow:source->opt_flow_res) {
+    auto image=std::make_shared<basalt::ManagedImage<uint16_t>>(160,120);std::mt19937 random(uint32_t(flow->t_ns));
+    for(size_t y=0;y<image->h;++y)for(size_t x=0;x<image->w;++x)(*image)(x,y)=uint16_t(random()%256)<<8;
+    flow->input_images->img_data[0].img=image;
+  }
+  return source;
+}
+void sql(const std::filesystem::path& path,const char* command) {
+  sqlite3* db=nullptr;assert(sqlite3_open_v2(path.string().c_str(),&db,SQLITE_OPEN_READWRITE,nullptr)==SQLITE_OK);
+  assert(sqlite3_exec(db,command,nullptr,nullptr,nullptr)==SQLITE_OK);assert(sqlite3_close(db)==SQLITE_OK);
+}
+void durable(const std::filesystem::path& path,const std::string& mode) {
+  basalt::Calibration<double> calibration;auto camera=basalt::GenericCamera<double>::fromString("pinhole");
+  camera.setFromInit(Eigen::Vector4d(100,100,80,60));calibration.intrinsics.push_back(camera);
+  calibration.T_i_c.emplace_back();calibration.resolution.emplace_back(160,120);basalt::VioConfig config;
+  Store memory(calibration,config);memory.append(*textured(10,20));memory.append(*textured(20,30));
+  if(mode=="create") {
+    Store::Snapshot held;
+    {
+      Store disk(calibration,config,{},path,false,"durable");const auto first=disk.append(*textured(10,20));
+      held=disk.append(*textured(20,30));exact(memory.snapshot(),held);
+      assert(first->revision==1 && !first->frames.count(30));
+      for(const auto& [stamp,reference]:held->frames) {
+        assert(!reference.resident());auto lease=reference.read();assert(!lease->features.corners.empty());
+        std::weak_ptr<const Store::Frame> released=lease;lease.reset();assert(released.expired());
+      }
+      rejects([&]{held->frames.at(10).read(1);},"mapping_input_page_budget");
+      compare(held,*memory.makeMapper(memory.snapshot()));
+      rejects([&]{Store duplicate(calibration,config,{},path,false,"durable");},"mapping_input_storage_path");
+    }
+    // Immutable snapshots keep the backing connection alive after the producer.
+    exact(memory.snapshot(),held);
+  } else {
+    Store disk(calibration,config,{},path,true,"durable");const auto before=disk.snapshot();exact(memory.snapshot(),before);
+    rejects([&]{disk.append(*textured(20,30));},"mapping_retirement_reused");
+    rejects([&]{Store other(calibration,config,{},path,true,"another-epoch");},"mapping_input_storage_identity");
+    auto wrong=config;wrong.mapper_detection_num_points+=1;
+    rejects([&]{Store other(calibration,wrong,{},path,true,"durable");},"mapping_input_storage_identity");
+    // The failure occurs after new frame rows have been inserted, before the
+    // retirement commit. Both on-disk rows and the published snapshot roll back.
+    sql(path,"CREATE TRIGGER fail_batch BEFORE INSERT ON batches WHEN NEW.revision=3 BEGIN SELECT RAISE(ABORT,'injected'); END;");
+    rejects([&]{disk.append(*textured(30,40));},"mapping_input_storage:19");assert(disk.snapshot()==before);
+    {Store reopened(calibration,config,{},path,true,"durable");exact(before,reopened.snapshot());}
+    sql(path,"DROP TRIGGER fail_batch;");
+    const auto committed=disk.append(*textured(30,40));memory.append(*textured(30,40));exact(memory.snapshot(),committed);
+    // Retrying succeeds only if the aborted frame insertion was also undone.
+    assert(before->revision==2 && !before->frames.count(40));
+    const auto path_copy=path.string()+".damaged";std::filesystem::copy_file(path,path_copy);
+    {Store relocated(calibration,config,{},path_copy,true,"durable");exact(committed,relocated.snapshot());}
+    sql(path_copy,"UPDATE frames SET value=zeroblob(length(value)) WHERE stamp=40;");
+    {
+      Store damaged(calibration,config,{},path_copy,true,"durable");
+      assert(damaged.snapshot()->frames.at(10).read()->stamp==10);
+      rejects([&]{damaged.makeMapper(damaged.snapshot());},"mapping_input_page_digest");
+    }
+    sql(path_copy,"UPDATE batches SET value=zeroblob(length(value)) WHERE revision=3;");
+    rejects([&]{Store damaged(calibration,config,{},path_copy,true,"durable");},"mapping_input_batch_digest");
+  }
+  std::cout<<"Durable inputs "<<mode<<": exact features/factors/poses, immutable page ownership and transaction controls pass.\n";
+}
 } // namespace
 
-int main() {
+int main(int argc,char** argv) {
+  if(argc==3){durable(std::filesystem::absolute(argv[2]),argv[1]);return 0;}
   basalt::Calibration<double> calibration;calibration.intrinsics.resize(1);calibration.T_i_c.resize(1);
   calibration.resolution.push_back(Eigen::Vector2i(4,4));
   basalt::VioConfig config;
@@ -88,6 +166,14 @@ int main() {
     posim_slam::MappingInputLimits limits;limits.compact_bytes=2;
     Store store(calibration,config,limits);const auto empty=store.snapshot();
     rejects([&]{store.append(*sample());},"mapping_compact_input_capacity");assert(store.snapshot()==empty);
+  }
+  {
+    posim_slam::MappingInputLimits limits;limits.keyframes=2;Store store(calibration,config,limits);
+    auto source=sample();const auto extra=sample(20,30);source->kfs_all.insert(30);
+    source->frame_poses.emplace(30,extra->frame_poses.at(30));source->opt_flow_res.push_back(extra->opt_flow_res.back());
+    source->aom.abs_order_map.emplace(30,std::make_pair(12,6));source->aom.total_size=18;source->aom.items=3;
+    source->abs_H=2*Eigen::MatrixXd::Identity(18,18);source->abs_b=Eigen::VectorXd::LinSpaced(18,-.1,.1);
+    const auto empty=store.snapshot();rejects([&]{store.append(*source);},"mapping_image_capacity");assert(store.snapshot()==empty);
   }
   {
     posim_slam::MappingInputLimits limits;limits.retirements=limits.update_retirements=1;

@@ -126,7 +126,8 @@ int main(int argc,char** argv) {
       fail("invalid_persistent_mapping_request");
     std::unique_ptr<posim_slam::PersistentMapper> persistent_map;
     if(persistent_mapping)persistent_map=std::make_unique<posim_slam::PersistentMapper>(c.cal,config,map_point_three_sigma_m,
-      posim_slam::PersistentMapLimits{},input_settings.value("map_epoch",std::string()));
+      posim_slam::PersistentMapLimits{},input_settings.value("map_epoch",std::string()),
+      export_file.parent_path()/("worker-map-inputs-"+posim_slam::mapping_graph_detail::epoch()+".sqlite"));
     owner->posim_map_information_enabled=joint_map_information && !persistent_mapping;
     owner->posim_map_point_three_sigma_m=map_point_three_sigma_m;
     const bool dvl_enabled=input_settings.value("enable_joint_dvl",false);

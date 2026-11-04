@@ -36,7 +36,7 @@ Input ingestion and optimization use separate threads. The input queue holds two
 snapshots. Optimization runs after eight new snapshots, after a five-second wait
 with pending input, or at end of input. `MappingInputStore` recovers each retirement's
 nonlinear factors and detects each keyframe's descriptor features once. Immutable
-in-memory snapshots retain those features, factors and the latest pose seeds;
+snapshots retain feature-page references, factors and the latest pose seeds;
 raw images and marginalization matrices are released after ingestion. SHA-256 of
 image dimensions and visible uint16 pixels checks repeated timestamps. Limits are
 203 keyframes, 96 MiB of processed-image-equivalent input, 96 MiB of compact logical
@@ -120,7 +120,7 @@ scope; legacy file readers retain the file's declared scope.
 입력 수신과 지도 최적화는 별도 스레드입니다. 입력 큐는 사본 두 건을 보관하고,
 새 입력 8건, 남은 입력의 5초 대기 또는 입력 종료 시 최적화합니다. 원래 시각으로
 입력 영상을 구분합니다. `MappingInputStore`는 전달 정보별 비선형 제약 복원과
-키프레임별 기술자 특징 검출을 한 번만 수행합니다. 불변 메모리 사본은 특징·복원
+키프레임별 기술자 특징 검출을 한 번만 수행합니다. 불변 사본은 특징 페이지 참조·복원
 제약·최신 자세 초기값을 보존하며 원본 영상과 주변화 행렬은 수신 처리 후 놓습니다.
 같은 시각의 영상은 크기와 유효 uint16 픽셀의 SHA-256으로 일치를 확인합니다.
 한도는 키프레임 203개, 처리 영상 환산 입력 96MiB, 특징·제약 논리 데이터 96MiB,
@@ -179,9 +179,14 @@ persistent native mapper retains its existing keyframe/input bounds. See the
 
 The mapper identifies observations by original image timestamp, camera and feature index. Rebuilding tracks replaces the complete association graph and rejects duplicate pixel ownership. Point IDs follow each track's earliest original observation rather than internal track numbering.
 
-A full PLY refresh also saves `worker-map.graph.pmap` in the native output directory. Its SHA-256-checked CBOR payload retains camera calibration, original pixel observations, recovered factors, current poses/landmarks, optimizer controls and segment identity. The optimizer can reload and relinearize the saved associations. The archive excludes raw images, feature descriptors and live VIO/IMU history; descriptor paging, automatic rollover and live navigation restart remain separate. Viewer-only requests do not write this archive. Snapshot write failures fail the request while sensor processing continues.
+A full PLY refresh also saves `worker-map.graph.pmap` in the native output directory. Its SHA-256-checked CBOR payload retains camera calibration, original pixel observations, recovered factors, current poses/landmarks, optimizer controls and segment identity. The optimizer can reload and relinearize the saved associations. Indexed `PSIMMAP3` pages retain all detector features and descriptors for matching restoration. Raw images and live VIO/IMU history are separate; automatic graph growth, rollover and live navigation restart remain unavailable. Viewer-only requests do not write this archive. Snapshot write failures fail the request while sensor processing continues.
 
 
 관측은 원본 영상 시각·카메라·특징 번호로 구분합니다. 트랙을 재구성하면 전체 관측 연결을 교체하고 픽셀의 중복 배정을 거부합니다. 점 ID는 내부 트랙 번호 대신 각 트랙의 가장 이른 원본 관측을 기준으로 유지합니다.
 
-전체 PLY 갱신은 네이티브 출력 디렉터리에 `worker-map.graph.pmap`도 저장합니다. SHA-256으로 검사하는 CBOR 데이터는 카메라 보정·원본 픽셀·복원 제약·현재 자세와 지도점·최적화 설정·구간 식별자를 보존합니다. 저장한 관측 연결을 불러와 최적화 정보를 다시 계산할 수 있습니다. 원본 영상·특징 기술자·라이브 VIO/IMU 이력은 포함하지 않으며 기술자 페이징·자동 전환·라이브 항법 재시작은 별도 작업입니다. 화면 조회는 이 파일을 기록하지 않습니다. 파일 기록 오류는 해당 요청을 실패 처리하며 센서 처리는 계속합니다.
+전체 PLY 갱신은 네이티브 출력 디렉터리에 `worker-map.graph.pmap`도 저장합니다. SHA-256으로 검사하는 CBOR 데이터는 카메라 보정·원본 픽셀·복원 제약·현재 자세와 지도점·최적화 설정·구간 식별자를 보존합니다. 저장한 관측 연결을 불러와 최적화 정보를 다시 계산할 수 있습니다. 색인이 있는 `PSIMMAP3` 페이지는 모든 검출 특징·기술자를 보존해 재매칭 복원에 사용합니다. 원본 영상·라이브 VIO/IMU 이력은 별도이며 자동 그래프 확장·구간 전환·라이브 항법 재시작은 지원하지 않습니다. 화면 조회는 이 파일을 기록하지 않습니다. 파일 기록 오류는 해당 요청을 실패 처리하며 센서 처리는 계속합니다.
+
+
+The native stream stores complete detector features, recovered factors, pose seeds and retirement identities in a session-owned `worker-map-inputs-*.sqlite` file beside its output. Each retirement commits in one SQLite transaction before publication. Immutable map snapshots retain page references; a read leases one checked feature frame, while optimization still materializes the bounded graph. The SQLite page cache targets 2 MiB, memory mapping is disabled and the database is bounded to 96 MiB. Input limits and admission checks still apply. A storage error invalidates map output; the navigation estimator can continue. Restoring inputs requires matching epoch, calibration, mapper settings and limits; it does not restart navigation.
+
+네이티브 스트림은 모든 검출 특징·복원 제약·자세 초기값·퇴출 식별자를 출력 옆의 세션별 `worker-map-inputs-*.sqlite`에 저장합니다. 전달 정보 한 건을 SQLite 트랜잭션으로 확정한 뒤 지도 생성 쪽에 전달합니다. 불변 지도 사본은 페이지 참조를 보관하고, 읽을 때 검증한 특징 프레임 하나를 임시로 소유합니다. 최적화는 여전히 한도 내 그래프의 특징을 메모리에 구성합니다. SQLite 페이지 캐시 목표는 2MiB이며 메모리 매핑은 끄고 데이터베이스 크기는 96MiB로 제한합니다. 기존 입력 한도와 점 채택 기준은 유지합니다. 저장 오류는 지도 출력을 무효화하며 항법 추정은 계속할 수 있습니다. 입력 복원에는 같은 구간 식별자·보정값·지도 설정·한도가 필요하며 항법을 재시작하지 않습니다.

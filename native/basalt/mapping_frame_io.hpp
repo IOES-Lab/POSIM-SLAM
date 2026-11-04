@@ -1,11 +1,14 @@
 // SPDX-License-Identifier: Apache-2.0
 #pragma once
-#include "mapping_graph.hpp"
+#include "mapping_frame.hpp"
+#include "mapping_binary.hpp"
+#include <fstream>
+#include <mutex>
 
 namespace posim_slam {
 namespace mapping_frame_io {
-using namespace mapping_graph_detail;
-using Frame=MappingInputStore::Frame;
+using namespace mapping_binary;
+using Frame=MappingInputFrame;
 constexpr size_t limit=96*1024*1024;
 inline Json binary(const InputDigest::Value& value) {
   return Json::binary(std::vector<uint8_t>(value.begin(),value.end()));
@@ -84,7 +87,7 @@ class MappingFramePages {
   using Json=nlohmann::json;
   MappingFramePages(std::ifstream&& file,uint64_t start,uint64_t end,const Json& table,const Json& frames)
       :file_(std::move(file)),start_(start) {
-    using namespace mapping_graph_detail;
+    using namespace mapping_binary;
     if(!table.is_array() || table.size()!=frames.size())throw std::invalid_argument("mapping_input_page_index");
     uint64_t offset=0;
     for(size_t i=0;i<table.size();++i) {
@@ -98,7 +101,7 @@ class MappingFramePages {
     }
     if(start+offset!=end)throw std::invalid_argument("mapping_input_page_index");
   }
-  std::shared_ptr<const MappingInputStore::Frame> read(int64_t stamp,size_t maximum) {
+  std::shared_ptr<const MappingInputFrame> read(int64_t stamp,size_t maximum) {
     using namespace mapping_frame_io;
     const auto found=pages_.find(stamp);
     if(found==pages_.end())throw std::invalid_argument("mapping_input_frame_missing");const auto& page=found->second;

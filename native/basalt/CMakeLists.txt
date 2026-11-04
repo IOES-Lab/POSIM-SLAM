@@ -10,6 +10,7 @@ find_package(Eigen3 5.0.1 EXACT CONFIG REQUIRED)
 find_package(TBB CONFIG REQUIRED)
 find_package(OpenCV 4.13.0 EXACT CONFIG REQUIRED COMPONENTS core imgproc calib3d features2d imgcodecs)
 find_package(fmt CONFIG REQUIRED)
+find_package(SQLite3 REQUIRED)
 set(BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(BUILD_PYTHON OFF CACHE BOOL "" FORCE)
 add_compile_definitions(EIGEN_MPL2_ONLY EIGEN_DONT_PARALLELIZE BASALT_INSTANTIATIONS_DOUBLE)
@@ -70,6 +71,8 @@ add_library(basalt_core STATIC
  ${B}/src/vi_estimator/marg_helper.cpp
  ${B}/src/vi_estimator/nfr_mapper.cpp
  ${CMAKE_CURRENT_SOURCE_DIR}/persistent_mapper.cc
+ ${CMAKE_CURRENT_SOURCE_DIR}/mapping_input_store.cc
+ ${CMAKE_CURRENT_SOURCE_DIR}/mapping_input_archive.cc
  ${CMAKE_CURRENT_SOURCE_DIR}/mapping_graph.cc
  ${B}/src/vi_estimator/sc_ba_base.cpp
  ${B}/src/vi_estimator/sqrt_ba_base.cpp
@@ -81,7 +84,7 @@ target_include_directories(basalt_core PUBLIC
  ${SOURCE_ROOT}/cereal/include ${SOURCE_ROOT}/magic_enum/include
  ${SOURCE_ROOT}/opengv/include ${SOURCE_ROOT}/json/single_include ${OpenCV_INCLUDE_DIRS})
 target_compile_options(basalt_core PRIVATE -Wno-error=missing-template-arg-list-after-template-kw)
-target_link_libraries(basalt_core PUBLIC Eigen3::Eigen TBB::tbb fmt::fmt opengv ${OpenCV_LIBS})
+target_link_libraries(basalt_core PUBLIC Eigen3::Eigen TBB::tbb fmt::fmt SQLite::SQLite3 opengv ${OpenCV_LIBS})
 add_executable(basalt_synthetic_probe synthetic_probe.cc)
 target_link_libraries(basalt_synthetic_probe PRIVATE basalt_core)
 add_executable(basalt_initial_prior_probe initial_prior_probe.cc)

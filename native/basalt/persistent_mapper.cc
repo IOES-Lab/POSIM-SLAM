@@ -9,15 +9,21 @@ namespace posim_slam {
 
 
 PersistentMapper::PersistentMapper(const basalt::Calibration<double>& calibration,
-    const basalt::VioConfig& config,double three_sigma_m,PersistentMapLimits limits,std::string epoch)
+    const basalt::VioConfig& config,double three_sigma_m,PersistentMapLimits limits,std::string epoch,std::filesystem::path input_archive)
     :calibration_(calibration),config_(MappingInputStore::configuration(config)),three_sigma_m_(three_sigma_m),limits_(limits),
-     store_(calibration_,config_,limits),
      graph_registry_(calibration_,config_,std::move(epoch)),
      latest_(std::make_shared<PersistentMapSnapshot>()) {
   if(!std::isfinite(three_sigma_m) || three_sigma_m<=0 || three_sigma_m>1)
     throw std::invalid_argument("invalid_persistent_mapping_configuration");
-  retained_.input=store_.snapshot();
   input.set_capacity(2);
+  try {
+    store_=std::make_unique<MappingInputStore>(calibration_,config_,limits,std::move(input_archive),false,graph_registry_.epoch());
+    retained_.input=store_->snapshot();
+  } catch(const std::exception& error) {
+    // Keep draining the map handoff queue when storage cannot start. This
+    // invalidates the map without blocking the independent navigation owner.
+    invalidate(error.what());
+  }
   ingest_thread_=std::thread(&PersistentMapper::ingest,this);
   try {mapper_thread_=std::thread(&PersistentMapper::optimize,this);}
   catch(...) {input.push(nullptr);ingest_thread_.join();throw;}
@@ -61,7 +67,7 @@ void PersistentMapper::ingest() {
     }
     try {
       {std::lock_guard<std::mutex> lock(mutex_);if(!error_.empty())continue;}
-      const auto committed=store_.append(*source);
+      const auto committed=store_->append(*source);
       std::lock_guard<std::mutex> lock(mutex_);
       if(!error_.empty())continue;
       retained_.input=committed;retained_.revision=committed->revision;changed_.notify_one();
@@ -95,7 +101,7 @@ void PersistentMapper::optimize() {
 }
 std::shared_ptr<PersistentMapSnapshot> PersistentMapper::build(const Batch& batch) {
   const auto started=std::chrono::steady_clock::now();
-  auto restored=store_.makeMapper(batch.input);auto& mapper=*restored;
+  auto restored=store_->makeMapper(batch.input);auto& mapper=*restored;
   if(!mapper.getFramePoses().count(batch.reference_stamp))
     throw std::runtime_error("mapping_pose_image_or_reference_mismatch");
   mapper.match_all();mapper.build_tracks();mapper.setup_opt();

@@ -33,7 +33,7 @@ class PersistentMapper {
   tbb::concurrent_bounded_queue<basalt::MargData::Ptr> input;
   PersistentMapper(const basalt::Calibration<double>& calibration,
                    const basalt::VioConfig& config,double three_sigma_m,
-                   PersistentMapLimits limits={},std::string epoch={});
+                   PersistentMapLimits limits={},std::string epoch={},std::filesystem::path input_archive={});
   ~PersistentMapper();
   PersistentMapper(const PersistentMapper&)=delete;
   PersistentMapper& operator=(const PersistentMapper&)=delete;
@@ -60,8 +60,8 @@ class PersistentMapper {
   basalt::VioConfig config_;
   double three_sigma_m_;
   PersistentMapLimits limits_;
-  MappingInputStore store_;
   MappingGraphRegistry graph_registry_;
+  std::unique_ptr<MappingInputStore> store_;
   mutable std::mutex mutex_;
   std::condition_variable changed_;
   Batch retained_;

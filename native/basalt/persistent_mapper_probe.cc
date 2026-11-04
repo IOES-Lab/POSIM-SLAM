@@ -17,13 +17,18 @@ basalt::MargData::Ptr sample(int64_t first=10,int64_t second=20) {
  }
  return m;
 }
-int main() {
+int main(int argc,char** argv) {
+ size_t archive_id=0;
+ auto archive=[&]() -> std::filesystem::path {
+  if(argc!=2)return {};
+  return std::filesystem::absolute(argv[1])/("mapper-"+std::to_string(++archive_id)+".sqlite");
+ };
  basalt::Calibration<double> calibration;calibration.intrinsics.resize(1);calibration.T_i_c.resize(1);
  calibration.resolution.push_back(Eigen::Vector2i(4,4));
  basalt::VioConfig config;
  {
   posim_slam::PersistentMapLimits limits;limits.update_retirements=limits.retirements;
-  posim_slam::PersistentMapper map(calibration,config,.1,limits);map.setReference(10,Sophus::SE3d());
+  posim_slam::PersistentMapper map(calibration,config,.1,limits,{},archive());map.setReference(10,Sophus::SE3d());
   map.input.push(sample());
   const auto deadline=std::chrono::steady_clock::now()+std::chrono::seconds(2);
   uint64_t requested=0;
@@ -38,7 +43,7 @@ int main() {
  }
  auto run=[&](std::vector<basalt::MargData::Ptr> values,const std::string& expected,size_t frames=2) {
   posim_slam::PersistentMapLimits limits;limits.keyframes=frames;limits.update_retirements=limits.retirements;
-  posim_slam::PersistentMapper map(calibration,config,.1,limits);map.setReference(10,Sophus::SE3d());
+  posim_slam::PersistentMapper map(calibration,config,.1,limits,{},archive());map.setReference(10,Sophus::SE3d());
   for(auto value:values)map.input.push(value);
   map.finish();map.finish();const auto result=map.snapshot();
   assert(result->error==expected && result->points.empty() && result->observed==0);
@@ -52,10 +57,16 @@ int main() {
  auto nonfinite=sample();nonfinite->abs_H(0,0)=std::numeric_limits<double>::quiet_NaN();
  run({nonfinite},"invalid_persistent_mapping_input");
  {
-  posim_slam::PersistentMapper map(calibration,config,.1);
+  posim_slam::PersistentMapper map(calibration,config,.1,{}, {},archive());
   map.invalidate("mapping_handoff_backlog");
   for(int i=0;i<30;++i)map.input.push(first);
   map.finish();assert(map.snapshot()->error=="mapping_handoff_backlog" && map.snapshot()->points.empty());
+ }
+ if(argc==2) {
+  posim_slam::PersistentMapper map(calibration,config,.1,{}, {},
+    std::filesystem::absolute(argv[1])/"absent-parent"/"inputs.sqlite");
+  for(int i=0;i<30;++i)map.input.push(first);
+  map.finish();assert(map.snapshot()->error=="mapping_input_storage_path" && map.snapshot()->points.empty());
  }
  std::cout<<"Persistent mapping: partial-batch update, duplicate ownership, image identity, budgets, invalid layout and failure draining pass.\n";
 }

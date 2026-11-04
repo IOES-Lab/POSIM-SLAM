@@ -62,14 +62,21 @@ MappingGraphRegistry::Snapshot MappingGraphRegistry::capture(const MappingInputS
   data->optimizer={mapper.lambda,mapper.min_lambda,mapper.max_lambda,mapper.lambda_vee};
   for(double value:data->optimizer)if(!std::isfinite(value) || value<0)throw std::invalid_argument("mapping_graph_optimizer");
   size_t corners=0;
-  for(const auto& [stamp,frame]:input->frames) {
+  for(const auto& [stamp,reference]:input->frames) {
+    const auto frame=reference.read();
     if(!frame || stamp<1 || frame->stamp!=stamp || frame->features.corners.size()>1000000 || (corners+=frame->features.corners.size())>1000000)
       throw std::invalid_argument("mapping_graph_frame_identity");
     if(frame->width<1 || frame->width>1920 || frame->height<1 || frame->height>1080 ||
         calibration_.resolution[0]!=Eigen::Vector2i(frame->width,frame->height))throw std::invalid_argument("mapping_graph_frame_shape");
     const auto value=mapper.getFramePoses().at(stamp).getPose();validPose(value);
     data->frames.push_back({stamp,frame->width,frame->height,frame->features.corners.size(),frame->digest});data->poses.emplace_back(stamp,value);
-    data->inputs.emplace(stamp,frame);
+    // Validate once per leased frame. The observation loop then uses the
+    // mapper's checked pixels, without a disk read for every observation.
+    const auto& mapped=mapper.feature_corners.at(basalt::TimeCamId(stamp,0)).corners;
+    if(mapped.size()!=frame->features.corners.size())throw std::invalid_argument("mapping_graph_observation_source");
+    for(size_t i=0;i<mapped.size();++i)if(!same(mapped[i],frame->features.corners[i]))
+      throw std::invalid_argument("mapping_source_pixel_changed");
+    data->inputs.emplace(stamp,reference);
   }
   if(!input->frames.count(reference_stamp))throw std::invalid_argument("mapping_graph_reference");
   std::set<std::pair<int64_t,int64_t>> factor_ids;
@@ -103,10 +110,10 @@ MappingGraphRegistry::Snapshot MappingGraphRegistry::capture(const MappingInputS
     MappingGraph::Captured::Track saved{native,found->second,{}};saved.pixels.reserve(track->size());result->stable_ids.emplace(native,found->second);
     for(const auto& [image,feature]:*track) {
       const auto frame=input->frames.find(image.frame_id);
-      if(image.cam_id!=0 || frame==input->frames.end() || feature<0 || size_t(feature)>=frame->second->features.corners.size())
+      if(image.cam_id!=0 || frame==input->frames.end() || feature<0 || size_t(feature)>=frame->second.metadata().corners)
         throw std::invalid_argument("mapping_graph_observation_source");
-      const auto& pixel=frame->second->features.corners[feature];
-      if(!pixel.allFinite() || !same(pixel,mapper.feature_corners.at(image).corners.at(feature)))throw std::invalid_argument("mapping_source_pixel_changed");
+      const auto& pixel=mapper.feature_corners.at(image).corners.at(feature);
+      if(!pixel.allFinite())throw std::invalid_argument("mapping_source_pixel_changed");
       MappingObservation identity{image.frame_id,image.cam_id,feature};
       if(owners.size()>=1000000 || !owners.emplace(identity,data->pixels.size()).second)throw std::invalid_argument("mapping_graph_observation_reused");
       saved.pixels.push_back(data->pixels.size());data->pixels.push_back({identity,pixel});
@@ -123,7 +130,7 @@ MappingGraphRegistry::Snapshot MappingGraphRegistry::capture(const MappingInputS
     saved.pixels.reserve(landmark.obs.size());
     for(const auto& [image,pixel]:landmark.obs) {
       const auto feature=track.at(image);MappingObservation identity{image.frame_id,image.cam_id,feature};
-      if(!same(pixel,input->frames.at(image.frame_id)->features.corners.at(feature)))throw std::invalid_argument("mapping_source_pixel_changed");
+      if(!same(pixel,mapper.feature_corners.at(image).corners.at(feature)))throw std::invalid_argument("mapping_source_pixel_changed");
       saved.pixels.push_back(owners.at(identity));
     }
     data->landmarks.push_back(std::move(saved));
@@ -297,8 +304,7 @@ std::shared_ptr<const MappingInputStore::Frame> MappingGraphRegistry::inputFrame
   if(graph->pages)return graph->pages->read(stamp,maximum);
   const auto found=graph->captured->inputs.find(stamp);
   if(found==graph->captured->inputs.end())throw std::invalid_argument("mapping_input_frame_missing");
-  if(mapping_frame_io::encode(*found->second).size()>maximum)throw std::runtime_error("mapping_input_page_budget");
-  return found->second;
+  return found->second.read(maximum);
 }
 std::unique_ptr<basalt::NfrMapper> MappingGraphRegistry::restoreForMatching(const Snapshot& graph,const std::function<bool()>& cancelled) {
   if(!graph || !graph->validated || !graph->hasInputFrames())throw std::invalid_argument("mapping_input_frames_missing");

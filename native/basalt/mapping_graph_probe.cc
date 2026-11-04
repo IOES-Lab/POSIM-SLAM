@@ -31,14 +31,14 @@ struct Fixture {
     auto map=std::make_unique<basalt::NfrMapper>(calibration,config);
     for(const auto& [stamp,frame]:input->frames) {
       map->getFramePoses().emplace(stamp,basalt::PoseStateWithLin<double>(stamp,Sophus::SE3d(Sophus::SO3d(),Eigen::Vector3d(.01*stamp,0,0))));
-      map->feature_corners.emplace(basalt::TimeCamId(stamp,0),frame->features);
+      map->feature_corners.emplace(basalt::TimeCamId(stamp,0),frame.read()->features);
       map->feature_tracks[first].emplace(basalt::TimeCamId(stamp,0),0);map->feature_tracks[second].emplace(basalt::TimeCamId(stamp,0),1);
     }
     for(auto [id,index]:{std::pair<int,int>{first,0},{second,1}}) {
       basalt::Keypoint<double> point;point.host_kf_id=basalt::TimeCamId(10,0);point.direction=Eigen::Vector2d(.1*index,-.1*index);point.inv_dist=index?0:.25;
       map->lmdb.addLandmark(id,point);
       for(int64_t stamp:{10,20,30}) {
-        basalt::KeypointObservation<double> obs;obs.kpt_id=id;obs.pos=input->frames.at(stamp)->features.corners[index];map->lmdb.addObservation(basalt::TimeCamId(stamp,0),obs);
+        basalt::KeypointObservation<double> obs;obs.kpt_id=id;obs.pos=input->frames.at(stamp).read()->features.corners[index];map->lmdb.addObservation(basalt::TimeCamId(stamp,0),obs);
       }
     }
     basalt::RelPoseFactor relative;relative.t_i_ns=10;relative.t_j_ns=20;relative.T_i_j=map->getFramePoses().at(10).getPose().inverse()*map->getFramePoses().at(20).getPose();relative.cov_inv=Eigen::Matrix<double,6,6>::Identity();map->rel_pose_factors.push_back(relative);
@@ -406,7 +406,7 @@ void nativeArchiveControls(const Fixture& fixture,const std::filesystem::path& d
 void inputPageControls(const std::filesystem::path& directory) {
   Fixture fixture;basalt::HashBow<256> vocabulary(fixture.config.mapper_bow_num_bits);
   for(auto& [stamp,source]:fixture.input->frames) {
-    auto frame=std::make_shared<posim_slam::MappingInputStore::Frame>(*source);auto& f=frame->features;
+    auto frame=std::make_shared<posim_slam::MappingInputStore::Frame>(*source.read());auto& f=frame->features;
     f.corners.emplace_back(100,100); // This detector feature has no old track.
     f.corner_angles={.1,.2,.3};f.corner_descriptors.resize(3);
     std::mt19937 random(37);
@@ -416,7 +416,7 @@ void inputPageControls(const std::filesystem::path& directory) {
   }
   auto mapper=fixture.mapper();
   for(const auto& [stamp,frame]:fixture.input->frames)
-    mapper->hash_bow_database->add_to_database(basalt::TimeCamId(stamp,0),frame->features.bow_vector);
+    mapper->hash_bow_database->add_to_database(basalt::TimeCamId(stamp,0),frame.read()->features.bow_vector);
   Registry registry(fixture.calibration,fixture.config,"input-pages");
   posim_slam::NativeMappingWindow window(*mapper,10,{10,20,30});
   const auto graph=registry.capture(fixture.input,*mapper,10,Sophus::SE3d(),Sophus::SE3d(),&window);
@@ -429,10 +429,10 @@ void inputPageControls(const std::filesystem::path& directory) {
   assert(original_output.points==restored_output.points && original_output.ids==restored_output.ids);
   for(const auto& [stamp,source]:fixture.input->frames) {
     const auto frame=Registry::inputFrame(loaded.graph,stamp);
-    assert(posim_slam::mapping_frame_io::encode(*frame)==posim_slam::mapping_frame_io::encode(*source));
+    assert(posim_slam::mapping_frame_io::encode(*frame)==posim_slam::mapping_frame_io::encode(*source.read()));
     assert(frame->features.corners.size()==3 && restored->feature_corners.at(basalt::TimeCamId(stamp,0)).corners.size()==3);
   }
-  const auto& query=fixture.input->frames.at(30)->features;
+  const auto query_frame=fixture.input->frames.at(30).read();const auto& query=query_frame->features;
   using Scores=std::vector<std::pair<basalt::TimeCamId,double>>;Scores before,after;
   mapper->hash_bow_database->querry_database(query.bow_vector,10,before);
   restored->hash_bow_database->querry_database(query.bow_vector,10,after);
@@ -447,7 +447,7 @@ void inputPageControls(const std::filesystem::path& directory) {
   int cancelled=0;rejects([&]{Registry::restoreForMatching(loaded.graph,[&]{return ++cancelled==4;});},"mapping_input_restore_cancelled");
   assert(Registry::document(loaded.graph)==Registry::document(graph));
   const auto frozen=Registry::inputFrame(loaded.graph,30)->features.corner_descriptors;
-  auto changed=std::make_shared<posim_slam::MappingInputStore::Frame>(*fixture.input->frames.at(30));
+  auto changed=std::make_shared<posim_slam::MappingInputStore::Frame>(*fixture.input->frames.at(30).read());
   changed->features.corner_descriptors[2].flip();vocabulary.compute_bow(changed->features.corner_descriptors,changed->features.hashes,changed->features.bow_vector);
   fixture.input->frames[30]=changed;
   const auto next=registry.capture(fixture.input,*mapper,10,Sophus::SE3d(),Sophus::SE3d(),&window);
