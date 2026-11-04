@@ -191,9 +191,23 @@ immutable snapshot keeps both states through later optimizer updates.
 measurements, current variables and reference before returning the snapshot;
 `NativeMappingCheckpoint::restore(mapper, graph)` reconstructs its window.
 Point correspondence uses stable IDs, independent of container row order.
-Readers supporting only `PSIMMAP1` reject window archives. Ordinary exports
-retain that existing format. File replacement is atomic; power-loss durability
+Readers supporting only `PSIMMAP1` reject window archives. Calls to `write`
+without a window retain `PSIMMAP1`. File replacement is atomic; power-loss durability
 is not guaranteed. Automatic window rollover remains disabled.
+
+`writeWithInputs` stores the graph, optional native window and complete compact
+detector inputs in `PSIMMAP3`. Frame pages preserve pixels, orientations,
+256-bit descriptors, unprojected bearings and HashBoW values. The metadata
+checksum binds each page's hash, length and frame/image identity. `read` opens
+the graph and page index; `inputFrame(graph, stamp, max_encoded_bytes)` loads
+and checks only the requested page. A held file handle keeps a snapshot bound
+to its original file through pathname replacement. `restoreForMatching`
+rehydrates all frames of the current bounded graph, rebuilds retrieval and
+validates tracked pixel ownership before returning a mapper. It rejects
+graph-only archives without inventing descriptors. The 96 MiB archive cap
+includes the graph and all pages. The live mapper still retains its bounded
+input set; automatic eviction, graph growth and navigation resumption require
+their own lifecycle support.
 
 `step()` uses backtracking on the hybrid Gaussian/robust objective, rejects a
 step that loses a previously valid projection, and restores poses, landmarks
@@ -263,9 +277,21 @@ existing full-history optimizer and limits; automatic rollover is not enabled.
 읽을 때 원본 관측·현재 변수·기준 자세의 일치를 검사하며
 `NativeMappingCheckpoint::restore(mapper, graph)`로 활성 구간을 복원합니다.
 점 대응은 내부 행 순서와 관계없이 고유 ID를 사용합니다. `PSIMMAP1`만 지원하는
-판독기는 구간 파일을 거부하며 일반 지도 출력은 기존 형식을 유지합니다.
+판독기는 구간 파일을 거부하며 구간 없이 호출한 `write`는 `PSIMMAP1` 형식을 유지합니다.
 파일 교체는 원자적이지만 전원 차단 시 보존을 보장하지 않습니다.
 자동 구간 전환은 아직 활성화하지 않습니다.
+
+`writeWithInputs`는 그래프·선택한 네이티브 구간·전체 검출 특징 입력을
+`PSIMMAP3`에 저장합니다. 프레임 페이지는 픽셀·방향·256비트 기술자·역투영
+방향과 HashBoW 값을 보존합니다. 메타데이터 체크섬은 각 페이지의 해시·길이와
+프레임·영상 식별자를 연결합니다. `read`는 그래프와 페이지 색인을 열고
+`inputFrame(graph, stamp, max_encoded_bytes)`는 요청한 페이지만 읽어 검사합니다.
+열린 파일 핸들은 경로의 파일이 교체되어도 사본이 원래 파일을 읽도록 합니다.
+`restoreForMatching`은 현재 크기가 제한된 그래프의 모든 프레임을 복원하고
+검색 색인·관측 픽셀 소유권을 확인한 뒤 지도를 반환합니다. 기술자가 없는 그래프
+전용 파일은 재매칭용 복원을 거부합니다. 96MiB 파일 한도에는 그래프와 모든
+페이지가 포함됩니다. 라이브 지도는 여전히 제한된 입력 집합을 메모리에 유지하며
+자동 입력 퇴출·그래프 확장·항법 재개에는 별도의 수명 주기 처리가 필요합니다.
 
 `step()`은 가우시안·강건 손실을 결합한 목적함수로 갱신 보폭을 조정합니다.
 유효했던 투영이 사라지는 갱신은 거부하며, 취소나 실패 시 자세·랜드마크·발행된
@@ -1867,11 +1893,15 @@ owner transaction. [Source/native and delayed-owner controls](../../docs/diagnos
 
 The mapper identifies observations by original image timestamp, camera and feature index. Rebuilding tracks replaces the complete association graph and rejects duplicate pixel ownership. Point IDs follow each track's earliest original observation rather than internal track numbering.
 
-Published map snapshots keep validated immutable measurement and optimizer values in typed arrays. JSON is constructed only for archive export or explicit inspection. A full PLY refresh also saves `worker-map.graph.pmap` in the native output directory. Its SHA-256-checked CBOR payload retains camera calibration, original pixel observations, recovered factors, current poses/landmarks, optimizer controls and segment identity. The optimizer can reload and relinearize the saved associations. The archive excludes raw images, feature descriptors and live VIO/IMU history; descriptor paging, automatic rollover and live navigation restart remain separate. Viewer-only requests do not write this archive. Snapshot write failures fail the request while sensor processing continues.
+Published map snapshots retain immutable measurement and optimizer values. A full PLY refresh also saves `worker-map.graph.pmap` in the native output directory. Its `PSIMMAP3` archive preserves calibration, original observations, recovered factors, current poses/landmarks, optimizer controls and segment identity, plus every detector feature and descriptor. A checksum-protected index binds separately checked frame pages to this graph; callers can load one frame at a time. Matching restoration rebuilds the HashBoW retrieval index and checks the original pixel identities.
+
+The 96 MiB file limit includes metadata and all pages. Older graph-only archives retain their saved associations for relinearization. Raw images and live VIO/IMU history are separate; automatic graph growth, window rollover and navigation restart remain unavailable. Viewer-only requests do not write the archive. A write failure fails the export request while sensor processing continues.
 
 
 관측은 원본 영상 시각·카메라·특징 번호로 구분합니다. 트랙을 재구성하면 전체 관측 연결을 교체하고 픽셀의 중복 배정을 거부합니다. 점 ID는 내부 트랙 번호 대신 각 트랙의 가장 이른 원본 관측을 기준으로 유지합니다.
 
-발행된 지도 사본은 검증한 측정값과 최적화 값을 형식이 지정된 불변 배열에 보관합니다. JSON은 파일 저장이나 명시적인 내용 조회 때만 생성합니다. 전체 PLY 갱신은 네이티브 출력 디렉터리에 `worker-map.graph.pmap`도 저장합니다. SHA-256으로 검사하는 CBOR 데이터는 카메라 보정·원본 픽셀·복원 제약·현재 자세와 지도점·최적화 설정·구간 식별자를 보존합니다. 저장한 관측 연결을 불러와 최적화 정보를 다시 계산할 수 있습니다. 원본 영상·특징 기술자·라이브 VIO/IMU 이력은 포함하지 않으며 기술자 페이징·자동 전환·라이브 항법 재시작은 별도 작업입니다. 화면 조회는 이 파일을 기록하지 않습니다. 파일 기록 오류는 해당 요청을 실패 처리하며 센서 처리는 계속합니다.
+발행된 지도 사본은 측정값과 최적화 값을 불변 데이터로 보관합니다. 전체 PLY 갱신은 네이티브 출력 디렉터리에 `worker-map.graph.pmap`도 저장합니다. `PSIMMAP3` 파일은 보정값·원본 관측·복원 제약·현재 자세와 지도점·최적화 설정·구간 식별자와 모든 검출 특징·기술자를 보존합니다. 체크섬을 가진 색인은 개별 검증하는 프레임 페이지를 해당 그래프에 연결하며 필요한 프레임을 하나씩 읽을 수 있습니다. 재매칭용 복원은 HashBoW 검색 색인을 재구성하고 원본 픽셀 식별자를 검사합니다.
+
+파일의 96MiB 한도에는 메타데이터와 모든 페이지가 포함됩니다. 이전 그래프 전용 파일은 저장된 관측 연결의 재계산에 사용합니다. 원본 영상과 라이브 VIO/IMU 이력은 별도이며 자동 그래프 확장·구간 전환·항법 재시작은 아직 지원하지 않습니다. 화면 조회는 파일을 기록하지 않습니다. 기록 오류는 내보내기 요청을 실패 처리하며 센서 처리는 계속합니다.
 
 `MappingGraphRegistry::capture` replaces one optimized graph atomically. `write` and `read` bind its checksum, request, input revision and tracking timestamp. `restore` rebuilds the NFR optimizer with saved associations; `adopt` restores the identity ledger only into an empty registry with matching epoch/calibration/configuration. `mappingGraphInformation` is shared by the live mapper and restored-graph uncertainty calculation. The existing native keyframe/input and 100,000-identity bounds apply.

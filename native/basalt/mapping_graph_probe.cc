@@ -4,6 +4,8 @@
 #include "native_mapping_window.hpp"
 #include "native_mapping_checkpoint.hpp"
 #include "mapping_output.hpp"
+#include "mapping_frame_io.hpp"
+#include <basalt/utils/keypoints.h>
 #include <cassert>
 #include <iostream>
 
@@ -401,8 +403,78 @@ void nativeArchiveControls(const Fixture& fixture,const std::filesystem::path& d
   std::cout<<"Native archive: immutable graph/window capture, owner binding, versioned export, byte-identical re-export, mismatched pairs and cancellation pass.\n";
 }
 
+void inputPageControls(const std::filesystem::path& directory) {
+  Fixture fixture;basalt::HashBow<256> vocabulary(fixture.config.mapper_bow_num_bits);
+  for(auto& [stamp,source]:fixture.input->frames) {
+    auto frame=std::make_shared<posim_slam::MappingInputStore::Frame>(*source);auto& f=frame->features;
+    f.corners.emplace_back(100,100); // This detector feature has no old track.
+    f.corner_angles={.1,.2,.3};f.corner_descriptors.resize(3);
+    std::mt19937 random(37);
+    for(auto& descriptor:f.corner_descriptors)for(size_t bit=0;bit<256;++bit)descriptor[bit]=random()&1;
+    std::vector<bool> success;fixture.calibration.intrinsics[0].unproject(f.corners,f.corners_3d,success);
+    vocabulary.compute_bow(f.corner_descriptors,f.hashes,f.bow_vector);source=frame;
+  }
+  auto mapper=fixture.mapper();
+  for(const auto& [stamp,frame]:fixture.input->frames)
+    mapper->hash_bow_database->add_to_database(basalt::TimeCamId(stamp,0),frame->features.bow_vector);
+  Registry registry(fixture.calibration,fixture.config,"input-pages");
+  posim_slam::NativeMappingWindow window(*mapper,10,{10,20,30});
+  const auto graph=registry.capture(fixture.input,*mapper,10,Sophus::SE3d(),Sophus::SE3d(),&window);
+  const auto path=directory/"inputs.pmap";Registry::writeWithInputs(path,graph,7,30);
+  const auto loaded=Registry::read(path,"input-pages");assert(loaded.graph->hasInputFrames());
+  const auto restored=Registry::restoreForMatching(loaded.graph);compare(*mapper,*restored);
+  auto reopened=posim_slam::NativeMappingCheckpoint::restore(*restored,loaded.graph);
+  const auto original_output=posim_slam::mappingOutput(*mapper,Sophus::SE3d(),window.mapInformation(.1),graph);
+  const auto restored_output=posim_slam::mappingOutput(*restored,Sophus::SE3d(),reopened->mapInformation(.1),loaded.graph);
+  assert(original_output.points==restored_output.points && original_output.ids==restored_output.ids);
+  for(const auto& [stamp,source]:fixture.input->frames) {
+    const auto frame=Registry::inputFrame(loaded.graph,stamp);
+    assert(posim_slam::mapping_frame_io::encode(*frame)==posim_slam::mapping_frame_io::encode(*source));
+    assert(frame->features.corners.size()==3 && restored->feature_corners.at(basalt::TimeCamId(stamp,0)).corners.size()==3);
+  }
+  const auto& query=fixture.input->frames.at(30)->features;
+  using Scores=std::vector<std::pair<basalt::TimeCamId,double>>;Scores before,after;
+  mapper->hash_bow_database->querry_database(query.bow_vector,10,before);
+  restored->hash_bow_database->querry_database(query.bow_vector,10,after);
+  std::sort(before.begin(),before.end());std::sort(after.begin(),after.end());assert(!before.empty() && before==after);
+  std::vector<std::pair<int,int>> matches;
+  basalt::matchDescriptors(query.corner_descriptors,restored->feature_corners.at(basalt::TimeCamId(10,0)).corner_descriptors,
+      matches,fixture.config.mapper_max_hamming_distance,fixture.config.mapper_second_best_test_ratio);
+  assert(matches.size()==3 && std::find(matches.begin(),matches.end(),std::pair<int,int>{2,2})!=matches.end());
+  rejects([&]{Registry::inputFrame(loaded.graph,10,1);},"mapping_input_page_budget");
+  rejects([&]{Registry::inputFrame(loaded.graph,99);},"mapping_input_frame_missing");
+  rejects([&]{Registry::read(path,"another-epoch");},"mapping_graph_epoch_mismatch");
+  int cancelled=0;rejects([&]{Registry::restoreForMatching(loaded.graph,[&]{return ++cancelled==4;});},"mapping_input_restore_cancelled");
+  assert(Registry::document(loaded.graph)==Registry::document(graph));
+  const auto frozen=Registry::inputFrame(loaded.graph,30)->features.corner_descriptors;
+  auto changed=std::make_shared<posim_slam::MappingInputStore::Frame>(*fixture.input->frames.at(30));
+  changed->features.corner_descriptors[2].flip();vocabulary.compute_bow(changed->features.corner_descriptors,changed->features.hashes,changed->features.bow_vector);
+  fixture.input->frames[30]=changed;
+  const auto next=registry.capture(fixture.input,*mapper,10,Sophus::SE3d(),Sophus::SE3d(),&window);
+  Registry::writeWithInputs(path,next,8,30);
+  assert(Registry::inputFrame(loaded.graph,30)->features.corner_descriptors==frozen);
+  assert(Registry::inputFrame(Registry::read(path).graph,30)->features.corner_descriptors!=frozen);
+  const auto repeated=directory/"reexport.pmap";Registry::writeWithInputs(repeated,loaded.graph,7,30);
+  assert(Registry::inputFrame(Registry::read(repeated).graph,30)->features.corner_descriptors==frozen);
+  // A corrupt unrequested page is not read speculatively. Loading it rejects it.
+  {std::fstream file(repeated,std::ios::in|std::ios::out|std::ios::binary);file.seekg(-1,std::ios::end);
+    char value;file.read(&value,1);value^=1;file.seekp(-1,std::ios::end);file.write(&value,1);}
+  const auto damaged=Registry::read(repeated);
+  assert(Registry::inputFrame(damaged.graph,10)->stamp==10);
+  rejects([&]{Registry::inputFrame(damaged.graph,30);},"mapping_input_page_digest");
+  rejects([&]{Registry::restoreForMatching(damaged.graph);},"mapping_input_page_digest");
+  rejects([&]{posim_slam::mapping_frame_io::decode(posim_slam::mapping_frame_io::encode(*changed),Registry::document(graph).at("frames")[0]);},"mapping_input_frame_identity");
+  const auto legacy=directory/"without-inputs.pmap";Registry::write(legacy,graph,7,30);
+  const auto old=Registry::read(legacy);assert(!old.graph->hasInputFrames());
+  rejects([&]{Registry::restoreForMatching(old.graph);},"mapping_input_frames_missing");
+  rejects([&]{Registry::writeWithInputs(path,old.graph,9,30);},"mapping_input_frames_missing");
+  assert(Registry::read(path).request==8);
+  std::cout<<"Input pages: exact unused features/descriptors, HashBoW and descriptor matching, unchanged map/covariance, lazy integrity, budgets, cancellation, replacement ownership and legacy rejection pass.\n";
+}
+
 int main(int argc,char** argv) {
   if(argc!=2)return 2;const std::filesystem::path directory=argv[1];Fixture fixture;
+  inputPageControls(directory);
   nativeArchiveControls(fixture,directory);
   nativeRowsControls(fixture);
   nativeWindowControls(fixture);

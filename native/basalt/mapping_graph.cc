@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 #include "mapping_graph.hpp"
 #include "native_mapping_checkpoint.hpp"
+#include "mapping_frame_io.hpp"
 #include <algorithm>
 #include <cstring>
 #include <limits>
@@ -19,6 +20,7 @@ template<int N> Eigen::Matrix<double,N,N> information(const Json& value) {
 constexpr size_t archive_limit=96*1024*1024;
 constexpr char magic[8]={'P','S','I','M','M','A','P','1'};
 constexpr char window_magic[8]={'P','S','I','M','M','A','P','2'};
+constexpr char input_magic[8]={'P','S','I','M','M','A','P','3'};
 void validPose(const Sophus::SE3d& value) {
   if(!Eigen::Map<const Eigen::Matrix<double,7,1>>(value.data()).allFinite())throw std::invalid_argument("mapping_graph_nonfinite_input");
   if(std::abs(Eigen::Map<const Eigen::Vector4d>(value.data()).squaredNorm()-1)>1e-10)throw std::invalid_argument("mapping_graph_rotation");
@@ -61,12 +63,13 @@ MappingGraphRegistry::Snapshot MappingGraphRegistry::capture(const MappingInputS
   for(double value:data->optimizer)if(!std::isfinite(value) || value<0)throw std::invalid_argument("mapping_graph_optimizer");
   size_t corners=0;
   for(const auto& [stamp,frame]:input->frames) {
-    if(!frame || stamp<1 || frame->features.corners.size()>1000000 || (corners+=frame->features.corners.size())>1000000)
+    if(!frame || stamp<1 || frame->stamp!=stamp || frame->features.corners.size()>1000000 || (corners+=frame->features.corners.size())>1000000)
       throw std::invalid_argument("mapping_graph_frame_identity");
     if(frame->width<1 || frame->width>1920 || frame->height<1 || frame->height>1080 ||
         calibration_.resolution[0]!=Eigen::Vector2i(frame->width,frame->height))throw std::invalid_argument("mapping_graph_frame_shape");
     const auto value=mapper.getFramePoses().at(stamp).getPose();validPose(value);
     data->frames.push_back({stamp,frame->width,frame->height,frame->features.corners.size(),frame->digest});data->poses.emplace_back(stamp,value);
+    data->inputs.emplace(stamp,frame);
   }
   if(!input->frames.count(reference_stamp))throw std::invalid_argument("mapping_graph_reference");
   std::set<std::pair<int64_t,int64_t>> factor_ids;
@@ -284,28 +287,78 @@ void MappingGraphRegistry::adopt(const Snapshot& graph) {
 }
 
 void MappingGraphRegistry::write(const std::filesystem::path& path,const Snapshot& graph,uint64_t request,int64_t tracking_stamp) {
+  writeArchive(path,graph,request,tracking_stamp,false);
+}
+void MappingGraphRegistry::writeWithInputs(const std::filesystem::path& path,const Snapshot& graph,uint64_t request,int64_t tracking_stamp) {
+  writeArchive(path,graph,request,tracking_stamp,true);
+}
+std::shared_ptr<const MappingInputStore::Frame> MappingGraphRegistry::inputFrame(const Snapshot& graph,int64_t stamp,size_t maximum) {
+  if(!graph || !graph->validated || !graph->hasInputFrames())throw std::invalid_argument("mapping_input_frames_missing");
+  if(graph->pages)return graph->pages->read(stamp,maximum);
+  const auto found=graph->captured->inputs.find(stamp);
+  if(found==graph->captured->inputs.end())throw std::invalid_argument("mapping_input_frame_missing");
+  if(mapping_frame_io::encode(*found->second).size()>maximum)throw std::runtime_error("mapping_input_page_budget");
+  return found->second;
+}
+std::unique_ptr<basalt::NfrMapper> MappingGraphRegistry::restoreForMatching(const Snapshot& graph,const std::function<bool()>& cancelled) {
+  if(!graph || !graph->validated || !graph->hasInputFrames())throw std::invalid_argument("mapping_input_frames_missing");
+  auto check=[&]{if(cancelled && cancelled())throw std::runtime_error("mapping_input_restore_cancelled");};check();
+  const auto data=document(graph);auto mapper=restore(data);check();
+  for(const auto& row:data.at("frames")) {
+    check();const int64_t stamp=row[0];const auto frame=inputFrame(graph,stamp);
+    const basalt::TimeCamId id(stamp,0);mapper->feature_corners.at(id)=frame->features;
+    mapper->hash_bow_database->add_to_database(id,frame->features.bow_vector);
+  }
+  // These are the original observation owners, including untriangulated tracks.
+  // No correspondence may silently acquire a different pixel after hydration.
+  for(const auto& row:data.at("pixels")) {
+    const auto [stamp,camera,feature]=mapping_graph_detail::key(row);
+    const auto values=mapping_graph_detail::doubles(row[3],2);
+    if(!mapping_graph_detail::same(mapper->feature_corners.at(basalt::TimeCamId(stamp,camera)).corners.at(feature),
+        Eigen::Vector2d(values[0],values[1])))throw std::invalid_argument("mapping_source_pixel_changed");
+  }
+  check();return mapper;
+}
+void MappingGraphRegistry::writeArchive(const std::filesystem::path& path,const Snapshot& graph,uint64_t request,int64_t tracking_stamp,bool inputs) {
   using namespace mapping_graph_detail;
   if(!graph || !graph->validated || !request || tracking_stamp<=0)throw std::invalid_argument("mapping_graph_export");
   const auto data=document(graph);
   for(const auto& frame:data.at("frames"))
     if(frame[0].get<int64_t>()>tracking_stamp)throw std::invalid_argument("mapping_graph_export_timing");
+  Json pages=Json::array();uint64_t page_bytes=0;
+  if(inputs)for(const auto& row:data.at("frames")) {
+    const auto frame=inputFrame(graph,row[0]);
+    if(Json::array({frame->stamp,frame->width,frame->height,frame->features.corners.size(),mapping_frame_io::binary(frame->digest)})!=row)
+      throw std::invalid_argument("mapping_input_frame_identity");
+    const auto bytes=mapping_frame_io::encode(*frame);
+    pages.push_back({frame->stamp,page_bytes,bytes.size(),mapping_frame_io::binary(mapping_frame_io::digest(bytes))});page_bytes+=bytes.size();
+    if(page_bytes>archive_limit)throw std::runtime_error("mapping_graph_archive_capacity");
+  }
   // The optional window belongs to this same immutable graph revision.
   // A distinct signature makes older readers reject unsupported window state.
   // Keep the ordinary three-entry CBOR archive byte-for-byte compatible.
   // Serialize the immutable graph directly instead of copying it into an envelope.
-  std::vector<uint8_t> bytes{uint8_t(graph->hasNativeWindow()?0xa4:0xa3)};
+  std::vector<uint8_t> bytes{uint8_t(0xa3+int(graph->hasNativeWindow())+int(inputs))};
   Json::to_cbor("graph",bytes);Json::to_cbor(data,bytes);
+  if(inputs) {Json::to_cbor("input_pages",bytes);Json::to_cbor(pages,bytes);}
   if(graph->hasNativeWindow()) {Json::to_cbor("native_window",bytes);Json::to_cbor(graph->native_window,bytes);}
   Json::to_cbor("request_id",bytes);Json::to_cbor(request,bytes);
   Json::to_cbor("tracking_stamp_ns",bytes);Json::to_cbor(tracking_stamp,bytes);
-  if(bytes.size()>archive_limit)throw std::runtime_error("mapping_graph_archive_capacity");
+  if(bytes.size()+page_bytes>archive_limit)throw std::runtime_error("mapping_graph_archive_capacity");
   InputDigest hash;hash.update(bytes.data(),bytes.size());const auto digest=hash.finish();const auto temporary=path.string()+".tmp";
   if(std::filesystem::is_symlink(path) || std::filesystem::is_symlink(temporary))throw std::invalid_argument("mapping_graph_archive_path");
   std::ofstream output(temporary,std::ios::binary|std::ios::trunc);
   if(!output)throw std::runtime_error("mapping_graph_archive_unwritable");
-  output.write(graph->hasNativeWindow()?window_magic:magic,8);output.write(reinterpret_cast<const char*>(digest.data()),digest.size());
+  output.write(inputs?input_magic:graph->hasNativeWindow()?window_magic:magic,8);output.write(reinterpret_cast<const char*>(digest.data()),digest.size());
   uint8_t size[8];for(int i=0;i<8;++i)size[i]=uint8_t(uint64_t(bytes.size())>>(8*i));output.write(reinterpret_cast<const char*>(size),8);
-  output.write(reinterpret_cast<const char*>(bytes.data()),bytes.size());output.flush();
+  output.write(reinterpret_cast<const char*>(bytes.data()),bytes.size());
+  for(const auto& row:pages) {
+    const auto page=mapping_frame_io::encode(*inputFrame(graph,row[0]));
+    if(page.size()!=row[2] || mapping_frame_io::binary(mapping_frame_io::digest(page))!=row[3])
+      throw std::invalid_argument("mapping_input_page_digest");
+    output.write(reinterpret_cast<const char*>(page.data()),page.size());
+  }
+  output.flush();
   if(!output)throw std::runtime_error("mapping_graph_archive_write_failed");output.close();
   if(!output)throw std::runtime_error("mapping_graph_archive_write_failed");std::filesystem::rename(temporary,path);
 }
@@ -319,14 +372,17 @@ MappingGraphRegistry::Restored MappingGraphRegistry::read(const std::filesystem:
   input.read(signature,8);input.read(reinterpret_cast<char*>(expected.data()),32);input.read(reinterpret_cast<char*>(length),8);
   uint64_t count=0;for(int i=0;i<8;++i)count|=uint64_t(length[i])<<(8*i);
   const bool with_window=std::memcmp(signature,window_magic,8)==0;
-  if(!input || (!with_window && std::memcmp(signature,magic,8)) || count!=size-48)throw std::invalid_argument("mapping_graph_archive_header");
+  const bool with_inputs=std::memcmp(signature,input_magic,8)==0;
+  if(!input || (!with_inputs && !with_window && std::memcmp(signature,magic,8)) ||
+      (with_inputs?(!count || count>size-48):count!=size-48))throw std::invalid_argument("mapping_graph_archive_header");
   std::vector<uint8_t> bytes(count);input.read(reinterpret_cast<char*>(bytes.data()),bytes.size());
   InputDigest digest;digest.update(bytes.data(),bytes.size());
   if(!input || digest.finish()!=expected)throw std::invalid_argument("mapping_graph_archive_digest");
   auto document=Json::from_cbor(bytes);auto graph=std::make_shared<MappingGraph>();
-  if(with_window!=document.contains("native_window"))throw std::invalid_argument("mapping_graph_archive_window");
+  if(!with_inputs && with_window!=document.contains("native_window"))throw std::invalid_argument("mapping_graph_archive_window");
+  if(with_inputs!=document.contains("input_pages"))throw std::invalid_argument("mapping_input_page_index");
   graph->imported=std::move(document.at("graph"));auto mapper=restore(graph->imported);
-  if(with_window) {
+  if(document.contains("native_window")) {
     graph->native_window=std::move(document.at("native_window"));
     NativeMappingCheckpoint::validate(*mapper,graph->native_window,integer(graph->imported.at("reference")[0],1,INT64_MAX));
   }
@@ -335,6 +391,7 @@ MappingGraphRegistry::Restored MappingGraphRegistry::read(const std::filesystem:
   for(const auto& row:graph->imported.at("tracks"))graph->stable_ids.emplace(integer(row[0],0,INT32_MAX),integer(row[1],0,99999));
   const auto tracking_stamp=integer(document.at("tracking_stamp_ns"),1,INT64_MAX);
   for(const auto& frame:graph->imported.at("frames"))if(frame[0].get<int64_t>()>tracking_stamp)throw std::invalid_argument("mapping_graph_export_timing");
+  if(with_inputs)graph->pages=std::make_shared<MappingFramePages>(std::move(input),48+count,size,document.at("input_pages"),graph->imported.at("frames"));
   return {graph,uint64_t(integer(document.at("request_id"),1,INT64_MAX)),tracking_stamp};
 }
 } // namespace posim_slam

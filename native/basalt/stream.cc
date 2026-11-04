@@ -592,7 +592,7 @@ int main(int argc,char** argv) {
         file.flush();if(!file)fail("snapshot_write_failed");file.close();
         fs::rename(temporary,target_file);
         if(refresh && full->mapping) {
-          posim_slam::MappingGraphRegistry::write(export_file.parent_path()/"worker-map.graph.pmap",full->mapping->graph,request,full->stamp);
+          posim_slam::MappingGraphRegistry::writeWithInputs(export_file.parent_path()/"worker-map.graph.pmap",full->mapping->graph,request,full->stamp);
         }
         if(refresh && record_mapping_candidates && full->mapping) {
           const fs::path target=export_file.parent_path()/"worker-map.candidates.json";

@@ -4,6 +4,7 @@
 #include "mapping_information.hpp"
 #include <nlohmann/json.hpp>
 #include <filesystem>
+#include <functional>
 #include <fstream>
 #include <random>
 #include <sstream>
@@ -12,6 +13,7 @@
 namespace posim_slam {
 class NativeMappingWindow;
 class NativeMappingCheckpoint;
+class MappingFramePages;
 namespace mapping_graph_detail {
 using Json=nlohmann::json;
 inline Json doubles(const double* values,size_t count) {
@@ -88,6 +90,7 @@ inline basalt::VioConfig config(const Json& value) {
 struct MappingGraph {
   std::map<int64_t,int> stable_ids;
   bool hasNativeWindow() const {return !native_window.is_null();}
+  bool hasInputFrames() const {return bool(pages) || (captured && !captured->inputs.empty());}
  private:
   friend class MappingGraphRegistry;
   friend class NativeMappingCheckpoint;
@@ -101,6 +104,7 @@ struct MappingGraph {
     std::string epoch;uint64_t input_revision=0,graph_revision=0;
     basalt::Calibration<double> calibration;basalt::VioConfig config;
     std::vector<Frame> frames;Eigen::aligned_vector<std::pair<int64_t,Sophus::SE3d>> poses;
+    std::map<int64_t,std::shared_ptr<const MappingInputStore::Frame>> inputs;
     Eigen::aligned_vector<basalt::RelPoseFactor> relative;Eigen::aligned_vector<basalt::RollPitchFactor> roll_pitch;
     Eigen::aligned_vector<Pixel> pixels;std::vector<Track> tracks;Eigen::aligned_vector<Landmark> landmarks;
     std::shared_ptr<const Ledger> identities;
@@ -109,6 +113,7 @@ struct MappingGraph {
   std::shared_ptr<const Captured> captured;
   Json imported;
   Json native_window;
+  std::shared_ptr<MappingFramePages> pages;
   bool validated=false;
 };
 
@@ -133,10 +138,19 @@ class MappingGraphRegistry {
   static std::unique_ptr<basalt::NfrMapper> restore(const nlohmann::json& data,basalt::Calibration<double>* calibration_out=nullptr);
   void adopt(const Snapshot& graph);
   static void write(const std::filesystem::path& path,const Snapshot& graph,uint64_t request,int64_t tracking_stamp);
+  // Complete compact detector inputs, indexed by frame in the same atomic file.
+  // Reading the graph does not load these pages. Old graph-only archives remain
+  // readable, but cannot supply inputs that were never recorded.
+  static void writeWithInputs(const std::filesystem::path& path,const Snapshot& graph,uint64_t request,int64_t tracking_stamp);
+  static std::shared_ptr<const MappingInputStore::Frame> inputFrame(const Snapshot& graph,int64_t stamp,
+      size_t max_encoded_bytes=96*1024*1024);
+  static std::unique_ptr<basalt::NfrMapper> restoreForMatching(const Snapshot& graph,
+      const std::function<bool()>& cancelled={});
   struct Restored {Snapshot graph;uint64_t request;int64_t tracking_stamp;};
   static Restored read(const std::filesystem::path& path,const std::string& expected_epoch={});
   const std::string& epoch() const {return epoch_;}
  private:
+  static void writeArchive(const std::filesystem::path& path,const Snapshot& graph,uint64_t request,int64_t tracking_stamp,bool inputs);
   basalt::Calibration<double> calibration_;basalt::VioConfig config_;std::string epoch_;
   std::shared_ptr<const MappingGraph::Ledger> anchors_=std::make_shared<const MappingGraph::Ledger>();
   int next_id_=0;uint64_t revision_=0,last_input_=0;
