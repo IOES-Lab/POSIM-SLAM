@@ -104,7 +104,9 @@ def build(engine, source, output, jobs=2):
     run([output / 'build/basalt_reference_patch_probe'], timeout=60)
     run([output / 'build/basalt_mapping_input_store_probe'], timeout=60)
     run([output / 'build/basalt_mapping_feature_matcher_probe'], timeout=60)
-    run([output / 'build/basalt_native_mapping_graph_probe'], timeout=60)
+    native_graph_directory = output / 'native-graph-check'
+    native_graph_directory.mkdir()
+    run([output / 'build/basalt_native_mapping_graph_probe', native_graph_directory], timeout=60)
     input_archive = output / 'mapping-inputs.sqlite'
     for mode in ('create', 'resume'):
         run([output / 'build/basalt_mapping_input_store_probe', mode,

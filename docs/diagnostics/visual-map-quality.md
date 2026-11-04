@@ -184,12 +184,16 @@ persistent native mapper retains its existing keyframe/input bounds. See the
 
 The mapper identifies observations by original image timestamp, camera and feature index. Rebuilding tracks replaces the complete association graph and rejects duplicate pixel ownership. Point IDs follow each track's earliest original observation rather than internal track numbering.
 
-A full PLY refresh also saves `worker-map.graph.pmap` in the native output directory. Its SHA-256-checked CBOR payload retains camera calibration, original pixel observations, recovered factors, current poses/landmarks, optimizer controls and segment identity. The optimizer can reload and relinearize the saved associations. Indexed `PSIMMAP3` pages retain all detector features and descriptors for matching restoration. Raw images and live VIO/IMU history are separate; automatic graph growth, rollover and live navigation restart remain unavailable. Viewer-only requests do not write this archive. Snapshot write failures fail the request while sensor processing continues.
+Published map snapshots retain immutable measurement and optimizer values. A full PLY refresh also saves `worker-map.graph.pmap` in the native output directory. Its `PSIMMAP4` archive preserves calibration, original observations and pose seeds, recovered factors, current poses/landmarks, optimizer controls, segment identity, all detector features and all evaluated image-pair decisions. Native graph restoration retains successful and failed matches, reconstructs retrieval and checks each complete original feature frame. Unmatched pixels remain available for later associations. The next native track ID and export identity ledger continue from the saved graph.
+
+The 96 MiB file limit includes metadata and all pages. Older graph-only archives retain their saved associations for relinearization. Raw images and live VIO/IMU history are separate; automatic graph growth, window rollover and navigation restart remain unavailable. Viewer-only requests do not write the archive. A write failure fails the export request while sensor processing continues.
 
 
 관측은 원본 영상 시각·카메라·특징 번호로 구분합니다. 트랙을 재구성하면 전체 관측 연결을 교체하고 픽셀의 중복 배정을 거부합니다. 점 ID는 내부 트랙 번호 대신 각 트랙의 가장 이른 원본 관측을 기준으로 유지합니다.
 
-전체 PLY 갱신은 네이티브 출력 디렉터리에 `worker-map.graph.pmap`도 저장합니다. SHA-256으로 검사하는 CBOR 데이터는 카메라 보정·원본 픽셀·복원 제약·현재 자세와 지도점·최적화 설정·구간 식별자를 보존합니다. 저장한 관측 연결을 불러와 최적화 정보를 다시 계산할 수 있습니다. 색인이 있는 `PSIMMAP3` 페이지는 모든 검출 특징·기술자를 보존해 재매칭 복원에 사용합니다. 원본 영상·라이브 VIO/IMU 이력은 별도이며 자동 그래프 확장·구간 전환·라이브 항법 재시작은 지원하지 않습니다. 화면 조회는 이 파일을 기록하지 않습니다. 파일 기록 오류는 해당 요청을 실패 처리하며 센서 처리는 계속합니다.
+발행된 지도 사본은 측정값과 최적화 값을 불변 데이터로 보관합니다. 전체 PLY 갱신은 네이티브 출력 디렉터리에 `worker-map.graph.pmap`도 저장합니다. `PSIMMAP4` 파일은 보정값·원본 관측과 입력 자세 초기값·복원 제약·현재 자세와 지도점·최적화 설정·구간 식별자·모든 검출 특징과 영상쌍 평가 결과를 보존합니다. 네이티브 그래프를 복원하면 성공·실패한 매칭 결과를 유지하고 검색 색인을 재구성하며 전체 원본 특징을 검사합니다. 아직 트랙에 연결되지 않은 픽셀도 이후 대응에 사용할 수 있습니다. 다음 네이티브 트랙 번호와 내보내기 ID 이력도 이어집니다.
+
+파일의 96MiB 한도에는 메타데이터와 모든 페이지가 포함됩니다. 이전 그래프 전용 파일은 저장된 관측 연결의 재계산에 사용합니다. 원본 영상과 라이브 VIO/IMU 이력은 별도이며 자동 그래프 확장·구간 전환·항법 재시작은 아직 지원하지 않습니다. 화면 조회는 파일을 기록하지 않습니다. 기록 오류는 내보내기 요청을 실패 처리하며 센서 처리는 계속합니다.
 
 
 The native stream stores complete detector features, recovered factors, pose seeds and retirement identities in a session-owned `worker-map-inputs-*.sqlite` file beside its output. Each retirement commits in one SQLite transaction before publication. Immutable map snapshots retain page references; a read leases one checked feature frame, while optimization retains pixel observations and the bounded pose/factor graph. The SQLite page cache targets 2 MiB, memory mapping is disabled and the database is bounded to 96 MiB. Input limits and admission checks still apply. A storage error invalidates map output; the navigation estimator can continue. Restoring inputs requires matching epoch, calibration, mapper settings and limits; it does not restart navigation.
@@ -209,7 +213,8 @@ refreshes affected later retrieval while reusing old pair results. The all-frame
 path retains the upstream Hamming threshold 70
 and second-best ratio 1.2. The similarly named configurable fields belong to the
 separate stereo path. Original pixel ownership, NFR factors and map admission
-remain unchanged. Matching decisions are in memory. Conditional-window growth,
+remain unchanged. Checkpoints restore matching decisions without repeating old
+pair evaluations. Conditional-window growth,
 active solver paging and rollover still require separate qualification.
 
 네이티브 매칭은 고정 Basalt의 HashBoW 검색·기술자 대응과 OpenGV RANSAC을
@@ -220,5 +225,6 @@ active solver paging and rollover still require separate qualification.
 갱신하면서 기존 영상쌍 결과를 재사용합니다. 전체 프레임 매칭의 Hamming
 한도 70과 두 번째 후보 거리 비율 1.2는 원본을 따릅니다. 같은 이름의 설정값은
 별도의 스테레오 경로에 적용됩니다. 원본 픽셀 소유권·NFR 제약·점 채택 기준은
-유지합니다. 매칭 판단은 메모리에 유지합니다. 조건부 정보 기반 범위 확장·활성
+유지합니다. 체크포인트에서 매칭 판단을 복원하면 기존 영상쌍을 다시 평가하지
+않습니다. 조건부 정보 기반 범위 확장·활성
 최적화 범위 제한·구간 전환은 별도 검증이 필요합니다.

@@ -82,6 +82,13 @@ class MappingMatchHistory {
     auto empty=std::make_shared<Data>();empty->owner=identity_;data_=empty;
   }
   Snapshot snapshot() const {return std::atomic_load(&data_);}
+  // Serialize immutable decisions only for explicit checkpoints. Complete
+  // original-feature hashes bind restored pairs, including failed attempts.
+  static nlohmann::json checkpoint(const Snapshot& state,
+      const basalt::Calibration<double>& calibration,const basalt::VioConfig& config);
+  static void validateCheckpoint(const nlohmann::json& document);
+  Snapshot restore(uint64_t revision,const std::map<int64_t,MappingFrameReference>& frames,
+      const nlohmann::json& document,const std::function<bool()>& cancelled={});
   Snapshot advance(uint64_t revision,const std::map<int64_t,MappingFrameReference>& frames,
       const std::function<bool()>& cancelled={}) {
     std::lock_guard<std::mutex> writer(writer_);

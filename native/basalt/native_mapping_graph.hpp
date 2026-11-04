@@ -7,10 +7,19 @@
 #include <functional>
 
 namespace posim_slam {
+struct NativeMappingGraphState {
+  MappingMatchHistory::Snapshot matching;
+  MappingInputStore::Snapshot input;
+  basalt::Calibration<double> calibration;
+  basalt::VioConfig config;
+  uint64_t revision=0;int64_t next_track=0;
+  InputDigest::Value source{},nonlinear{};
+};
 // One thread exclusively owns this graph and its matching history. Input poses
 // seed new frames; existing nonlinear means remain optimizer variables. Native
-// track conflict rules and triangulation are unchanged. This bounded full graph
-// does not yet own a rolling NativeMappingWindow or durable matching state.
+// track conflict rules and triangulation are unchanged. Explicit checkpoints
+// retain matching and nonlinear state; this bounded full graph does not yet
+// own a rolling NativeMappingWindow.
 class NativeMappingGraph {
  public:
   struct Update {
@@ -29,6 +38,12 @@ class NativeMappingGraph {
   basalt::NfrMapper& mapper(){return mapper_;}
   const Update& lastUpdate() const {return last_;}
   MappingMatchHistory::Snapshot matchingSnapshot() const {return matched_;}
+  std::shared_ptr<const NativeMappingGraphState> captureState(const MappingInputStore::Snapshot& input);
+  static nlohmann::json checkpoint(const NativeMappingGraphState& state);
+  static void validateCheckpoint(basalt::NfrMapper& mapper,const nlohmann::json& document,uint64_t revision);
+  static std::unique_ptr<NativeMappingGraph> restore(MappingMatchHistory& matching,
+      const MappingInputStore::Snapshot& input,const nlohmann::json& document,
+      std::unique_ptr<basalt::NfrMapper> mapper,const std::function<bool()>& cancelled={});
   Update update(const MappingInputStore::Snapshot& input,int iterations=10,
       const std::function<bool()>& cancelled={});
  private:

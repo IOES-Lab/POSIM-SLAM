@@ -72,6 +72,7 @@ add_library(basalt_core STATIC
  ${B}/src/vi_estimator/nfr_mapper.cpp
  ${CMAKE_CURRENT_SOURCE_DIR}/persistent_mapper.cc
  ${CMAKE_CURRENT_SOURCE_DIR}/native_mapping_graph.cc
+ ${CMAKE_CURRENT_SOURCE_DIR}/mapping_match_checkpoint.cc
  ${CMAKE_CURRENT_SOURCE_DIR}/mapping_input_store.cc
  ${CMAKE_CURRENT_SOURCE_DIR}/mapping_input_archive.cc
  ${CMAKE_CURRENT_SOURCE_DIR}/mapping_graph.cc

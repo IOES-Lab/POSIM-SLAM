@@ -130,7 +130,7 @@ std::shared_ptr<PersistentMapSnapshot> PersistentMapper::build(const Batch& batc
   result->graph_extended_tracks=updated.extended_tracks;result->graph_merged_components=updated.merged_components;
   result->graph_removed_tracks=updated.removed_tracks;result->graph_preserved_landmarks=updated.preserved_landmarks;
   result->graph_initialized_landmarks=updated.initialized_landmarks;result->graph_numeric_bytes=updated.numeric_bytes;
-  result->graph=graph_registry_.capture(batch.input,mapper,batch.reference_stamp,batch.reference_pose,gauge);
+  result->graph=graph_registry_.capture(batch.input,mapper,batch.reference_stamp,batch.reference_pose,gauge,nullptr,graph_.get());
   static_cast<MappingOutput&>(*result)=mappingOutput(mapper,gauge,quality,result->graph);
   result->optimize_seconds=std::chrono::duration<double>(std::chrono::steady_clock::now()-started).count();
   return result;

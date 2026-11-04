@@ -42,8 +42,9 @@ store's compact quota also bounds retained matching numeric payload (96 MiB by
 default); the 203-frame limit still applies. This counts pixels, BoW/index values,
 evaluated pair keys and match data. Container overhead, the transactional index
 copy and caller-held older snapshots are additional. Cancellation or failure
-leaves the previous matching snapshot intact. Matching decisions are kept in
-memory; a new owner evaluates restored inputs again.
+leaves the previous matching snapshot intact. Explicit checkpoints retain every
+evaluated pair. Restoration checks complete original features and matching
+settings; old pairs do not run RANSAC again.
 
 `PersistentMapper`는 현재 구간의 HashBoW 색인·픽셀 좌표·영상쌍 평가 결과를
 보존합니다. 시간순 입력에서는 새 영상만 검색합니다. 늦게 도착한 영상은 해당
@@ -56,8 +57,9 @@ memory; a new owner evaluates restored inputs again.
 압축 데이터 한도(기본 96MiB)를 적용하고 203프레임 한도를 유지합니다.
 픽셀·BoW와 색인 값·평가한 영상쌍 키·매칭 데이터를 계산하며 컨테이너 부가 공간,
 트랜잭션용 색인 사본과 호출자가 보유한 이전 사본은 별도입니다. 취소나 실패 시
-이전 매칭 사본을 보존합니다. 매칭 판단은 메모리에 유지되며 새 인스턴스는
-복원한 입력을 다시 평가합니다.
+이전 매칭 사본을 보존합니다. 체크포인트는 평가한 모든 영상쌍을 보존합니다.
+복원 시 전체 원본 특징과 매칭 설정을 검사하며 기존 영상쌍에는 RANSAC을
+다시 수행하지 않습니다.
 
 `NativeMappingGraph` keeps optimized poses and landmark parameters between
 updates. The pinned native track builder supplies current associations; original
@@ -74,7 +76,7 @@ ones, within the matching owner's compact quota (96 MiB by default). Container
 overhead, transaction copies and optimizer workspace are additional. Original
 inputs and matching results remain separately owned. Full bounded optimization
 and information calculation still run on every update; automatic conditional
-window growth, rollover and durable matching continuation are separate facilities.
+window growth and rollover require separate lifecycle support.
 
 `NativeMappingGraph`는 갱신 사이에도 최적화한 자세와 지도점 매개변수를 유지합니다.
 기존 네이티브 트랙 구성기로 현재 대응을 구하고 원본 픽셀 식별자로 트랙 연장·
@@ -89,7 +91,7 @@ window growth, rollover and durable matching continuation are separate facilitie
 데이터 한도(기본 96MiB) 안에서 예약합니다. 컨테이너 부가 공간·트랜잭션 사본·
 최적화 작업공간은 별도이며 원본 입력과 매칭 결과도 각각 보존합니다.
 갱신마다 한도 내 전체 그래프 최적화와 정보 계산을 수행합니다. 조건부 정보 기반
-범위 확장·구간 전환·저장된 매칭을 이어 쓰는 기능은 별도입니다.
+범위 확장·구간 전환에는 별도의 수명 주기 처리가 필요합니다.
 
 The native stream stores complete detector features, recovered factors, pose seeds and retirement identities in a session-owned `worker-map-inputs-*.sqlite` file beside its output. Each retirement commits in one SQLite transaction before publication. Immutable map snapshots retain page references; a read leases one checked feature frame, while optimization retains pixel observations and the bounded pose/factor graph. The SQLite page cache targets 2 MiB, memory mapping is disabled and the database is bounded to 96 MiB. Input limits and admission checks still apply. A storage error invalidates map output; the navigation estimator can continue. Restoring inputs requires matching epoch, calibration, mapper settings and limits; it does not restart navigation.
 
@@ -339,6 +341,18 @@ includes the graph and all pages. The live mapper still retains its bounded
 input set; automatic eviction, conditional-window growth and navigation resumption require
 their own lifecycle support.
 
+When `capture` receives the `NativeMappingGraph` owner, `writeWithInputs` uses
+`PSIMMAP4`. It includes evaluated pairs, descriptor/inlier indices, relative
+transforms, original input pose seeds and the next native track ID.
+`restoreInputs` provides original seeds and lazily read feature pages;
+`restoreNativeGraph` restores nonlinear means, solver controls and matching
+decisions. Unmatched pixels are available for future associations. Changed
+original features, settings or seeds are rejected before publishing the matching
+state. Ordinary map publication keeps typed immutable values; checkpoint JSON
+is created only for explicit serialization or restoration. These records count
+toward the 96 MiB archive limit. `PSIMMAP1`–`PSIMMAP3` remain readable.
+Live VIO/IMU state and automatic navigation restart require separate support.
+
 `step()` uses backtracking on the hybrid Gaussian/robust objective, rejects a
 step that loses a previously valid projection, and restores poses, landmarks
 and the published owner on cancellation or failure. Callers exclusively own
@@ -450,6 +464,16 @@ existing full-history optimizer and limits; automatic rollover is not enabled.
 전용 파일은 재매칭용 복원을 거부합니다. 96MiB 파일 한도에는 그래프와 모든
 페이지가 포함됩니다. 라이브 지도는 여전히 제한된 입력 집합을 메모리에 유지하며
 자동 입력 퇴출·조건부 정보 기반 구간 확장·항법 재개에는 별도의 수명 주기 처리가 필요합니다.
+
+`capture`에 `NativeMappingGraph` 소유자를 전달하면 `writeWithInputs`는
+`PSIMMAP4`를 사용합니다. 평가한 영상쌍·기술자와 인라이어 번호·상대 변환·
+원래 입력 자세 초기값·다음 네이티브 트랙 번호를 함께 저장합니다. `restoreInputs`는
+원본 자세 초기값과 필요할 때 읽는 특징 페이지를 제공하며, `restoreNativeGraph`는
+현재 추정값·최적화 설정·매칭 판단을 복원합니다. 미연결 픽셀도 이후 대응에 사용할
+수 있습니다. 원본 특징·설정·초기값이 다르면 매칭 상태를 발행하기 전에 거부합니다.
+일반 지도 발행은 불변 자료형을 보관하고 명시적인 저장·복원에서만 체크포인트
+JSON을 만듭니다. 이 기록도 96MiB 파일 한도에 포함되며 `PSIMMAP1`–`PSIMMAP3`은
+계속 읽을 수 있습니다. 라이브 VIO/IMU 상태와 자동 항법 재시작은 별도 지원이 필요합니다.
 
 `step()`은 가우시안·강건 손실을 결합한 목적함수로 갱신 보폭을 조정합니다.
 유효했던 투영이 사라지는 갱신은 거부하며, 취소나 실패 시 자세·랜드마크·발행된
@@ -2054,14 +2078,14 @@ owner transaction. [Source/native and delayed-owner controls](../../docs/diagnos
 
 The mapper identifies observations by original image timestamp, camera and feature index. Rebuilding tracks replaces the complete association graph and rejects duplicate pixel ownership. Point IDs follow each track's earliest original observation rather than internal track numbering.
 
-Published map snapshots retain immutable measurement and optimizer values. A full PLY refresh also saves `worker-map.graph.pmap` in the native output directory. Its `PSIMMAP3` archive preserves calibration, original observations, recovered factors, current poses/landmarks, optimizer controls and segment identity, plus every detector feature and descriptor. A checksum-protected index binds separately checked frame pages to this graph; callers can load one frame at a time. Matching restoration rebuilds the HashBoW retrieval index and checks the original pixel identities.
+Published map snapshots retain immutable measurement and optimizer values. A full PLY refresh also saves `worker-map.graph.pmap` in the native output directory. Its `PSIMMAP4` archive preserves calibration, original observations and pose seeds, recovered factors, current poses/landmarks, optimizer controls, segment identity, all detector features and all evaluated image-pair decisions. Native graph restoration retains successful and failed matches, reconstructs retrieval and checks each complete original feature frame. Unmatched pixels remain available for later associations. The next native track ID and export identity ledger continue from the saved graph.
 
 The 96 MiB file limit includes metadata and all pages. Older graph-only archives retain their saved associations for relinearization. Raw images and live VIO/IMU history are separate; automatic graph growth, window rollover and navigation restart remain unavailable. Viewer-only requests do not write the archive. A write failure fails the export request while sensor processing continues.
 
 
 관측은 원본 영상 시각·카메라·특징 번호로 구분합니다. 트랙을 재구성하면 전체 관측 연결을 교체하고 픽셀의 중복 배정을 거부합니다. 점 ID는 내부 트랙 번호 대신 각 트랙의 가장 이른 원본 관측을 기준으로 유지합니다.
 
-발행된 지도 사본은 측정값과 최적화 값을 불변 데이터로 보관합니다. 전체 PLY 갱신은 네이티브 출력 디렉터리에 `worker-map.graph.pmap`도 저장합니다. `PSIMMAP3` 파일은 보정값·원본 관측·복원 제약·현재 자세와 지도점·최적화 설정·구간 식별자와 모든 검출 특징·기술자를 보존합니다. 체크섬을 가진 색인은 개별 검증하는 프레임 페이지를 해당 그래프에 연결하며 필요한 프레임을 하나씩 읽을 수 있습니다. 재매칭용 복원은 HashBoW 검색 색인을 재구성하고 원본 픽셀 식별자를 검사합니다.
+발행된 지도 사본은 측정값과 최적화 값을 불변 데이터로 보관합니다. 전체 PLY 갱신은 네이티브 출력 디렉터리에 `worker-map.graph.pmap`도 저장합니다. `PSIMMAP4` 파일은 보정값·원본 관측과 입력 자세 초기값·복원 제약·현재 자세와 지도점·최적화 설정·구간 식별자·모든 검출 특징과 영상쌍 평가 결과를 보존합니다. 네이티브 그래프를 복원하면 성공·실패한 매칭 결과를 유지하고 검색 색인을 재구성하며 전체 원본 특징을 검사합니다. 아직 트랙에 연결되지 않은 픽셀도 이후 대응에 사용할 수 있습니다. 다음 네이티브 트랙 번호와 내보내기 ID 이력도 이어집니다.
 
 파일의 96MiB 한도에는 메타데이터와 모든 페이지가 포함됩니다. 이전 그래프 전용 파일은 저장된 관측 연결의 재계산에 사용합니다. 원본 영상과 라이브 VIO/IMU 이력은 별도이며 자동 그래프 확장·구간 전환·항법 재시작은 아직 지원하지 않습니다. 화면 조회는 파일을 기록하지 않습니다. 기록 오류는 내보내기 요청을 실패 처리하며 센서 처리는 계속합니다.
 

@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 #include "native_mapping_graph.hpp"
+#include "mapping_graph.hpp"
 #include <tbb/global_control.h>
 #include <cassert>
 #include <iostream>
@@ -8,7 +9,7 @@ using namespace posim_slam;
 template<class F> void rejects(F call,const std::string& expected) {
   bool caught=false;try{call();}catch(const std::exception& error){assert(error.what()==expected);caught=true;}assert(caught);
 }
-int main() {
+int main(int argc,char** argv) {
   tbb::global_control threads(tbb::global_control::max_allowed_parallelism,2);
   basalt::Calibration<double> calibration;auto camera=basalt::GenericCamera<double>::fromString("pinhole");
   camera.setFromInit(Eigen::Vector4d(400,400,320,240));calibration.intrinsics.push_back(camera);
@@ -18,7 +19,7 @@ int main() {
   for(int64_t stamp=1;stamp<=6;++stamp) {
     auto frame=std::make_shared<MappingInputFrame>();frame->stamp=stamp;frame->width=640;frame->height=480;frame->digest.fill(stamp);
     auto& features=frame->features;std::mt19937 random(37);
-    for(int i=0;i<64;++i) {
+    for(int i=0;i<(stamp>=4?80:64);++i) {
       const Eigen::Vector3d point((i%8-3.5)*.3-stamp*.2,(i/8-3.5)*.25,4+.05*(i%11));
       features.corners.emplace_back(400*point.x()/point.z()+320,400*point.y()/point.z()+240);
       features.corner_angles.push_back(0);features.corner_descriptors.emplace_back();
@@ -61,6 +62,53 @@ int main() {
   assert(Eigen::Vector3d(kept.direction.x(),kept.direction.y(),kept.inv_dist)==parameters);
   assert(&graph.mapper()==address && result.new_frames==2 && result.preserved_landmarks==64 && result.initialized_landmarks==0 && result.extended_tracks==64);
   assert(graph.mapper().lmdb.numObservations()==256 && graph.mapper().rel_pose_factors.size()==3);
+  graph.mapper().lambda=7; // Preserve current solver controls, not constructor defaults.
+  graph.mapper().getFramePoses().at(4)=basalt::PoseStateWithLin<double>(4,
+      Sophus::SE3d(Sophus::SO3d(),Eigen::Vector3d(.803,0,0)));
+  MappingGraphRegistry registry(calibration,config,"native-graph-checkpoint");
+  const auto captured=registry.capture(second,graph.mapper(),1,second->poses.at(1).getPose(),Sophus::SE3d(),nullptr,&graph);
+  const auto document=MappingGraphRegistry::document(captured);
+  const auto native_saved=NativeMappingGraph::checkpoint(*graph.captureState(second));
+  assert(MappingGraphRegistry::restoreInputs(captured)==second);
+  MappingMatchHistory restored_matching(calibration,config);
+  const auto empty=restored_matching.snapshot();
+  auto wrong=MappingGraphRegistry::restore(document);wrong->lmdb.getLandmark(id).inv_dist*=1.02;
+  rejects([&]{NativeMappingGraph::restore(restored_matching,second,native_saved,std::move(wrong));},"native_graph_checkpoint_source");
+  auto wrong_seeds=std::make_shared<MappingInputStore::Data>(*second);
+  wrong_seeds->poses.at(4)=basalt::PoseStateWithLin<double>(4,Sophus::SE3d(Sophus::SO3d(),Eigen::Vector3d(.81,0,0)));
+  rejects([&]{MappingGraphRegistry::restoreNativeGraph(captured,restored_matching,wrong_seeds);},"native_graph_checkpoint_source");
+  rejects([&]{MappingGraphRegistry::restoreNativeGraph(captured,restored_matching,second,[]{return true;});},"mapping_match_cancelled");
+  assert(restored_matching.snapshot()==empty);
+  auto restored=MappingGraphRegistry::restoreNativeGraph(captured,restored_matching,second);
+  assert(nativeMappingStateIdentity(restored->mapper())==nativeMappingStateIdentity(graph.mapper()));
+  assert(nativeMappingSourceIdentity(restored->mapper())==nativeMappingSourceIdentity(graph.mapper()));
+  assert(restored->mapper().lambda==7 && restored->update(second,0).reused);
+  assert(restored->mapper().feature_corners.at(basalt::TimeCamId(4,0)).corners==frames.at(4).read()->features.corners);
+  assert(NativeMappingGraph::checkpoint(*restored->captureState(second))==native_saved);
+  if(argc==2) {
+    const std::filesystem::path directory=argv[1],path=directory/"native.pmap";
+    MappingGraphRegistry::writeWithInputs(path,captured,1,4);
+    const auto loaded=MappingGraphRegistry::read(path,"native-graph-checkpoint");
+    assert(loaded.graph->hasNativeGraph() && loaded.graph->hasInputFrames());
+    const auto inputs=MappingGraphRegistry::restoreInputs(loaded.graph);
+    assert(inputs->poses.at(4).getPose().translation().x()==.8);
+    MappingMatchHistory disk_matching(calibration,config);
+    const auto disk=MappingGraphRegistry::restoreNativeGraph(loaded.graph,disk_matching,inputs);
+    assert(NativeMappingGraph::checkpoint(*disk->captureState(inputs))==native_saved);
+    assert(disk->mapper().feature_corners.at(basalt::TimeCamId(4,0)).corners==frames.at(4).read()->features.corners);
+    MappingGraphRegistry::write(directory/"graph-only.pmap",captured,1,4);
+    const auto plain=MappingGraphRegistry::read(directory/"graph-only.pmap");
+    assert(!plain.graph->hasNativeGraph() && !plain.graph->hasInputFrames());
+    rejects([&]{MappingGraphRegistry::restoreInputs(plain.graph);},"native_graph_checkpoint_missing");
+    std::filesystem::copy_file(path,directory/"corrupted.pmap",std::filesystem::copy_options::overwrite_existing);
+    {std::fstream file(directory/"corrupted.pmap",std::ios::in|std::ios::out|std::ios::binary);
+      file.seekg(-1,std::ios::end);char byte;file.get(byte);byte^=1;file.seekp(-1,std::ios::end);file.put(byte);}
+    const auto corrupt=MappingGraphRegistry::read(directory/"corrupted.pmap");
+    const auto corrupt_inputs=MappingGraphRegistry::restoreInputs(corrupt.graph);MappingMatchHistory untouched(calibration,config);
+    rejects([&]{MappingGraphRegistry::restoreNativeGraph(corrupt.graph,untouched,corrupt_inputs);},"mapping_input_page_digest");
+    assert(!untouched.snapshot()->revision);
+  }
+  MappingGraphRegistry restored_registry(calibration,config,"native-graph-checkpoint");restored_registry.adopt(captured);
   auto broken=std::make_shared<MappingInputStore::Data>(*third);broken->relative.front().cov_inv*=2;
   const auto before=nativeMappingStateIdentity(graph.mapper());
   rejects([&]{graph.update(broken,0);},"native_graph_source_changed");
@@ -68,11 +116,22 @@ int main() {
   broken=std::make_shared<MappingInputStore::Data>(*third);broken->relative.push_back(broken->relative.back());
   rejects([&]{graph.update(broken,0);},"native_graph_factor");
   result=graph.update(third,10);assert(&graph.mapper()==address && result.new_frames==2 && result.preserved_landmarks==64);
-  assert(graph.mapper().feature_tracks.size()==64 && graph.mapper().lmdb.numObservations()==384 && graph.mapper().rel_pose_factors.size()==5);
+  assert(graph.mapper().feature_tracks.size()==80 && graph.mapper().lmdb.numObservations()==432 && graph.mapper().rel_pose_factors.size()==5);
+  const auto resumed=restored->update(third,10);assert(resumed.new_tracks==16 && resumed.preserved_landmarks==64 && resumed.initialized_landmarks==16);
+  assert(restored->mapper().feature_tracks==graph.mapper().feature_tracks);
+  assert(nativeMappingSourceIdentity(restored->mapper())==nativeMappingSourceIdentity(graph.mapper()));
+  for(const auto& [track,point]:graph.mapper().lmdb.getLandmarks()) {
+    const auto& other=restored->mapper().lmdb.getLandmark(track);
+    assert((point.direction-other.direction).norm()<1e-10 && std::abs(point.inv_dist-other.inv_dist)<1e-10);
+  }
+  const auto next=registry.capture(third,graph.mapper(),1,third->poses.at(1).getPose(),Sophus::SE3d(),nullptr,&graph);
+  const auto resumed_next=restored_registry.capture(third,restored->mapper(),1,third->poses.at(1).getPose(),Sophus::SE3d(),nullptr,restored.get());
+  assert(next->stable_ids==resumed_next->stable_ids);
   MappingMatchHistory limited_matching(calibration,config);NativeMappingGraph limited(limited_matching,1);
   rejects([&]{limited.update(first,0);},"native_graph_numeric_capacity");
   assert(!limited.lastUpdate().revision && limited.mapper().getFramePoses().empty() && !limited.mapper().lmdb.numLandmarks());
   graph.mapper().lmdb.getLandmark(id).obs.begin()->second.x()+=1;
   rejects([&]{graph.update(third,0);},"native_graph_originals_changed");
   std::cout<<"Persistent native graph: one mapper, preserved nonlinear seeds, new observations, no-input reuse, full post-optimization rollback, source/factor/capacity guards pass.\n";
+  std::cout<<"Native graph checkpoint: exact nonlinear state, solver controls, matching decisions and next track ID; continued growth and registry identities; source/cancellation rejection pass.\n";
 }

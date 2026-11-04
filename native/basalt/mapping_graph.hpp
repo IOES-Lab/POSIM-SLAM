@@ -15,6 +15,8 @@ namespace posim_slam {
 class NativeMappingWindow;
 class NativeMappingCheckpoint;
 class MappingFramePages;
+class NativeMappingGraph;
+struct NativeMappingGraphState;
 namespace mapping_graph_detail {
 using namespace mapping_binary;
 inline Sophus::SE3d pose(const Json& value) {
@@ -68,6 +70,7 @@ inline basalt::VioConfig config(const Json& value) {
 struct MappingGraph {
   std::map<int64_t,int> stable_ids;
   bool hasNativeWindow() const {return !native_window.is_null();}
+  bool hasNativeGraph() const {return bool(native_owner) || !native_owner_saved.is_null();}
   bool hasInputFrames() const {return bool(pages) || (captured && !captured->inputs.empty());}
  private:
   friend class MappingGraphRegistry;
@@ -93,6 +96,8 @@ struct MappingGraph {
   Json native_window;
   std::shared_ptr<MappingFramePages> pages;
   bool validated=false;
+  std::shared_ptr<const NativeMappingGraphState> native_owner;
+  Json native_owner_saved;
 };
 
 // Segment-local pixel identities survive internal TrackBuilder renumbering.
@@ -109,7 +114,7 @@ class MappingGraphRegistry {
   }
   Snapshot capture(const MappingInputStore::Snapshot& input,basalt::NfrMapper& mapper,
       int64_t reference_stamp,const Sophus::SE3d& reference_pose,const Sophus::SE3d& gauge,
-      const NativeMappingWindow* window=nullptr);
+      const NativeMappingWindow* window=nullptr,NativeMappingGraph* owner=nullptr);
   // Captured snapshots own typed immutable values. JSON is materialized only
   // for explicit serialization/inspection, never for normal map publication.
   static nlohmann::json document(const Snapshot& graph);
@@ -124,6 +129,12 @@ class MappingGraphRegistry {
       size_t max_encoded_bytes=96*1024*1024);
   static std::unique_ptr<basalt::NfrMapper> restoreForMatching(const Snapshot& graph,
       const std::function<bool()>& cancelled={});
+  static std::unique_ptr<NativeMappingGraph> restoreNativeGraph(const Snapshot& graph,
+      MappingMatchHistory& matching,const MappingInputStore::Snapshot& input,
+      const std::function<bool()>& cancelled={});
+  // Original pose seeds and paged detector inputs for independent native graph
+  // continuation. This does not recreate live VIO/IMU state or a store identity.
+  static MappingInputStore::Snapshot restoreInputs(const Snapshot& graph);
   struct Restored {Snapshot graph;uint64_t request;int64_t tracking_stamp;};
   static Restored read(const std::filesystem::path& path,const std::string& expected_epoch={});
   const std::string& epoch() const {return epoch_;}
