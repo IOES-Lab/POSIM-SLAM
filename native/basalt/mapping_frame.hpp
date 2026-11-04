@@ -24,12 +24,16 @@ class MappingFrameReference {
       :metadata_(metadata),reader_(std::move(reader)) {}
   explicit operator bool() const {return bool(resident_) || bool(reader_);}
   bool resident() const {return bool(resident_);}
+  // Copies of one immutable source reference share this identity, including
+  // paged readers. Rebinding a timestamp to another source requires a new owner.
+  bool sameSource(const MappingFrameReference& other) const {return identity_==other.identity_;}
   Metadata metadata() const {
     if(resident_)return {resident_->stamp,resident_->width,resident_->height,resident_->features.corners.size(),resident_->digest};
     if(!reader_)throw std::invalid_argument("mapping_input_frame_missing");return metadata_;
   }
   Lease read(size_t maximum=SIZE_MAX) const;
  private:
+  std::shared_ptr<const int> identity_=std::make_shared<const int>(0);
   Lease resident_;Metadata metadata_{};std::function<Lease(size_t)> reader_;
 };
 } // namespace posim_slam

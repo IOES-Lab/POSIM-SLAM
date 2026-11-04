@@ -115,6 +115,18 @@ std::unique_ptr<basalt::NfrMapper> MappingInputStore::makeMatchedMapper(const Sn
   mapper->getFramePoses()=input->poses;mapper->rel_pose_factors=input->relative;mapper->roll_pitch_factors=input->roll_pitch;
   return mapper;
 }
+std::unique_ptr<MappingMatchHistory> MappingInputStore::makeMatchHistory() const {
+  auto history=std::make_unique<MappingMatchHistory>(calibration_,config_,limits_.compact_bytes);
+  history->source_identity_=identity_;return history;
+}
+std::unique_ptr<basalt::NfrMapper> MappingInputStore::makeMatchedMapper(const Snapshot& input,MappingMatchHistory& history,
+    const std::function<bool()>& cancelled) const {
+  if(!input || input->identity!=identity_ || history.source_identity_!=identity_)
+    throw std::invalid_argument("mapping_input_snapshot_owner");
+  auto state=history.advance(input->revision,input->frames,cancelled);auto mapper=history.makeMapper(state);
+  mapper->getFramePoses()=input->poses;mapper->rel_pose_factors=input->relative;mapper->roll_pitch_factors=input->roll_pitch;
+  return mapper;
+}
 void MappingInputStore::restoreArchive() {
   using namespace mapping_graph_detail;
   auto next=std::make_shared<Data>(*initial());

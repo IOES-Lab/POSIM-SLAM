@@ -29,12 +29,36 @@ matrices. Immutable revisions let optimization run independently of ingestion. I
 overflow invalidates mapping without blocking the navigation estimator.
 [Persistent-map contract and bounds](../../docs/diagnostics/visual-map-quality.md).
 
-Matching uses two tasks with at most four complete feature frames in use. The
-mapper retains pixel coordinates for optimization and releases descriptor,
-bearing and orientation arrays and the retrieval index after matching.
+`PersistentMapper` retains its HashBoW index, pixel coordinates and image-pair
+results within the current segment. Chronological input queries only new frames.
+A delayed frame refreshes retrieval at its timestamp and later timestamps;
+previously evaluated pairs, including failed attempts, retain their results.
+Earlier accepted pairs remain available after a retrieval-ranking change.
+Frame sources, calibration and matching settings stay fixed within this owner.
 
-매칭은 두 작업자가 전체 특징 프레임을 최대 4개까지 읽습니다. 지도는 최적화용
-픽셀 좌표를 보관하고, 매칭 뒤 기술자·방향 벡터·방향값과 검색 색인을 해제합니다.
+Matching uses two tasks with at most four complete feature frames in use.
+Descriptor, bearing and orientation arrays are released after use. The input
+store's compact quota also bounds retained matching numeric payload (96 MiB by
+default); the 203-frame limit still applies. This counts pixels, BoW/index values,
+evaluated pair keys and match data. Container overhead, the transactional index
+copy and caller-held older snapshots are additional. Cancellation or failure
+leaves the previous matching snapshot intact. Matching decisions are kept in
+memory; a new owner evaluates restored inputs again. The nonlinear graph is
+reconstructed and optimized for each map update.
+
+`PersistentMapper`는 현재 구간의 HashBoW 색인·픽셀 좌표·영상쌍 평가 결과를
+보존합니다. 시간순 입력에서는 새 영상만 검색합니다. 늦게 도착한 영상은 해당
+시각과 이후 영상의 검색을 갱신하며, 이미 평가한 영상쌍은 실패한 결과까지
+재사용합니다. 검색 순위가 바뀌어도 이전에 채택한 영상쌍은 보존합니다.
+이 매칭 인스턴스에서 원본 프레임·보정값·매칭 설정은 고정됩니다.
+
+매칭은 두 작업자가 전체 특징 프레임을 최대 4개까지 읽으며 기술자·방향 벡터·
+방향값은 사용 후 해제합니다. 보존하는 매칭 수치 데이터에도 입력 저장소의
+압축 데이터 한도(기본 96MiB)를 적용하고 203프레임 한도를 유지합니다.
+픽셀·BoW와 색인 값·평가한 영상쌍 키·매칭 데이터를 계산하며 컨테이너 부가 공간,
+트랜잭션용 색인 사본과 호출자가 보유한 이전 사본은 별도입니다. 취소나 실패 시
+이전 매칭 사본을 보존합니다. 매칭 판단은 메모리에 유지되며 새 인스턴스는
+복원한 입력을 다시 평가합니다. 비선형 그래프는 지도 갱신마다 재구성·최적화합니다.
 
 The native stream stores complete detector features, recovered factors, pose seeds and retirement identities in a session-owned `worker-map-inputs-*.sqlite` file beside its output. Each retirement commits in one SQLite transaction before publication. Immutable map snapshots retain page references; a read leases one checked feature frame, while optimization retains pixel observations and the bounded pose/factor graph. The SQLite page cache targets 2 MiB, memory mapping is disabled and the database is bounded to 96 MiB. Input limits and admission checks still apply. A storage error invalidates map output; the navigation estimator can continue. Restoring inputs requires matching epoch, calibration, mapper settings and limits; it does not restart navigation.
 

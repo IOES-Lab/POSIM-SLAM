@@ -11,6 +11,7 @@
 
 namespace posim_slam {
 class MappingInputArchive;
+class MappingMatchHistory;
 struct MappingInputLimits {
   size_t keyframes=kMaxJointColumns/6,image_bytes=96*1024*1024,retirements=512,update_retirements=8;
   size_t compact_bytes=96*1024*1024;
@@ -49,6 +50,9 @@ class MappingInputStore {
   Snapshot append(const basalt::MargData& source);
   std::unique_ptr<basalt::NfrMapper> makeMapper(const Snapshot& input) const;
   std::unique_ptr<basalt::NfrMapper> makeMatchedMapper(const Snapshot& input,
+      const std::function<bool()>& cancelled={}) const;
+  std::unique_ptr<MappingMatchHistory> makeMatchHistory() const;
+  std::unique_ptr<basalt::NfrMapper> makeMatchedMapper(const Snapshot& input,MappingMatchHistory& history,
       const std::function<bool()>& cancelled={}) const;
   static InputDigest::Value imageDigest(const basalt::ManagedImage<uint16_t>& image) {
     InputDigest digest;const uint32_t dimensions[2]={uint32_t(image.w),uint32_t(image.h)};

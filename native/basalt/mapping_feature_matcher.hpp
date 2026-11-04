@@ -42,8 +42,133 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <basalt/utils/keypoints.h>
 #include <tbb/parallel_for.h>
 #include <tbb/task_arena.h>
+#include <atomic>
+#include <mutex>
 
 namespace posim_slam {
+// Pixels and calibration are unchanged for an already evaluated image pair.
+// HashBoW queries only frames strictly earlier than the query timestamp. Keep
+// those accepted matches; newly appended timestamps cannot change that query.
+// A late frame reopens only affected later retrieval queries. Already evaluated
+// pairs, including unsuccessful ones, are not rerun; valid old pairs remain.
+class MappingMatchHistory {
+  friend class MappingInputStore;
+ public:
+  using Pair=std::pair<basalt::TimeCamId,basalt::TimeCamId>;
+  struct Frame {
+    MappingFrameReference source;
+    std::shared_ptr<const basalt::KeypointsData> pixels;
+    basalt::HashBowVector bow;
+  };
+  struct Data {
+    uint64_t revision=0;
+    std::map<int64_t,Frame> frames;
+    std::map<Pair,std::shared_ptr<const basalt::MatchData>> matches;
+    size_t evaluated_pairs=0,new_frames=0,queried_frames=0,new_pairs=0,numeric_bytes=0;
+    const std::set<Pair>& evaluatedPairs() const {return evaluated;}
+   private:
+    friend class MappingMatchHistory;
+    std::shared_ptr<const int> owner;
+    std::set<Pair> evaluated;
+  };
+  using Snapshot=std::shared_ptr<const Data>;
+  MappingMatchHistory(const basalt::Calibration<double>& calibration,const basalt::VioConfig& config,
+      size_t maximum_bytes=96*1024*1024)
+      :calibration_(calibration),config_(config),maximum_bytes_(maximum_bytes),
+       database_(std::make_shared<basalt::HashBow<256>>(config.mapper_bow_num_bits)) {
+    if(calibration.intrinsics.size()!=1 || calibration.T_i_c.size()!=1 || calibration.resolution.size()!=1 ||
+        !maximum_bytes || maximum_bytes>96*1024*1024)throw std::invalid_argument("mapping_match_input");
+    auto empty=std::make_shared<Data>();empty->owner=identity_;data_=empty;
+  }
+  Snapshot snapshot() const {return std::atomic_load(&data_);}
+  Snapshot advance(uint64_t revision,const std::map<int64_t,MappingFrameReference>& frames,
+      const std::function<bool()>& cancelled={}) {
+    std::lock_guard<std::mutex> writer(writer_);
+    auto check=[&]{if(cancelled && cancelled())throw std::runtime_error("mapping_match_cancelled");};check();
+    const auto old=snapshot();
+    if(revision<old->revision || frames.size()>size_t(kMaxJointColumns/6))throw std::invalid_argument("mapping_match_revision");
+    for(const auto& [stamp,frame]:old->frames) {
+      auto found=frames.find(stamp);
+      if(found==frames.end() || !frame.source.sameSource(found->second))throw std::invalid_argument("mapping_match_source_changed");
+    }
+    std::vector<int64_t> incoming;
+    for(const auto& [stamp,frame]:frames)if(!old->frames.count(stamp)) {
+      if(stamp<=0)throw std::invalid_argument("mapping_input_frame_identity");
+      incoming.push_back(stamp);
+    }
+    if(revision==old->revision) {
+      if(!incoming.empty())throw std::invalid_argument("mapping_match_revision");return old;
+    }
+    auto next=std::make_shared<Data>(*old);next->revision=revision;next->new_frames=incoming.size();next->new_pairs=0;next->queried_frames=0;
+    // Copy only the compact retrieval index for the transaction. Descriptor
+    // arrays remain paged, and previous pair results remain immutable/shared.
+    auto database=incoming.empty()?database_:std::make_shared<basalt::HashBow<256>>(*database_);
+    for(auto stamp:incoming) {
+      check();const auto frame=frames.at(stamp).read();mapping_frame_io::shape(*frame);
+      if(stamp!=frame->stamp || calibration_.resolution[0]!=Eigen::Vector2i(frame->width,frame->height))
+        throw std::invalid_argument("mapping_input_frame_identity");
+      auto pixels=std::make_shared<basalt::KeypointsData>();pixels->corners=frame->features.corners;
+      next->numeric_bytes+=pixels->corners.size()*sizeof(pixels->corners[0])+frame->features.bow_vector.size()*
+        (sizeof(frame->features.bow_vector[0])+sizeof(std::pair<basalt::TimeCamId,double>));
+      if(next->numeric_bytes>maximum_bytes_)throw std::runtime_error("mapping_match_capacity");
+      next->frames.emplace(stamp,Frame{frames.at(stamp),std::move(pixels),frame->features.bow_vector});
+      database->add_to_database(basalt::TimeCamId(stamp,0),frame->features.bow_vector);
+    }
+    std::vector<int64_t> queries;
+    if(!incoming.empty())for(const auto& [stamp,frame]:frames)if(stamp>=incoming.front())queries.push_back(stamp);
+    next->queried_frames=queries.size();
+    struct Result {std::vector<std::pair<Pair,std::shared_ptr<const basalt::MatchData>>> matches;std::vector<Pair> evaluated;};
+    std::vector<Result> results(queries.size());
+    std::atomic<size_t> staged_bytes{next->numeric_bytes};
+    tbb::task_arena arena(2);
+    arena.execute([&]{tbb::parallel_for(tbb::blocked_range<size_t>(0,queries.size()),[&](const auto& range) {
+      for(size_t i=range.begin();i!=range.end();++i) {
+        check();const auto stamp=queries[i];const basalt::TimeCamId first_id(stamp,0);
+        MappingFrameReference::Lease first;std::vector<std::pair<basalt::TimeCamId,double>> candidates;
+        database->querry_database(next->frames.at(stamp).bow,config_.mapper_num_frames_to_match,candidates,&stamp);
+        for(const auto& [second_id,score]:candidates) {
+          check();if(!(score>config_.mapper_frames_to_match_threshold))continue;
+          if(second_id.cam_id!=0 || second_id.frame_id>=stamp)throw std::logic_error("mapping_match_temporal_candidate");
+          const Pair pair{first_id,second_id};if(old->evaluated.count(pair))continue;
+          if(staged_bytes.fetch_add(sizeof(Pair))+sizeof(Pair)>maximum_bytes_)throw std::runtime_error("mapping_match_capacity");
+          if(!first)first=frames.at(stamp).read();
+          const auto second=frames.at(second_id.frame_id).read();auto match=std::make_shared<basalt::MatchData>();
+          basalt::matchDescriptors(first->features.corner_descriptors,second->features.corner_descriptors,match->matches,70,1.2);
+          if(int(match->matches.size())>config_.mapper_min_matches)
+            basalt::findInliersRansac(first->features,second->features,config_.mapper_ransac_threshold,config_.mapper_min_matches,*match);
+          results[i].evaluated.push_back(pair);
+          if(!match->inliers.empty()) {
+            const size_t bytes=sizeof(basalt::MatchData)+match->matches.size()*sizeof(match->matches[0])+match->inliers.size()*sizeof(match->inliers[0]);
+            if(staged_bytes.fetch_add(bytes)+bytes>maximum_bytes_)throw std::runtime_error("mapping_match_capacity");
+            results[i].matches.push_back({pair,std::move(match)});
+          }
+        }
+      }
+    });});
+    for(const auto& result:results) {
+      next->new_pairs+=result.evaluated.size();next->numeric_bytes+=result.evaluated.size()*sizeof(Pair);
+      for(const auto& pair:result.evaluated)if(!next->evaluated.insert(pair).second)throw std::logic_error("mapping_match_pair_reused");
+      for(const auto& [pair,match]:result.matches) {
+        next->numeric_bytes+=sizeof(basalt::MatchData)+match->matches.size()*sizeof(match->matches[0])+match->inliers.size()*sizeof(match->inliers[0]);
+        if(next->numeric_bytes>maximum_bytes_)throw std::runtime_error("mapping_match_capacity");
+        if(!next->matches.emplace(pair,match).second)throw std::logic_error("mapping_match_pair_reused");
+      }
+    }
+    next->evaluated_pairs+=next->new_pairs;check();
+    Snapshot committed=next;database_=std::move(database);std::atomic_store(&data_,committed);return committed;
+  }
+  std::unique_ptr<basalt::NfrMapper> makeMapper(const Snapshot& state) const {
+    if(!state || state->owner!=identity_)throw std::invalid_argument("mapping_match_owner");
+    auto mapper=std::make_unique<basalt::NfrMapper>(calibration_,config_);
+    for(const auto& [stamp,frame]:state->frames)mapper->feature_corners[basalt::TimeCamId(stamp,0)].corners=frame.pixels->corners;
+    for(const auto& [pair,match]:state->matches)mapper->feature_matches.emplace(pair,*match);
+    return mapper;
+  }
+ private:
+  basalt::Calibration<double> calibration_;basalt::VioConfig config_;size_t maximum_bytes_;
+  std::shared_ptr<const int> identity_=std::make_shared<const int>(0),source_identity_;
+  std::shared_ptr<basalt::HashBow<256>> database_;mutable std::mutex writer_;Snapshot data_;
+};
 // Returns a newly owned mapper only after complete matching. Pixels stay resident
 // for track construction/optimization; descriptor, bearing and orientation arrays
 // are leased. At most two tasks own two frame leases each. The cancellation

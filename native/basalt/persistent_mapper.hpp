@@ -15,6 +15,7 @@ struct PersistentMapSnapshot : MappingOutput {
   int64_t optimized_through_ns=0;
   size_t keyframes=0, retirements=0;
   size_t source_image_bytes=0,source_factor_matrix_bytes=0,compact_input_bytes=0;
+  size_t matching_new_frames=0,matching_queried_frames=0,matching_new_pairs=0,matching_total_pairs=0,matching_numeric_bytes=0;
   double optimize_seconds=0;
   std::string error;
   MappingGraphRegistry::Snapshot graph;
@@ -22,9 +23,10 @@ struct PersistentMapSnapshot : MappingOutput {
 using PersistentMapLimits=MappingInputLimits;
 
 // The ingest thread recovers each retirement's factors and extracts each new
-// image's features once. The mapper rebuilds a graph from immutable compact
-// snapshots, so an old graph's observations
-// are never appended again. Intermediate optimization requests may coalesce;
+// image's features once. A persistent chronological matching owner evaluates
+// only new query frames, preserving old pair results. The bounded nonlinear
+// graph is still rebuilt from the resulting original associations; incremental
+// graph/window ownership is a separate transition. Intermediate requests may coalesce;
 // input measurements never do. A budget/input failure invalidates map output
 // without stopping the caller's independently valid navigation estimator.
 class PersistentMapper {
@@ -62,6 +64,7 @@ class PersistentMapper {
   PersistentMapLimits limits_;
   MappingGraphRegistry graph_registry_;
   std::unique_ptr<MappingInputStore> store_;
+  std::unique_ptr<MappingMatchHistory> matching_;
   mutable std::mutex mutex_;
   std::condition_variable changed_;
   Batch retained_;

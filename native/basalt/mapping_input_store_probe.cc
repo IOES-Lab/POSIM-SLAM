@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 #include "mapping_input_store.hpp"
 #include "mapping_frame_io.hpp"
+#include "mapping_feature_matcher.hpp"
 #include <sqlite3.h>
 #include <cassert>
 #include <iostream>
@@ -155,6 +156,13 @@ int main(int argc,char** argv) {
     Store other(calibration,config);
     rejects([&]{other.makeMapper(first);},"mapping_input_snapshot_owner");
     rejects([&]{store.makeMapper(nullptr);},"mapping_input_snapshot_owner");
+    auto matching=store.makeMatchHistory();auto matched=store.makeMatchedMapper(first,*matching);
+    assert(matching->snapshot()->new_frames==2 && matched->getFramePoses().size()==2);
+    store.makeMatchedMapper(before,*matching);assert(matching->snapshot()->new_frames==1);
+    const auto retained=matching->snapshot();store.makeMatchedMapper(before,*matching);assert(matching->snapshot()==retained);
+    auto wrong=other.makeMatchHistory();
+    rejects([&]{store.makeMatchedMapper(before,*wrong);},"mapping_input_snapshot_owner");
+    rejects([&]{other.makeMatchedMapper(before,*matching);},"mapping_input_snapshot_owner");
   }
   {
     Store store(calibration,config);const auto first=store.append(*sample());

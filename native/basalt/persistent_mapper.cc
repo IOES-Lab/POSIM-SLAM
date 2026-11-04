@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 #include "persistent_mapper.hpp"
 #include "mapping_graph_information.hpp"
+#include "mapping_feature_matcher.hpp"
 #include <Eigen/Cholesky>
 #include <chrono>
 #include <numeric>
@@ -18,6 +19,7 @@ PersistentMapper::PersistentMapper(const basalt::Calibration<double>& calibratio
   input.set_capacity(2);
   try {
     store_=std::make_unique<MappingInputStore>(calibration_,config_,limits,std::move(input_archive),false,graph_registry_.epoch());
+    matching_=store_->makeMatchHistory();
     retained_.input=store_->snapshot();
   } catch(const std::exception& error) {
     // Keep draining the map handoff queue when storage cannot start. This
@@ -101,7 +103,7 @@ void PersistentMapper::optimize() {
 }
 std::shared_ptr<PersistentMapSnapshot> PersistentMapper::build(const Batch& batch) {
   const auto started=std::chrono::steady_clock::now();
-  auto restored=store_->makeMatchedMapper(batch.input,[this] {
+  auto restored=store_->makeMatchedMapper(batch.input,*matching_,[this] {
     std::lock_guard<std::mutex> lock(mutex_);return !error_.empty();
   });auto& mapper=*restored;
   if(!mapper.getFramePoses().count(batch.reference_stamp))
@@ -120,6 +122,10 @@ std::shared_ptr<PersistentMapSnapshot> PersistentMapper::build(const Batch& batc
   result->source_image_bytes=batch.input->source_image_bytes;
   result->source_factor_matrix_bytes=batch.input->source_factor_matrix_bytes;
   result->compact_input_bytes=batch.input->compactPayloadBytes();
+  const auto matched=matching_->snapshot();result->matching_new_frames=matched->new_frames;
+  result->matching_queried_frames=matched->queried_frames;
+  result->matching_new_pairs=matched->new_pairs;result->matching_total_pairs=matched->evaluated_pairs;
+  result->matching_numeric_bytes=matched->numeric_bytes;
   result->graph=graph_registry_.capture(batch.input,mapper,batch.reference_stamp,batch.reference_pose,gauge);
   static_cast<MappingOutput&>(*result)=mappingOutput(mapper,gauge,quality,result->graph);
   result->optimize_seconds=std::chrono::duration<double>(std::chrono::steady_clock::now()-started).count();

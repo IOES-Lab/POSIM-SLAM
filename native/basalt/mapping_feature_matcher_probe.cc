@@ -68,5 +68,52 @@ int main() {
   });
   rejects([&]{published=posim_slam::matchMappingFrames(calibration,config,broken);},"mapping_input_page_digest");
   assert(!published && state->active==0);
+  {
+    posim_slam::MappingMatchHistory history(calibration,config);
+    std::map<int64_t,Reference> prefix;
+    for(int64_t stamp=1;stamp<=2;++stamp)prefix.emplace(stamp,frames.at(stamp));
+    const auto first=history.advance(1,prefix);assert(first->new_frames==2 && first->new_pairs==1 && first->matches.size()==1);
+    rejects([&]{history.advance(2,broken);},"mapping_input_page_digest");
+    assert(history.snapshot()==first && state->active==0);
+    const auto immutable_pair=first->matches.begin()->second;const auto first_pixels=first->frames.begin()->second.pixels;
+    for(int64_t stamp=3;stamp<=4;++stamp)prefix.emplace(stamp,frames.at(stamp));
+    checked=0;rejects([&]{history.advance(2,prefix,[&]{return ++checked>4;});},"mapping_match_cancelled");
+    assert(history.snapshot()==first && state->active==0);
+    const auto second=history.advance(2,prefix);
+    assert(second->new_frames==2 && second->new_pairs==5 && second->evaluated_pairs==6 && second->matches.size()==6);
+    assert(second->matches.at(first->matches.begin()->first)==immutable_pair && second->frames.begin()->second.pixels==first_pixels);
+    const int reads=state->reads;assert(history.advance(2,prefix)==second && state->reads==reads);
+    const auto factors_only=history.advance(3,prefix);assert(!factors_only->new_frames && !factors_only->new_pairs && state->reads==reads);
+    const auto full=history.advance(8,frames);assert(full->new_frames==2 && full->new_pairs==9 && full->evaluated_pairs==15);
+    assert(full->matches.size()==15 && first->frames.size()==2 && first->matches.size()==1);
+    const auto complete=history.makeMapper(full);
+    for(const auto& [pair,match]:paged->feature_matches) {
+      const auto& found=complete->feature_matches.at(pair);assert(found.matches==match.matches);
+      auto a=found.inliers,b=match.inliers;std::sort(a.begin(),a.end());std::sort(b.begin(),b.end());assert(a==b && a.size()==64);
+    }
+    assert(state->active==0 && state->peak<=4);
+    rejects([&]{history.advance(7,frames);},"mapping_match_revision");
+    auto changed=frames;changed.erase(1);rejects([&]{history.advance(9,changed);},"mapping_match_source_changed");
+    changed=frames;changed.at(1)=Reference(std::make_shared<Frame>(*frames.at(1).read()));
+    rejects([&]{history.advance(9,changed);},"mapping_match_source_changed");assert(history.snapshot()==full);
+    posim_slam::MappingMatchHistory other(calibration,config);
+    rejects([&]{other.makeMapper(full);},"mapping_match_owner");
+    posim_slam::MappingMatchHistory limited(calibration,config,first->numeric_bytes);
+    std::map<int64_t,Reference> two{{1,frames.at(1)},{2,frames.at(2)}};const auto bounded=limited.advance(1,two);
+    rejects([&]{limited.advance(2,frames);},"mapping_match_capacity");assert(limited.snapshot()==bounded && state->active==0);
+    posim_slam::MappingMatchHistory pair_limited(calibration,config,full->numeric_bytes-1);
+    const auto pair_bound=pair_limited.advance(1,two);
+    rejects([&]{pair_limited.advance(2,frames);},"mapping_match_capacity");
+    assert(pair_limited.snapshot()==pair_bound && state->active==0);
+    posim_slam::MappingMatchHistory ordered(calibration,config);two={{1,frames.at(1)},{3,frames.at(3)}};const auto gap=ordered.advance(1,two);
+    const auto old_pair=gap->matches.begin()->second;two.emplace(2,frames.at(2));const auto delayed=ordered.advance(2,two);
+    assert(delayed->new_frames==1 && delayed->queried_frames==2 && delayed->new_pairs==2 && delayed->evaluated_pairs==3);
+    assert(delayed->matches.at(gap->matches.begin()->first)==old_pair);
+    auto no_inliers=config;no_inliers.mapper_min_matches=1000;posim_slam::MappingMatchHistory rejected_pairs(calibration,no_inliers);
+    two.erase(2);const auto unsuccessful=rejected_pairs.advance(1,two);assert(unsuccessful->matches.empty() && unsuccessful->evaluated_pairs==1);
+    two.emplace(2,frames.at(2));const auto retried=rejected_pairs.advance(2,two);
+    assert(retried->matches.empty() && retried->new_pairs==2 && retried->evaluated_pairs==3 && state->active==0);
+  }
+  std::cout<<"Incremental matching: original pairs evaluated once, unchanged pair/pixel owners, chronological and delayed retrieval, unsuccessful-pair reuse, no-input reuse, atomic cancellation/source/capacity controls and four-frame lease bound pass.\n";
   std::cout<<"Paged matching: 15 original pairs, exact descriptors/inliers/pixels, at most four leased frames, cancellation and failure release pass.\n";
 }

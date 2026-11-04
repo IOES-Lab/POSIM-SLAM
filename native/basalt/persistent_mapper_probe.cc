@@ -39,6 +39,16 @@ int main(int argc,char** argv) {
   while(map.snapshot()->revision<requested && map.snapshot()->error.empty() &&
       std::chrono::steady_clock::now()<deadline)std::this_thread::sleep_for(std::chrono::milliseconds(1));
   assert(map.snapshot()->revision>=requested && map.snapshot()->error.empty());
+  const auto original=map.snapshot();assert(original->matching_new_frames==2);
+  for(uint64_t revision:{2,3}) {
+   map.input.push(sample(10*revision,10*(revision+1)));
+   const auto next_deadline=std::chrono::steady_clock::now()+std::chrono::seconds(2);
+   while(map.snapshot()->revision<revision && map.snapshot()->error.empty() && std::chrono::steady_clock::now()<next_deadline) {
+    map.requestUpdate();std::this_thread::sleep_for(std::chrono::milliseconds(1));
+   }
+   const auto next=map.snapshot();assert(next->error.empty() && next->revision==revision && next->keyframes==revision+1);
+   assert(next->matching_new_frames==1 && next->matching_new_pairs==0 && original->keyframes==2);
+  }
   map.finish();assert(map.requestUpdate()==0);
  }
  auto run=[&](std::vector<basalt::MargData::Ptr> values,const std::string& expected,size_t frames=2) {
