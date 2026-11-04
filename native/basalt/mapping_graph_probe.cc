@@ -169,7 +169,7 @@ void nativeRowStreamControls(const Fixture& fixture) {
   compare(*invalid,*original);
   std::cout<<"Original row stream: invalid-slot ownership, summary counts, sink exception, duplicate rejection and failed-construction source preservation pass.\n";
 }
-void nativeScheduleControls(const Fixture& fixture) {
+std::unique_ptr<basalt::NfrMapper> chainMapper(const Fixture& fixture) {
   auto mapper=fixture.mapper();
   for(int64_t stamp:{30,40,50,60}) {
     mapper->getFramePoses().emplace(stamp,basalt::PoseStateWithLin<double>(stamp,
@@ -185,6 +185,10 @@ void nativeScheduleControls(const Fixture& fixture) {
     basalt::KeypointObservation<double> observation;observation.kpt_id=777;observation.pos={320.-4*(stamp/10-4),240.};
     mapper->lmdb.addObservation({stamp,0},observation);mapper->feature_tracks[777][{stamp,0}]=0;
   }
+  return mapper;
+}
+void nativeScheduleControls(const Fixture& fixture) {
+  auto mapper=chainMapper(fixture);
   posim_slam::NativeMappingSchedule schedule(*mapper,{50,60});
   assert(schedule.frontier==std::set<int64_t>({50,60}) && schedule.unobserved.empty());
   assert(schedule.last_use.at(10)==30 && schedule.last_use.at(20)==30 && schedule.last_use.at(30)==40);
@@ -440,6 +444,97 @@ void nativeCheckpointControls(const Fixture& fixture) {
   std::cout<<"Native window checkpoint: CBOR anchors, shared uncertainty, original ownership, continued optimization, source/state binding, corruption, capacity and cancellation rollback pass.\n";
 }
 
+void nativeRetirementControls(const Fixture& fixture) {
+  using Window=posim_slam::NativeMappingWindow;using Checkpoint=posim_slam::NativeMappingCheckpoint;
+  auto mapper=chainMapper(fixture);Window window(*mapper,10,{10,20,30,40,50,60});
+  auto resign=[](Json& value) {
+    const auto bytes=Json::to_cbor(value["model"]);posim_slam::InputDigest hash;hash.update(bytes.data(),bytes.size());
+    const auto digest=hash.finish();value["sha256"]=Json::binary(std::vector<uint8_t>(digest.begin(),digest.end()));
+  };
+  auto copy_state=[&](basalt::NfrMapper& target) {
+    target.getFramePoses()=mapper->getFramePoses();
+    for(const auto& [id,p]:mapper->lmdb.getLandmarks()) {
+      auto& q=target.lmdb.getLandmark(id);q.direction=p.direction;q.inv_dist=p.inv_dist;
+    }
+  };
+  const auto initial=window.snapshot();
+  rejects([&]{window.retire({10,20,30,40,50,60});},"native_window_retirement_subset");
+  rejects([&]{window.retire({40,50,70});},"native_window_retirement_subset");
+  rejects([&]{window.retire({20});},"native_window_no_active_likelihoods");
+  rejects([&]{window.retire({30,40,50,60},[]{return true;});},"native_window_cancelled");
+  mapper->obs_std_dev*=2;
+  rejects([&]{window.retire({30,40,50,60});},"native_window_retirement_source_changed");mapper->obs_std_dev/=2;
+  const auto original_pose=mapper->getFramePoses().at(20);Sophus::Vector6d move=Sophus::Vector6d::Zero();move[0]=.01;
+  mapper->getFramePoses().at(20).applyInc(move);
+  rejects([&]{window.retire({30,40,50,60});},"native_window_retirement_state_changed");
+  rejects([&]{Checkpoint::document(window);},"native_window_checkpoint_state_changed");
+  mapper->getFramePoses().at(20)=original_pose;assert(window.snapshot()==initial);
+  assert(window.step().accepted);
+  // Existing fixed-window archives retain their meaning under the v1 reader.
+  auto legacy=Checkpoint::document(window);legacy["model"]["schema"]="posim-slam-native-window-1";
+  legacy["model"].erase("initial_active");legacy["model"].erase("retirements");resign(legacy);
+  auto old=chainMapper(fixture);copy_state(*old);auto legacy_window=Checkpoint::restore(*old,legacy);
+  assert((legacy_window->proposal()-window.proposal()).norm()<1e-8);
+  double maximum_covariance_error=0;
+  for(const std::set<int64_t> kept:{std::set<int64_t>{30,40,50,60},std::set<int64_t>{50,60}}) {
+    const auto before=window.worldInformation({42,777});const auto proposal=window.proposal();
+    const auto state=posim_slam::nativeMappingStateIdentity(*mapper);const auto originals=window.snapshot()->information;
+    window.retire(kept);
+    assert(posim_slam::nativeMappingStateIdentity(*mapper)==state);
+    assert(window.snapshot()->information->measurements==originals->measurements);
+    assert(window.snapshot()->information->known==originals->known);
+    assert(window.snapshot()->information->order.size()==6*kept.size());
+    assert((window.proposal()-proposal).norm()<1e-8);
+    const auto after=window.worldInformation({42,777});
+    const double error=(after.covariance-before.covariance).norm()/before.covariance.norm();
+    maximum_covariance_error=std::max(maximum_covariance_error,error);assert(error<1e-9);
+    assert((after.positions-before.positions).norm()==0 && after.observed==before.observed);
+    assert(window.step().accepted);
+  }
+  const auto saved=Json::from_cbor(Json::to_cbor(Checkpoint::document(window)));
+  assert(saved["model"]["retirements"].size()==2);
+  auto restored=chainMapper(fixture);copy_state(*restored);
+  auto reopened=Checkpoint::restore(*restored,saved);compare(*mapper,*restored);
+  assert(Checkpoint::document(*reopened)==saved);
+  assert((reopened->proposal()-window.proposal()).norm()<1e-8);
+  const auto before=window.worldInformation({42,777}),after=reopened->worldInformation({42,777});
+  const double restore_error=(before.covariance-after.covariance).norm()/before.covariance.norm();assert(restore_error<1e-9);
+  assert(before.observed==after.observed && (before.positions-after.positions).norm()==0);
+  const auto quality=window.mapInformation(.1),replay=reopened->mapInformation(.1);
+  assert(quality.points.size()==replay.points.size() && quality.observations==replay.observations);
+  for(const auto& [id,p]:quality.points)assert(p.eligible==replay.points.at(id).eligible && p.mature==replay.points.at(id).mature);
+  // Saving only initial anchors and the final active set is demonstrably a
+  // different posterior after the retired groups were nonlinearly updated.
+  auto naive=saved;naive["model"]["schema"]="posim-slam-native-window-1";
+  naive["model"].erase("initial_active");naive["model"].erase("retirements");resign(naive);
+  auto naive_mapper=chainMapper(fixture);copy_state(*naive_mapper);auto naive_window=Checkpoint::restore(*naive_mapper,naive);
+  const double missing_anchor_error=(before.covariance-naive_window->worldInformation({42,777}).covariance).norm()/before.covariance.norm();
+  assert(missing_anchor_error>1e-5);
+  auto invalid=saved;invalid["model"]["retirements"][0]["poses"].erase(0);resign(invalid);
+  rejects([&]{Checkpoint::validate(*restored,invalid,10);},"native_window_retirement_anchors");
+  rejects([&]{Checkpoint::restore(*restored,invalid);},"native_window_retirement_anchors");compare(*mapper,*restored);
+  invalid=saved;invalid["model"]["retirements"][1]["kept"]=invalid["model"]["retirements"][0]["kept"];resign(invalid);
+  rejects([&]{Checkpoint::restore(*restored,invalid);},"native_window_retirement_subset");compare(*mapper,*restored);
+  invalid=saved;invalid["model"]["active"]={40,50,60};resign(invalid);
+  rejects([&]{Checkpoint::restore(*restored,invalid);},"native_window_checkpoint_active");compare(*mapper,*restored);
+  int checks=0;rejects([&]{Checkpoint::restore(*restored,saved,{},[&]{return ++checks==6;});},"native_window_cancelled");compare(*mapper,*restored);
+  const auto a=window.step(),b=reopened->step();assert(a.accepted==b.accepted && a.trials==b.trials);
+  assert(std::abs(a.after-b.after)<1e-8);
+  for(const auto& [stamp,p]:mapper->getFramePoses())assert((p.getPose().matrix()-restored->getFramePoses().at(stamp).getPose().matrix()).norm()<1e-8);
+  posim_slam::SubmapInformation::Limits limits;limits.nodes=1;
+  auto small=chainMapper(fixture);Window bounded(*small,10,{10,20,30,40,50,60},limits);
+  bounded.retire({30,40,50,60});const auto snapshot=bounded.snapshot();const auto checkpoint=Checkpoint::document(bounded);
+  rejects([&]{bounded.retire({50,60});},"submap_node_capacity");
+  assert(snapshot==bounded.snapshot() && Checkpoint::document(bounded)==checkpoint);
+  auto free=chainMapper(fixture);free->config.vio_init_pose_weight=0;
+  Window unreferenced(*free,10,{10,20,30,40,50,60});unreferenced.retire({50,60});
+  assert(!unreferenced.worldInformation({42,777}).observed);
+  auto free_document=Checkpoint::document(unreferenced);auto free_restored=chainMapper(fixture);free_restored->config.vio_init_pose_weight=0;
+  auto free_window=Checkpoint::restore(*free_restored,free_document);assert(!free_window->worldInformation({42,777}).observed);
+  std::cout<<"Native retirement: original groups, active replacement, shared covariance, source anchors, archive replay, legacy reads, unobserved gauge and atomic failures pass; covariance error "
+    <<maximum_covariance_error<<", restore error "<<restore_error<<", missing-anchor negative control "<<missing_anchor_error<<".\n";
+}
+
 void nativeArchiveControls(const Fixture& fixture,const std::filesystem::path& directory) {
   using Checkpoint=posim_slam::NativeMappingCheckpoint;
   auto mapper=fixture.mapper(),other=fixture.mapper();
@@ -570,6 +665,7 @@ int main(int argc,char** argv) {
   nativeWindowControls(fixture);
   nativeWorldControls(fixture);
   nativeCheckpointControls(fixture);
+  nativeRetirementControls(fixture);
   Registry registry(fixture.calibration,fixture.config,"fixture-segment");auto original=fixture.mapper();
   const auto first=registry.capture(fixture.input,*original,10,original->getFramePoses().at(10).getPose(),Sophus::SE3d());
   assert(first->stable_ids.at(42)==0 && first->stable_ids.at(99)==1);

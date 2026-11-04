@@ -189,6 +189,16 @@ reference position and heading select a conditional mean coordinate convention;
 they supply no measurement or world covariance. Reference roll and pitch remain
 variables. This interface applies to relative/gravity NFR graphs.
 
+`NativeMappingWindow::retire(kept)` reduces the active pose set. Groups crossing
+its new boundary enter the historical information at their last accepted
+linearization; remaining groups stay replaceable. Original observations,
+current variables and old/new correlations are preserved. `kept` must be a
+nonempty proper subset retaining at least one active group. Source or variable
+edits outside the owner are rejected. Retirement anchors share the existing
+96 MiB numeric budget, with their capacity reserved during construction.
+New source frames and reassociation require further owner transitions;
+automatic window growth remains disabled.
+
 `worldInformation()` returns current finite world points and their joint
 linearized covariance, including landmark conditional noise and shared old/new
 pose errors. It uses the original VIO position/world-z-rotation reference once,
@@ -208,19 +218,24 @@ Weak and infinite candidates remain inspectable. Changed original
 observations or noise require a new owner before output can be certified.
 
 `NativeMappingCheckpoint` in `native_mapping_checkpoint.hpp` saves the original
-pose/landmark anchors and active pose membership alongside the current-state
+pose/landmark chart, active membership and each retirement's source anchors alongside the current-state
 mapping graph. Its CBOR-compatible document binds the original observations,
 calibration, weights and current variables with separate SHA-256 identities.
-Restore reconstructs historical information at its original anchors and
+Restore replays historical information at the anchors used when each group was sealed and
 replaces only active likelihoods at the saved current state. Source/state
 mismatches, corruption, invalid anchors and caller capacity failures are
-rejected; cancellation leaves the supplied graph unchanged. Pass the window to
+rejected; cancellation leaves the supplied graph unchanged.
+
+Pass the window to
 `MappingGraphRegistry::capture` while exclusively owning its mapper. The
 immutable snapshot keeps both states through later optimizer updates.
 `MappingGraphRegistry::write` stores them together in one checksummed
 `PSIMMAP2` file, published by a single rename. Read validates the original
 measurements, current variables and reference before returning the snapshot;
 `NativeMappingCheckpoint::restore(mapper, graph)` reconstructs its window.
+
+The window document uses `posim-slam-native-window-2`; the reader also accepts
+fixed-window version 1 documents. Keep a compatible library with these archives.
 Point correspondence uses stable IDs, independent of container row order.
 Readers supporting only `PSIMMAP1` reject window archives. Calls to `write`
 without a window retain `PSIMMAP1`. File replacement is atomic; power-loss durability
@@ -292,6 +307,15 @@ existing full-history optimizer and limits; automatic rollover is not enabled.
 좌표를 선택하며 측정이나 세계 공분산을 추가하지 않습니다. 기준 자세의 롤·피치는
 계속 추정합니다. 상대 자세·중력 NFR 그래프에 사용하는 인터페이스입니다.
 
+`NativeMappingWindow::retire(kept)`는 활성 자세 집합을 줄입니다. 새 경계를
+가로지르는 그룹은 마지막으로 채택된 선형화 기준에서 과거 정보에 반영하고,
+남은 그룹은 계속 교체할 수 있습니다. 원본 관측·현재 변수·과거와 현재의
+상관관계는 유지합니다. `kept`는 기존 집합보다 작고 비어 있지 않아야 하며
+활성 그룹을 하나 이상 남겨야 합니다. 소유자 밖에서 원본이나 변수를 바꾸면
+거부합니다. 소거 기준값도 기존 수치 데이터 96MiB 한도에 포함하며 생성 시
+필요 용량을 예약합니다. 새 입력 프레임과 관측 재연결에는 추가 소유권 전환이
+필요하며 자동 구간 확장은 비활성 상태입니다.
+
 `worldInformation()`은 현재의 유한한 세계 좌표 지도점과 결합 선형 공분산을
 반환합니다. 랜드마크 조건부 잡음과 과거·현재 자세의 공유 오차를 포함합니다.
 원래 VIO의 위치·세계 수직축 회전 기준을 한 번 반영하며, 기울어진 기준 자세의
@@ -308,16 +332,21 @@ existing full-history optimizer and limits; automatic rollover is not enabled.
 새 소유자를 구성한 뒤 점 채택을 판정합니다.
 
 `native_mapping_checkpoint.hpp`의 `NativeMappingCheckpoint`는 원래 자세·랜드마크
-기준값과 활성 자세 집합을 현재 상태의 지도 그래프와 함께 보존합니다. CBOR로
+좌표 기준·활성 자세 집합·각 소거 시점의 원본 기준값을 현재 상태의 지도 그래프와 함께 보존합니다. CBOR로
 저장할 수 있는 문서는 원본 관측·보정값·가중치와 현재 변수를 각각 SHA-256으로
-식별합니다. 복원은 원래 기준값에서 과거 정보를 재구성하고 활성 관측만 저장된
+식별합니다. 복원은 각 그룹을 확정한 시점의 기준값으로 과거 정보를 재구성하고 활성 관측만 저장된
 현재 상태에서 다시 계산합니다. 입력·상태 불일치, 손상, 잘못된 기준값과 호출자
-용량 초과를 거부하며 취소 시 입력 그래프를 유지합니다. 지도 소유 스레드에서
+용량 초과를 거부하며 취소 시 입력 그래프를 유지합니다.
+
+지도 소유 스레드에서
 구간을 `MappingGraphRegistry::capture`에 전달하면 두 상태가 같은 불변 스냅샷에
 보존됩니다. 이후 최적화가 진행되어도 `MappingGraphRegistry::write`는 그 스냅샷을
 하나의 체크섬을 가진 `PSIMMAP2` 파일로 저장하고 한 번의 이름 변경으로 교체합니다.
 읽을 때 원본 관측·현재 변수·기준 자세의 일치를 검사하며
 `NativeMappingCheckpoint::restore(mapper, graph)`로 활성 구간을 복원합니다.
+
+구간 문서는 `posim-slam-native-window-2` 형식이며 판독기는 고정 구간용
+버전 1 문서도 읽습니다. 이 파일과 호환되는 라이브러리를 함께 보존합니다.
 점 대응은 내부 행 순서와 관계없이 고유 ID를 사용합니다. `PSIMMAP1`만 지원하는
 판독기는 구간 파일을 거부하며 구간 없이 호출한 `write`는 `PSIMMAP1` 형식을 유지합니다.
 파일 교체는 원자적이지만 전원 차단 시 보존을 보장하지 않습니다.

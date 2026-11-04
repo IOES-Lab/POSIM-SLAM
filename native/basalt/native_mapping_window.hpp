@@ -141,7 +141,7 @@ class NativeMappingChart {
 // A window whose separator exceeds the supplied capacity is rejected intact.
 // The caller exclusively owns mapper during this object's lifetime. Graph
 // growth, track reassociation, rehosting and sealed-factor rehydration require
-// a new owner built from the original graph; automatic rollover is separate.
+// source-backed ownership transitions; automatic rollover is separate.
 class NativeMappingWindow {
   friend class NativeMappingCheckpoint;
  public:
@@ -167,6 +167,7 @@ class NativeMappingWindow {
   NativeMappingWindow(basalt::NfrMapper& mapper,int64_t reference,
       const std::set<int64_t>& active_poses,SubmapInformation::Limits limits={})
       :mapper_(mapper),chart_(mapper,reference),limits_(limits),active_poses_(active_poses),
+       initial_active_poses_(active_poses),
        source_identity_(nativeMappingSourceIdentity(mapper)),
        reference_weight_(mapper.config.vio_init_pose_weight) {
     if(active_poses.empty())throw std::invalid_argument("native_window_empty");
@@ -176,6 +177,13 @@ class NativeMappingWindow {
     // materialized. Each landmark has a 3 x (6 * poses) back-substitution,
     // three offsets and a total of three finite/free noise directions.
     size_t reserved=chart_.numericBytes();
+    // Each original active group can retire once. Reserve its source-anchor
+    // upper bound now, so later metadata cannot escape the same numeric quota.
+    // A retirement event shares common pose anchors between its groups.
+    for(const auto& group:schedule.groups)if(group.active)
+      retirement_capacity_+=sizeof(double)*(7*group.poses.size()+
+        (group.source.kind==NativeMappingRowSource::landmark?3:0));
+    reserved+=retirement_capacity_;
     for(const auto& [id,point]:mapper_.lmdb.getLandmarks()) {
       if(point.obs.empty() || point.obs.size()>2048)
         throw std::invalid_argument("native_mapping_landmark");
@@ -242,13 +250,31 @@ class NativeMappingWindow {
     originals_=source.originals+source.pose_factors;
     if(owner_->snapshot()->information->measurements.size()!=originals_)
       throw std::logic_error("native_window_original_ownership");
+    linearization_state_=nativeMappingStateIdentity(mapper_);
   }
   const NativeMappingChart& chart() const {return chart_;}
   const NativeMappingSelection& selection() const {return selection_;}
   SubmapLinearization::Snapshot snapshot() const {return owner_->snapshot();}
   size_t numericBytes() const {
-    size_t out=snapshot()->numericBytes()+chart_.numericBytes();
+    size_t out=snapshot()->numericBytes()+chart_.numericBytes()+retirement_bytes_;
     for(const auto& [id,point]:points_)out+=point.bytes();return out;
+  }
+  // Retire original groups crossing the reduced active set at their last
+  // accepted linearization. Mapper variables and original observations are
+  // unchanged; archived geometry retains its conditional correlations.
+  void retire(const std::set<int64_t>& kept,const std::function<bool()>& cancelled={}) {
+    if(nativeMappingSourceIdentity(mapper_)!=source_identity_)
+      throw std::invalid_argument("native_window_retirement_source_changed");
+    if(nativeMappingStateIdentity(mapper_)!=linearization_state_)
+      throw std::invalid_argument("native_window_retirement_state_changed");
+    auto plan=retirementPlan(kept);auto record=std::make_shared<Retirement>();record->kept=kept;
+    for(auto stamp:plan.support)record->poses.emplace(stamp,mapper_.getFramePoses().at(stamp).getPose());
+    for(auto id:plan.selected.points) {
+      const auto& point=mapper_.lmdb.getLandmark(id);
+      record->points.emplace(id,Eigen::Vector3d(point.direction.x(),point.direction.y(),point.inv_dist));
+    }
+    if(cancelled && cancelled())throw std::runtime_error("native_window_cancelled");
+    commitRetirement(std::move(plan),std::move(record));
   }
   // Returned coordinates minimize the current hybrid linearization. No
   // covariance or readiness claim follows from this conditional mean.
@@ -407,6 +433,53 @@ class NativeMappingWindow {
     return result;
   }
  private:
+  struct Retirement {
+    std::set<int64_t> kept;
+    Eigen::aligned_map<int64_t,Sophus::SE3d> poses;
+    Eigen::aligned_map<int64_t,Eigen::Vector3d> points;
+    size_t bytes() const {return sizeof(double)*(7*poses.size()+3*points.size());}
+  };
+  struct RetirementPlan {
+    std::set<int64_t> kept,support;
+    NativeMappingSelection selected,next;
+    std::vector<int64_t> columns;
+    std::vector<std::string> originals;
+  };
+  RetirementPlan retirementPlan(const std::set<int64_t>& kept) const {
+    if(kept.empty() || kept.size()>=active_poses_.size() ||
+        !std::includes(active_poses_.begin(),active_poses_.end(),kept.begin(),kept.end()))
+      throw std::invalid_argument("native_window_retirement_subset");
+    RetirementPlan plan;plan.kept=kept;plan.next=selection_;std::set<int64_t> columns;size_t remaining=0;
+    auto outside=[&](const std::vector<int64_t>& columns) {
+      return std::any_of(columns.begin(),columns.end(),[&](auto c){return !kept.count(chart_.poses().at(c/6));});
+    };
+    for(const auto& group:snapshot()->active) {
+      if(outside(group->columns)) {
+        plan.originals.insert(plan.originals.end(),group->originals.begin(),group->originals.end());
+        for(auto c:group->columns)plan.support.insert(chart_.poses().at(c/6));
+        for(const auto& key:group->originals)if(plan.next.factors.erase(key))plan.selected.factors.insert(key);
+      } else {++remaining;columns.insert(group->columns.begin(),group->columns.end());}
+    }
+    if(!remaining)throw std::invalid_argument("native_window_no_active_likelihoods");
+    for(auto id:selection_.points)if(outside(points_.at(id).columns)) {
+      plan.selected.points.insert(id);plan.next.points.erase(id);
+    }
+    plan.columns.assign(columns.begin(),columns.end());return plan;
+  }
+  void commitRetirement(RetirementPlan plan,std::shared_ptr<const Retirement> record) {
+    std::set<int64_t> poses,points;
+    for(const auto& [id,value]:record->poses)poses.insert(id);
+    for(const auto& [id,value]:record->points)points.insert(id);
+    if(record->kept!=plan.kept || poses!=plan.support || points!=plan.selected.points)
+      throw std::invalid_argument("native_window_retirement_anchors");
+    if(record->bytes()>retirement_capacity_-retirement_bytes_)
+      throw std::runtime_error("native_window_numeric_capacity");
+    auto records=retirements_;records.push_back(record);
+    owner_->retire(plan.originals,plan.columns);
+    // All allocations/validation precede publication of the numeric owner.
+    selection_.points.swap(plan.next.points);selection_.factors.swap(plan.next.factors);
+    active_poses_.swap(plan.kept);retirements_.swap(records);retirement_bytes_+=record->bytes();
+  }
   struct Conditional {
     std::vector<int64_t> columns;Eigen::MatrixXd backsub,noise,unbounded;Eigen::VectorXd offset;
     explicit Conditional(NativeMappingPointReduction value):columns(std::move(value.likelihood.columns)),
@@ -429,6 +502,12 @@ class NativeMappingWindow {
   // restoring historical anchors. Historical rows are never relinearized at
   // the latest output state merely because the window was saved and reopened.
   void replaceActive(const NativeMappingRows& rows,const std::function<void()>& check) {
+    const auto state=nativeMappingStateIdentity(mapper_);std::vector<std::string> remove;
+    for(const auto& group:snapshot()->active)remove.insert(remove.end(),group->originals.begin(),group->originals.end());
+    replaceSelected(rows,remove,check);linearization_state_=state;
+  }
+  void replaceSelected(const NativeMappingRows& rows,const std::vector<std::string>& remove,
+      const std::function<void()>& check) {
     const auto anchored=chart_.rows(mapper_,rows);
     std::vector<SubmapLinearization::Rows> replacement;std::map<int64_t,Conditional> new_points;
     for(const auto& group:anchored.factors)replacement.push_back(nativeMappingFactor(group,chart_.offsets()));
@@ -436,8 +515,6 @@ class NativeMappingWindow {
       auto reduced=reduceNativeMappingPoint(group,chart_.offsets());replacement.push_back(reduced.likelihood);
       new_points.emplace(group.id,Conditional(std::move(reduced)));
     }
-    std::vector<std::string> remove;
-    for(const auto& group:snapshot()->active)remove.insert(remove.end(),group->originals.begin(),group->originals.end());
     check();owner_->replace(remove,replacement);
     for(auto& [id,reduced]:new_points)points_.at(id)=std::move(reduced);
   }
@@ -483,8 +560,10 @@ class NativeMappingWindow {
     return .5*(base.jacobian*local+base.residual).squaredNorm()+active.vision_cost+.5*active.pose_cost;
   }
   basalt::NfrMapper& mapper_;NativeMappingChart chart_;SubmapInformation::Limits limits_;
-  std::set<int64_t> active_poses_;InputDigest::Value source_identity_;
+  std::set<int64_t> active_poses_,initial_active_poses_;InputDigest::Value source_identity_,linearization_state_;
   NativeMappingSelection selection_;std::unique_ptr<SubmapLinearization> owner_;
   std::map<int64_t,Conditional> points_;size_t originals_=0;double reference_weight_;
+  std::vector<std::shared_ptr<const Retirement>> retirements_;
+  size_t retirement_capacity_=0,retirement_bytes_=0;
 };
 } // namespace posim_slam
