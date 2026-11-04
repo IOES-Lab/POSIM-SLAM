@@ -140,6 +140,35 @@ void nativeRowsControls(const Fixture& fixture) {
   rejects([&]{posim_slam::nativeMappingRows(*invalid_factor);},"native_mapping_factor_information");
   std::cout<<"Native mapping rows: finite/infinite original observations, analytic pose/landmark derivatives, invalid-row ownership and current-tangent checks pass; derivative error "<<maximum<<".\n";
 }
+void nativeRowStreamControls(const Fixture& fixture) {
+  auto mapper=fixture.mapper();mapper->lmdb.getLandmark(42).direction=Eigen::Vector2d(2,0);
+  size_t factors=0,points=0,originals=0,invalid_count=0;
+  const auto summary=posim_slam::streamNativeMappingRows(*mapper,
+    [&](posim_slam::NativeMappingPoseRows row) {++factors;assert(!row.original.empty());},
+    [&](posim_slam::NativeMappingPointRows row) {
+      ++points;originals+=row.originals.size();
+      for(size_t i=0;i<row.valid.size();++i)if(!row.valid[i]) {
+        ++invalid_count;assert(row.pose.middleRows<2>(2*i).isZero() && row.landmark.middleRows<2>(2*i).isZero());
+        assert(row.residual.segment<2>(2*i).isZero());
+      }
+    });
+  assert(summary.poses.size()==3 && factors==2 && points==2 && originals==6 && invalid_count==3);
+  assert(summary.pose_factors==factors && summary.points==points && summary.originals==originals);
+  assert(summary.valid_projections==3);
+  auto unchanged=fixture.mapper();mapper=fixture.mapper();
+  rejects([&]{posim_slam::streamNativeMappingRows(*mapper,
+    [](posim_slam::NativeMappingPoseRows){},
+    [](posim_slam::NativeMappingPointRows){throw std::runtime_error("sink_cancelled");});},"sink_cancelled");
+  compare(*mapper,*unchanged);
+  mapper->feature_tracks[99].at(basalt::TimeCamId(20,0))=0;
+  rejects([&]{posim_slam::streamNativeMappingRows(*mapper,
+    [](posim_slam::NativeMappingPoseRows){},[](posim_slam::NativeMappingPointRows){});},"native_mapping_original_reused");
+  auto invalid=fixture.mapper();invalid->lmdb.getLandmark(42).inv_dist=-1;
+  auto original=fixture.mapper();original->lmdb.getLandmark(42).inv_dist=-1;
+  rejects([&]{posim_slam::NativeMappingWindow window(*invalid,10,{10,20});},"native_mapping_landmark");
+  compare(*invalid,*original);
+  std::cout<<"Original row stream: invalid-slot ownership, summary counts, sink exception, duplicate rejection and failed-construction source preservation pass.\n";
+}
 void nativeWindowControls(const Fixture& fixture) {
   auto mapper=fixture.mapper();
   for(auto& [stamp,state]:mapper->getFramePoses()) {
@@ -476,7 +505,7 @@ int main(int argc,char** argv) {
   if(argc!=2)return 2;const std::filesystem::path directory=argv[1];Fixture fixture;
   inputPageControls(directory);
   nativeArchiveControls(fixture,directory);
-  nativeRowsControls(fixture);
+  nativeRowsControls(fixture);nativeRowStreamControls(fixture);
   nativeWindowControls(fixture);
   nativeWorldControls(fixture);
   nativeCheckpointControls(fixture);

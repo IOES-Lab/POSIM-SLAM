@@ -145,6 +145,15 @@ exported map point. Invalid projections keep their original identities and zero
 row slots. The input mapper is unchanged. Frozen first-estimate pose references
 are rejected because this interface requires one current tangent.
 
+`streamNativeMappingRows` sends one factor or landmark group to its consumers
+at a time and returns costs/counts after the complete traversal. It retains the
+same original-identity checks, invalid row slots and numerical weights.
+Consumers stage changes until traversal succeeds. `nativeMappingRows` collects
+the same stream when simultaneous access is needed. The native window transforms
+and eliminates each group immediately, feeding historical rows to 4,096-row QR
+batches. Its full initial pose frontier, original-ID ledger and retained
+conditionals still use the existing graph limits.
+
 `reduceNativeMappingPoint` eliminates each landmark with the shared SVD routine
 and returns pose residuals, landmark back-substitution and unobserved directions.
 The owning mapper keeps stable timestamp/coordinate identities, transports
@@ -240,6 +249,14 @@ existing full-history optimizer and limits; automatic rollover is not enabled.
 지도점으로 내보내지는 않습니다. 투영 불가 관측은 원본 식별자와 0으로 채운 행을
 유지합니다. 입력 지도는 바꾸지 않습니다. 하나의 현재 접선 좌표를 사용하므로
 최초 추정 기준에 고정된 자세는 거부합니다.
+
+`streamNativeMappingRows`는 제약 또는 랜드마크 묶음을 한 번에 하나씩 전달하고,
+전체 순회가 성공하면 비용과 개수를 반환합니다. 원본 식별자 검사, 투영 불가
+관측의 행과 수치 가중치를 유지합니다. 호출자는 순회 성공 후 변경을 반영합니다.
+`nativeMappingRows`는 동시 접근이 필요할 때 같은 행을 모읍니다. 네이티브 구간은
+각 묶음을 즉시 좌표 변환·소거하고 과거 관측 행을 4,096행 QR 묶음으로 전달합니다.
+초기 전체 자세 행렬, 원본 식별자 목록과 보존된 조건부 정보에는 기존 그래프 한도가
+적용됩니다.
 
 `reduceNativeMappingPoint`는 공유 SVD 계산으로 랜드마크를 소거하고 자세 잔차,
 랜드마크 역대입과 미관측 방향을 제공합니다. 지도 소유자가 시각·좌표 식별자를

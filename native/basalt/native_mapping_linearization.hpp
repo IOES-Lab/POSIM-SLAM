@@ -39,9 +39,21 @@ struct NativeMappingSelection {
   std::set<int64_t> points;
   std::set<std::string> factors;
 };
-inline NativeMappingRows nativeMappingRows(basalt::NfrMapper& mapper,
+struct NativeMappingRowSummary {
+  std::vector<int64_t> poses;
+  double vision_cost=0,pose_cost=0;
+  size_t originals=0,valid_projections=0,pose_factors=0,points=0;
+};
+// Materialize one original factor or landmark group at a time. The sinks may
+// consume/move its rows; retaining them is the sink's responsibility. Duplicate
+// ownership is checked across the complete traversal, including invalid rows.
+// Sinks must stage effects until this function returns: a later input or sink
+// failure propagates without publishing a summary. The mapper is read-only.
+template<class FactorSink,class PointSink>
+inline NativeMappingRowSummary streamNativeMappingRows(basalt::NfrMapper& mapper,
+    FactorSink&& factor_sink,PointSink&& point_sink,
     const NativeMappingSelection* selection=nullptr) {
-  NativeMappingRows out;
+  NativeMappingRowSummary out;
   const auto& states=mapper.getFramePoses();
   if(states.empty() || 6*states.size()>size_t(kMaxJointColumns) ||
       mapper.lmdb.getLandmarks().size()>100000 ||
@@ -66,7 +78,7 @@ inline NativeMappingRows nativeMappingRows(basalt::NfrMapper& mapper,
     if(!rows.jacobian.allFinite() || !rows.residual.allFinite())
       throw std::invalid_argument("native_mapping_factor_nonfinite");
     rows.cost=rows.residual.squaredNorm();out.pose_cost+=rows.cost;
-    out.factors.push_back(std::move(rows));
+    ++out.pose_factors;factor_sink(std::move(rows));
   };
   if(mapper.config.mapper_use_factors) {
     for(const auto& factor:mapper.rel_pose_factors) {
@@ -148,10 +160,23 @@ inline NativeMappingRows nativeMappingRows(basalt::NfrMapper& mapper,
       }
       rows.full_weight.push_back(full);++index;
     }
-    out.originals+=rows.originals.size();out.vision_cost+=rows.cost;out.points.push_back(std::move(rows));
+    out.originals+=rows.originals.size();out.vision_cost+=rows.cost;
+    ++out.points;point_sink(std::move(rows));
   }
-  if(selection && (out.points.size()!=selection->points.size() || factors!=selection->factors))
+  if(selection && (out.points!=selection->points.size() || factors!=selection->factors))
     throw std::invalid_argument("native_mapping_selection_missing");
+  return out;
+}
+// Bounded-graph collector for callers which need simultaneous access to rows.
+// Streaming consumers avoid these vectors and their aggregate numeric storage.
+inline NativeMappingRows nativeMappingRows(basalt::NfrMapper& mapper,
+    const NativeMappingSelection* selection=nullptr) {
+  NativeMappingRows out;
+  auto summary=streamNativeMappingRows(mapper,
+    [&](NativeMappingPoseRows row){out.factors.push_back(std::move(row));},
+    [&](NativeMappingPointRows row){out.points.push_back(std::move(row));},selection);
+  out.poses=std::move(summary.poses);out.vision_cost=summary.vision_cost;out.pose_cost=summary.pose_cost;
+  out.originals=summary.originals;out.valid_projections=summary.valid_projections;
   return out;
 }
 struct NativeMappingPointReduction {
