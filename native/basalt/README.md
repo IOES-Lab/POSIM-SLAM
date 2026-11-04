@@ -149,10 +149,13 @@ are rejected because this interface requires one current tangent.
 at a time and returns costs/counts after the complete traversal. It retains the
 same original-identity checks, invalid row slots and numerical weights.
 Consumers stage changes until traversal succeeds. `nativeMappingRows` collects
-the same stream when simultaneous access is needed. The native window transforms
-and eliminates each group immediately, feeding historical rows to 4,096-row QR
-batches. Its full initial pose frontier, original-ID ledger and retained
-conditionals still use the existing graph limits.
+the same stream when simultaneous access is needed. `NativeMappingSchedule`
+orders historical groups by their latest incident pose. The native window
+transforms/eliminates each group and feeds local columns to 4,096-row QR batches.
+It retires a pose outside the active separator after its last historical group,
+retaining its conditional and shared correlations. The temporary frontier has the existing 1,218-scalar
+ceiling; the final active separator defaults to 256. Global keyframes, original
+identities and retained conditional storage keep their existing limits.
 
 `reduceNativeMappingPoint` eliminates each landmark with the shared SVD routine
 and returns pose residuals, landmark back-substitution and unobserved directions.
@@ -253,10 +256,13 @@ existing full-history optimizer and limits; automatic rollover is not enabled.
 `streamNativeMappingRows`는 제약 또는 랜드마크 묶음을 한 번에 하나씩 전달하고,
 전체 순회가 성공하면 비용과 개수를 반환합니다. 원본 식별자 검사, 투영 불가
 관측의 행과 수치 가중치를 유지합니다. 호출자는 순회 성공 후 변경을 반영합니다.
-`nativeMappingRows`는 동시 접근이 필요할 때 같은 행을 모읍니다. 네이티브 구간은
-각 묶음을 즉시 좌표 변환·소거하고 과거 관측 행을 4,096행 QR 묶음으로 전달합니다.
-초기 전체 자세 행렬, 원본 식별자 목록과 보존된 조건부 정보에는 기존 그래프 한도가
-적용됩니다.
+`nativeMappingRows`는 동시 접근이 필요할 때 같은 행을 모읍니다.
+`NativeMappingSchedule`은 연결된 마지막 자세의 시각으로 과거 관측 묶음을
+정렬합니다. 네이티브 구간은 각 묶음을 좌표 변환·소거하고 해당 열을 4,096행 QR
+묶음으로 전달합니다. 활성 경계 밖에서 마지막 과거 관측을 반영한 자세는 조건부
+정보와 공유 상관관계를 보존하며 소거합니다. 임시 계산 경계는 기존 한도인 스칼라 좌표 1,218개이며,
+최종 활성 경계의 기본값은 256개입니다. 전체 키프레임, 원본 식별자와 보존된
+조건부 정보의 저장 한도는 유지합니다.
 
 `reduceNativeMappingPoint`는 공유 SVD 계산으로 랜드마크를 소거하고 자세 잔차,
 랜드마크 역대입과 미관측 방향을 제공합니다. 지도 소유자가 시각·좌표 식별자를

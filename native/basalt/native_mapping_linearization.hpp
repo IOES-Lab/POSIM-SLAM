@@ -44,6 +44,11 @@ struct NativeMappingRowSummary {
   double vision_cost=0,pose_cost=0;
   size_t originals=0,valid_projections=0,pose_factors=0,points=0;
 };
+struct NativeMappingRowSource {
+  enum Kind {relative,roll_pitch,landmark};
+  Kind kind;
+  int64_t id; // Pose-factor vector index, or the original landmark ID.
+};
 // Materialize one original factor or landmark group at a time. The sinks may
 // consume/move its rows; retaining them is the sink's responsibility. Duplicate
 // ownership is checked across the complete traversal, including invalid rows.
@@ -52,7 +57,8 @@ struct NativeMappingRowSummary {
 template<class FactorSink,class PointSink>
 inline NativeMappingRowSummary streamNativeMappingRows(basalt::NfrMapper& mapper,
     FactorSink&& factor_sink,PointSink&& point_sink,
-    const NativeMappingSelection* selection=nullptr) {
+    const NativeMappingSelection* selection=nullptr,
+    const std::vector<NativeMappingRowSource>* order=nullptr) {
   NativeMappingRowSummary out;
   const auto& states=mapper.getFramePoses();
   if(states.empty() || 6*states.size()>size_t(kMaxJointColumns) ||
@@ -80,29 +86,27 @@ inline NativeMappingRowSummary streamNativeMappingRows(basalt::NfrMapper& mapper
     rows.cost=rows.residual.squaredNorm();out.pose_cost+=rows.cost;
     ++out.pose_factors;factor_sink(std::move(rows));
   };
-  if(mapper.config.mapper_use_factors) {
-    for(const auto& factor:mapper.rel_pose_factors) {
+  auto relative=[&](const basalt::RelPoseFactor& factor) {
       Sophus::Matrix6d first,second;NativeMappingPoseRows rows;
       rows.original="relative:"+std::to_string(factor.t_i_ns)+":"+std::to_string(factor.t_j_ns);
-      if(selection && !selection->factors.count(rows.original))continue;
+      if(selection && !selection->factors.count(rows.original))return;
       rows.poses={factor.t_i_ns,factor.t_j_ns};
       if(factor.t_i_ns==factor.t_j_ns)throw std::invalid_argument("native_mapping_relative_identity");
       rows.residual=basalt::relPoseError(factor.T_i_j,states.at(factor.t_i_ns).getPose(),
                                        states.at(factor.t_j_ns).getPose(),&first,&second);
       rows.jacobian.resize(6,12);rows.jacobian<<first,second;
       add_factor(std::move(rows),factor.cov_inv);
-    }
-    for(const auto& factor:mapper.roll_pitch_factors) {
+  };
+  auto roll_pitch=[&](const basalt::RollPitchFactor& factor) {
       Eigen::Matrix<double,2,6> derivative;NativeMappingPoseRows rows;
       rows.original="roll-pitch:"+std::to_string(factor.t_ns);rows.poses={factor.t_ns};
-      if(selection && !selection->factors.count(rows.original))continue;
+      if(selection && !selection->factors.count(rows.original))return;
       rows.residual=basalt::rollPitchError(states.at(factor.t_ns).getPose(),factor.R_w_i_meas,&derivative);
       rows.jacobian=derivative;add_factor(std::move(rows),factor.cov_inv);
-    }
-  }
+  };
   std::set<MappingObservation> owners;
-  for(const auto& [id,point]:mapper.lmdb.getLandmarks()) {
-    if(selection && !selection->points.count(id))continue;
+  auto landmark=[&](int64_t id,const basalt::Keypoint<double>& point) {
+    if(selection && !selection->points.count(id))return;
     if(id<0 || point.obs.empty() || point.obs.size()>2048 ||
         out.originals+point.obs.size()>1000000 || !point.direction.allFinite() ||
         !std::isfinite(point.inv_dist) || point.inv_dist<0)
@@ -162,9 +166,31 @@ inline NativeMappingRowSummary streamNativeMappingRows(basalt::NfrMapper& mapper
     }
     out.originals+=rows.originals.size();out.vision_cost+=rows.cost;
     ++out.points;point_sink(std::move(rows));
+  };
+  if(order) {
+    for(const auto& source:*order) {
+      if(source.id<0)throw std::invalid_argument("native_mapping_row_order");
+      switch(source.kind) {
+        case NativeMappingRowSource::relative:
+          if(mapper.config.mapper_use_factors)relative(mapper.rel_pose_factors.at(source.id));break;
+        case NativeMappingRowSource::roll_pitch:
+          if(mapper.config.mapper_use_factors)roll_pitch(mapper.roll_pitch_factors.at(source.id));break;
+        case NativeMappingRowSource::landmark:landmark(source.id,mapper.lmdb.getLandmarks().at(source.id));break;
+        default:throw std::invalid_argument("native_mapping_row_order");
+      }
+    }
+  } else {
+    if(mapper.config.mapper_use_factors) {
+      for(const auto& factor:mapper.rel_pose_factors)relative(factor);
+      for(const auto& factor:mapper.roll_pitch_factors)roll_pitch(factor);
+    }
+    for(const auto& [id,point]:mapper.lmdb.getLandmarks())landmark(id,point);
   }
   if(selection && (out.points!=selection->points.size() || factors!=selection->factors))
     throw std::invalid_argument("native_mapping_selection_missing");
+  if(!selection && (out.points!=mapper.lmdb.getLandmarks().size() || out.pose_factors!=
+      (mapper.config.mapper_use_factors?mapper.rel_pose_factors.size()+mapper.roll_pitch_factors.size():0)))
+    throw std::invalid_argument("native_mapping_row_order_incomplete");
   return out;
 }
 // Bounded-graph collector for callers which need simultaneous access to rows.

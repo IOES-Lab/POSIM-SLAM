@@ -169,6 +169,67 @@ void nativeRowStreamControls(const Fixture& fixture) {
   compare(*invalid,*original);
   std::cout<<"Original row stream: invalid-slot ownership, summary counts, sink exception, duplicate rejection and failed-construction source preservation pass.\n";
 }
+void nativeScheduleControls(const Fixture& fixture) {
+  auto mapper=fixture.mapper();
+  for(int64_t stamp:{30,40,50,60}) {
+    mapper->getFramePoses().emplace(stamp,basalt::PoseStateWithLin<double>(stamp,
+      Sophus::SE3d(Sophus::SO3d(),Eigen::Vector3d(.01*stamp,0,0))));
+    auto relative=mapper->rel_pose_factors.front();relative.t_i_ns=stamp-10;relative.t_j_ns=stamp;
+    relative.T_i_j=mapper->getFramePoses().at(stamp-10).getPose().inverse()*mapper->getFramePoses().at(stamp).getPose();
+    mapper->rel_pose_factors.push_back(relative);
+  }
+  auto roll=mapper->roll_pitch_factors.front();roll.t_ns=60;mapper->roll_pitch_factors.push_back(roll);
+  basalt::Keypoint<double> point;point.host_kf_id={40,0};point.direction.setZero();point.inv_dist=.25;
+  mapper->lmdb.addLandmark(777,point);
+  for(int64_t stamp:{40,50,60}) {
+    basalt::KeypointObservation<double> observation;observation.kpt_id=777;observation.pos={320.-4*(stamp/10-4),240.};
+    mapper->lmdb.addObservation({stamp,0},observation);mapper->feature_tracks[777][{stamp,0}]=0;
+  }
+  posim_slam::NativeMappingSchedule schedule(*mapper,{50,60});
+  assert(schedule.frontier==std::set<int64_t>({50,60}) && schedule.unobserved.empty());
+  assert(schedule.last_use.at(10)==30 && schedule.last_use.at(20)==30 && schedule.last_use.at(30)==40);
+  const auto collected=posim_slam::nativeMappingRows(*mapper);
+  const auto summary=posim_slam::streamNativeMappingRows(*mapper,
+    [](posim_slam::NativeMappingPoseRows){},[](posim_slam::NativeMappingPointRows){},nullptr,&schedule.order);
+  assert(summary.originals==collected.originals && summary.pose_factors==collected.factors.size());
+  auto incomplete=schedule.order;incomplete.pop_back();
+  rejects([&]{posim_slam::streamNativeMappingRows(*mapper,
+    [](posim_slam::NativeMappingPoseRows){},[](posim_slam::NativeMappingPointRows){},nullptr,&incomplete);},"native_mapping_row_order_incomplete");
+  posim_slam::NativeMappingWindow full(*mapper,10,{10,20,30,40,50,60});
+  posim_slam::NativeMappingWindow window(*mapper,10,{50,60});
+  assert(window.snapshot()->base->nodes.size()==3 && window.snapshot()->base->order.size()==12);
+  assert(window.snapshot()->information->measurements==full.snapshot()->information->measurements);
+  assert((window.proposal()-full.proposal()).norm()<1e-10);
+  const auto expected=full.worldInformation({42,777}),actual=window.worldInformation({42,777});
+  assert(actual.observed==expected.observed && (actual.positions-expected.positions).norm()==0);
+  const double covariance_error=(actual.covariance-expected.covariance).norm()/expected.covariance.norm();
+  assert(covariance_error<1e-10);
+  const double reference_weight=mapper->config.vio_init_pose_weight;mapper->config.vio_init_pose_weight=0;
+  posim_slam::NativeMappingWindow free_full(*mapper,10,{10,20,30,40,50,60});
+  posim_slam::NativeMappingWindow free_window(*mapper,10,{50,60});
+  const auto free_a=free_full.worldInformation({42,777}),free_b=free_window.worldInformation({42,777});
+  assert(!free_a.observed && !free_b.observed);
+  assert((free_a.unbounded_gram-free_b.unbounded_gram).norm()<1e-10);
+  mapper->config.vio_init_pose_weight=reference_weight;
+  // An unused original pose retains its free coordinates, without a new key.
+  mapper->getFramePoses().emplace(70,basalt::PoseStateWithLin<double>(70,Sophus::SE3d()));
+  posim_slam::NativeMappingWindow unused(*mapper,10,{50,60});
+  assert(unused.snapshot()->information->known.size()==42);
+  assert(unused.snapshot()->information->measurements==window.snapshot()->information->measurements);
+  assert(unused.proposal().tail<6>().norm()==0);
+  bool free_pose=false;
+  for(const auto& node:unused.snapshot()->base->nodes)if(node->removed==std::vector<int64_t>({36,37,38,39,40,41})) {
+    free_pose=true;assert(node->noise.cols()==0 && node->unbounded.cols()==6);
+    assert((node->unbounded*node->unbounded.transpose()).isApprox(Eigen::Matrix<double,6,6>::Identity(),1e-12));
+  }
+  assert(free_pose);
+  auto oversized=fixture.mapper();
+  for(int64_t i=4;i<=posim_slam::kMaxJointColumns/6+1;++i)
+    oversized->getFramePoses().emplace(10*i,basalt::PoseStateWithLin<double>(10*i,Sophus::SE3d()));
+  rejects([&]{posim_slam::NativeMappingSchedule rejected(*oversized,{10,20,30});},"native_mapping_linearization_configuration");
+  rejects([&]{posim_slam::nativeMappingRows(*oversized);},"native_mapping_linearization_configuration");
+  std::cout<<"Original lifetime schedule: multiple conditionals, shared-world cross-point covariance, complete ownership and unobserved pose retention pass; covariance error "<<covariance_error<<".\n";
+}
 void nativeWindowControls(const Fixture& fixture) {
   auto mapper=fixture.mapper();
   for(auto& [stamp,state]:mapper->getFramePoses()) {
@@ -505,7 +566,7 @@ int main(int argc,char** argv) {
   if(argc!=2)return 2;const std::filesystem::path directory=argv[1];Fixture fixture;
   inputPageControls(directory);
   nativeArchiveControls(fixture,directory);
-  nativeRowsControls(fixture);nativeRowStreamControls(fixture);
+  nativeRowsControls(fixture);nativeRowStreamControls(fixture);nativeScheduleControls(fixture);
   nativeWindowControls(fixture);
   nativeWorldControls(fixture);
   nativeCheckpointControls(fixture);

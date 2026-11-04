@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 #pragma once
 #include "native_mapping_linearization.hpp"
+#include "native_mapping_schedule.hpp"
 #include "native_mapping_identity.hpp"
 #include "mapping_graph_information.hpp"
 #include <functional>
@@ -97,7 +98,8 @@ class NativeMappingChart {
   }
   template<class FactorSink,class PointSink>
   NativeMappingRowSummary streamRows(basalt::NfrMapper& mapper,
-      FactorSink&& factor_sink,PointSink&& point_sink) const {
+      FactorSink&& factor_sink,PointSink&& point_sink,
+      const std::vector<NativeMappingRowSource>* order=nullptr) const {
     const auto value=coordinates(mapper);
     return streamNativeMappingRows(mapper,
       [&](NativeMappingPoseRows row) {
@@ -105,7 +107,7 @@ class NativeMappingChart {
       },
       [&](NativeMappingPointRows row) {
         transform(mapper,row,value);point_sink(std::move(row));
-      });
+      },nullptr,order);
   }
  private:
   void transform(const std::vector<int64_t>& poses,Eigen::MatrixXd& jacobian,
@@ -169,9 +171,7 @@ class NativeMappingWindow {
        reference_weight_(mapper.config.vio_init_pose_weight) {
     if(active_poses.empty())throw std::invalid_argument("native_window_empty");
     for(auto stamp:active_poses)if(!chart_.offsets().count(stamp))throw std::invalid_argument("native_window_unknown_pose");
-    auto contained=[&](const std::vector<int64_t>& poses) {
-      for(auto stamp:poses)if(!active_poses.count(stamp))return false;return true;
-    };
+    const NativeMappingSchedule schedule(mapper_,active_poses);
     // Reserve the exact retained conditional dimensions before any row is
     // materialized. Each landmark has a 3 x (6 * poses) back-substitution,
     // three offsets and a total of three finite/free noise directions.
@@ -187,28 +187,51 @@ class NativeMappingWindow {
     }
     if(reserved>=limits.numeric_bytes)throw std::runtime_error("native_window_numeric_capacity");
     auto owner_limits=limits;owner_limits.numeric_bytes-=reserved;
-    auto initial_limits=owner_limits;initial_limits.active_columns=6*chart_.poses().size();
+    // Bootstrap keeps the existing temporary-column ceiling. The final active
+    // separator still obeys limits.active_columns. Neither is scaled by history.
+    auto initial_limits=owner_limits;initial_limits.active_columns=kMaxJointColumns;
     SubmapInformation initial(initial_limits);
-    RowBatches history(initial,initial_limits.active_columns);
+    std::unique_ptr<RowBatches> history;int64_t event=0;size_t next_group=0;
     std::vector<SubmapLinearization::Rows> active;
     std::set<int64_t> frontier;
+    auto finish_event=[&] {
+      if(!history)return;
+      history->flush();history.reset();std::vector<int64_t> kept;
+      for(auto column:initial.snapshot()->order) {
+        const auto stamp=chart_.poses().at(column/6);
+        if(schedule.frontier.count(stamp) || schedule.last_use.at(stamp)>event)kept.push_back(column);
+      }
+      if(kept.size()<initial.snapshot()->order.size())initial.seal(kept);
+    };
+    auto selected=[&](const std::vector<int64_t>& poses) {
+      const auto& group=schedule.groups.at(next_group++);
+      if(poses!=group.poses && !std::is_permutation(poses.begin(),poses.end(),group.poses.begin(),group.poses.end()))
+        throw std::logic_error("native_mapping_schedule_source_changed");
+      if(!group.active && event!=group.event) {
+        finish_event();event=group.event;
+        const auto& stamps=schedule.event_poses.at(event);
+        history=std::make_unique<RowBatches>(initial,nativeMappingColumns(
+          std::vector<int64_t>(stamps.begin(),stamps.end()),chart_.offsets()));
+      }
+      return group.active;
+    };
     auto retain=[&](const SubmapLinearization::Rows& row,bool selected) {
       if(selected) {frontier.insert(row.columns.begin(),row.columns.end());active.push_back(row);}
-      else history.append(row);
+      else history->append(row);
     };
     const auto source=chart_.streamRows(mapper_,
       [&](const NativeMappingPoseRows& group) {
-        const bool selected=contained(group.poses);if(selected)selection_.factors.insert(group.original);
-        retain(nativeMappingFactor(group,chart_.offsets()),selected);
+        const bool is_active=selected(group.poses);if(is_active)selection_.factors.insert(group.original);
+        retain(nativeMappingFactor(group,chart_.offsets()),is_active);
       },
       [&](const NativeMappingPointRows& group) {
-        const bool selected=contained(group.poses);if(selected)selection_.points.insert(group.id);
-        auto reduced=reduceNativeMappingPoint(group,chart_.offsets());retain(reduced.likelihood,selected);
+        const bool is_active=selected(group.poses);if(is_active)selection_.points.insert(group.id);
+        auto reduced=reduceNativeMappingPoint(group,chart_.offsets());retain(reduced.likelihood,is_active);
         points_.emplace(group.id,Conditional(std::move(reduced)));
-      });
+      },&schedule.order);
     if(active.empty())throw std::invalid_argument("native_window_no_active_likelihoods");
     if(frontier.size()>limits.active_columns)throw std::runtime_error("native_window_separator_capacity");
-    history.flush();
+    finish_event();
     std::vector<int64_t> kept;
     for(auto column:initial.snapshot()->order)if(frontier.count(column))kept.push_back(column);
     if(kept.size()<initial.snapshot()->order.size())initial.seal(kept);
@@ -418,19 +441,17 @@ class NativeMappingWindow {
     check();owner_->replace(remove,replacement);
     for(auto& [id,reduced]:new_points)points_.at(id)=std::move(reduced);
   }
-  // Same row order and 4,096-row QR batches as the collector path. Historical
-  // likelihood groups are released after append instead of accumulating in a
-  // second vector. The full pose frontier and original-ID ledger remain bounded
-  // by the existing graph limits; this is not an unbounded-history solver.
+  // Batch within one schedule event. Column IDs remain global while each
+  // temporary matrix contains only that event's original factor support.
   class RowBatches {
    public:
-    RowBatches(SubmapInformation& owner,int columns):owner_(owner),order_(columns) {
-      std::iota(order_.begin(),order_.end(),0);
+    RowBatches(SubmapInformation& owner,std::vector<int64_t> columns):owner_(owner),order_(std::move(columns)) {
+      for(size_t i=0;i<order_.size();++i)offsets_.emplace(order_[i],i);
     }
     void append(const SubmapLinearization::Rows& group) {
       if(!j_.size()){j_=Eigen::MatrixXd::Zero(4096,order_.size());r_.resize(4096);}
       if(used_+group.jacobian.rows()>j_.rows())flush();
-      for(size_t c=0;c<group.columns.size();++c)j_.block(used_,group.columns[c],group.jacobian.rows(),1)=group.jacobian.col(c);
+      for(size_t c=0;c<group.columns.size();++c)j_.block(used_,offsets_.at(group.columns[c]),group.jacobian.rows(),1)=group.jacobian.col(c);
       r_.segment(used_,group.residual.size())=group.residual;used_+=group.residual.size();
       keys_.insert(keys_.end(),group.originals.begin(),group.originals.end());
     }
@@ -440,6 +461,7 @@ class NativeMappingWindow {
     }
    private:
     SubmapInformation& owner_;std::vector<int64_t> order_;
+    std::map<int64_t,size_t> offsets_;
     Eigen::MatrixXd j_;Eigen::VectorXd r_;int used_=0;std::vector<std::string> keys_;
   };
   static void conditionArchived(Eigen::VectorXd& value,const SubmapInformation::Data& base) {
