@@ -34,17 +34,39 @@ class MapQualityTests(unittest.TestCase):
 
     def test_ready_requires_persistent_native_mapping_and_the_metric_policy(self):
         self.assertIs(native_settings()['persistent_mapping'],True)
+        self.assertNotIn('map_backend',native_settings())
         value=dict(map_information_transport='persistent_nfr_world_v1',
             persistent_map_transport='retained_keyframe_reoptimization_v1',
             map_graph_snapshot='original_measurements_cbor_v1',map_point_identity='original_observation_anchor_v1',
             mapping_epoch='fixture-segment',
             map_snapshot_view='published_snapshot_v1',map_snapshot_update='retained_revision_v1',map_snapshot_timeout_ms=10000,
-            map_information_enabled=True,map_point_three_sigma_m=.1)
+            map_information_enabled=True,map_point_three_sigma_m=.1,
+            map_backend='conditional_paged_v1',map_active_keyframes=12,
+            map_history_keyframes=10922,map_row_cache_bytes=8388608)
         validate_ready(value)
+        from posim_slam.live_client import LiveClient
+        client=LiveClient.__new__(LiveClient)
+        client.processing_request=dict(native_settings(),map_epoch='fixture-segment',
+                                       map_backend='conditional_paged_v1')
+        client._check_processing_ready(value)
+        with self.assertRaisesRegex(ValueError,'information_contract'):
+            client._check_processing_ready(dict(value,map_backend='full_graph_v1'))
+        legacy={key:item for key,item in value.items() if key not in
+                ('map_backend','map_active_keyframes','map_history_keyframes','map_row_cache_bytes')}
+        validate_ready(legacy)
+        with self.assertRaisesRegex(ValueError,'information_contract'):
+            client._check_processing_ready(legacy)
+        full=dict(value,map_backend='full_graph_v1',map_active_keyframes=0,
+                  map_history_keyframes=203,map_row_cache_bytes=0)
+        validate_ready(full,backend='full_graph_v1')
+        with self.assertRaisesRegex(ValueError,'information_contract'):
+            validate_ready(full,backend='conditional_paged_v1')
         validate_ready(value,epoch='fixture-segment')
         with self.assertRaisesRegex(ValueError,'information_contract'):
             validate_ready(value,epoch='another-segment')
         for key,invalid in [('map_information_transport','joint_linearized_world_v1'),
+                ('map_backend','full_graph_v1'),('map_active_keyframes',0),('map_active_keyframes',True),
+                ('map_history_keyframes',203),('map_row_cache_bytes',0),('map_row_cache_bytes',None),
                 ('map_snapshot_update',None),('map_snapshot_view',None),('map_snapshot_timeout_ms',True),('map_snapshot_timeout_ms',2000),
                 ('persistent_map_transport',None),('map_information_enabled',False),
                 ('map_graph_snapshot',None),('map_point_identity',None),('mapping_epoch',''),('mapping_epoch',None),

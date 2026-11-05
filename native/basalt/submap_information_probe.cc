@@ -518,10 +518,51 @@ void batchedRelativeGauge() {
     close(result.covariance,expected,1e-10);
   }
 }
+void wideWeakAndUnobservedDirections() {
+  // A wide compressed likelihood has correlated strong directions, two weak
+  // independent measurements and two genuinely unobserved coordinates.
+  // Retiring its strong block must preserve all three kinds under rescaling.
+  constexpr int n=48,strong=44,repeats=8;
+  Eigen::MatrixXd a=Eigen::MatrixXd::Zero(n,n);
+  for(int i=0;i<strong;++i)for(int k=0;k<strong;++k)
+    a(i,k)=(i==k?2.:0.)+.02*std::sin(.13*i+.17*k);
+  a(44,44)=1e-8;a(45,45)=2e-8;
+  const Eigen::MatrixXd h=a.topLeftCorner(strong,strong).transpose()*a.topLeftCorner(strong,strong);
+  const Eigen::MatrixXd covariance=h.ldlt().solve(Eigen::MatrixXd::Identity(strong,strong))/repeats;
+  Eigen::VectorXd mean(n);for(int i=0;i<n;++i)mean[i]=.01*(i+1);mean.tail(2).setZero();
+  const std::vector<int> chosen{0,6,17,39,44,45,46,47};
+  Eigen::MatrixXd derivative=Eigen::MatrixXd::Zero(chosen.size(),n);
+  Eigen::VectorXd expected_mean(chosen.size());
+  Eigen::MatrixXd expected=Eigen::MatrixXd::Zero(chosen.size(),chosen.size());
+  for(size_t i=0;i<chosen.size();++i) {
+    derivative(i,chosen[i])=1;expected_mean[i]=mean[chosen[i]];
+    for(size_t k=0;k<chosen.size();++k)if(chosen[i]<strong && chosen[k]<strong)
+      expected(i,k)=covariance(chosen[i],chosen[k]);
+  }
+  expected(4,4)=1e16/repeats;expected(5,5)=1e16/(4*repeats);
+  for(double scale:{1e-4,1.,1e4}) {
+    Store store;Eigen::MatrixXd j(repeats*n,n);
+    for(int i=0;i<repeats;++i)j.middleRows(i*n,n)=scale*a;
+    store.append({"wide-strong-weak-and-unobserved"},coordinates(0,n),j,-j*mean);
+    store.seal(coordinates(strong,n-strong));
+    const auto solved=store.solve(store.snapshot());
+    const auto finite=store.query(solved,coordinates(0,n),derivative.topRows(6));
+    assert(finite.observed);close(finite.mean,expected_mean.head(6),1e-8);
+    // Check the strong and weak blocks separately: the large weak variance
+    // must not hide an error in well-constrained covariance.
+    close(finite.covariance.topLeftCorner(4,4),expected.topLeftCorner(4,4)/(scale*scale),1e-9);
+    close(finite.covariance.bottomRightCorner(2,2),expected.block(4,4,2,2)/(scale*scale),1e-10);
+    const auto all=store.query(solved,coordinates(0,n),derivative);
+    assert(!all.observed);close(all.mean,expected_mean,1e-8);
+    Eigen::MatrixXd free=Eigen::MatrixXd::Zero(chosen.size(),chosen.size());free.bottomRightCorner(2,2).setIdentity();
+    close(all.unbounded_gram,free,1e-9);
+  }
+}
 } // namespace
 int main() {
   denseAndLateAdjustment();unobservedReference();exactZeroQuerySupport();exactConstraintsAndCapacity();pressureDatumAndClosedFrontier();longChain();
   replaceOriginalLikelihoods();replaceRankAndExactSupport();boundedReplacements();selectiveRetirement();correlatedReobservation();batchedOriginals();
   batchedRelativeGauge();
+  wideWeakAndUnobservedDirections();
   std::cout<<"Submap information: batch mean/covariance, shared noise, unobserved gauge, exact support, immutable ownership and bounded-frontier chain pass.\n";
 }

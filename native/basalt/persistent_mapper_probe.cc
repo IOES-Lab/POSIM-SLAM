@@ -3,6 +3,7 @@
 #include "submap_row_store.hpp"
 #include <tbb/global_control.h>
 #include <cassert>
+#include <fstream>
 #include <iostream>
 basalt::MargData::Ptr sample(int64_t first=10,int64_t second=20) {
  auto m=std::make_shared<basalt::MargData>();m->use_imu=true;
@@ -106,6 +107,32 @@ int main(int argc,char** argv) {
   assert(posim_slam::MappingGraphRegistry::restoreInputs(restored.graph)->frames.size()==240);
   map.input.push(sample(2400,2410));map.finish();
   assert(map.snapshot()->error=="mapping_image_capacity" && accepted->keyframes==240);
+ }
+ if(argc==2) {
+  const auto path=archive();const auto rows=path.string()+".rows";
+  posim_slam::PersistentMapper::Snapshot retained;
+  {
+   posim_slam::PersistentMapper map(calibration,config,.1,{},"owned-paged-storage",path,12);
+   assert(std::filesystem::is_directory(rows));
+   map.setReference(10,Sophus::SE3d());map.input.push(first);map.finish();retained=map.snapshot();
+   assert(retained->error.empty() && retained->graph && retained->graph->hasNativeWindow());
+   assert(retained->row_cache_pages>0 && retained->row_cache_peak_bytes>0 &&
+     retained->row_cache_peak_bytes<=posim_slam::PagedMappingPolicy::row_cache_bytes);
+  }
+  // Durable inputs and source anchors outlive the disposable derived cache.
+  assert(!std::filesystem::exists(rows));
+  const auto checkpoint=path.string()+".pmap";
+  posim_slam::MappingGraphRegistry::writeWithInputs(checkpoint,retained->graph,retained->revision,20);
+  assert(posim_slam::MappingGraphRegistry::read(checkpoint).graph->hasNativeWindow());
+  retained.reset();assert(!std::filesystem::exists(rows));
+ }
+ if(argc==2) {
+  const auto path=archive();const auto rows=path.string()+".rows";
+  std::filesystem::create_directory(rows);std::ofstream(rows+"/keep")<<"caller data";
+  posim_slam::PersistentMapper map(calibration,config,.1,{},"occupied-paged-storage",path,12);
+  for(int i=0;i<30;++i)map.input.push(first);
+  map.finish();assert(map.snapshot()->error=="submap_row_storage_exists");
+  std::ifstream marker(rows+"/keep");std::string contents;std::getline(marker,contents);assert(contents=="caller data");
  }
  if(argc==2) {
   posim_slam::PersistentMapper map(calibration,config,.1,{}, {},

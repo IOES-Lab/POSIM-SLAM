@@ -170,7 +170,8 @@ class SubmapInformation {
       throw std::runtime_error("submap_coordinate_capacity");
     // Compact incoming rows before stacking. Work depends on the frontier
     // dimensions, not the total observation count across the mission.
-    Eigen::MatrixXd incoming=j;Eigen::VectorXd value=r;compact(incoming,value,roundoff,roundoff>0);
+    Eigen::MatrixXd incoming=j;Eigen::VectorXd value=r;
+    const bool incoming_compacted=compact(incoming,value,roundoff,roundoff>0);
     next->roundoff=std::hypot(next->roundoff,roundoff);
     const auto previous_rows=next->jacobian.rows(),previous_columns=next->jacobian.cols();
     const auto n=Eigen::Index(next->order.size());
@@ -186,11 +187,17 @@ class SubmapInformation {
     next->constraints.bottomRows(c.rows()).setZero();
     for(size_t i=0;c.rows() && i<columns.size();++i)next->constraints.bottomRows(c.rows()).col(offsets.at(columns[i]))=c.col(i);
     next->target.conservativeResize(old_constraints+target.size());next->target.tail(target.size())=target;
-    compact(next->jacobian,next->residual,next->roundoff,next->roundoff>0);compactConstraints(*next);
-    next->measurements.insert(keys.begin(),keys.end());return commit(std::move(next));
+    // Scattering the only row block into a larger/permuted coordinate list
+    // preserves its independent rows. Stacking with any earlier rows does not.
+    const bool compacted=(!previous_rows && incoming_compacted) ||
+      compact(next->jacobian,next->residual,next->roundoff,next->roundoff>0);
+    compactConstraints(*next);
+    next->measurements.insert(keys.begin(),keys.end());return commit(std::move(next),compacted);
   }
   Snapshot seal(const std::vector<Coordinate>& kept) {
-    std::lock_guard<std::mutex> writer(writer_);auto next=std::make_shared<Data>(*snapshot());
+    std::lock_guard<std::mutex> writer(writer_);const auto previous=snapshot();
+    const bool compacted=compacted_.lock()==previous;
+    auto next=std::make_shared<Data>(*previous);
     const auto offsets=index(next->order);const auto selected=index(kept);auto node=std::make_shared<Node>();node->kept=kept;
     for(Coordinate coordinate:kept)if(!offsets.count(coordinate))throw std::invalid_argument("submap_separator_coordinates");
     for(Coordinate coordinate:next->order)if(!selected.count(coordinate))node->removed.push_back(coordinate);
@@ -202,7 +209,9 @@ class SubmapInformation {
     // Elimination must receive independent likelihood rows and an explicit
     // constant residual. Otherwise QR round-off in redundant rows can become
     // a spurious observable direction when a small marginal is solved alone.
-    compact(j,next->residual,next->roundoff,true);node->roundoff=next->roundoff;
+    // Column permutation preserves a previously compacted immutable snapshot.
+    // Other snapshots conservatively perform the full rank-aware calculation.
+    if(!compacted)compact(j,next->residual,next->roundoff,true);node->roundoff=next->roundoff;
     const auto split=splitConstrainedInformation(j,next->residual,kept.size(),c,next->target);
     node->regression=split.reduced.backsub_matrix;node->offset=split.reduced.backsub_offset;
     node->noise=split.noise;node->unbounded=split.unbounded;node->deterministic=split.deterministic;
@@ -211,7 +220,7 @@ class SubmapInformation {
     next->order=kept;next->jacobian=split.reduced.jacobian;next->residual=split.reduced.residual;
     next->constraints=split.constraint_jacobian;next->target=split.constraint_target;
     compact(next->jacobian,next->residual,next->roundoff,true);next->history_bytes+=node->bytes();next->nodes.push_back(std::move(node));
-    return commit(std::move(next));
+    return commit(std::move(next),true);
   }
   // Recondition affected nodes in elimination order, passing only the new
   // marginal message onward. Original root information enters once, after
@@ -354,10 +363,11 @@ class SubmapInformation {
     for(size_t i=0;i<order.size();++i)if(order[i]<0 || !out.emplace(order[i],i).second)throw std::invalid_argument("submap_coordinates");
     return out;
   }
-  static void compact(Eigen::MatrixXd& j,Eigen::VectorXd& r,double& roundoff,bool preserve_rank=false) {
+  static bool compact(Eigen::MatrixXd& j,Eigen::VectorXd& r,double& roundoff,bool preserve_rank=false) {
     const auto source_rows=j.rows();
-    if(!source_rows || (!preserve_rank && source_rows<=j.cols()+1))return;
-    if(!j.cols()){r=Eigen::VectorXd::Constant(1,r.stableNorm());j.resize(1,0);roundoff=0;return;}
+    if(!source_rows)return true;
+    if(!preserve_rank && source_rows<=j.cols()+1)return false;
+    if(!j.cols()){r=Eigen::VectorXd::Constant(1,r.stableNorm());j.resize(1,0);roundoff=0;return true;}
     if(source_rows>j.cols()+1) {
       Eigen::MatrixXd augmented(source_rows,j.cols()+1);augmented<<j,r;
       Eigen::HouseholderQR<Eigen::MatrixXd> qr(augmented);
@@ -377,7 +387,7 @@ class SubmapInformation {
     Eigen::MatrixXd reduced=Eigen::MatrixXd::Zero(rank+1,j.cols());
     reduced.topRows(rank)=singular.head(rank).asDiagonal()*svd.matrixV().leftCols(rank).transpose();
     r.resize(rank+1);r.head(rank)=projected;r[rank]=constant;j=std::move(reduced);
-    roundoff=rank?tolerance:0;
+    roundoff=rank?tolerance:0;return true;
   }
   static void compactConstraints(Data& data) {
     if(!data.constraints.rows())return;
@@ -387,14 +397,19 @@ class SubmapInformation {
   void requireOwner(const Snapshot& input) const {
     if(!input || input->owner!=identity_)throw std::invalid_argument("submap_snapshot_owner");
   }
-  Snapshot commit(std::shared_ptr<Data> next) {
+  Snapshot commit(std::shared_ptr<Data> next,bool compacted=false) {
     if(!next->jacobian.allFinite() || !next->residual.allFinite() || !next->constraints.allFinite() || !next->target.allFinite() ||
         !std::isfinite(next->roundoff) || next->roundoff<0)
       throw std::runtime_error("submap_nonfinite_information");
     if(next->numericBytes()>limits_.numeric_bytes)throw std::runtime_error("submap_numeric_capacity");
-    ++next->revision;Snapshot immutable=next;std::atomic_store(&data_,immutable);return immutable;
+    ++next->revision;Snapshot immutable=next;
+    compacted_=compacted?immutable:Snapshot{};
+    std::atomic_store(&data_,immutable);return immutable;
   }
   Limits limits_;std::shared_ptr<const int> identity_=std::make_shared<const int>(0);
   mutable std::mutex writer_;Snapshot data_;
+  // Writer-owned cache of a proven invariant, not additional retained data or
+  // serialized information. Forked/restored snapshots recompute conservatively.
+  std::weak_ptr<const Data> compacted_;
 };
 } // namespace posim_slam

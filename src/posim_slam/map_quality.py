@@ -7,6 +7,10 @@ import math
 from .map_snapshot import VIO_EXPORT_WORKER_SECONDS
 
 WORLD_THREE_SIGMA_M = .1
+MAP_BACKEND = 'conditional_paged_v1'
+ACTIVE_KEYFRAMES = 12
+HISTORY_KEYFRAMES = 65536 // 6
+ROW_CACHE_BYTES = 8 * 1024 * 1024
 
 
 def native_settings():
@@ -14,8 +18,22 @@ def native_settings():
                 map_point_three_sigma_m=WORLD_THREE_SIGMA_M)
 
 
-def validate_ready(value, *, epoch=None):
+def validate_ready(value, *, epoch=None, backend=None):
+    selected = value.get('map_backend')
+    if backend is not None and selected != backend:
+        raise ValueError('worker_visual_map_information_contract')
+    if selected == MAP_BACKEND:
+        policy = dict(map_backend=MAP_BACKEND, map_active_keyframes=ACTIVE_KEYFRAMES,
+                      map_history_keyframes=HISTORY_KEYFRAMES, map_row_cache_bytes=ROW_CACHE_BYTES)
+    elif selected == 'full_graph_v1':
+        policy = dict(map_backend=selected, map_active_keyframes=0,
+                      map_history_keyframes=203, map_row_cache_bytes=0)
+    elif selected is None and backend is None:
+        policy = {}
+    else:
+        raise ValueError('worker_visual_map_information_contract')
     if (value.get('map_information_transport') != 'persistent_nfr_world_v1'
+            or any(type(value.get(k)) is not type(v) or value[k] != v for k, v in policy.items())
             or value.get('map_graph_snapshot') != 'original_measurements_cbor_v1'
             or value.get('map_point_identity') != 'original_observation_anchor_v1'
             or not isinstance(value.get('mapping_epoch'), str) or not 0 < len(value['mapping_epoch']) <= 256

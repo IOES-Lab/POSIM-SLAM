@@ -15,15 +15,18 @@ PersistentMapper::PersistentMapper(const basalt::Calibration<double>& calibratio
     const basalt::VioConfig& config,double three_sigma_m,PersistentMapLimits limits,std::string epoch,std::filesystem::path input_archive,
     size_t active_window,std::shared_ptr<SubmapRowStore> row_store)
     :calibration_(calibration),config_(MappingInputStore::configuration(config)),three_sigma_m_(three_sigma_m),limits_(limits),
+     row_store_(std::move(row_store)),
      graph_registry_(calibration_,config_,std::move(epoch)),
      latest_(std::make_shared<PersistentMapSnapshot>()) {
   if(!std::isfinite(three_sigma_m) || three_sigma_m<=0 || three_sigma_m>1)
     throw std::invalid_argument("invalid_persistent_mapping_configuration");
   input.set_capacity(2);
   try {
-    store_=std::make_unique<MappingInputStore>(calibration_,config_,limits,std::move(input_archive),false,graph_registry_.epoch());
+    store_=std::make_unique<MappingInputStore>(calibration_,config_,limits,input_archive,false,graph_registry_.epoch());
+    if(active_window && !row_store_ && !input_archive.empty())
+      row_store_=std::make_shared<SubmapRowStore>(input_archive.string()+".rows",PagedMappingPolicy::row_cache_bytes);
     matching_=store_->makeMatchHistory();
-    graph_=std::make_unique<NativeMappingGraph>(*matching_,0,active_window,std::move(row_store));
+    graph_=std::make_unique<NativeMappingGraph>(*matching_,0,active_window,row_store_);
     retained_.input=store_->snapshot();
   } catch(const std::exception& error) {
     // Keep draining the map handoff queue when storage cannot start. This
@@ -138,6 +141,11 @@ std::shared_ptr<PersistentMapSnapshot> PersistentMapper::build(const Batch& batc
   result->graph_initialized_landmarks=updated.initialized_landmarks;result->graph_numeric_bytes=updated.numeric_bytes;
   result->graph=graph_registry_.capture(batch.input,mapper,batch.reference_stamp,batch.reference_pose,gauge,window,graph_.get());
   static_cast<MappingOutput&>(*result)=mappingOutput(mapper,gauge,quality,result->graph);
+  if(row_store_) {
+    const auto usage=row_store_->statistics();
+    result->row_cache_resident_bytes=usage.resident_bytes;result->row_cache_peak_bytes=usage.peak_resident_bytes;
+    result->row_cache_pages=usage.pages;result->row_cache_reads=usage.reads;
+  }
   result->optimize_seconds=std::chrono::duration<double>(std::chrono::steady_clock::now()-started).count();
   return result;
 }

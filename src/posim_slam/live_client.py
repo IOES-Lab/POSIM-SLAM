@@ -136,6 +136,9 @@ class LiveClient:
 
     def _check_processing_ready(self,value):
         request=self.processing_request
+        if 'map_backend' in request:
+            from .map_quality import validate_ready
+            validate_ready(value,epoch=request.get('map_epoch'),backend=request['map_backend'])
         if 'initial_imu_bias_calibration' in request:
             from .imu_bias_calibration import InitialImuBiasCalibration
             calibration=InitialImuBiasCalibration.read(request['initial_imu_bias_calibration']);rows=calibration.rows()

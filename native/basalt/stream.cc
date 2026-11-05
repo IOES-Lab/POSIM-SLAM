@@ -124,10 +124,16 @@ int main(int argc,char** argv) {
       fail("invalid_joint_map_information_request");
     if(persistent_mapping && (!joint_map_information || sonar_clock || map_point_three_sigma_m<=0))
       fail("invalid_persistent_mapping_request");
+    const auto map_backend=input_settings.value("map_backend",std::string("full_graph_v1"));
+    const bool conditional_mapping=map_backend==posim_slam::PagedMappingPolicy::name;
+    if((map_backend!="full_graph_v1" && !conditional_mapping) || (conditional_mapping && !persistent_mapping))
+      fail("invalid_persistent_mapping_backend");
+    const auto map_limits=conditional_mapping?posim_slam::PagedMappingPolicy::limits():posim_slam::PersistentMapLimits{};
+    const size_t map_active_keyframes=conditional_mapping?posim_slam::PagedMappingPolicy::active_keyframes:0;
     std::unique_ptr<posim_slam::PersistentMapper> persistent_map;
     if(persistent_mapping)persistent_map=std::make_unique<posim_slam::PersistentMapper>(c.cal,config,map_point_three_sigma_m,
-      posim_slam::PersistentMapLimits{},input_settings.value("map_epoch",std::string()),
-      export_file.parent_path()/("worker-map-inputs-"+posim_slam::mapping_graph_detail::epoch()+".sqlite"));
+      map_limits,input_settings.value("map_epoch",std::string()),
+      export_file.parent_path()/("worker-map-inputs-"+posim_slam::mapping_graph_detail::epoch()+".sqlite"),map_active_keyframes);
     owner->posim_map_information_enabled=joint_map_information && !persistent_mapping;
     owner->posim_map_point_three_sigma_m=map_point_three_sigma_m;
     const bool dvl_enabled=input_settings.value("enable_joint_dvl",false);
@@ -782,6 +788,8 @@ int main(int argc,char** argv) {
             {"keyframes",m.keyframes},{"retirements",m.retirements},{"optimize_seconds",m.optimize_seconds},
             {"source_image_bytes",m.source_image_bytes},{"source_factor_matrix_bytes",m.source_factor_matrix_bytes},
             {"compact_input_bytes",m.compact_input_bytes},
+            {"row_cache_resident_bytes",m.row_cache_resident_bytes},{"row_cache_peak_bytes",m.row_cache_peak_bytes},
+            {"row_cache_pages",m.row_cache_pages},{"row_cache_reads",m.row_cache_reads},
             {"pending",m.revision==0},{"error",m.error.empty()?Json(nullptr):Json(m.error)}};
         }
         emit({{"type","map"},{"stamp_ns",data->t_ns},{"point_geometry",geometry},
@@ -814,6 +822,9 @@ int main(int argc,char** argv) {
     emit({{"type","ready"},{"startup_tracks_transport",!sonar_clock && require_gravity_seed ? Json("preinitialize_camera_tracks_v1") : Json(nullptr)},{"inertial_seed_transport","first_imu_state_v1"},{"state_clock",state_clock},{"gravity_seed_transport",sonar_clock ? "first_sensor_direction_v1" : "first_image_direction_v1"},{"gravity_seed_required",require_gravity_seed},{"protocol",1},{"inertial_fused",true},{"map_export",sonar_clock ? Json(nullptr) : Json("segment_landmark_archive_ply_1")},
           {"map_information_transport",persistent_mapping?"persistent_nfr_world_v1":"joint_linearized_world_v1"},
           {"persistent_map_transport",persistent_mapping?Json("retained_keyframe_reoptimization_v1"):Json(nullptr)},
+          {"map_backend",persistent_mapping?Json(map_backend):Json(nullptr)},
+          {"map_active_keyframes",map_active_keyframes},{"map_history_keyframes",map_limits.keyframes},
+          {"map_row_cache_bytes",conditional_mapping?posim_slam::PagedMappingPolicy::row_cache_bytes:0},
           {"map_snapshot_update",persistent_mapping?Json("retained_revision_v1"):Json(nullptr)},
           {"map_snapshot_view",persistent_mapping?Json("published_snapshot_v1"):Json(nullptr)},
           {"map_graph_snapshot",persistent_mapping?Json("original_measurements_cbor_v1"):Json(nullptr)},
