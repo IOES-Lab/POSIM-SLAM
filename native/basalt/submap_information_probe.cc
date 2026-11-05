@@ -69,6 +69,16 @@ void unobservedReference() {
   const auto relative=store.query(solution,coordinates(0,12),j);
   assert(relative.observed);close(relative.mean,move);close(relative.covariance,Eigen::MatrixXd::Identity(6,6));
 }
+void exactZeroQuerySupport() {
+  Store store;store.append({"two-measurements"},{0,1},Eigen::Matrix2d::Identity(),Eigen::Vector2d(-1,-2));
+  store.seal({1});const auto solution=store.solve(store.snapshot());
+  const auto zero=store.query(solution,{0,1},Eigen::MatrixXd::Zero(1,2));
+  assert(zero.observed && zero.mean[0]==0 && zero.covariance(0,0)==0);
+  // A squared-norm zero check would incorrectly discard this coefficient.
+  const auto tiny=store.query(solution,{0},Eigen::MatrixXd::Constant(1,1,1e-200));
+  assert(tiny.mean[0]>0 && std::abs(tiny.mean[0]/1e-200-1)<1e-12);
+  rejects([&]{store.query(solution,{2},Eigen::MatrixXd::Zero(1,1));},"unknown_submap_query_coordinate");
+}
 void exactConstraintsAndCapacity() {
   Store store;Eigen::Matrix3d j;j<<2,1,.2,.3,3,.4,.1,.2,4;Eigen::Vector3d residual(.1,.2,.3);
   Eigen::Matrix<double,2,3> c;c<<1,0,0,0,1,-1;Eigen::Vector2d target(2,3);
@@ -510,7 +520,7 @@ void batchedRelativeGauge() {
 }
 } // namespace
 int main() {
-  denseAndLateAdjustment();unobservedReference();exactConstraintsAndCapacity();pressureDatumAndClosedFrontier();longChain();
+  denseAndLateAdjustment();unobservedReference();exactZeroQuerySupport();exactConstraintsAndCapacity();pressureDatumAndClosedFrontier();longChain();
   replaceOriginalLikelihoods();replaceRankAndExactSupport();boundedReplacements();selectiveRetirement();correlatedReobservation();batchedOriginals();
   batchedRelativeGauge();
   std::cout<<"Submap information: batch mean/covariance, shared noise, unobserved gauge, exact support, immutable ownership and bounded-frontier chain pass.\n";

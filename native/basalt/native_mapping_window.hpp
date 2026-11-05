@@ -17,13 +17,15 @@ inline constexpr double kNativeMappingPi=3.14159265358979323846;
 class NativeMappingChart {
   friend class NativeMappingCheckpoint;
  public:
-  NativeMappingChart(basalt::NfrMapper& mapper,int64_t reference):reference_(reference) {
+  NativeMappingChart(basalt::NfrMapper& mapper,int64_t reference,
+      size_t maximum_coordinates=kMaxNativeMappingPoseCoordinates)
+      :reference_(reference),coordinate_capacity_(maximum_coordinates) {
     for(const auto& [stamp,state]:mapper.getFramePoses()) {
       if(state.isLinearized() || !state.getPose().matrix().allFinite())
         throw std::invalid_argument("native_window_current_pose_required");
       anchors_.emplace(stamp,state.getPose());poses_.push_back(stamp);
     }
-    offsets_=nativeMappingPoseOffsets(poses_);
+    offsets_=nativeMappingPoseAddresses(poses_,coordinate_capacity_);
     reference_angles_=angles(anchors_.at(reference_));
     for(const auto& [id,point]:mapper.lmdb.getLandmarks()) {
       points_.emplace(id,Eigen::Vector3d(point.direction.x(),point.direction.y(),point.inv_dist));
@@ -39,7 +41,7 @@ class NativeMappingChart {
     NativeMappingChart next=*this;
     for(auto stamp:poses_)if(!mapper.getFramePoses().count(stamp))
       throw std::invalid_argument("native_window_pose_removed");
-    if(6*mapper.getFramePoses().size()>size_t(kMaxJointColumns))
+    if(mapper.getFramePoses().size()>coordinate_capacity_/6)
       throw std::runtime_error("native_window_coordinate_capacity");
     for(const auto& [stamp,state]:mapper.getFramePoses())if(!next.offsets_.count(stamp)) {
       if(state.isLinearized() || !state.getPose().matrix().allFinite())
@@ -136,7 +138,7 @@ class NativeMappingChart {
       },
       [&](NativeMappingPointRows row) {
         transform(mapper,row,value);point_sink(std::move(row));
-      },selection,order);
+      },selection,order,coordinate_capacity_);
   }
  private:
   void transform(const std::vector<int64_t>& poses,Eigen::MatrixXd& jacobian,
@@ -159,6 +161,7 @@ class NativeMappingChart {
     return {std::atan2(r(2,1),r(2,2)),std::atan2(-r(2,0),horizontal),std::atan2(r(1,0),r(0,0))};
   }
   int64_t reference_;Eigen::Vector3d reference_angles_;
+  size_t coordinate_capacity_;
   std::vector<int64_t> poses_;std::map<int64_t,int> offsets_;
   Eigen::aligned_map<int64_t,Sophus::SE3d> anchors_;
   std::map<int64_t,Eigen::Vector3d> points_;std::map<int64_t,basalt::TimeCamId> hosts_;
@@ -214,7 +217,7 @@ class NativeMappingWindow {
   NativeMappingWindow(basalt::NfrMapper& mapper,int64_t reference,
       const std::set<int64_t>& active_poses,SubmapInformation::Limits limits={},
       std::shared_ptr<SubmapRowStore> row_store={})
-      :NativeMappingWindow(mapper,NativeMappingChart(mapper,reference),active_poses,limits,nullptr,{},std::move(row_store)) {
+      :NativeMappingWindow(mapper,NativeMappingChart(mapper,reference,limits.coordinates),active_poses,limits,nullptr,{},std::move(row_store)) {
     auto selected=[&](const std::vector<int64_t>& poses) {
       return std::all_of(poses.begin(),poses.end(),[&](auto stamp){return active_poses.count(stamp);});
     };
@@ -267,7 +270,7 @@ class NativeMappingWindow {
     }
     if(layout.frontier.size()>limits_.active_columns)throw std::runtime_error("native_window_separator_capacity");
     auto groups=nativeMappingGroupIdentities(mapper_);NativeMappingSelection selected,replacement;
-    const NativeMappingSchedule schedule(mapper_,active);
+    const NativeMappingSchedule schedule(mapper_,active,limits_.coordinates);
     auto add=[](NativeMappingSelection& selection,const std::string& id) {
       if(id.compare(0,7,"factor:")==0)selection.factors.insert(id.substr(7));
       else if(id.compare(0,6,"point:")==0)selection.points.insert(std::stoll(id.substr(6)));
@@ -410,8 +413,25 @@ class NativeMappingWindow {
     const auto& value=linearization.coordinates;
     const auto reference=mapper_.getFramePoses().at(chart_.reference()).getPose();
     const auto reference_derivative=chart_.derivative(chart_.reference(),value);
-    const int reference_column=chart_.offsets().at(chart_.reference());
-    const int rows=3*ids.size(),columns=value.size();
+    // Only the selected points' conditional sources, hosts and shared
+    // reference contribute. History addresses never size this dense matrix.
+    std::set<int64_t> support;
+    auto include_pose=[&](int64_t stamp) {
+      const auto first=chart_.offsets().at(stamp);
+      for(int i=0;i<6;++i)support.insert(first+i);
+    };
+    include_pose(chart_.reference());
+    for(auto id:ids) {
+      const auto found=points_.find(id);
+      if(found==points_.end())throw std::invalid_argument("native_window_unknown_point");
+      support.insert(found->second.columns.begin(),found->second.columns.end());
+      include_pose(mapper_.lmdb.getLandmark(id).host_kf_id.frame_id);
+    }
+    const std::vector<int64_t> order(support.begin(),support.end());
+    std::map<int64_t,int> local_column;
+    for(size_t i=0;i<order.size();++i)local_column.emplace(order[i],int(i));
+    const int reference_column=local_column.at(chart_.offsets().at(chart_.reference()));
+    const int rows=3*ids.size(),columns=order.size();
     Eigen::MatrixXd derivative=Eigen::MatrixXd::Zero(rows,columns);
     Eigen::MatrixXd shared=Eigen::MatrixXd::Zero(rows,4);
     WorldPoints out;out.positions.resize(rows);
@@ -436,8 +456,8 @@ class NativeMappingWindow {
       host.leftCols<3>().setIdentity();host.rightCols<3>()=-Sophus::SO3d::hat(world-host_pose.translation());
       const Eigen::MatrixXd propagated=landmark*conditional.backsub;
       for(size_t c=0;c<conditional.columns.size();++c)
-        derivative.block<3,1>(3*i,conditional.columns[c])+=propagated.col(c);
-      derivative.block<3,6>(3*i,chart_.offsets().at(point.host_kf_id.frame_id))+=
+        derivative.block<3,1>(3*i,local_column.at(conditional.columns[c]))+=propagated.col(c);
+      derivative.block<3,6>(3*i,local_column.at(chart_.offsets().at(point.host_kf_id.frame_id)))+=
         host*chart_.derivative(point.host_kf_id.frame_id,value);
       out.positions.segment<3>(3*i)=world;
       shared.block<3,3>(3*i,0).setIdentity();
@@ -452,7 +472,6 @@ class NativeMappingWindow {
       out.unbounded_gram.block<3,3>(3*i,3*i)=free*free.transpose();
       if(free.norm()>1e-8*std::max(1.,landmark.norm()*conditional.unbounded.norm()))observed=false;
     }
-    std::vector<int64_t> order(columns);std::iota(order.begin(),order.end(),0);
     const auto query=owner_->query(linearization.solution,order,derivative);
     out.covariance+=query.covariance;out.unbounded_gram+=query.unbounded_gram;
     if(reference_weight_>0)out.covariance.noalias()+=shared*shared.transpose()/reference_weight_;
@@ -463,7 +482,7 @@ class NativeMappingWindow {
   }
   Step step(const std::function<bool()>& cancelled={}) {
     auto check=[&] {if(cancelled && cancelled())throw std::runtime_error("native_window_cancelled");};
-    check();const auto before_rows=nativeMappingRows(mapper_,&selection_);
+    check();const auto before_rows=nativeMappingRows(mapper_,&selection_,limits_.coordinates);
     const auto current=chart_.coordinates(mapper_);const auto proposed=proposal();
     Step result;result.before=objective(current,before_rows);result.after=result.before;
     result.active_originals=before_rows.originals+before_rows.factors.size();
@@ -480,7 +499,7 @@ class NativeMappingWindow {
         else next=pointValue(id,reduced,value);
         auto& point=mapper_.lmdb.getLandmark(id);point.direction=next.head<2>();point.inv_dist=std::max(0.,next.z());
       }
-      const auto trial_rows=nativeMappingRows(mapper_,&selection_);
+      const auto trial_rows=nativeMappingRows(mapper_,&selection_,limits_.coordinates);
       bool visible=true;
       for(size_t i=0;i<before_rows.points.size();++i)for(size_t k=0;k<before_rows.points[i].valid.size();++k)
         if(before_rows.points[i].valid[k] && !trial_rows.points.at(i).valid.at(k))visible=false;
@@ -494,7 +513,7 @@ class NativeMappingWindow {
  private:
   static size_t rowBudget(basalt::NfrMapper& mapper,const NativeMappingChart& chart,
       const std::set<int64_t>& active,const SubmapInformation::Limits& limits) {
-    const NativeMappingSchedule schedule(mapper,active);size_t reserved=chart.numericBytes();
+    const NativeMappingSchedule schedule(mapper,active,limits.coordinates);size_t reserved=chart.numericBytes();
     for(const auto& group:schedule.groups) {
       reserved+=sizeof(double)*(7*group.poses.size()+
         (group.source.kind==NativeMappingRowSource::landmark?3:0));

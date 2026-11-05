@@ -296,7 +296,9 @@ class SubmapInformation {
     std::map<Coordinate,Eigen::VectorXd> coefficients;
     for(size_t i=0;i<coordinates.size();++i) {
       if(!solution.input->known.count(coordinates[i]))throw std::invalid_argument("unknown_submap_query_coordinate");
-      coefficients.emplace(coordinates[i],derivative.col(i));
+      // Skip exactly zero support only. A tolerance (or squared norm, which
+      // can underflow) would discard valid small coefficients.
+      if((derivative.col(i).array()!=0.).any())coefficients.emplace(coordinates[i],derivative.col(i));
     }
     Query result;result.mean=Eigen::VectorXd::Zero(rows);result.covariance=Eigen::MatrixXd::Zero(rows,rows);
     result.unbounded_gram=Eigen::MatrixXd::Zero(rows,rows);
@@ -318,8 +320,13 @@ class SubmapInformation {
       result.mean.noalias()+=weights*node.offset;uncertainty(weights,node.noise,node.unbounded);
       const Eigen::MatrixXd next=weights*node.regression;
       for(size_t i=0;i<node.kept.size();++i) {
+        if(!(next.col(i).array()!=0.).any())continue;
         auto found=coefficients.find(node.kept[i]);
-        if(found==coefficients.end())coefficients.emplace(node.kept[i],next.col(i));else found->second+=next.col(i);
+        if(found==coefficients.end())coefficients.emplace(node.kept[i],next.col(i));
+        else {
+          found->second+=next.col(i);
+          if(!(found->second.array()!=0.).any())coefficients.erase(found);
+        }
       }
     }
     Eigen::MatrixXd weights=Eigen::MatrixXd::Zero(rows,n);

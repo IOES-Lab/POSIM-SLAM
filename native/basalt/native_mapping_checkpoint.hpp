@@ -87,11 +87,11 @@ class NativeMappingCheckpoint {
       }
       // Only this event's originals are relinearized. Other historical groups
       // retain their own anchors; remaining active groups are restored below.
-      if(!plan.originals.empty())window->replaceSelected(nativeMappingRows(mapper,&plan.selected),plan.originals,check);
+      if(!plan.originals.empty())window->replaceSelected(nativeMappingRows(mapper,&plan.selected,limits.coordinates),plan.originals,check);
       check();window->commitRetirement(std::move(plan));
     }
     backup.restore();window->chart_.coordinates(mapper);check();
-    window->replaceActive(nativeMappingRows(mapper,&window->selection_),check);
+    window->replaceActive(nativeMappingRows(mapper,&window->selection_,limits.coordinates),check);
     backup.committed=true;return window;
   }
  private:
@@ -111,13 +111,13 @@ class NativeMappingCheckpoint {
       const Parsed& parsed,SubmapInformation::Limits limits,const std::function<bool()>& cancelled,
       std::shared_ptr<SubmapRowStore> row_store) {
     auto check=[&]{if(cancelled && cancelled())throw std::runtime_error("native_window_cancelled");};check();
-    NativeMappingChart chart(mapper,parsed.reference);chart.anchors_=parsed.poses;
+    NativeMappingChart chart(mapper,parsed.reference,limits.coordinates);chart.anchors_=parsed.poses;
     chart.points_.clear();chart.points_.insert(parsed.points.begin(),parsed.points.end());
-    chart.poses_=parsed.pose_order;chart.offsets_=nativeMappingPoseOffsets(chart.poses_);
+    chart.poses_=parsed.pose_order;chart.offsets_=nativeMappingPoseAddresses(chart.poses_,limits.coordinates);
     chart.reference_angles_=chart.angles(chart.anchors_.at(parsed.reference));chart.coordinates(mapper);
     auto window=std::unique_ptr<NativeMappingWindow>(new NativeMappingWindow(mapper,std::move(chart),parsed.active,
         limits,&parsed.layout,parsed.unassigned,std::move(row_store)));
-    const NativeMappingSchedule schedule(mapper,parsed.active);NativeMappingWindow::Backup backup(mapper);
+    const NativeMappingSchedule schedule(mapper,parsed.active,limits.coordinates);NativeMappingWindow::Backup backup(mapper);
     std::vector<SubmapFactorization::Factor> factors;
     for(const auto& group:schedule.groups) {
       check();const auto id=window->groupId(group.source);const auto& anchor=*parsed.anchors.at(id);
@@ -155,7 +155,7 @@ class NativeMappingCheckpoint {
         value.at("basalt_revision")!="0f3b2b52c807f70ff4e2973ce253c73329eea7bc")
       throw std::invalid_argument("native_window_checkpoint_schema");
     const auto& poses=value.at("poses");const auto& points=value.at("points");const auto& active=value.at("active");
-    if(!poses.is_array() || poses.size()!=mapper.getFramePoses().size() || poses.size()>kMaxJointColumns/6 ||
+    if(!poses.is_array() || poses.size()!=mapper.getFramePoses().size() || poses.size()>kMaxNativeMappingPoseCoordinates/6 ||
         !points.is_array() || points.size()!=mapper.lmdb.getLandmarks().size() || points.size()>100000 ||
         !active.is_array() || active.empty() || active.size()>poses.size())
       throw std::invalid_argument("native_window_checkpoint_shape");
@@ -198,7 +198,7 @@ class NativeMappingCheckpoint {
       const auto& events=value.at("retirements");
       if(!events.is_array() || events.size()>=result.initial_active.size())
         throw std::invalid_argument("native_window_checkpoint_retirements");
-      auto previous=result.initial_active;const NativeMappingSchedule schedule(mapper,result.initial_active);
+      auto previous=result.initial_active;const NativeMappingSchedule schedule(mapper,result.initial_active,kMaxNativeMappingPoseCoordinates);
       for(const auto& event:events) {
         auto record=std::make_shared<NativeMappingWindow::Retirement>();record->kept=active_set(event.at("kept"));
         if(record->kept.size()>=previous.size() ||
@@ -242,7 +242,7 @@ class NativeMappingCheckpoint {
     const auto& order=value.at("pose_order");
     if(!order.is_array() || order.size()!=out.poses.size())throw std::invalid_argument("native_window_checkpoint_pose_order");
     for(const auto& stamp:order)out.pose_order.push_back(integer(stamp,1,INT64_MAX));
-    const auto offsets=nativeMappingPoseOffsets(out.pose_order);
+    const auto offsets=nativeMappingPoseAddresses(out.pose_order);
     for(const auto& [stamp,index]:offsets)if(!out.poses.count(stamp))throw std::invalid_argument("native_window_checkpoint_pose_order");
     const auto& layout=value.at("layout");
     if(!layout.is_array() || layout.size()!=2 || !layout[0].is_array() || !layout[1].is_array() ||
@@ -265,7 +265,7 @@ class NativeMappingCheckpoint {
         throw std::invalid_argument("native_window_checkpoint_layout");
       out.layout.frontier.push_back(column);
     }
-    const NativeMappingSchedule schedule(mapper,out.active);
+    const NativeMappingSchedule schedule(mapper,out.active,kMaxNativeMappingPoseCoordinates);
     std::map<std::string,std::pair<std::set<int64_t>,bool>> expected;
     for(const auto& group:schedule.groups) {
       const auto& source=group.source;std::string id;

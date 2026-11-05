@@ -18,9 +18,11 @@ struct NativeMappingSchedule {
   std::set<int64_t> frontier,unobserved;
   std::map<int64_t,int64_t> last_use;
   std::map<int64_t,std::set<int64_t>> event_poses;
-  NativeMappingSchedule(basalt::NfrMapper& mapper,const std::set<int64_t>& active) {
+  NativeMappingSchedule(basalt::NfrMapper& mapper,const std::set<int64_t>& active,
+      size_t maximum_pose_coordinates=kMaxJointColumns) {
     const auto& states=mapper.getFramePoses();
-    if(states.empty() || states.size()>size_t(kMaxJointColumns/6) ||
+    if(!maximum_pose_coordinates || maximum_pose_coordinates>kMaxNativeMappingPoseCoordinates ||
+        states.empty() || states.size()>maximum_pose_coordinates/6 ||
         mapper.lmdb.getLandmarks().size()>100000 ||
         mapper.rel_pose_factors.size()+mapper.roll_pitch_factors.size()>65536)
       throw std::invalid_argument("native_mapping_linearization_configuration");

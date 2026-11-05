@@ -6,6 +6,10 @@
 #include <basalt/utils/ba_utils.h>
 
 namespace posim_slam {
+// Stable history addresses are metadata, not columns of a single dense solve.
+// Conditional owners use the existing information-store namespace budget;
+// whole-graph collectors keep the separate dense-algebra bound by default.
+inline constexpr size_t kMaxNativeMappingPoseCoordinates=SubmapInformation::Limits{}.coordinates;
 // Rows use Basalt's host stereographic direction/inverse-distance landmark
 // coordinates and its world-translation/left-rotation pose increment. They are
 // optimizer likelihoods, not a finite-world-point export or covariance gate.
@@ -58,10 +62,12 @@ template<class FactorSink,class PointSink>
 inline NativeMappingRowSummary streamNativeMappingRows(basalt::NfrMapper& mapper,
     FactorSink&& factor_sink,PointSink&& point_sink,
     const NativeMappingSelection* selection=nullptr,
-    const std::vector<NativeMappingRowSource>* order=nullptr) {
+    const std::vector<NativeMappingRowSource>* order=nullptr,
+    size_t maximum_pose_coordinates=kMaxJointColumns) {
   NativeMappingRowSummary out;
   const auto& states=mapper.getFramePoses();
-  if(states.empty() || 6*states.size()>size_t(kMaxJointColumns) ||
+  if(!maximum_pose_coordinates || maximum_pose_coordinates>kMaxNativeMappingPoseCoordinates ||
+      states.empty() || states.size()>maximum_pose_coordinates/6 ||
       mapper.lmdb.getLandmarks().size()>100000 ||
       mapper.rel_pose_factors.size()+mapper.roll_pitch_factors.size()>65536 ||
       !std::isfinite(mapper.obs_std_dev) || mapper.obs_std_dev<=0 ||
@@ -196,11 +202,12 @@ inline NativeMappingRowSummary streamNativeMappingRows(basalt::NfrMapper& mapper
 // Bounded-graph collector for callers which need simultaneous access to rows.
 // Streaming consumers avoid these vectors and their aggregate numeric storage.
 inline NativeMappingRows nativeMappingRows(basalt::NfrMapper& mapper,
-    const NativeMappingSelection* selection=nullptr) {
+    const NativeMappingSelection* selection=nullptr,
+    size_t maximum_pose_coordinates=kMaxJointColumns) {
   NativeMappingRows out;
   auto summary=streamNativeMappingRows(mapper,
     [&](NativeMappingPoseRows row){out.factors.push_back(std::move(row));},
-    [&](NativeMappingPointRows row){out.points.push_back(std::move(row));},selection);
+    [&](NativeMappingPointRows row){out.points.push_back(std::move(row));},selection,nullptr,maximum_pose_coordinates);
   out.poses=std::move(summary.poses);out.vision_cost=summary.vision_cost;out.pose_cost=summary.pose_cost;
   out.originals=summary.originals;out.valid_projections=summary.valid_projections;
   return out;
@@ -211,14 +218,19 @@ struct NativeMappingPointReduction {
   Eigen::VectorXd offset;
   Eigen::MatrixXd noise,unbounded;
 };
-inline std::map<int64_t,int> nativeMappingPoseOffsets(const std::vector<int64_t>& poses) {
+inline std::map<int64_t,int> nativeMappingPoseAddresses(const std::vector<int64_t>& poses,
+    size_t maximum_coordinates=kMaxNativeMappingPoseCoordinates) {
   std::map<int64_t,int> offsets;
-  if(poses.empty() || 6*poses.size()>size_t(kMaxJointColumns))
+  if(!maximum_coordinates || maximum_coordinates>kMaxNativeMappingPoseCoordinates ||
+      poses.empty() || poses.size()>maximum_coordinates/6)
     throw std::invalid_argument("native_mapping_pose_order");
   for(size_t i=0;i<poses.size();++i)
     if(poses[i]<=0 || !offsets.emplace(poses[i],int(6*i)).second)
       throw std::invalid_argument("native_mapping_pose_order");
   return offsets;
+}
+inline std::map<int64_t,int> nativeMappingPoseOffsets(const std::vector<int64_t>& poses) {
+  return nativeMappingPoseAddresses(poses,kMaxJointColumns);
 }
 inline std::vector<int64_t> nativeMappingColumns(const std::vector<int64_t>& poses,
     const std::map<int64_t,int>& offsets) {

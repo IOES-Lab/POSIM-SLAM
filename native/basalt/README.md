@@ -280,6 +280,15 @@ reference position and heading select a conditional mean coordinate convention;
 they supply no measurement or world covariance. Reference roll and pitch remain
 variables. This interface applies to relative/gravity NFR graphs.
 
+Pose history uses stable scalar addresses within the caller's `coordinates`
+budget (default 65,536). Local factor, landmark-span and elimination matrices
+keep their separate 1,218-column ceiling; node, original-key and numeric-byte
+quotas also apply. `prepareGrowth` preserves existing addresses when appending
+poses, and checkpoint restoration applies the new caller's capacity policy.
+World-point queries assemble only the requested points' source, host and
+reference columns, retaining shared errors. The complete input/matching owner
+and default mapper retain their 203-keyframe limit.
+
 `NativeMappingWindow::retire(kept)` reduces the active pose set. Groups crossing
 its new boundary enter the historical information at their last accepted
 linearization; remaining groups stay replaceable. Original observations,
@@ -433,6 +442,14 @@ are additional to `cache_bytes`.
 확정된 정보와 같은 기준을 사용합니다. 기존 기준 위치·방위는 조건부 평균의
 좌표를 선택하며 측정이나 세계 공분산을 추가하지 않습니다. 기준 자세의 롤·피치는
 계속 추정합니다. 상대 자세·중력 NFR 그래프에 사용하는 인터페이스입니다.
+
+자세 이력은 호출자의 `coordinates` 한도(기본 스칼라 주소 65,536개) 안에서
+고정 주소를 사용합니다. 개별 제약·랜드마크 관측 구간·소거 행렬에는 별도의
+1,218열 한도를 적용하며 노드·원본 키·수치 데이터 용량도 제한합니다.
+`prepareGrowth`는 자세를 추가할 때 기존 주소를 보존하고, 체크포인트 복원은
+새 호출자의 용량 정책을 적용합니다. 세계 좌표 점 조회는 요청한 점의 원본·
+기준 영상 자세·세계 기준에 필요한 열만 모으며 공유 오차를 유지합니다.
+전체 입력·대응 관계 소유자와 기본 지도 생성기의 키프레임 한도는 203개입니다.
 
 `NativeMappingWindow::retire(kept)`는 활성 자세 집합을 줄입니다. 새 경계를
 가로지르는 그룹은 마지막으로 채택된 선형화 기준에서 과거 정보에 반영하고,
