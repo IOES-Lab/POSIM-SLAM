@@ -57,27 +57,27 @@ class NativeMappingCheckpoint {
   }
   static std::unique_ptr<NativeMappingWindow> restore(basalt::NfrMapper& mapper,
       const MappingGraphRegistry::Snapshot& graph,SubmapInformation::Limits limits={},
-      const std::function<bool()>& cancelled={}) {
+      const std::function<bool()>& cancelled={},std::shared_ptr<SubmapRowStore> row_store={}) {
     if(!graph || !graph->validated || !graph->hasNativeWindow())
       throw std::invalid_argument("native_window_checkpoint_missing");
-    return restore(mapper,graph->native_window_state?document(*graph->native_window_state):graph->native_window,limits,cancelled);
+    return restore(mapper,graph->native_window_state?document(*graph->native_window_state):graph->native_window,limits,cancelled,std::move(row_store));
   }
   // The caller restores the matching graph first and exclusively owns it.
   // Rejection or cancellation leaves its poses and landmarks byte-identical.
   // Limits remain caller policy, not a value trusted from the saved document.
   static std::unique_ptr<NativeMappingWindow> restore(basalt::NfrMapper& mapper,const Json& saved,
-      SubmapInformation::Limits limits={},const std::function<bool()>& cancelled={}) {
+      SubmapInformation::Limits limits={},const std::function<bool()>& cancelled={},std::shared_ptr<SubmapRowStore> row_store={}) {
     using namespace mapping_graph_detail;
     auto check=[&]{if(cancelled && cancelled())throw std::runtime_error("native_window_cancelled");};check();
     const auto parsed=decode(mapper,saved);
-    if(parsed.source_owned)return restoreSources(mapper,parsed,limits,cancelled);
+    if(parsed.source_owned)return restoreSources(mapper,parsed,limits,cancelled,std::move(row_store));
     NativeMappingWindow::Backup backup(mapper);
     for(const auto& [stamp,anchor]:parsed.poses)
       mapper.getFramePoses().at(stamp)=basalt::PoseStateWithLin<double>(stamp,anchor);
     for(const auto& [id,parameters]:parsed.points) {
       auto& point=mapper.lmdb.getLandmark(id);point.direction=parameters.head<2>();point.inv_dist=parameters[2];
     }
-    check();auto window=std::make_unique<NativeMappingWindow>(mapper,parsed.reference,parsed.initial_active,limits);
+    check();auto window=std::make_unique<NativeMappingWindow>(mapper,parsed.reference,parsed.initial_active,limits,std::move(row_store));
     for(const auto& record:parsed.retirements) {
       check();auto plan=window->retirementPlan(record->kept);
       for(const auto& [stamp,anchor]:record->poses)
@@ -108,14 +108,15 @@ class NativeMappingCheckpoint {
     std::vector<std::string> unassigned;
   };
   static std::unique_ptr<NativeMappingWindow> restoreSources(basalt::NfrMapper& mapper,
-      const Parsed& parsed,SubmapInformation::Limits limits,const std::function<bool()>& cancelled) {
+      const Parsed& parsed,SubmapInformation::Limits limits,const std::function<bool()>& cancelled,
+      std::shared_ptr<SubmapRowStore> row_store) {
     auto check=[&]{if(cancelled && cancelled())throw std::runtime_error("native_window_cancelled");};check();
     NativeMappingChart chart(mapper,parsed.reference);chart.anchors_=parsed.poses;
     chart.points_.clear();chart.points_.insert(parsed.points.begin(),parsed.points.end());
     chart.poses_=parsed.pose_order;chart.offsets_=nativeMappingPoseOffsets(chart.poses_);
     chart.reference_angles_=chart.angles(chart.anchors_.at(parsed.reference));chart.coordinates(mapper);
     auto window=std::unique_ptr<NativeMappingWindow>(new NativeMappingWindow(mapper,std::move(chart),parsed.active,
-        limits,&parsed.layout,parsed.unassigned));
+        limits,&parsed.layout,parsed.unassigned,std::move(row_store)));
     const NativeMappingSchedule schedule(mapper,parsed.active);NativeMappingWindow::Backup backup(mapper);
     std::vector<SubmapFactorization::Factor> factors;
     for(const auto& group:schedule.groups) {

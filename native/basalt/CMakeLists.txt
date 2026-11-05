@@ -55,6 +55,8 @@ string(SUBSTRING "${BA_SOURCE}" ${MAP_START} ${MAP_LENGTH} MAP_ORIGINAL)
 file(READ ${CMAKE_CURRENT_SOURCE_DIR}/map_points.inc MAP_REPLACEMENT)
 string(REPLACE "${MAP_ORIGINAL}" "${MAP_REPLACEMENT}\n" BA_PATCHED "${BA_SOURCE}")
 file(CONFIGURE OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/ba_base.cpp" CONTENT "${BA_PATCHED}" @ONLY)
+add_library(posim_slam_submap_rows STATIC submap_row_store.cc)
+target_link_libraries(posim_slam_submap_rows PUBLIC Eigen3::Eigen SQLite::SQLite3)
 add_library(basalt_core STATIC
  ${B}/src/linearization/landmark_block.cpp
  ${B}/src/linearization/linearization_abs_qr.cpp
@@ -86,7 +88,7 @@ target_include_directories(basalt_core PUBLIC
  ${SOURCE_ROOT}/cereal/include ${SOURCE_ROOT}/magic_enum/include
  ${SOURCE_ROOT}/opengv/include ${SOURCE_ROOT}/json/single_include ${OpenCV_INCLUDE_DIRS})
 target_compile_options(basalt_core PRIVATE -Wno-error=missing-template-arg-list-after-template-kw)
-target_link_libraries(basalt_core PUBLIC Eigen3::Eigen TBB::tbb fmt::fmt SQLite::SQLite3 opengv ${OpenCV_LIBS})
+target_link_libraries(basalt_core PUBLIC posim_slam_submap_rows Eigen3::Eigen TBB::tbb fmt::fmt SQLite::SQLite3 opengv ${OpenCV_LIBS})
 add_executable(basalt_synthetic_probe synthetic_probe.cc)
 target_link_libraries(basalt_synthetic_probe PRIVATE basalt_core)
 add_executable(basalt_initial_prior_probe initial_prior_probe.cc)
@@ -128,7 +130,7 @@ add_executable(basalt_submap_information_probe submap_information_probe.cc)
 target_link_libraries(basalt_submap_information_probe PRIVATE Eigen3::Eigen)
 target_compile_options(basalt_submap_information_probe PRIVATE -UNDEBUG)
 add_executable(basalt_submap_factorization_probe submap_factorization_probe.cc)
-target_link_libraries(basalt_submap_factorization_probe PRIVATE Eigen3::Eigen)
+target_link_libraries(basalt_submap_factorization_probe PRIVATE posim_slam_submap_rows Eigen3::Eigen)
 target_compile_options(basalt_submap_factorization_probe PRIVATE -UNDEBUG)
 add_executable(basalt_mapping_graph_probe mapping_graph_probe.cc)
 target_link_libraries(basalt_mapping_graph_probe PRIVATE basalt_core)

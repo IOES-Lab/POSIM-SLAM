@@ -3,6 +3,8 @@
 #include <cassert>
 #include <iostream>
 #include <numeric>
+#include <sqlite3.h>
+#include <thread>
 
 namespace {
 using Graph=posim_slam::SubmapFactorization;
@@ -40,10 +42,11 @@ void verify(Graph& graph,const Matrix& projection=Matrix()) {
   for(auto column:state->information->known)order.push_back(column);
   std::map<int64_t,size_t> offsets;for(size_t i=0;i<order.size();++i)offsets[order[i]]=i;
   size_t rows=0,exact=0;
-  for(const auto& [id,source]:state->factors){rows+=source->jacobian.rows();exact+=source->constraints.rows();}
+  for(const auto& [id,source]:state->factors){rows+=source->rows();exact+=source->exactRows();}
   Matrix j=Matrix::Zero(rows,order.size()),c=Matrix::Zero(exact,order.size());Vector r(rows),target(exact);
   size_t n=0,m=0;std::set<std::string> originals;
-  for(const auto& [id,source]:state->factors) {
+  for(const auto& [id,page]:state->factors) {
+    const auto source=page->pin();
     for(const auto& key:source->originals)assert(originals.insert(key).second);
     for(size_t i=0;i<source->columns.size();++i) {
       j.block(n,offsets.at(source->columns[i]),source->jacobian.rows(),1)=source->jacobian.col(i);
@@ -72,8 +75,8 @@ std::vector<Graph::Factor> factors() {
     edge("c","pixel:c",2,5,.5,2),edge("d","pixel:d",3,4,1,1.4),
     edge("e","pixel:e",4,5,.2,5),ref};
 }
-void replacementAndGrowth() {
-  Graph graph({{5},{{0},{1},{2},{3},{4}}});graph.replace({},factors());verify(graph);
+void replacementAndGrowth(std::shared_ptr<posim_slam::SubmapRowStore> store={}) {
+  Graph graph({{5},{{0},{1},{2},{3},{4}}},{},{},store);graph.replace({},factors());verify(graph);
   const auto old=graph.snapshot();const auto old_solution=graph.solve(old);
   const auto old_result=graph.query(old_solution,{0,1,2,3,4,5},Matrix::Identity(6,6));
   graph.replace({"a"},{edge("a","pixel:a",0,2,.8,4)});verify(graph);
@@ -108,8 +111,8 @@ void replacementAndGrowth() {
   Graph other(layout);rejects([&]{other.solve(graph.snapshot());},"submap_factor_owner");
   rejects([&]{other.query(old_solution,{0},Matrix::Identity(1,1));},"submap_snapshot_owner");
 }
-void rollbackAndConstraints() {
-  Graph graph({{5},{{0},{1},{2},{3},{4}}});graph.replace({},factors());
+void rollbackAndConstraints(std::shared_ptr<posim_slam::SubmapRowStore> store={}) {
+  Graph graph({{5},{{0},{1},{2},{3},{4}}},{},{},store);graph.replace({},factors());
   const auto before=graph.snapshot();int calls=0;
   rejects([&]{graph.replace({"a"},{edge("a","pixel:a",0,2,.5,1)}, {},nullptr,[&]{return ++calls==5;});},"submap_factor_cancelled");
   assert(graph.snapshot()==before);
@@ -150,8 +153,59 @@ void quotasAndBatching() {
   batches.replace({},all);Matrix relative(1,2);relative<<1,-1;verify(batches,relative);
   assert(batches.snapshot()->information->measurements.size()==3);
 }
+void sql(const std::filesystem::path& directory,const char* statement) {
+  sqlite3* db=nullptr;assert(sqlite3_open((directory/"rows.sqlite").string().c_str(),&db)==SQLITE_OK);
+  const auto result=sqlite3_exec(db,statement,nullptr,nullptr,nullptr);sqlite3_close(db);assert(result==SQLITE_OK);
+}
+void paged(const std::filesystem::path& root) {
+  using Store=posim_slam::SubmapRowStore;
+  assert(std::filesystem::create_directory(root));
+  {
+    auto store=std::make_shared<Store>(root/"graph",128);
+    rejects([&]{Store duplicate(root/"graph",128);},"submap_row_storage_exists");
+    replacementAndGrowth(store);rollbackAndConstraints(store);
+    assert(store->statistics().pages==0 && store->statistics().resident_bytes==0);
+    assert(store->statistics().reads>30 && store->statistics().peak_resident_bytes<=128);
+    Graph graph({{5},{{0},{1},{2},{3},{4}}},{},{},store);graph.replace({},factors());
+    const auto before=graph.snapshot();const auto count=store->statistics().pages;
+    rejects([&]{graph.replace({"a"},{edge("a","pixel:a",0,2,.9,2),edge("bad","new:bad",0,99,0,1)});},"submap_factor_coordinates");
+    assert(graph.snapshot()==before && store->statistics().pages==count);verify(graph);
+    sql(root/"graph","CREATE TRIGGER fail_insert BEFORE INSERT ON pages BEGIN SELECT RAISE(FAIL,'test'); END");
+    rejects([&]{graph.replace({"a"},{edge("a","pixel:a",0,2,.9,2)});},"submap_row_storage_io");
+    assert(graph.snapshot()==before && store->statistics().pages==count);verify(graph);
+    sql(root/"graph","DROP TRIGGER fail_insert");
+    store->evict();sql(root/"graph","UPDATE pages SET payload=zeroblob(length(payload))");
+    rejects([&]{graph.replace({"a"},{edge("a","pixel:a",0,2,.9,2)});},"submap_row_storage_digest");
+    assert(graph.snapshot()==before && store->statistics().pages==count);
+  }
+  {
+    auto store=std::make_shared<Store>(root/"leases",24);
+    auto first=store->put(edge("a","a",0,1,.2,3).rows),second=store->put(edge("b","b",0,1,.3,4).rows);
+    auto lease=first->pin();store->evict();assert(store->statistics().resident_bytes==24);
+    rejects([&]{second->pin();},"submap_row_cache_capacity");
+    first.reset();assert(lease->jacobian(0,0)==3 && store->statistics().pages==1);
+    lease.reset();assert(store->statistics().resident_bytes==0);assert(second->pin()->jacobian(0,0)==4);
+    // Empty and constant likelihoods preserve residuals without invented columns.
+    Graph::Rows constant;constant.jacobian.resize(1,0);constant.residual=Vector::Constant(1,2);
+    auto term=store->put(constant);assert(term->pin()->residual[0]==2);
+    store.reset();assert(second->pin()->jacobian(0,0)==4);
+  }
+  {
+    auto store=std::make_shared<Store>(root/"threads",128);
+    std::vector<Store::Reference> pages;
+    for(int i=0;i<12;++i)pages.push_back(store->put(edge("a","a",0,1,.2,1+i).rows));
+    std::vector<std::thread> threads;
+    for(int t=0;t<3;++t)threads.emplace_back([&,t]{for(int n=0;n<60;++n) {
+      const size_t i=(n+t)%pages.size();const auto lease=pages[i]->pin();assert(lease->jacobian(0,0)==1+i);
+    }});
+    for(auto& thread:threads)thread.join();assert(store->statistics().peak_resident_bytes<=128);
+    pages.clear();assert(store->statistics().pages==0 && store->statistics().resident_bytes==0);
+  }
+  assert(std::filesystem::is_empty(root));std::filesystem::remove(root);
+}
 } // namespace
-int main() {
+int main(int argc,char** argv) {
   replacementAndGrowth();rollbackAndConstraints();quotasAndBatching();
+  if(argc==2)paged(std::filesystem::path(argv[1]));else assert(argc==1);
   std::cout<<"source factorization: archived replacement, merge, unassignment, growth, shared branches, gauge, constraints and rollback passed\n";
 }

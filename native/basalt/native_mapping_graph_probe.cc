@@ -133,7 +133,12 @@ int main(int argc,char** argv) {
   rejects([&]{limited.update(first,0);},"native_graph_numeric_capacity");
   assert(!limited.lastUpdate().revision && limited.mapper().getFramePoses().empty() && !limited.mapper().lmdb.numLandmarks());
   assert(!limited_matching.snapshot()->revision);
-  MappingMatchHistory window_matching(calibration,config);NativeMappingGraph rolling(window_matching,0,2);
+  std::shared_ptr<SubmapRowStore> store,resume_store;
+  if(argc==2) {
+    store=std::make_shared<SubmapRowStore>(std::filesystem::path(argv[1])/"native-rows",32*1024);
+    resume_store=std::make_shared<SubmapRowStore>(std::filesystem::path(argv[1])/"restored-rows",32*1024);
+  }
+  MappingMatchHistory window_matching(calibration,config);NativeMappingGraph rolling(window_matching,0,2,store);
   rolling.update(first,0);assert(rolling.window());
   const auto old_window=rolling.window();const auto old_numeric=old_window->snapshot();
   const auto old_matching=window_matching.snapshot();const auto old_state=nativeMappingStateIdentity(rolling.mapper());
@@ -159,7 +164,8 @@ int main(int argc,char** argv) {
   rejects([&]{MappingGraphRegistry::restoreNativeGraph(window_capture,window_resume_matching,second,
       [&]{return ++window_checks==7;});},"native_window_cancelled");
   assert(window_resume_matching.snapshot()==untouched_window_matching);
-  auto rolling_resumed=MappingGraphRegistry::restoreNativeGraph(window_capture,window_resume_matching,second);
+  auto rolling_resumed=NativeMappingGraph::restore(window_resume_matching,second,window_saved,
+      MappingGraphRegistry::restore(MappingGraphRegistry::document(window_capture)),{},window_model,resume_store);
   assert(NativeMappingCheckpoint::document(*rolling_resumed->window())==window_model);
   assert((rolling.window()->proposal()-rolling_resumed->window()->proposal()).norm()<1e-8);
   if(argc==2) {

@@ -8,6 +8,7 @@
 
 namespace posim_slam {
 class NativeMappingWindow;
+class SubmapRowStore;
 struct NativeMappingWindowState;
 struct NativeMappingGraphState {
   MappingMatchHistory::Snapshot matching;
@@ -31,7 +32,8 @@ class NativeMappingGraph {
       removed_tracks=0,preserved_landmarks=0,initialized_landmarks=0,numeric_bytes=0;
     bool reused=false;
   };
-  explicit NativeMappingGraph(MappingMatchHistory& matching,size_t maximum_bytes=0,size_t active_window=0);
+  explicit NativeMappingGraph(MappingMatchHistory& matching,size_t maximum_bytes=0,size_t active_window=0,
+      std::shared_ptr<SubmapRowStore> row_store={});
   ~NativeMappingGraph();
   basalt::NfrMapper& mapper(){return mapper_;}
   const NativeMappingWindow* window() const {return window_.get();}
@@ -44,7 +46,7 @@ class NativeMappingGraph {
   static std::unique_ptr<NativeMappingGraph> restore(MappingMatchHistory& matching,
       const MappingInputStore::Snapshot& input,const nlohmann::json& document,
       std::unique_ptr<basalt::NfrMapper> mapper,const std::function<bool()>& cancelled={},
-      const nlohmann::json& window={});
+      const nlohmann::json& window={},std::shared_ptr<SubmapRowStore> row_store={});
   Update update(const MappingInputStore::Snapshot& input,int iterations=10,
       const std::function<bool()>& cancelled={});
  private:
@@ -79,6 +81,7 @@ class NativeMappingGraph {
   std::array<double,4> initial_solver_;
   MappingInputStore::Snapshot input_;MappingMatchHistory::Snapshot matched_;
   InputDigest::Value source_identity_{};int64_t next_track_=0;Update last_;
+  std::shared_ptr<SubmapRowStore> row_store_;
   size_t window_size_=0;std::unique_ptr<NativeMappingWindow> window_;
 };
 } // namespace posim_slam

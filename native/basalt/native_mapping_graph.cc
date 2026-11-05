@@ -8,9 +8,10 @@
 #include <cmath>
 
 namespace posim_slam {
-NativeMappingGraph::NativeMappingGraph(MappingMatchHistory& matching,size_t maximum_bytes,size_t active_window)
+NativeMappingGraph::NativeMappingGraph(MappingMatchHistory& matching,size_t maximum_bytes,size_t active_window,
+    std::shared_ptr<SubmapRowStore> row_store)
     :matching_(matching),mapper_(matching.calibration_,matching.config_),
-     maximum_bytes_(maximum_bytes?maximum_bytes:matching.maximum_bytes_),window_size_(active_window) {
+     maximum_bytes_(maximum_bytes?maximum_bytes:matching.maximum_bytes_),row_store_(std::move(row_store)),window_size_(active_window) {
   if(!maximum_bytes_ || maximum_bytes_>matching.maximum_bytes_ ||
       active_window>SubmapInformation::Limits{}.active_columns/6)
     throw std::invalid_argument("native_graph_capacity");
@@ -104,7 +105,7 @@ void NativeMappingGraph::validateCheckpoint(basalt::NfrMapper& mapper,const nloh
 std::unique_ptr<NativeMappingGraph> NativeMappingGraph::restore(MappingMatchHistory& matching,
     const MappingInputStore::Snapshot& input,const nlohmann::json& document,
     std::unique_ptr<basalt::NfrMapper> mapper,const std::function<bool()>& cancelled,
-    const nlohmann::json& window) {
+    const nlohmann::json& window,std::shared_ptr<SubmapRowStore> row_store) {
   if(!input || !mapper || !input->revision || input->frames.empty() ||
       input->frames.size()!=input->poses.size() || input->frames.size()!=mapper->getFramePoses().size() ||
       (matching.source_identity_ && matching.source_identity_!=input->identity))
@@ -130,7 +131,7 @@ std::unique_ptr<NativeMappingGraph> NativeMappingGraph::restore(MappingMatchHist
     mapper->feature_corners.at(basalt::TimeCamId(stamp,0)).corners=frame->features.corners;
   }
   const size_t policy=document.at("data").value("active_window",size_t(0));
-  auto result=std::make_unique<NativeMappingGraph>(matching,0,policy);
+  auto result=std::make_unique<NativeMappingGraph>(matching,0,policy,std::move(row_store));
   result->mapper_.getFramePoses().swap(mapper->getFramePoses());
   result->mapper_.feature_corners.swap(mapper->feature_corners);result->mapper_.feature_tracks.swap(mapper->feature_tracks);
   mapper->lmdb.backup();std::swap(result->mapper_.lmdb,mapper->lmdb);
@@ -147,7 +148,7 @@ std::unique_ptr<NativeMappingGraph> NativeMappingGraph::restore(MappingMatchHist
   if(policy) {
     SubmapInformation::Limits limits;
     limits.numeric_bytes=result->maximum_bytes_;
-    result->window_=NativeMappingCheckpoint::restore(result->mapper_,window,limits,cancelled);
+    result->window_=NativeMappingCheckpoint::restore(result->mapper_,window,limits,cancelled,result->row_store_);
   }
   // All graph allocation and validation precede the matching commit. A failed
   // source read, cancellation or quota check leaves that empty owner unchanged.
@@ -307,7 +308,7 @@ NativeMappingGraph::Update NativeMappingGraph::update(const MappingInputStore::S
       if(window_)next_window=window_->prepareGrowth(active,cancelled);
       else {
         SubmapInformation::Limits limits;limits.numeric_bytes=maximum_bytes_;
-        next_window=std::make_unique<NativeMappingWindow>(mapper_,mapper_.getFramePoses().begin()->first,active,limits);
+        next_window=std::make_unique<NativeMappingWindow>(mapper_,mapper_.getFramePoses().begin()->first,active,limits,row_store_);
       }
       for(int i=0;i<iterations;++i)if(!next_window->step(cancelled).accepted)break;
     } else if(iterations)mapper_.optimize(iterations);

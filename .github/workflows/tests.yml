@@ -10,7 +10,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - run: sudo apt-get update -qq && sudo apt-get install -y libeigen3-dev nlohmann-json3-dev
+      - run: sudo apt-get update -qq && sudo apt-get install -y libeigen3-dev nlohmann-json3-dev libsqlite3-dev
       - run: python -m pip install -e .
       - name: Check sampled sonar ranges and physical point visibility
         run: |
@@ -54,8 +54,9 @@ jobs:
         run: |
           c++ -std=c++17 -O2 -UNDEBUG -DEIGEN_MPL2_ONLY -DEIGEN_DONT_PARALLELIZE \
             -I/usr/include/eigen3 native/basalt/submap_factorization_probe.cc \
+            native/basalt/submap_row_store.cc -lsqlite3 -pthread \
             -o "$RUNNER_TEMP/submap_factorization_probe"
-          "$RUNNER_TEMP/submap_factorization_probe"
+          "$RUNNER_TEMP/submap_factorization_probe" "$RUNNER_TEMP/submap-row-pages"
       - name: Compare native finite-cone and sonar-fan joint surface ranges
         run: |
           c++ -std=c++17 -O2 -DEIGEN_MPL2_ONLY -DEIGEN_DONT_PARALLELIZE \

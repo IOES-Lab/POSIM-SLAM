@@ -212,8 +212,9 @@ class NativeMappingWindow {
     WorldLinearization(WorldLinearization&&)=default;
   };
   NativeMappingWindow(basalt::NfrMapper& mapper,int64_t reference,
-      const std::set<int64_t>& active_poses,SubmapInformation::Limits limits={})
-      :NativeMappingWindow(mapper,NativeMappingChart(mapper,reference),active_poses,limits) {
+      const std::set<int64_t>& active_poses,SubmapInformation::Limits limits={},
+      std::shared_ptr<SubmapRowStore> row_store={})
+      :NativeMappingWindow(mapper,NativeMappingChart(mapper,reference),active_poses,limits,nullptr,{},std::move(row_store)) {
     auto selected=[&](const std::vector<int64_t>& poses) {
       return std::all_of(poses.begin(),poses.end(),[&](auto stamp){return active_poses.count(stamp);});
     };
@@ -506,7 +507,7 @@ class NativeMappingWindow {
   NativeMappingWindow(basalt::NfrMapper& mapper,NativeMappingChart chart,
       const std::set<int64_t>& active,SubmapInformation::Limits limits,
       const SubmapFactorization::Layout* saved_layout=nullptr,
-      const std::vector<std::string>& unassigned={})
+      const std::vector<std::string>& unassigned={},std::shared_ptr<SubmapRowStore> row_store={})
       :mapper_(mapper),chart_(std::move(chart)),limits_(limits),active_poses_(active),
        source_identity_(nativeMappingSourceIdentity(mapper)),
        linearization_state_(nativeMappingStateIdentity(mapper)),
@@ -523,7 +524,7 @@ class NativeMappingWindow {
       else layout.eliminated.push_back(columns);
     }
     if(layout.frontier.size()>limits.active_columns)throw std::runtime_error("native_window_separator_capacity");
-    owner_=std::make_unique<SubmapFactorization>(layout,owner_limits,unassigned);
+    owner_=std::make_unique<SubmapFactorization>(layout,owner_limits,unassigned,std::move(row_store));
     group_identities_=nativeMappingGroupIdentities(mapper);
     configuration_identity_=nativeMappingConfigurationIdentity(mapper);
   }

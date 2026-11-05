@@ -377,9 +377,23 @@ or a rotation change reaching the original chart's pi boundary requires a new
 owner. `prepareGrowth` handles changed source membership and host coordinates;
 callers commit it with their staged native graph. Original keys remain unique
 through source-group splitting. `NativeMappingGraph` keeps surviving tracks
-whole and rejects partial replacements or splits of committed tracks. Durable
-graph paging and automatic rollover remain unimplemented; the default mapper
+whole and rejects partial replacements or splits of committed tracks. Automatic
+whole-graph paging and rollover remain unimplemented; the default mapper
 retains its existing optimizer and limits.
+
+`SubmapRowStore(directory, cache_bytes)` optionally pages derived source rows
+and elimination messages to SQLite on a caller-selected working disk. Pass its
+shared owner to `NativeMappingGraph`, `NativeMappingWindow` or checkpoint
+restoration. Immutable metadata stays resident; each pinned numeric page counts
+until its last reader releases it, even after cache eviction. Reads verify
+SHA-256 and preserve float64 values. A full pinned cache, storage failure or
+corrupt page rejects the update without replacing the published graph. The
+existing logical quotas still apply. This disposable cache is reconstructed
+from source-owned checkpoints; it does not store durable inputs. Its directory
+must be new and its disk available while the owner is in use. SQLite reuses
+released pages and removes the cache after the last owner and snapshot release it.
+Caller matrices, solver workspace, metadata, SQLite cache and allocator overhead
+are additional to `cache_bytes`.
 
 `native_mapping_linearization.hpp::nativeMappingRows`는 네이티브 최적화기의
 원본 관측 우도를 제공합니다. Basalt의 기준 영상 내 평사투영 방향·역거리 좌표,
@@ -504,8 +518,22 @@ JSON을 만듭니다. 이 기록도 96MiB 파일 한도에 포함됩니다. 이�
 필요합니다. `prepareGrowth`는 원본 관측의 연결과 기준 영상 좌표 변경을 처리하며
 호출자가 준비한 네이티브 그래프와 함께 확정합니다. 원본 그룹을 분할해도 원본
 식별자는 중복 배정하지 않습니다. `NativeMappingGraph`는 남는 트랙 전체를 유지하고
-확정한 트랙의 일부 교체·분할은 거부합니다. 그래프의 디스크 페이징과 자동 구간
-전환은 아직 구현되지 않았으며 기본 워커는 기존 최적화기와 한도를 사용합니다.
+확정한 트랙의 일부 교체·분할은 거부합니다. 그래프 전체의 자동 디스크 페이징과
+구간 전환은 아직 구현되지 않았으며 기본 워커는 기존 최적화기와 한도를 사용합니다.
+
+선택형 `SubmapRowStore(directory, cache_bytes)`는 계산용 원본 관측 행렬과
+소거 중간 결과를 호출자가 지정한 작업 디스크의 SQLite에 보관합니다. 공유 객체를
+`NativeMappingGraph`, `NativeMappingWindow` 또는 체크포인트 복원에 전달합니다.
+불변 메타데이터는 메모리에 유지하며, 읽는 중인 수치 데이터는 캐시 목록에서
+제거돼도 마지막 사용자가 반환할 때까지 사용량에 포함됩니다. 읽을 때 SHA-256을
+검사하고 float64 값을 그대로 보존합니다. 읽는 데이터가 캐시 한도를 채우거나
+저장장치 오류·손상이 발생하면 발행된 그래프를 유지한 채 갱신을 거부합니다.
+기존 논리 용량 한도도 적용합니다. 이 임시 캐시는 원본 관측을 보존한
+체크포인트에서 재구성하며 영구 입력을 저장하지 않습니다. 새 디렉터리가
+필요하고 사용 중에는 해당 디스크에 접근할 수 있어야 합니다. SQLite는 반환된
+저장 공간을 재사용하며, 마지막 소유자와 상태 사본이 반환되면 캐시를 제거합니다.
+호출자 행렬·풀이 임시 공간·메타데이터·SQLite 캐시·할당 오버헤드는
+`cache_bytes`와 별도입니다.
 
 The build-local adapter maps initial gyro/accelerometer information weights
 to their physical state coordinates. Fresh builds check the actual constructor
