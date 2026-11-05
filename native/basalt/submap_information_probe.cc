@@ -478,9 +478,40 @@ void batchedOriginals() {
     assert(active.snapshot()==stable);
   }
 }
+void batchedRelativeGauge() {
+  for(int batch_size:{7,2100}) {
+    Store store;const int count=6300;
+    for(int start=0;start<count;start+=batch_size) {
+      const int count_here=std::min(batch_size,count-start);
+      Eigen::MatrixXd j=Eigen::MatrixXd::Ones(count_here,2);j.col(1).setConstant(-1);
+      Eigen::VectorXd residual(count_here);
+      for(int i=0;i<count_here;++i)residual[i]=-.1*((start+i)/2100);
+      store.append({"source:"+std::to_string(start)},{0,1},j,residual);
+    }
+    assert(!store.query(store.solve(store.snapshot()),{0,1},Eigen::Matrix2d::Identity()).observed);
+    store.seal({1});const auto solved=store.solve(store.snapshot());
+    assert(!store.query(solved,{1},Eigen::MatrixXd::Identity(1,1)).observed);
+    Eigen::Matrix<double,1,2> difference;difference<<1,-1;
+    const auto relative=store.query(solved,{0,1},difference);assert(relative.observed);
+    close(relative.mean,Eigen::VectorXd::Constant(1,.1),1e-10);
+    close(relative.covariance,Eigen::MatrixXd::Constant(1,1,1./count),1e-10);
+  }
+  // A genuinely weak, independent direction stays finite. Uniform rescaling
+  // changes covariance, not observability or the recovered mean.
+  for(double scale:{1e-4,1.,1e4}) {
+    Store store;Eigen::MatrixXd j=Eigen::MatrixXd::Zero(2100,2);Eigen::Vector2d mean(.2,-.3);
+    for(int i=0;i<2100;++i)j(i,i%2)=scale*(i%2?1e-8:1.);
+    store.append({"weak-independent-measurement"},{0,1},j,-j*mean);
+    store.seal({1});const auto result=store.query(store.solve(store.snapshot()),{0,1},Eigen::Matrix2d::Identity());
+    assert(result.observed);close(result.mean,mean,1e-8);
+    Eigen::Matrix2d expected=Eigen::Matrix2d::Zero();expected(0,0)=1./(1050*scale*scale);expected(1,1)=expected(0,0)*1e16;
+    close(result.covariance,expected,1e-10);
+  }
+}
 } // namespace
 int main() {
   denseAndLateAdjustment();unobservedReference();exactConstraintsAndCapacity();pressureDatumAndClosedFrontier();longChain();
   replaceOriginalLikelihoods();replaceRankAndExactSupport();boundedReplacements();selectiveRetirement();correlatedReobservation();batchedOriginals();
+  batchedRelativeGauge();
   std::cout<<"Submap information: batch mean/covariance, shared noise, unobserved gauge, exact support, immutable ownership and bounded-frontier chain pass.\n";
 }

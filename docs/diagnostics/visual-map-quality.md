@@ -166,7 +166,9 @@ The optional `SubmapInformation` utility stores fixed-linearization marginal row
 and removed-variable conditionals with original measurement ownership. Late
 factors recondition the affected chain; joint queries retain cross-point noise,
 null directions and exact affine constraints. It reuses the component's existing
-QR/SVD operations. The caller supplies one consistent tangent reference and its
+QR/SVD operations. Row compression carries the source numerical precision so
+round-off directions do not become measurements in a smaller marginal. The
+caller supplies one consistent tangent reference and its
 original world-reference rows. It is an in-memory numerical interface; the
 persistent native mapper retains its existing keyframe/input bounds. See the
 [native input and bounds](../../native/basalt/README.md).
@@ -174,9 +176,26 @@ persistent native mapper retains its existing keyframe/input bounds. See the
 선택형 `SubmapInformation`은 고정 선형화의 주변 정보와 제거한 변수의 조건부
 정보를 원본 측정 소유권과 함께 보존합니다. 늦게 온 제약은 영향을 받은 연결
 정보를 다시 계산하고, 결합 조회는 점 사이 공유 잡음·관측 불가 방향·정확한
-아핀 제약을 유지합니다. 기존 QR/SVD 계산을 재사용하며 호출자가 일관된 접선
+아핀 제약을 유지합니다. QR/SVD 압축 뒤에도 원본의 수치 정밀도 기준을 전달해
+반올림 잔차를 관측 정보로 취급하지 않습니다. 호출자가 일관된 접선
 좌표와 원래 기준 좌표 제약을 제공합니다. 메모리 수치 인터페이스이며 현재
 네이티브 지도 워커의 키프레임·입력 한도는 유지합니다.
+
+`SubmapFactorization` retains source-factor groups and their elimination
+dependencies. Replacing an archived group recomputes affected branches and
+shares unchanged conditionals. Explicit unassignment keeps original keys in
+the ledger; the caller retains the raw input. Its frontier can move while old
+coordinates remain queryable. This numerical interface does not perform native
+feature reassociation, automatic mapper rollover or disk paging.
+
+`SubmapFactorization`은 원본 요인 그룹과 소거 계산의 의존 관계를 보존합니다.
+과거 그룹을 교체하면 영향을 받은 부분만 다시 계산하고 나머지 조건부 정보를
+재사용합니다. 대응을 해제한 원본 키도 기록에 남기며 실제 입력은 호출자가
+보존합니다. 활성 구간이 이동한 뒤에도 과거 좌표를 조회할 수 있습니다.
+네이티브 특징 대응 변경·지도 워커 자동 전환·디스크 페이징은 별도로 필요합니다.
+
+[Source-factor ownership](../../native/basalt/submap_factorization.hpp)
+· [Information compression](../../native/basalt/submap_information.hpp)
 
 
 ## Original observation graph / 원본 관측 그래프

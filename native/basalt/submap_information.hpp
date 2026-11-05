@@ -29,6 +29,7 @@ class SubmapInformation {
     std::vector<Coordinate> kept,removed;
     Eigen::MatrixXd regression,noise,unbounded,deterministic;
     Eigen::VectorXd offset;
+    double roundoff=0;
     size_t bytes() const {return sizeof(double)*size_t(regression.size()+noise.size()+unbounded.size()+deterministic.size()+offset.size());}
   };
   struct Data {
@@ -40,6 +41,10 @@ class SubmapInformation {
     std::set<Coordinate> known;
     std::set<std::string> measurements,conditional_sources;
     size_t history_bytes=0;
+    // Numerical precision of the source square root, not measurement noise.
+    // It survives compression so a later, smaller solve cannot promote its
+    // discarded round-off directions into information.
+    double roundoff=0;
     size_t numericBytes() const {
       return history_bytes+sizeof(double)*size_t(jacobian.size()+constraints.size()+residual.size()+target.size());
     }
@@ -91,7 +96,8 @@ class SubmapInformation {
         conditional.offset.size()!=n || conditional.noise.rows()!=n || conditional.unbounded.rows()!=n ||
         conditional.deterministic.rows()!=n || conditional.noise.cols()+conditional.unbounded.cols()+conditional.deterministic.cols()!=n ||
         !conditional.regression.allFinite() || !conditional.offset.allFinite() || !conditional.noise.allFinite() ||
-        !conditional.unbounded.allFinite() || !conditional.deterministic.allFinite())
+        !conditional.unbounded.allFinite() || !conditional.deterministic.allFinite() ||
+        !std::isfinite(conditional.roundoff) || conditional.roundoff<0)
       throw std::invalid_argument("submap_conditional_shape");
     for(auto column:conditional.kept)if(!next->known.count(column))throw std::invalid_argument("submap_conditional_parent");
     for(auto column:conditional.removed)if(next->known.count(column))throw std::invalid_argument("submap_conditional_coordinate_reused");
@@ -141,10 +147,11 @@ class SubmapInformation {
   // consumed once. Use appendLate for factors touching archived coordinates.
   Snapshot append(const std::vector<std::string>& originals,const std::vector<Coordinate>& columns,
       const Eigen::MatrixXd& j,const Eigen::VectorXd& r,
-      const Eigen::MatrixXd& c=Eigen::MatrixXd(),const Eigen::VectorXd& target=Eigen::VectorXd()) {
+      const Eigen::MatrixXd& c=Eigen::MatrixXd(),const Eigen::VectorXd& target=Eigen::VectorXd(),double roundoff=0) {
     std::lock_guard<std::mutex> writer(writer_);auto next=std::make_shared<Data>(*snapshot());
     if(originals.empty())throw std::invalid_argument("submap_information_rows");
     validateRows(columns,j,r,c,target);
+    if(!std::isfinite(roundoff) || roundoff<0)throw std::invalid_argument("submap_information_precision");
     std::set<std::string> keys;
     for(const auto& key:originals)
       if(key.empty() || key.size()>256 || next->measurements.count(key) || !keys.insert(key).second)
@@ -162,7 +169,8 @@ class SubmapInformation {
       throw std::runtime_error("submap_coordinate_capacity");
     // Compact incoming rows before stacking. Work depends on the frontier
     // dimensions, not the total observation count across the mission.
-    Eigen::MatrixXd incoming=j;Eigen::VectorXd value=r;compact(incoming,value);
+    Eigen::MatrixXd incoming=j;Eigen::VectorXd value=r;compact(incoming,value,roundoff,roundoff>0);
+    next->roundoff=std::hypot(next->roundoff,roundoff);
     const auto previous_rows=next->jacobian.rows(),previous_columns=next->jacobian.cols();
     const auto n=Eigen::Index(next->order.size());
     next->jacobian.conservativeResize(previous_rows+incoming.rows(),n);
@@ -177,7 +185,7 @@ class SubmapInformation {
     next->constraints.bottomRows(c.rows()).setZero();
     for(size_t i=0;c.rows() && i<columns.size();++i)next->constraints.bottomRows(c.rows()).col(offsets.at(columns[i]))=c.col(i);
     next->target.conservativeResize(old_constraints+target.size());next->target.tail(target.size())=target;
-    compact(next->jacobian,next->residual);compactConstraints(*next);
+    compact(next->jacobian,next->residual,next->roundoff,next->roundoff>0);compactConstraints(*next);
     next->measurements.insert(keys.begin(),keys.end());return commit(std::move(next));
   }
   Snapshot seal(const std::vector<Coordinate>& kept) {
@@ -190,6 +198,10 @@ class SubmapInformation {
     std::vector<Coordinate> order=kept;order.insert(order.end(),node->removed.begin(),node->removed.end());
     Eigen::MatrixXd j(next->jacobian.rows(),order.size()),c(next->constraints.rows(),order.size());
     for(size_t i=0;i<order.size();++i){j.col(i)=next->jacobian.col(offsets.at(order[i]));c.col(i)=next->constraints.col(offsets.at(order[i]));}
+    // Elimination must receive independent likelihood rows and an explicit
+    // constant residual. Otherwise QR round-off in redundant rows can become
+    // a spurious observable direction when a small marginal is solved alone.
+    compact(j,next->residual,next->roundoff,true);node->roundoff=next->roundoff;
     const auto split=splitConstrainedInformation(j,next->residual,kept.size(),c,next->target);
     node->regression=split.reduced.backsub_matrix;node->offset=split.reduced.backsub_offset;
     node->noise=split.noise;node->unbounded=split.unbounded;node->deterministic=split.deterministic;
@@ -197,7 +209,7 @@ class SubmapInformation {
         !node->unbounded.allFinite() || !node->deterministic.allFinite())throw std::runtime_error("submap_nonfinite_conditional");
     next->order=kept;next->jacobian=split.reduced.jacobian;next->residual=split.reduced.residual;
     next->constraints=split.constraint_jacobian;next->target=split.constraint_target;
-    compact(next->jacobian,next->residual);next->history_bytes+=node->bytes();next->nodes.push_back(std::move(node));
+    compact(next->jacobian,next->residual,next->roundoff,true);next->history_bytes+=node->bytes();next->nodes.push_back(std::move(node));
     return commit(std::move(next));
   }
   // Recondition affected nodes in elimination order, passing only the new
@@ -205,12 +217,12 @@ class SubmapInformation {
   // conditional replacement. Unaffected nodes remain shared and immutable.
   Snapshot appendLate(const std::vector<std::string>& originals,const std::vector<Coordinate>& columns,
       const Eigen::MatrixXd& j,const Eigen::VectorXd& r,
-      const Eigen::MatrixXd& c=Eigen::MatrixXd(),const Eigen::VectorXd& target=Eigen::VectorXd()) {
+      const Eigen::MatrixXd& c=Eigen::MatrixXd(),const Eigen::VectorXd& target=Eigen::VectorXd(),double roundoff=0) {
     std::lock_guard<std::mutex> writer(writer_);auto next=std::make_shared<Data>(*snapshot());
     // Reuse append's complete row, key, rank and numeric validation in an
     // isolated message owner. Its input keys are not added to history twice.
     auto workspace=limits_;workspace.active_columns=temporaryColumns(limits_);
-    SubmapInformation message(workspace);message.append(originals,columns,j,r,c,target);
+    SubmapInformation message(workspace);message.append(originals,columns,j,r,c,target,roundoff);
     for(const auto& key:originals)if(next->measurements.count(key))throw std::invalid_argument("submap_measurement_reused");
     if(next->measurements.size()+originals.size()>limits_.measurements)throw std::runtime_error("submap_measurement_capacity");
     for(Coordinate coordinate:columns)if(next->known.insert(coordinate).second)next->order.push_back(coordinate);
@@ -240,8 +252,8 @@ class SubmapInformation {
       exact<<-original.deterministic.transpose()*original.regression,original.deterministic.transpose();
       SubmapInformation combined(workspace);
       combined.append({"original-conditional"},order,conditional,-whitened*original.offset,
-        exact,original.deterministic.transpose()*original.offset);
-      combined.append({"new-message"},incoming->order,incoming->jacobian,incoming->residual,incoming->constraints,incoming->target);
+        exact,original.deterministic.transpose()*original.offset,original.roundoff);
+      combined.append({"new-message"},incoming->order,incoming->jacobian,incoming->residual,incoming->constraints,incoming->target,incoming->roundoff);
       std::set<Coordinate> removed(original.removed.begin(),original.removed.end());
       std::vector<Coordinate> kept;
       for(Coordinate coordinate:combined.snapshot()->order)if(!removed.count(coordinate))kept.push_back(coordinate);
@@ -256,14 +268,14 @@ class SubmapInformation {
     for(Coordinate coordinate:incoming->order)if(!root.count(coordinate))throw std::logic_error("submap_late_closure");
     if(!next->order.empty()) {
       SubmapInformation frontier(limits_);
-      frontier.append({"original-frontier"},next->order,next->jacobian,next->residual,next->constraints,next->target);
-      frontier.append({"new-message"},incoming->order,incoming->jacobian,incoming->residual,incoming->constraints,incoming->target);
+      frontier.append({"original-frontier"},next->order,next->jacobian,next->residual,next->constraints,next->target,next->roundoff);
+      frontier.append({"new-message"},incoming->order,incoming->jacobian,incoming->residual,incoming->constraints,incoming->target,incoming->roundoff);
       const auto updated=frontier.snapshot();next->order=updated->order;next->jacobian=updated->jacobian;next->residual=updated->residual;
-      next->constraints=updated->constraints;next->target=updated->target;
+      next->constraints=updated->constraints;next->target=updated->target;next->roundoff=updated->roundoff;
     } else {
       const auto old_rows=next->residual.size();next->residual.conservativeResize(old_rows+incoming->residual.size());
       next->residual.tail(incoming->residual.size())=incoming->residual;next->jacobian.resize(next->residual.size(),0);
-      compact(next->jacobian,next->residual);
+      compact(next->jacobian,next->residual,next->roundoff);
     }
     next->measurements.insert(originals.begin(),originals.end());return commit(std::move(next));
   }
@@ -334,12 +346,30 @@ class SubmapInformation {
     for(size_t i=0;i<order.size();++i)if(order[i]<0 || !out.emplace(order[i],i).second)throw std::invalid_argument("submap_coordinates");
     return out;
   }
-  static void compact(Eigen::MatrixXd& j,Eigen::VectorXd& r) {
-    if(j.rows()<=j.cols()+1)return;
-    Eigen::MatrixXd augmented(j.rows(),j.cols()+1);augmented<<j,r;
-    Eigen::HouseholderQR<Eigen::MatrixXd> qr(augmented);
-    const Eigen::MatrixXd root=qr.matrixQR().topRows(augmented.cols()).triangularView<Eigen::Upper>();
-    j=root.leftCols(j.cols());r=root.col(j.cols());
+  static void compact(Eigen::MatrixXd& j,Eigen::VectorXd& r,double& roundoff,bool preserve_rank=false) {
+    const auto source_rows=j.rows();
+    if(!source_rows || (!preserve_rank && source_rows<=j.cols()+1))return;
+    if(!j.cols()){r=Eigen::VectorXd::Constant(1,r.stableNorm());j.resize(1,0);roundoff=0;return;}
+    if(source_rows>j.cols()+1) {
+      Eigen::MatrixXd augmented(source_rows,j.cols()+1);augmented<<j,r;
+      Eigen::HouseholderQR<Eigen::MatrixXd> qr(augmented);
+      const Eigen::MatrixXd root=qr.matrixQR().topRows(augmented.cols()).triangularView<Eigen::Upper>();
+      j=root.leftCols(j.cols());r=root.col(j.cols());
+    }
+    // Use the same dimension-relative SVD rule as the information split, at
+    // the source row count. Shrinking a matrix must not promote QR residuals
+    // below its original precision into new measurements.
+    Eigen::JacobiSVD<Eigen::MatrixXd> svd(j,Eigen::ComputeThinU|Eigen::ComputeThinV);
+    if(svd.info()!=Eigen::Success)throw std::runtime_error("submap_compaction_svd_failed");
+    const auto& singular=svd.singularValues();
+    const double tolerance=std::max(roundoff,std::max(source_rows,j.cols())*std::numeric_limits<double>::epsilon()*singular[0]);
+    const Eigen::Index rank=(singular.array()>tolerance).count();
+    const Eigen::VectorXd projected=svd.matrixU().leftCols(rank).transpose()*r;
+    const double constant=(r-svd.matrixU().leftCols(rank)*projected).stableNorm();
+    Eigen::MatrixXd reduced=Eigen::MatrixXd::Zero(rank+1,j.cols());
+    reduced.topRows(rank)=singular.head(rank).asDiagonal()*svd.matrixV().leftCols(rank).transpose();
+    r.resize(rank+1);r.head(rank)=projected;r[rank]=constant;j=std::move(reduced);
+    roundoff=rank?tolerance:0;
   }
   static void compactConstraints(Data& data) {
     if(!data.constraints.rows())return;
@@ -350,7 +380,8 @@ class SubmapInformation {
     if(!input || input->owner!=identity_)throw std::invalid_argument("submap_snapshot_owner");
   }
   Snapshot commit(std::shared_ptr<Data> next) {
-    if(!next->jacobian.allFinite() || !next->residual.allFinite() || !next->constraints.allFinite() || !next->target.allFinite())
+    if(!next->jacobian.allFinite() || !next->residual.allFinite() || !next->constraints.allFinite() || !next->target.allFinite() ||
+        !std::isfinite(next->roundoff) || next->roundoff<0)
       throw std::runtime_error("submap_nonfinite_information");
     if(next->numericBytes()>limits_.numeric_bytes)throw std::runtime_error("submap_numeric_capacity");
     ++next->revision;Snapshot immutable=next;std::atomic_store(&data_,immutable);return immutable;
