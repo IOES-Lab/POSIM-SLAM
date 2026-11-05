@@ -517,7 +517,7 @@ void nativeRetirementControls(const Fixture& fixture) {
     assert(window.step().accepted);
   }
   const auto saved=Json::from_cbor(Json::to_cbor(Checkpoint::document(window)));
-  assert(saved["model"]["schema"]=="posim-slam-native-window-3");
+  assert(saved["model"]["schema"]=="posim-slam-native-window-4");
   legacy2["model"]["active"]=saved["model"]["active"];legacy2["model"]["state"]=saved["model"]["state"];resign(legacy2);
   auto restored=chainMapper(fixture);copy_state(*restored);
   auto reopened=Checkpoint::restore(*restored,saved);compare(*mapper,*restored);
@@ -526,6 +526,21 @@ void nativeRetirementControls(const Fixture& fixture) {
   const auto before=window.worldInformation({42,777}),after=reopened->worldInformation({42,777});
   const double restore_error=(before.covariance-after.covariance).norm()/before.covariance.norm();assert(restore_error<1e-9);
   assert(before.observed==after.observed && (before.positions-after.positions).norm()==0);
+  // The prior source-owned format contains one complete pose per block.
+  auto legacy3=saved;legacy3["model"]["schema"]="posim-slam-native-window-3";
+  auto& single=legacy3["model"]["layout"][0];single=Json::array();
+  for(const auto& block:saved["model"]["layout"][0])for(size_t i=0;i<block.size();i+=6) {
+    Json pose=Json::array();for(size_t j=0;j<6;++j)pose.push_back(block[i+j]);single.push_back(std::move(pose));
+  }
+  resign(legacy3);auto legacy3_mapper=chainMapper(fixture);copy_state(*legacy3_mapper);
+  auto legacy3_window=Checkpoint::restore(*legacy3_mapper,legacy3);compare(*mapper,*legacy3_mapper);
+  assert((legacy3_window->worldInformation({42,777}).covariance-before.covariance).norm()/before.covariance.norm()<1e-9);
+  auto grouped=saved;grouped["model"]["layout"][0]=Json::array({Json::array()});
+  for(const auto& block:saved["model"]["layout"][0])for(const auto& column:block)grouped["model"]["layout"][0][0].push_back(column);
+  resign(grouped);auto grouped_mapper=chainMapper(fixture);copy_state(*grouped_mapper);
+  auto grouped_window=Checkpoint::restore(*grouped_mapper,grouped);compare(*mapper,*grouped_mapper);
+  assert(Checkpoint::document(*grouped_window)==grouped);
+  assert((grouped_window->worldInformation({42,777}).covariance-before.covariance).norm()/before.covariance.norm()<1e-9);
   auto legacy_mapper=chainMapper(fixture);copy_state(*legacy_mapper);
   auto legacy_reopened=Checkpoint::restore(*legacy_mapper,legacy2);
   assert((legacy_reopened->proposal()-window.proposal()).norm()<1e-8);
@@ -546,6 +561,14 @@ void nativeRetirementControls(const Fixture& fixture) {
   invalid=legacy2;invalid["model"]["retirements"][1]["kept"]=invalid["model"]["retirements"][0]["kept"];resign(invalid);
   rejects([&]{Checkpoint::restore(*restored,invalid);},"native_window_retirement_subset");compare(*mapper,*restored);
   invalid=saved;invalid["model"]["active"]={40,50,60};resign(invalid);
+  rejects([&]{Checkpoint::restore(*restored,invalid);},"native_window_checkpoint_layout");compare(*mapper,*restored);
+  invalid=grouped;invalid["model"]["layout"][0][0].erase(0);resign(invalid);
+  rejects([&]{Checkpoint::restore(*restored,invalid);},"native_window_checkpoint_layout");compare(*mapper,*restored);
+  invalid=grouped;invalid["model"]["layout"][0][0][6]=invalid["model"]["layout"][0][0][0];resign(invalid);
+  rejects([&]{Checkpoint::restore(*restored,invalid);},"native_window_checkpoint_layout");compare(*mapper,*restored);
+  invalid=grouped;invalid["model"]["layout"][0].clear();resign(invalid);
+  rejects([&]{Checkpoint::restore(*restored,invalid);},"native_window_checkpoint_layout");compare(*mapper,*restored);
+  invalid=grouped;invalid["model"]["schema"]="posim-slam-native-window-3";resign(invalid);
   rejects([&]{Checkpoint::restore(*restored,invalid);},"native_window_checkpoint_layout");compare(*mapper,*restored);
   invalid=saved;invalid["model"]["groups"][0][1].erase(0);resign(invalid);
   rejects([&]{Checkpoint::restore(*restored,invalid);},"native_window_checkpoint_groups");compare(*mapper,*restored);

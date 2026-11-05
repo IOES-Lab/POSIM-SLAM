@@ -8,6 +8,8 @@ namespace posim_slam {
 // groups at their own last linearization, then rebuild their saved elimination
 // order. Numeric caches and old event histories are not duplicated. Schemas 1/2
 // remain readable through the original fixed-source retirement decoder.
+// Schema 4 also retains strict supernodes of complete six-coordinate poses;
+// schema 3's single-pose elimination blocks remain readable.
 class NativeMappingCheckpoint {
  public:
   using Json=nlohmann::json;
@@ -32,7 +34,7 @@ class NativeMappingCheckpoint {
   }
   static Json document(const State& state) {
     using namespace mapping_graph_detail;
-    Json value={{"schema","posim-slam-native-window-3"},
+    Json value={{"schema","posim-slam-native-window-4"},
       {"basalt_revision","0f3b2b52c807f70ff4e2973ce253c73329eea7bc"},
       {"reference",state.chart.reference_},{"active",state.active},
       {"source",binary(state.source)},{"state",binary(state.nonlinear)},
@@ -150,7 +152,7 @@ class NativeMappingCheckpoint {
     using namespace mapping_graph_detail;
     const auto& value=saved.at("model");
     const bool legacy=value.at("schema")=="posim-slam-native-window-1";
-    const bool source_owned=value.at("schema")=="posim-slam-native-window-3";
+    const bool source_owned=value.at("schema")=="posim-slam-native-window-3" || value.at("schema")=="posim-slam-native-window-4";
     if((!legacy && !source_owned && value.at("schema")!="posim-slam-native-window-2") ||
         value.at("basalt_revision")!="0f3b2b52c807f70ff4e2973ce253c73329eea7bc")
       throw std::invalid_argument("native_window_checkpoint_schema");
@@ -246,18 +248,23 @@ class NativeMappingCheckpoint {
     for(const auto& [stamp,index]:offsets)if(!out.poses.count(stamp))throw std::invalid_argument("native_window_checkpoint_pose_order");
     const auto& layout=value.at("layout");
     if(!layout.is_array() || layout.size()!=2 || !layout[0].is_array() || !layout[1].is_array() ||
-        layout[0].size()+out.active.size()!=out.poses.size() || layout[1].size()!=6*out.active.size())
+        layout[0].size()+out.active.size()>out.poses.size() || layout[1].size()!=6*out.active.size())
       throw std::invalid_argument("native_window_checkpoint_layout");
     std::set<int64_t> seen;
     for(const auto& block:layout[0]) {
-      if(!block.is_array() || block.size()!=6)throw std::invalid_argument("native_window_checkpoint_layout");
+      if(!block.is_array() || block.empty() || block.size()%6 || block.size()>size_t(kMaxJointColumns) ||
+          (value.at("schema")=="posim-slam-native-window-3" && block.size()!=6))
+        throw std::invalid_argument("native_window_checkpoint_layout");
       std::vector<int64_t> columns;
       for(const auto& item:block)columns.push_back(integer(item,0,6*out.poses.size()-1));
-      const auto stamp=out.pose_order.at(columns.front()/6);
-      if(out.active.count(stamp) || !seen.insert(stamp).second || columns!=nativeMappingColumns({stamp},offsets))
-        throw std::invalid_argument("native_window_checkpoint_layout");
+      for(size_t i=0;i<columns.size();i+=6) {
+        const auto stamp=out.pose_order.at(columns[i]/6);const auto expected=nativeMappingColumns({stamp},offsets);
+        if(out.active.count(stamp) || !seen.insert(stamp).second || !std::equal(expected.begin(),expected.end(),columns.begin()+i))
+          throw std::invalid_argument("native_window_checkpoint_layout");
+      }
       out.layout.eliminated.push_back(std::move(columns));
     }
+    if(seen.size()+out.active.size()!=out.poses.size())throw std::invalid_argument("native_window_checkpoint_layout");
     std::set<int64_t> actual;
     for(const auto& item:layout[1]) {
       const auto column=integer(item,0,6*out.poses.size()-1);

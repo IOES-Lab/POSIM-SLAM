@@ -123,7 +123,10 @@ class SubmapFactorization {
     assigned.insert(unused.begin(),unused.end());
     if(!std::includes(assigned.begin(),assigned.end(),outgoing.begin(),outgoing.end()))
       throw std::invalid_argument("submap_factor_original_missing");
-    if(ordering==Ordering::minimum_degree)reorderChanged(*next,*previous,cancelled);
+    if(ordering==Ordering::minimum_degree) {
+      reorderChanged(*next,*previous,cancelled);
+      coalesceChanged(*next,*previous,cancelled);
+    }
     rebuild(*next,previous.get(),cancelled);check(cancelled);
     ++next->revision;Snapshot immutable=next;std::atomic_store(&data_,immutable);return immutable;
   }
@@ -169,21 +172,19 @@ class SubmapFactorization {
       throw std::invalid_argument("submap_factor_coordinate_missing");
     return rank;
   }
-  // Plan the affected dependency tree using column metadata only. Unchanged
-  // descendants stay in their original relative order and retain their exact
-  // numeric pages. Reorder only the remaining blocks, from the same source rows.
-  void reorderChanged(Data& next,const Data& previous,const std::function<bool()>& cancelled) const {
-    const size_t root=next.layout.eliminated.size();if(root<2)return;
+  struct Symbol {
+    std::vector<Page> sources;std::vector<size_t> children;std::vector<Coordinate> columns;
+    std::shared_ptr<const Bucket> reused;
+  };
+  // Source metadata predicts both the outgoing support and exact reuse. The
+  // caller reserves any additional symbolic workspace before this allocation.
+  std::vector<Symbol> symbolize(const Data& next,const Data& previous,
+      const std::function<bool()>& cancelled,size_t reserved=0) const {
+    const size_t root=next.layout.eliminated.size();
     const auto rank=validateLayout(next.layout,nullptr);
-    const size_t count=root+next.layout.frontier.size(),words=(count+63)/64;
-    if(count>limits_.numeric_bytes/(2*sizeof(uint64_t))/words)return;
-    struct Symbol {
-      std::vector<Page> sources;std::vector<size_t> children;std::vector<Coordinate> columns;
-      std::shared_ptr<const Bucket> reused;
-    };
-    size_t workspace=2*count*words*sizeof(uint64_t)+count*4*sizeof(size_t)+(root+1)*sizeof(Symbol);
+    size_t workspace=reserved+(root+1)*sizeof(Symbol);
     if(next.factors.size()>limits_.numeric_bytes/sizeof(Page) ||
-        workspace>limits_.numeric_bytes-next.factors.size()*sizeof(Page))return;
+        workspace>limits_.numeric_bytes-next.factors.size()*sizeof(Page))return {};
     workspace+=next.factors.size()*sizeof(Page);
     const auto route=[&](const std::vector<Coordinate>& columns) {
       size_t out=root;for(auto c:columns)out=std::min(out,rank.at(c));return out;
@@ -192,7 +193,6 @@ class SubmapFactorization {
     for(const auto& [id,rows]:next.factors)symbols[route(rows->columns)].sources.push_back(rows);
     std::map<std::vector<Coordinate>,std::shared_ptr<const Bucket>> old;
     for(size_t i=0;i<previous.layout.eliminated.size();++i)old.emplace(previous.buckets[i]->context,previous.buckets[i]);
-    std::vector<size_t> fixed,changed;
     for(size_t i=0;i<=root;++i) {
       check(cancelled);auto& symbol=symbols[i];const auto& context=i==root?next.layout.frontier:next.layout.eliminated[i];
       auto found=old.find(context);const auto before=i==root?previous.buckets.back():(found==old.end()?nullptr:found->second);
@@ -207,13 +207,26 @@ class SubmapFactorization {
         symbol.columns.assign(columns.begin(),columns.end());
       }
       const size_t bytes=symbol.columns.size()*sizeof(Coordinate)+symbol.children.size()*sizeof(size_t);
-      if(bytes>limits_.numeric_bytes-workspace)return;workspace+=bytes;
+      if(bytes>limits_.numeric_bytes-workspace)return {};workspace+=bytes;
       if(i!=root) {
-        (same?fixed:changed).push_back(i);const auto parent=route(symbol.columns);
+        const auto parent=route(symbol.columns);
         if(parent<=i)throw std::logic_error("submap_factor_dependency_order");
         symbols[parent].children.push_back(i);
       }
     }
+    return symbols;
+  }
+  // Plan the affected dependency tree using column metadata only. Unchanged
+  // descendants stay in their original relative order and retain their exact
+  // numeric pages. Reorder only the remaining blocks, from the same source rows.
+  void reorderChanged(Data& next,const Data& previous,const std::function<bool()>& cancelled) const {
+    const size_t root=next.layout.eliminated.size();if(root<2)return;
+    const size_t count=root+next.layout.frontier.size(),words=(count+63)/64;
+    if(count>limits_.numeric_bytes/(2*sizeof(uint64_t))/words)return;
+    const auto symbols=symbolize(next,previous,cancelled,2*count*words*sizeof(uint64_t)+count*4*sizeof(size_t));
+    if(symbols.empty())return;
+    std::vector<size_t> fixed,changed;
+    for(size_t i=0;i<root;++i)(symbols[i].reused?fixed:changed).push_back(i);
     if(changed.size()<2)return;
     std::vector<size_t> weights;std::map<Coordinate,size_t> vertex;
     for(size_t i=0;i<root;++i){weights.push_back(next.layout.eliminated[i].size());for(auto c:next.layout.eliminated[i])vertex.emplace(c,i);}
@@ -244,6 +257,28 @@ class SubmapFactorization {
     if(candidate_cost>=original_cost || candidate_width>original_width)return;
     const auto blocks=next.layout.eliminated;
     for(size_t i=0;i<chosen.size();++i)next.layout.eliminated[i]=blocks[chosen[i]];
+  }
+  // Strict supernodes share an identical remaining separator. Eliminating
+  // them together avoids repeatedly compacting that same dense message. The
+  // union has exactly the first block's symbolic width, so it introduces no
+  // fill or larger temporary matrix. Unchanged numeric branches stay shared.
+  void coalesceChanged(Data& next,const Data& previous,const std::function<bool()>& cancelled) const {
+    const size_t root=next.layout.eliminated.size();if(root<2)return;
+    const auto symbols=symbolize(next,previous,cancelled);if(symbols.empty())return;
+    std::vector<std::vector<Coordinate>> groups;
+    for(size_t i=0;i<root;++i) {
+      check(cancelled);auto group=next.layout.eliminated[i];
+      while(i+1<root && !symbols[i].reused && !symbols[i+1].reused) {
+        const auto& child=symbols[i].columns;const auto& parent=symbols[i+1].columns;
+        const auto& context=next.layout.eliminated[i+1];
+        if(child.size()!=parent.size()+context.size() ||
+            !std::includes(child.begin(),child.end(),parent.begin(),parent.end()) ||
+            !std::all_of(context.begin(),context.end(),[&](auto c){return std::binary_search(child.begin(),child.end(),c);}))break;
+        group.insert(group.end(),context.begin(),context.end());++i;
+      }
+      groups.push_back(std::move(group));
+    }
+    next.layout.eliminated=std::move(groups);
   }
   // Compact bounded batches in the existing rank-aware information engine.
   // Internal message labels are local to this workspace. Only source keys are

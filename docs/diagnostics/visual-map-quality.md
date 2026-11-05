@@ -22,7 +22,9 @@ correlations; historical poses and landmarks move with the solution. Changed
 source groups rebuild their affected elimination dependencies. Weighted minimum
 degree orders the affected historical blocks while unchanged branches keep their
 numeric pages. An order is adopted when its symbolic work decreases without
-widening the largest intermediate block. QR/SVD elimination
+widening the largest intermediate block. Adjacent changed blocks with an identical
+remaining separator are eliminated together, avoiding repeated compression without
+increasing symbolic fill. QR/SVD elimination
 and conditional queries produce world-point uncertainty. The original estimated
 position/yaw reference enters once. Truth and optimizer damping add no information.
 
@@ -51,7 +53,8 @@ and cross-layer statistical independence is unverified. `map_qualified` is false
 갱신됩니다. 원본 관측 묶음이 바뀌면 영향을 받는 소거 관계를 다시 구성합니다.
 연결된 좌표 수를 가중치로 삼는 최소 차수 순서로 해당 과거 블록을 소거하며,
 변경되지 않은 계산 가지는 기존 행렬을 재사용합니다. 예상 계산량이 줄고 가장
-큰 중간 블록이 넓어지지 않는 순서를 적용합니다.
+큰 중간 블록이 넓어지지 않는 순서를 적용합니다. 남은 연결 좌표가 같은 인접한
+변경 블록은 묶어서 소거하므로 행렬 연결을 늘리지 않고 반복 압축을 줄입니다.
 QR/SVD 소거와 조건부 질의로 세계 좌표 점의 불확실성을 구합니다. 원래 추정한
 위치·방위 기준은 한 번 반영하며 시뮬레이터 정답이나 최적화 감쇠로 정보를
 추가하지 않습니다.
@@ -171,6 +174,10 @@ failed matches. New input can extend its selected calculation window within the
 retained-input quota. Navigation state is not restored. Older graph-only archives
 retain their saved observation associations for relinearization.
 
+The embedded conditional checkpoint preserves complete pose blocks and their
+elimination groups in schema 4. Its reader accepts schemas 1–4 and checks that
+each retired pose appears exactly once and each active pose remains in the frontier.
+
 The archive streams each checked feature frame once and uses the same encoded
 bytes for matching identity. A sibling temporary file and a **1 MiB** transfer
 buffer preserve the indexed format; the completed file replaces its destination
@@ -182,6 +189,10 @@ atomically. Source-integrity failures leave the published archive unchanged.
 유지합니다. 입력 보관 한도 안에서 새 입력으로 선택한 계산 구간을 확장할 수
 있습니다. 항법 상태는 복원하지 않습니다. 이전 그래프 전용 파일은 저장된 관측
 연결의 재선형화를 지원합니다.
+
+내장 조건부 체크포인트는 완전한 자세 블록과 소거 묶음을 스키마 4로 보존합니다.
+읽기는 스키마 1–4를 지원하며, 퇴역 자세가 정확히 한 번 포함되고 활성 자세가
+계산 구간에 남아 있는지 검사합니다.
 
 검사한 특징 프레임은 한 번 읽어 저장하고 같은 인코딩 바이트로 대응 관계의
 식별자를 만듭니다. 같은 폴더의 임시 파일과 **1MiB** 전송 버퍼로 색인 형식을

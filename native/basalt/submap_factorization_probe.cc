@@ -219,6 +219,60 @@ void affectedOrdering(std::shared_ptr<posim_slam::SubmapRowStore> store={}) {
   anchor.rows.constraints=Matrix::Ones(1,1);anchor.rows.target=Vector::Constant(1,.2);
   graph.replace({}, {anchor},{},nullptr,{},Graph::Ordering::minimum_degree);verify(graph);
 }
+void strictSupernodes(std::shared_ptr<posim_slam::SubmapRowStore> store={}) {
+  constexpr int n=12;Graph::Layout layout;layout.frontier={n-1};
+  for(int i=0;i<n-1;++i)layout.eliminated.push_back({i});
+  Graph graph(layout,{},{},store);Graph::Rows rows;rows.originals={"dense-measurement"};
+  for(int i=0;i<n;++i)rows.columns.push_back(i);
+  rows.jacobian=Matrix::Identity(n,n);rows.jacobian.array()+=.02;
+  rows.residual=Vector::LinSpaced(n,-.2,.3);
+  graph.replace({},{{"dense",rows}});verify(graph);
+  const auto before=graph.snapshot();const auto old_solution=graph.solve(before);
+  const auto old=graph.query(old_solution,rows.columns,Matrix::Identity(n,n));
+  rows.residual*=2;
+  graph.replace({"dense"},{{"dense",rows}},{},nullptr,{},Graph::Ordering::minimum_degree);verify(graph);
+  const auto grouped=graph.snapshot();assert(grouped->layout.eliminated.size()==1);
+  assert(grouped->layout.eliminated.front().size()==n-1 && grouped->factors.size()==1);
+  close(graph.query(old_solution,rows.columns,Matrix::Identity(n,n)).covariance,old.covariance);
+  graph.replace({}, {},{},nullptr,{},Graph::Ordering::minimum_degree);
+  assert(graph.snapshot()->buckets==grouped->buckets && graph.snapshot()->rebuilt.empty());
+  auto growth=grouped->layout;growth.eliminated.push_back({n-1});growth.frontier={n};
+  graph.replace({}, {edge("later","later-source",n-1,n,.4,2)}, {}, &growth,{},Graph::Ordering::minimum_degree);verify(graph);
+  // Removing absolute information keeps the relative measurement and its gauge.
+  graph.replace({"dense"},{},{"dense-measurement"},nullptr,{},Graph::Ordering::minimum_degree);
+  Matrix relative=Matrix::Zero(1,n+1);relative(0,n-1)=1;relative(0,n)=-1;verify(graph,relative);
+  assert(!graph.query(graph.solve(graph.snapshot()),{n},Matrix::Identity(1,1)).observed);
+  rows.jacobian.resize(0,n);rows.residual.resize(0);
+  rows.constraints=Matrix::Identity(n,n);rows.target=Vector::LinSpaced(n,-.2,.3);
+  graph.replace({},{{"exact",rows}},{},nullptr,{},Graph::Ordering::minimum_degree);verify(graph);
+}
+void groupedWeakDirections() {
+  constexpr int n=48,strong=44,repeats=8;Matrix a=Matrix::Zero(n,n);
+  for(int i=0;i<strong;++i)for(int k=0;k<strong;++k)a(i,k)=(i==k?2.:0.)+.02*std::sin(.13*i+.17*k);
+  a(44,44)=1e-8;a(45,45)=2e-8;
+  const Matrix h=a.topLeftCorner(strong,strong).transpose()*a.topLeftCorner(strong,strong);
+  const Matrix covariance=h.ldlt().solve(Matrix::Identity(strong,strong))/repeats;
+  Vector mean(n);for(int i=0;i<n;++i)mean[i]=.01*(i+1);mean.tail(2).setZero();
+  std::vector<int64_t> columns(n);std::iota(columns.begin(),columns.end(),0);
+  for(double scale:{1e-4,1.,1e4}) {
+    Graph::Layout layout;layout.frontier={44,45,46,47};for(int i=0;i<strong;++i)layout.eliminated.push_back({i});
+    Graph graph(layout);Graph::Rows rows;rows.originals={"strong-weak-free"};rows.columns=columns;rows.jacobian.resize(repeats*n,n);
+    for(int i=0;i<repeats;++i)rows.jacobian.middleRows(i*n,n)=scale*a;
+    rows.residual=-rows.jacobian*mean;
+    graph.replace({},{{"likelihood",rows}},{},nullptr,{},Graph::Ordering::minimum_degree);
+    assert(graph.snapshot()->layout.eliminated.size()==1);
+    Matrix derivative=Matrix::Zero(8,n);std::vector<int> chosen{0,6,17,39,44,45,46,47};
+    for(size_t i=0;i<chosen.size();++i)derivative(i,chosen[i])=1;
+    const auto solved=graph.solve(graph.snapshot());const auto finite=graph.query(solved,columns,derivative.topRows(6));
+    assert(finite.observed);assert((finite.mean-derivative.topRows(6)*mean).norm()<1e-8);
+    Matrix expected=Matrix::Zero(4,4);for(int i=0;i<4;++i)for(int k=0;k<4;++k)expected(i,k)=covariance(chosen[i],chosen[k])/(scale*scale);
+    close(finite.covariance.topLeftCorner(4,4),expected);
+    Matrix weak=Matrix::Zero(2,2);weak(0,0)=1e16/(repeats*scale*scale);weak(1,1)=1e16/(4*repeats*scale*scale);
+    assert((finite.covariance.bottomRightCorner(2,2)-weak).norm()<1e-10*weak.norm());
+    const auto all=graph.query(solved,columns,derivative);Matrix free=Matrix::Zero(8,8);free.bottomRightCorner(2,2).setIdentity();
+    assert(!all.observed);close(all.unbounded_gram,free);
+  }
+}
 void sql(const std::filesystem::path& directory,const char* statement) {
   sqlite3* db=nullptr;assert(sqlite3_open((directory/"rows.sqlite").string().c_str(),&db)==SQLITE_OK);
   const auto result=sqlite3_exec(db,statement,nullptr,nullptr,nullptr);sqlite3_close(db);assert(result==SQLITE_OK);
@@ -249,6 +303,10 @@ void paged(const std::filesystem::path& root) {
     assert(store->statistics().pages==0 && store->statistics().resident_bytes==0);
   }
   {
+    auto store=std::make_shared<Store>(root/"supernodes",4096);strictSupernodes(store);
+    assert(store->statistics().pages==0 && store->statistics().resident_bytes==0);
+  }
+  {
     auto store=std::make_shared<Store>(root/"leases",24);
     auto first=store->put(edge("a","a",0,1,.2,3).rows),second=store->put(edge("b","b",0,1,.3,4).rows);
     auto lease=first->pin();store->evict();assert(store->statistics().resident_bytes==24);
@@ -275,7 +333,7 @@ void paged(const std::filesystem::path& root) {
 }
 } // namespace
 int main(int argc,char** argv) {
-  replacementAndGrowth();rollbackAndConstraints();quotasAndBatching();symbolicElimination();affectedOrdering();
+  replacementAndGrowth();rollbackAndConstraints();quotasAndBatching();symbolicElimination();affectedOrdering();strictSupernodes();groupedWeakDirections();
   if(argc==2)paged(std::filesystem::path(argv[1]));else assert(argc==1);
   std::cout<<"source factorization: archived replacement, merge, unassignment, growth, shared branches, gauge, constraints and rollback passed\n";
 }
