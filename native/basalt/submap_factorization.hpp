@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 #pragma once
 #include "submap_row_store.hpp"
+#include "submap_ordering.hpp"
 #include <functional>
 
 namespace posim_slam {
@@ -20,6 +21,7 @@ class SubmapFactorization {
     std::vector<Coordinate> frontier;
     std::vector<std::vector<Coordinate>> eliminated;
   };
+  enum class Ordering {fixed,minimum_degree};
   struct Bucket {
     std::vector<Page> sources;
     std::vector<std::shared_ptr<const Bucket>> children;
@@ -77,7 +79,7 @@ class SubmapFactorization {
   // existing blocks and every previously known coordinate remain intact.
   Snapshot replace(const std::vector<std::string>& removed,
       const std::vector<Factor>& incoming,const std::vector<std::string>& unassigned={},
-      const Layout* layout=nullptr,const std::function<bool()>& cancelled={}) {
+      const Layout* layout=nullptr,const std::function<bool()>& cancelled={},Ordering ordering=Ordering::fixed) {
     std::lock_guard<std::mutex> writer(writer_);check(cancelled);
     const auto previous=snapshot();auto next=std::make_shared<Data>(*previous);
     if(layout)next->layout=*layout;
@@ -121,6 +123,7 @@ class SubmapFactorization {
     assigned.insert(unused.begin(),unused.end());
     if(!std::includes(assigned.begin(),assigned.end(),outgoing.begin(),outgoing.end()))
       throw std::invalid_argument("submap_factor_original_missing");
+    if(ordering==Ordering::minimum_degree)reorderChanged(*next,*previous,cancelled);
     rebuild(*next,previous.get(),cancelled);check(cancelled);
     ++next->revision;Snapshot immutable=next;std::atomic_store(&data_,immutable);return immutable;
   }
@@ -165,6 +168,82 @@ class SubmapFactorization {
     if(previous)for(auto column:previous->frontier)if(!rank.count(column))
       throw std::invalid_argument("submap_factor_coordinate_missing");
     return rank;
+  }
+  // Plan the affected dependency tree using column metadata only. Unchanged
+  // descendants stay in their original relative order and retain their exact
+  // numeric pages. Reorder only the remaining blocks, from the same source rows.
+  void reorderChanged(Data& next,const Data& previous,const std::function<bool()>& cancelled) const {
+    const size_t root=next.layout.eliminated.size();if(root<2)return;
+    const auto rank=validateLayout(next.layout,nullptr);
+    const size_t count=root+next.layout.frontier.size(),words=(count+63)/64;
+    if(count>limits_.numeric_bytes/(2*sizeof(uint64_t))/words)return;
+    struct Symbol {
+      std::vector<Page> sources;std::vector<size_t> children;std::vector<Coordinate> columns;
+      std::shared_ptr<const Bucket> reused;
+    };
+    size_t workspace=2*count*words*sizeof(uint64_t)+count*4*sizeof(size_t)+(root+1)*sizeof(Symbol);
+    if(next.factors.size()>limits_.numeric_bytes/sizeof(Page) ||
+        workspace>limits_.numeric_bytes-next.factors.size()*sizeof(Page))return;
+    workspace+=next.factors.size()*sizeof(Page);
+    const auto route=[&](const std::vector<Coordinate>& columns) {
+      size_t out=root;for(auto c:columns)out=std::min(out,rank.at(c));return out;
+    };
+    std::vector<Symbol> symbols(root+1);
+    for(const auto& [id,rows]:next.factors)symbols[route(rows->columns)].sources.push_back(rows);
+    std::map<std::vector<Coordinate>,std::shared_ptr<const Bucket>> old;
+    for(size_t i=0;i<previous.layout.eliminated.size();++i)old.emplace(previous.buckets[i]->context,previous.buckets[i]);
+    std::vector<size_t> fixed,changed;
+    for(size_t i=0;i<=root;++i) {
+      check(cancelled);auto& symbol=symbols[i];const auto& context=i==root?next.layout.frontier:next.layout.eliminated[i];
+      auto found=old.find(context);const auto before=i==root?previous.buckets.back():(found==old.end()?nullptr:found->second);
+      bool same=before && before->context==context && before->sources==symbol.sources && before->children.size()==symbol.children.size();
+      for(size_t j=0;same && j<symbol.children.size();++j)same=symbols[symbol.children[j]].reused==before->children[j];
+      if(same){symbol.reused=before;symbol.columns=before->message->columns;}
+      else {
+        std::set<Coordinate> columns(context.begin(),context.end());
+        for(const auto& page:symbol.sources)columns.insert(page->columns.begin(),page->columns.end());
+        for(auto child:symbol.children)columns.insert(symbols[child].columns.begin(),symbols[child].columns.end());
+        if(i!=root)for(auto c:context)columns.erase(c);
+        symbol.columns.assign(columns.begin(),columns.end());
+      }
+      const size_t bytes=symbol.columns.size()*sizeof(Coordinate)+symbol.children.size()*sizeof(size_t);
+      if(bytes>limits_.numeric_bytes-workspace)return;workspace+=bytes;
+      if(i!=root) {
+        (same?fixed:changed).push_back(i);const auto parent=route(symbol.columns);
+        if(parent<=i)throw std::logic_error("submap_factor_dependency_order");
+        symbols[parent].children.push_back(i);
+      }
+    }
+    if(changed.size()<2)return;
+    std::vector<size_t> weights;std::map<Coordinate,size_t> vertex;
+    for(size_t i=0;i<root;++i){weights.push_back(next.layout.eliminated[i].size());for(auto c:next.layout.eliminated[i])vertex.emplace(c,i);}
+    for(auto c:next.layout.frontier){vertex.emplace(c,weights.size());weights.push_back(1);}
+    SubmapOrderingGraph graph(weights);
+    for(const auto& [id,page]:next.factors) {
+      check(cancelled);std::set<size_t> nodes;for(auto c:page->columns)nodes.insert(vertex.at(c));
+      for(auto a=nodes.begin();a!=nodes.end();++a)for(auto b=std::next(a);b!=nodes.end();++b)graph.connect(*a,*b);
+    }
+    const auto cost=[](size_t width){const uint64_t n=width;return n*n*n;};
+    uint64_t original_cost=0,candidate_cost=0;size_t original_width=0,candidate_width=0;
+    {
+      auto original=graph;
+      for(size_t i=0;i<root;++i) {
+        check(cancelled);const auto width=original.eliminate(i);
+        if(!symbols[i].reused){original_cost+=cost(width);original_width=std::max(original_width,width);}
+      }
+    }
+    for(auto node:fixed){check(cancelled);graph.eliminate(node);}
+    std::vector<size_t> chosen=fixed;
+    while(!changed.empty()) {
+      check(cancelled);auto best=std::min_element(changed.begin(),changed.end(),[&](size_t a,size_t b) {
+        return graph.degree(a)==graph.degree(b)?a<b:graph.degree(a)<graph.degree(b);
+      });
+      const auto node=*best;const auto width=graph.eliminate(node);candidate_cost+=cost(width);candidate_width=std::max(candidate_width,width);
+      chosen.push_back(node);changed.erase(best);
+    }
+    if(candidate_cost>=original_cost || candidate_width>original_width)return;
+    const auto blocks=next.layout.eliminated;
+    for(size_t i=0;i<chosen.size();++i)next.layout.eliminated[i]=blocks[chosen[i]];
   }
   // Compact bounded batches in the existing rank-aware information engine.
   // Internal message labels are local to this workspace. Only source keys are
@@ -238,14 +317,16 @@ class SubmapFactorization {
     for(const auto& [id,rows]:next.factors) {
       pending[route(rows->columns)]->sources.push_back(rows);bytes+=rows->bytes();
     }
+    std::map<std::vector<Coordinate>,std::shared_ptr<const Bucket>> old_buckets;
+    if(previous)for(size_t i=0;i<previous->layout.eliminated.size();++i)
+      old_buckets.emplace(previous->buckets[i]->context,previous->buckets[i]);
     next.buckets.clear();next.rebuilt.clear();
     for(size_t i=0;i<=root;++i) {
       check(cancelled);const auto& incoming=pending[i];std::shared_ptr<const Bucket> bucket;
       // An old root is not an eliminated node when the frontier moves.
-      const bool old_kind=previous && ((i==root && i==previous->layout.eliminated.size()) ||
-          (i<root && i<previous->layout.eliminated.size()));
-      if(old_kind) {
-        const auto& old=previous->buckets.at(i);
+      const auto found=old_buckets.find(incoming->context);
+      const auto old=i==root?(previous?previous->buckets.back():nullptr):(found==old_buckets.end()?nullptr:found->second);
+      if(old) {
         if(old->context==incoming->context && old->sources==incoming->sources && old->children==incoming->children)bucket=old;
       }
       if(!bucket){bucket=factorize(incoming,i==root,cancelled);next.rebuilt.push_back(i);}

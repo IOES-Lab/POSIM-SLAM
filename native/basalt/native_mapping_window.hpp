@@ -239,7 +239,7 @@ class NativeMappingWindow {
       });
     if(selection_.factors.empty() && selection_.points.empty())
       throw std::invalid_argument("native_window_no_active_likelihoods");
-    owner_->replace({},factors);
+    owner_->replace({},factors,{},nullptr,{},SubmapFactorization::Ordering::minimum_degree);
     originals_=source.originals+source.pose_factors;
     if(snapshot()->information->measurements.size()!=originals_)
       throw std::logic_error("native_window_original_ownership");
@@ -310,7 +310,7 @@ class NativeMappingWindow {
     for(const auto& factor:factors)assigned.insert(factor.rows.originals.begin(),factor.rows.originals.end());
     std::vector<std::string> unassigned;
     std::set_difference(outgoing.begin(),outgoing.end(),assigned.begin(),assigned.end(),std::back_inserter(unassigned));
-    check();next->owner_->replace(removed,factors,unassigned,&layout,cancelled);
+    check();next->owner_->replace(removed,factors,unassigned,&layout,cancelled,SubmapFactorization::Ordering::minimum_degree);
     next->selection_=std::move(selected);next->active_poses_=active;
     next->group_identities_=std::move(groups);next->source_identity_=nativeMappingSourceIdentity(mapper_);
     next->linearization_state_=nativeMappingStateIdentity(mapper_);

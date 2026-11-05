@@ -19,7 +19,10 @@ Different feature IDs alone do not establish independent measurement errors.
 The optional conditional policy reoptimizes the recent calculation window. Historical factors
 retain their original observations, linearization anchors and conditional
 correlations; historical poses and landmarks move with the solution. Changed
-source groups rebuild their affected elimination dependencies. QR/SVD elimination
+source groups rebuild their affected elimination dependencies. Weighted minimum
+degree orders the affected historical blocks while unchanged branches keep their
+numeric pages. An order is adopted when its symbolic work decreases without
+widening the largest intermediate block. QR/SVD elimination
 and conditional queries produce world-point uncertainty. The original estimated
 position/yaw reference enters once. Truth and optimizer damping add no information.
 
@@ -46,6 +49,9 @@ and cross-layer statistical independence is unverified. `map_qualified` is false
 선택형 조건부 정책은 최근 계산 구간을 다시 최적화합니다. 과거 인자는 원본 관측·
 선형화 기준·조건부 상관관계를 보존하며 과거 자세와 지도점도 해에 따라
 갱신됩니다. 원본 관측 묶음이 바뀌면 영향을 받는 소거 관계를 다시 구성합니다.
+연결된 좌표 수를 가중치로 삼는 최소 차수 순서로 해당 과거 블록을 소거하며,
+변경되지 않은 계산 가지는 기존 행렬을 재사용합니다. 예상 계산량이 줄고 가장
+큰 중간 블록이 넓어지지 않는 순서를 적용합니다.
 QR/SVD 소거와 조건부 질의로 세계 좌표 점의 불확실성을 구합니다. 원래 추정한
 위치·방위 기준은 한 번 반영하며 시뮬레이터 정답이나 최적화 감쇠로 정보를
 추가하지 않습니다.

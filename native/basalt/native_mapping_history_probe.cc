@@ -153,10 +153,23 @@ void unchangedSafety() {
   const auto output=window.worldInformation(window.worldLinearization(),{100,200});
   assert(!output.observed && output.unbounded_gram.norm()>0);
   auto wide=chain(300,1e4,true);const auto before=nativeMappingStateIdentity(*wide);
-  // Eliminating the hub exposes 299 neighbours: namespace space is available,
-  // but the unchanged local separator bound must still reject the operation.
-  rejects([&]{NativeMappingWindow invalid(*wide,1,{298,299,300});},"submap_factor_separator_capacity");
+  // Retiring leaves before the hub avoids chronological fill without increasing
+  // the local separator bound. Compare the entire endpoint joint covariance.
+  NativeMappingWindow reordered(*wide,1,{298,299,300});
+  close(reordered.worldInformation(reordered.worldLinearization(),{100,200}).covariance,fullCovariance(*wide,{100,200}));
   assert(nativeMappingStateIdentity(*wide)==before);
+  // A clique cannot be made narrow by changing the elimination order. Retain a
+  // genuine separator-capacity failure with source state unchanged.
+  auto dense=chain(6);dense->rel_pose_factors.clear();
+  for(int64_t a=1;a<=6;++a)for(int64_t b=a+1;b<=6;++b) {
+    basalt::RelPoseFactor factor;factor.t_i_ns=a;factor.t_j_ns=b;
+    factor.T_i_j=dense->getFramePoses().at(a).getPose().inverse()*dense->getFramePoses().at(b).getPose();
+    factor.cov_inv=100*Sophus::Matrix6d::Identity();dense->rel_pose_factors.push_back(factor);
+  }
+  const auto dense_before=nativeMappingStateIdentity(*dense);
+  SubmapInformation::Limits limited;limited.active_columns=18;limited.temporary_columns=24;
+  rejects([&]{NativeMappingWindow invalid(*dense,1,{4,5,6},limited);},"submap_factor_separator_capacity");
+  assert(nativeMappingStateIdentity(*dense)==dense_before);
 }
 } // namespace
 int main(int argc,char** argv) {

@@ -153,6 +153,72 @@ void quotasAndBatching() {
   batches.replace({},all);Matrix relative(1,2);relative<<1,-1;verify(batches,relative);
   assert(batches.snapshot()->information->measurements.size()==3);
 }
+void symbolicElimination() {
+  // Cross packed-word boundaries and compare every weighted degree against an
+  // independent set graph, including fill edges and nonuniform block sizes.
+  constexpr size_t count=137;std::vector<size_t> weights(count);
+  for(size_t i=0;i<count;++i)weights[i]=1+i%6;
+  posim_slam::SubmapOrderingGraph packed(weights);std::vector<std::set<size_t>> reference(count);
+  for(size_t i=0;i<count;++i)for(size_t j=i+1;j<count;++j)if((i*29+j*17)%41<3) {
+    packed.connect(i,j);packed.connect(j,i);reference[i].insert(j);reference[j].insert(i);
+  }
+  for(size_t step=0;step<count;++step) {
+    for(size_t i=0;i<count;++i) {
+      size_t expected=0;for(auto j:reference[i])expected+=weights[j];
+      assert(packed.degree(i)==expected);
+    }
+    const size_t node=(step*43)%count;size_t width=weights[node];
+    for(auto other:reference[node])width+=weights[other];
+    assert(packed.eliminate(node)==width);
+    const auto neighbors=reference[node];
+    for(auto a:neighbors) {
+      reference[a].erase(node);
+      for(auto b:neighbors)if(a!=b)reference[a].insert(b);
+    }
+    reference[node].clear();
+  }
+}
+void affectedOrdering(std::shared_ptr<posim_slam::SubmapRowStore> store={}) {
+  Graph::Layout layout;layout.frontier={15};for(int i=0;i<15;++i)layout.eliminated.push_back({i});
+  Graph graph(layout,{},{},store);std::vector<Graph::Factor> inputs;
+  for(int i=1;i<=12;++i)inputs.push_back(edge("leaf:"+std::to_string(i),"pixel:"+std::to_string(i),0,i,.1*i,1+.1*i));
+  inputs.push_back(edge("center","pixel:center",0,15,.3,2));
+  inputs.push_back(edge("branch:a","pixel:branch:a",13,14,.2,3));
+  inputs.push_back(edge("branch:b","pixel:branch:b",14,15,.4,2));
+  auto anchor=edge("anchor","sensor:anchor",15,14,0,1);
+  anchor.rows.columns={15};anchor.rows.jacobian=Matrix::Constant(1,1,2);inputs.push_back(anchor);
+  graph.replace({},inputs);verify(graph);
+  const auto before=graph.snapshot();const auto old_solution=graph.solve(before);
+  const auto old_query=graph.query(old_solution,{0,15},Matrix::Identity(2,2));
+  auto update=edge("leaf:1","pixel:1",0,1,.7,3);
+  int calls=0;
+  rejects([&]{graph.replace({"leaf:1"},{update},{},nullptr,[&]{return ++calls==6;},Graph::Ordering::minimum_degree);},"submap_factor_cancelled");
+  assert(graph.snapshot()==before);
+  graph.replace({"leaf:1"},{update},{},nullptr,{},Graph::Ordering::minimum_degree);verify(graph);
+  const auto after=graph.snapshot();assert(after->layout.eliminated!=before->layout.eliminated);
+  for(auto context:{13,14}) {
+    const auto found=std::find(after->layout.eliminated.begin(),after->layout.eliminated.end(),std::vector<int64_t>{context});
+    assert(found!=after->layout.eliminated.end());
+    assert(after->buckets[found-after->layout.eliminated.begin()]==before->buckets[context]);
+  }
+  auto width=[](const Graph::Snapshot& state) {
+    size_t largest=0;for(const auto& bucket:state->buckets)
+      largest=std::max(largest,bucket->context.size()+bucket->message->columns.size());
+    return largest;
+  };
+  assert(width(after)<width(before));
+  close(graph.query(old_solution,{0,15},Matrix::Identity(2,2)).mean,old_query.mean);
+  close(graph.query(old_solution,{0,15},Matrix::Identity(2,2)).covariance,old_query.covariance);
+  graph.replace({}, {},{},nullptr,{},Graph::Ordering::minimum_degree);
+  assert(graph.snapshot()->buckets==after->buckets && graph.snapshot()->rebuilt.empty());
+  auto grown=graph.snapshot()->layout;grown.eliminated.push_back({15});grown.frontier={16};
+  graph.replace({}, {edge("new","pixel:new",15,16,.2,2)}, {}, &grown,{},Graph::Ordering::minimum_degree);verify(graph);
+  graph.replace({"anchor"},{},{"sensor:anchor"},nullptr,{},Graph::Ordering::minimum_degree);verify(graph);
+  Matrix relative=Matrix::Zero(2,17);relative(0,0)=relative(1,13)=1;relative(0,16)=relative(1,15)=-1;verify(graph,relative);
+  anchor.rows.jacobian.resize(0,1);anchor.rows.residual.resize(0);
+  anchor.rows.constraints=Matrix::Ones(1,1);anchor.rows.target=Vector::Constant(1,.2);
+  graph.replace({}, {anchor},{},nullptr,{},Graph::Ordering::minimum_degree);verify(graph);
+}
 void sql(const std::filesystem::path& directory,const char* statement) {
   sqlite3* db=nullptr;assert(sqlite3_open((directory/"rows.sqlite").string().c_str(),&db)==SQLITE_OK);
   const auto result=sqlite3_exec(db,statement,nullptr,nullptr,nullptr);sqlite3_close(db);assert(result==SQLITE_OK);
@@ -177,6 +243,10 @@ void paged(const std::filesystem::path& root) {
     store->evict();sql(root/"graph","UPDATE pages SET payload=zeroblob(length(payload))");
     rejects([&]{graph.replace({"a"},{edge("a","pixel:a",0,2,.9,2)});},"submap_row_storage_digest");
     assert(graph.snapshot()==before && store->statistics().pages==count);
+  }
+  {
+    auto store=std::make_shared<Store>(root/"ordering",4096);affectedOrdering(store);
+    assert(store->statistics().pages==0 && store->statistics().resident_bytes==0);
   }
   {
     auto store=std::make_shared<Store>(root/"leases",24);
@@ -205,7 +275,7 @@ void paged(const std::filesystem::path& root) {
 }
 } // namespace
 int main(int argc,char** argv) {
-  replacementAndGrowth();rollbackAndConstraints();quotasAndBatching();
+  replacementAndGrowth();rollbackAndConstraints();quotasAndBatching();symbolicElimination();affectedOrdering();
   if(argc==2)paged(std::filesystem::path(argv[1]));else assert(argc==1);
   std::cout<<"source factorization: archived replacement, merge, unassignment, growth, shared branches, gauge, constraints and rollback passed\n";
 }
