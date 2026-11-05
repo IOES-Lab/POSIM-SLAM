@@ -40,7 +40,8 @@ class NativeMappingGraph {
   const Update& lastUpdate() const {return last_;}
   MappingMatchHistory::Snapshot matchingSnapshot() const {return matched_;}
   std::shared_ptr<const NativeMappingGraphState> captureState(const MappingInputStore::Snapshot& input);
-  static nlohmann::json checkpoint(const NativeMappingGraphState& state);
+  static nlohmann::json checkpoint(const NativeMappingGraphState& state,
+      const MappingMatchHistory::FrameVisitor& frame_visitor={});
   static void validateCheckpoint(basalt::NfrMapper& mapper,const nlohmann::json& document,uint64_t revision,
       const nlohmann::json& window={});
   static std::unique_ptr<NativeMappingGraph> restore(MappingMatchHistory& matching,

@@ -684,6 +684,8 @@ void inputPageControls(const std::filesystem::path& directory) {
   assert(Registry::inputFrame(damaged.graph,10)->stamp==10);
   rejects([&]{Registry::inputFrame(damaged.graph,30);},"mapping_input_page_digest");
   rejects([&]{Registry::restoreForMatching(damaged.graph);},"mapping_input_page_digest");
+  rejects([&]{Registry::writeWithInputs(path,damaged.graph,9,30);},"mapping_input_page_digest");
+  assert(Registry::read(path).request==8);
   rejects([&]{posim_slam::mapping_frame_io::decode(posim_slam::mapping_frame_io::encode(*changed),Registry::document(graph).at("frames")[0]);},"mapping_input_frame_identity");
   const auto legacy=directory/"without-inputs.pmap";Registry::write(legacy,graph,7,30);
   const auto old=Registry::read(legacy);assert(!old.graph->hasInputFrames());
@@ -693,9 +695,39 @@ void inputPageControls(const std::filesystem::path& directory) {
   std::cout<<"Input pages: exact unused features/descriptors, HashBoW and descriptor matching, unchanged map/covariance, lazy integrity, budgets, cancellation, replacement ownership and legacy rejection pass.\n";
 }
 
+void archiveChunkBoundaries(const std::filesystem::path& directory) {
+  Fixture fixture;basalt::HashBow<256> vocabulary(fixture.config.mapper_bow_num_bits);
+  for(auto& [stamp,source]:fixture.input->frames) {
+    auto frame=std::make_shared<posim_slam::MappingInputFrame>(*source.read());auto& features=frame->features;
+    while(features.corners.size()<10000) {
+      const auto i=features.corners.size();features.corners.emplace_back(10+i%620,10+i%460);
+    }
+    const auto count=features.corners.size();features.corner_angles.resize(count);features.corner_descriptors.resize(count);
+    for(size_t i=0;i<count;++i) {
+      features.corner_angles[i]=.001*i;
+      features.corner_descriptors[i][(i+stamp)%256]=true;
+      features.corner_descriptors[i][(7*i+stamp)%256]=true;
+    }
+    std::vector<bool> success;fixture.calibration.intrinsics[0].unproject(features.corners,features.corners_3d,success);
+    vocabulary.compute_bow(features.corner_descriptors,features.hashes,features.bow_vector);source=frame;
+  }
+  auto mapper=fixture.mapper();Registry registry(fixture.calibration,fixture.config,"chunk-boundaries");
+  const auto graph=registry.capture(fixture.input,*mapper,10,Sophus::SE3d(),Sophus::SE3d());
+  const auto path=directory/"chunks.pmap";Registry::writeWithInputs(path,graph,1,30);
+  assert(std::filesystem::file_size(path)>2*1024*1024);
+  const auto loaded=Registry::read(path);assert(Registry::document(graph)==Registry::document(loaded.graph));
+  for(const auto& [stamp,source]:fixture.input->frames)
+    assert(posim_slam::mapping_frame_io::encode(*Registry::inputFrame(loaded.graph,stamp))==posim_slam::mapping_frame_io::encode(*source.read()));
+  // Re-export from the still-open source to its own pathname, preserving all
+  // bytes across overlapping backward moves and a non-aligned final chunk.
+  Registry::writeWithInputs(path,loaded.graph,1,30);const auto again=Registry::read(path);
+  for(const auto& [stamp,source]:fixture.input->frames)
+    assert(posim_slam::mapping_frame_io::encode(*Registry::inputFrame(again.graph,stamp))==posim_slam::mapping_frame_io::encode(*source.read()));
+}
+
 int main(int argc,char** argv) {
   if(argc!=2)return 2;const std::filesystem::path directory=argv[1];Fixture fixture;
-  inputPageControls(directory);
+  inputPageControls(directory);archiveChunkBoundaries(directory);
   nativeArchiveControls(fixture,directory);
   nativeRowsControls(fixture);nativeRowStreamControls(fixture);nativeScheduleControls(fixture);
   nativeWindowControls(fixture);

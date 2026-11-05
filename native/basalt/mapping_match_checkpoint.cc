@@ -13,10 +13,12 @@ Json profile(const basalt::Calibration<double>& calibration,const basalt::VioCon
       doubles(calibration.T_i_c[0].data(),7),calibration.resolution[0].x(),calibration.resolution[0].y()}},
       {"config",config(configuration)}};
 }
-Json frameIdentity(const MappingInputFrame& frame) {
+Json frameIdentity(const MappingInputFrame& frame,const InputDigest::Value& digest) {
   return {frame.stamp,frame.width,frame.height,frame.features.corners.size(),
-      mapping_frame_io::binary(frame.digest),
-      mapping_frame_io::binary(mapping_frame_io::digest(mapping_frame_io::encode(frame)))};
+      mapping_frame_io::binary(frame.digest),mapping_frame_io::binary(digest)};
+}
+Json frameIdentity(const MappingInputFrame& frame) {
+  return frameIdentity(frame,mapping_frame_io::digest(mapping_frame_io::encode(frame)));
 }
 const Json& checked(const Json& document) {
   if(!document.is_object() || document.size()!=3 || document.at("schema")!="posim-slam-matching-1")
@@ -39,7 +41,7 @@ const Json& checked(const Json& document) {
 }
 
 nlohmann::json MappingMatchHistory::checkpoint(const Snapshot& state,
-    const basalt::Calibration<double>& calibration,const basalt::VioConfig& config) {
+    const basalt::Calibration<double>& calibration,const basalt::VioConfig& config,const FrameVisitor& frame_visitor) {
   using namespace mapping_graph_detail;
   if(!state || !state->owner || !state->revision || state->frames.empty() ||
       state->evaluated_pairs!=state->evaluated.size())throw std::invalid_argument("mapping_match_checkpoint_source");
@@ -49,7 +51,9 @@ nlohmann::json MappingMatchHistory::checkpoint(const Snapshot& state,
     const auto frame=retained.source.read();mapping_frame_io::shape(*frame);
     if(frame->stamp!=stamp || !retained.pixels || frame->features.corners!=retained.pixels->corners ||
         frame->features.bow_vector!=retained.bow)throw std::invalid_argument("mapping_match_checkpoint_source");
-    data["frames"].push_back(frameIdentity(*frame));
+    const auto encoded=mapping_frame_io::encode(*frame);const auto digest=mapping_frame_io::digest(encoded);
+    data["frames"].push_back(frameIdentity(*frame,digest));
+    if(frame_visitor)frame_visitor(retained.source,*frame,encoded,digest);
   }
   for(const auto& pair:state->evaluated)data["evaluated"].push_back({pair.first.frame_id,pair.second.frame_id});
   for(const auto& [pair,match]:state->matches) {

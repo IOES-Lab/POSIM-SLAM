@@ -56,11 +56,12 @@ std::shared_ptr<const NativeMappingGraphState> NativeMappingGraph::captureState(
   return state;
 }
 
-nlohmann::json NativeMappingGraph::checkpoint(const NativeMappingGraphState& state) {
+nlohmann::json NativeMappingGraph::checkpoint(const NativeMappingGraphState& state,
+    const MappingMatchHistory::FrameVisitor& frame_visitor) {
   using namespace mapping_graph_detail;
   Json data={{"revision",state.revision},{"next_track",state.next_track},
       {"source",mapping_frame_io::binary(state.source)},{"nonlinear",mapping_frame_io::binary(state.nonlinear)},
-      {"matching",MappingMatchHistory::checkpoint(state.matching,state.calibration,state.config)},
+      {"matching",MappingMatchHistory::checkpoint(state.matching,state.calibration,state.config,frame_visitor)},
       {"input_poses",Json::array()}};
   if(!state.input || state.input->revision!=state.revision)throw std::invalid_argument("native_graph_checkpoint_source");
   for(const auto& [stamp,pose]:state.input->poses)data["input_poses"].push_back({stamp,doubles(pose.getPose().data(),7)});

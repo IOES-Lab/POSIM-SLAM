@@ -376,44 +376,72 @@ void MappingGraphRegistry::writeArchive(const std::filesystem::path& path,const 
   const auto data=document(graph);
   for(const auto& frame:data.at("frames"))
     if(frame[0].get<int64_t>()>tracking_stamp)throw std::invalid_argument("mapping_graph_export_timing");
+  const auto temporary=path.string()+".tmp";
+  if(std::filesystem::is_symlink(path) || std::filesystem::is_symlink(temporary))throw std::invalid_argument("mapping_graph_archive_path");
+  std::fstream output(temporary,std::ios::binary|std::ios::in|std::ios::out|std::ios::trunc);
+  if(!output)throw std::runtime_error("mapping_graph_archive_unwritable");
   Json pages=Json::array();uint64_t page_bytes=0;
-  if(inputs)for(const auto& row:data.at("frames")) {
-    const auto frame=inputFrame(graph,row[0]);
-    if(Json::array({frame->stamp,frame->width,frame->height,frame->features.corners.size(),mapping_frame_io::binary(frame->digest)})!=row)
+  const auto append_frame=[&](const MappingInputFrame& frame,const std::vector<uint8_t>& encoded,const InputDigest::Value& digest) {
+    if(pages.size()>=data.at("frames").size() ||
+        Json::array({frame.stamp,frame.width,frame.height,frame.features.corners.size(),mapping_frame_io::binary(frame.digest)})!=data.at("frames")[pages.size()])
       throw std::invalid_argument("mapping_input_frame_identity");
-    const auto bytes=mapping_frame_io::encode(*frame);
-    pages.push_back({frame->stamp,page_bytes,bytes.size(),mapping_frame_io::binary(mapping_frame_io::digest(bytes))});page_bytes+=bytes.size();
-    if(page_bytes>archive_limit)throw std::runtime_error("mapping_graph_archive_capacity");
+    if(encoded.size()>archive_limit-page_bytes)throw std::runtime_error("mapping_graph_archive_capacity");
+    pages.push_back({frame.stamp,page_bytes,encoded.size(),mapping_frame_io::binary(digest)});page_bytes+=encoded.size();
+    output.write(reinterpret_cast<const char*>(encoded.data()),encoded.size());
+    if(!output)throw std::runtime_error("mapping_graph_archive_write_failed");
+  };
+  // Stream each original frame once. Native matching uses these exact encoded
+  // bytes for its identity, then the archive appends them before the lease ends.
+  // Restored and graph-only owners use the same writer without a matching visit.
+  const bool owner=inputs && graph->hasNativeGraph();Json owner_checkpoint;
+  if(owner && graph->native_owner) {
+    owner_checkpoint=NativeMappingGraph::checkpoint(*graph->native_owner,
+      [&](const MappingFrameReference& source,const MappingInputFrame& frame,
+          const std::vector<uint8_t>& encoded,const InputDigest::Value& digest) {
+        if(!graph->captured || !graph->captured->inputs.count(frame.stamp) ||
+            !graph->captured->inputs.at(frame.stamp).sameSource(source))
+          throw std::invalid_argument("native_graph_checkpoint_source");
+        append_frame(frame,encoded,digest);
+      });
+  } else if(inputs) {
+    for(const auto& row:data.at("frames")) {
+      const auto frame=inputFrame(graph,row[0]);const auto encoded=mapping_frame_io::encode(*frame);
+      append_frame(*frame,encoded,mapping_frame_io::digest(encoded));
+    }
+    if(owner)owner_checkpoint=graph->native_owner_saved;
   }
+  if(inputs && pages.size()!=data.at("frames").size())throw std::invalid_argument("mapping_input_frame_identity");
   // The optional window belongs to this same immutable graph revision.
   // A distinct signature makes older readers reject unsupported window state.
   // Keep the ordinary three-entry CBOR archive byte-for-byte compatible.
   // Serialize the immutable graph directly instead of copying it into an envelope.
-  const bool owner=inputs && graph->hasNativeGraph();
   std::vector<uint8_t> bytes{uint8_t(0xa3+int(graph->hasNativeWindow())+int(inputs)+int(owner))};
   Json::to_cbor("graph",bytes);Json::to_cbor(data,bytes);
   if(inputs) {Json::to_cbor("input_pages",bytes);Json::to_cbor(pages,bytes);}
   if(graph->hasNativeWindow()) {Json::to_cbor("native_window",bytes);Json::to_cbor(graph->native_window_state?NativeMappingCheckpoint::document(*graph->native_window_state):graph->native_window,bytes);}
   if(owner) {
     Json::to_cbor("native_graph",bytes);
-    Json::to_cbor(graph->native_owner?NativeMappingGraph::checkpoint(*graph->native_owner):graph->native_owner_saved,bytes);
+    Json::to_cbor(owner_checkpoint,bytes);
   }
   Json::to_cbor("request_id",bytes);Json::to_cbor(request,bytes);
   Json::to_cbor("tracking_stamp_ns",bytes);Json::to_cbor(tracking_stamp,bytes);
-  if(bytes.size()+page_bytes>archive_limit)throw std::runtime_error("mapping_graph_archive_capacity");
-  InputDigest hash;hash.update(bytes.data(),bytes.size());const auto digest=hash.finish();const auto temporary=path.string()+".tmp";
-  if(std::filesystem::is_symlink(path) || std::filesystem::is_symlink(temporary))throw std::invalid_argument("mapping_graph_archive_path");
-  std::ofstream output(temporary,std::ios::binary|std::ios::trunc);
-  if(!output)throw std::runtime_error("mapping_graph_archive_unwritable");
+  if(bytes.size()>archive_limit-page_bytes)throw std::runtime_error("mapping_graph_archive_capacity");
+  InputDigest hash;hash.update(bytes.data(),bytes.size());const auto digest=hash.finish();
+  // Prepend the unchanged envelope inside the same unpublished temporary file.
+  // Moving backwards handles overlap with one bounded buffer; decoded frames
+  // and page payloads are never accumulated into a second in-memory archive.
+  const uint64_t prefix=48+bytes.size();std::vector<char> buffer(std::min<uint64_t>(1024*1024,page_bytes));
+  for(uint64_t end=page_bytes;end;) {
+    const auto count=std::min<uint64_t>(end,buffer.size());const auto start=end-count;
+    output.seekg(start);output.read(buffer.data(),count);
+    if(!output)throw std::runtime_error("mapping_graph_archive_write_failed");
+    output.seekp(prefix+start);output.write(buffer.data(),count);
+    if(!output)throw std::runtime_error("mapping_graph_archive_write_failed");end=start;
+  }
+  output.seekp(0);
   output.write(owner?owner_magic:inputs?input_magic:graph->hasNativeWindow()?window_magic:magic,8);output.write(reinterpret_cast<const char*>(digest.data()),digest.size());
   uint8_t size[8];for(int i=0;i<8;++i)size[i]=uint8_t(uint64_t(bytes.size())>>(8*i));output.write(reinterpret_cast<const char*>(size),8);
   output.write(reinterpret_cast<const char*>(bytes.data()),bytes.size());
-  for(const auto& row:pages) {
-    const auto page=mapping_frame_io::encode(*inputFrame(graph,row[0]));
-    if(page.size()!=row[2] || mapping_frame_io::binary(mapping_frame_io::digest(page))!=row[3])
-      throw std::invalid_argument("mapping_input_page_digest");
-    output.write(reinterpret_cast<const char*>(page.data()),page.size());
-  }
   output.flush();
   if(!output)throw std::runtime_error("mapping_graph_archive_write_failed");output.close();
   if(!output)throw std::runtime_error("mapping_graph_archive_write_failed");std::filesystem::rename(temporary,path);

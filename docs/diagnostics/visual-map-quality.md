@@ -167,12 +167,22 @@ failed matches. New input can extend its selected calculation window within the
 retained-input quota. Navigation state is not restored. Older graph-only archives
 retain their saved observation associations for relinearization.
 
+The archive streams each checked feature frame once and uses the same encoded
+bytes for matching identity. A sibling temporary file and a **1 MiB** transfer
+buffer preserve the indexed format; the completed file replaces its destination
+atomically. Source-integrity failures leave the published archive unchanged.
+
 `PSIMMAP4`는 모든 검출 특징·원본 픽셀과 인자·자세 초기값·현재 자세와 지도점·
 선형화 기준·최적화 설정·구간 식별자와 보정값·평가한 영상쌍·다음 트랙 및 출력 ID를
 보존합니다. 복원은 식별자를 검사하고 검색 색인을 재구성하며 성공·실패한 대응을
 유지합니다. 입력 보관 한도 안에서 새 입력으로 선택한 계산 구간을 확장할 수
 있습니다. 항법 상태는 복원하지 않습니다. 이전 그래프 전용 파일은 저장된 관측
 연결의 재선형화를 지원합니다.
+
+검사한 특징 프레임은 한 번 읽어 저장하고 같은 인코딩 바이트로 대응 관계의
+식별자를 만듭니다. 같은 폴더의 임시 파일과 **1MiB** 전송 버퍼로 색인 형식을
+유지하며, 완성된 파일을 원자적으로 교체합니다. 원본 무결성 검사에 실패하면
+발행된 기존 파일은 유지됩니다.
 
 ## Native matching input memory / 네이티브 매칭 입력 메모리
 

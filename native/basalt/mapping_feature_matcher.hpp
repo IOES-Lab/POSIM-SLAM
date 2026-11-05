@@ -118,6 +118,10 @@ class MappingMatchHistory {
     std::set<Pair> evaluated;
   };
   using Snapshot=std::shared_ptr<const Data>;
+  // A checkpoint visitor consumes the same validated, canonically encoded frame
+  // that binds the matching decisions. Its lease lasts only for this call.
+  using FrameVisitor=std::function<void(const MappingFrameReference&,const MappingInputFrame&,
+      const std::vector<uint8_t>&,const InputDigest::Value&)>;
   MappingMatchHistory(const basalt::Calibration<double>& calibration,const basalt::VioConfig& config,
       size_t maximum_bytes=96*1024*1024,size_t maximum_frames=kMaxJointColumns/6)
       :calibration_(calibration),config_(config),maximum_bytes_(maximum_bytes),maximum_frames_(maximum_frames),
@@ -131,7 +135,8 @@ class MappingMatchHistory {
   // Serialize immutable decisions only for explicit checkpoints. Complete
   // original-feature hashes bind restored pairs, including failed attempts.
   static nlohmann::json checkpoint(const Snapshot& state,
-      const basalt::Calibration<double>& calibration,const basalt::VioConfig& config);
+      const basalt::Calibration<double>& calibration,const basalt::VioConfig& config,
+      const FrameVisitor& frame_visitor={});
   static void validateCheckpoint(const nlohmann::json& document);
   Snapshot restore(uint64_t revision,const std::map<int64_t,MappingFrameReference>& frames,
       const nlohmann::json& document,const std::function<bool()>& cancelled={});

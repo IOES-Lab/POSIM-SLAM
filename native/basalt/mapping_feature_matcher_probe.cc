@@ -19,7 +19,9 @@ Reference monitored(const std::shared_ptr<const Frame>& source,const std::shared
   }};
 }
 template<class F> void rejects(F call,const std::string& expected) {
-  bool caught=false;try{call();}catch(const std::exception& error){assert(error.what()==expected);caught=true;}assert(caught);
+  bool caught=false;try{call();}catch(const std::exception& error){
+    if(error.what()!=expected)std::cerr<<"Expected "<<expected<<", received "<<error.what()<<'\n';
+    assert(error.what()==expected);caught=true;}assert(caught);
 }
 }
 int main() {
@@ -130,6 +132,8 @@ int main() {
     changed_descriptor->features.corner_descriptors[0][0].flip();different.at(1)=Reference(changed_descriptor);
     rejects([&]{empty.restore(8,different,saved);},"mapping_match_checkpoint_source");
     corrupted=saved;corrupted["data"]["evaluated"].push_back(corrupted["data"]["evaluated"][0]);
+    rejects([&]{empty.restore(8,frames,reseal(corrupted));},"mapping_match_checkpoint_shape");
+    corrupted=saved;corrupted["data"]["evaluated"][1]=corrupted["data"]["evaluated"][0];
     rejects([&]{empty.restore(8,frames,reseal(corrupted));},"mapping_match_checkpoint_pair");
     corrupted=saved;corrupted["data"]["matches"][0][2][0][0]=999999;
     rejects([&]{empty.restore(8,frames,reseal(corrupted));},"mapping_graph_integer");

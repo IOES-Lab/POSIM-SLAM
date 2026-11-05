@@ -16,6 +16,7 @@ int main(int argc,char** argv) {
   camera.setFromInit(Eigen::Vector4d(400,400,320,240));calibration.intrinsics.push_back(camera);
   calibration.T_i_c.emplace_back();calibration.resolution.emplace_back(640,480);basalt::VioConfig config;
   config.mapper_min_track_length=2;basalt::HashBow<256> vocabulary(config.mapper_bow_num_bits);
+  std::map<int64_t,size_t> frame_reads;int64_t failed_frame=0;
   std::map<int64_t,MappingFrameReference> frames;
   for(int64_t stamp=1;stamp<=6;++stamp) {
     auto frame=std::make_shared<MappingInputFrame>();frame->stamp=stamp;frame->width=640;frame->height=480;frame->digest.fill(stamp);
@@ -27,7 +28,12 @@ int main(int argc,char** argv) {
       for(size_t bit=0;bit<256;++bit)features.corner_descriptors.back()[bit]=random()&1;
     }
     std::vector<bool> success;camera.unproject(features.corners,features.corners_3d,success);
-    vocabulary.compute_bow(features.corner_descriptors,features.hashes,features.bow_vector);frames.emplace(stamp,frame);
+    vocabulary.compute_bow(features.corner_descriptors,features.hashes,features.bow_vector);
+    const MappingFrameReference resident(frame);
+    frames.emplace(stamp,MappingFrameReference(resident.metadata(),[&,resident,stamp](size_t maximum) {
+      ++frame_reads[stamp];if(failed_frame==stamp)throw std::runtime_error("probe_frame_read_failed");
+      return resident.read(maximum);
+    }));
   }
   auto batch=[&](int count) {
     auto input=std::make_shared<MappingInputStore::Data>();input->revision=count/2;
@@ -89,7 +95,14 @@ int main(int argc,char** argv) {
   assert(NativeMappingGraph::checkpoint(*restored->captureState(second))==native_saved);
   if(argc==2) {
     const std::filesystem::path directory=argv[1],path=directory/"native.pmap";
+    frame_reads.clear();
     MappingGraphRegistry::writeWithInputs(path,captured,1,4);
+    assert(frame_reads.size()==second->frames.size());
+    for(const auto& [stamp,reads]:frame_reads)assert(reads==1);
+    // A late source failure leaves the previously published archive intact.
+    failed_frame=4;
+    rejects([&]{MappingGraphRegistry::writeWithInputs(path,captured,2,4);},"probe_frame_read_failed");
+    failed_frame=0;assert(MappingGraphRegistry::read(path).request==1);
     const auto loaded=MappingGraphRegistry::read(path,"native-graph-checkpoint");
     assert(loaded.graph->hasNativeGraph() && loaded.graph->hasInputFrames());
     const auto inputs=MappingGraphRegistry::restoreInputs(loaded.graph);
