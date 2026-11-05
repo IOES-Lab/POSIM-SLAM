@@ -52,13 +52,16 @@ void PersistentMapper::setReference(int64_t stamp,const Sophus::SE3d& pose) {
 uint64_t PersistentMapper::requestUpdate() {
   std::lock_guard<std::mutex> lock(mutex_);
   if(finished_ || !error_.empty())return 0;
-  requested_revision_=std::max(requested_revision_,retained_.revision);
+  if(retained_.revision>requested_revision_) {
+    requested_revision_=retained_.revision;requested_input_=retained_.input;
+  }
   changed_.notify_all();return requested_revision_;
 }
 void PersistentMapper::invalidate(const std::string& error) {
   std::lock_guard<std::mutex> lock(mutex_);
   if(!error_.empty())return;
   error_=error.empty()?"mapping_invalidated":error;
+  requested_input_.reset();
   auto failed=std::make_shared<PersistentMapSnapshot>(*latest_);
   failed->error=error_;failed->points.clear();failed->ids.clear();failed->observed=0;
   for(auto& point:failed->candidates){point.eligible=false;point.observed=false;}
@@ -99,12 +102,16 @@ void PersistentMapper::optimize() {
         lock.unlock();invalidate("mapping_initial_reference_missing");return;
       }
       batch=retained_;
+      if(requested_input_ && requested_input_->revision>completed) {
+        batch.input=requested_input_;batch.revision=requested_input_->revision;
+      }
     }
     try {
       auto result=build(batch);
       std::lock_guard<std::mutex> lock(mutex_);
       if(error_.empty())latest_=std::move(result);
       completed=batch.revision;
+      if(requested_input_ && requested_input_->revision<=completed)requested_input_.reset();
     } catch(const std::exception& error){invalidate(error.what());return;}
   }
 }

@@ -62,8 +62,9 @@ class PersistentMapper {
   void setReference(int64_t stamp,const Sophus::SE3d& pose);
   void invalidate(const std::string& error);
   Snapshot snapshot() const;
-  // Pin accepted input, not a moving "latest" target. Wake the optimizer
-  // without blocking ingestion or waiting for a complete batch.
+  // Pin the accepted input snapshot, not only its revision. Once the in-flight
+  // update completes, serve that snapshot before later background input.
+  // Ingestion continues; newer explicit requests may coalesce this request.
   uint64_t requestUpdate();
   const std::string& epoch() const {return graph_registry_.epoch();}
   void finish();
@@ -94,6 +95,7 @@ class PersistentMapper {
   std::string error_;
   Snapshot latest_;
   uint64_t requested_revision_=0;
+  MappingInputStore::Snapshot requested_input_;
   std::thread ingest_thread_,mapper_thread_;
 };
 } // namespace posim_slam

@@ -31,6 +31,31 @@ int main(int argc,char** argv) {
  calibration.resolution.push_back(Eigen::Vector2i(4,4));
  basalt::VioConfig config;
  {
+  // Withhold the reference to hold optimization, while the real producer
+  // continues. A full two-slot queue proves that later input was consumed
+  // before the reference releases the explicitly requested first snapshot.
+  posim_slam::PersistentMapLimits limits;limits.update_retirements=limits.retirements;
+  posim_slam::PersistentMapper map(calibration,config,.1,limits,"pinned-request",archive());
+  map.input.push(sample());uint64_t requested=0;
+  const auto deadline=std::chrono::steady_clock::now()+std::chrono::seconds(2);
+  while(!requested && std::chrono::steady_clock::now()<deadline) {
+   requested=map.requestUpdate();std::this_thread::sleep_for(std::chrono::milliseconds(1));
+  }
+  assert(requested==1);
+  for(int64_t revision=2;revision<=5;++revision)map.input.push(sample(10*revision,10*(revision+1)));
+  map.setReference(10,Sophus::SE3d());
+  while(!map.snapshot()->revision && map.snapshot()->error.empty() && std::chrono::steady_clock::now()<deadline)
+   std::this_thread::sleep_for(std::chrono::milliseconds(1));
+  const auto pinned=map.snapshot();
+  assert(pinned->error.empty() && pinned->revision==1 && pinned->keyframes==2);
+  assert(posim_slam::MappingGraphRegistry::document(pinned->graph).at("input_revision")==1);
+  assert(map.requestUpdate()>=3);map.finish();
+  const auto complete=map.snapshot();
+  assert(complete->error.empty() && complete->revision==5 && complete->keyframes==6);
+  assert(posim_slam::MappingGraphRegistry::document(complete->graph).at("frames").size()==6);
+  assert(pinned->revision==1 && pinned->keyframes==2 && map.requestUpdate()==0);
+ }
+ {
   posim_slam::PersistentMapLimits limits;limits.update_retirements=limits.retirements;
   posim_slam::PersistentMapper map(calibration,config,.1,limits,{},archive());map.setReference(10,Sophus::SE3d());
   map.input.push(sample());

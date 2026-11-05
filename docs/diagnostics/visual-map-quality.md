@@ -116,13 +116,15 @@ continue. It cannot certify a truncated or unobserved map.
 
 ## Snapshot and download / 스냅샷과 다운로드
 
-`LiveClient.snapshot(id)` pins the accepted input revision and requests a complete
+`LiveClient.snapshot(id)` pins the accepted input snapshot and requests a complete
 refresh while sensor processing continues. Only one export is active. Native,
 ROS-owner and browser-service deadlines are **10/11/12 seconds**. Segment changes
 cancel admission. `snapshot(id, refresh=False)` reads the published immutable map
 without waking optimization, through a separate capacity-one writer. It produces
 `worker-view.ply`; the ROS view service uses **2/2.5/3-second** owner/adapter/client
 bounds. A viewer request does not replace the full export or candidate diagnostics.
+The current update finishes before the pinned request runs; later input remains
+available for subsequent background updates without pausing ingestion.
 
 PLY and replies carry the requested/optimized revision, `optimized_through_ns`
 and `snapshot_policy`. The optimized revision covers the request, and its input
@@ -137,13 +139,15 @@ independent of the viewer limit, with scope `reoptimized_sparse_mapping_landmark
 Optional candidate diagnostics retain all candidates, encoding nonfinite values
 as JSON null. Dense surface reconstruction and qualified loop closure are absent.
 
-`snapshot(id)`는 수신 완료된 입력 회차를 고정하고 전체 지도를 갱신하며 센서
+`snapshot(id)`는 수신 완료된 입력 스냅샷을 고정하고 전체 지도를 갱신하며 센서
 처리는 계속합니다. 내보내기는 한 번에 한 건이며 네이티브·ROS 소유자·브라우저
 서비스의 한도는 **10/11/12초**입니다. 구간 변경 시 채택을 취소합니다.
 `snapshot(id, refresh=False)`는 최적화를 깨우지 않고 발행된 지도를 읽습니다.
 별도 용량 1의 출력 작업자가 `worker-view.ply`를 만들며 ROS 조회의 소유자·
 어댑터·클라이언트 한도는 **2/2.5/3초**입니다. 조회는 전체 내보내기나 후보 기록을
 교체하지 않습니다.
+진행 중 갱신이 끝나면 고정한 요청을 먼저 계산합니다. 그 뒤에 도착한 입력도
+계속 수신·보관하며 후속 배경 갱신에서 계산합니다.
 
 PLY와 응답은 요청·최적화 회차, `optimized_through_ns`, `snapshot_policy`를
 담습니다. 결과는 요청 회차를 반영해야 하며 입력 시각은 함께 발행한 추적 시각을
