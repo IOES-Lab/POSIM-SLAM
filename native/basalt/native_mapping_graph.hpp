@@ -48,7 +48,7 @@ class NativeMappingGraph {
       std::unique_ptr<basalt::NfrMapper> mapper,const std::function<bool()>& cancelled={},
       const nlohmann::json& window={},std::shared_ptr<SubmapRowStore> row_store={});
   Update update(const MappingInputStore::Snapshot& input,int iterations=10,
-      const std::function<bool()>& cancelled={});
+      const std::function<bool()>& cancelled={},int64_t reference_stamp=0);
  private:
   static bool same(const basalt::RelPoseFactor& a,const basalt::RelPoseFactor& b) {
     return a.t_i_ns==b.t_i_ns && a.t_j_ns==b.t_j_ns &&

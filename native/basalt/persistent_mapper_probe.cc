@@ -1,5 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 #include "persistent_mapper.hpp"
+#include "submap_row_store.hpp"
+#include <tbb/global_control.h>
 #include <cassert>
 #include <iostream>
 basalt::MargData::Ptr sample(int64_t first=10,int64_t second=20) {
@@ -18,6 +20,7 @@ basalt::MargData::Ptr sample(int64_t first=10,int64_t second=20) {
  return m;
 }
 int main(int argc,char** argv) {
+ tbb::global_control threads(tbb::global_control::max_allowed_parallelism,2);
  size_t archive_id=0;
  auto archive=[&]() -> std::filesystem::path {
   if(argc!=2)return {};
@@ -71,6 +74,38 @@ int main(int argc,char** argv) {
   map.invalidate("mapping_handoff_backlog");
   for(int i=0;i<30;++i)map.input.push(first);
   map.finish();assert(map.snapshot()->error=="mapping_handoff_backlog" && map.snapshot()->points.empty());
+ }
+ if(argc==2) {
+  const auto path=archive();posim_slam::PersistentMapLimits limits;
+  limits.keyframes=240;limits.update_retirements=limits.retirements;
+  auto rows=std::make_shared<posim_slam::SubmapRowStore>(path.string()+".rows",2*1024*1024);
+  posim_slam::PersistentMapper map(calibration,config,.1,limits,"long-producer",path,8,rows);
+  // A valid reference need not be the first keyframe. Preserve its gauge when
+  // constructing the conditional owner instead of silently choosing another.
+  map.setReference(20,Sophus::SE3d());size_t previous=1;
+  posim_slam::PersistentMapper::Snapshot retained;
+  for(size_t count:{40,200,208,240}) {
+   for(size_t frame=previous+1;frame<=count;++frame)map.input.push(sample(10*(frame-1),10*frame));
+   const auto deadline=std::chrono::steady_clock::now()+std::chrono::seconds(20);
+   while(map.snapshot()->revision<count-1 && map.snapshot()->error.empty() && std::chrono::steady_clock::now()<deadline) {
+    map.requestUpdate();std::this_thread::sleep_for(std::chrono::milliseconds(1));
+   }
+   const auto result=map.snapshot();
+   if(!result->error.empty())std::cerr<<"Continuous producer: "<<result->error<<"\n";
+   assert(result->error.empty() && result->revision==count-1 && result->keyframes==count);
+   assert(result->graph && result->graph->hasNativeWindow() && result->graph->hasInputFrames());
+   assert(result->points.empty() && result->candidates.empty()); // Constant images supply no features.
+   if(retained)assert(retained->keyframes==40 && retained->revision==39);
+   else retained=result;
+   previous=count;
+  }
+  const auto accepted=map.snapshot();
+  const auto checkpoint=path.string()+".pmap";
+  posim_slam::MappingGraphRegistry::writeWithInputs(checkpoint,accepted->graph,accepted->revision,2400);
+  const auto restored=posim_slam::MappingGraphRegistry::read(checkpoint);
+  assert(posim_slam::MappingGraphRegistry::restoreInputs(restored.graph)->frames.size()==240);
+  map.input.push(sample(2400,2410));map.finish();
+  assert(map.snapshot()->error=="mapping_image_capacity" && accepted->keyframes==240);
  }
  if(argc==2) {
   posim_slam::PersistentMapper map(calibration,config,.1,{}, {},

@@ -16,6 +16,7 @@ class NativeMappingWindow;
 class NativeMappingCheckpoint;
 class MappingFramePages;
 class NativeMappingGraph;
+class SubmapRowStore;
 struct NativeMappingGraphState;
 struct NativeMappingWindowState;
 namespace mapping_graph_detail {
@@ -120,7 +121,8 @@ class MappingGraphRegistry {
   // Captured snapshots own typed immutable values. JSON is materialized only
   // for explicit serialization/inspection, never for normal map publication.
   static nlohmann::json document(const Snapshot& graph);
-  static std::unique_ptr<basalt::NfrMapper> restore(const nlohmann::json& data,basalt::Calibration<double>* calibration_out=nullptr);
+  static std::unique_ptr<basalt::NfrMapper> restore(const nlohmann::json& data,basalt::Calibration<double>* calibration_out=nullptr,
+      size_t maximum_frames=kMaxJointColumns/6);
   void adopt(const Snapshot& graph);
   static void write(const std::filesystem::path& path,const Snapshot& graph,uint64_t request,int64_t tracking_stamp);
   // Complete compact detector inputs, indexed by frame in the same atomic file.
@@ -133,7 +135,7 @@ class MappingGraphRegistry {
       const std::function<bool()>& cancelled={});
   static std::unique_ptr<NativeMappingGraph> restoreNativeGraph(const Snapshot& graph,
       MappingMatchHistory& matching,const MappingInputStore::Snapshot& input,
-      const std::function<bool()>& cancelled={});
+      const std::function<bool()>& cancelled={},std::shared_ptr<SubmapRowStore> row_store={});
   // Original pose seeds and paged detector inputs for independent native graph
   // continuation. This does not recreate live VIO/IMU state or a store identity.
   static MappingInputStore::Snapshot restoreInputs(const Snapshot& graph);

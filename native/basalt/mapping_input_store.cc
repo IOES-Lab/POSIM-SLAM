@@ -9,7 +9,7 @@ MappingInputStore::MappingInputStore(const basalt::Calibration<double>& calibrat
                     MappingInputLimits limits,std::filesystem::path archive_path,bool restore,std::string epoch)
       :calibration_(calibration),config_(configuration(config)),limits_(limits),data_(initial()) {
     if(calibration.intrinsics.size()!=1 || calibration.T_i_c.size()!=1 || calibration.resolution.size()!=1 ||
-        limits.keyframes<2 || limits.keyframes>size_t(kMaxJointColumns/6) ||
+        limits.keyframes<2 || limits.keyframes>(archive_path.empty()?size_t(kMaxJointColumns/6):kMaxMappingHistoryFrames) ||
         limits.image_bytes<2 || limits.image_bytes>96*1024*1024 ||
         !limits.retirements || limits.retirements>512 || !limits.update_retirements ||
         limits.compact_bytes<2 || limits.compact_bytes>96*1024*1024 ||
@@ -99,6 +99,7 @@ MappingInputStore::Snapshot MappingInputStore::append(const basalt::MargData& so
   }
 std::unique_ptr<basalt::NfrMapper> MappingInputStore::makeMapper(const Snapshot& input) const {
     if(!input || input->identity!=identity_)throw std::invalid_argument("mapping_input_snapshot_owner");
+    if(input->frames.size()>size_t(kMaxJointColumns/6))throw std::runtime_error("mapping_whole_graph_capacity");
     auto mapper=std::make_unique<basalt::NfrMapper>(calibration_,config_);
     mapper->getFramePoses()=input->poses;mapper->rel_pose_factors=input->relative;mapper->roll_pitch_factors=input->roll_pitch;
     for(const auto& [stamp,reference]:input->frames) {
@@ -116,13 +117,14 @@ std::unique_ptr<basalt::NfrMapper> MappingInputStore::makeMatchedMapper(const Sn
   return mapper;
 }
 std::unique_ptr<MappingMatchHistory> MappingInputStore::makeMatchHistory() const {
-  auto history=std::make_unique<MappingMatchHistory>(calibration_,config_,limits_.compact_bytes);
+  auto history=std::make_unique<MappingMatchHistory>(calibration_,config_,limits_.compact_bytes,limits_.keyframes);
   history->source_identity_=identity_;return history;
 }
 std::unique_ptr<basalt::NfrMapper> MappingInputStore::makeMatchedMapper(const Snapshot& input,MappingMatchHistory& history,
     const std::function<bool()>& cancelled) const {
   if(!input || input->identity!=identity_ || history.source_identity_!=identity_)
     throw std::invalid_argument("mapping_input_snapshot_owner");
+  if(input->frames.size()>size_t(kMaxJointColumns/6))throw std::runtime_error("mapping_whole_graph_capacity");
   auto state=history.advance(input->revision,input->frames,cancelled);auto mapper=history.makeMapper(state);
   mapper->getFramePoses()=input->poses;mapper->rel_pose_factors=input->relative;mapper->roll_pitch_factors=input->roll_pitch;
   return mapper;

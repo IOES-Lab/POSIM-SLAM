@@ -19,6 +19,9 @@ template<int N> Eigen::Matrix<double,N,N> information(const Json& value) {
     throw std::invalid_argument("mapping_graph_information");return out;
 }
 constexpr size_t archive_limit=96*1024*1024;
+size_t frameCapacity(const MappingGraphRegistry::Snapshot& graph) {
+  return graph && graph->hasNativeWindow()?kMaxMappingHistoryFrames:size_t(kMaxJointColumns/6);
+}
 constexpr char magic[8]={'P','S','I','M','M','A','P','1'};
 constexpr char window_magic[8]={'P','S','I','M','M','A','P','2'};
 constexpr char input_magic[8]={'P','S','I','M','M','A','P','3'};
@@ -52,7 +55,8 @@ MappingGraphRegistry::Snapshot MappingGraphRegistry::capture(const MappingInputS
       mapper.calib.resolution[0]!=calibration_.resolution[0])
     throw std::invalid_argument("mapping_graph_source");
   if(input->revision<1 || input->revision>512 || revision_>=uint64_t(INT64_MAX))throw std::invalid_argument("mapping_graph_integer");
-  if(input->frames.size()<2 || input->frames.size()>kMaxJointColumns/6 || mapper.rel_pose_factors.size()>65536 ||
+  const size_t maximum_frames=(window || (owner && owner->window()))?kMaxMappingHistoryFrames:size_t(kMaxJointColumns/6);
+  if(input->frames.size()<2 || input->frames.size()>maximum_frames || mapper.rel_pose_factors.size()>65536 ||
       mapper.roll_pitch_factors.size()>512 || mapper.lmdb.getLandmarks().size()>mapper.feature_tracks.size())
     throw std::invalid_argument("mapping_graph_capacity");
   mapping_graph_detail::config(mapping_graph_detail::config(config_));
@@ -176,8 +180,10 @@ nlohmann::json MappingGraphRegistry::document(const Snapshot& graph) {
   return result;
 }
 
-std::unique_ptr<basalt::NfrMapper> MappingGraphRegistry::restore(const nlohmann::json& data,basalt::Calibration<double>* calibration_out) {
+std::unique_ptr<basalt::NfrMapper> MappingGraphRegistry::restore(const nlohmann::json& data,basalt::Calibration<double>* calibration_out,
+    size_t maximum_frames) {
   using namespace mapping_graph_detail;
+  if(maximum_frames<2 || maximum_frames>kMaxMappingHistoryFrames)throw std::invalid_argument("mapping_graph_capacity");
   if(data.at("schema")!="posim-slam-mapping-graph-1" || data.at("posim_slam_version")!="0.1.0" ||
       data.at("basalt_revision")!="0f3b2b52c807f70ff4e2973ce253c73329eea7bc" ||
       data.at("coordinates")!="native_vio_world" || data.at("map_qualified")!=false)
@@ -187,7 +193,7 @@ std::unique_ptr<basalt::NfrMapper> MappingGraphRegistry::restore(const nlohmann:
   integer(data.at("input_revision"),1,512);integer(data.at("graph_revision"),1,INT64_MAX);
   const auto& frames=data.at("frames");const auto& poses=data.at("poses");const auto& pixels=data.at("pixels");
   const auto& tracks=data.at("tracks");const auto& landmarks=data.at("landmarks");
-  count(frames,kMaxJointColumns/6,2);count(poses,frames.size(),frames.size());count(pixels,1000000);
+  count(frames,maximum_frames,2);count(poses,frames.size(),frames.size());count(pixels,1000000);
   count(tracks,100000);count(landmarks,tracks.size());count(data.at("relative"),65536);count(data.at("roll_pitch"),512);
   basalt::Calibration<double> calibration;const auto& camera=data.at("camera");count(camera,3,3);
   auto model=basalt::GenericCamera<double>::fromString(camera[0].get<std::string>());
@@ -289,7 +295,7 @@ std::unique_ptr<basalt::NfrMapper> MappingGraphRegistry::restore(const nlohmann:
 void MappingGraphRegistry::adopt(const Snapshot& graph) {
   using namespace mapping_graph_detail;
   if(!graph || revision_)throw std::invalid_argument("mapping_graph_adoption_requires_empty_registry");
-  const auto data=document(graph);restore(data);
+  const auto data=document(graph);restore(data,nullptr,frameCapacity(graph));
   if(data.at("epoch")!=epoch_)throw std::invalid_argument("mapping_graph_epoch_mismatch");
   const auto parameters=calibration_.intrinsics[0].getParam();
   const Json camera={calibration_.intrinsics[0].getName(),doubles(parameters.data(),parameters.size()),doubles(calibration_.T_i_c[0].data(),7)};
@@ -337,19 +343,20 @@ std::unique_ptr<basalt::NfrMapper> MappingGraphRegistry::restoreForMatching(cons
   check();return mapper;
 }
 std::unique_ptr<NativeMappingGraph> MappingGraphRegistry::restoreNativeGraph(const Snapshot& graph,
-    MappingMatchHistory& matching,const MappingInputStore::Snapshot& input,const std::function<bool()>& cancelled) {
+    MappingMatchHistory& matching,const MappingInputStore::Snapshot& input,const std::function<bool()>& cancelled,
+    std::shared_ptr<SubmapRowStore> row_store) {
   if(!graph || !graph->validated || !graph->hasNativeGraph())
     throw std::invalid_argument("native_graph_checkpoint_missing");
   const auto saved=graph->native_owner?NativeMappingGraph::checkpoint(*graph->native_owner):graph->native_owner_saved;
   const auto window=graph->native_window_state?NativeMappingCheckpoint::document(*graph->native_window_state):graph->native_window;
-  return NativeMappingGraph::restore(matching,input,saved,restore(document(graph)),cancelled,window);
+  return NativeMappingGraph::restore(matching,input,saved,restore(document(graph),nullptr,frameCapacity(graph)),cancelled,window,std::move(row_store));
 }
 
 MappingInputStore::Snapshot MappingGraphRegistry::restoreInputs(const Snapshot& graph) {
   if(!graph || !graph->validated || !graph->hasNativeGraph() || !graph->hasInputFrames())
     throw std::invalid_argument("native_graph_checkpoint_missing");
   if(graph->native_owner)return graph->native_owner->input;
-  const auto data=document(graph);auto mapper=restore(data);auto input=std::make_shared<MappingInputStore::Data>();
+  const auto data=document(graph);auto mapper=restore(data,nullptr,frameCapacity(graph));auto input=std::make_shared<MappingInputStore::Data>();
   input->revision=data.at("input_revision");input->relative=std::move(mapper->rel_pose_factors);
   input->roll_pitch=std::move(mapper->roll_pitch_factors);
   for(const auto& row:graph->native_owner_saved.at("data").at("input_poses")) {
@@ -432,7 +439,8 @@ MappingGraphRegistry::Restored MappingGraphRegistry::read(const std::filesystem:
   if(!with_inputs && with_window!=document.contains("native_window"))throw std::invalid_argument("mapping_graph_archive_window");
   if(with_inputs!=document.contains("input_pages"))throw std::invalid_argument("mapping_input_page_index");
   if(with_owner!=document.contains("native_graph"))throw std::invalid_argument("native_graph_checkpoint_missing");
-  graph->imported=std::move(document.at("graph"));auto mapper=restore(graph->imported);
+  graph->imported=std::move(document.at("graph"));
+  auto mapper=restore(graph->imported,nullptr,document.contains("native_window")?kMaxMappingHistoryFrames:size_t(kMaxJointColumns/6));
   if(document.contains("native_window")) {
     graph->native_window=std::move(document.at("native_window"));
     NativeMappingCheckpoint::validate(*mapper,graph->native_window,integer(graph->imported.at("reference")[0],1,INT64_MAX));

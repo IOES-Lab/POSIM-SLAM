@@ -39,7 +39,7 @@ Frame sources, calibration and matching settings stay fixed within this owner.
 Matching uses two tasks with at most four complete feature frames in use.
 Descriptor, bearing and orientation arrays are released after use. The input
 store's compact quota also bounds retained matching numeric payload (96 MiB by
-default); the 203-frame limit still applies. This counts pixels, BoW/index values,
+default); the default frame limit is 203. This counts pixels, BoW/index values,
 evaluated pair keys and match data. Container overhead, the transactional index
 copy and caller-held older snapshots are additional. Cancellation or failure
 leaves the previous matching snapshot intact. Explicit checkpoints retain every
@@ -57,7 +57,7 @@ OpenGV implementation.
 
 매칭은 두 작업자가 전체 특징 프레임을 최대 4개까지 읽으며 기술자·방향 벡터·
 방향값은 사용 후 해제합니다. 보존하는 매칭 수치 데이터에도 입력 저장소의
-압축 데이터 한도(기본 96MiB)를 적용하고 203프레임 한도를 유지합니다.
+압축 데이터 한도(기본 96MiB)를 적용하며 기본 프레임 한도는 203개입니다.
 픽셀·BoW와 색인 값·평가한 영상쌍 키·매칭 데이터를 계산하며 컨테이너 부가 공간,
 트랜잭션용 색인 사본과 호출자가 보유한 이전 사본은 별도입니다. 취소나 실패 시
 이전 매칭 사본을 보존합니다. 체크포인트는 평가한 모든 영상쌍을 보존합니다.
@@ -79,9 +79,9 @@ or cancellation restores the previous graph, nonlinear means and solver controls
 The graph reserves numeric storage for every track, including untriangulated
 ones, within the matching owner's compact quota (96 MiB by default). Container
 overhead, transaction copies and optimizer workspace are additional. Original
-inputs and matching results remain separately owned. Full bounded optimization
-and information calculation still run on every update; automatic conditional
-window growth and rollover require separate lifecycle support.
+inputs and matching results remain separately owned. An explicit `active_window`
+selects conditional updates and world-point covariance from that same owner.
+The default provider uses full bounded optimization and information calculation.
 
 `NativeMappingGraph`는 갱신 사이에도 최적화한 자세와 지도점 매개변수를 유지합니다.
 기존 네이티브 트랙 구성기로 현재 대응을 구하고 원본 픽셀 식별자로 트랙 연장·
@@ -95,8 +95,24 @@ window growth and rollover require separate lifecycle support.
 삼각측량 전 트랙도 포함해 모든 트랙의 수치 저장 공간을 매칭 인스턴스의 압축
 데이터 한도(기본 96MiB) 안에서 예약합니다. 컨테이너 부가 공간·트랜잭션 사본·
 최적화 작업공간은 별도이며 원본 입력과 매칭 결과도 각각 보존합니다.
-갱신마다 한도 내 전체 그래프 최적화와 정보 계산을 수행합니다. 조건부 정보 기반
-범위 확장·구간 전환에는 별도의 수명 주기 처리가 필요합니다.
+`active_window`를 지정하면 조건부 갱신과 같은 소유자의 세계 좌표 점 공분산을
+사용합니다. 기본 추정기는 한도 내 전체 그래프 최적화와 정보 계산을 수행합니다.
+
+A paged `MappingInputStore` accepts an explicit keyframe-history quota up to
+10,922 frames, within the existing 65,536-coordinate namespace. Its matching
+owner inherits that quota. `PersistentMapper` requires a nonzero `active_window`
+for history beyond 203 frames; a `SubmapRowStore` can bound resident derived rows.
+The existing input, retirement, numeric-byte, observation and admission limits
+apply independently. Dense collectors retain their 203-frame limit. The chosen
+reference timestamp remains fixed through window movement and checkpoint restore.
+
+페이지 저장을 사용하는 `MappingInputStore`는 기존 65,536좌표 공간 안에서
+최대 10,922프레임의 이력 한도를 명시할 수 있으며 매칭 소유자도 이를 적용합니다.
+`PersistentMapper`에서 203프레임을 넘는 이력을 사용하려면 `active_window`를
+지정해야 하며, `SubmapRowStore`로 파생 행렬의 상주 메모리를 제한할 수 있습니다.
+입력·퇴역·수치 바이트·관측·채택 한도는 각각 적용합니다. 전체 행렬을 모으는
+인터페이스의 한도는 203프레임입니다. 선택한 기준 시각은 구간 이동과 복원 후에도
+유지합니다.
 
 The native stream stores complete detector features, recovered factors, pose seeds and retirement identities in a session-owned `worker-map-inputs-*.sqlite` file beside its output. Each retirement commits in one SQLite transaction before publication. Immutable map snapshots retain page references; a read leases one checked feature frame, while optimization retains pixel observations and the bounded pose/factor graph. The SQLite page cache targets 2 MiB, memory mapping is disabled and the database is bounded to 96 MiB. Input limits and admission checks still apply. A storage error invalidates map output; the navigation estimator can continue. Restoring inputs requires matching epoch, calibration, mapper settings and limits; it does not restart navigation.
 
@@ -286,8 +302,8 @@ keep their separate 1,218-column ceiling; node, original-key and numeric-byte
 quotas also apply. `prepareGrowth` preserves existing addresses when appending
 poses, and checkpoint restoration applies the new caller's capacity policy.
 World-point queries assemble only the requested points' source, host and
-reference columns, retaining shared errors. The complete input/matching owner
-and default mapper retain their 203-keyframe limit.
+reference columns, retaining shared errors. The default mapper limits keyframes
+to 203; paged inputs with an explicit conditional window use their history quota.
 
 `NativeMappingWindow::retire(kept)` reduces the active pose set. Groups crossing
 its new boundary enter the historical information at their last accepted
@@ -361,7 +377,8 @@ When `capture` receives the `NativeMappingGraph` owner, `writeWithInputs` uses
 transforms, original input pose seeds and the next native track ID.
 `restoreInputs` provides original seeds and lazily read feature pages;
 `restoreNativeGraph` restores nonlinear means, solver controls and matching
-decisions. Unmatched pixels are available for future associations. Changed
+decisions. Its optional `row_store` places reconstructed numeric rows in the
+caller's bounded cache. Unmatched pixels are available for future associations. Changed
 original features, settings or seeds are rejected before publishing the matching
 state. Ordinary map publication keeps typed immutable values; checkpoint JSON
 is created only for explicit serialization or restoration. These records count
@@ -449,7 +466,8 @@ are additional to `cache_bytes`.
 `prepareGrowth`는 자세를 추가할 때 기존 주소를 보존하고, 체크포인트 복원은
 새 호출자의 용량 정책을 적용합니다. 세계 좌표 점 조회는 요청한 점의 원본·
 기준 영상 자세·세계 기준에 필요한 열만 모으며 공유 오차를 유지합니다.
-전체 입력·대응 관계 소유자와 기본 지도 생성기의 키프레임 한도는 203개입니다.
+기본 지도 생성기는 203키프레임을 사용합니다. 명시적인 조건부 구간과 페이지 입력은
+설정한 이력 한도를 사용합니다.
 
 `NativeMappingWindow::retire(kept)`는 활성 자세 집합을 줄입니다. 새 경계를
 가로지르는 그룹은 마지막으로 채택된 선형화 기준에서 과거 정보에 반영하고,
@@ -514,7 +532,8 @@ are additional to `cache_bytes`.
 `PSIMMAP4`를 사용합니다. 평가한 영상쌍·기술자와 인라이어 번호·상대 변환·
 원래 입력 자세 초기값·다음 네이티브 트랙 번호를 함께 저장합니다. `restoreInputs`는
 원본 자세 초기값과 필요할 때 읽는 특징 페이지를 제공하며, `restoreNativeGraph`는
-현재 추정값·최적화 설정·매칭 판단을 복원합니다. 미연결 픽셀도 이후 대응에 사용할
+현재 추정값·최적화 설정·매칭 판단을 복원합니다. 선택 인자 `row_store`를 전달하면
+복원하는 수치 행렬에 호출자가 지정한 캐시 한도를 적용합니다. 미연결 픽셀도 이후 대응에 사용할
 수 있습니다. 원본 특징·설정·초기값이 다르면 매칭 상태를 발행하기 전에 거부합니다.
 일반 지도 발행은 불변 자료형을 보관하고 명시적인 저장·복원에서만 체크포인트
 JSON을 만듭니다. 이 기록도 96MiB 파일 한도에 포함됩니다. 이동 구간을 선택하면

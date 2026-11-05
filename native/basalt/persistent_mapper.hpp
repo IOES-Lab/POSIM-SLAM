@@ -11,6 +11,7 @@
 
 namespace posim_slam {
 class NativeMappingGraph;
+class SubmapRowStore;
 struct PersistentMapSnapshot : MappingOutput {
   uint64_t revision=0;
   int64_t optimized_through_ns=0;
@@ -29,7 +30,8 @@ using PersistentMapLimits=MappingInputLimits;
 // image's features once. A persistent chronological matching owner evaluates
 // only new query frames, preserving old pair results. One bounded nonlinear
 // mapper keeps optimized states while source track changes update its graph.
-// Conditional-window integration is separate. Intermediate requests may coalesce;
+// An explicit active window uses source-owned conditional updates and their
+// covariance, with optional derived-row paging. Intermediate requests may coalesce;
 // input measurements never do. A budget/input failure invalidates map output
 // without stopping the caller's independently valid navigation estimator.
 class PersistentMapper {
@@ -38,7 +40,8 @@ class PersistentMapper {
   tbb::concurrent_bounded_queue<basalt::MargData::Ptr> input;
   PersistentMapper(const basalt::Calibration<double>& calibration,
                    const basalt::VioConfig& config,double three_sigma_m,
-                   PersistentMapLimits limits={},std::string epoch={},std::filesystem::path input_archive={});
+                   PersistentMapLimits limits={},std::string epoch={},std::filesystem::path input_archive={},
+                   size_t active_window=0,std::shared_ptr<SubmapRowStore> row_store={});
   ~PersistentMapper();
   PersistentMapper(const PersistentMapper&)=delete;
   PersistentMapper& operator=(const PersistentMapper&)=delete;

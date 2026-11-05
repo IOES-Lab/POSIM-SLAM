@@ -39,6 +39,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #pragma once
 #include "mapping_frame_io.hpp"
 #include "estimator_budget.hpp"
+#include "mapping_history_budget.hpp"
 #include <basalt/hash_bow/hash_bow.h>
 #include <basalt/utils/keypoints.h>
 #include <opengv/relative_pose/CentralRelativeAdapter.hpp>
@@ -118,11 +119,12 @@ class MappingMatchHistory {
   };
   using Snapshot=std::shared_ptr<const Data>;
   MappingMatchHistory(const basalt::Calibration<double>& calibration,const basalt::VioConfig& config,
-      size_t maximum_bytes=96*1024*1024)
-      :calibration_(calibration),config_(config),maximum_bytes_(maximum_bytes),
+      size_t maximum_bytes=96*1024*1024,size_t maximum_frames=kMaxJointColumns/6)
+      :calibration_(calibration),config_(config),maximum_bytes_(maximum_bytes),maximum_frames_(maximum_frames),
        database_(std::make_shared<basalt::HashBow<256>>(config.mapper_bow_num_bits)) {
     if(calibration.intrinsics.size()!=1 || calibration.T_i_c.size()!=1 || calibration.resolution.size()!=1 ||
-        !maximum_bytes || maximum_bytes>96*1024*1024)throw std::invalid_argument("mapping_match_input");
+        !maximum_bytes || maximum_bytes>96*1024*1024 || maximum_frames<2 ||
+        maximum_frames>kMaxMappingHistoryFrames)throw std::invalid_argument("mapping_match_input");
     auto empty=std::make_shared<Data>();empty->owner=identity_;data_=empty;
   }
   Snapshot snapshot() const {return std::atomic_load(&data_);}
@@ -139,7 +141,7 @@ class MappingMatchHistory {
     std::lock_guard<std::mutex> writer(writer_);
     auto check=[&]{if(cancelled && cancelled())throw std::runtime_error("mapping_match_cancelled");};check();
     const auto old=snapshot();
-    if(revision<old->revision || frames.size()>size_t(kMaxJointColumns/6))throw std::invalid_argument("mapping_match_revision");
+    if(revision<old->revision || frames.size()>maximum_frames_)throw std::invalid_argument("mapping_match_revision");
     for(const auto& [stamp,frame]:old->frames) {
       auto found=frames.find(stamp);
       if(found==frames.end() || !frame.source.sameSource(found->second))throw std::invalid_argument("mapping_match_source_changed");
@@ -217,13 +219,14 @@ class MappingMatchHistory {
   }
   std::unique_ptr<basalt::NfrMapper> makeMapper(const Snapshot& state) const {
     if(!state || state->owner!=identity_)throw std::invalid_argument("mapping_match_owner");
+    if(state->frames.size()>size_t(kMaxJointColumns/6))throw std::runtime_error("mapping_whole_graph_capacity");
     auto mapper=std::make_unique<basalt::NfrMapper>(calibration_,config_);
     for(const auto& [stamp,frame]:state->frames)mapper->feature_corners[basalt::TimeCamId(stamp,0)].corners=frame.pixels->corners;
     for(const auto& [pair,match]:state->matches)mapper->feature_matches.emplace(pair,*match);
     return mapper;
   }
  private:
-  basalt::Calibration<double> calibration_;basalt::VioConfig config_;size_t maximum_bytes_;
+  basalt::Calibration<double> calibration_;basalt::VioConfig config_;size_t maximum_bytes_,maximum_frames_;
   std::shared_ptr<const int> identity_=std::make_shared<const int>(0),source_identity_;
   std::shared_ptr<basalt::HashBow<256>> database_;mutable std::mutex writer_;Snapshot data_;
 };

@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 #pragma once
 #include "estimator_budget.hpp"
+#include "mapping_history_budget.hpp"
 #include "mapping_frame.hpp"
 #include <filesystem>
 #include <basalt/vi_estimator/nfr_mapper.h>

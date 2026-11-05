@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 #pragma once
 #include "constrained_information.hpp"
+#include "mapping_history_budget.hpp"
 #include <atomic>
 #include <cstdint>
 #include <map>
@@ -19,7 +20,7 @@ class SubmapInformation {
  public:
   using Coordinate=int64_t;
   struct Limits {
-    size_t active_columns=256,nodes=4096,coordinates=65536,measurements=65536;
+    size_t active_columns=256,nodes=4096,coordinates=kMaxMappingHistoryCoordinates,measurements=65536;
     size_t numeric_bytes=96*1024*1024;
     // Zero uses the retained-frontier quota. A caller may reserve a distinct
     // temporary elimination workspace within the same existing hard ceiling.

@@ -22,10 +22,11 @@ const Json& checked(const Json& document) {
   if(!document.is_object() || document.size()!=3 || document.at("schema")!="posim-slam-matching-1")
     throw std::invalid_argument("mapping_match_checkpoint_schema");
   const auto& data=document.at("data");
-  const size_t maximum_frames=kMaxJointColumns/6,maximum_pairs=maximum_frames*(maximum_frames-1)/2;
+  const size_t maximum_frames=kMaxMappingHistoryFrames;
   if(!data.is_object() || data.size()!=5 || !data.at("frames").is_array() ||
       data.at("frames").empty() || data.at("frames").size()>maximum_frames ||
-      !data.at("evaluated").is_array() || data.at("evaluated").size()>maximum_pairs ||
+      !data.at("evaluated").is_array() ||
+      data.at("evaluated").size()>data.at("frames").size()*(data.at("frames").size()-1)/2 ||
       !data.at("matches").is_array() || data.at("matches").size()>data.at("evaluated").size())
     throw std::invalid_argument("mapping_match_checkpoint_shape");
   integer(data.at("revision"),1,INT64_MAX);
@@ -71,6 +72,7 @@ MappingMatchHistory::Snapshot MappingMatchHistory::restore(uint64_t revision,
   auto check=[&]{if(cancelled && cancelled())throw std::runtime_error("mapping_match_cancelled");};check();
   const auto old=snapshot();
   if(old->revision || !old->frames.empty())throw std::invalid_argument("mapping_match_restore_requires_empty");
+  if(frames.size()>maximum_frames_)throw std::invalid_argument("mapping_match_revision");
   const auto& data=checked(document);
   if(data.at("revision")!=revision || data.at("profile")!=profile(calibration_,config_) ||
       data.at("frames").size()!=frames.size())throw std::invalid_argument("mapping_match_checkpoint_source");

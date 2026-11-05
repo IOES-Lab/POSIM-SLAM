@@ -13,6 +13,7 @@ NativeMappingGraph::NativeMappingGraph(MappingMatchHistory& matching,size_t maxi
     :matching_(matching),mapper_(matching.calibration_,matching.config_),
      maximum_bytes_(maximum_bytes?maximum_bytes:matching.maximum_bytes_),row_store_(std::move(row_store)),window_size_(active_window) {
   if(!maximum_bytes_ || maximum_bytes_>matching.maximum_bytes_ ||
+      (!active_window && matching.maximum_frames_>size_t(kMaxJointColumns/6)) ||
       active_window>SubmapInformation::Limits{}.active_columns/6)
     throw std::invalid_argument("native_graph_capacity");
   initial_solver_={mapper_.lambda,mapper_.min_lambda,mapper_.max_lambda,mapper_.lambda_vee};
@@ -157,12 +158,15 @@ std::unique_ptr<NativeMappingGraph> NativeMappingGraph::restore(MappingMatchHist
 }
 
 NativeMappingGraph::Update NativeMappingGraph::update(const MappingInputStore::Snapshot& input,
-    int iterations,const std::function<bool()>& cancelled) {
+    int iterations,const std::function<bool()>& cancelled,int64_t reference_stamp) {
   auto check=[&]{if(cancelled && cancelled())throw std::runtime_error("native_graph_cancelled");};check();
   if(!input || !input->revision || input->frames.empty() || input->frames.size()!=input->poses.size() ||
-      input->frames.size()>size_t(kMaxJointColumns/6) || iterations<0 || iterations>10 ||
+      input->frames.size()>(window_size_?matching_.maximum_frames_:size_t(kMaxJointColumns/6)) || iterations<0 || iterations>10 ||
       (matching_.source_identity_ && input->identity!=matching_.source_identity_))
     throw std::invalid_argument("native_graph_input");
+  if(reference_stamp<0 || (reference_stamp && !input->poses.count(reference_stamp)) ||
+      (window_ && reference_stamp && window_->chart().reference()!=reference_stamp))
+    throw std::invalid_argument("native_graph_reference");
   if(input_) {
     if(input->identity!=input_->identity || input->revision<input_->revision)
       throw std::invalid_argument("native_graph_source_changed");
@@ -308,7 +312,8 @@ NativeMappingGraph::Update NativeMappingGraph::update(const MappingInputStore::S
       if(window_)next_window=window_->prepareGrowth(active,cancelled);
       else {
         SubmapInformation::Limits limits;limits.numeric_bytes=maximum_bytes_;
-        next_window=std::make_unique<NativeMappingWindow>(mapper_,mapper_.getFramePoses().begin()->first,active,limits,row_store_);
+        next_window=std::make_unique<NativeMappingWindow>(mapper_,
+            reference_stamp?reference_stamp:mapper_.getFramePoses().begin()->first,active,limits,row_store_);
       }
       for(int i=0;i<iterations;++i)if(!next_window->step(cancelled).accepted)break;
     } else if(iterations)mapper_.optimize(iterations);
