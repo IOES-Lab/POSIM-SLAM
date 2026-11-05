@@ -139,7 +139,7 @@ void quotasAndBatching() {
   auto huge=edge("huge","pixel:b",1,2,0,1);huge.rows.jacobian=Matrix::Ones(4096,2);huge.rows.residual=Vector::Zero(4096);
   rejects([&]{graph.replace({}, {huge});},"submap_factor_numeric_capacity");
   auto layout=before->layout;layout.eliminated.push_back({5});layout.frontier={6};
-  rejects([&]{graph.replace({}, {},{},&layout);},"submap_factor_layout_capacity");
+  rejects([&]{graph.replace({}, {},{},&layout);},"submap_node_capacity");
   assert(graph.snapshot()==before);
   Graph batches({{1},{{0}}});std::vector<Graph::Factor> all;
   for(int i=0;i<3;++i) {

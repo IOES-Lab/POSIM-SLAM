@@ -26,11 +26,7 @@ class Digest {
 inline std::set<int64_t> points(basalt::NfrMapper& mapper) {
   std::set<int64_t> ids;for(const auto& [id,point]:mapper.lmdb.getLandmarks())ids.insert(id);return ids;
 }
-} // namespace native_mapping_identity_detail
-
-inline InputDigest::Value nativeMappingSourceIdentity(basalt::NfrMapper& mapper) {
-  using namespace native_mapping_identity_detail;Digest hash;hash.text("native-mapping-original-likelihood-1");
-  hash.integer(mapper.getFramePoses().size());for(const auto& [stamp,pose]:mapper.getFramePoses())hash.integer(stamp);
+inline void configuration(Digest& hash,const basalt::NfrMapper& mapper) {
   hash.integer(mapper.calib.intrinsics.size());
   for(const auto& camera:mapper.calib.intrinsics) {
     hash.text(camera.getName());const auto parameters=camera.getParam();hash.numbers(parameters.data(),parameters.size());
@@ -41,6 +37,13 @@ inline InputDigest::Value nativeMappingSourceIdentity(basalt::NfrMapper& mapper)
   }
   const double noise[]={mapper.obs_std_dev,mapper.huber_thresh,mapper.config.vio_init_pose_weight};hash.numbers(noise,3);
   hash.integer(mapper.config.mapper_use_factors);hash.integer(mapper.config.mapper_no_factor_weights);
+}
+} // namespace native_mapping_identity_detail
+
+inline InputDigest::Value nativeMappingSourceIdentity(basalt::NfrMapper& mapper) {
+  using namespace native_mapping_identity_detail;Digest hash;hash.text("native-mapping-original-likelihood-1");
+  hash.integer(mapper.getFramePoses().size());for(const auto& [stamp,pose]:mapper.getFramePoses())hash.integer(stamp);
+  configuration(hash,mapper);
   hash.integer(mapper.rel_pose_factors.size());for(const auto& factor:mapper.rel_pose_factors) {
     hash.integer(factor.t_i_ns);hash.integer(factor.t_j_ns);hash.numbers(factor.T_i_j.data(),7);hash.numbers(factor.cov_inv.data(),36);
   }
@@ -55,6 +58,35 @@ inline InputDigest::Value nativeMappingSourceIdentity(basalt::NfrMapper& mapper)
     }
   }
   return hash.finish();
+}
+inline InputDigest::Value nativeMappingConfigurationIdentity(const basalt::NfrMapper& mapper) {
+  native_mapping_identity_detail::Digest hash;
+  native_mapping_identity_detail::configuration(hash,mapper);return hash.finish();
+}
+inline std::map<std::string,InputDigest::Value> nativeMappingGroupIdentities(basalt::NfrMapper& mapper) {
+  using namespace native_mapping_identity_detail;
+  std::map<std::string,InputDigest::Value> out;
+  if(mapper.config.mapper_use_factors) {
+    for(const auto& factor:mapper.rel_pose_factors) {
+      const std::string id="factor:relative:"+std::to_string(factor.t_i_ns)+":"+std::to_string(factor.t_j_ns);
+      Digest hash;hash.text(id);hash.numbers(factor.T_i_j.data(),7);hash.numbers(factor.cov_inv.data(),36);
+      if(!out.emplace(id,hash.finish()).second)throw std::invalid_argument("native_mapping_factor");
+    }
+    for(const auto& factor:mapper.roll_pitch_factors) {
+      const std::string id="factor:roll-pitch:"+std::to_string(factor.t_ns);
+      Digest hash;hash.text(id);hash.numbers(factor.R_w_i_meas.data(),4);hash.numbers(factor.cov_inv.data(),4);
+      if(!out.emplace(id,hash.finish()).second)throw std::invalid_argument("native_mapping_factor");
+    }
+  }
+  for(auto id:points(mapper)) {
+    const auto& point=mapper.lmdb.getLandmark(id);Digest hash;hash.integer(id);hash.image(point.host_kf_id);
+    hash.integer(point.obs.size());
+    for(const auto& [image,pixel]:point.obs) {
+      hash.image(image);hash.integer(mapper.feature_tracks.at(id).at(image));hash.numbers(pixel.data(),2);
+    }
+    out.emplace("point:"+std::to_string(id),hash.finish());
+  }
+  return out;
 }
 inline InputDigest::Value nativeMappingStateIdentity(basalt::NfrMapper& mapper) {
   using namespace native_mapping_identity_detail;Digest hash;hash.text("native-mapping-current-state-1");

@@ -14,6 +14,7 @@ class NativeMappingCheckpoint {
   using Json=nlohmann::json;
   static Json document(const NativeMappingWindow& window) {
     using namespace mapping_graph_detail;
+    if(window.growth_revision_)throw std::invalid_argument("native_window_growth_checkpoint_required");
     if(nativeMappingSourceIdentity(window.mapper_)!=window.source_identity_)
       throw std::invalid_argument("native_window_checkpoint_source_changed");
     const auto state=nativeMappingStateIdentity(window.mapper_);

@@ -36,10 +36,12 @@ class SubmapFactorization {
     std::set<std::string> originals;
     std::map<std::string,std::string> assignments;
     std::vector<std::shared_ptr<const Bucket>> buckets;
-    Information::Snapshot information;
+    Information::Snapshot information,base;
+    std::vector<std::shared_ptr<const Rows>> active;
     std::vector<size_t> rebuilt;
     size_t numericBytes() const {
       size_t bytes=information?information->numericBytes():0;
+      if(base && base!=information)bytes+=base->numericBytes()-base->history_bytes;
       for(const auto& [id,rows]:factors)bytes+=rows->bytes();
       for(const auto& bucket:buckets)bytes+=bucket->message.bytes();
       return bytes;
@@ -50,12 +52,18 @@ class SubmapFactorization {
   };
   using Snapshot=std::shared_ptr<const Data>;
   explicit SubmapFactorization(Layout layout,Information::Limits limits={})
-      :core_(limits),limits_(limits) {
+      :core_(std::make_shared<Information>(limits)),limits_(limits) {
     auto initial=std::make_shared<Data>();initial->owner=identity_;
     initial->layout=std::move(layout);validateLayout(initial->layout,nullptr);
     rebuild(*initial,nullptr,{});data_=initial;
   }
   Snapshot snapshot() const {return std::atomic_load(&data_);}
+  // Stage a larger native transaction without publishing to the current owner.
+  // Immutable source rows, conditionals and the query lineage remain shared.
+  std::unique_ptr<SubmapFactorization> fork(const Snapshot& state) const {
+    if(!state || state->owner!=identity_)throw std::invalid_argument("submap_factor_owner");
+    return std::unique_ptr<SubmapFactorization>(new SubmapFactorization(*this,state));
+  }
   // All originals of removed groups must be reassigned or explicitly marked
   // unassigned. The layout may append elimination blocks and new coordinates;
   // existing blocks and every previously known coordinate remain intact.
@@ -110,13 +118,15 @@ class SubmapFactorization {
   }
   Information::Solution solve(const Snapshot& input) const {
     if(!input || input->owner!=identity_)throw std::invalid_argument("submap_factor_owner");
-    return core_.solve(input->information);
+    return core_->solve(input->information);
   }
   Information::Query query(const Information::Solution& solution,
       const std::vector<Coordinate>& coordinates,const Eigen::MatrixXd& derivative) const {
-    return core_.query(solution,coordinates,derivative);
+    return core_->query(solution,coordinates,derivative);
   }
  private:
+  SubmapFactorization(const SubmapFactorization& source,Snapshot state)
+      :core_(source.core_),limits_(source.limits_),identity_(source.identity_),data_(std::move(state)) {}
   static void check(const std::function<bool()>& cancelled) {
     if(cancelled && cancelled())throw std::runtime_error("submap_factor_cancelled");
   }
@@ -127,8 +137,8 @@ class SubmapFactorization {
     return out;
   }
   std::map<Coordinate,size_t> validateLayout(const Layout& layout,const Layout* previous) const {
-    if(layout.frontier.empty() || layout.frontier.size()>limits_.active_columns ||
-        layout.eliminated.size()>limits_.nodes)
+    if(layout.eliminated.size()>limits_.nodes)throw std::runtime_error("submap_node_capacity");
+    if(layout.frontier.empty() || layout.frontier.size()>limits_.active_columns)
       throw std::runtime_error("submap_factor_layout_capacity");
     if(previous && (layout.eliminated.size()<previous->eliminated.size() ||
         !std::equal(previous->eliminated.begin(),previous->eliminated.end(),layout.eliminated.begin())))
@@ -241,7 +251,7 @@ class SubmapFactorization {
     }
     // Reuse the information engine's lineage and query/back-substitution.
     // Its context stays empty; all numeric payload is owned by this snapshot.
-    auto information=std::make_shared<Information::Data>(*core_.snapshot());
+    auto information=std::make_shared<Information::Data>(*core_->snapshot());
     const auto& frontier=next.buckets.back()->message;
     information->revision=next.revision+1;information->order=frontier.columns;
     information->jacobian=frontier.jacobian;information->residual=frontier.residual;
@@ -254,9 +264,26 @@ class SubmapFactorization {
       information->history_bytes+=next.buckets[i]->conditional->bytes();
     }
     next.information=information;
+    next.active=next.buckets.back()->sources;
+    if(next.active.empty())next.base=next.information;
+    else if(previous && previous->buckets.back()->context==next.buckets.back()->context &&
+        previous->buckets.back()->children==next.buckets.back()->children)next.base=previous->base;
+    else {
+      // The nonlinear objective combines this historical marginal with the
+      // original active residuals. Do not count those active residuals twice.
+      auto history=std::make_shared<Bucket>();history->context=next.layout.frontier;
+      history->children=next.buckets.back()->children;
+      const auto reduced=factorize(history,true,cancelled);
+      auto base=std::make_shared<Information::Data>(*information);
+      base->order=reduced->message.columns;base->jacobian=reduced->message.jacobian;
+      base->residual=reduced->message.residual;base->constraints=reduced->message.constraints;
+      base->target=reduced->message.target;base->roundoff=reduced->roundoff;
+      for(const auto& rows:next.active)for(const auto& key:rows->originals)base->measurements.erase(key);
+      next.base=std::move(base);
+    }
     if(next.numericBytes()>limits_.numeric_bytes)throw std::runtime_error("submap_factor_numeric_capacity");
   }
-  Information core_;Information::Limits limits_;
+  std::shared_ptr<Information> core_;Information::Limits limits_;
   std::shared_ptr<const int> identity_=std::make_shared<const int>(0);
   std::mutex writer_;Snapshot data_;
 };

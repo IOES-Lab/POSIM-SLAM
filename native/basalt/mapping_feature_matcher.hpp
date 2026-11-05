@@ -90,7 +90,8 @@ class MappingMatchHistory {
   Snapshot restore(uint64_t revision,const std::map<int64_t,MappingFrameReference>& frames,
       const nlohmann::json& document,const std::function<bool()>& cancelled={});
   Snapshot advance(uint64_t revision,const std::map<int64_t,MappingFrameReference>& frames,
-      const std::function<bool()>& cancelled={}) {
+      const std::function<bool()>& cancelled={},
+      const std::function<void(const Snapshot&)>& before_commit={}) {
     std::lock_guard<std::mutex> writer(writer_);
     auto check=[&]{if(cancelled && cancelled())throw std::runtime_error("mapping_match_cancelled");};check();
     const auto old=snapshot();
@@ -105,7 +106,8 @@ class MappingMatchHistory {
       incoming.push_back(stamp);
     }
     if(revision==old->revision) {
-      if(!incoming.empty())throw std::invalid_argument("mapping_match_revision");return old;
+      if(!incoming.empty())throw std::invalid_argument("mapping_match_revision");
+      if(before_commit)before_commit(old);return old;
     }
     auto next=std::make_shared<Data>(*old);next->revision=revision;next->new_frames=incoming.size();next->new_pairs=0;next->queried_frames=0;
     // Copy only the compact retrieval index for the transaction. Descriptor
@@ -163,7 +165,11 @@ class MappingMatchHistory {
       }
     }
     next->evaluated_pairs+=next->new_pairs;check();
-    Snapshot committed=next;database_=std::move(database);std::atomic_store(&data_,committed);return committed;
+    Snapshot committed=next;
+    // The exclusive native graph owner can stage its matching-dependent state
+    // here. A failure keeps both the retrieval index and public snapshot intact.
+    if(before_commit)before_commit(committed);
+    database_=std::move(database);std::atomic_store(&data_,committed);return committed;
   }
   std::unique_ptr<basalt::NfrMapper> makeMapper(const Snapshot& state) const {
     if(!state || state->owner!=identity_)throw std::invalid_argument("mapping_match_owner");

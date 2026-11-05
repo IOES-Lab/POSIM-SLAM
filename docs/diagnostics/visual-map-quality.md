@@ -194,6 +194,20 @@ feature reassociation, automatic mapper rollover or disk paging.
 보존합니다. 활성 구간이 이동한 뒤에도 과거 좌표를 조회할 수 있습니다.
 네이티브 특징 대응 변경·지도 워커 자동 전환·디스크 페이징은 별도로 필요합니다.
 
+An optional nonzero `NativeMappingGraph` active-window argument stages native
+matching, track reassociation and conditional source updates together. Existing
+pose coordinates stay stable as the frontier moves. Cancellation preserves all
+three owners. Growing-window checkpoints are rejected because the archive does
+not yet retain that source ownership. This mode is not enabled by the default
+worker; bounded solver paging and runtime rollover remain separate.
+
+선택형 `NativeMappingGraph`의 활성 구간 인자를 지정하면 네이티브 매칭·트랙
+대응 변경·조건부 원본 갱신을 함께 준비해 확정합니다. 활성 구간이 이동해도
+기존 자세 좌표는 유지하며 취소 시 세 상태를 모두 보존합니다. 성장하는 구간의
+원본 소유권은 아직 저장 형식에 포함되지 않으므로 해당 체크포인트를 거부합니다.
+기본 워커에는 활성화하지 않으며, 최적화 범위의 페이징과 실행 중 구간 전환은
+별도로 필요합니다.
+
 [Source-factor ownership](../../native/basalt/submap_factorization.hpp)
 · [Information compression](../../native/basalt/submap_information.hpp)
 

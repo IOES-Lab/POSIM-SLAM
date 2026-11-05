@@ -1,12 +1,22 @@
 // SPDX-License-Identifier: Apache-2.0
 #include "native_mapping_graph.hpp"
 #include "mapping_graph.hpp"
+#include "native_mapping_window.hpp"
 #include <Eigen/Cholesky>
 #include <algorithm>
 #include <climits>
 #include <cmath>
 
 namespace posim_slam {
+NativeMappingGraph::NativeMappingGraph(MappingMatchHistory& matching,size_t maximum_bytes,size_t active_window)
+    :matching_(matching),mapper_(matching.calibration_,matching.config_),
+     maximum_bytes_(maximum_bytes?maximum_bytes:matching.maximum_bytes_),window_size_(active_window) {
+  if(!maximum_bytes_ || maximum_bytes_>matching.maximum_bytes_ ||
+      active_window>SubmapInformation::Limits{}.active_columns/6)
+    throw std::invalid_argument("native_graph_capacity");
+  initial_solver_={mapper_.lambda,mapper_.min_lambda,mapper_.max_lambda,mapper_.lambda_vee};
+}
+NativeMappingGraph::~NativeMappingGraph()=default;
 namespace {
 const nlohmann::json& checkedGraphCheckpoint(const nlohmann::json& document) {
   using namespace mapping_graph_detail;
@@ -23,6 +33,7 @@ const nlohmann::json& checkedGraphCheckpoint(const nlohmann::json& document) {
 }
 
 std::shared_ptr<const NativeMappingGraphState> NativeMappingGraph::captureState(const MappingInputStore::Snapshot& input) {
+  if(window_size_)throw std::invalid_argument("native_graph_window_checkpoint_required");
   if(!input_ || input!=input_ || !matched_ || matched_->revision!=last_.revision ||
       nativeMappingSourceIdentity(mapper_)!=source_identity_)
     throw std::invalid_argument("native_graph_checkpoint_owner");
@@ -145,7 +156,9 @@ NativeMappingGraph::Update NativeMappingGraph::update(const MappingInputStore::S
         Eigen::LLT<Eigen::Matrix2d>(factor.cov_inv).info()!=Eigen::Success)
       throw std::invalid_argument("native_graph_factor");
   }
-  const auto matched=matching_.advance(input->revision,input->frames,cancelled);check();
+  Update committed;
+  matching_.advance(input->revision,input->frames,cancelled,[&](const MappingMatchHistory::Snapshot& matched) {
+  check();
 
   // Reconstruct only combinatorial tracks with the pinned native implementation.
   // Temporary swaps keep the one nonlinear mapper, its means and its database.
@@ -239,6 +252,7 @@ NativeMappingGraph::Update NativeMappingGraph::update(const MappingInputStore::S
   };
   check();swap();
   try {
+    std::unique_ptr<NativeMappingWindow> next_window;
     check();
     // Use the original initializer only for tracks without a landmark. Existing
     // parameters, including zero inverse distance, remain free optimizer values.
@@ -253,18 +267,31 @@ NativeMappingGraph::Update NativeMappingGraph::update(const MappingInputStore::S
     // solve. This resets optimizer controls, not measurements or point means.
     mapper_.lambda=initial_solver_[0];mapper_.min_lambda=initial_solver_[1];
     mapper_.max_lambda=initial_solver_[2];mapper_.lambda_vee=initial_solver_[3];
-    if(iterations)mapper_.optimize(iterations);
+    if(window_size_) {
+      std::set<int64_t> active;
+      for(auto it=mapper_.getFramePoses().rbegin();it!=mapper_.getFramePoses().rend() && active.size()<window_size_;++it)
+        active.insert(it->first);
+      if(window_)next_window=window_->prepareGrowth(active,cancelled);
+      else {
+        SubmapInformation::Limits limits;limits.numeric_bytes=maximum_bytes_;
+        next_window=std::make_unique<NativeMappingWindow>(mapper_,mapper_.getFramePoses().begin()->first,active,limits);
+      }
+      for(int i=0;i<iterations;++i)if(!next_window->step(cancelled).accepted)break;
+    } else if(iterations)mapper_.optimize(iterations);
     for(const auto& [stamp,pose]:mapper_.getFramePoses())
       if(!pose.getPose().matrix().allFinite())throw std::runtime_error("native_graph_nonfinite_pose");
     for(const auto& [id,point]:mapper_.lmdb.getLandmarks())
       if(!point.direction.allFinite() || !std::isfinite(point.inv_dist) || point.inv_dist<0)
         throw std::runtime_error("native_graph_nonfinite_landmark");
     const auto identity=nativeMappingSourceIdentity(mapper_);check();
+    window_.swap(next_window);
     source_identity_=identity;input_=input;matched_=matched;next_track_=next_id;last_=result;
   } catch(...) {
     swap();mapper_.lambda=old_solver[0];mapper_.min_lambda=old_solver[1];
     mapper_.max_lambda=old_solver[2];mapper_.lambda_vee=old_solver[3];throw;
   }
-  return result;
+  committed=result;
+  });
+  return committed;
 }
 } // namespace posim_slam

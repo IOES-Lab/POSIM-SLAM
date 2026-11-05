@@ -7,6 +7,7 @@
 #include <functional>
 
 namespace posim_slam {
+class NativeMappingWindow;
 struct NativeMappingGraphState {
   MappingMatchHistory::Snapshot matching;
   MappingInputStore::Snapshot input;
@@ -17,9 +18,10 @@ struct NativeMappingGraphState {
 };
 // One thread exclusively owns this graph and its matching history. Input poses
 // seed new frames; existing nonlinear means remain optimizer variables. Native
-// track conflict rules and triangulation are unchanged. Explicit checkpoints
-// retain matching and nonlinear state; this bounded full graph does not yet
-// own a rolling NativeMappingWindow.
+// track conflict rules and triangulation are unchanged. An explicit nonzero
+// active_window owns conditional source updates. That optional mode rejects
+// checkpoints until its moving source ownership can also be restored; the
+// default full graph retains matching and nonlinear checkpoints.
 class NativeMappingGraph {
  public:
   struct Update {
@@ -28,14 +30,10 @@ class NativeMappingGraph {
       removed_tracks=0,preserved_landmarks=0,initialized_landmarks=0,numeric_bytes=0;
     bool reused=false;
   };
-  explicit NativeMappingGraph(MappingMatchHistory& matching,size_t maximum_bytes=0)
-      :matching_(matching),mapper_(matching.calibration_,matching.config_),
-       maximum_bytes_(maximum_bytes?maximum_bytes:matching.maximum_bytes_) {
-    if(!maximum_bytes_ || maximum_bytes_>matching.maximum_bytes_)
-      throw std::invalid_argument("native_graph_capacity");
-    initial_solver_={mapper_.lambda,mapper_.min_lambda,mapper_.max_lambda,mapper_.lambda_vee};
-  }
+  explicit NativeMappingGraph(MappingMatchHistory& matching,size_t maximum_bytes=0,size_t active_window=0);
+  ~NativeMappingGraph();
   basalt::NfrMapper& mapper(){return mapper_;}
+  const NativeMappingWindow* window() const {return window_.get();}
   const Update& lastUpdate() const {return last_;}
   MappingMatchHistory::Snapshot matchingSnapshot() const {return matched_;}
   std::shared_ptr<const NativeMappingGraphState> captureState(const MappingInputStore::Snapshot& input);
@@ -78,5 +76,6 @@ class NativeMappingGraph {
   std::array<double,4> initial_solver_;
   MappingInputStore::Snapshot input_;MappingMatchHistory::Snapshot matched_;
   InputDigest::Value source_identity_{};int64_t next_track_=0;Update last_;
+  size_t window_size_=0;std::unique_ptr<NativeMappingWindow> window_;
 };
 } // namespace posim_slam

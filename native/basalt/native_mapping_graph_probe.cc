@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 #include "native_mapping_graph.hpp"
 #include "mapping_graph.hpp"
+#include "native_mapping_window.hpp"
 #include <tbb/global_control.h>
 #include <cassert>
 #include <iostream>
@@ -57,6 +58,7 @@ int main(int argc,char** argv) {
   rejects([&]{graph.update(second,10,[&]{return graph.mapper().getFramePoses().size()>2 && ++new_state_seen>=2;});},"native_graph_cancelled");
   assert(new_state_seen==2 && &graph.mapper()==address && graph.lastUpdate().revision==1 && graph.matchingSnapshot()==committed_matching);
   assert(nativeMappingStateIdentity(graph.mapper())==state && nativeMappingSourceIdentity(graph.mapper())==source && graph.mapper().lambda==lambda);
+  assert(matching.snapshot()==committed_matching);
   result=graph.update(second,0);
   const auto& kept=graph.mapper().lmdb.getLandmark(id);
   assert(Eigen::Vector3d(kept.direction.x(),kept.direction.y(),kept.inv_dist)==parameters);
@@ -130,6 +132,28 @@ int main(int argc,char** argv) {
   MappingMatchHistory limited_matching(calibration,config);NativeMappingGraph limited(limited_matching,1);
   rejects([&]{limited.update(first,0);},"native_graph_numeric_capacity");
   assert(!limited.lastUpdate().revision && limited.mapper().getFramePoses().empty() && !limited.mapper().lmdb.numLandmarks());
+  assert(!limited_matching.snapshot()->revision);
+  MappingMatchHistory window_matching(calibration,config);NativeMappingGraph rolling(window_matching,0,2);
+  rolling.update(first,0);assert(rolling.window());
+  const auto old_window=rolling.window();const auto old_numeric=old_window->snapshot();
+  const auto old_matching=window_matching.snapshot();const auto old_state=nativeMappingStateIdentity(rolling.mapper());
+  const auto context=old_window->worldLinearization();const auto first_id=rolling.mapper().lmdb.getLandmarks().begin()->first;
+  int staged_checks=0;
+  rejects([&]{rolling.update(second,1,[&]{return rolling.mapper().getFramePoses().size()>2 && ++staged_checks>12;});},"submap_factor_cancelled");
+  assert(rolling.window()==old_window && rolling.window()->snapshot()==old_numeric);
+  assert(window_matching.snapshot()==old_matching && nativeMappingStateIdentity(rolling.mapper())==old_state);
+  rolling.update(second,1);
+  assert(rolling.window()->chart().offsets().at(1)==0 && rolling.window()->chart().offsets().at(2)==6);
+  rejects([&]{rolling.window()->worldInformation(context,{int64_t(first_id)});},"native_window_stale_world_linearization");
+  rolling.update(third,1);
+  assert(rolling.window()->chart().poses().size()==6 && rolling.window()->snapshot()->layout.frontier.size()==12);
+  assert(rolling.window()->snapshot()->information->measurements.size()==rolling.mapper().lmdb.numObservations()+11);
+  assert(rolling.window()->mapInformation(.3).points.size()==80);
+  rejects([&]{rolling.captureState(third);},"native_graph_window_checkpoint_required");
+  MappingGraphRegistry window_registry(calibration,config,"growing-window");
+  rejects([&]{window_registry.capture(third,rolling.mapper(),1,third->poses.at(1).getPose(),Sophus::SE3d(),nullptr,&rolling);},
+      "native_graph_window_checkpoint_required");
+  std::cout<<"Source window: actual native growth, stable pose coordinates, shared source ownership, covariance queries and matching/native/window cancellation rollback pass.\n";
   graph.mapper().lmdb.getLandmark(id).obs.begin()->second.x()+=1;
   rejects([&]{graph.update(third,0);},"native_graph_originals_changed");
   std::cout<<"Persistent native graph: one mapper, preserved nonlinear seeds, new observations, no-input reuse, full post-optimization rollback, source/factor/capacity guards pass.\n";

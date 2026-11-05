@@ -12,7 +12,10 @@
 namespace {
 using Registry=posim_slam::MappingGraphRegistry;using Json=nlohmann::json;
 template<class F> void rejects(F call,const std::string& reason) {
-  bool rejected=false;try{call();}catch(const std::exception& e){assert(e.what()==reason);rejected=true;}assert(rejected);
+  bool rejected=false;try{call();}catch(const std::exception& e){
+    if(e.what()!=reason)std::cerr<<"Expected "<<reason<<", received "<<e.what()<<'\n';
+    assert(e.what()==reason);rejected=true;
+  }assert(rejected);
 }
 struct Fixture {
   basalt::Calibration<double> calibration;basalt::VioConfig config;
@@ -201,7 +204,11 @@ void nativeScheduleControls(const Fixture& fixture) {
     [](posim_slam::NativeMappingPoseRows){},[](posim_slam::NativeMappingPointRows){},nullptr,&incomplete);},"native_mapping_row_order_incomplete");
   posim_slam::NativeMappingWindow full(*mapper,10,{10,20,30,40,50,60});
   posim_slam::NativeMappingWindow window(*mapper,10,{50,60});
-  assert(window.snapshot()->base->nodes.size()==3 && window.snapshot()->base->order.size()==12);
+  std::set<int64_t> removed;
+  for(const auto& node:window.snapshot()->base->nodes)
+    for(auto column:node->removed)assert(removed.insert(column).second);
+  std::set<int64_t> historical;for(int64_t column=0;column<24;++column)historical.insert(column);
+  assert(removed==historical && window.snapshot()->base->order.size()==12);
   assert(window.snapshot()->information->measurements==full.snapshot()->information->measurements);
   assert((window.proposal()-full.proposal()).norm()<1e-10);
   const auto expected=full.worldInformation({42,777}),actual=window.worldInformation({42,777});
@@ -523,8 +530,8 @@ void nativeRetirementControls(const Fixture& fixture) {
   for(const auto& [stamp,p]:mapper->getFramePoses())assert((p.getPose().matrix()-restored->getFramePoses().at(stamp).getPose().matrix()).norm()<1e-8);
   posim_slam::SubmapInformation::Limits limits;limits.nodes=1;
   auto small=chainMapper(fixture);Window bounded(*small,10,{10,20,30,40,50,60},limits);
-  bounded.retire({30,40,50,60});const auto snapshot=bounded.snapshot();const auto checkpoint=Checkpoint::document(bounded);
-  rejects([&]{bounded.retire({50,60});},"submap_node_capacity");
+  bounded.retire({20,30,40,50,60});const auto snapshot=bounded.snapshot();const auto checkpoint=Checkpoint::document(bounded);
+  rejects([&]{bounded.retire({30,40,50,60});},"submap_node_capacity");
   assert(snapshot==bounded.snapshot() && Checkpoint::document(bounded)==checkpoint);
   auto free=chainMapper(fixture);free->config.vio_init_pose_weight=0;
   Window unreferenced(*free,10,{10,20,30,40,50,60});unreferenced.retire({50,60});
