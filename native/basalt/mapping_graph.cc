@@ -137,11 +137,16 @@ MappingGraphRegistry::Snapshot MappingGraphRegistry::capture(const MappingInputS
     }
     data->landmarks.push_back(std::move(saved));
   }
-  if(window)result->native_window=NativeMappingCheckpoint::capture(*window,mapper,reference_stamp);
   if(owner) {
     if(&owner->mapper()!=&mapper)throw std::invalid_argument("native_graph_checkpoint_owner");
     result->native_owner=owner->captureState(input);
+    if(result->native_owner->window) {
+      if((window && window!=owner->window()) || reference_stamp!=owner->window()->chart().reference())
+        throw std::invalid_argument("native_window_checkpoint_owner");
+      result->native_window_state=result->native_owner->window;
+    }
   }
+  if(window && !result->native_window_state)result->native_window_state=NativeMappingCheckpoint::captureState(*window,mapper,reference_stamp);
   data->identities=anchors;result->captured=std::move(data);result->validated=true;
   // Commit only after all original measurements and typed values are validated.
   anchors_=std::move(anchors);next_id_=next_id;last_input_=input->revision;++revision_;
@@ -336,7 +341,8 @@ std::unique_ptr<NativeMappingGraph> MappingGraphRegistry::restoreNativeGraph(con
   if(!graph || !graph->validated || !graph->hasNativeGraph())
     throw std::invalid_argument("native_graph_checkpoint_missing");
   const auto saved=graph->native_owner?NativeMappingGraph::checkpoint(*graph->native_owner):graph->native_owner_saved;
-  return NativeMappingGraph::restore(matching,input,saved,restore(document(graph)),cancelled);
+  const auto window=graph->native_window_state?NativeMappingCheckpoint::document(*graph->native_window_state):graph->native_window;
+  return NativeMappingGraph::restore(matching,input,saved,restore(document(graph)),cancelled,window);
 }
 
 MappingInputStore::Snapshot MappingGraphRegistry::restoreInputs(const Snapshot& graph) {
@@ -380,7 +386,7 @@ void MappingGraphRegistry::writeArchive(const std::filesystem::path& path,const 
   std::vector<uint8_t> bytes{uint8_t(0xa3+int(graph->hasNativeWindow())+int(inputs)+int(owner))};
   Json::to_cbor("graph",bytes);Json::to_cbor(data,bytes);
   if(inputs) {Json::to_cbor("input_pages",bytes);Json::to_cbor(pages,bytes);}
-  if(graph->hasNativeWindow()) {Json::to_cbor("native_window",bytes);Json::to_cbor(graph->native_window,bytes);}
+  if(graph->hasNativeWindow()) {Json::to_cbor("native_window",bytes);Json::to_cbor(graph->native_window_state?NativeMappingCheckpoint::document(*graph->native_window_state):graph->native_window,bytes);}
   if(owner) {
     Json::to_cbor("native_graph",bytes);
     Json::to_cbor(graph->native_owner?NativeMappingGraph::checkpoint(*graph->native_owner):graph->native_owner_saved,bytes);
@@ -434,7 +440,7 @@ MappingGraphRegistry::Restored MappingGraphRegistry::read(const std::filesystem:
   if(with_owner) {
     graph->native_owner_saved=std::move(document.at("native_graph"));
     NativeMappingGraph::validateCheckpoint(*mapper,graph->native_owner_saved,
-        integer(graph->imported.at("input_revision"),1,512));
+        integer(graph->imported.at("input_revision"),1,512),graph->native_window);
   }
   graph->validated=true;
   if(!expected_epoch.empty() && graph->imported.at("epoch")!=expected_epoch)throw std::invalid_argument("mapping_graph_epoch_mismatch");

@@ -17,6 +17,7 @@ class NativeMappingCheckpoint;
 class MappingFramePages;
 class NativeMappingGraph;
 struct NativeMappingGraphState;
+struct NativeMappingWindowState;
 namespace mapping_graph_detail {
 using namespace mapping_binary;
 inline Sophus::SE3d pose(const Json& value) {
@@ -69,7 +70,7 @@ inline basalt::VioConfig config(const Json& value) {
 
 struct MappingGraph {
   std::map<int64_t,int> stable_ids;
-  bool hasNativeWindow() const {return !native_window.is_null();}
+  bool hasNativeWindow() const {return bool(native_window_state) || !native_window.is_null();}
   bool hasNativeGraph() const {return bool(native_owner) || !native_owner_saved.is_null();}
   bool hasInputFrames() const {return bool(pages) || (captured && !captured->inputs.empty());}
  private:
@@ -94,6 +95,7 @@ struct MappingGraph {
   std::shared_ptr<const Captured> captured;
   Json imported;
   Json native_window;
+  std::shared_ptr<const NativeMappingWindowState> native_window_state;
   std::shared_ptr<MappingFramePages> pages;
   bool validated=false;
   std::shared_ptr<const NativeMappingGraphState> native_owner;

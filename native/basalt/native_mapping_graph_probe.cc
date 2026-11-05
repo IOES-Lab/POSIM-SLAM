@@ -1,14 +1,14 @@
 // SPDX-License-Identifier: Apache-2.0
 #include "native_mapping_graph.hpp"
 #include "mapping_graph.hpp"
-#include "native_mapping_window.hpp"
+#include "native_mapping_checkpoint.hpp"
 #include <tbb/global_control.h>
 #include <cassert>
 #include <iostream>
 #include <random>
 using namespace posim_slam;
 template<class F> void rejects(F call,const std::string& expected) {
-  bool caught=false;try{call();}catch(const std::exception& error){assert(error.what()==expected);caught=true;}assert(caught);
+  bool caught=false;try{call();}catch(const std::exception& error){if(error.what()!=expected)std::cerr<<"Expected "<<expected<<", received "<<error.what()<<"\n";assert(error.what()==expected);caught=true;}assert(caught);
 }
 int main(int argc,char** argv) {
   tbb::global_control threads(tbb::global_control::max_allowed_parallelism,2);
@@ -145,15 +145,72 @@ int main(int argc,char** argv) {
   rolling.update(second,1);
   assert(rolling.window()->chart().offsets().at(1)==0 && rolling.window()->chart().offsets().at(2)==6);
   rejects([&]{rolling.window()->worldInformation(context,{int64_t(first_id)});},"native_window_stale_world_linearization");
-  rolling.update(third,1);
+  MappingGraphRegistry window_registry(calibration,config,"growing-window");
+  const auto window_capture=window_registry.capture(second,rolling.mapper(),1,second->poses.at(1).getPose(),Sophus::SE3d(),nullptr,&rolling);
+  const auto window_saved=NativeMappingGraph::checkpoint(*rolling.captureState(second));
+  const auto window_model=NativeMappingCheckpoint::document(*rolling.window());
+  assert(window_saved["schema"]=="posim-slam-native-graph-2");
+  MappingMatchHistory window_resume_matching(calibration,config);
+  const auto untouched_window_matching=window_resume_matching.snapshot();
+  rejects([&]{NativeMappingGraph::restore(window_resume_matching,second,window_saved,
+      MappingGraphRegistry::restore(MappingGraphRegistry::document(window_capture)));},"native_graph_checkpoint_window");
+  assert(window_resume_matching.snapshot()==untouched_window_matching);
+  int window_checks=0;
+  rejects([&]{MappingGraphRegistry::restoreNativeGraph(window_capture,window_resume_matching,second,
+      [&]{return ++window_checks==7;});},"native_window_cancelled");
+  assert(window_resume_matching.snapshot()==untouched_window_matching);
+  auto rolling_resumed=MappingGraphRegistry::restoreNativeGraph(window_capture,window_resume_matching,second);
+  assert(NativeMappingCheckpoint::document(*rolling_resumed->window())==window_model);
+  assert((rolling.window()->proposal()-rolling_resumed->window()->proposal()).norm()<1e-8);
+  if(argc==2) {
+    const std::filesystem::path directory=argv[1];
+    MappingGraphRegistry::writeWithInputs(directory/"window.pmap",window_capture,2,4);
+    const auto disk=MappingGraphRegistry::read(directory/"window.pmap","growing-window");
+    const auto disk_inputs=MappingGraphRegistry::restoreInputs(disk.graph);
+    MappingMatchHistory disk_matching(calibration,config);
+    auto disk_window=MappingGraphRegistry::restoreNativeGraph(disk.graph,disk_matching,disk_inputs);
+    assert(NativeMappingCheckpoint::document(*disk_window->window())==window_model);
+  }
+  rolling.update(third,1);rolling_resumed->update(third,1);
+  // Old typed snapshots are immutable after the live owner advances.
+  MappingMatchHistory frozen_matching(calibration,config);
+  const auto old_restored=MappingGraphRegistry::restoreNativeGraph(window_capture,frozen_matching,second);
+  assert(NativeMappingCheckpoint::document(*old_restored->window())==window_model);
   assert(rolling.window()->chart().poses().size()==6 && rolling.window()->snapshot()->layout.frontier.size()==12);
   assert(rolling.window()->snapshot()->information->measurements.size()==rolling.mapper().lmdb.numObservations()+11);
-  assert(rolling.window()->mapInformation(.3).points.size()==80);
-  rejects([&]{rolling.captureState(third);},"native_graph_window_checkpoint_required");
-  MappingGraphRegistry window_registry(calibration,config,"growing-window");
-  rejects([&]{window_registry.capture(third,rolling.mapper(),1,third->poses.at(1).getPose(),Sophus::SE3d(),nullptr,&rolling);},
-      "native_graph_window_checkpoint_required");
+  const auto rolling_map=rolling.window()->mapInformation(.3),resumed_map=rolling_resumed->window()->mapInformation(.3);
+  assert(rolling_map.points.size()==80 && rolling_map.points.size()==resumed_map.points.size());
+  assert(rolling.mapper().feature_tracks==rolling_resumed->mapper().feature_tracks);
+  assert(rolling.window()->snapshot()->originals==rolling_resumed->window()->snapshot()->originals);
+  for(const auto& [id,point]:rolling_map.points) {
+    const auto& other=resumed_map.points.at(id);
+    assert(point.eligible==other.eligible && point.world.observed==other.world.observed);
+    assert((point.world.covariance-other.world.covariance).norm()<1e-8*std::max(1e-12,point.world.covariance.norm()));
+  }
+  MappingGraphRegistry resumed_window_registry(calibration,config,"growing-window");resumed_window_registry.adopt(window_capture);
+  const auto next_window=window_registry.capture(third,rolling.mapper(),1,third->poses.at(1).getPose(),Sophus::SE3d(),nullptr,&rolling);
+  const auto next_resumed=resumed_window_registry.capture(third,rolling_resumed->mapper(),1,third->poses.at(1).getPose(),Sophus::SE3d(),nullptr,rolling_resumed.get());
+  assert(next_window->stable_ids==next_resumed->stable_ids);
   std::cout<<"Source window: actual native growth, stable pose coordinates, shared source ownership, covariance queries and matching/native/window cancellation rollback pass.\n";
+  // A late earlier image must extend the chart without moving its reference,
+  // and keep surviving landmarks in their existing host coordinates.
+  auto late_first=std::make_shared<MappingInputStore::Data>(*second);late_first->revision=1;
+  late_first->frames.erase(1);late_first->poses.erase(1);
+  late_first->relative.erase(late_first->relative.begin());late_first->roll_pitch.erase(late_first->roll_pitch.begin());
+  auto late_second=std::make_shared<MappingInputStore::Data>(*late_first);late_second->revision=2;
+  late_second->frames.emplace(1,second->frames.at(1));late_second->poses.emplace(1,second->poses.at(1));
+  late_second->relative.push_back(second->relative.front());late_second->roll_pitch.push_back(second->roll_pitch.front());
+  MappingMatchHistory late_matching(calibration,config);NativeMappingGraph late(late_matching,0,2);late.update(late_first,0);
+  MappingGraphRegistry late_registry(calibration,config,"late-source");
+  auto late_saved=late_registry.capture(late_first,late.mapper(),2,late_first->poses.at(2).getPose(),Sophus::SE3d(),nullptr,&late);
+  MappingMatchHistory late_resumed_matching(calibration,config);auto late_resumed=MappingGraphRegistry::restoreNativeGraph(late_saved,late_resumed_matching,late_first);
+  late.update(late_second,0);late_resumed->update(late_second,0);
+  assert(late.window()->chart().reference()==2 && late.window()->chart().poses()==std::vector<int64_t>({2,3,4,1}));
+  assert(late.mapper().feature_tracks==late_resumed->mapper().feature_tracks);
+  assert(NativeMappingCheckpoint::document(*late.window())==NativeMappingCheckpoint::document(*late_resumed->window()));
+  for(const auto& [key,p]:late.mapper().lmdb.getLandmarks())assert(p.host_kf_id.frame_id==2);
+  assert(NativeMappingGraph::checkpoint(*late.captureState(late_second))==NativeMappingGraph::checkpoint(*late_resumed->captureState(late_second)));
+
   graph.mapper().lmdb.getLandmark(id).obs.begin()->second.x()+=1;
   rejects([&]{graph.update(third,0);},"native_graph_originals_changed");
   std::cout<<"Persistent native graph: one mapper, preserved nonlinear seeds, new observations, no-input reuse, full post-optimization rollback, source/factor/capacity guards pass.\n";

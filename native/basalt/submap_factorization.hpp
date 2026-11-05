@@ -51,18 +51,25 @@ class SubmapFactorization {
     std::shared_ptr<const int> owner;
   };
   using Snapshot=std::shared_ptr<const Data>;
-  explicit SubmapFactorization(Layout layout,Information::Limits limits={})
+  explicit SubmapFactorization(Layout layout,Information::Limits limits={},
+      const std::vector<std::string>& retained_originals={})
       :core_(std::make_shared<Information>(limits)),limits_(limits) {
     auto initial=std::make_shared<Data>();initial->owner=identity_;
+    initial->originals=keys(retained_originals);
+    if(initial->originals.size()>limits_.measurements)throw std::runtime_error("submap_measurement_capacity");
     initial->layout=std::move(layout);validateLayout(initial->layout,nullptr);
     rebuild(*initial,nullptr,{});data_=initial;
   }
   Snapshot snapshot() const {return std::atomic_load(&data_);}
   // Stage a larger native transaction without publishing to the current owner.
   // Immutable source rows, conditionals and the query lineage remain shared.
-  std::unique_ptr<SubmapFactorization> fork(const Snapshot& state) const {
+  std::unique_ptr<SubmapFactorization> fork(const Snapshot& state,size_t numeric_bytes=0) const {
     if(!state || state->owner!=identity_)throw std::invalid_argument("submap_factor_owner");
-    return std::unique_ptr<SubmapFactorization>(new SubmapFactorization(*this,state));
+    auto result=std::unique_ptr<SubmapFactorization>(new SubmapFactorization(*this,state));
+    // A larger transaction reserves its own current metadata separately. The
+    // supplied row budget governs the next replacement, before publication.
+    if(numeric_bytes)result->limits_.numeric_bytes=numeric_bytes;
+    return result;
   }
   // All originals of removed groups must be reassigned or explicitly marked
   // unassigned. The layout may append elimination blocks and new coordinates;

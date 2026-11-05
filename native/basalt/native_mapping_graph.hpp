@@ -8,6 +8,7 @@
 
 namespace posim_slam {
 class NativeMappingWindow;
+struct NativeMappingWindowState;
 struct NativeMappingGraphState {
   MappingMatchHistory::Snapshot matching;
   MappingInputStore::Snapshot input;
@@ -15,13 +16,13 @@ struct NativeMappingGraphState {
   basalt::VioConfig config;
   uint64_t revision=0;int64_t next_track=0;
   InputDigest::Value source{},nonlinear{};
+  size_t active_window=0;std::shared_ptr<const NativeMappingWindowState> window;
 };
 // One thread exclusively owns this graph and its matching history. Input poses
 // seed new frames; existing nonlinear means remain optimizer variables. Native
 // track conflict rules and triangulation are unchanged. An explicit nonzero
-// active_window owns conditional source updates. That optional mode rejects
-// checkpoints until its moving source ownership can also be restored; the
-// default full graph retains matching and nonlinear checkpoints.
+// active_window owns conditional source updates. Checkpoints preserve matching,
+// nonlinear state, source anchors and the active-window policy together.
 class NativeMappingGraph {
  public:
   struct Update {
@@ -38,10 +39,12 @@ class NativeMappingGraph {
   MappingMatchHistory::Snapshot matchingSnapshot() const {return matched_;}
   std::shared_ptr<const NativeMappingGraphState> captureState(const MappingInputStore::Snapshot& input);
   static nlohmann::json checkpoint(const NativeMappingGraphState& state);
-  static void validateCheckpoint(basalt::NfrMapper& mapper,const nlohmann::json& document,uint64_t revision);
+  static void validateCheckpoint(basalt::NfrMapper& mapper,const nlohmann::json& document,uint64_t revision,
+      const nlohmann::json& window={});
   static std::unique_ptr<NativeMappingGraph> restore(MappingMatchHistory& matching,
       const MappingInputStore::Snapshot& input,const nlohmann::json& document,
-      std::unique_ptr<basalt::NfrMapper> mapper,const std::function<bool()>& cancelled={});
+      std::unique_ptr<basalt::NfrMapper> mapper,const std::function<bool()>& cancelled={},
+      const nlohmann::json& window={});
   Update update(const MappingInputStore::Snapshot& input,int iterations=10,
       const std::function<bool()>& cancelled={});
  private:

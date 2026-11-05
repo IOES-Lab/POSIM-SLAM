@@ -482,10 +482,28 @@ void nativeRetirementControls(const Fixture& fixture) {
   legacy["model"].erase("initial_active");legacy["model"].erase("retirements");resign(legacy);
   auto old=chainMapper(fixture);copy_state(*old);auto legacy_window=Checkpoint::restore(*old,legacy);
   assert((legacy_window->proposal()-window.proposal()).norm()<1e-8);
+  auto legacy2=legacy;legacy2["model"]["schema"]="posim-slam-native-window-2";
+  legacy2["model"]["initial_active"]={10,20,30,40,50,60};legacy2["model"]["retirements"]=Json::array();
+  std::set<int64_t> previous{10,20,30,40,50,60};
   double maximum_covariance_error=0;
   for(const std::set<int64_t> kept:{std::set<int64_t>{30,40,50,60},std::set<int64_t>{50,60}}) {
     const auto before=window.worldInformation({42,777});const auto proposal=window.proposal();
     const auto state=posim_slam::nativeMappingStateIdentity(*mapper);const auto originals=window.snapshot()->information;
+    // Build an authentic v2 event from the source groups crossing this boundary.
+    const posim_slam::NativeMappingSchedule schedule(*mapper,previous);
+    std::set<int64_t> support,points;
+    for(const auto& group:schedule.groups)if(group.active &&
+        !std::includes(kept.begin(),kept.end(),group.poses.begin(),group.poses.end())) {
+      support.insert(group.poses.begin(),group.poses.end());
+      if(group.source.kind==posim_slam::NativeMappingRowSource::landmark)points.insert(group.source.id);
+    }
+    Json event={{"kept",kept},{"poses",Json::array()},{"points",Json::array()}};
+    for(auto stamp:support)event["poses"].push_back({stamp,posim_slam::mapping_graph_detail::doubles(mapper->getFramePoses().at(stamp).getPose().data(),7)});
+    for(auto id:points) {
+      const auto& p=mapper->lmdb.getLandmark(id);const Eigen::Vector3d values(p.direction.x(),p.direction.y(),p.inv_dist);
+      event["points"].push_back({id,posim_slam::mapping_graph_detail::doubles(values.data(),3)});
+    }
+    legacy2["model"]["retirements"].push_back(std::move(event));previous=kept;
     window.retire(kept);
     assert(posim_slam::nativeMappingStateIdentity(*mapper)==state);
     assert(window.snapshot()->information->measurements==originals->measurements);
@@ -499,7 +517,8 @@ void nativeRetirementControls(const Fixture& fixture) {
     assert(window.step().accepted);
   }
   const auto saved=Json::from_cbor(Json::to_cbor(Checkpoint::document(window)));
-  assert(saved["model"]["retirements"].size()==2);
+  assert(saved["model"]["schema"]=="posim-slam-native-window-3");
+  legacy2["model"]["active"]=saved["model"]["active"];legacy2["model"]["state"]=saved["model"]["state"];resign(legacy2);
   auto restored=chainMapper(fixture);copy_state(*restored);
   auto reopened=Checkpoint::restore(*restored,saved);compare(*mapper,*restored);
   assert(Checkpoint::document(*reopened)==saved);
@@ -507,6 +526,10 @@ void nativeRetirementControls(const Fixture& fixture) {
   const auto before=window.worldInformation({42,777}),after=reopened->worldInformation({42,777});
   const double restore_error=(before.covariance-after.covariance).norm()/before.covariance.norm();assert(restore_error<1e-9);
   assert(before.observed==after.observed && (before.positions-after.positions).norm()==0);
+  auto legacy_mapper=chainMapper(fixture);copy_state(*legacy_mapper);
+  auto legacy_reopened=Checkpoint::restore(*legacy_mapper,legacy2);
+  assert((legacy_reopened->proposal()-window.proposal()).norm()<1e-8);
+  assert((legacy_reopened->worldInformation({42,777}).covariance-before.covariance).norm()/before.covariance.norm()<1e-9);
   const auto quality=window.mapInformation(.1),replay=reopened->mapInformation(.1);
   assert(quality.points.size()==replay.points.size() && quality.observations==replay.observations);
   for(const auto& [id,p]:quality.points)assert(p.eligible==replay.points.at(id).eligible && p.mature==replay.points.at(id).mature);
@@ -517,13 +540,19 @@ void nativeRetirementControls(const Fixture& fixture) {
   auto naive_mapper=chainMapper(fixture);copy_state(*naive_mapper);auto naive_window=Checkpoint::restore(*naive_mapper,naive);
   const double missing_anchor_error=(before.covariance-naive_window->worldInformation({42,777}).covariance).norm()/before.covariance.norm();
   assert(missing_anchor_error>1e-5);
-  auto invalid=saved;invalid["model"]["retirements"][0]["poses"].erase(0);resign(invalid);
+  auto invalid=legacy2;invalid["model"]["retirements"][0]["poses"].erase(0);resign(invalid);
   rejects([&]{Checkpoint::validate(*restored,invalid,10);},"native_window_retirement_anchors");
   rejects([&]{Checkpoint::restore(*restored,invalid);},"native_window_retirement_anchors");compare(*mapper,*restored);
-  invalid=saved;invalid["model"]["retirements"][1]["kept"]=invalid["model"]["retirements"][0]["kept"];resign(invalid);
+  invalid=legacy2;invalid["model"]["retirements"][1]["kept"]=invalid["model"]["retirements"][0]["kept"];resign(invalid);
   rejects([&]{Checkpoint::restore(*restored,invalid);},"native_window_retirement_subset");compare(*mapper,*restored);
   invalid=saved;invalid["model"]["active"]={40,50,60};resign(invalid);
-  rejects([&]{Checkpoint::restore(*restored,invalid);},"native_window_checkpoint_active");compare(*mapper,*restored);
+  rejects([&]{Checkpoint::restore(*restored,invalid);},"native_window_checkpoint_layout");compare(*mapper,*restored);
+  invalid=saved;invalid["model"]["groups"][0][1].erase(0);resign(invalid);
+  rejects([&]{Checkpoint::restore(*restored,invalid);},"native_window_checkpoint_groups");compare(*mapper,*restored);
+  invalid=saved;invalid["model"]["pose_order"][1]=10;resign(invalid);
+  rejects([&]{Checkpoint::restore(*restored,invalid);},"native_mapping_pose_order");compare(*mapper,*restored);
+  invalid=saved;invalid["model"]["unassigned"]={"pixel:10:0:0:"};resign(invalid);
+  rejects([&]{Checkpoint::restore(*restored,invalid);},"native_window_checkpoint_originals");compare(*mapper,*restored);
   int checks=0;rejects([&]{Checkpoint::restore(*restored,saved,{},[&]{return ++checks==6;});},"native_window_cancelled");compare(*mapper,*restored);
   const auto a=window.step(),b=reopened->step();assert(a.accepted==b.accepted && a.trials==b.trials);
   assert(std::abs(a.after-b.after)<1e-8);

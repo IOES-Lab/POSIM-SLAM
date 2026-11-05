@@ -44,7 +44,10 @@ evaluated pair keys and match data. Container overhead, the transactional index
 copy and caller-held older snapshots are additional. Cancellation or failure
 leaves the previous matching snapshot intact. Explicit checkpoints retain every
 evaluated pair. Restoration checks complete original features and matching
-settings; old pairs do not run RANSAC again.
+settings; old pairs do not run RANSAC again. New pairs derive the RANSAC seed
+from their ordered timestamps and original image digests. The Stewenius solver,
+100-trial limit, inlier thresholds and nonlinear refinement use the pinned
+OpenGV implementation.
 
 `PersistentMapper`는 현재 구간의 HashBoW 색인·픽셀 좌표·영상쌍 평가 결과를
 보존합니다. 시간순 입력에서는 새 영상만 검색합니다. 늦게 도착한 영상은 해당
@@ -59,7 +62,9 @@ settings; old pairs do not run RANSAC again.
 트랜잭션용 색인 사본과 호출자가 보유한 이전 사본은 별도입니다. 취소나 실패 시
 이전 매칭 사본을 보존합니다. 체크포인트는 평가한 모든 영상쌍을 보존합니다.
 복원 시 전체 원본 특징과 매칭 설정을 검사하며 기존 영상쌍에는 RANSAC을
-다시 수행하지 않습니다.
+다시 수행하지 않습니다. 새 영상쌍은 순서가 있는 두 시각과 원본 영상 해시로
+RANSAC 난수 시드를 정합니다. Stewenius 해법, 최대 100회 반복, 인라이어 임계값과
+비선형 보정에는 고정 OpenGV 구현을 사용합니다.
 
 `NativeMappingGraph` keeps optimized poses and landmark parameters between
 updates. The pinned native track builder supplies current associations; original
@@ -304,11 +309,12 @@ Weak and infinite candidates remain inspectable. Changed original
 observations or noise require a new owner before output can be certified.
 
 `NativeMappingCheckpoint` in `native_mapping_checkpoint.hpp` saves the original
-pose/landmark chart, active membership and each retirement's source anchors alongside the current-state
-mapping graph. Its CBOR-compatible document binds the original observations,
+pose/landmark chart, stable pose order, active membership, elimination order
+and each source group's last linearization alongside the current-state graph.
+Original keys remain recorded when their current association is removed. Its CBOR-compatible document binds the original observations,
 calibration, weights and current variables with separate SHA-256 identities.
-Restore replays historical information at the anchors used when each group was sealed and
-replaces only active likelihoods at the saved current state. Source/state
+Restore reconstructs each original group at its saved anchors, then rebuilds
+the saved elimination order. Source/state
 mismatches, corruption, invalid anchors and caller capacity failures are
 rejected; cancellation leaves the supplied graph unchanged.
 
@@ -320,8 +326,8 @@ immutable snapshot keeps both states through later optimizer updates.
 measurements, current variables and reference before returning the snapshot;
 `NativeMappingCheckpoint::restore(mapper, graph)` reconstructs its window.
 
-The window document uses `posim-slam-native-window-2`; the reader also accepts
-fixed-window version 1 documents. Keep a compatible library with these archives.
+The window document uses `posim-slam-native-window-3`; the reader also accepts
+version 1 and 2 documents. Keep a compatible library with these archives.
 Point correspondence uses stable IDs, independent of container row order.
 Readers supporting only `PSIMMAP1` reject window archives. Calls to `write`
 without a window retain `PSIMMAP1`. File replacement is atomic; power-loss durability
@@ -350,7 +356,10 @@ decisions. Unmatched pixels are available for future associations. Changed
 original features, settings or seeds are rejected before publishing the matching
 state. Ordinary map publication keeps typed immutable values; checkpoint JSON
 is created only for explicit serialization or restoration. These records count
-toward the 96 MiB archive limit. `PSIMMAP1`–`PSIMMAP3` remain readable.
+toward the 96 MiB archive limit. A selected moving window also retains its
+source anchors and active-window policy; its matching and window checkpoints
+are bound by a digest. Restoration constructs the window before committing
+matching state. `PSIMMAP1`–`PSIMMAP3` remain readable.
 Live VIO/IMU state and automatic navigation restart require separate support.
 
 `step()` uses backtracking on the hybrid Gaussian/robust objective, rejects a
@@ -365,9 +374,12 @@ back-substitution and coordinate anchors. The native owner reserves up to
 keeps its own quota. Caller-owned graphs, temporary solve
 storage and allocator overhead are additional. An undefined reference heading
 or a rotation change reaching the original chart's pi boundary requires a new
-owner. Graph growth, reassociation, rehosting, sealed nonlinear restoration and
-durable paging also require explicit handling. The default mapper retains its
-existing full-history optimizer and limits; automatic rollover is not enabled.
+owner. `prepareGrowth` handles changed source membership and host coordinates;
+callers commit it with their staged native graph. Original keys remain unique
+through source-group splitting. `NativeMappingGraph` keeps surviving tracks
+whole and rejects partial replacements or splits of committed tracks. Durable
+graph paging and automatic rollover remain unimplemented; the default mapper
+retains its existing optimizer and limits.
 
 `native_mapping_linearization.hpp::nativeMappingRows`는 네이티브 최적화기의
 원본 관측 우도를 제공합니다. Basalt의 기준 영상 내 평사투영 방향·역거리 좌표,
@@ -433,10 +445,12 @@ existing full-history optimizer and limits; automatic rollover is not enabled.
 새 소유자를 구성한 뒤 점 채택을 판정합니다.
 
 `native_mapping_checkpoint.hpp`의 `NativeMappingCheckpoint`는 원래 자세·랜드마크
-좌표 기준·활성 자세 집합·각 소거 시점의 원본 기준값을 현재 상태의 지도 그래프와 함께 보존합니다. CBOR로
+좌표 기준·일정한 자세 순서·활성 자세 집합·소거 순서와 원본 그룹별 마지막 선형화
+기준값을 현재 상태의 지도 그래프와 함께 보존합니다. 현재 대응에서 빠진 원본
+식별자도 기록합니다. CBOR로
 저장할 수 있는 문서는 원본 관측·보정값·가중치와 현재 변수를 각각 SHA-256으로
-식별합니다. 복원은 각 그룹을 확정한 시점의 기준값으로 과거 정보를 재구성하고 활성 관측만 저장된
-현재 상태에서 다시 계산합니다. 입력·상태 불일치, 손상, 잘못된 기준값과 호출자
+식별합니다. 복원은 각 원본 그룹을 저장된 기준값에서 재구성하고 저장된
+소거 순서로 계산합니다. 입력·상태 불일치, 손상, 잘못된 기준값과 호출자
 용량 초과를 거부하며 취소 시 입력 그래프를 유지합니다.
 
 지도 소유 스레드에서
@@ -446,8 +460,8 @@ existing full-history optimizer and limits; automatic rollover is not enabled.
 읽을 때 원본 관측·현재 변수·기준 자세의 일치를 검사하며
 `NativeMappingCheckpoint::restore(mapper, graph)`로 활성 구간을 복원합니다.
 
-구간 문서는 `posim-slam-native-window-2` 형식이며 판독기는 고정 구간용
-버전 1 문서도 읽습니다. 이 파일과 호환되는 라이브러리를 함께 보존합니다.
+구간 문서는 `posim-slam-native-window-3` 형식이며 판독기는
+버전 1·2 문서도 읽습니다. 이 파일과 호환되는 라이브러리를 함께 보존합니다.
 점 대응은 내부 행 순서와 관계없이 고유 ID를 사용합니다. `PSIMMAP1`만 지원하는
 판독기는 구간 파일을 거부하며 구간 없이 호출한 `write`는 `PSIMMAP1` 형식을 유지합니다.
 파일 교체는 원자적이지만 전원 차단 시 보존을 보장하지 않습니다.
@@ -472,7 +486,9 @@ existing full-history optimizer and limits; automatic rollover is not enabled.
 현재 추정값·최적화 설정·매칭 판단을 복원합니다. 미연결 픽셀도 이후 대응에 사용할
 수 있습니다. 원본 특징·설정·초기값이 다르면 매칭 상태를 발행하기 전에 거부합니다.
 일반 지도 발행은 불변 자료형을 보관하고 명시적인 저장·복원에서만 체크포인트
-JSON을 만듭니다. 이 기록도 96MiB 파일 한도에 포함되며 `PSIMMAP1`–`PSIMMAP3`은
+JSON을 만듭니다. 이 기록도 96MiB 파일 한도에 포함됩니다. 이동 구간을 선택하면
+원본 그룹의 기준값과 활성 구간 정책도 보존하며 매칭·구간 체크포인트를 해시로
+결합합니다. 복원은 구간을 구성한 뒤 매칭 상태를 확정합니다. `PSIMMAP1`–`PSIMMAP3`은
 계속 읽을 수 있습니다. 라이브 VIO/IMU 상태와 자동 항법 재시작은 별도 지원이 필요합니다.
 
 `step()`은 가우시안·강건 손실을 결합한 목적함수로 갱신 보폭을 조정합니다.
@@ -485,9 +501,11 @@ JSON을 만듭니다. 이 기록도 96MiB 파일 한도에 포함되며 `PSIMMAP
 보존하는 활성 경계는 별도의 한도를 유지합니다.
 호출자 소유 그래프, 풀이 임시 공간과 할당 오버헤드는 별도입니다. 기준 방위를
 정의할 수 없거나 원래 회전 좌표에서 변화가 pi 경계에 도달하면 새 소유자가
-필요합니다. 그래프 확장, 관측 재연결, 기준 영상 변경, 확정된 비선형 제약 복원과
-디스크 페이징도 별도 처리가 필요합니다. 기본 지도는 기존 전체 기록 최적화기와
-한도를 사용하며 자동 구간 전환은 활성화되지 않습니다.
+필요합니다. `prepareGrowth`는 원본 관측의 연결과 기준 영상 좌표 변경을 처리하며
+호출자가 준비한 네이티브 그래프와 함께 확정합니다. 원본 그룹을 분할해도 원본
+식별자는 중복 배정하지 않습니다. `NativeMappingGraph`는 남는 트랙 전체를 유지하고
+확정한 트랙의 일부 교체·분할은 거부합니다. 그래프의 디스크 페이징과 자동 구간
+전환은 아직 구현되지 않았으며 기본 워커는 기존 최적화기와 한도를 사용합니다.
 
 The build-local adapter maps initial gyro/accelerometer information weights
 to their physical state coordinates. Fresh builds check the actual constructor

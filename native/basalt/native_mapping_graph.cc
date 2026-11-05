@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 #include "native_mapping_graph.hpp"
 #include "mapping_graph.hpp"
-#include "native_mapping_window.hpp"
+#include "native_mapping_checkpoint.hpp"
 #include <Eigen/Cholesky>
 #include <algorithm>
 #include <climits>
@@ -20,10 +20,16 @@ NativeMappingGraph::~NativeMappingGraph()=default;
 namespace {
 const nlohmann::json& checkedGraphCheckpoint(const nlohmann::json& document) {
   using namespace mapping_graph_detail;
-  if(!document.is_object() || document.size()!=3 || document.at("schema")!="posim-slam-native-graph-1")
+  const bool window=document.value("schema","")=="posim-slam-native-graph-2";
+  if(!document.is_object() || document.size()!=3 || (!window && document.at("schema")!="posim-slam-native-graph-1"))
     throw std::invalid_argument("native_graph_checkpoint_schema");
   const auto& data=document.at("data");
-  if(!data.is_object() || data.size()!=6)throw std::invalid_argument("native_graph_checkpoint_schema");
+  if(!data.is_object() || data.size()!=(window?8:6))throw std::invalid_argument("native_graph_checkpoint_schema");
+  if(window) {
+    integer(data.at("active_window"),1,SubmapInformation::Limits{}.active_columns/6);
+    if(!data.at("window_sha256").is_binary() || data.at("window_sha256").get_binary().size()!=32)
+      throw std::invalid_argument("native_graph_checkpoint_window");
+  }
   const auto bytes=Json::to_cbor(data);
   if(bytes.size()>96*1024*1024)throw std::runtime_error("native_graph_numeric_capacity");
   if(document.at("sha256")!=mapping_frame_io::binary(mapping_frame_io::digest(bytes)))
@@ -33,14 +39,19 @@ const nlohmann::json& checkedGraphCheckpoint(const nlohmann::json& document) {
 }
 
 std::shared_ptr<const NativeMappingGraphState> NativeMappingGraph::captureState(const MappingInputStore::Snapshot& input) {
-  if(window_size_)throw std::invalid_argument("native_graph_window_checkpoint_required");
   if(!input_ || input!=input_ || !matched_ || matched_->revision!=last_.revision ||
       nativeMappingSourceIdentity(mapper_)!=source_identity_)
     throw std::invalid_argument("native_graph_checkpoint_owner");
   auto state=std::make_shared<NativeMappingGraphState>();state->matching=matched_;state->input=input;
   state->calibration=matching_.calibration_;state->config=matching_.config_;
   state->revision=last_.revision;state->next_track=next_track_;
-  state->source=source_identity_;state->nonlinear=nativeMappingStateIdentity(mapper_);return state;
+  state->source=source_identity_;state->nonlinear=nativeMappingStateIdentity(mapper_);
+  state->active_window=window_size_;
+  if(window_size_) {
+    if(!window_)throw std::invalid_argument("native_graph_checkpoint_window");
+    state->window=NativeMappingCheckpoint::captureState(*window_,mapper_,window_->chart().reference());
+  }
+  return state;
 }
 
 nlohmann::json NativeMappingGraph::checkpoint(const NativeMappingGraphState& state) {
@@ -51,14 +62,29 @@ nlohmann::json NativeMappingGraph::checkpoint(const NativeMappingGraphState& sta
       {"input_poses",Json::array()}};
   if(!state.input || state.input->revision!=state.revision)throw std::invalid_argument("native_graph_checkpoint_source");
   for(const auto& [stamp,pose]:state.input->poses)data["input_poses"].push_back({stamp,doubles(pose.getPose().data(),7)});
+  if(bool(state.active_window)!=bool(state.window))throw std::invalid_argument("native_graph_checkpoint_window");
+  if(state.window) {
+    data["active_window"]=state.active_window;
+    data["window_sha256"]=NativeMappingCheckpoint::document(*state.window).at("sha256");
+  }
   const auto bytes=Json::to_cbor(data);
-  return {{"schema","posim-slam-native-graph-1"},{"data",std::move(data)},
+  return {{"schema",state.window?"posim-slam-native-graph-2":"posim-slam-native-graph-1"},{"data",std::move(data)},
       {"sha256",mapping_frame_io::binary(mapping_frame_io::digest(bytes))}};
 }
 
-void NativeMappingGraph::validateCheckpoint(basalt::NfrMapper& mapper,const nlohmann::json& document,uint64_t revision) {
+void NativeMappingGraph::validateCheckpoint(basalt::NfrMapper& mapper,const nlohmann::json& document,uint64_t revision,
+    const nlohmann::json& window) {
   using namespace mapping_graph_detail;
   const auto& data=checkedGraphCheckpoint(document);
+  if(data.contains("active_window")) {
+    if(window.is_null() || data.at("window_sha256")!=window.at("sha256"))
+      throw std::invalid_argument("native_graph_checkpoint_window");
+    const auto reference=integer(window.at("model").at("reference"),1,INT64_MAX);
+    NativeMappingCheckpoint::validate(mapper,window,reference);
+    std::set<int64_t> expected;const size_t count=data.at("active_window");
+    for(auto it=mapper.getFramePoses().rbegin();it!=mapper.getFramePoses().rend() && expected.size()<count;++it)expected.insert(it->first);
+    if(window.at("model").at("active")!=Json(expected))throw std::invalid_argument("native_graph_checkpoint_window");
+  }
   if(data.at("revision")!=revision || data.at("matching").at("data").at("revision")!=revision ||
       data.at("source")!=mapping_frame_io::binary(nativeMappingSourceIdentity(mapper)) ||
       data.at("nonlinear")!=mapping_frame_io::binary(nativeMappingStateIdentity(mapper)))
@@ -77,12 +103,13 @@ void NativeMappingGraph::validateCheckpoint(basalt::NfrMapper& mapper,const nloh
 
 std::unique_ptr<NativeMappingGraph> NativeMappingGraph::restore(MappingMatchHistory& matching,
     const MappingInputStore::Snapshot& input,const nlohmann::json& document,
-    std::unique_ptr<basalt::NfrMapper> mapper,const std::function<bool()>& cancelled) {
+    std::unique_ptr<basalt::NfrMapper> mapper,const std::function<bool()>& cancelled,
+    const nlohmann::json& window) {
   if(!input || !mapper || !input->revision || input->frames.empty() ||
       input->frames.size()!=input->poses.size() || input->frames.size()!=mapper->getFramePoses().size() ||
       (matching.source_identity_ && matching.source_identity_!=input->identity))
     throw std::invalid_argument("native_graph_checkpoint_source");
-  validateCheckpoint(*mapper,document,input->revision);
+  validateCheckpoint(*mapper,document,input->revision,window);
   for(const auto& row:document.at("data").at("input_poses")) {
     const auto found=input->poses.find(row[0].get<int64_t>());
     if(found==input->poses.end() || row[1]!=mapping_graph_detail::doubles(found->second.getPose().data(),7))
@@ -102,20 +129,26 @@ std::unique_ptr<NativeMappingGraph> NativeMappingGraph::restore(MappingMatchHist
       throw std::invalid_argument("native_graph_checkpoint_source");
     mapper->feature_corners.at(basalt::TimeCamId(stamp,0)).corners=frame->features.corners;
   }
-  auto result=std::make_unique<NativeMappingGraph>(matching);
+  const size_t policy=document.at("data").value("active_window",size_t(0));
+  auto result=std::make_unique<NativeMappingGraph>(matching,0,policy);
   result->mapper_.getFramePoses().swap(mapper->getFramePoses());
   result->mapper_.feature_corners.swap(mapper->feature_corners);result->mapper_.feature_tracks.swap(mapper->feature_tracks);
   mapper->lmdb.backup();std::swap(result->mapper_.lmdb,mapper->lmdb);
   result->mapper_.rel_pose_factors.swap(mapper->rel_pose_factors);result->mapper_.roll_pitch_factors.swap(mapper->roll_pitch_factors);
   result->mapper_.lambda=mapper->lambda;result->mapper_.min_lambda=mapper->min_lambda;
   result->mapper_.max_lambda=mapper->max_lambda;result->mapper_.lambda_vee=mapper->lambda_vee;
-  validateCheckpoint(result->mapper_,document,input->revision);
+  validateCheckpoint(result->mapper_,document,input->revision,window);
   result->last_.revision=input->revision;
   result->last_.numeric_bytes=numericBytes(result->mapper_.feature_corners,result->mapper_.feature_tracks,
       input->poses.size(),input->relative.size(),input->roll_pitch.size());
   if(result->last_.numeric_bytes>result->maximum_bytes_)throw std::runtime_error("native_graph_numeric_capacity");
   result->source_identity_=nativeMappingSourceIdentity(result->mapper_);
   result->input_=input;result->next_track_=document.at("data").at("next_track").get<int64_t>();
+  if(policy) {
+    SubmapInformation::Limits limits;
+    limits.numeric_bytes=result->maximum_bytes_;
+    result->window_=NativeMappingCheckpoint::restore(result->mapper_,window,limits,cancelled);
+  }
   // All graph allocation and validation precede the matching commit. A failed
   // source read, cancellation or quota check leaves that empty owner unchanged.
   result->matched_=matching.restore(input->revision,input->frames,document.at("data").at("matching"),cancelled);

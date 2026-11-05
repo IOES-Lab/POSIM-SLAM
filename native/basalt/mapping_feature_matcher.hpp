@@ -32,20 +32,64 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-// Adapted from NfrMapper::match_all at Basalt revision
-// 0f3b2b52c807f70ff4e2973ce253c73329eea7bc. Preserve its retrieval, descriptor
-// thresholds and RANSAC calls; load complete features only for the current pair.
+// Adapted from NfrMapper::match_all and findInliersRansac at Basalt revision
+// 0f3b2b52c807f70ff4e2973ce253c73329eea7bc. Preserve retrieval, descriptor
+// thresholds, geometric solver and refinement. Each frame pair owns its RANSAC
+// random stream, independently of wall time, scheduling and process lifetime.
 #pragma once
 #include "mapping_frame_io.hpp"
 #include "estimator_budget.hpp"
 #include <basalt/hash_bow/hash_bow.h>
 #include <basalt/utils/keypoints.h>
+#include <opengv/relative_pose/CentralRelativeAdapter.hpp>
+#include <opengv/relative_pose/methods.hpp>
+#include <opengv/sac/Ransac.hpp>
+#include <opengv/sac_problems/relative_pose/CentralRelativePoseSacProblem.hpp>
 #include <tbb/parallel_for.h>
 #include <tbb/task_arena.h>
 #include <atomic>
 #include <mutex>
 
 namespace posim_slam {
+inline uint32_t mappingPairSeed(const MappingInputFrame& first,const MappingInputFrame& second) {
+  InputDigest digest;
+  for(const auto* frame:{&first,&second}) {
+    uint8_t stamp[8];for(int i=0;i<8;++i)stamp[i]=uint8_t(uint64_t(frame->stamp)>>(8*i));
+    digest.update(stamp,8);digest.update(frame->digest.data(),frame->digest.size());
+  }
+  const auto hash=digest.finish();uint32_t seed=0;for(int i=0;i<4;++i)seed=(seed<<8)|hash[i];return seed;
+}
+inline void mappingPairInliers(const MappingInputFrame& first,const MappingInputFrame& second,
+    double threshold,int minimum,basalt::MatchData& match) {
+  using Problem=opengv::sac_problems::relative_pose::CentralRelativePoseSacProblem;
+  struct SeededProblem:Problem {
+    SeededProblem(adapter_t& adapter,uint32_t seed):Problem(adapter,STEWENIUS,false) {
+      rng_alg_.seed(seed);
+      // OpenGV binds a copy of the generator. Rebind after seeding that copy.
+      rng_gen_=std::make_shared<std::function<int()>>(std::bind(*rng_dist_,rng_alg_));
+    }
+  };
+  match.inliers.clear();opengv::bearingVectors_t bearings1,bearings2;
+  for(const auto& [i,j]:match.matches) {
+    bearings1.push_back(first.features.corners_3d[i].head<3>());
+    bearings2.push_back(second.features.corners_3d[j].head<3>());
+  }
+  opengv::relative_pose::CentralRelativeAdapter adapter(bearings1,bearings2);
+  opengv::sac::Ransac<Problem> ransac;
+  ransac.sac_model_=std::make_shared<SeededProblem>(adapter,mappingPairSeed(first,second));
+  ransac.threshold_=threshold;ransac.max_iterations_=100;ransac.computeModel();
+  const auto before=ransac.inliers_.size();
+  adapter.sett12(ransac.model_coefficients_.topRightCorner<3,1>());
+  adapter.setR12(ransac.model_coefficients_.topLeftCorner<3,3>());
+  const auto refined=opengv::relative_pose::optimize_nonlinear(adapter,ransac.inliers_);
+  ransac.sac_model_->selectWithinDistance(refined,ransac.threshold_,ransac.inliers_);
+  if(ransac.inliers_.size()+2<before)
+    std::cout<<"Warning: non-linear refinement reduced the relative pose ransac inlier count from "
+      <<before<<" to "<<ransac.inliers_.size()<<"."<<std::endl;
+  match.T_i_j=Sophus::SE3d(refined.topLeftCorner<3,3>(),refined.topRightCorner<3,1>().normalized());
+  if(int64_t(ransac.inliers_.size())>=minimum)
+    for(auto index:ransac.inliers_)match.inliers.emplace_back(match.matches[index]);
+}
 // Pixels and calibration are unchanged for an already evaluated image pair.
 // HashBoW queries only frames strictly earlier than the query timestamp. Keep
 // those accepted matches; newly appended timestamps cannot change that query.
@@ -145,7 +189,7 @@ class MappingMatchHistory {
           const auto second=frames.at(second_id.frame_id).read();auto match=std::make_shared<basalt::MatchData>();
           basalt::matchDescriptors(first->features.corner_descriptors,second->features.corner_descriptors,match->matches,70,1.2);
           if(int(match->matches.size())>config_.mapper_min_matches)
-            basalt::findInliersRansac(first->features,second->features,config_.mapper_ransac_threshold,config_.mapper_min_matches,*match);
+            mappingPairInliers(*first,*second,config_.mapper_ransac_threshold,config_.mapper_min_matches,*match);
           results[i].evaluated.push_back(pair);
           if(!match->inliers.empty()) {
             const size_t bytes=sizeof(basalt::MatchData)+match->matches.size()*sizeof(match->matches[0])+match->inliers.size()*sizeof(match->inliers[0]);
@@ -224,7 +268,7 @@ inline std::unique_ptr<basalt::NfrMapper> matchMappingFrames(
         basalt::matchDescriptors(first->features.corner_descriptors,second->features.corner_descriptors,
           match.matches,70,1.2);
         if(int(match.matches.size())>config.mapper_min_matches)
-          basalt::findInliersRansac(first->features,second->features,
+          mappingPairInliers(*first,*second,
             config.mapper_ransac_threshold,config.mapper_min_matches,match);
         if(!match.inliers.empty())mapper->feature_matches[std::make_pair(id1,id2)]=std::move(match);
       }

@@ -181,13 +181,15 @@ No GUI/AprilTag/camera-driver target is linked. This research recipe does not
 qualify another dependency closure for application redistribution.
 
 [`mapping_feature_matcher.hpp`](native/basalt/mapping_feature_matcher.hpp) adapts
-the pinned Basalt `NfrMapper::match_all` under BSD-3-Clause and retains its full
-original notice. It changes feature ownership and scheduling; descriptor and
-OpenGV RANSAC calculations still use the pinned upstream functions.
+the pinned Basalt `NfrMapper::match_all` and `findInliersRansac` under BSD-3-Clause
+and retains the full original notice. It manages feature ownership and gives
+each image pair its own input-derived random seed. Descriptor matching and the
+OpenGV Stewenius solver, refinement, thresholds and 100-trial limit are retained.
 
-위 매칭 연결부는 고정 Basalt의 `NfrMapper::match_all`에서 파생되며 BSD-3-Clause
-원본 고지를 파일에 보존합니다. 특징 소유권·작업 배치를 변경하고 기술자 대응과
-OpenGV RANSAC 계산에는 고정 원본 함수를 사용합니다.
+위 매칭 연결부는 고정 Basalt의 `NfrMapper::match_all`과 `findInliersRansac`에서
+파생되며 BSD-3-Clause 원본 고지를 파일에 보존합니다. 특징 소유권을 관리하고
+영상쌍별 입력으로 난수 시드를 정합니다. 기술자 대응과 OpenGV Stewenius 해법,
+비선형 보정, 임계값 및 최대 100회 반복은 유지합니다.
 
 The build-local IMU interval extension preserves the pinned Basalt header's
 BSD-3-Clause notice. Its source and preparation script are included under
