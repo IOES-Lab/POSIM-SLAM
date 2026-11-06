@@ -260,9 +260,10 @@ class NativeMappingWindow {
       throw std::invalid_argument("native_window_unknown_pose");
     auto layout=snapshot()->layout;std::set<int64_t> eliminated;
     for(const auto& block:layout.eliminated)eliminated.insert(block.begin(),block.end());
-    layout.frontier.clear();
+    layout.frontier.clear();layout.variables.clear();
     for(auto stamp:next->chart_.poses()) {
       const auto columns=nativeMappingColumns({stamp},next->chart_.offsets());
+      layout.variables.push_back(columns);
       if(active.count(stamp)) {
         if(eliminated.count(columns.front()))throw std::invalid_argument("native_window_reactivated_pose");
         layout.frontier.insert(layout.frontier.end(),columns.begin(),columns.end());
@@ -542,6 +543,10 @@ class NativeMappingWindow {
       if(active.count(stamp))layout.frontier.insert(layout.frontier.end(),columns.begin(),columns.end());
       else layout.eliminated.push_back(columns);
     }
+    // Saved layouts already encode complete poses; recover their variable
+    // partition from the chart without changing the checkpoint format.
+    layout.variables.clear();
+    for(auto stamp:chart_.poses())layout.variables.push_back(nativeMappingColumns({stamp},chart_.offsets()));
     if(layout.frontier.size()>limits.active_columns)throw std::runtime_error("native_window_separator_capacity");
     owner_=std::make_unique<SubmapFactorization>(layout,owner_limits,unassigned,std::move(row_store));
     group_identities_=nativeMappingGroupIdentities(mapper);

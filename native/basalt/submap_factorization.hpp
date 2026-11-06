@@ -20,6 +20,9 @@ class SubmapFactorization {
   struct Layout {
     std::vector<Coordinate> frontier;
     std::vector<std::vector<Coordinate>> eliminated;
+    // Optional stable variable partition, independent of numeric supernodes.
+    // New variables append to this list as the layout grows.
+    std::vector<std::vector<Coordinate>> variables;
   };
   enum class Ordering {fixed,minimum_degree};
   struct Bucket {
@@ -124,6 +127,7 @@ class SubmapFactorization {
     if(!std::includes(assigned.begin(),assigned.end(),outgoing.begin(),outgoing.end()))
       throw std::invalid_argument("submap_factor_original_missing");
     if(ordering==Ordering::minimum_degree) {
+      expandChanged(*next,*previous,cancelled);
       reorderChanged(*next,*previous,cancelled);
       coalesceChanged(*next,*previous,cancelled);
     }
@@ -170,6 +174,21 @@ class SubmapFactorization {
     if(rank.size()>limits_.coordinates)throw std::runtime_error("submap_coordinate_capacity");
     if(previous)for(auto column:previous->frontier)if(!rank.count(column))
       throw std::invalid_argument("submap_factor_coordinate_missing");
+    if(previous && !previous->variables.empty() &&
+        (layout.variables.size()<previous->variables.size() ||
+         !std::equal(previous->variables.begin(),previous->variables.end(),layout.variables.begin())))
+      throw std::invalid_argument("submap_factor_variables_changed");
+    if(!layout.variables.empty()) {
+      std::set<Coordinate> assigned;
+      for(const auto& variable:layout.variables) {
+        if(variable.empty() || !rank.count(variable.front()))
+          throw std::invalid_argument("submap_factor_variables");
+        const auto bucket=rank.at(variable.front());
+        for(auto column:variable)if(!rank.count(column) || rank.at(column)!=bucket || !assigned.insert(column).second)
+          throw std::invalid_argument("submap_factor_variables");
+      }
+      if(assigned.size()!=rank.size())throw std::invalid_argument("submap_factor_variables");
+    }
     return rank;
   }
   struct Symbol {
@@ -215,6 +234,29 @@ class SubmapFactorization {
       }
     }
     return symbols;
+  }
+  // Numeric supernodes are temporary groups for one symbolic graph. New
+  // observations can give their variables different separators. Expand only
+  // affected groups before ordering; unchanged numeric branches remain shared.
+  void expandChanged(Data& next,const Data& previous,const std::function<bool()>& cancelled) const {
+    if(next.layout.variables.empty())return;
+    const auto symbols=symbolize(next,previous,cancelled);if(symbols.empty())return;
+    std::map<Coordinate,size_t> variable;
+    for(size_t i=0;i<next.layout.variables.size();++i)
+      for(auto c:next.layout.variables[i])variable.emplace(c,i);
+    std::vector<std::vector<Coordinate>> expanded;
+    for(size_t i=0;i<next.layout.eliminated.size();++i) {
+      check(cancelled);const auto& group=next.layout.eliminated[i];
+      if(symbols[i].reused)expanded.push_back(group);
+      else {
+        std::set<size_t> used;
+        for(auto c:group)if(used.insert(variable.at(c)).second)
+          expanded.push_back(next.layout.variables[variable.at(c)]);
+      }
+      // Expansion is an ordering optimization, not a new capacity requirement.
+      if(expanded.size()>limits_.nodes)return;
+    }
+    next.layout.eliminated=std::move(expanded);
   }
   // Plan the affected dependency tree using column metadata only. Unchanged
   // descendants stay in their original relative order and retain their exact

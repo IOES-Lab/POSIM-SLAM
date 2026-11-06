@@ -180,6 +180,7 @@ void symbolicElimination() {
 }
 void affectedOrdering(std::shared_ptr<posim_slam::SubmapRowStore> store={}) {
   Graph::Layout layout;layout.frontier={15};for(int i=0;i<15;++i)layout.eliminated.push_back({i});
+  for(int i=0;i<16;++i)layout.variables.push_back({i});
   Graph graph(layout,{},{},store);std::vector<Graph::Factor> inputs;
   for(int i=1;i<=12;++i)inputs.push_back(edge("leaf:"+std::to_string(i),"pixel:"+std::to_string(i),0,i,.1*i,1+.1*i));
   inputs.push_back(edge("center","pixel:center",0,15,.3,2));
@@ -211,7 +212,7 @@ void affectedOrdering(std::shared_ptr<posim_slam::SubmapRowStore> store={}) {
   close(graph.query(old_solution,{0,15},Matrix::Identity(2,2)).covariance,old_query.covariance);
   graph.replace({}, {},{},nullptr,{},Graph::Ordering::minimum_degree);
   assert(graph.snapshot()->buckets==after->buckets && graph.snapshot()->rebuilt.empty());
-  auto grown=graph.snapshot()->layout;grown.eliminated.push_back({15});grown.frontier={16};
+  auto grown=graph.snapshot()->layout;grown.eliminated.push_back({15});grown.frontier={16};grown.variables.push_back({16});
   graph.replace({}, {edge("new","pixel:new",15,16,.2,2)}, {}, &grown,{},Graph::Ordering::minimum_degree);verify(graph);
   graph.replace({"anchor"},{},{"sensor:anchor"},nullptr,{},Graph::Ordering::minimum_degree);verify(graph);
   Matrix relative=Matrix::Zero(2,17);relative(0,0)=relative(1,13)=1;relative(0,16)=relative(1,15)=-1;verify(graph,relative);
@@ -245,6 +246,51 @@ void strictSupernodes(std::shared_ptr<posim_slam::SubmapRowStore> store={}) {
   rows.jacobian.resize(0,n);rows.residual.resize(0);
   rows.constraints=Matrix::Identity(n,n);rows.target=Vector::LinSpaced(n,-.2,.3);
   graph.replace({},{{"exact",rows}},{},nullptr,{},Graph::Ordering::minimum_degree);verify(graph);
+}
+void regroupChangedSupernodes(std::shared_ptr<posim_slam::SubmapRowStore> store={}) {
+  constexpr int n=20;Graph::Layout layout;layout.frontier={18,19};
+  for(int i=0;i<n;i+=2) {
+    layout.variables.push_back({i,i+1});
+    if(i<18)layout.eliminated.push_back({i,i+1});
+  }
+  auto invalid=layout;invalid.variables.pop_back();
+  rejects([&]{Graph bad(invalid);},"submap_factor_variables");
+  invalid=layout;invalid.variables[0]={0,2};
+  rejects([&]{Graph bad(invalid);},"submap_factor_variables");
+  Graph graph(layout,{},{},store);Graph::Rows dense;
+  for(int i=0;i<n;++i)dense.columns.push_back(i);
+  for(int i=0;i<n/2;++i)dense.originals.push_back("measurement:"+std::to_string(i));
+  dense.jacobian=Matrix::Identity(n,n);dense.jacobian.array()+=.02;
+  dense.residual=Vector::LinSpaced(n,-.2,.3);
+  graph.replace({},{{"dense",dense}},{},nullptr,{},Graph::Ordering::minimum_degree);verify(graph);
+  const auto grouped=graph.snapshot();assert(grouped->layout.eliminated.size()==1);
+  const auto old_solution=graph.solve(grouped);const auto old=graph.query(old_solution,dense.columns,Matrix::Identity(n,n));
+  std::vector<Graph::Factor> chain;
+  for(int i=0;i<n;i+=2) {
+    Graph::Rows rows;rows.originals={"measurement:"+std::to_string(i/2)};
+    rows.columns=i?std::vector<int64_t>{i-2,i-1,i,i+1}:std::vector<int64_t>{0,1};
+    rows.jacobian=Matrix::Zero(2,rows.columns.size());rows.jacobian.rightCols(2).setIdentity();
+    if(i)rows.jacobian.leftCols(2)=-Matrix::Identity(2,2);
+    rows.residual=Vector::Constant(2,-.1*(i+1));chain.push_back({"chain:"+std::to_string(i),rows});
+  }
+  graph.replace({"dense"},chain,{},nullptr,{},Graph::Ordering::minimum_degree);verify(graph);
+  assert(graph.snapshot()->layout.variables==layout.variables);
+  assert(graph.snapshot()->layout.eliminated.size()==layout.eliminated.size());
+  for(const auto& bucket:graph.snapshot()->buckets)
+    assert(bucket->context.size()+bucket->message->columns.size()<=4);
+  close(graph.query(old_solution,dense.columns,Matrix::Identity(n,n)).covariance,old.covariance);
+  const auto unchanged=graph.snapshot();
+  graph.replace({}, {},{},nullptr,{},Graph::Ordering::minimum_degree);
+  assert(graph.snapshot()->buckets==unchanged->buckets && graph.snapshot()->rebuilt.empty());
+  invalid=graph.snapshot()->layout;std::swap(invalid.variables[0],invalid.variables[1]);
+  const auto valid=graph.snapshot();
+  rejects([&]{graph.replace({}, {},{},&invalid);},"submap_factor_variables_changed");
+  assert(graph.snapshot()==valid);
+  // Optional expansion cannot turn an already valid layout into a quota failure.
+  auto bounded=grouped->layout;Graph::Information::Limits limits;limits.nodes=1;
+  Graph limited(bounded,limits);limited.replace({},{{"dense",dense}});
+  limited.replace({"dense"},chain,{},nullptr,{},Graph::Ordering::minimum_degree);verify(limited);
+  assert(limited.snapshot()->layout.eliminated.size()==1);
 }
 void groupedWeakDirections() {
   constexpr int n=48,strong=44,repeats=8;Matrix a=Matrix::Zero(n,n);
@@ -307,6 +353,10 @@ void paged(const std::filesystem::path& root) {
     assert(store->statistics().pages==0 && store->statistics().resident_bytes==0);
   }
   {
+    auto store=std::make_shared<Store>(root/"regroup",4096);regroupChangedSupernodes(store);
+    assert(store->statistics().pages==0 && store->statistics().resident_bytes==0);
+  }
+  {
     auto store=std::make_shared<Store>(root/"leases",24);
     auto first=store->put(edge("a","a",0,1,.2,3).rows),second=store->put(edge("b","b",0,1,.3,4).rows);
     auto lease=first->pin();store->evict();assert(store->statistics().resident_bytes==24);
@@ -333,7 +383,7 @@ void paged(const std::filesystem::path& root) {
 }
 } // namespace
 int main(int argc,char** argv) {
-  replacementAndGrowth();rollbackAndConstraints();quotasAndBatching();symbolicElimination();affectedOrdering();strictSupernodes();groupedWeakDirections();
+  replacementAndGrowth();rollbackAndConstraints();quotasAndBatching();symbolicElimination();affectedOrdering();strictSupernodes();regroupChangedSupernodes();groupedWeakDirections();
   if(argc==2)paged(std::filesystem::path(argv[1]));else assert(argc==1);
   std::cout<<"source factorization: archived replacement, merge, unassignment, growth, shared branches, gauge, constraints and rollback passed\n";
 }

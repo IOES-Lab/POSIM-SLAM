@@ -231,6 +231,11 @@ Replacement rebuilds affected dependencies from source rows. An unchanged,
 already compacted row block can be reused after coordinate permutation;
 newly stacked or restored rows undergo the rank-aware calculation. This preserves
 the source-scale precision rule and supplies no prior or damping.
+An explicit variable partition separates model variables from temporary numeric
+groups. Changed groups expand to those variables before reordering and regrouping
+for the current connections; unchanged branches keep their numeric pages.
+The native mapper uses complete six-coordinate poses and recovers their partition
+from the saved pose chart. Expansion respects the existing node capacity.
 Dense compression uses Householder QR and Eigen's
 [divide-and-conquer SVD](https://libeigen.gitlab.io/eigen/docs-5.0/classEigen_1_1BDCSVD.html).
 Conditional elimination retains the source roundoff bound when selecting
@@ -242,6 +247,11 @@ feasible-coordinate map. Build without unsafe floating-point optimizations.
 영향받는 관계를 재구성합니다. 이미 압축한 불변 행 묶음은 좌표 순서를 바꾼 뒤에도
 재사용할 수 있고, 새로 쌓거나 복원한 행은 계수를 확인하며 계산합니다. 원본 크기에
 따른 수치 정밀도 규칙을 유지하고 사전정보나 감쇠를 추가하지 않습니다.
+모델 변수의 구분을 명시해 임시 계산 묶음과 분리합니다. 변경된 묶음은 변수
+단위로 펼쳐 현재 연결 관계에 맞게 순서를 정하고 다시 묶으며, 변경되지 않은
+가지는 기존 계산 페이지를 유지합니다. 네이티브 매퍼는 포즈의 여섯 좌표를
+한 변수로 다루고 저장한 포즈 좌표계에서 이 구분을 복원합니다. 묶음 확장은
+기존 노드 수 한도 안에서 수행합니다.
 밀집 행 압축에는 Householder QR과 Eigen의
 [분할 정복 SVD](https://libeigen.gitlab.io/eigen/docs-5.0/classEigen_1_1BDCSVD.html)를
 사용합니다. 조건부 소거에서도 원본 반올림 오차 한도를 보존해 관측 가능한 방향을
