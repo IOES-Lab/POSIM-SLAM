@@ -35,6 +35,11 @@ class MapQualityTests(unittest.TestCase):
     def test_ready_requires_persistent_native_mapping_and_the_metric_policy(self):
         self.assertIs(native_settings()['persistent_mapping'],True)
         self.assertNotIn('map_backend',native_settings())
+        for backend in ('full_graph_v1','conditional_paged_v1'):
+            self.assertEqual(native_settings(backend=backend),dict(native_settings(),map_backend=backend))
+        for invalid in ('', 'unknown', True, 1, []):
+            with self.subTest(backend=invalid),self.assertRaisesRegex(ValueError,'invalid_visual_map_backend'):
+                native_settings(backend=invalid)
         value=dict(map_information_transport='persistent_nfr_world_v1',
             persistent_map_transport='retained_keyframe_reoptimization_v1',
             map_graph_snapshot='original_measurements_cbor_v1',map_point_identity='original_observation_anchor_v1',

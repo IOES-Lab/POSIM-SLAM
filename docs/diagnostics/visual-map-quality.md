@@ -3,7 +3,7 @@
 `posim_slam.map_quality.native_settings()` enables persistent mapping and a
 **0.1 m** world-position three-sigma budget. Its default `full_graph_v1` backend
 uses the full graph, limited to **203 keyframes**. To select the optional
-conditional policy, pass `dict(native_settings(), map_backend="conditional_paged_v1")`.
+conditional policy, pass `native_settings(backend="conditional_paged_v1")`.
 `validate_ready(ready, backend="conditional_paged_v1")` checks the requested policy,
 capacities, epoch and snapshot protocol. Without an explicit backend requirement,
 it also accepts the legacy full-graph provider contract. The bare native binary
@@ -36,7 +36,7 @@ and cross-layer statistical independence is unverified. `map_qualified` is false
 
 `native_settings()`는 지속 지도와 세계 좌표 **3시그마 0.1m** 한도를 켭니다.
 기본 `full_graph_v1` 백엔드는 전체 그래프를 사용하며 **203키프레임**으로 제한합니다.
-조건부 정책은 `dict(native_settings(), map_backend="conditional_paged_v1")`로
+조건부 정책은 `native_settings(backend="conditional_paged_v1")`로
 명시합니다. `validate_ready(ready, backend="conditional_paged_v1")`는 요청한
 정책·용량·구간 식별자·스냅샷 규약을 검사합니다. 백엔드를 지정하지 않으면 기존
 전체 그래프 공급 모듈의 규약도 허용합니다. 설정 없는 네이티브 실행 파일은 지속

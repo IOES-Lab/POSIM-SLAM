@@ -8,14 +8,21 @@ from .map_snapshot import VIO_EXPORT_WORKER_SECONDS
 
 WORLD_THREE_SIGMA_M = .1
 MAP_BACKEND = 'conditional_paged_v1'
+DEFAULT_MAP_BACKEND = 'full_graph_v1'
+MAP_BACKENDS = (DEFAULT_MAP_BACKEND, MAP_BACKEND)
 ACTIVE_KEYFRAMES = 12
 HISTORY_KEYFRAMES = 65536 // 6
 ROW_CACHE_BYTES = 8 * 1024 * 1024
 
 
-def native_settings():
-    return dict(joint_map_information=True, persistent_mapping=True,
-                map_point_three_sigma_m=WORLD_THREE_SIGMA_M)
+def native_settings(*, backend=None):
+    settings = dict(joint_map_information=True, persistent_mapping=True,
+                    map_point_three_sigma_m=WORLD_THREE_SIGMA_M)
+    if backend is not None:
+        if backend not in MAP_BACKENDS:
+            raise ValueError('invalid_visual_map_backend')
+        settings['map_backend'] = backend
+    return settings
 
 
 def validate_ready(value, *, epoch=None, backend=None):
