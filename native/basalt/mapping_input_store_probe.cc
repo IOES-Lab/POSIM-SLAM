@@ -43,6 +43,31 @@ template<class F> void rejects(F action,const std::string& expected) {
 template<class A,class B> void equal(const A& a,const B& b) {
   assert(a.rows()==b.rows() && a.cols()==b.cols() && (a.array()==b.array()).all());
 }
+void descriptorWireFormat() {
+  namespace io=posim_slam::mapping_frame_io;
+  posim_slam::MappingInputFrame frame;frame.stamp=17;frame.width=160;frame.height=120;frame.digest.fill(3);
+  auto& features=frame.features;features.corners.emplace_back(12.5,44.25);features.corner_angles.push_back(.25);
+  features.corners_3d.emplace_back(0,0,1,1);features.corner_descriptors.resize(1);features.hashes.emplace_back(17);
+  const nlohmann::json identity={17,160,120,1,io::binary(frame.digest)};
+  for(size_t bit=0;bit<258;++bit) {
+    auto& descriptor=features.corner_descriptors.front();descriptor.reset();
+    std::vector<uint8_t> expected(32);
+    if(bit<256){descriptor.set(bit);expected[bit/8]=uint8_t(1u<<(bit%8));}
+    else if(bit==256){descriptor.set();std::fill(expected.begin(),expected.end(),255);}
+    const auto bytes=io::encode(frame);const auto document=nlohmann::json::from_cbor(bytes);
+    assert(document.at("descriptors")==nlohmann::json::binary(expected));
+    assert(io::decode(bytes,identity)->features.corner_descriptors.front()==descriptor);
+  }
+  // Independent wire bytes exercise every byte and all four word boundaries.
+  auto document=nlohmann::json::from_cbor(io::encode(frame));std::vector<uint8_t> wire(32);
+  for(size_t byte=0;byte<wire.size();++byte)wire[byte]=uint8_t(13+37*byte);
+  document["descriptors"]=nlohmann::json::binary(wire);const auto bytes=nlohmann::json::to_cbor(document);
+  const auto decoded=io::decode(bytes,identity);
+  for(size_t bit=0;bit<256;++bit)assert(decoded->features.corner_descriptors.front()[bit]==bool(wire[bit/8]&(1u<<(bit%8))));
+  assert(io::encode(*decoded)==bytes);
+  document["descriptors"]=nlohmann::json::binary(std::vector<uint8_t>(31));
+  rejects([&]{io::decode(nlohmann::json::to_cbor(document),identity);},"mapping_input_frame_shape");
+}
 void compare(const Store::Snapshot& compact,const basalt::NfrMapper& raw) {
   assert(compact->relative.size()==raw.rel_pose_factors.size());
   assert(compact->roll_pitch.size()==raw.roll_pitch_factors.size());
@@ -133,6 +158,7 @@ void durable(const std::filesystem::path& path,const std::string& mode) {
 } // namespace
 
 int main(int argc,char** argv) {
+  descriptorWireFormat();
   if(argc==3){durable(std::filesystem::absolute(argv[2]),argv[1]);return 0;}
   basalt::Calibration<double> calibration;calibration.intrinsics.resize(1);calibration.T_i_c.resize(1);
   calibration.resolution.push_back(Eigen::Vector2i(4,4));

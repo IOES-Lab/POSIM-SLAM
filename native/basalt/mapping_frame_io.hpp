@@ -2,6 +2,8 @@
 #pragma once
 #include "mapping_frame.hpp"
 #include "mapping_binary.hpp"
+#include <bitset>
+#include <cstdint>
 #include <fstream>
 #include <mutex>
 
@@ -36,7 +38,12 @@ inline std::vector<uint8_t> encode(const Frame& frame) {
   for(size_t i=0;i<n;++i) {
     corners.insert(corners.end(),f.corners[i].data(),f.corners[i].data()+2);
     spatial.insert(spatial.end(),f.corners_3d[i].data(),f.corners_3d[i].data()+4);
-    for(size_t bit=0;bit<256;++bit)if(f.corner_descriptors[i][bit])descriptors[32*i+bit/8]|=uint8_t(1u<<(bit%8));
+    // Pack four little-endian words without testing each descriptor bit.
+    const std::bitset<256> word_mask(UINT64_MAX);
+    for(size_t word=0;word<4;++word) {
+      const auto value=((f.corner_descriptors[i]>>(64*word))&word_mask).to_ullong();
+      for(size_t byte=0;byte<8;++byte)descriptors[32*i+8*word+byte]=uint8_t(value>>(8*byte));
+    }
     hashes.push_back(uint32_t(f.hashes[i].to_ulong()));
   }
   for(const auto& [word,weight]:f.bow_vector)bow.push_back({uint32_t(word.to_ulong()),doubles(&weight,1)});
@@ -68,7 +75,11 @@ inline std::shared_ptr<const Frame> decode(const std::vector<uint8_t>& bytes,con
   for(size_t i=0;i<n;++i) {
     f.corners.emplace_back(corners[2*i],corners[2*i+1]);
     f.corners_3d.emplace_back(spatial[4*i],spatial[4*i+1],spatial[4*i+2],spatial[4*i+3]);
-    for(size_t bit=0;bit<256;++bit)f.corner_descriptors[i][bit]=bool(descriptors.get_binary()[32*i+bit/8]&(1u<<(bit%8)));
+    for(size_t word=0;word<4;++word) {
+      uint64_t value=0;
+      for(size_t byte=0;byte<8;++byte)value|=uint64_t(descriptors.get_binary()[32*i+8*word+byte])<<(8*byte);
+      f.corner_descriptors[i]|=std::bitset<256>(value)<<(64*word);
+    }
     f.hashes.emplace_back(integer(hashes[i],0,UINT32_MAX));
   }
   for(const auto& row:bow) {
