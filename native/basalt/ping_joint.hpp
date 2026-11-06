@@ -36,7 +36,8 @@ struct JointInformationSplit {
 // every retained/retiring coordinate. Conditional noise has unit independent
 // latent coefficients; null columns are unbounded, never zero-variance poses.
 inline JointInformationSplit splitJointInformation(const Eigen::MatrixXd& j,
-    const Eigen::VectorXd& residual,Eigen::Index retained,bool include_conditional=true,double source_roundoff=0.) {
+    const Eigen::VectorXd& residual,Eigen::Index retained,bool include_conditional=true,double source_roundoff=0.,
+    Eigen::HouseholderQR<Eigen::MatrixXd>* projection=nullptr) {
   if(j.rows()>4096 || j.cols()>kMaxJointColumns || residual.size()!=j.rows() ||
      !j.allFinite() || !residual.allFinite() || retained<0 || retained>j.cols() ||
      !std::isfinite(source_roundoff) || source_roundoff<0)
@@ -75,6 +76,7 @@ inline JointInformationSplit splitJointInformation(const Eigen::MatrixXd& j,
     if(rank<j.rows()) {
       Eigen::HouseholderQR<Eigen::MatrixXd> qr(observed);
       combined=(qr.householderQ().adjoint()*combined).eval();
+      if(projection)*projection=qr;
     }
   }
   const auto remaining=j.rows()-rank;

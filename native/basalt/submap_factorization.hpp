@@ -118,9 +118,9 @@ class SubmapFactorization {
       }
       if(next->originals.size()>limits_.measurements)
         throw std::runtime_error("submap_measurement_capacity");
-      if(source_bytes>limits_.numeric_bytes || factor.rows.bytes()>limits_.numeric_bytes-source_bytes)
+      if(source_bytes>limits_.numeric_bytes || factor.rows.retainedBytes()>limits_.numeric_bytes-source_bytes)
         throw std::runtime_error("submap_factor_numeric_capacity");
-      source_bytes+=factor.rows.bytes();
+      source_bytes+=factor.rows.retainedBytes();
       next->factors.emplace(factor.id,retain(factor.rows));
     }
     assigned.insert(unused.begin(),unused.end());

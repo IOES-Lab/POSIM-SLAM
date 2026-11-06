@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 #pragma once
 #include "submap_information.hpp"
+#include "submap_row_projection.hpp"
 #include <algorithm>
 
 namespace posim_slam {
@@ -17,9 +18,11 @@ class SubmapLinearization {
     std::vector<Coordinate> columns;
     Eigen::MatrixXd jacobian,constraints;
     Eigen::VectorXd residual,target;
+    SubmapRowProjection::Ptr projection;
     size_t bytes() const {
       return sizeof(double)*size_t(jacobian.size()+constraints.size()+residual.size()+target.size());
     }
+    size_t retainedBytes() const {return projection?projection->bytes():bytes();}
   };
   struct Data {
     uint64_t revision=0;
@@ -88,7 +91,10 @@ class SubmapLinearization {
           throw std::invalid_argument("submap_measurement_reused");
       }
       // Copy caller-owned matrices before validating/committing the transaction.
-      retained.push_back(std::make_shared<const Rows>(group));
+      auto owned=std::make_shared<Rows>(group);
+      // This owner keeps dense rows. Do not retain a second encoded payload
+      // outside its dense-row accounting; encoded pages have their own owner.
+      owned->projection.reset();retained.push_back(std::move(owned));
     }
     if(!std::includes(incoming.begin(),incoming.end(),remove.begin(),remove.end()))
       throw std::invalid_argument("submap_replacement_original_missing");

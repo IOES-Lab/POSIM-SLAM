@@ -22,15 +22,43 @@ InputDigest::Value digest(const std::array<int64_t,6>& shape,const void* bytes,s
 }
 }
 
-SubmapRowPage::SubmapRowPage(const Rows& rows):originals(rows.originals),columns(rows.columns),bytes_(rows.bytes()),
+SubmapRowPage::SubmapRowPage(const Rows& rows):originals(rows.originals),columns(rows.columns),
+    bytes_(rows.retainedBytes()),decoded_bytes_(rows.bytes()),
     shape_{rows.jacobian.rows(),rows.jacobian.cols(),rows.constraints.rows(),rows.constraints.cols(),
-           rows.residual.size(),rows.target.size()} {}
+           rows.residual.size(),rows.target.size()},projected_(bool(rows.projection)),projection_(rows.projection) {
+  if(projected_) {
+    if(rows.constraints.rows() || rows.target.size() || bytes_>=decoded_bytes_ ||
+        !projection_->matches(rows.jacobian,rows.residual))
+      throw std::invalid_argument("submap_projection_source");
+    projected_digest_=projection_->expected();
+  }
+}
 SubmapRowPage::Reference SubmapRowPage::resident(const Rows& rows) {
   auto page=std::shared_ptr<SubmapRowPage>(new SubmapRowPage(rows));
-  page->resident_=std::make_shared<const Rows>(rows);return page;
+  if(!page->projected_)page->resident_=std::make_shared<const Rows>(rows);return page;
 }
 SubmapRowPage::~SubmapRowPage(){if(store_ && id_)store_->release(id_);}
-SubmapRowPage::Lease SubmapRowPage::pin() const {return resident_?resident_:store_->read(*this);}
+SubmapRowPage::Lease SubmapRowPage::pin() const {
+  if(resident_)return resident_;
+  if(projection_)return Lease(decode(projection_->payload().data()).release());
+  return store_->read(*this);
+}
+std::unique_ptr<SubmapRowPage::Rows> SubmapRowPage::decode(const void* payload) const {
+  auto rows=std::make_unique<Rows>();rows->originals=originals;rows->columns=columns;
+  rows->constraints.resize(shape_[2],shape_[3]);rows->target.resize(shape_[5]);
+  if(projected_) {
+    auto value=SubmapRowProjection::decode(payload,bytes_,shape_[0],shape_[1],projected_digest_);
+    rows->jacobian=std::move(value.jacobian);rows->residual=std::move(value.residual);
+  } else {
+    rows->jacobian.resize(shape_[0],shape_[1]);rows->residual.resize(shape_[4]);size_t offset=0;
+    const auto bytes=static_cast<const uint8_t*>(payload);
+    const auto copy=[&](auto& matrix) {
+      const size_t size=sizeof(double)*matrix.size();if(size)std::memcpy(matrix.data(),bytes+offset,size);offset+=size;
+    };
+    copy(rows->jacobian);copy(rows->constraints);copy(rows->residual);copy(rows->target);
+  }
+  return rows;
+}
 
 SubmapRowStore::SubmapRowStore(const std::filesystem::path& directory,size_t cache_bytes)
     :directory_(directory),capacity_(cache_bytes) {
@@ -68,12 +96,16 @@ SubmapRowStore::Reference SubmapRowStore::put(const Rows& rows) {
   }else SubmapInformation::validateRows(rows.columns,rows.jacobian,rows.residual,rows.constraints,rows.target);
   if(rows.bytes()>capacity_)throw std::runtime_error("submap_row_cache_capacity");
   auto self=shared_from_this();auto page=std::shared_ptr<SubmapRowPage>(new SubmapRowPage(rows));
-  std::vector<uint8_t> bytes(page->bytes());size_t offset=0;
-  const auto append=[&](const auto& matrix) {
-    const size_t size=sizeof(double)*matrix.size();
-    if(size)std::memcpy(bytes.data()+offset,matrix.data(),size);offset+=size;
-  };
-  append(rows.jacobian);append(rows.constraints);append(rows.residual);append(rows.target);
+  std::vector<uint8_t> bytes;
+  if(page->projected_)bytes=rows.projection->payload();
+  else {
+    bytes.resize(page->bytes());size_t offset=0;
+    const auto append=[&](const auto& matrix) {
+      const size_t size=sizeof(double)*matrix.size();
+      if(size)std::memcpy(bytes.data()+offset,matrix.data(),size);offset+=size;
+    };
+    append(rows.jacobian);append(rows.constraints);append(rows.residual);append(rows.target);
+  }
   page->digest_=digest(page->shape_,bytes.data(),bytes.size());
   std::lock_guard<std::mutex> guard(mutex_);check();
   if(next_id_==INT64_MAX)throw std::runtime_error("submap_row_storage_capacity");
@@ -81,7 +113,7 @@ SubmapRowStore::Reference SubmapRowStore::put(const Rows& rows) {
   const int bound=bytes.empty()?sqlite3_bind_zeroblob(insert.value,2,0):
       sqlite3_bind_blob(insert.value,2,bytes.data(),int(bytes.size()),SQLITE_STATIC);
   if(bound!=SQLITE_OK)throw std::runtime_error("submap_row_storage_io");insert.done();
-  page->id_=next_id_++;page->store_=std::move(self);++pages_;return page;
+  page->id_=next_id_++;page->store_=std::move(self);page->projection_.reset();++pages_;return page;
 }
 void SubmapRowStore::trim(size_t incoming) {
   while(incoming>capacity_-counter_->bytes.load() && !order_.empty()) {
@@ -94,19 +126,13 @@ SubmapRowStore::Lease SubmapRowStore::read(const SubmapRowPage& page) {
   if(found!=cache_.end()) {
     order_.splice(order_.begin(),order_,found->second.position);return found->second.rows;
   }
-  trim(page.bytes());Statement query(db_,"SELECT payload FROM pages WHERE id=?1");query.number(1,page.id_);
+  trim(page.decodedBytes());Statement query(db_,"SELECT payload FROM pages WHERE id=?1");query.number(1,page.id_);
   if(sqlite3_step(query.value)!=SQLITE_ROW || sqlite3_column_type(query.value,0)!=SQLITE_BLOB ||
       size_t(sqlite3_column_bytes(query.value,0))!=page.bytes())throw std::runtime_error("submap_row_storage_shape");
   const auto bytes=static_cast<const uint8_t*>(sqlite3_column_blob(query.value,0));
   if(digest(page.shape_,bytes,page.bytes())!=page.digest_)throw std::runtime_error("submap_row_storage_digest");
-  auto rows=std::make_unique<Rows>();rows->originals=page.originals;rows->columns=page.columns;
-  rows->jacobian.resize(page.shape_[0],page.shape_[1]);rows->constraints.resize(page.shape_[2],page.shape_[3]);
-  rows->residual.resize(page.shape_[4]);rows->target.resize(page.shape_[5]);size_t offset=0;
-  const auto copy=[&](auto& matrix) {
-    const size_t size=sizeof(double)*matrix.size();if(size)std::memcpy(matrix.data(),bytes+offset,size);offset+=size;
-  };
-  copy(rows->jacobian);copy(rows->constraints);copy(rows->residual);copy(rows->target);
-  const auto counter=counter_;const auto size=page.bytes();counter->bytes+=size;
+  auto rows=page.decode(bytes);
+  const auto counter=counter_;const auto size=page.decodedBytes();counter->bytes+=size;
   Lease lease(rows.release(),[counter,size](const Rows* value){delete value;counter->bytes-=size;});
   peak_=std::max(peak_,counter->bytes.load());++reads_;order_.push_front(page.id_);
   try {cache_.emplace(page.id_,Cached{lease,order_.begin()});}

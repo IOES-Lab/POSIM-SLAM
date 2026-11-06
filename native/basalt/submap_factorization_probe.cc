@@ -323,9 +323,70 @@ void sql(const std::filesystem::path& directory,const char* statement) {
   sqlite3* db=nullptr;assert(sqlite3_open((directory/"rows.sqlite").string().c_str(),&db)==SQLITE_OK);
   const auto result=sqlite3_exec(db,statement,nullptr,nullptr,nullptr);sqlite3_close(db);assert(result==SQLITE_OK);
 }
+Graph::Rows projectedRows(int rank) {
+  constexpr int m=64,n=24;Matrix source=Matrix::Zero(m,n),nuisance=Matrix::Zero(m,3);
+  Vector residual(m);
+  for(int i=0;i<m;++i) {
+    source(i,i%n)=std::sin(.3*(i+1));source(i,(5*i+3)%n)+=.03;
+    residual[i]=std::cos(.17*(i+1));
+    for(int k=0;k<rank;++k)nuisance(i,k)=std::sin(.21*(i+1)*(k+1));
+  }
+  source(0,n-1)=-0.;Matrix joint(m,n+3);joint<<source,nuisance;
+  Eigen::HouseholderQR<Matrix> transform;
+  const auto split=posim_slam::splitJointInformation(joint,residual,n,true,0.,&transform);
+  Graph::Rows rows;rows.originals={"projected-original"};rows.columns.resize(n);
+  std::iota(rows.columns.begin(),rows.columns.end(),0);
+  rows.jacobian=split.reduced.jacobian;rows.residual=split.reduced.residual;
+  rows.projection=posim_slam::SubmapRowProjection::create(source,residual,transform,
+      split.reduced.nuisance_rank,rows.jacobian,rows.residual);
+  assert(rows.projection && rows.retainedBytes()<rows.bytes());return rows;
+}
+void identicalRows(const Graph::Rows& a,const Graph::Rows& b) {
+  assert(a.columns==b.columns && a.originals==b.originals);
+  assert(a.jacobian.rows()==b.jacobian.rows() && a.jacobian.cols()==b.jacobian.cols());
+  assert(!std::memcmp(a.jacobian.data(),b.jacobian.data(),a.jacobian.size()*sizeof(double)));
+  assert(!std::memcmp(a.residual.data(),b.residual.data(),a.residual.size()*sizeof(double)));
+}
+void projectedStorage(const std::filesystem::path& root) {
+  using Store=posim_slam::SubmapRowStore;using Projection=posim_slam::SubmapRowProjection;
+  for(int rank=0;rank<=3;++rank) {
+    const auto rows=projectedRows(rank);const auto resident=posim_slam::SubmapRowPage::resident(rows);
+    assert(resident->bytes()==rows.retainedBytes() && resident->decodedBytes()==rows.bytes());
+    identicalRows(*resident->pin(),rows);
+    posim_slam::SubmapLinearization dense_owner;dense_owner.append({rows});
+    assert(!dense_owner.snapshot()->active.front()->projection);
+    auto malformed=rows.projection->payload();int64_t invalid=5000;std::memcpy(malformed.data(),&invalid,sizeof(invalid));
+    rejects([&]{Projection::decode(malformed.data(),malformed.size(),rows.jacobian.rows(),rows.jacobian.cols(),rows.projection->expected());},"submap_projection_shape");
+    auto altered=rows;altered.residual[0]+=1;
+    rejects([&]{posim_slam::SubmapRowPage::resident(altered);},"submap_projection_source");
+    const auto path=root/("projected-"+std::to_string(rank));auto store=std::make_shared<Store>(path,rows.bytes());
+    auto first=store->put(rows),second=store->put(rows);auto lease=first->pin();identicalRows(*lease,rows);
+    store->evict();assert(store->statistics().resident_bytes==rows.bytes());
+    rejects([&]{second->pin();},"submap_row_cache_capacity");
+    first.reset();identicalRows(*lease,rows);assert(store->statistics().pages==1);
+    lease.reset();assert(store->statistics().resident_bytes==0);identicalRows(*second->pin(),rows);
+    assert(store->statistics().peak_resident_bytes==rows.bytes());
+    store->evict();sql(path,"UPDATE pages SET payload=zeroblob(length(payload))");
+    rejects([&]{second->pin();},"submap_row_storage_digest");
+  }
+  const auto rows=projectedRows(3);const auto path=root/"projected-atomic";
+  auto store=std::make_shared<Store>(path,65536);Graph::Layout layout;
+  for(int i=0;i<18;++i)layout.eliminated.push_back({i});
+  for(int i=18;i<24;++i)layout.frontier.push_back(i);
+  Graph graph(layout,{},{},store);graph.replace({},{{"original",rows}});verify(graph);
+  auto before=graph.snapshot();const auto pages=store->statistics().pages;
+  auto changed=rows;changed.jacobian(0,0)+=.1;
+  rejects([&]{graph.replace({"original"},{{"original",changed}});},"submap_projection_source");
+  assert(graph.snapshot()==before && store->statistics().pages==pages);verify(graph);
+  sql(path,"CREATE TRIGGER fail_insert BEFORE INSERT ON pages BEGIN SELECT RAISE(FAIL,'test'); END");
+  rejects([&]{graph.replace({"original"},{{"original",rows}});},"submap_row_storage_io");
+  assert(graph.snapshot()==before && store->statistics().pages==pages);verify(graph);
+  sql(path,"DROP TRIGGER fail_insert");
+}
 void paged(const std::filesystem::path& root) {
   using Store=posim_slam::SubmapRowStore;
   assert(std::filesystem::create_directory(root));
+  projectedStorage(root);
   {
     auto store=std::make_shared<Store>(root/"graph",128);
     rejects([&]{Store duplicate(root/"graph",128);},"submap_row_storage_exists");

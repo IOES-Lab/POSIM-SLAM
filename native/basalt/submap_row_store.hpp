@@ -24,15 +24,20 @@ class SubmapRowPage {
   SubmapRowPage& operator=(const SubmapRowPage&)=delete;
   Lease pin() const;
   size_t bytes() const {return bytes_;}
+  size_t decodedBytes() const {return decoded_bytes_;}
   Eigen::Index rows() const {return shape_[0];}
   Eigen::Index exactRows() const {return shape_[2];}
  private:
   friend class SubmapRowStore;
   explicit SubmapRowPage(const Rows& rows);
-  size_t bytes_;
+  std::unique_ptr<Rows> decode(const void* bytes) const;
+  size_t bytes_,decoded_bytes_;
   std::array<int64_t,6> shape_;
   InputDigest::Value digest_{};
+  InputDigest::Value projected_digest_{};
+  bool projected_=false;
   Lease resident_;
+  SubmapRowProjection::Ptr projection_;
   std::shared_ptr<SubmapRowStore> store_;
   int64_t id_=0;
 };

@@ -280,12 +280,15 @@ inline NativeMappingPointReduction reduceNativeMappingPoint(const NativeMappingP
       source.residual.size()!=source.pose.rows() || source.pose.rows()!=2*source.originals.size())
     throw std::invalid_argument("native_mapping_point_dimensions");
   Eigen::MatrixXd joint(source.pose.rows(),n+3);joint<<source.pose,source.landmark;
-  const auto reduced=splitJointInformation(joint,source.residual,n);
+  Eigen::HouseholderQR<Eigen::MatrixXd> projection;
+  const auto reduced=splitJointInformation(joint,source.residual,n,true,0.,&projection);
   NativeMappingPointReduction out;
   out.likelihood.columns=nativeMappingColumns(source.poses,offsets);
   for(const auto& [stamp,camera,feature]:source.originals)
     out.likelihood.originals.push_back("pixel:"+std::to_string(stamp)+":"+std::to_string(camera)+":"+std::to_string(feature));
   out.likelihood.jacobian=reduced.reduced.jacobian;out.likelihood.residual=reduced.reduced.residual;
+  out.likelihood.projection=SubmapRowProjection::create(source.pose,source.residual,projection,
+      reduced.reduced.nuisance_rank,out.likelihood.jacobian,out.likelihood.residual);
   out.backsub=reduced.reduced.backsub_matrix;out.offset=reduced.reduced.backsub_offset;
   out.noise=reduced.observable_noise_factor;
   out.unbounded=reduced.unobservable_basis;

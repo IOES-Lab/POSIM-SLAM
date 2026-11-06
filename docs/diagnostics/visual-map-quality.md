@@ -75,6 +75,8 @@ also apply to the default full-graph backend.
 
 - **12 recent active keyframes**, **8 MiB** derived-row cache and at most
   **10,922 keyframe addresses** in the history namespace.
+- **65,536 original measurement identities**, including retained unassigned
+  identities; this is separate from the landmark-candidate count.
 - **512 retirement records**, **100,000 candidate points**, **96 MiB** of
   processed-image-equivalent input and **96 MiB** of compact input.
 - Session input SQLite and complete `PSIMMAP4` archives each have a **96 MiB**
@@ -93,11 +95,19 @@ marginal matrices. SHA-256 of dimensions and visible uint16 pixels checks image
 identity. The conditional policy's derived numeric rows use a disposable sibling `.rows` directory;
 existing directories are protected and a successful shutdown releases the cache.
 Original input snapshots remain exportable after the derived cache is released.
+Projected visual source rows retain sparse original pose rows and their exact
+Householder transform when this uses less storage. Reading a page reconstructs
+the original marginal rows and verifies their digest. The **96 MiB retained
+numeric budget** counts encoded source payloads together with chart, point
+conditional and separator data. The **8 MiB cache** counts decoded rows until
+their final reader releases them, including rows evicted from the cache index.
 A storage, capacity or rank failure invalidates map output while navigation can
 continue. It cannot certify a truncated or unobserved map.
 
 - **최근 활성 키프레임 12개**, 파생 행렬 캐시 **8MiB**, 이력 주소 상한
   **키프레임 10,922개**를 사용합니다.
+- 보존 중인 미배정 식별자까지 포함해 **원본 측정 식별자 65,536개**를
+  제한합니다. 랜드마크 후보 수와는 별도입니다.
 - **퇴역 기록 512개·후보점 100,000개·처리 영상 환산 입력 96MiB·압축 입력
   96MiB**를 각각 제한합니다.
 - 세션 입력 SQLite와 전체 `PSIMMAP4` 파일도 각각 **96MiB**로 제한합니다.
@@ -113,7 +123,12 @@ continue. It cannot certify a truncated or unobserved map.
 한 번 검출한 뒤 원본 영상과 큰 주변화 행렬을 해제합니다. 크기와 유효 uint16
 픽셀의 SHA-256으로 같은 영상인지 확인합니다. 조건부 정책의 파생 행렬은 옆의 임시 `.rows`
 디렉터리를 사용하며 기존 디렉터리는 보호하고 정상 종료 시 캐시를 해제합니다.
-캐시 해제 뒤에도 원본 입력 사본을 내보낼 수 있습니다. 저장·용량·계수 부족은
+캐시 해제 뒤에도 원본 입력 사본을 내보낼 수 있습니다. 시각 관측의 소거 행렬은
+공간이 절약될 때 소거 전 희소 포즈 행렬과 정확한 Householder 변환으로 보존합니다.
+페이지를 읽을 때 원래 행렬을 재구성하고 다이제스트를 확인합니다. **96MiB 보존
+수치 예산**에는 인코딩된 관측과 좌표계·랜드마크 조건부·연결 행렬 자료를 포함합니다.
+**8MiB 캐시**는 펼친 행렬 크기를 계산하며, 캐시 목록에서 빠진 뒤에도 마지막
+사용자가 반환할 때까지 점유량에 포함합니다. 저장·용량·계수 부족은
 지도 출력을 무효화하며 항법은 계속할 수 있습니다. 잘리거나 관측되지 않은
 지도를 통과한 결과로 표시하지 않습니다.
 
