@@ -36,9 +36,10 @@ struct JointInformationSplit {
 // every retained/retiring coordinate. Conditional noise has unit independent
 // latent coefficients; null columns are unbounded, never zero-variance poses.
 inline JointInformationSplit splitJointInformation(const Eigen::MatrixXd& j,
-    const Eigen::VectorXd& residual,Eigen::Index retained,bool include_conditional=true) {
+    const Eigen::VectorXd& residual,Eigen::Index retained,bool include_conditional=true,double source_roundoff=0.) {
   if(j.rows()>4096 || j.cols()>kMaxJointColumns || residual.size()!=j.rows() ||
-     !j.allFinite() || !residual.allFinite() || retained<0 || retained>j.cols())
+     !j.allFinite() || !residual.allFinite() || retained<0 || retained>j.cols() ||
+     !std::isfinite(source_roundoff) || source_roundoff<0)
     throw std::invalid_argument("invalid_joint_information_split");
   const Eigen::Index count=j.cols()-retained;JointInformationSplit out;
   if(!count || !j.rows()) {
@@ -54,8 +55,10 @@ inline JointInformationSplit splitJointInformation(const Eigen::MatrixXd& j,
   Eigen::JacobiSVD<Eigen::MatrixXd> svd(nuisance,options);
   if(svd.info()!=Eigen::Success)throw std::runtime_error("joint_patch_svd_failed");
   const auto& singular=svd.singularValues();
-  const double tolerance=std::max(nuisance.rows(),nuisance.cols())*
-      std::numeric_limits<double>::epsilon()*singular[0];
+  // Restricting columns must not promote values below the original row
+  // precision into new measured directions in a smaller conditional.
+  const double tolerance=std::max(source_roundoff,std::max(nuisance.rows(),nuisance.cols())*
+      std::numeric_limits<double>::epsilon()*singular[0]);
   const Eigen::Index rank=(singular.array()>tolerance).count();
   Eigen::MatrixXd combined(j.rows(),retained+1);combined.leftCols(retained)=j.leftCols(retained);combined.col(retained)=residual;
   Eigen::MatrixXd backsub=Eigen::MatrixXd::Zero(count,retained+1);

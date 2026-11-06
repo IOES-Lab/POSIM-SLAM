@@ -25,14 +25,16 @@ struct ConstrainedInformationSplit {
   JointPatchReduction reduced;
   Eigen::MatrixXd noise,unbounded,deterministic,constraint_jacobian;
   Eigen::VectorXd constraint_target;
+  double source_roundoff=0.;
 };
 inline ConstrainedInformationSplit splitConstrainedInformation(const Eigen::MatrixXd& j,const Eigen::VectorXd& r,
-    Eigen::Index kept,const Eigen::MatrixXd& c,const Eigen::VectorXd& target) {
-  if(j.rows()>4096 || j.cols()>kMaxJointColumns || r.size()!=j.rows() || kept<0 || kept>j.cols() || !j.allFinite() || !r.allFinite())
+    Eigen::Index kept,const Eigen::MatrixXd& c,const Eigen::VectorXd& target,double source_roundoff=0.) {
+  if(j.rows()>4096 || j.cols()>kMaxJointColumns || r.size()!=j.rows() || kept<0 || kept>j.cols() || !j.allFinite() || !r.allFinite() ||
+      !std::isfinite(source_roundoff) || source_roundoff<0)
     throw std::invalid_argument("invalid_constrained_information_split");
-  affineSupport(c,target,j.cols());const auto gone=j.cols()-kept;ConstrainedInformationSplit out;
+  affineSupport(c,target,j.cols());const auto gone=j.cols()-kept;ConstrainedInformationSplit out;out.source_roundoff=source_roundoff;
   if(!c.rows()) {
-    const auto split=splitJointInformation(j,r,kept);out.reduced=split.reduced;
+    const auto split=splitJointInformation(j,r,kept,true,source_roundoff);out.reduced=split.reduced;
     out.noise=split.observable_noise_factor;out.unbounded=split.unobservable_basis;
     out.deterministic=Eigen::MatrixXd::Zero(gone,0);out.constraint_jacobian=Eigen::MatrixXd::Zero(0,kept);out.constraint_target.resize(0);return out;
   }
@@ -49,7 +51,17 @@ inline ConstrainedInformationSplit splitConstrainedInformation(const Eigen::Matr
   const auto root=affineSupport(remaining*ck,remaining*target,kept);
   out.constraint_jacobian=root.normal.transpose();out.constraint_target=out.constraint_jacobian*root.point;
   Eigen::MatrixXd reduced(j.rows(),kept+z.cols());reduced<<j.leftCols(kept)+j.rightCols(gone)*p,j.rightCols(gone)*z;
-  const auto split=splitJointInformation(reduced,r+j.rightCols(gone)*q,kept);out.reduced=split.reduced;
+  // The feasible-coordinate map is [I,0; p,z]. Because p lies in the
+  // constrained row space and z is its orthonormal nullspace, its operator
+  // norm is sqrt(1 + ||p||_2^2). Carry the same source error through that map.
+  double transformed_roundoff=source_roundoff;
+  if(source_roundoff>0 && p.rows() && p.cols()) {
+    Eigen::JacobiSVD<Eigen::MatrixXd> scale(p);
+    if(scale.info()!=Eigen::Success)throw std::runtime_error("constraint_roundoff_svd_failed");
+    transformed_roundoff*=std::hypot(1.,scale.singularValues()[0]);
+  }
+  const auto split=splitJointInformation(reduced,r+j.rightCols(gone)*q,kept,true,transformed_roundoff);out.reduced=split.reduced;
+  out.source_roundoff=transformed_roundoff;
   out.reduced.backsub_matrix=p+z*split.reduced.backsub_matrix;out.reduced.backsub_offset=q+z*split.reduced.backsub_offset;
   out.noise=z*split.observable_noise_factor;out.unbounded=z*split.unobservable_basis;out.deterministic=hard;
   return out;

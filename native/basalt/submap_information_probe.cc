@@ -558,11 +558,37 @@ void wideWeakAndUnobservedDirections() {
     close(all.unbounded_gram,free,1e-9);
   }
 }
+void sourcePrecisionSurvivesRestrictedColumns() {
+  using posim_slam::splitConstrainedInformation;
+  const double source_floor=8.423593620084742e-12;
+  for(double scale:{1e-4,1.,1e4}) {
+    Eigen::MatrixXd j=Eigen::MatrixXd::Zero(3,2);j(0,0)=20*scale;
+    j(1,1)=2.139358733844034e-13*scale;
+    const Eigen::VectorXd r=Eigen::VectorXd::Zero(3),target=Eigen::VectorXd::Zero(0);
+    const Eigen::MatrixXd c=Eigen::MatrixXd::Zero(0,2);
+    const auto weak=splitConstrainedInformation(j,r,1,c,target,source_floor*scale);
+    assert(weak.noise.cols()==0 && weak.unbounded.cols()==1);
+    assert(weak.reduced.nuisance_rank==0);
+    // A real weak measurement above the source floor remains measured.
+    j(1,1)=1e-8*scale;
+    const auto measured=splitConstrainedInformation(j,r,1,c,target,source_floor*scale);
+    assert(measured.noise.cols()==1 && measured.unbounded.cols()==0);
+    close(measured.noise*measured.noise.transpose(),Eigen::MatrixXd::Constant(1,1,1e16/(scale*scale)),1e-12);
+  }
+  // x_1=-3*x_0 maps source perturbations through [I,0;p,z]. The retained
+  // precision bound scales by its operator norm, and remains with the result.
+  Eigen::MatrixXd j=Eigen::MatrixXd::Zero(3,3);j(0,0)=20;j(1,2)=2e-12;j(2,1)=1;
+  Eigen::MatrixXd c(1,3);c<<3,1,0;
+  const auto constrained=splitConstrainedInformation(j,Eigen::VectorXd::Zero(3),1,c,Eigen::VectorXd::Zero(1),1e-12);
+  assert(constrained.noise.cols()==0 && constrained.unbounded.cols()==1);
+  assert(std::abs(constrained.source_roundoff-std::sqrt(10.)*1e-12)<1e-25);
+}
 } // namespace
 int main() {
   denseAndLateAdjustment();unobservedReference();exactZeroQuerySupport();exactConstraintsAndCapacity();pressureDatumAndClosedFrontier();longChain();
   replaceOriginalLikelihoods();replaceRankAndExactSupport();boundedReplacements();selectiveRetirement();correlatedReobservation();batchedOriginals();
   batchedRelativeGauge();
   wideWeakAndUnobservedDirections();
+  sourcePrecisionSurvivesRestrictedColumns();
   std::cout<<"Submap information: batch mean/covariance, shared noise, unobserved gauge, exact support, immutable ownership and bounded-frontier chain pass.\n";
 }

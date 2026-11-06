@@ -231,12 +231,22 @@ Replacement rebuilds affected dependencies from source rows. An unchanged,
 already compacted row block can be reused after coordinate permutation;
 newly stacked or restored rows undergo the rank-aware calculation. This preserves
 the source-scale precision rule and supplies no prior or damping.
+Dense compression uses Householder QR and Eigen's
+[divide-and-conquer SVD](https://libeigen.gitlab.io/eigen/docs-5.0/classEigen_1_1BDCSVD.html).
+Conditional elimination retains the source roundoff bound when selecting
+observable directions. Exact constraints carry that bound through their
+feasible-coordinate map. Build without unsafe floating-point optimizations.
 
 `SubmapInformation`과 `SubmapFactorization`은 원본 측정의 소유 관계, 정확한
 아핀 제약, 조건부 공유 잡음과 미관측 방향을 보존합니다. 교체 시 원본 행으로
 영향받는 관계를 재구성합니다. 이미 압축한 불변 행 묶음은 좌표 순서를 바꾼 뒤에도
 재사용할 수 있고, 새로 쌓거나 복원한 행은 계수를 확인하며 계산합니다. 원본 크기에
 따른 수치 정밀도 규칙을 유지하고 사전정보나 감쇠를 추가하지 않습니다.
+밀집 행 압축에는 Householder QR과 Eigen의
+[분할 정복 SVD](https://libeigen.gitlab.io/eigen/docs-5.0/classEigen_1_1BDCSVD.html)를
+사용합니다. 조건부 소거에서도 원본 반올림 오차 한도를 보존해 관측 가능한 방향을
+판정합니다. 정확한 제약식이 있으면 제약식을 만족하는 좌표 변환에 맞춰 한도를
+전달합니다. 안전하지 않은 부동소수점 최적화를 끄고 빌드합니다.
 
 Implementation: [selected sources](../../native/basalt/sources.json),
 [persistent mapper](../../native/basalt/persistent_mapper.cc),

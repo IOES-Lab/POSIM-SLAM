@@ -212,13 +212,14 @@ class SubmapInformation {
     // Column permutation preserves a previously compacted immutable snapshot.
     // Other snapshots conservatively perform the full rank-aware calculation.
     if(!compacted)compact(j,next->residual,next->roundoff,true);node->roundoff=next->roundoff;
-    const auto split=splitConstrainedInformation(j,next->residual,kept.size(),c,next->target);
+    const auto split=splitConstrainedInformation(j,next->residual,kept.size(),c,next->target,next->roundoff);
     node->regression=split.reduced.backsub_matrix;node->offset=split.reduced.backsub_offset;
     node->noise=split.noise;node->unbounded=split.unbounded;node->deterministic=split.deterministic;
     if(!node->regression.allFinite() || !node->offset.allFinite() || !node->noise.allFinite() ||
         !node->unbounded.allFinite() || !node->deterministic.allFinite())throw std::runtime_error("submap_nonfinite_conditional");
     next->order=kept;next->jacobian=split.reduced.jacobian;next->residual=split.reduced.residual;
     next->constraints=split.constraint_jacobian;next->target=split.constraint_target;
+    next->roundoff=split.source_roundoff;
     compact(next->jacobian,next->residual,next->roundoff,true);next->history_bytes+=node->bytes();next->nodes.push_back(std::move(node));
     return commit(std::move(next),true);
   }
@@ -291,7 +292,7 @@ class SubmapInformation {
   }
   Solution solve(const Snapshot& input) const {
     requireOwner(input);
-    const auto split=splitConstrainedInformation(input->jacobian,input->residual,0,input->constraints,input->target);
+    const auto split=splitConstrainedInformation(input->jacobian,input->residual,0,input->constraints,input->target,input->roundoff);
     return {input,split.reduced.backsub_offset,split.noise,split.unbounded};
   }
   // Evaluate all outputs jointly. Each conditional noise is counted once, so
@@ -377,7 +378,7 @@ class SubmapInformation {
     // Use the same dimension-relative SVD rule as the information split, at
     // the source row count. Shrinking a matrix must not promote QR residuals
     // below its original precision into new measurements.
-    Eigen::JacobiSVD<Eigen::MatrixXd> svd(j,Eigen::ComputeThinU|Eigen::ComputeThinV);
+    Eigen::BDCSVD<Eigen::MatrixXd> svd(j,Eigen::ComputeThinU|Eigen::ComputeThinV);
     if(svd.info()!=Eigen::Success)throw std::runtime_error("submap_compaction_svd_failed");
     const auto& singular=svd.singularValues();
     const double tolerance=std::max(roundoff,std::max(source_rows,j.cols())*std::numeric_limits<double>::epsilon()*singular[0]);
