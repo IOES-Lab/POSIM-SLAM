@@ -2,6 +2,7 @@
 #pragma once
 #include "constrained_information.hpp"
 #include "mapping_history_budget.hpp"
+#include "submap_measurements.hpp"
 #include <atomic>
 #include <cstdint>
 #include <map>
@@ -40,7 +41,8 @@ class SubmapInformation {
     Eigen::VectorXd residual,target;
     std::vector<std::shared_ptr<const Node>> nodes;
     std::set<Coordinate> known;
-    std::set<std::string> measurements,conditional_sources;
+    SubmapMeasurements measurements;
+    std::set<std::string> conditional_sources;
     size_t history_bytes=0;
     // Numerical precision of the source square root, not measurement noise.
     // It survives compression so a later, smaller solve cannot promote its

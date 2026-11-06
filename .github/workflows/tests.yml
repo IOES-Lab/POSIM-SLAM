@@ -54,7 +54,7 @@ jobs:
         run: |
           c++ -std=c++17 -O2 -UNDEBUG -DEIGEN_MPL2_ONLY -DEIGEN_DONT_PARALLELIZE \
             -I/usr/include/eigen3 native/basalt/submap_factorization_probe.cc \
-            native/basalt/submap_row_store.cc -lsqlite3 -pthread \
+            native/basalt/submap_row_store.cc native/basalt/submap_ownership_store.cc -lsqlite3 -pthread \
             -o "$RUNNER_TEMP/submap_factorization_probe"
           "$RUNNER_TEMP/submap_factorization_probe" "$RUNNER_TEMP/submap-row-pages"
       - name: Compare native finite-cone and sonar-fan joint surface ranges

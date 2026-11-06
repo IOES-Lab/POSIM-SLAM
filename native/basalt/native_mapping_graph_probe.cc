@@ -200,7 +200,11 @@ int main(int argc,char** argv) {
   const auto rolling_map=rolling.window()->mapInformation(.3),resumed_map=rolling_resumed->window()->mapInformation(.3);
   assert(rolling_map.points.size()==80 && rolling_map.points.size()==resumed_map.points.size());
   assert(rolling.mapper().feature_tracks==rolling_resumed->mapper().feature_tracks);
-  assert(rolling.window()->snapshot()->originals==rolling_resumed->window()->snapshot()->originals);
+  assert(rolling.window()->snapshot()->originalCount()==rolling_resumed->window()->snapshot()->originalCount());
+  rolling.window()->snapshot()->eachOriginal([&](const auto& key){
+    assert(rolling_resumed->window()->snapshot()->hasOriginal(key));
+    assert(rolling.window()->snapshot()->assignment(key)==rolling_resumed->window()->snapshot()->assignment(key));
+  });
   for(const auto& [id,point]:rolling_map.points) {
     const auto& other=resumed_map.points.at(id);
     assert(point.eligible==other.eligible && point.world.observed==other.world.observed);

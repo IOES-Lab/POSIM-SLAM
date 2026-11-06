@@ -18,6 +18,9 @@ struct PersistentMapSnapshot : MappingOutput {
   size_t keyframes=0, retirements=0;
   size_t source_image_bytes=0,source_factor_matrix_bytes=0,compact_input_bytes=0;
   size_t row_cache_resident_bytes=0,row_cache_peak_bytes=0,row_cache_pages=0,row_cache_reads=0;
+  size_t original_identities=0,assigned_identities=0,metadata_cache_entries=0,metadata_cache_peak_entries=0;
+  size_t metadata_cache_bytes=0,metadata_cache_peak_bytes=0,metadata_directory_bytes=0,
+    metadata_directory_peak_bytes=0,metadata_workspace_peak_bytes=0,metadata_database_bytes=0;
   size_t matching_new_frames=0,matching_queried_frames=0,matching_new_pairs=0,matching_total_pairs=0,matching_numeric_bytes=0;
   size_t graph_new_frames=0,graph_new_tracks=0,graph_extended_tracks=0,graph_merged_components=0,
     graph_removed_tracks=0,graph_preserved_landmarks=0,graph_initialized_landmarks=0,graph_numeric_bytes=0;

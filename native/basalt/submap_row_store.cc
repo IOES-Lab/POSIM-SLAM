@@ -22,10 +22,11 @@ InputDigest::Value digest(const std::array<int64_t,6>& shape,const void* bytes,s
 }
 }
 
-SubmapRowPage::SubmapRowPage(const Rows& rows):originals(rows.originals),columns(rows.columns),
+SubmapRowPage::SubmapRowPage(const Rows& rows,bool resident):columns(rows.columns),
     bytes_(rows.retainedBytes()),decoded_bytes_(rows.bytes()),
     shape_{rows.jacobian.rows(),rows.jacobian.cols(),rows.constraints.rows(),rows.constraints.cols(),
-           rows.residual.size(),rows.target.size()},projected_(bool(rows.projection)),projection_(rows.projection) {
+           rows.residual.size(),rows.target.size()},projected_(bool(rows.projection)),projection_(rows.projection),
+    resident_originals_(resident?rows.originals:std::vector<std::string>()) {
   if(projected_) {
     if(rows.constraints.rows() || rows.target.size() || bytes_>=decoded_bytes_ ||
         !projection_->matches(rows.jacobian,rows.residual))
@@ -35,16 +36,21 @@ SubmapRowPage::SubmapRowPage(const Rows& rows):originals(rows.originals),columns
 }
 SubmapRowPage::Reference SubmapRowPage::resident(const Rows& rows) {
   auto page=std::shared_ptr<SubmapRowPage>(new SubmapRowPage(rows));
-  if(!page->projected_)page->resident_=std::make_shared<const Rows>(rows);return page;
+  if(!page->projected_) {auto numeric=std::make_shared<Rows>(rows);numeric->originals.clear();numeric->originals.shrink_to_fit();page->resident_=numeric;}
+  return page;
 }
 SubmapRowPage::~SubmapRowPage(){if(store_ && id_)store_->release(id_);}
-SubmapRowPage::Lease SubmapRowPage::pin() const {
+SubmapRowPage::Lease SubmapRowPage::pinNumeric() const {
   if(resident_)return resident_;
   if(projection_)return Lease(decode(projection_->payload().data()).release());
   return store_->read(*this);
 }
+void SubmapRowPage::eachOriginal(const std::function<void(const std::string&)>& visitor) const {
+  if(store_)store_->metadata()->eachKey(originals_,visitor);else for(const auto& key:resident_originals_)visitor(key);
+}
+size_t SubmapRowPage::originalCount() const {return originals_?originals_->count:resident_originals_.size();}
 std::unique_ptr<SubmapRowPage::Rows> SubmapRowPage::decode(const void* payload) const {
-  auto rows=std::make_unique<Rows>();rows->originals=originals;rows->columns=columns;
+  auto rows=std::make_unique<Rows>();rows->columns=columns;
   rows->constraints.resize(shape_[2],shape_[3]);rows->target.resize(shape_[5]);
   if(projected_) {
     auto value=SubmapRowProjection::decode(payload,bytes_,shape_[0],shape_[1],projected_digest_);
@@ -60,10 +66,12 @@ std::unique_ptr<SubmapRowPage::Rows> SubmapRowPage::decode(const void* payload) 
   return rows;
 }
 
-SubmapRowStore::SubmapRowStore(const std::filesystem::path& directory,size_t cache_bytes)
+SubmapRowStore::SubmapRowStore(const std::filesystem::path& directory,size_t cache_bytes,SubmapOwnershipStore::Limits metadata_limits)
     :directory_(directory),capacity_(cache_bytes) {
   if(!capacity_ || capacity_>96*1024*1024)throw std::invalid_argument("submap_row_cache_capacity");
   if(!std::filesystem::create_directory(directory_))throw std::invalid_argument("submap_row_storage_exists");
+  directory_owner_=std::shared_ptr<std::filesystem::path>(new std::filesystem::path(directory_),
+      [](const auto* path){std::error_code error;std::filesystem::remove(*path,error);delete path;});
   try {
     if(sqlite3_open_v2((directory_/"rows.sqlite").string().c_str(),&db_,
         SQLITE_OPEN_READWRITE|SQLITE_OPEN_CREATE|SQLITE_OPEN_FULLMUTEX,nullptr)!=SQLITE_OK)
@@ -73,21 +81,21 @@ SubmapRowStore::SubmapRowStore(const std::filesystem::path& directory,size_t cac
     execute("PRAGMA temp_store=MEMORY");execute("PRAGMA journal_mode=MEMORY");
     execute("PRAGMA synchronous=OFF");execute("PRAGMA cache_size=-1024");
     execute("CREATE TABLE pages(id INTEGER PRIMARY KEY, payload BLOB NOT NULL)");
+    metadata_=std::make_shared<SubmapOwnershipStore>(directory_/"identities",metadata_limits,directory_owner_);
   }catch(...) {
     if(db_)sqlite3_close(db_);db_=nullptr;std::error_code error;
-    std::filesystem::remove(directory_/"rows.sqlite",error);std::filesystem::remove(directory_,error);throw;
+    std::filesystem::remove(directory_/"rows.sqlite",error);throw;
   }
 }
 SubmapRowStore::~SubmapRowStore() {
   if(db_)sqlite3_close(db_);std::error_code error;
   std::filesystem::remove(directory_/"rows.sqlite",error);
-  std::filesystem::remove(directory_,error);
 }
 void SubmapRowStore::check() const {if(failed_)throw std::runtime_error("submap_row_storage_io");}
 void SubmapRowStore::execute(const char* sql) {
   if(sqlite3_exec(db_,sql,nullptr,nullptr,nullptr)!=SQLITE_OK)throw std::runtime_error("submap_row_storage_io");
 }
-SubmapRowStore::Reference SubmapRowStore::put(const Rows& rows) {
+SubmapRowStore::Reference SubmapRowStore::put(const Rows& rows,const std::function<bool()>& cancelled) {
   if(rows.columns.empty()) {
     if(rows.jacobian.cols() || rows.constraints.cols() || rows.jacobian.rows()>4096 ||
         rows.constraints.rows()>1024 || rows.residual.size()!=rows.jacobian.rows() ||
@@ -95,7 +103,8 @@ SubmapRowStore::Reference SubmapRowStore::put(const Rows& rows) {
       throw std::invalid_argument("submap_information_rows");
   }else SubmapInformation::validateRows(rows.columns,rows.jacobian,rows.residual,rows.constraints,rows.target);
   if(rows.bytes()>capacity_)throw std::runtime_error("submap_row_cache_capacity");
-  auto self=shared_from_this();auto page=std::shared_ptr<SubmapRowPage>(new SubmapRowPage(rows));
+  auto self=shared_from_this();auto page=std::shared_ptr<SubmapRowPage>(new SubmapRowPage(rows,false));
+  page->originals_=metadata_->keys(rows.originals,cancelled);
   std::vector<uint8_t> bytes;
   if(page->projected_)bytes=rows.projection->payload();
   else {

@@ -75,8 +75,11 @@ also apply to the default full-graph backend.
 
 - **12 recent active keyframes**, **8 MiB** derived-row cache and at most
   **10,922 keyframe addresses** in the history namespace.
-- **65,536 original measurement identities**, including retained unassigned
-  identities; this is separate from the landmark-candidate count.
+- The shared original-label/ownership cache holds at most **65,536 decoded
+  records** and **8 MiB**. Retained history, including explicitly unassigned
+  originals, stays in a derived SQLite store with a **96 MiB main-file bound**.
+  Its immutable page/root accounting is limited to **8 MiB**, and its page-merge
+  workspace to **1 MiB**. These are separate from the landmark-candidate count.
 - **512 retirement records**, **100,000 candidate points**, **96 MiB** of
   processed-image-equivalent input and **96 MiB** of compact input.
 - Session input SQLite and complete `PSIMMAP4` archives each have a **96 MiB**
@@ -95,6 +98,14 @@ marginal matrices. SHA-256 of dimensions and visible uint16 pixels checks image
 identity. The conditional policy's derived numeric rows use a disposable sibling `.rows` directory;
 existing directories are protected and a successful shutdown releases the cache.
 Original input snapshots remain exportable after the derived cache is released.
+Original labels and ownership use the same decoded-page budget. An immutable
+ownership root becomes current only after the corresponding numeric update
+succeeds. Source ordering and unassigned identities survive reconstruction from
+the original checkpoint. The derived metadata database targets a **1 MiB**
+SQLite page cache with memory mapping off. Its rollback journal stays in the
+same working directory and can temporarily require another database's size
+plus SQLite journal headers. Generic resident-only information workspaces keep
+their **65,536-total-original** guard.
 Projected visual source rows retain sparse original pose rows and their exact
 Householder transform when this uses less storage. Reading a page reconstructs
 the original marginal rows and verifies their digest. The **96 MiB retained
@@ -106,8 +117,10 @@ continue. It cannot certify a truncated or unobserved map.
 
 - **최근 활성 키프레임 12개**, 파생 행렬 캐시 **8MiB**, 이력 주소 상한
   **키프레임 10,922개**를 사용합니다.
-- 보존 중인 미배정 식별자까지 포함해 **원본 측정 식별자 65,536개**를
-  제한합니다. 랜드마크 후보 수와는 별도입니다.
+- 원본 목록·소유권의 공통 캐시는 **디코딩한 항목 65,536개·8MiB** 이하입니다.
+  명시적으로 미배정한 원본을 포함한 이력은 **주 파일 96MiB**의 파생 SQLite에
+  보관합니다. 불변 페이지·루트 계상은 **8MiB**, 페이지 합병 작업공간은
+  **1MiB**로 제한합니다. 랜드마크 후보 수와는 별도입니다.
 - **퇴역 기록 512개·후보점 100,000개·처리 영상 환산 입력 96MiB·압축 입력
   96MiB**를 각각 제한합니다.
 - 세션 입력 SQLite와 전체 `PSIMMAP4` 파일도 각각 **96MiB**로 제한합니다.
@@ -123,7 +136,14 @@ continue. It cannot certify a truncated or unobserved map.
 한 번 검출한 뒤 원본 영상과 큰 주변화 행렬을 해제합니다. 크기와 유효 uint16
 픽셀의 SHA-256으로 같은 영상인지 확인합니다. 조건부 정책의 파생 행렬은 옆의 임시 `.rows`
 디렉터리를 사용하며 기존 디렉터리는 보호하고 정상 종료 시 캐시를 해제합니다.
-캐시 해제 뒤에도 원본 입력 사본을 내보낼 수 있습니다. 시각 관측의 소거 행렬은
+캐시 해제 뒤에도 원본 입력 사본을 내보낼 수 있습니다. 원본 목록과 소유권은
+같은 페이지 디코딩 예산을 사용합니다. 해당 수치 갱신이 성공한 뒤에만 새로운
+소유권 루트를 현재 상태로 공개합니다. 원본 체크포인트에서 다시 만들 때에도
+관측 순서와 미배정 식별자를 유지합니다. 파생 메타데이터의 SQLite 페이지
+캐시 목표는 **1MiB**이며 메모리 매핑은 사용하지 않습니다. 롤백 저널은 같은
+작업 디렉터리에 놓이며 일시적으로 DB 한 개 크기와 저널 헤더 공간을 추가로
+사용할 수 있습니다. 일반 메모리 전용 정보 계산은 **전체 원본 65,536개**의
+한도를 유지합니다. 시각 관측의 소거 행렬은
 공간이 절약될 때 소거 전 희소 포즈 행렬과 정확한 Householder 변환으로 보존합니다.
 페이지를 읽을 때 원래 행렬을 재구성하고 다이제스트를 확인합니다. **96MiB 보존
 수치 예산**에는 인코딩된 관측과 좌표계·랜드마크 조건부·연결 행렬 자료를 포함합니다.

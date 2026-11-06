@@ -152,6 +152,12 @@ std::shared_ptr<PersistentMapSnapshot> PersistentMapper::build(const Batch& batc
     const auto usage=row_store_->statistics();
     result->row_cache_resident_bytes=usage.resident_bytes;result->row_cache_peak_bytes=usage.peak_resident_bytes;
     result->row_cache_pages=usage.pages;result->row_cache_reads=usage.reads;
+    const auto metadata=row_store_->metadata()->statistics();
+    result->metadata_cache_entries=metadata.entries;result->metadata_cache_peak_entries=metadata.peak_entries;
+    result->metadata_cache_bytes=metadata.cache_bytes;result->metadata_cache_peak_bytes=metadata.peak_cache_bytes;
+    result->metadata_directory_bytes=metadata.directory_bytes;result->metadata_directory_peak_bytes=metadata.peak_directory_bytes;
+    result->metadata_workspace_peak_bytes=metadata.peak_workspace_bytes;result->metadata_database_bytes=metadata.database_bytes;
+    if(window){result->original_identities=window->snapshot()->originalCount();result->assigned_identities=window->snapshot()->assignedCount();}
   }
   result->optimize_seconds=std::chrono::duration<double>(std::chrono::steady_clock::now()-started).count();
   return result;

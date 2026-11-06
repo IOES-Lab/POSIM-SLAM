@@ -25,6 +25,7 @@ class SubmapFactorization {
     std::vector<std::vector<Coordinate>> variables;
   };
   enum class Ordering {fixed,minimum_degree};
+  enum class Ownership {resident,paged};
   struct Bucket {
     std::vector<Page> sources;
     std::vector<std::shared_ptr<const Bucket>> children;
@@ -37,14 +38,34 @@ class SubmapFactorization {
     uint64_t revision=0;
     Layout layout;
     std::map<std::string,Page> factors;
-    // Original identity survives explicit unassignment. The raw measurement
-    // payload remains the responsibility of the caller's input archive.
-    std::set<std::string> originals;
-    std::map<std::string,std::string> assignments;
     std::vector<std::shared_ptr<const Bucket>> buckets;
     Information::Snapshot information,base;
     std::vector<Page> active;
     std::vector<size_t> rebuilt;
+    // These queries cover the complete inventory in either storage mode.
+    // Explicitly unassigned identities remain in the caller's input archive
+    // and this index. Paged snapshots never copy the resident global sets.
+    size_t originalCount() const {return inventory?inventory->count:resident_originals.size();}
+    size_t assignedCount() const {return inventory?inventory->assigned:resident_assignments.size();}
+    bool hasOriginal(const std::string& key) const {
+      return inventory?metadata->lookup(inventory,key).has_value():resident_originals.count(key)>0;
+    }
+    std::optional<std::string> assignment(const std::string& key) const {
+      if(inventory){auto owner=metadata->lookup(inventory,key);return owner && !owner->empty()?owner:std::nullopt;}
+      auto owner=resident_assignments.find(key);return owner==resident_assignments.end()?std::nullopt:std::optional<std::string>(owner->second);
+    }
+    std::string ownerOf(const std::string& key) const {
+      auto owner=assignment(key);if(!owner)throw std::out_of_range("submap_original_unassigned");return *owner;
+    }
+    void eachUnassigned(const std::function<void(const std::string&)>& visitor) const {
+      if(inventory)metadata->each(inventory,[&](const auto& row){if(row.owner.empty())visitor(row.key);});
+      else for(const auto& key:resident_originals)if(!resident_assignments.count(key))visitor(key);
+    }
+    void eachOriginal(const std::function<void(const std::string&)>& visitor) const {
+      if(inventory)metadata->each(inventory,[&](const auto& row){visitor(row.key);});
+      else for(const auto& key:resident_originals)visitor(key);
+    }
+    bool pagedOwnership() const {return bool(inventory);}
     size_t numericBytes() const {
       size_t bytes=information?information->numericBytes():0;
       if(base && base!=information)bytes+=base->numericBytes()-base->history_bytes;
@@ -54,15 +75,28 @@ class SubmapFactorization {
     }
    private:
     friend class SubmapFactorization;
+    std::set<std::string> resident_originals;
+    std::map<std::string,std::string> resident_assignments;
+    std::shared_ptr<SubmapOwnershipStore> metadata;
+    SubmapOwnershipStore::Snapshot inventory;
     std::shared_ptr<const int> owner;
   };
   using Snapshot=std::shared_ptr<const Data>;
   explicit SubmapFactorization(Layout layout,Information::Limits limits={},
-      const std::vector<std::string>& retained_originals={},std::shared_ptr<SubmapRowStore> row_store={})
-      :core_(std::make_shared<Information>(limits)),limits_(limits),row_store_(std::move(row_store)) {
+      const std::vector<std::string>& retained_originals={},std::shared_ptr<SubmapRowStore> row_store={},
+      Ownership ownership=Ownership::resident)
+      :core_(std::make_shared<Information>(limits)),limits_(limits),row_store_(std::move(row_store)),ownership_(ownership) {
     auto initial=std::make_shared<Data>();initial->owner=identity_;
-    initial->originals=keys(retained_originals);
-    if(initial->originals.size()>limits_.measurements)throw std::runtime_error("submap_measurement_capacity");
+    if(ownership_==Ownership::paged) {
+      if(!row_store_ || row_store_->metadata()->capacity()!=limits.measurements)
+        throw std::invalid_argument("submap_metadata_capacity_configuration");
+      initial->metadata=row_store_->metadata();initial->inventory=initial->metadata->empty();
+      if(!retained_originals.empty())initial->inventory=initial->metadata->stage(initial->inventory,1,
+          [&](auto& edit){for(const auto& key:retained_originals)edit.seed(key);});
+    } else {
+      initial->resident_originals=keys(retained_originals);
+      if(initial->resident_originals.size()>limits_.measurements)throw std::runtime_error("submap_measurement_capacity");
+    }
     initial->layout=std::move(layout);validateLayout(initial->layout,nullptr);
     rebuild(*initial,nullptr,{});data_=initial;
   }
@@ -84,48 +118,62 @@ class SubmapFactorization {
       const std::vector<Factor>& incoming,const std::vector<std::string>& unassigned={},
       const Layout* layout=nullptr,const std::function<bool()>& cancelled={},Ordering ordering=Ordering::fixed) {
     std::lock_guard<std::mutex> writer(writer_);check(cancelled);
+    // Storage is part of this factor transaction. Its cancellation checkpoints
+    // propagate the owning operation's exception and rollback contract.
+    const std::function<bool()> source_cancelled=[&]{check(cancelled);return false;};
     const auto previous=snapshot();auto next=std::make_shared<Data>(*previous);
     if(layout)next->layout=*layout;
     const auto rank=validateLayout(next->layout,&previous->layout);
-    const auto remove=keys(removed),unused=keys(unassigned);std::set<std::string> outgoing;
+    const auto remove=keys(removed);std::set<std::string> unused,outgoing,assigned;
+    if(ownership_==Ownership::resident)unused=keys(unassigned);
     for(const auto& id:remove) {
       const auto found=next->factors.find(id);
       if(found==next->factors.end())throw std::invalid_argument("submap_factor_unknown");
-      for(const auto& key:found->second->originals) {
-        outgoing.insert(key);next->assignments.erase(key);
-      }
+      if(ownership_==Ownership::resident)found->second->eachOriginal([&](const auto& key){
+        outgoing.insert(key);next->resident_assignments.erase(key);
+      });
       next->factors.erase(found);
     }
-    if(!std::includes(outgoing.begin(),outgoing.end(),unused.begin(),unused.end()))
+    if(ownership_==Ownership::resident && !std::includes(outgoing.begin(),outgoing.end(),unused.begin(),unused.end()))
       throw std::invalid_argument("submap_factor_unassignment");
-    std::set<std::string> assigned;
     size_t source_bytes=0;
     for(const auto& [id,rows]:next->factors)source_bytes+=rows->bytes();
-    for(const auto& factor:incoming) {
+    const auto addIncoming=[&](SubmapOwnershipStore::Editor* edit) {for(const auto& factor:incoming) {
       check(cancelled);keys({factor.id});
       if(next->factors.count(factor.id))throw std::invalid_argument("submap_factor_reused");
-      const auto originals=keys(factor.rows.originals);
-      if(originals.empty())throw std::invalid_argument("submap_factor_empty");
+      if(factor.rows.originals.empty())throw std::invalid_argument("submap_factor_empty");
       Information::validateRows(factor.rows.columns,factor.rows.jacobian,factor.rows.residual,
                                factor.rows.constraints,factor.rows.target);
       std::set<Coordinate> columns;
       for(auto column:factor.rows.columns)if(!rank.count(column) || !columns.insert(column).second)
         throw std::invalid_argument("submap_factor_coordinates");
-      for(const auto& key:originals) {
-        if(unused.count(key) || !next->assignments.emplace(key,factor.id).second)
-          throw std::invalid_argument("submap_measurement_reused");
-        assigned.insert(key);next->originals.insert(key);
+      if(ownership_==Ownership::resident) {
+        for(const auto& key:keys(factor.rows.originals)) {
+          if(unused.count(key) || !next->resident_assignments.emplace(key,factor.id).second)
+            throw std::invalid_argument("submap_measurement_reused");
+          assigned.insert(key);next->resident_originals.insert(key);
+        }
+        if(next->resident_originals.size()>limits_.measurements)
+          throw std::runtime_error("submap_measurement_capacity");
       }
-      if(next->originals.size()>limits_.measurements)
-        throw std::runtime_error("submap_measurement_capacity");
       if(source_bytes>limits_.numeric_bytes || factor.rows.retainedBytes()>limits_.numeric_bytes-source_bytes)
         throw std::runtime_error("submap_factor_numeric_capacity");
       source_bytes+=factor.rows.retainedBytes();
-      next->factors.emplace(factor.id,retain(factor.rows));
+      next->factors.emplace(factor.id,retain(factor.rows,source_cancelled));
+      if(edit){edit->factor(factor.id);for(const auto& key:factor.rows.originals)edit->assign(key);}
+    }};
+    if(ownership_==Ownership::paged) {
+      next->inventory=next->metadata->stage(previous->inventory,previous->inventory->revision+1,[&](auto& edit){
+        for(const auto& id:remove)edit.remove(id);
+        addIncoming(&edit);
+        for(const auto& key:unassigned)edit.unassign(key);
+      },source_cancelled);
+    } else {
+      addIncoming(nullptr);
+      assigned.insert(unused.begin(),unused.end());
+      if(!std::includes(assigned.begin(),assigned.end(),outgoing.begin(),outgoing.end()))
+        throw std::invalid_argument("submap_factor_original_missing");
     }
-    assigned.insert(unused.begin(),unused.end());
-    if(!std::includes(assigned.begin(),assigned.end(),outgoing.begin(),outgoing.end()))
-      throw std::invalid_argument("submap_factor_original_missing");
     if(ordering==Ordering::minimum_degree) {
       expandChanged(*next,*previous,cancelled);
       reorderChanged(*next,*previous,cancelled);
@@ -144,8 +192,11 @@ class SubmapFactorization {
   }
  private:
   SubmapFactorization(const SubmapFactorization& source,Snapshot state)
-      :core_(source.core_),limits_(source.limits_),row_store_(source.row_store_),identity_(source.identity_),data_(std::move(state)) {}
-  Page retain(const Rows& rows) const {return row_store_?row_store_->put(rows):SubmapRowPage::resident(rows);}
+      :core_(source.core_),limits_(source.limits_),row_store_(source.row_store_),ownership_(source.ownership_),
+       identity_(source.identity_),data_(std::move(state)) {}
+  Page retain(const Rows& rows,const std::function<bool()>& cancelled={}) const {
+    return row_store_?row_store_->put(rows,cancelled):SubmapRowPage::resident(rows);
+  }
   static void check(const std::function<bool()>& cancelled) {
     if(cancelled && cancelled())throw std::runtime_error("submap_factor_cancelled");
   }
@@ -352,7 +403,7 @@ class SubmapFactorization {
       used=exact=0;j.setZero();c.setZero();
     };
     for(const auto& page:rows) {
-      check(cancelled);const auto group=page->pin();
+      check(cancelled);const auto group=page->pinNumeric();
       const auto n=group->jacobian.rows(),m=group->constraints.rows();
       Eigen::Index row=0,constraint=0;
       while(row<n || constraint<m) {
@@ -378,7 +429,7 @@ class SubmapFactorization {
     bucket->roundoff=result->roundoff;
     out.columns=result->order;out.jacobian=result->jacobian;out.residual=result->residual;
     out.constraints=result->constraints;out.target=result->target;
-    bucket->message=retain(out);return bucket;
+    bucket->message=retain(out,cancelled);return bucket;
   }
   void rebuild(Data& next,const Data* previous,const std::function<bool()>& cancelled) const {
     const auto rank=validateLayout(next.layout,nullptr);const size_t root=next.layout.eliminated.size();
@@ -421,13 +472,14 @@ class SubmapFactorization {
     auto information=std::make_shared<Information::Data>(*core_->snapshot());
     information->revision=next.revision+1;
     {
-      const auto frontier=next.buckets.back()->message->pin();
+      const auto frontier=next.buckets.back()->message->pinNumeric();
       information->order=frontier->columns;information->jacobian=frontier->jacobian;
       information->residual=frontier->residual;information->constraints=frontier->constraints;information->target=frontier->target;
     }
     information->roundoff=next.buckets.back()->roundoff;
     for(const auto& [column,index]:rank)information->known.insert(column);
-    for(const auto& [key,id]:next.assignments)information->measurements.insert(key);
+    if(next.inventory)information->measurements=SubmapMeasurements::view(next.metadata->measurements(next.inventory));
+    else for(const auto& [key,id]:next.resident_assignments)information->measurements.insert(key);
     for(size_t i=0;i<root;++i) {
       information->nodes.push_back(next.buckets[i]->conditional);
       information->history_bytes+=next.buckets[i]->conditional->bytes();
@@ -444,17 +496,22 @@ class SubmapFactorization {
       history->children=next.buckets.back()->children;
       const auto reduced=factorize(history,true,cancelled);
       auto base=std::make_shared<Information::Data>(*information);
-      const auto message=reduced->message->pin();
+      const auto message=reduced->message->pinNumeric();
       base->order=message->columns;base->jacobian=message->jacobian;
       base->residual=message->residual;base->constraints=message->constraints;
       base->target=message->target;base->roundoff=reduced->roundoff;
-      for(const auto& rows:next.active)for(const auto& key:rows->originals)base->measurements.erase(key);
+      if(next.inventory) {
+        const std::set<Page> active(next.active.begin(),next.active.end());std::vector<std::string> exclude;
+        for(const auto& [id,page]:next.factors)if(active.count(page))exclude.push_back(id);
+        base->measurements=SubmapMeasurements::view(next.metadata->measurements(next.inventory,exclude));
+      } else for(const auto& rows:next.active)rows->eachOriginal([&](const auto& key){base->measurements.erase(key);});
       next.base=std::move(base);
     }
     if(next.numericBytes()>limits_.numeric_bytes)throw std::runtime_error("submap_factor_numeric_capacity");
   }
   std::shared_ptr<Information> core_;Information::Limits limits_;
   std::shared_ptr<SubmapRowStore> row_store_;
+  Ownership ownership_;
   std::shared_ptr<const int> identity_=std::make_shared<const int>(0);
   std::mutex writer_;Snapshot data_;
 };

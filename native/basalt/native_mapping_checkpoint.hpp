@@ -25,7 +25,7 @@ class NativeMappingCheckpoint {
     auto state=std::make_shared<State>(window.chart_);const auto numeric=window.snapshot();
     state->active=window.active_poses_;state->layout=numeric->layout;state->anchors=window.source_anchors_;
     state->source=window.source_identity_;state->nonlinear=nonlinear;
-    for(const auto& key:numeric->originals)if(!numeric->assignments.count(key))state->unassigned.push_back(key);
+    numeric->eachUnassigned([&](const auto& key){state->unassigned.push_back(key);});
     if(state->anchors.size()!=numeric->factors.size())throw std::logic_error("native_window_source_anchors");
     return state;
   }

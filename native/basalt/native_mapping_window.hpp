@@ -287,7 +287,7 @@ class NativeMappingWindow {
     }
     std::vector<std::string> removed;std::set<std::string> outgoing,assigned;
     for(const auto& [id,rows]:snapshot()->factors)if(!groups.count(id) || incoming.count(id)) {
-      removed.push_back(id);outgoing.insert(rows->originals.begin(),rows->originals.end());
+      removed.push_back(id);rows->eachOriginal([&](const auto& key){outgoing.insert(key);});
     }
     for(const auto& id:incoming)add(replacement,id);
     for(auto it=next->points_.begin();it!=next->points_.end();) {
@@ -548,7 +548,8 @@ class NativeMappingWindow {
     layout.variables.clear();
     for(auto stamp:chart_.poses())layout.variables.push_back(nativeMappingColumns({stamp},chart_.offsets()));
     if(layout.frontier.size()>limits.active_columns)throw std::runtime_error("native_window_separator_capacity");
-    owner_=std::make_unique<SubmapFactorization>(layout,owner_limits,unassigned,std::move(row_store));
+    const auto ownership=row_store?SubmapFactorization::Ownership::paged:SubmapFactorization::Ownership::resident;
+    owner_=std::make_unique<SubmapFactorization>(layout,owner_limits,unassigned,std::move(row_store),ownership);
     group_identities_=nativeMappingGroupIdentities(mapper);
     configuration_identity_=nativeMappingConfigurationIdentity(mapper);
   }
@@ -598,9 +599,9 @@ class NativeMappingWindow {
     };
     for(const auto& group:snapshot()->active) {
       if(outside(group->columns)) {
-        plan.originals.insert(plan.originals.end(),group->originals.begin(),group->originals.end());
+        group->eachOriginal([&](const auto& key){plan.originals.push_back(key);});
         for(auto c:group->columns)plan.support.insert(chart_.poses().at(c/6));
-        for(const auto& key:group->originals)if(plan.next.factors.erase(key))plan.selected.factors.insert(key);
+        group->eachOriginal([&](const auto& key){if(plan.next.factors.erase(key))plan.selected.factors.insert(key);});
       } else {++remaining;columns.insert(group->columns.begin(),group->columns.end());}
     }
     if(!remaining)throw std::invalid_argument("native_window_no_active_likelihoods");
@@ -642,7 +643,7 @@ class NativeMappingWindow {
   // the latest output state merely because the window was saved and reopened.
   void replaceActive(const NativeMappingRows& rows,const std::function<void()>& check) {
     const auto state=nativeMappingStateIdentity(mapper_);std::vector<std::string> remove;
-    for(const auto& group:snapshot()->active)remove.insert(remove.end(),group->originals.begin(),group->originals.end());
+    for(const auto& group:snapshot()->active)group->eachOriginal([&](const auto& key){remove.push_back(key);});
     replaceSelected(rows,remove,check);linearization_state_=state;
   }
   void replaceSelected(const NativeMappingRows& rows,const std::vector<std::string>& remove,
@@ -660,7 +661,7 @@ class NativeMappingWindow {
       anchors.emplace("point:"+std::to_string(group.id),sourceAnchor(group.poses,group.id));
     }
     std::set<std::string> ids;
-    for(const auto& key:remove)ids.insert(snapshot()->assignments.at(key));
+    for(const auto& key:remove)ids.insert(snapshot()->ownerOf(key));
     check();owner_->replace(std::vector<std::string>(ids.begin(),ids.end()),replacement);
     for(auto& [id,reduced]:new_points)points_.at(id)=std::move(reduced);
     for(auto& [id,anchor]:anchors)source_anchors_.at(id)=std::move(anchor);

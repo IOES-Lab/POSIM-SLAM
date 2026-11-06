@@ -46,8 +46,8 @@ void verify(Graph& graph,const Matrix& projection=Matrix()) {
   Matrix j=Matrix::Zero(rows,order.size()),c=Matrix::Zero(exact,order.size());Vector r(rows),target(exact);
   size_t n=0,m=0;std::set<std::string> originals;
   for(const auto& [id,page]:state->factors) {
-    const auto source=page->pin();
-    for(const auto& key:source->originals)assert(originals.insert(key).second);
+    const auto source=page->pinNumeric();
+    page->eachOriginal([&](const auto& key){assert(originals.insert(key).second);});
     for(size_t i=0;i<source->columns.size();++i) {
       j.block(n,offsets.at(source->columns[i]),source->jacobian.rows(),1)=source->jacobian.col(i);
       if(source->constraints.rows())c.block(m,offsets.at(source->columns[i]),source->constraints.rows(),1)=source->constraints.col(i);
@@ -56,7 +56,7 @@ void verify(Graph& graph,const Matrix& projection=Matrix()) {
     n+=source->jacobian.rows();m+=source->constraints.rows();
   }
   assert(originals==state->information->measurements);
-  assert(originals.size()==state->assignments.size());
+  assert(originals.size()==state->assignedCount());
   const auto constraint=decompose(c);const Vector anchor=constraint.inverse*target;
   close(c*anchor,target);const auto reduced=decompose(j*constraint.nullspace);
   const Vector mean=anchor-constraint.nullspace*reduced.inverse*(j*anchor+r);
@@ -94,7 +94,7 @@ void replacementAndGrowth(std::shared_ptr<posim_slam::SubmapRowStore> store={}) 
   rejects([&]{graph.replace({"merged"},{edge("a","pixel:a",0,2,.8,4)});},"submap_factor_original_missing");
   assert(graph.snapshot()==before_unassign);
   graph.replace({"merged"},{edge("a","pixel:a",0,2,.8,4)},{"pixel:b"});verify(graph);
-  assert(graph.snapshot()->originals.count("pixel:b") && !graph.snapshot()->assignments.count("pixel:b"));
+  assert(graph.snapshot()->hasOriginal("pixel:b") && !graph.snapshot()->assignment("pixel:b"));
   Matrix observed=Matrix::Zero(5,6);for(int row=0,column=0;column<6;++column)if(column!=1)observed(row++,column)=1;
   verify(graph,observed);
   graph.replace({}, {edge("b-again","pixel:b",1,2,-.7,3)});verify(graph);
@@ -342,17 +342,21 @@ Graph::Rows projectedRows(int rank) {
   assert(rows.projection && rows.retainedBytes()<rows.bytes());return rows;
 }
 void identicalRows(const Graph::Rows& a,const Graph::Rows& b) {
-  assert(a.columns==b.columns && a.originals==b.originals);
+  assert(a.columns==b.columns && a.originals.empty());
   assert(a.jacobian.rows()==b.jacobian.rows() && a.jacobian.cols()==b.jacobian.cols());
   assert(!std::memcmp(a.jacobian.data(),b.jacobian.data(),a.jacobian.size()*sizeof(double)));
   assert(!std::memcmp(a.residual.data(),b.residual.data(),a.residual.size()*sizeof(double)));
+}
+void identicalOriginals(const posim_slam::SubmapRowPage::Reference& page,const Graph::Rows& rows) {
+  std::vector<std::string> actual;page->eachOriginal([&](const auto& key){actual.push_back(key);});
+  assert(actual==rows.originals && page->originalCount()==rows.originals.size());
 }
 void projectedStorage(const std::filesystem::path& root) {
   using Store=posim_slam::SubmapRowStore;using Projection=posim_slam::SubmapRowProjection;
   for(int rank=0;rank<=3;++rank) {
     const auto rows=projectedRows(rank);const auto resident=posim_slam::SubmapRowPage::resident(rows);
     assert(resident->bytes()==rows.retainedBytes() && resident->decodedBytes()==rows.bytes());
-    identicalRows(*resident->pin(),rows);
+    identicalRows(*resident->pinNumeric(),rows);identicalOriginals(resident,rows);
     posim_slam::SubmapLinearization dense_owner;dense_owner.append({rows});
     assert(!dense_owner.snapshot()->active.front()->projection);
     auto malformed=rows.projection->payload();int64_t invalid=5000;std::memcpy(malformed.data(),&invalid,sizeof(invalid));
@@ -360,14 +364,15 @@ void projectedStorage(const std::filesystem::path& root) {
     auto altered=rows;altered.residual[0]+=1;
     rejects([&]{posim_slam::SubmapRowPage::resident(altered);},"submap_projection_source");
     const auto path=root/("projected-"+std::to_string(rank));auto store=std::make_shared<Store>(path,rows.bytes());
-    auto first=store->put(rows),second=store->put(rows);auto lease=first->pin();identicalRows(*lease,rows);
+    auto first=store->put(rows),second=store->put(rows);auto lease=first->pinNumeric();identicalRows(*lease,rows);
+    identicalOriginals(first,rows);identicalOriginals(second,rows);
     store->evict();assert(store->statistics().resident_bytes==rows.bytes());
-    rejects([&]{second->pin();},"submap_row_cache_capacity");
+    rejects([&]{second->pinNumeric();},"submap_row_cache_capacity");
     first.reset();identicalRows(*lease,rows);assert(store->statistics().pages==1);
-    lease.reset();assert(store->statistics().resident_bytes==0);identicalRows(*second->pin(),rows);
+    lease.reset();assert(store->statistics().resident_bytes==0);identicalRows(*second->pinNumeric(),rows);
     assert(store->statistics().peak_resident_bytes==rows.bytes());
     store->evict();sql(path,"UPDATE pages SET payload=zeroblob(length(payload))");
-    rejects([&]{second->pin();},"submap_row_storage_digest");
+    rejects([&]{second->pinNumeric();},"submap_row_storage_digest");
   }
   const auto rows=projectedRows(3);const auto path=root/"projected-atomic";
   auto store=std::make_shared<Store>(path,65536);Graph::Layout layout;
@@ -383,10 +388,68 @@ void projectedStorage(const std::filesystem::path& root) {
   assert(graph.snapshot()==before && store->statistics().pages==pages);verify(graph);
   sql(path,"DROP TRIGGER fail_insert");
 }
+void ownedPages(const std::filesystem::path& root) {
+  using Store=posim_slam::SubmapRowStore;
+  const auto path=root/"owned-index";auto store=std::make_shared<Store>(path,1024);
+  Graph graph({{0},{}},{},{},store,Graph::Ownership::paged);
+  Graph::Rows rows;rows.columns={0};rows.jacobian=Matrix::Constant(1,1,2);rows.residual=Vector::Constant(1,-6);
+  // More originals than fit in the shared cache; preserve source-label order.
+  for(size_t i=65537;i>0;--i)rows.originals.push_back("source:"+std::to_string(i));
+  Graph resident({{0},{}});
+  rejects([&]{resident.replace({},{{"large",rows}});},"submap_measurement_capacity");
+  const auto first=graph.replace({},{{"large",rows}});assert(first->pagedOwnership());
+  assert(first->originalCount()==65537 && first->assignedCount()==65537);
+  assert(first->information->measurements.size()==65537 && first->base->measurements.empty());
+  identicalOriginals(first->factors.at("large"),rows);
+  auto solution=graph.solve(first);auto result=graph.query(solution,{0},Matrix::Identity(1,1));
+  assert(result.observed && std::abs(result.mean[0]-3)<1e-12 && std::abs(result.covariance(0,0)-.25)<1e-12);
+  auto changed=rows;const auto unused=changed.originals.back();changed.originals.pop_back();changed.originals.push_back("new-source");
+  changed.jacobian(0,0)=4;changed.residual[0]=-8;
+  auto rejected=changed;rejected.originals.pop_back();
+  rejects([&]{graph.replace({"large"},{{"changed",rejected}});},"ownership_original_missing");
+  assert(graph.snapshot()==first);store->metadata()->collect();
+  const auto before_metadata=store->metadata()->statistics().pages,before_numeric=store->statistics().pages;
+  int cancelled_calls=0;
+  rejects([&]{graph.replace({"large"},{{"changed",changed}},{unused},nullptr,[&]{return ++cancelled_calls==5;});},"submap_factor_cancelled");
+  store->metadata()->collect();
+  assert(graph.snapshot()==first && store->statistics().pages==before_numeric && store->metadata()->statistics().pages==before_metadata);
+  const auto trigger="CREATE TRIGGER fail_after_source BEFORE INSERT ON pages WHEN (SELECT count(*) FROM pages)>="+
+      std::to_string(before_numeric+1)+" BEGIN SELECT RAISE(FAIL,'after ownership stage'); END";
+  sql(path,trigger.c_str());
+  rejects([&]{graph.replace({"large"},{{"changed",changed}},{unused});},"submap_row_storage_io");
+  sql(path,"DROP TRIGGER fail_after_source");store->metadata()->collect();
+  assert(graph.snapshot()==first && store->statistics().pages==before_numeric && store->metadata()->statistics().pages==before_metadata);
+  const auto second=graph.replace({"large"},{{"changed",changed}},{unused});
+  assert(second->originalCount()==65538 && second->assignedCount()==65537 && second->hasOriginal(unused) && !second->assignment(unused));
+  std::vector<std::string> unassigned;second->eachUnassigned([&](const auto& key){unassigned.push_back(key);});assert(unassigned==std::vector<std::string>{unused});
+  assert(first->assignment(unused)=="large" && first->information->measurements.count(unused));
+  assert(!second->information->measurements.count(unused) && second->information->measurements.count("new-source"));
+  auto next=graph.solve(second);auto now=graph.query(next,{0},Matrix::Identity(1,1));
+  assert(now.observed && std::abs(now.mean[0]-2)<1e-12 && std::abs(now.covariance(0,0)-.0625)<1e-12);
+  assert(store->metadata()->statistics().peak_entries<=65536 && store->metadata()->statistics().peak_cache_bytes<=8*1024*1024);
+  // A view keeps the shared working directory alive after its row-store handle.
+  auto view=second->information->measurements;assert(view.size()==65537);
+}
+void metadataLeases(const std::filesystem::path& root) {
+  using Store=posim_slam::SubmapRowStore;posim_slam::SubmapOwnershipStore::Limits limits;
+  limits.entries=3;limits.page_entries=2;
+  auto store=std::make_shared<Store>(root/"metadata-leases",128,limits);auto meta=store->metadata();
+  auto labels=meta->keys({"z","a"});auto held=meta->pin(labels->pages.front());meta->evict();
+  auto rows=edge("a","a",0,1,.2,3).rows;rows.originals={"c","b"};auto page=store->put(rows);
+  rejects([&]{page->eachOriginal([](const auto&){});},"ownership_cache_capacity");
+  assert(meta->statistics().entries==2);held.reset();identicalOriginals(page,rows);
+  auto inventory=meta->stage(meta->empty(),1,[](auto& edit){edit.factor("owner");edit.assign("a");edit.assign("z");});
+  auto view=posim_slam::SubmapMeasurements::view(meta->measurements(inventory));
+  rejects([&]{view.insert("forbidden");},"submap_measurement_view_read_only");
+  page.reset();labels.reset();inventory.reset();meta.reset();store.reset();
+  assert(view.size()==2 && view.count("z"));view={};
+  assert(!std::filesystem::exists(root/"metadata-leases"));
+}
 void paged(const std::filesystem::path& root) {
   using Store=posim_slam::SubmapRowStore;
   assert(std::filesystem::create_directory(root));
   projectedStorage(root);
+  ownedPages(root);metadataLeases(root);
   {
     auto store=std::make_shared<Store>(root/"graph",128);
     rejects([&]{Store duplicate(root/"graph",128);},"submap_row_storage_exists");
@@ -420,14 +483,14 @@ void paged(const std::filesystem::path& root) {
   {
     auto store=std::make_shared<Store>(root/"leases",24);
     auto first=store->put(edge("a","a",0,1,.2,3).rows),second=store->put(edge("b","b",0,1,.3,4).rows);
-    auto lease=first->pin();store->evict();assert(store->statistics().resident_bytes==24);
-    rejects([&]{second->pin();},"submap_row_cache_capacity");
+    auto lease=first->pinNumeric();store->evict();assert(store->statistics().resident_bytes==24);
+    rejects([&]{second->pinNumeric();},"submap_row_cache_capacity");
     first.reset();assert(lease->jacobian(0,0)==3 && store->statistics().pages==1);
-    lease.reset();assert(store->statistics().resident_bytes==0);assert(second->pin()->jacobian(0,0)==4);
+    lease.reset();assert(store->statistics().resident_bytes==0);assert(second->pinNumeric()->jacobian(0,0)==4);
     // Empty and constant likelihoods preserve residuals without invented columns.
     Graph::Rows constant;constant.jacobian.resize(1,0);constant.residual=Vector::Constant(1,2);
-    auto term=store->put(constant);assert(term->pin()->residual[0]==2);
-    store.reset();assert(second->pin()->jacobian(0,0)==4);
+    auto term=store->put(constant);assert(term->pinNumeric()->residual[0]==2);
+    store.reset();assert(second->pinNumeric()->jacobian(0,0)==4);
   }
   {
     auto store=std::make_shared<Store>(root/"threads",128);
@@ -435,7 +498,7 @@ void paged(const std::filesystem::path& root) {
     for(int i=0;i<12;++i)pages.push_back(store->put(edge("a","a",0,1,.2,1+i).rows));
     std::vector<std::thread> threads;
     for(int t=0;t<3;++t)threads.emplace_back([&,t]{for(int n=0;n<60;++n) {
-      const size_t i=(n+t)%pages.size();const auto lease=pages[i]->pin();assert(lease->jacobian(0,0)==1+i);
+      const size_t i=(n+t)%pages.size();const auto lease=pages[i]->pinNumeric();assert(lease->jacobian(0,0)==1+i);
     }});
     for(auto& thread:threads)thread.join();assert(store->statistics().peak_resident_bytes<=128);
     pages.clear();assert(store->statistics().pages==0 && store->statistics().resident_bytes==0);

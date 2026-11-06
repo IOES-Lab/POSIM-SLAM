@@ -55,7 +55,7 @@ string(SUBSTRING "${BA_SOURCE}" ${MAP_START} ${MAP_LENGTH} MAP_ORIGINAL)
 file(READ ${CMAKE_CURRENT_SOURCE_DIR}/map_points.inc MAP_REPLACEMENT)
 string(REPLACE "${MAP_ORIGINAL}" "${MAP_REPLACEMENT}\n" BA_PATCHED "${BA_SOURCE}")
 file(CONFIGURE OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/ba_base.cpp" CONTENT "${BA_PATCHED}" @ONLY)
-add_library(posim_slam_submap_rows STATIC submap_row_store.cc)
+add_library(posim_slam_submap_rows STATIC submap_row_store.cc submap_ownership_store.cc)
 target_link_libraries(posim_slam_submap_rows PUBLIC Eigen3::Eigen SQLite::SQLite3)
 add_library(basalt_core STATIC
  ${B}/src/linearization/landmark_block.cpp

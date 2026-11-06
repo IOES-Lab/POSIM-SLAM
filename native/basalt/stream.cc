@@ -790,6 +790,11 @@ int main(int argc,char** argv) {
             {"compact_input_bytes",m.compact_input_bytes},
             {"row_cache_resident_bytes",m.row_cache_resident_bytes},{"row_cache_peak_bytes",m.row_cache_peak_bytes},
             {"row_cache_pages",m.row_cache_pages},{"row_cache_reads",m.row_cache_reads},
+            {"original_identities",m.original_identities},{"assigned_identities",m.assigned_identities},
+            {"metadata_cache_entries",m.metadata_cache_entries},{"metadata_cache_peak_entries",m.metadata_cache_peak_entries},
+            {"metadata_cache_bytes",m.metadata_cache_bytes},{"metadata_cache_peak_bytes",m.metadata_cache_peak_bytes},
+            {"metadata_directory_bytes",m.metadata_directory_bytes},{"metadata_directory_peak_bytes",m.metadata_directory_peak_bytes},
+            {"metadata_workspace_peak_bytes",m.metadata_workspace_peak_bytes},{"metadata_database_bytes",m.metadata_database_bytes},
             {"pending",m.revision==0},{"error",m.error.empty()?Json(nullptr):Json(m.error)}};
         }
         emit({{"type","map"},{"stamp_ns",data->t_ns},{"point_geometry",geometry},
