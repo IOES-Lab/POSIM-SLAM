@@ -52,6 +52,30 @@ def replace_once(text,old,new):
     return text.replace(old,new,1)
 
 
+def prepare_nfr_source(source,destination):
+    raw=(Path(source)/'src/vi_estimator/nfr_mapper.cpp').read_bytes()
+    if hashlib.sha256(raw).hexdigest()!='ba1f179e78b857c7978d9489039a9588003b784b43caf1d8af7302c41fe0047a':
+        raise ValueError('pinned_basalt_nfr_source_changed')
+    text=replace_once(raw.decode(),'namespace basalt {\n',
+        '#include "nfr_covariance_projection.hpp"\n\nnamespace basalt {\n')
+    # Keep the upstream FullPivHouseholderQR rank decision. The factor weights
+    # use projected triangular solves instead of a full general inverse.
+    text=replace_once(text,
+        '  Eigen::MatrixXd cov_old = qr.solve(Eigen::MatrixXd::Identity(asize, asize));',
+        '  std::unique_ptr<posim_slam::NfrCovarianceProjection> projection;\n'
+        '  if (!config.mapper_no_factor_weights)\n'
+        '    projection = std::make_unique<posim_slam::NfrCovarianceProjection>(m.abs_H);')
+    old='    Sophus::Matrix6d cov_new = J * cov_old * J.transpose();'
+    if text.count(old)!=2:raise ValueError('pinned_basalt_nfr_projection_changed')
+    text=text.replace(old,'')
+    text=replace_once(text,'      rpf.cov_inv = cov_new.block<2, 2>(4, 4).inverse();',
+        '      rpf.cov_inv = projection->information(J.bottomRows(2));')
+    text=replace_once(text,'      cov_new.ldlt().solveInPlace(rpf.cov_inv);',
+        '      rpf.cov_inv = projection->information(J);')
+    target=Path(destination)/'nfr_mapper.cpp'
+    if not target.exists() or target.read_text()!=text:target.write_text(text)
+
+
 def prepare(source,destination):
     output=Path(destination)/'basalt';output.mkdir(parents=True,exist_ok=True)
     raw=(Path(source).parent/'headers/include/basalt/imu/preintegration.h').read_bytes()
@@ -365,6 +389,7 @@ void SqrtKeypointVioEstimator<Scalar_>::debug_finalize()''')
         '        if (!this->posim_consumed_visual.allows(lm_id, kv.first)) continue;')
     target=Path(destination)/'sqrt_keypoint_vio.cpp'
     if not target.exists() or target.read_text()!=text:target.write_text(text)
+    prepare_nfr_source(source,destination)
 
 
 if __name__=='__main__':prepare(sys.argv[1],sys.argv[2])

@@ -31,6 +31,7 @@ set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS
  ${B}/include/basalt/vi_estimator/ba_base.h
  ${B}/include/basalt/vi_estimator/vio_estimator.h
  ${B}/include/basalt/vi_estimator/sqrt_keypoint_vio.h
+ ${B}/src/vi_estimator/nfr_mapper.cpp
  ${B}/src/vi_estimator/sqrt_keypoint_vio.cpp)
 execute_process(COMMAND ${Python3_EXECUTABLE}
  ${CMAKE_CURRENT_SOURCE_DIR}/prepare_joint_headers.py ${B} ${JOINT_HEADERS}
@@ -71,7 +72,7 @@ add_library(basalt_core STATIC
  ${CMAKE_CURRENT_BINARY_DIR}/ba_base.cpp
  ${B}/src/vi_estimator/landmark_database.cpp
  ${B}/src/vi_estimator/marg_helper.cpp
- ${B}/src/vi_estimator/nfr_mapper.cpp
+ ${JOINT_HEADERS}/nfr_mapper.cpp
  ${CMAKE_CURRENT_SOURCE_DIR}/persistent_mapper.cc
  ${CMAKE_CURRENT_SOURCE_DIR}/native_mapping_graph.cc
  ${CMAKE_CURRENT_SOURCE_DIR}/mapping_match_checkpoint.cc
@@ -109,6 +110,9 @@ target_compile_options(basalt_mapping_information_probe PRIVATE -UNDEBUG)
 add_executable(basalt_sparse_normal_information_probe sparse_normal_information_probe.cc)
 target_link_libraries(basalt_sparse_normal_information_probe PRIVATE Eigen3::Eigen)
 target_compile_options(basalt_sparse_normal_information_probe PRIVATE -UNDEBUG)
+add_executable(basalt_nfr_covariance_projection_probe nfr_covariance_projection_probe.cc)
+target_link_libraries(basalt_nfr_covariance_projection_probe PRIVATE Eigen3::Eigen)
+target_compile_options(basalt_nfr_covariance_projection_probe PRIVATE -UNDEBUG)
 add_executable(basalt_mapping_handoff_probe mapping_handoff_probe.cc)
 target_link_libraries(basalt_mapping_handoff_probe PRIVATE basalt_core)
 target_compile_options(basalt_mapping_handoff_probe PRIVATE -UNDEBUG)

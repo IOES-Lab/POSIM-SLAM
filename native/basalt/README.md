@@ -53,6 +53,19 @@ matrices. Immutable revisions let optimization run independently of ingestion. I
 overflow invalidates mapping without blocking the navigation estimator.
 [Persistent-map contract and bounds](../../docs/diagnostics/visual-map-quality.md).
 
+Relative-pose and roll/pitch NFR factors project marginal information with a
+Cholesky factor `H = L Lᵀ`. Triangular solves form
+`C = (L⁻¹ Jᵀ)ᵀ (L⁻¹ Jᵀ)`; an inverse-root Gram matrix supplies its information.
+Each Gram matrix computes one triangle and mirrors it. The upstream full-pivot QR rank
+decision remains in place. Nonfinite, asymmetric and nonpositive inputs are
+rejected; no eigenvalue floor, added prior or damping supplies missing information.
+
+상대 자세와 roll/pitch NFR 제약은 주변화 정보 `H = L Lᵀ`의 Cholesky
+분해와 삼각 풀이로 공분산을 투영합니다. 역분해 행렬의 Gram 행렬로 제약
+정보를 계산하며 한쪽 삼각형을 계산해 대칭으로 반영합니다. 원래 완전 피벗 QR의
+랭크 판정은 유지합니다. 비유한·비대칭·양의 정부호가 아닌 입력을 거부하며,
+고윳값 하한·추가 사전정보·감쇠로 관측하지 못한 정보를 채우지 않습니다.
+
 `PersistentMapper` retains its HashBoW index, pixel coordinates and image-pair
 results within the current segment. Chronological input queries only new frames.
 A delayed frame refreshes retrieval at its timestamp and later timestamps;
