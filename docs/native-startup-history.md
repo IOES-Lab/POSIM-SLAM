@@ -89,3 +89,6 @@ The example retains all maps and the 1.536 m outlier; physical lock loss and
 installed use remain unverified.
 예제는 모든 지도와 1.536m 이상점을 보존하며 물리적 bottom-lock 상실과
 설치형 운용은 아직 검증하지 않았습니다.
+
+[Physical DVL loss, complete returned maps and failed capacity/export gates](diagnostics/physical-dvl-range-20261108/README.md) ·
+[실제 DVL 상실·전체 복귀 지도·용량/내보내기 실패](diagnostics/physical-dvl-range-20261108/README.ko.md).

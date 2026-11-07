@@ -1,0 +1,290 @@
+{
+  "schema": "physical-dvl-shelf-audit-1",
+  "run_passed": false,
+  "mission_status": "completed",
+  "mission_seconds": 156.96,
+  "physical_checks": {
+    "actual_timed_loss": true,
+    "fewer_than3_beams": true,
+    "no_invalid_velocity": true,
+    "native_states_continue": true,
+    "same_frame_worker": true,
+    "no_repeated_velocity_factors": true,
+    "loss_reported_unready": true,
+    "map_retained": true,
+    "communication_continues": true
+  },
+  "loss": {
+    "samples": 73,
+    "first_stamp_ns": 73000000000,
+    "last_stamp_ns": 145010000000,
+    "span_s": 72.01,
+    "maximum_sample_gap_s": 1.01,
+    "locked_beams": {
+      "0": 35,
+      "1": 2,
+      "2": 36
+    },
+    "continued_states": 837,
+    "minimum_retained_points": 2744,
+    "suspended_streams_required": false,
+    "reason": "Timed invalid samples advance the stream; silence alone suspends it"
+  },
+  "maps": {
+    "return-first": {
+      "stamp_ns": 147000000000,
+      "points": 2936,
+      "all_points_retained": true,
+      "median_m": 0.003845666729314162,
+      "p95_m": 0.01899094387750766,
+      "rmse_m": 0.009630637634957384,
+      "maximum_m": 0.09872029684270744,
+      "above_10cm": 0,
+      "above_20cm": 0,
+      "fixture_gate": true,
+      "covered_objects": 6,
+      "source_sha256": "a5341baf1586fd9f0ccddc08e5a105b9e0c8861fc906d12dd4e18aba75459485",
+      "phase": "After physical lock return; filename before is a retained observer-boundary error, not a pre-loss map"
+    },
+    "return-later": {
+      "stamp_ns": 149000000000,
+      "points": 2974,
+      "all_points_retained": true,
+      "median_m": 0.0040166630378084545,
+      "p95_m": 0.019060745507273647,
+      "rmse_m": 0.010030453202717563,
+      "maximum_m": 0.13402355492206386,
+      "above_10cm": 1,
+      "above_20cm": 0,
+      "fixture_gate": true,
+      "covered_objects": 6,
+      "source_sha256": "faec9f6a791435dcbd85455f6ed5e05127b00a68ac09c10eeda98c3fae51f61a",
+      "phase": "After physical lock return; filename before is a retained observer-boundary error, not a pre-loss map"
+    }
+  },
+  "motion": {
+    "metrics": {
+      "evaluated": true,
+      "states": 1619,
+      "duration_s": 170.10000000000002,
+      "evaluation_alignment": {
+        "rotation": [
+          [
+            0.9013582727267465,
+            -0.433074201710349,
+            0.0
+          ],
+          [
+            0.433074201710349,
+            0.9013582727267465,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "translation": [
+          -0.17709738414009485,
+          0.5753098155129278,
+          -0.2278210527953215
+        ],
+        "scale": 1.0
+      },
+      "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+      "position_rmse_m": 1.551778887168489,
+      "position_max_m": 4.236072939803553,
+      "rotation_rmse_rad": 0.019980366899791453,
+      "rotation_max_rad": 0.03325935845174977,
+      "truth_distance_m": 84.56006720012182,
+      "estimated_distance_m": 81.280739862238,
+      "rpe_1s_pairs": 1571,
+      "rpe_1s_position_rmse_m": 0.11410374826305811,
+      "rpe_1s_rotation_rmse_rad": 0.0036499727170325727,
+      "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+    },
+    "accepted": false,
+    "checks": {
+      "evaluated": true,
+      "states": true,
+      "duration": true,
+      "actual_motion": true,
+      "position_rmse": false,
+      "position_max": false
+    },
+    "criteria": {
+      "minimum_states": 250,
+      "minimum_duration_s": 29.0,
+      "minimum_truth_distance_m": 0.5,
+      "maximum_position_rmse_m": 0.1,
+      "maximum_position_error_m": 0.25
+    },
+    "scope": "Single recorded motion position gate; map geometry, orientation, repeatability and installed-app qualification remain separate"
+  },
+  "input_databases": [
+    {
+      "file": "worker-map-inputs-8f5acff52d37c08945c8c00fc289fdf0.sqlite",
+      "sha256": "9ad607f50ee029d0c7d7f73e6a6820fe43582bc48e79536f15f8c9a10161b414",
+      "quick_check": "ok",
+      "frames": 9,
+      "revision": 2,
+      "limits": [
+        203,
+        100663296,
+        512,
+        8,
+        100663296
+      ],
+      "source_image_bytes": 2160000,
+      "compact_feature_bytes": 634896
+    },
+    {
+      "file": "worker-map-inputs-9c933a60b60799d26dd180ef52b2c5df.sqlite",
+      "sha256": "f04f30320d5aa931baeb1da20b378c22feb082a0220df91beedb63d527d8865a",
+      "quick_check": "ok",
+      "frames": 203,
+      "revision": 196,
+      "limits": [
+        203,
+        100663296,
+        512,
+        8,
+        100663296
+      ],
+      "source_image_bytes": 48720000,
+      "compact_feature_bytes": 8441136
+    }
+  ],
+  "final_mapping_error": "mapping_image_capacity",
+  "missing_evidence": [
+    "No pre-loss HTTP export; both recorded PLYs are after return",
+    "No actual HTTP export request during loss; native reported readyfalse and consumer contract tests cover refusal",
+    "No accepted final map after original full-graph203-frame capacity failure"
+  ],
+  "observer_verdict": "Preserved failed verdict; communications-suspension predicate was inappropriate for timed physical invalidity",
+  "product_qualified": false,
+  "truth_used_for": "assessment and annotation only",
+  "native_resource": {
+    "elapsed_seconds": 232.86561025,
+    "peak_owned_rss_bytes": 2086207488,
+    "guard": null,
+    "remaining_owned_processes": []
+  },
+  "paged_replay": {
+    "passed": false,
+    "error": "ValueError('vio_map_segment_changed_or_unavailable')",
+    "backend": "conditional_paged_v1",
+    "published_poses": 1757,
+    "failures": [],
+    "camera_prefetch": {
+      "mode": "bounded_async_v1",
+      "max_bytes": 402653184,
+      "lookahead": 16,
+      "reserved_bytes": 0,
+      "peak_reserved_bytes": 9185536,
+      "loaded": 1825,
+      "released": 1809,
+      "pending": 0,
+      "thread_alive": false,
+      "closed": true
+    },
+    "last_completed_policy": {
+      "admission_coordinate": "world_position",
+      "assigned_identities": 53405,
+      "calibration_uncertainty_included": false,
+      "candidate_points": 7779,
+      "compact_input_bytes": 10344496,
+      "cross_layer_statistical_independence_verified": false,
+      "damping_included": false,
+      "eligible_points": 3557,
+      "error": null,
+      "gauge": "native_initial_position_and_yaw_prior",
+      "keyframes": 223,
+      "map_qualified": false,
+      "metadata_cache_bytes": 6514244,
+      "metadata_cache_entries": 65195,
+      "metadata_cache_peak_bytes": 6552364,
+      "metadata_cache_peak_entries": 65536,
+      "metadata_database_bytes": 8466432,
+      "metadata_directory_bytes": 3358048,
+      "metadata_directory_peak_bytes": 3941796,
+      "metadata_workspace_peak_bytes": 57366,
+      "metric_three_sigma_limit_m": 0.1,
+      "nfr_approximation": true,
+      "nonfinite_candidates": 12,
+      "optimization_revision": 216,
+      "optimize_seconds": 6.517307833,
+      "optimized_through_ns": 178100000000,
+      "original_identities": 53857,
+      "pending": false,
+      "pixel_sigma": 0.5,
+      "policy": "persistent_nfr_world_information",
+      "pose_uncertainty_included": true,
+      "reprojection_policy": "robust_multiview_reoptimization",
+      "retirements": 216,
+      "row_cache_pages": 9619,
+      "row_cache_peak_bytes": 8388608,
+      "row_cache_reads": 137921,
+      "row_cache_resident_bytes": 8050520,
+      "source_factor_matrix_bytes": 4064256,
+      "source_image_bytes": 53520000,
+      "world_observed_points": 7767
+    },
+    "native_export_error": "map_update_timeout",
+    "elapsed_seconds": 188.94209791699998,
+    "peak_owned_rss_bytes": 817102848,
+    "guard": null,
+    "remaining_owned_processes": [],
+    "complete_download_accepted": false
+  },
+  "first_paged_attempt": {
+    "passed": false,
+    "guard": "ssd_reserve",
+    "elapsed_seconds": 72.17543241700001,
+    "owned_output_bytes": 223970576,
+    "repeat_reason": "SSD reserve recovered; original80GB reserve retained, no cleanup, source inputs/settings unchanged"
+  },
+  "worker_sha256": "f8d90d89a92049a4b613414c8731d796035ac4fc96f824b4981d7b2fbbb20a95",
+  "native_cpp_commit": "2ae4dcd89fd5a313aa0a0b8238b769e7993aa8c6",
+  "library_python_commit": "7c5167058759fbb3dd2af5bd411f3255c0093727",
+  "figure_sha256": "b9e0b7137a283b2b4501b73ea8454fb2988cf8ad62448fab40c9b41cbf2144d5",
+  "timing_only_reproduction": {
+    "schema": "native-map-request-timing-1",
+    "scope": "Timing-only reproduction, not accepted full download",
+    "request_revision": 220,
+    "published_revision_at_request": 209,
+    "wait_before_target_build_s": 3.9397283329162747,
+    "target_build_s": 6.378530042013153,
+    "total_request_to_target_completion_s": 10.318258374929428,
+    "graph_update_s": 5.206027917098254,
+    "information_s": 0.9805915409233421,
+    "registry_s": 0.1885601670946926,
+    "output_s": 0.001044791890308261,
+    "original_deadline_s": 10,
+    "deadline_exceeded_s": 0.3182583749294281,
+    "maximum_input_delivery_lag_s": 0.007349583087489009,
+    "all_recorded_wire_payloads_exact": true,
+    "packet_counts": {
+      "14": 16,
+      "13": 1,
+      "1": 17942,
+      "16": 16,
+      "9": 107,
+      "8": 314,
+      "10": 179,
+      "2": 1759,
+      "4": 1
+    },
+    "native_exports": [
+      {
+        "wall_s": 187.52144199982285,
+        "reason": "map_update_timeout",
+        "request_id": 1,
+        "success": false,
+        "type": "export"
+      }
+    ],
+    "passed": false
+  }
+}

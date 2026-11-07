@@ -1,0 +1,38 @@
+{
+  "schema": "native-map-request-timing-1",
+  "scope": "Timing-only reproduction, not accepted full download",
+  "request_revision": 220,
+  "published_revision_at_request": 209,
+  "wait_before_target_build_s": 3.9397283329162747,
+  "target_build_s": 6.378530042013153,
+  "total_request_to_target_completion_s": 10.318258374929428,
+  "graph_update_s": 5.206027917098254,
+  "information_s": 0.9805915409233421,
+  "registry_s": 0.1885601670946926,
+  "output_s": 0.001044791890308261,
+  "original_deadline_s": 10,
+  "deadline_exceeded_s": 0.3182583749294281,
+  "maximum_input_delivery_lag_s": 0.007349583087489009,
+  "all_recorded_wire_payloads_exact": true,
+  "packet_counts": {
+    "14": 16,
+    "13": 1,
+    "1": 17942,
+    "16": 16,
+    "9": 107,
+    "8": 314,
+    "10": 179,
+    "2": 1759,
+    "4": 1
+  },
+  "native_exports": [
+    {
+      "wall_s": 187.52144199982285,
+      "reason": "map_update_timeout",
+      "request_id": 1,
+      "success": false,
+      "type": "export"
+    }
+  ],
+  "passed": false
+}
