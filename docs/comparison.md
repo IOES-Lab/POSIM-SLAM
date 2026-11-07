@@ -1,5 +1,8 @@
 # Method comparison protocol / 방법 비교 규약
 
+[Camera/IMU/DVL/pressure: matched RGB and complete map](examples/camera-dvl.md) ·
+[카메라·IMU·DVL·수압: 같은 시각 RGB와 전체 지도](examples/camera-dvl.ko.md)
+
 ### Moving initialization and IMU-loss recovery
 
 ![Camera/IMU/Ping initial map and matched RGB](validation/ordered-camera-inputs-20261028/initial-rgb-pcl.png)

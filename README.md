@@ -1,5 +1,8 @@
 # POSIM-SLAM
 
+[Camera/IMU/DVL/pressure example](docs/examples/camera-dvl.md) shows the complete
+sparse map beside matched field RGB and the actual camera input.
+
 `delayed_surface_update` prepares correlated late-range rows with sequential
 block elimination. It updates retiring-state conditionals and retains live-state
 uncertainty without freezing recovered poses. The optional native

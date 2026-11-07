@@ -1,5 +1,8 @@
 # POSIM-SLAM
 
+[카메라·IMU·DVL·수압 예시](docs/examples/camera-dvl.ko.md)에서 전체 희소 지도와
+같은 방향의 현장 RGB·실제 카메라 입력을 비교합니다.
+
 `delayed_surface_update`는 상태 블록을 순서대로 제거해 상관관계가 있는 지연 거리
 관측을 준비합니다. 과거 자세를 확정값으로 고정하지 않고 조건부 관계와 현재 상태의
 불확실성을 유지합니다. 선택형 네이티브 `SurfaceMarginalOwner`는 새 현재 상태 제약,
