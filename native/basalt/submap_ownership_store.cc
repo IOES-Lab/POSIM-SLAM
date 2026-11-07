@@ -19,6 +19,10 @@ struct Statement {
     if(sqlite3_prepare_v2(db,sql,-1,&value,nullptr)!=SQLITE_OK)fail("ownership_storage_io");
   }
   ~Statement(){sqlite3_finalize(value);}
+  void reset() {
+    if(sqlite3_reset(value)!=SQLITE_OK || sqlite3_clear_bindings(value)!=SQLITE_OK)
+      fail("ownership_storage_io");
+  }
   void text(int index,const std::string& item) {
     if(sqlite3_bind_text(value,index,item.data(),int(item.size()),SQLITE_TRANSIENT)!=SQLITE_OK)
       fail("ownership_storage_io");
@@ -316,12 +320,17 @@ SubmapOwnershipStore::Snapshot SubmapOwnershipStore::stage(const Snapshot& previ
     for(auto sql:{"DELETE FROM changes","DELETE FROM removals","DELETE FROM incoming"})s.execute(sql);
     Editor editor(s,previous->count==0,cancelled);edit(editor);cancel(cancelled);
     {Statement empty(s.db,"SELECT 1 FROM incoming WHERE n=0 LIMIT 1");if(empty.row())throw std::invalid_argument("ownership_factor_empty");}
+    // One transaction can inspect the same owner on many original rows.
+    // Keep statement lifetime at the transaction scope; bindings and results
+    // are reset for every row, preserving all ownership checks and writes.
+    Statement flags(s.db,"SELECT EXISTS(SELECT 1 FROM removals WHERE owner=?1),EXISTS(SELECT 1 FROM incoming WHERE owner=?1)");
+    Statement seen(s.db,"UPDATE removals SET seen=1 WHERE owner=?1");
     const auto removed=[&](const std::string& owner) {
       if(owner.empty())return false;
-      Statement flags(s.db,"SELECT EXISTS(SELECT 1 FROM removals WHERE owner=?1),EXISTS(SELECT 1 FROM incoming WHERE owner=?1)");flags.text(1,owner);
+      flags.reset();flags.text(1,owner);
       if(!flags.row())fail("ownership_storage_io");const bool remove=flags.number(0),incoming=flags.number(1);
       if(incoming && !remove)throw std::invalid_argument("ownership_factor_reused");
-      if(remove){Statement seen(s.db,"UPDATE removals SET seen=1 WHERE owner=?1");seen.text(1,owner);seen.done();}
+      if(remove){seen.reset();seen.text(1,owner);seen.done();}
       return remove;
     };
     {

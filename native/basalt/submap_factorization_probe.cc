@@ -430,6 +430,41 @@ void ownedPages(const std::filesystem::path& root) {
   // A view keeps the shared working directory alive after its row-store handle.
   auto view=second->information->measurements;assert(view.size()==65537);
 }
+void pagedOwnerTransitions(const std::filesystem::path& root) {
+  using Store=posim_slam::SubmapRowStore;
+  posim_slam::SubmapOwnershipStore::Limits limits;limits.page_entries=2;
+  auto store=std::make_shared<Store>(root/"owner-transitions",1024,limits);
+  Graph graph({{0},{}},{},{},store,Graph::Ownership::paged);
+  const auto rows=[](std::vector<std::string> originals) {
+    Graph::Rows out;out.originals=std::move(originals);out.columns={0};
+    out.jacobian=Matrix::Ones(1,1);out.residual=Vector::Zero(1);return out;
+  };
+  const auto a=rows({"k00","k03","k06","k09"});
+  const auto b=rows({"k01","k04","k07","k10"});
+  const auto c=rows({"k02","k05","k08","k11"});
+  const auto first=graph.replace({},{{"a",a},{"b",b},{"c",c}});
+  auto changed_a=a;changed_a.originals.pop_back();
+  auto changed_c=c;changed_c.originals.push_back("new-key");
+  // Sorted source pages alternate removed/replaced and untouched owners.
+  // One replacement keeps its owner name; the other uses a new owner name.
+  const auto second=graph.replace({"a","c"},{{"a2",changed_a},{"c",changed_c}},{"k09"});
+  assert(second->originalCount()==13 && second->assignedCount()==12);
+  for(const auto& key:changed_a.originals)assert(second->assignment(key)=="a2" && first->assignment(key)=="a");
+  for(const auto& key:b.originals)assert(second->assignment(key)=="b" && first->assignment(key)=="b");
+  for(const auto& key:c.originals)assert(second->assignment(key)=="c" && first->assignment(key)=="c");
+  assert(second->hasOriginal("k09") && !second->assignment("k09"));
+  assert(second->assignment("new-key")=="c" && !first->hasOriginal("new-key"));
+  auto duplicate=changed_a;duplicate.originals.push_back("k01");
+  rejects([&]{graph.replace({"a2"},{{"bad",duplicate}});},"ownership_original_reused");
+  assert(graph.snapshot()==second && second->assignment("k01")=="b");
+  changed_a.jacobian(0,0)=2;
+  const auto third=graph.replace({"a2"},{{"a3",changed_a}});
+  assert(third->originalCount()==13 && third->assignedCount()==12);
+  for(const auto& key:changed_a.originals)assert(third->assignment(key)=="a3" && second->assignment(key)=="a2");
+  for(const auto& key:b.originals)assert(third->assignment(key)=="b");
+  for(const auto& key:changed_c.originals)assert(third->assignment(key)=="c");
+  assert(!third->assignment("k09"));
+}
 void metadataLeases(const std::filesystem::path& root) {
   using Store=posim_slam::SubmapRowStore;posim_slam::SubmapOwnershipStore::Limits limits;
   limits.entries=3;limits.page_entries=2;
@@ -449,7 +484,7 @@ void paged(const std::filesystem::path& root) {
   using Store=posim_slam::SubmapRowStore;
   assert(std::filesystem::create_directory(root));
   projectedStorage(root);
-  ownedPages(root);metadataLeases(root);
+  ownedPages(root);pagedOwnerTransitions(root);metadataLeases(root);
   {
     auto store=std::make_shared<Store>(root/"graph",128);
     rejects([&]{Store duplicate(root/"graph",128);},"submap_row_storage_exists");
