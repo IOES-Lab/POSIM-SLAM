@@ -115,11 +115,25 @@ class SparseNormalInformation {
   size_t factorNonZeros() const {return ready_?solver_.matrixL().nestedExpression().nonZeros():0;}
   size_t cachedQueries() const {return cached_queries_;}
   size_t solveQueries() const {return solve_queries_;}
+  // Logical selected-inverse arrays and fill metadata; excludes the solver and
+  // allocator/container overhead. The direct layout fits the old cache budget.
+  size_t covarianceStorageBytes() const {
+    size_t bytes=sizeof(double)*(size_t(lower_.nonZeros())+inverse_lower_.size()+inverse_diagonal_.size()+inverse_packed_.size())+
+      sizeof(uint64_t)*inverse_pattern_.size()+sizeof(int)*component_.size();
+    if(lower_.outerIndexPtr())bytes+=sizeof(Sparse::StorageIndex)*(size_t(lower_.nonZeros())+size_t(lower_.outerSize())+1);
+    return bytes;
+  }
  private:
   // Takahashi recursion on the filled LDLT pattern. Missing requested entries
   // use an exact solve; absent entries are never assumed to be zero unless
   // they belong to disconnected components of the factor graph.
   std::optional<double> selectedAt(int row,int col) const {
+    if(!inverse_packed_.empty()) {
+      if(component_[row]!=component_[col])return 0.;
+      if(row<col)std::swap(row,col);const size_t index=size_t(row)*(size_t(row)+1)/2+size_t(col);
+      if(!(inverse_pattern_[index/64]&(uint64_t(1)<<(index%64))))return {};
+      return inverse_packed_[index];
+    }
     if(row==col)return inverse_diagonal_[row];
     if(component_[row]!=component_[col])return 0.;
     if(row<col)std::swap(row,col);
@@ -129,37 +143,62 @@ class SparseNormalInformation {
     return inverse_lower_[found-lower_.innerIndexPtr()];
   }
   void recoverSelected() {
-    lower_=solver_.matrixL().nestedExpression();lower_.makeCompressed();
-    inverse_lower_.assign(lower_.nonZeros(),0.);inverse_diagonal_.assign(columns_,0.);
+    const auto& factor=solver_.matrixL().nestedExpression();
+    const size_t n=columns_,entries=n*(n+1)/2,words=(entries+63)/64;
+    const size_t old_numeric_values=2*size_t(factor.nonZeros())+n;
+    const bool packed=factor.isCompressed() && entries<=old_numeric_values && words<=old_numeric_values-entries;
+    if(packed) {
+      lower_.resize(0,0);lower_.data().squeeze();
+      std::vector<double>().swap(inverse_lower_);std::vector<double>().swap(inverse_diagonal_);
+      inverse_packed_.assign(entries,0.);inverse_pattern_.assign(words,0);
+      const auto mark=[&](size_t row,size_t col) {
+        if(row<col)std::swap(row,col);const size_t index=row*(row+1)/2+col;
+        inverse_pattern_[index/64]|=uint64_t(1)<<(index%64);
+      };
+      for(int col=0;col<columns_;++col) {
+        mark(col,col);for(Sparse::InnerIterator it(factor,col);it;++it)mark(it.row(),col);
+      }
+    } else {
+      std::vector<double>().swap(inverse_packed_);std::vector<uint64_t>().swap(inverse_pattern_);
+      lower_=factor;lower_.makeCompressed();
+      inverse_lower_.assign(lower_.nonZeros(),0.);inverse_diagonal_.assign(columns_,0.);
+    }
+    const auto& lower=packed?factor:lower_;
     component_.resize(columns_);for(int i=0;i<columns_;++i)component_[i]=i;
     auto root=[&](int i){while(component_[i]!=i){component_[i]=component_[component_[i]];i=component_[i];}return i;};
-    for(int col=0;col<columns_;++col)for(Sparse::InnerIterator it(lower_,col);it;++it)
+    for(int col=0;col<columns_;++col)for(Sparse::InnerIterator it(lower,col);it;++it)
       if(it.row()!=col && it.value()!=0)component_[root(it.row())]=root(col);
     for(int i=0;i<columns_;++i)component_[i]=root(i);
     for(int col=columns_-1;col>=0;--col) {
-      const int begin=lower_.outerIndexPtr()[col],end=lower_.outerIndexPtr()[col+1];
+      const int begin=lower.outerIndexPtr()[col],end=lower.outerIndexPtr()[col+1];
       for(int target=begin;target<end;++target) {
-        int row=lower_.innerIndexPtr()[target];if(row<=col)continue;
+        int row=lower.innerIndexPtr()[target];if(row<=col)continue;
         double sum=0;
         for(int k=begin;k<end;++k) {
-          int other=lower_.innerIndexPtr()[k];if(other<=col || lower_.valuePtr()[k]==0)continue;
+          int other=lower.innerIndexPtr()[k];if(other<=col || lower.valuePtr()[k]==0)continue;
           const auto value=selectedAt(other,row);
           if(!value)throw std::runtime_error("sparse_inverse_pattern");
-          sum+=lower_.valuePtr()[k]*(*value);
+          sum+=lower.valuePtr()[k]*(*value);
         }
-        inverse_lower_[target]=-sum;
+        if(packed)inverse_packed_[size_t(row)*(size_t(row)+1)/2+size_t(col)]=-sum;
+        else inverse_lower_[target]=-sum;
       }
       double diagonal=1/solver_.vectorD()[col];
-      for(int k=begin;k<end;++k)if(lower_.innerIndexPtr()[k]>col)
-        diagonal-=lower_.valuePtr()[k]*inverse_lower_[k];
+      for(int k=begin;k<end;++k)if(lower.innerIndexPtr()[k]>col) {
+        const double value=packed?inverse_packed_[size_t(lower.innerIndexPtr()[k])*(size_t(lower.innerIndexPtr()[k])+1)/2+size_t(col)]:inverse_lower_[k];
+        diagonal-=lower.valuePtr()[k]*value;
+      }
       if(!std::isfinite(diagonal) || diagonal<=0)throw std::runtime_error("sparse_inverse_diagonal");
-      inverse_diagonal_[col]=diagonal;
+      if(packed)inverse_packed_[size_t(col)*(size_t(col)+1)/2+size_t(col)]=diagonal;
+      else inverse_diagonal_[col]=diagonal;
     }
   }
+
   int columns_;bool factorized_=false,ready_=false;
   std::unordered_map<uint64_t,double> values_;
   Eigen::VectorXd scale_;Sparse normal_;
-  Sparse lower_;std::vector<double> inverse_lower_,inverse_diagonal_;std::vector<int> component_;
+  Sparse lower_;std::vector<double> inverse_lower_,inverse_diagonal_,inverse_packed_;
+  std::vector<uint64_t> inverse_pattern_;std::vector<int> component_;
   mutable size_t cached_queries_=0,solve_queries_=0;
   Eigen::SimplicialLDLT<Sparse,Eigen::Lower,Eigen::AMDOrdering<int>> solver_;
 };

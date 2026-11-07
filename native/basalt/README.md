@@ -35,6 +35,13 @@ world translation or yaw cannot be certified by a pseudoinverse. The caller owns
 the world reference and must establish independence from recovered VIO factors.
 The full-graph backend uses this interface for provisional admission. The selected live conditional backend queries `NativeMappingWindow`.
 
+The sparse pose backend uses LDLT and Takahashi's selected-inverse recursion.
+When a symmetric direct-address table and its fill mask fit within the existing
+numeric-cache payload, queries use that layout. The recursion keeps its operand
+order; entries outside the filled pattern use the explicit sparse solve and its
+residual check. `covarianceStorageBytes()` reports the selected-inverse arrays
+and fill metadata, separately from the solver and process memory.
+
 When a mapping output queue is attached, joint factor retirement supplies a
 detached keyframe snapshot after the marginal prior commits. The snapshot keeps
 pose information and eliminates velocity, bias and the unknown pressure datum
@@ -154,6 +161,13 @@ The native stream stores complete detector features, recovered factors, pose see
 의사역행렬만으로 유효 판정을 받지 못합니다. 세계 좌표 기준과 복원된 VIO 제약에
 대한 관측 독립성은 호출자가 확인해야 합니다. 전체 그래프 백엔드가 이 인터페이스를 잠정 점 채택에 사용하며, 선택된 조건부
 라이브 백엔드는 `NativeMappingWindow`에서 정보를 조회합니다.
+
+희소 자세 백엔드는 LDLT 분해와 Takahashi 선택 역행렬 재귀식을 사용합니다.
+대칭 배열과 채움 위치 표시에 필요한 공간이 기존 수치 캐시 예산 안이면
+이 배열로 원소를 조회합니다. 재귀식의 연산 순서를 유지하며 채움 영역 밖
+원소에는 희소 선형계 풀이와 잔차 검사를 적용합니다.
+`covarianceStorageBytes()`는 선택 역행렬 배열과 채움 위치 정보의 크기를
+보고하며 분해기와 프로세스 메모리는 별도입니다.
 
 `submap_information.hpp::SubmapInformation` represents one fixed tangent-space
 linearization as a bounded frontier and immutable Gaussian conditionals. It
