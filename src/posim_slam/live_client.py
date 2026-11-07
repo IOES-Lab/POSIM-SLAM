@@ -42,6 +42,7 @@ class LiveClient:
         self.fault=None
         self.budget_lock=threading.Lock();self.pending_bytes=0
         self.closed=threading.Event()
+        self.output_notification=None
         self.ready=threading.Event()
         self.startup_tracks_transport=False;self.inertial_seed_transport=False;self.retained_startup_transport=False
         self.ping_transport=False;self.gravity_seed_transport=False;self.sonar_transport=False;self.sonar_auxiliary_transport=False
@@ -138,8 +139,29 @@ class LiveClient:
                 # Never silently drop poses/maps while calling the segment live.
                 self.output.put_nowait(value)
                 if value['type']=='ready':self.ready.set()
+                self._notify_output()
         except (OSError,ValueError,EOFError,queue.Full) as error:
             if not self.closed.is_set():self.fault=str(error) or 'worker_output_backlog'
+
+    def set_output_notification(self,callback):
+        """Wake a caller's event loop when output is available; never consume it.
+
+        The optional callback must return immediately and may run on the reader
+        or installing thread. Wakeups can coalesce; drain with poll(). Passing
+        None removes the callback. close() joins the reader before returning.
+        """
+        if callback is not None and not callable(callback):
+            raise ValueError('invalid_worker_output_notification')
+        self.output_notification=callback
+        if not self.output.empty():self._notify_output()
+
+    def _notify_output(self):
+        callback=self.output_notification
+        if callback is not None and not self.closed.is_set():
+            try:callback()
+            except Exception as error:
+                self.fault='worker_output_notification_failed'
+                raise ValueError(self.fault) from error
 
     def _check_processing_ready(self,value):
         request=self.processing_request

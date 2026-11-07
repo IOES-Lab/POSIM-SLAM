@@ -33,6 +33,13 @@ host in initialization while catching up; sensor timestamps and freshness
 requirements remain unchanged. This transport does not qualify initialization
 uncertainty or navigation readiness.
 
+Use `client.set_output_notification(callback)` to wake an event loop when a
+validated worker output is queued. The callback consumes no packet and must
+return immediately; call `poll()` from the owning loop. Notifications can
+coalesce and may run on the reader or installing thread. Passing `None`
+removes the callback. `close()` joins the reader before returning. Retain an
+independent timer for input freshness and worker deadlines when no reply arrives.
+
 ## 초기 측정 보존
 
 카메라·IMU 워커 보정에서 `require_gravity_seed: true`와 함께
@@ -65,3 +72,10 @@ IMU 바이어스·잡음 좌표 규약을 명시합니다. 초기값은 최적�
 따라잡는 동안 호스트는 초기화 상태를 유지하며 원본 센서 시각과 최신성
 조건을 지킵니다. 이 전송은 초기화 불확실성이나 항해 준비의 합격 판정이
 아닙니다.
+
+`client.set_output_notification(callback)`은 검증한 워커 출력이 큐에 들어오면
+호스트 이벤트 루프를 깨웁니다. 콜백은 패킷을 꺼내지 않고 즉시 반환해야
+하며, 소유자 루프에서 `poll()`을 호출합니다. 알림은 합쳐질 수 있고 읽기
+스레드나 콜백 등록 스레드에서 실행될 수 있습니다. `None`으로 알림을
+해제합니다. `close()`는 읽기 스레드가 끝난 뒤 반환합니다. 응답이 없을 때도
+입력 최신성과 워커 기한을 검사하는 독립 타이머를 유지합니다.

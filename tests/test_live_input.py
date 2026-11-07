@@ -19,6 +19,7 @@ class LiveInputTests(unittest.TestCase):
         c=LiveClient.__new__(LiveClient);c.closed=threading.Event();c.fault=None
         c.processing_request={}
         c.input=queue.Queue(maxsize=256);c.output=queue.Queue(maxsize=8)
+        c.output_notification=None
         c.budget_lock=threading.Lock();c.pending_bytes=0
         c.ready=threading.Event();c.ready.set()
         c.surface_transport=False;c.surface_directory=None;c._surface_files={};c._surface_request_id=0
