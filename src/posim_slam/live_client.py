@@ -24,6 +24,9 @@ class LiveClient:
     def __init__(self, binary, calibration, log):
         self.processing_request=json.loads(Path(calibration).read_text())
         if not isinstance(self.processing_request,dict):raise ValueError('invalid_worker_calibration')
+        if ('record_current_state_information' in self.processing_request
+                and type(self.processing_request['record_current_state_information']) is not bool):
+            raise ValueError('invalid_current_state_information_request')
         if ('optical_flow_type' in self.processing_request
                 and self.processing_request['optical_flow_type'] not in ('frame_to_frame','patch')):
             raise ValueError('invalid_optical_flow_type')
@@ -136,6 +139,9 @@ class LiveClient:
 
     def _check_processing_ready(self,value):
         request=self.processing_request
+        if (request.get('record_current_state_information',False) and
+                value.get('current_state_information_transport')!='undamped_joint_selected_state_v1'):
+            raise ValueError('worker_current_state_information_unsupported')
         if 'map_backend' in request:
             from .map_quality import validate_ready
             validate_ready(value,epoch=request.get('map_epoch'),backend=request['map_backend'])

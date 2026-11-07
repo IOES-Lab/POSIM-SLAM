@@ -111,7 +111,7 @@ def prepare(source,destination):
             text=replace_once(text,'#pragma once','#pragma once\n#include <map>\n#include "visual_geometry.hpp"')
             text=replace_once(text,'  std::vector<int> point_ids;','  std::vector<int> point_ids;\n  std::map<int,posim_slam::VisualPointSupport> map_quality;\n  std::string map_information_error;')
         elif name.endswith('/sqrt_keypoint_vio.h'):
-            text=replace_once(text,'#pragma once','#pragma once\n#include <functional>\n#include <atomic>\nnamespace posim_slam { class PingFactorStore; class SonarFactorStore; class DvlFactorStore; class PressureFactorStore; struct NativeSurfaceInformation; }')
+            text=replace_once(text,'#pragma once','#pragma once\n#include <functional>\n#include <atomic>\nnamespace posim_slam { class PingFactorStore; class SonarFactorStore; class DvlFactorStore; class PressureFactorStore; struct NativeSurfaceInformation; struct NativeStateInformation; }')
             text=replace_once(text,'  using Scalar = Scalar_;','''  using Scalar = Scalar_;
   // Configured before input is submitted; called only by the estimator thread.
   std::function<void(SqrtKeypointVioEstimator&, int64_t)> posim_before_marginalization;
@@ -129,6 +129,7 @@ def prepare(source,destination):
   uint64_t posim_projection_rejections = 0;
   void posim_optimize_joint();
   posim_slam::NativeSurfaceInformation posim_surface_information();
+  posim_slam::NativeStateInformation posim_state_information(int64_t stamp);
   void posim_update_map_information();''')
         elif name.endswith('/ba_base.h'):
             text=replace_once(text,'#pragma once','#pragma once\n#include "ping_state.hpp"\n#include "consumed_visual.hpp"\n#include "visual_geometry.hpp"\n#include "map_information.hpp"')
@@ -254,7 +255,7 @@ def prepare(source,destination):
     text=replace_once(text,'    frames_after_kf++;', '    if (!posim_auxiliary) frames_after_kf++;')
     text=replace_once(text,'  std::unordered_set<KeypointId> lost_landmaks;\n  if (config.vio_marg_lost_landmarks) {',
         '  std::unordered_set<KeypointId> lost_landmaks;\n  if (!posim_auxiliary && config.vio_marg_lost_landmarks) {')
-    text='#include "ping_factors.hpp"\n#include "ping_optimizer.hpp"\n#include "joint_map_information.hpp"\n#include "surface_information.hpp"\n#include <cstdlib>\n'+text
+    text='#include "ping_factors.hpp"\n#include "ping_optimizer.hpp"\n#include "joint_map_information.hpp"\n#include "surface_information.hpp"\n#include "native_state_information.hpp"\n#include <cstdlib>\n'+text
     text=replace_once(text,'      if (kv.first > last_state_to_marg) break;',
         '      if (!posim_joint_started && kv.first > last_state_to_marg) break;')
     text=replace_once(text,'      if (kv.first != last_state_to_marg) {',
@@ -351,6 +352,26 @@ void SqrtKeypointVioEstimator<Scalar_>::posim_optimize_joint() {
       << " steps " << report.accepted << " " << report.rejected << std::endl;
   posim_joint_last_accepted = report.accepted;
   posim_projection_rejections += report.projection_rejections;
+}
+
+template <class Scalar_>
+posim_slam::NativeStateInformation SqrtKeypointVioEstimator<Scalar_>::posim_state_information(int64_t stamp) {
+  auto& base=static_cast<BundleAdjustmentBase<double>&>(*this);
+  if(frame_states.empty() || frame_states.rbegin()->first!=stamp || this->posim_ping_trial_active)
+    throw std::invalid_argument("current_native_state_required");
+  const auto order=posim_slam::planPingMarginalLayout(base, {}, {}, {}, {}).source;
+  const auto block=order.abs_order_map.at(stamp);
+  if(block.second!=15)throw std::invalid_argument("native_state_block_required");
+  ImuLinData<double> imu={g, gyro_bias_sqrt_weight, accel_bias_sqrt_weight, {}};
+  for(const auto& [time,measurement]:imu_meas)imu.imu_meas[time]=&measurement;
+  const auto groups=posim_ping_factors ? posim_ping_factors->specs(order) : std::vector<posim_slam::JointPingGroupSpec>{};
+  posim_slam::MapPoseInformation information;
+  posim_slam::jointMapInformation(base,order,groups,marg_data,imu,
+      posim_sonar_factors.get(),posim_dvl_factors.get(),posim_pressure_factors.get(),&information,false);
+  // Current physical tangent, including any retained FEJ rotation delta.
+  // Copies use the pinned applyInc convention; the estimator is not changed.
+  const auto derivative=posim_slam::currentStateDerivative(frame_states.at(stamp));
+  return posim_slam::selectedStateInformation(information,block.first,derivative);
 }
 
 template <class Scalar_>

@@ -13,10 +13,12 @@
 #include "pressure_input.hpp"
 #include "sonar_ground_packet.hpp"
 #include "surface_protocol.hpp"
+#include "native_state_information.hpp"
 #include <basalt/vi_estimator/sqrt_keypoint_vio.h>
 #include <tbb/global_control.h>
 #include <opencv2/core.hpp>
 #include <algorithm>
+#include <chrono>
 #include <cstring>
 #include <iostream>
 #include <mutex>
@@ -157,6 +159,13 @@ int main(int argc,char** argv) {
         conditional_epoch.empty() || conditional_epoch.size()>128))fail("pose_conditional_capture_requires_sonar_pressure_epoch");
     const bool terrain_enabled=input_settings.value("enable_terrain_ping",false);
     const bool ground_enabled=input_settings.value("enable_sonar_ground",false);
+    if(input_settings.contains("record_current_state_information") &&
+        !input_settings.at("record_current_state_information").is_boolean())
+      fail("invalid_current_state_information_request");
+    const bool state_information_enabled=input_settings.value("record_current_state_information",false);
+    if(state_information_enabled && (sonar_clock || sonar_enabled || terrain_enabled || ground_enabled || surface_enabled))
+      fail("unsupported_current_state_information_profile");
+    int64_t last_state_information_stamp=0;
     if(capture_pose_conditionals && (terrain_enabled || ground_enabled || input_settings.value("enable_joint_ping",false)))
       fail("pose_conditional_capture_requires_no_ping_or_ground_factors");
     if(ground_enabled && (!sonar_clock || terrain_enabled || input_settings.value("enable_joint_ping",false)))
@@ -266,6 +275,32 @@ int main(int argc,char** argv) {
           {"orientation_xyzw",{q.x(),q.y(),q.z(),q.w()}},
           {"velocity",vector3(oldest.vel_w_i)},
           {"gyro_bias",vector3(oldest.bias_gyro)},{"accel_bias",vector3(oldest.bias_accel)}};
+        if(state_information_enabled && (!last_state_information_stamp || stamp-last_state_information_stamp>=1'000'000'000LL)) {
+          const auto began=std::chrono::steady_clock::now();
+          Json report={{"schema","native-current-state-information-1"},{"stamp_ns",stamp},
+            {"coordinates","world_translation_world_left_rotation_world_velocity_imu_biases"},
+            {"block_order",{"position","rotation","velocity","gyro_bias","accel_bias"}},
+            {"block_units",{"m","rad","m/s","rad/s","m/s2"}},
+            {"damping_included",false},{"calibration_uncertainty_included",false},
+            {"statistically_calibrated",false},{"navigation_ready",false},
+            {"scope","Current undamped native likelihood, retained linearization and robust weights; not bootstrap qualification"},
+            {"initial_prior_weights",{{"position_yaw",config.vio_init_pose_weight},
+              {"gyro_bias",config.vio_init_bg_weight},{"accel_bias",config.vio_init_ba_weight}}}};
+          try {
+            const auto information=estimator.posim_state_information(stamp);
+            const auto matrix=[](const auto& m) {Json rows=Json::array();for(Eigen::Index i=0;i<m.rows();++i) {
+              Json row=Json::array();for(Eigen::Index j=0;j<m.cols();++j)row.push_back(m(i,j));rows.push_back(std::move(row));}return rows;};
+            report["available"]=true;report["source_columns"]=information.source_columns;
+            report["observable_covariance"]=matrix(information.observable_covariance);
+            report["unbounded_directions"]=matrix(information.unbounded);
+            report["blocks"]=Json::array();
+            for(const auto& block:information.blocks)report["blocks"].push_back({
+              {"observed",block.observed},{"three_sigma_max",block.observed?Json(3*block.maximum_sigma_m):Json(nullptr)}});
+          } catch(const std::exception& error) {report["available"]=false;report["reason"]=error.what();}
+          report["query_ms"]=std::chrono::duration<double,std::milli>(std::chrono::steady_clock::now()-began).count();
+          initialization_windows[stamp]["current_state_information"]=std::move(report);
+          last_state_information_stamp=stamp;
+        }
         if(initialization_windows.size()>16)fail("initialization_diagnostic_backlog");
       }
       if(sonar_enabled) {
@@ -824,7 +859,7 @@ int main(int argc,char** argv) {
       vio->initialize(stamp,Sophus::SE3d(q,Vec3::Zero()),q*initial_velocity_imu,
                       initial_gyro_bias,initial_accel_bias);
     };
-    emit({{"type","ready"},{"startup_tracks_transport",!sonar_clock && require_gravity_seed ? Json("preinitialize_camera_tracks_v1") : Json(nullptr)},{"inertial_seed_transport","first_imu_state_v1"},{"state_clock",state_clock},{"gravity_seed_transport",sonar_clock ? "first_sensor_direction_v1" : "first_image_direction_v1"},{"gravity_seed_required",require_gravity_seed},{"protocol",1},{"inertial_fused",true},{"map_export",sonar_clock ? Json(nullptr) : Json("segment_landmark_archive_ply_1")},
+    emit({{"type","ready"},{"current_state_information_transport",state_information_enabled?Json("undamped_joint_selected_state_v1"):Json(nullptr)},{"startup_tracks_transport",!sonar_clock && require_gravity_seed ? Json("preinitialize_camera_tracks_v1") : Json(nullptr)},{"inertial_seed_transport","first_imu_state_v1"},{"state_clock",state_clock},{"gravity_seed_transport",sonar_clock ? "first_sensor_direction_v1" : "first_image_direction_v1"},{"gravity_seed_required",require_gravity_seed},{"protocol",1},{"inertial_fused",true},{"map_export",sonar_clock ? Json(nullptr) : Json("segment_landmark_archive_ply_1")},
           {"map_information_transport",persistent_mapping?"persistent_nfr_world_v1":"joint_linearized_world_v1"},
           {"persistent_map_transport",persistent_mapping?Json("retained_keyframe_reoptimization_v1"):Json(nullptr)},
           {"map_backend",persistent_mapping?Json(map_backend):Json(nullptr)},

@@ -602,6 +602,8 @@ Add `--joint-ping` to fuse recorded ranges with exactly matching image timestamp
 
 Native stream states include `initialization_window`: the oldest retained optimizer state after optimization and before marginalization. Its timestamp, pose, velocity and biases allow recorded startup diagnostics to distinguish the emitted prediction from subsequent window corrections. This field does not certify initialization or change estimator inputs.
 
+An optional [current-state information report](docs/native-state-information.md) retains the full position/rotation/velocity/IMU-bias cross covariance and projected free modes from the undamped native likelihood. Enable `record_current_state_information` in the camera/IMU worker calibration. It is disabled by default and does not qualify initialization.
+
 Optional native input setting `record_visual_tracks: true` writes a sibling
 `*.visual-tracks.jsonl` file for up to 1,800 map frames, followed by an explicit
 truncation marker. Each row preserves actual frontend IDs/pixels, available

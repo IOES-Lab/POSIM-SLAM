@@ -551,6 +551,8 @@ PYTHONPATH=src python tools/evaluate_stationary_initialization.py --output /tmp/
 
 네이티브 스트림 상태의 `initialization_window`는 최적화 후, 주변화 전에 남아 있는 가장 오래된 상태를 담습니다. 시각·자세·위치·속도·바이어스를 통해 처음 발행된 예측과 이후 최적화 창의 보정을 구분할 수 있습니다. 이 필드는 초기화 합격을 보증하거나 추정기 입력을 변경하지 않습니다.
 
+선택형 [현재 상태 정보](docs/native-state-information.md#현재-네이티브-상태-정보)는 감쇠 없는 네이티브 측정 정보에서 위치·회전·속도·IMU 바이어스의 전체 교차 공분산과 관측불능 방향을 보존합니다. 카메라·IMU 워커 보정의 `record_current_state_information`으로 켭니다. 기본값은 꺼짐이며 초기화 합격 판정은 별도입니다.
+
 선택형 네이티브 입력 `record_visual_tracks: true`는 같은 폴더의
 `*.visual-tracks.jsonl`에 최대 1,800개 지도 프레임을 기록하고, 초과하면
 명시적인 잘림 표시를 남깁니다. 실제 추적 ID·픽셀, 사용 가능한 최적화된
