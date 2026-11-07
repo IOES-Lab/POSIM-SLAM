@@ -1,0 +1,23 @@
+{
+  "schema": 1,
+  "session_nonce": "976a07f085be421fbefceaeaaf407e00",
+  "revision": 0,
+  "settings": {
+    "enabled": true,
+    "seabed_texture": true,
+    "seabed_grid": false,
+    "contours": false,
+    "haze": true,
+    "absorption": true,
+    "sunlight": true,
+    "caustics": true,
+    "particles": true,
+    "grid_spacing": 10.0,
+    "contour_spacing": 5.0
+  },
+  "available": true,
+  "cameras": 6,
+  "error": null,
+  "backend": "Ogre2 PBR surface optics",
+  "locked": false
+}

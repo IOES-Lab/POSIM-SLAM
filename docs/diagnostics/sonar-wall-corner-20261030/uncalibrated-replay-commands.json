@@ -1,0 +1,61 @@
+[
+  {
+    "mode": "navigation",
+    "command": [
+      "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/posim332f629-sdk/bin/python3",
+      "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/sonar-wall-corner-20261030c/scripts/replay_recorded_auxiliary_sonar.py",
+      "--record",
+      "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/sonar-wall-corner-20261030c/record/inputs",
+      "--calibration",
+      "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/sonar-wall-corner-20261030c/replay-calibration.json",
+      "--binary",
+      "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/native-imu-bias-calibration-20261029/native-build/basalt_stream",
+      "--output",
+      "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/sonar-wall-corner-20261030c/replay-uncalibrated-navigation",
+      "--state-clock",
+      "sonar",
+      "--stream-tracks",
+      "--joint-dvl",
+      "--dvl-gyro-sigma-rad-s",
+      ".01",
+      "--joint-pressure",
+      "--range-sigma-m",
+      "0.025083611719310283",
+      "--azimuth-sigma-rad",
+      "0.008213314126139592",
+      "--max-recent-states",
+      "16",
+      "--omit-sonar-factors"
+    ],
+    "exit": 0
+  },
+  {
+    "mode": "baseline",
+    "command": [
+      "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/posim332f629-sdk/bin/python3",
+      "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/sonar-wall-corner-20261030c/scripts/replay_recorded_auxiliary_sonar.py",
+      "--record",
+      "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/sonar-wall-corner-20261030c/record/inputs",
+      "--calibration",
+      "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/sonar-wall-corner-20261030c/replay-calibration.json",
+      "--binary",
+      "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/native-imu-bias-calibration-20261029/native-build/basalt_stream",
+      "--output",
+      "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/sonar-wall-corner-20261030c/replay-uncalibrated-baseline",
+      "--state-clock",
+      "sonar",
+      "--stream-tracks",
+      "--joint-dvl",
+      "--dvl-gyro-sigma-rad-s",
+      ".01",
+      "--joint-pressure",
+      "--range-sigma-m",
+      "0.025083611719310283",
+      "--azimuth-sigma-rad",
+      "0.008213314126139592",
+      "--max-recent-states",
+      "16"
+    ],
+    "exit": 0
+  }
+]

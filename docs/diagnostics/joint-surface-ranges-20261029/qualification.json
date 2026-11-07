@@ -1,0 +1,84 @@
+{
+  "scope": "Source/native conditional geometry and real Basalt owner controls; no new live surface fusion or map",
+  "scenarios": [
+    {
+      "name": "accumulated-two-plane",
+      "original_readings": 21,
+      "factor_rows": 21,
+      "support_only_rows": 0,
+      "poses": 3,
+      "planes": 2,
+      "maximum_native_source_jacobian_error": 7.815970093361102e-14,
+      "maximum_owner_finite_difference_error": 3.2655536941206265e-08,
+      "nuisance_rank": 6,
+      "optimization": {
+        "accepted": 20,
+        "final_cost": 42.520277027993274,
+        "initial_cost": 3475.0947396627625,
+        "termination": "iteration_limit"
+      },
+      "installation": {
+        "remaining_groups": 0,
+        "remaining_planes": 0,
+        "remaining_poses": 2,
+        "replay_rejected": true,
+        "retired_source_rejected": true
+      },
+      "support_checked": false
+    },
+    {
+      "name": "current-raw-support",
+      "original_readings": 6,
+      "factor_rows": 2,
+      "support_only_rows": 4,
+      "poses": 5,
+      "planes": 1,
+      "maximum_native_source_jacobian_error": 0.0,
+      "maximum_owner_finite_difference_error": 6.251056561268342e-09,
+      "nuisance_rank": 1,
+      "optimization": null,
+      "installation": null,
+      "support_checked": true
+    }
+  ],
+  "source_sha256": {
+    ".github/workflows/tests.yml": "eea547b4592ced76c1dbdd899361e8c28673bf8291b18ff8c6c6f12ceadab4b6",
+    "native/basalt/CMakeLists.txt": "7bb0d6ba25e6ef136c51878601804b6f1f499c2a2862062ac0918da59b46293f",
+    "src/posim_slam/inertial.py": "04a5b26b01258ca4986e2b314a7547d5e7ce60e46e8611e6b1766a3f49aa2bf4",
+    "src/posim_slam/range_surface_joint.py": "7351c40cb6439af248cf131ffaba422477f6833d761a7ecb9b6454189fcc38d7",
+    "tests/test_range_surface_joint.py": "53f6c2e31ffe690b70f3bac48ede1f8cae3a8694b496aaada24c9c03253cdc3a",
+    "tests/test_surface_pose_retention.py": "886863d42216270683340524c0a2170ee2ba33f2e985b5fcaa298da962ab64cf",
+    "tools/audit_surface_pose_retention.py": "43ba105a89a7e8cf5138592391ce59e75d1e13603f8ddbfd737cd3a2dad8274f",
+    "README.md": "a9c79b6b0c129c1709af365fbf6ce02aed0a386738cc0902b17f3bbc5fd950ac",
+    "README.ko.md": "f683b70773b57227ce4cacd1a313808bf79fb17cc5b8402a1a9891b8c89a17c5",
+    "native/basalt/README.md": "1d49d545db108ea1593a5e500ed786d45dfc1d15229fcd13dfdf9dd0ebff83c9",
+    "native/basalt/range_surface.hpp": "b1ba34d5eb5b22ac13e56ad6a3f3741b3fb6c6434c0cd4702aa22d7dde7a979e",
+    "native/basalt/range_surface_group.hpp": "1b0249607671276168627576d87ea352437d24b31ddfd2b840d0c254b65bdad5",
+    "native/basalt/range_surface_probe.cc": "4e121c522ba0529e67b5d0ea6939a893b25a97b3dd05226b175cb1240fba8785",
+    "native/basalt/range_surface_probe_io.hpp": "ebc26c33c35adab386daa88520b7b9c5c47c8831a46e571112a547052bb36e78",
+    "native/basalt/range_surface_owner_probe.cc": "2fa94fb0e55d854ddc29b3396a25c3933a23501feb0bc03802f4b1d2ee4bdeef",
+    "native/basalt/test_range_surface_native.py": "5380b003d81f36b4e8f7bac00b720e73803403c1c9bcc5e414632f822ce97d66",
+    "native/basalt/test_range_surface_owner.py": "3c8739cc78452c2372747bf4efafed334e2050a8231fe21dab9fcd553ad6ff85"
+  },
+  "binaries_sha256": {
+    "range_surface_probe": "4a3aad1f14c9dbc84226d9bc0ad259450ce908736cb2365525729c5e32b02cec",
+    "range_surface_owner_probe": "4d6606085adcedecd58718a8d24c5132d2aed27ec8c34b1d800d154977d4960f"
+  },
+  "basalt_core_sha256": "86f7cd7e7dc0c6f21042e1e315aa3803f3b5a61e36550b05be62651b5d6c7f8f",
+  "protected_user_files_checked": 16,
+  "protected_user_files_unchanged": true,
+  "truth_is_estimator_input": false,
+  "native_stream_binary_updated": false,
+  "live_surface_fusion_enabled": false,
+  "map_qualified": false,
+  "source_base_revision": "4c319bff40c42b3efea9d7fa41e069328ff5adf2",
+  "tests": {
+    "new_native_cases": 6,
+    "new_native_failures": 0,
+    "wheel_total": 461,
+    "wheel_skipped": 16,
+    "wheel_failures": 0,
+    "wheel_errors": 0
+  },
+  "observed_setup_failure": "Deliberate post-retirement group reuse first hit Basalt fatal missing-pose path; current owner adapter validates actual residency and rejects before that call"
+}

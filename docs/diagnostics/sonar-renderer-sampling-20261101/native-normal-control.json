@@ -1,0 +1,149 @@
+{
+  "scope": "Check the complete captured normal tensors with the actual C++ helper.",
+  "producer_changed": false,
+  "source_sha256": "d261c35e2c036cafdf71ab72a9e296c29491f56bdee69f2f5f1dea0b54a55feb",
+  "helper_sha256": "121f9cb0d19a129c037f5f48ba64a7a476d48e7ba51944b88787f8e761003ee6",
+  "compiled_binary_sha256": "14af161d5e5b769f18267833841c6330ff9b59ec31c6bcbec3d8100d5beb1cb2",
+  "published_direction_atan2_vs_source_angles": {
+    "changed_cells": 31,
+    "delta_rad": {
+      "count": 256,
+      "rms": 1.237867675030202e-08,
+      "minimum": -5.960464477539063e-08,
+      "maximum": 5.960464477539063e-08,
+      "absolute_quantiles": {
+        "50": 0.0,
+        "90": 3.725290298461914e-09,
+        "95": 2.9802322387695312e-08,
+        "99": 5.960464477539063e-08,
+        "100": 5.960464477539063e-08
+      }
+    },
+    "reason": "Published cos/sin are rounded float32 before assignment to message doubles"
+  },
+  "elevation_cpp_vs_numpy_changed_cells": 126,
+  "results": [
+    {
+      "trace": 0,
+      "cpp_equals_captured_bytes": true,
+      "cpp_minus_captured": {
+        "count": 196608,
+        "rms": 0.0,
+        "minimum": 0.0,
+        "maximum": 0.0,
+        "absolute_quantiles": {
+          "50": 0.0,
+          "90": 0.0,
+          "95": 0.0,
+          "99": 0.0,
+          "100": 0.0
+        }
+      },
+      "numpy_with_cpp_angles_minus_captured": {
+        "count": 196608,
+        "rms": 2.136048351530917e-06,
+        "minimum": -0.0006936927093192935,
+        "maximum": 4.693865776062012e-06,
+        "absolute_quantiles": {
+          "50": 0.0,
+          "90": 0.0,
+          "95": 2.9802322387695312e-08,
+          "99": 2.086162567138672e-07,
+          "100": 0.0006936927093192935
+        }
+      }
+    },
+    {
+      "trace": 1,
+      "cpp_equals_captured_bytes": true,
+      "cpp_minus_captured": {
+        "count": 196608,
+        "rms": 0.0,
+        "minimum": 0.0,
+        "maximum": 0.0,
+        "absolute_quantiles": {
+          "50": 0.0,
+          "90": 0.0,
+          "95": 0.0,
+          "99": 0.0,
+          "100": 0.0
+        }
+      },
+      "numpy_with_cpp_angles_minus_captured": {
+        "count": 196608,
+        "rms": 1.011061976896599e-05,
+        "minimum": -0.0013107933336868882,
+        "maximum": 4.5299530029296875e-06,
+        "absolute_quantiles": {
+          "50": 0.0,
+          "90": 0.0,
+          "95": 2.9802322387695312e-08,
+          "99": 1.7881393432617188e-07,
+          "100": 0.0013107933336868882
+        }
+      }
+    },
+    {
+      "trace": 2,
+      "cpp_equals_captured_bytes": true,
+      "cpp_minus_captured": {
+        "count": 196608,
+        "rms": 0.0,
+        "minimum": 0.0,
+        "maximum": 0.0,
+        "absolute_quantiles": {
+          "50": 0.0,
+          "90": 0.0,
+          "95": 0.0,
+          "99": 0.0,
+          "100": 0.0
+        }
+      },
+      "numpy_with_cpp_angles_minus_captured": {
+        "count": 196608,
+        "rms": 0.002193867228925228,
+        "minimum": -0.41334325075149536,
+        "maximum": 0.8474719524383545,
+        "absolute_quantiles": {
+          "50": 0.0,
+          "90": 0.0,
+          "95": 2.9802322387695312e-08,
+          "99": 1.9371509552001953e-07,
+          "100": 0.8474719524383545
+        }
+      }
+    },
+    {
+      "trace": 3,
+      "cpp_equals_captured_bytes": true,
+      "cpp_minus_captured": {
+        "count": 196608,
+        "rms": 0.0,
+        "minimum": 0.0,
+        "maximum": 0.0,
+        "absolute_quantiles": {
+          "50": 0.0,
+          "90": 0.0,
+          "95": 0.0,
+          "99": 0.0,
+          "100": 0.0
+        }
+      },
+      "numpy_with_cpp_angles_minus_captured": {
+        "count": 196608,
+        "rms": 7.817829100531526e-06,
+        "minimum": -0.001292448490858078,
+        "maximum": 4.649162292480469e-06,
+        "absolute_quantiles": {
+          "50": 0.0,
+          "90": 0.0,
+          "95": 2.2351741790771484e-08,
+          "99": 1.7881393432617188e-07,
+          "100": 0.001292448490858078
+        }
+      }
+    }
+  ],
+  "compiler_profile": "Apple clang, -O3 -DNDEBUG -std=gnu++20 -arch arm64 -fPIC",
+  "helper_source": "POSIM RaySurfaceNormals.hh at diagnostic source revision"
+}

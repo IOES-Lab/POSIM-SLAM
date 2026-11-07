@@ -1,0 +1,48 @@
+{
+  "states": 286,
+  "trajectory": {
+    "evaluated": true,
+    "states": 286,
+    "duration_s": 95.0,
+    "evaluation_alignment": {
+      "rotation": [
+        [
+          -0.9903724594049796,
+          -0.13842829064946172,
+          0.0
+        ],
+        [
+          0.13842829064946172,
+          -0.9903724594049796,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "translation": [
+        -0.02274078061066737,
+        0.010448829452008833,
+        -1.2924615732501334
+      ],
+      "scale": 1.0
+    },
+    "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+    "position_rmse_m": 0.04791106141529139,
+    "position_max_m": 0.11977843021603285,
+    "rotation_rmse_rad": 0.017801165298626187,
+    "rotation_max_rad": 0.032671478930309,
+    "truth_distance_m": 25.014677471794805,
+    "estimated_distance_m": 25.142869365738342,
+    "rpe_1s_pairs": 259,
+    "rpe_1s_position_rmse_m": 0.005327192395722801,
+    "rpe_1s_rotation_rmse_rad": 0.002911735783298081,
+    "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+  },
+  "all_states_assessed": true,
+  "truth_is_estimator_input": false,
+  "map_qualified": false,
+  "initial_bias_profile": "Matched existing native unknown-bias default"
+}

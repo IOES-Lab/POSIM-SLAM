@@ -9,11 +9,11 @@ sensor-model change, not a new POSIM-SLAM estimator or a novelty claim.
 The estimator receives only raw sensor observations, never renderer normals,
 geometric ray endpoints or simulator poses.
 
-새 BlueROV 시뮬레이션 기록은 음향 생성기의 구면 광선 법선 모델을 수정해
-사용합니다. 직교 좌표의 국소 평면 법선을 각 광선 기준으로 표현한 뒤 입사각에
+새 BlueROV 시뮬레이션 기록은 음향 생성기의 구면 음선 법선 모델을 수정해
+사용합니다. 직교 좌표의 국소 평면 법선을 각 음선 기준으로 표현한 뒤 입사각에
 따른 산란을 계산합니다. 외부 센서 모델의 변경이며 POSIM-SLAM의 새 추정기나
 연구 독창성을 의미하지 않습니다. 추정기에는 원본 센서 관측만 들어가며 렌더러
-법선·기하학적 광선 끝점·시뮬레이터 자세는 전달하지 않습니다.
+법선·기하학적 음선 끝점·시뮬레이터 자세는 전달하지 않습니다.
 
 The 69 s camera-free replay has 245 states. Sonar + IMU + DVL + pressure
 uses the same worker, frontend, observations and state timestamps as the

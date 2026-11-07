@@ -4,6 +4,19 @@ import numpy as np
 from .dvl_scale import vector
 
 
+def _convex_hull(samples):
+    """Counterclockwise 2D hull; shared by point and finite-cone support."""
+    ordered=sorted(set(map(tuple,samples)))
+    def cross(a,b,c):return (b[0]-a[0])*(c[1]-a[1])-(b[1]-a[1])*(c[0]-a[0])
+    def chain(sequence):
+        result=[]
+        for point in sequence:
+            while len(result)>=2 and cross(result[-2],result[-1],point)<=0:result.pop()
+            result.append(point)
+        return result
+    return chain(ordered)[:-1]+chain(reversed(ordered))[:-1]
+
+
 def require_surface_support(points, intersections, normal, *, max_distance):
     """Require projected intersections inside the hull and near actual samples.
 
@@ -24,15 +37,8 @@ def require_surface_support(points, intersections, normal, *, max_distance):
     basis=np.array([u,v]).T;origin=p.mean(axis=0)
     # Normalize to the requested support radius for scale-independent tolerance.
     samples=(p-origin)@basis/max_distance;queries=(q-origin)@basis/max_distance
-    ordered=sorted(set(map(tuple,samples)))
     def cross(a,b,c):return (b[0]-a[0])*(c[1]-a[1])-(b[1]-a[1])*(c[0]-a[0])
-    def chain(sequence):
-        result=[]
-        for point in sequence:
-            while len(result)>=2 and cross(result[-2],result[-1],point)<=0:result.pop()
-            result.append(point)
-        return result
-    hull=chain(ordered)[:-1]+chain(reversed(ordered))[:-1]
+    hull=_convex_hull(samples)
     if len(hull)<3:raise ValueError('degenerate_surface_support')
     for i,a in enumerate(hull):
         b=hull[(i+1)%len(hull)]

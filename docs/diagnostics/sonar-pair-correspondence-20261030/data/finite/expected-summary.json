@@ -1,0 +1,304 @@
+{
+  "variants": {
+    "lk_raw": {
+      "pair": {
+        "candidates": 8533,
+        "converged_candidates": 8073,
+        "converged_cost_p50_p90": [
+          1.6089422927492303,
+          25.881638052545178
+        ],
+        "diagnostic_cost_within_9": 6148,
+        "multiple_distinct_converged_near_modes": 425,
+        "multiple_near_seed_fits": 8055,
+        "mode_search": "nine initial elevations; distinct converged fits do not prove global uniqueness"
+      },
+      "triplet_all": {
+        "candidates": 2889,
+        "training_fit": 2705,
+        "validation_found": 1534,
+        "validation_source_supported": 1534,
+        "visible_predictions": 1027,
+        "family_compatible": 773,
+        "chosen_range_abs_error_m_p50_p90": [
+          0.01929691277818879,
+          0.10970471092177031
+        ],
+        "chosen_azimuth_abs_error_deg_p50_p90": [
+          0.28401325121537174,
+          1.6411246014655425
+        ],
+        "validation_success_ratio_all_candidates": 0.2675666320526134
+      },
+      "triplet_training_selected": {
+        "candidates": 2057,
+        "training_fit": 2057,
+        "validation_found": 1185,
+        "validation_source_supported": 1185,
+        "visible_predictions": 857,
+        "family_compatible": 719,
+        "chosen_range_abs_error_m_p50_p90": [
+          0.016404194355764012,
+          0.08443882850452551
+        ],
+        "chosen_azimuth_abs_error_deg_p50_p90": [
+          0.23475238743357246,
+          1.0755943359672782
+        ],
+        "validation_success_ratio_all_candidates": 0.349538162372387
+      },
+      "no_pose_blocks": 1
+    },
+    "lk_source_positive": {
+      "pair": {
+        "candidates": 1947,
+        "converged_candidates": 1856,
+        "converged_cost_p50_p90": [
+          1.0949728910122682,
+          24.34489619437893
+        ],
+        "diagnostic_cost_within_9": 1446,
+        "multiple_distinct_converged_near_modes": 90,
+        "multiple_near_seed_fits": 1853,
+        "mode_search": "nine initial elevations; distinct converged fits do not prove global uniqueness"
+      },
+      "triplet_all": {
+        "candidates": 645,
+        "training_fit": 603,
+        "validation_found": 369,
+        "validation_source_supported": 253,
+        "visible_predictions": 249,
+        "family_compatible": 203,
+        "chosen_range_abs_error_m_p50_p90": [
+          0.022338455627342935,
+          0.10612069657397684
+        ],
+        "chosen_azimuth_abs_error_deg_p50_p90": [
+          0.2115231650098462,
+          0.844080486370335
+        ],
+        "validation_success_ratio_all_candidates": 0.3147286821705426
+      },
+      "triplet_training_selected": {
+        "candidates": 478,
+        "training_fit": 478,
+        "validation_found": 297,
+        "validation_source_supported": 206,
+        "visible_predictions": 222,
+        "family_compatible": 190,
+        "chosen_range_abs_error_m_p50_p90": [
+          0.01948597730120305,
+          0.09483689954059918
+        ],
+        "chosen_azimuth_abs_error_deg_p50_p90": [
+          0.1981355796054135,
+          0.7755383659003569
+        ],
+        "validation_success_ratio_all_candidates": 0.39748953974895396
+      },
+      "no_pose_blocks": 1
+    },
+    "lk_source_contrast": {
+      "pair": {
+        "candidates": 497,
+        "converged_candidates": 470,
+        "converged_cost_p50_p90": [
+          0.4143421690208766,
+          14.963446644947643
+        ],
+        "diagnostic_cost_within_9": 406,
+        "multiple_distinct_converged_near_modes": 17,
+        "multiple_near_seed_fits": 470,
+        "mode_search": "nine initial elevations; distinct converged fits do not prove global uniqueness"
+      },
+      "triplet_all": {
+        "candidates": 164,
+        "training_fit": 152,
+        "validation_found": 102,
+        "validation_source_supported": 58,
+        "visible_predictions": 74,
+        "family_compatible": 69,
+        "chosen_range_abs_error_m_p50_p90": [
+          0.015114627214838361,
+          0.05669314780311209
+        ],
+        "chosen_azimuth_abs_error_deg_p50_p90": [
+          0.21114408031966725,
+          0.7260115851330124
+        ],
+        "validation_success_ratio_all_candidates": 0.42073170731707316
+      },
+      "triplet_training_selected": {
+        "candidates": 134,
+        "training_fit": 134,
+        "validation_found": 87,
+        "validation_source_supported": 51,
+        "visible_predictions": 70,
+        "family_compatible": 67,
+        "chosen_range_abs_error_m_p50_p90": [
+          0.014385700511333255,
+          0.052845863614501984
+        ],
+        "chosen_azimuth_abs_error_deg_p50_p90": [
+          0.20404391945377742,
+          0.7015765440991913
+        ],
+        "validation_success_ratio_all_candidates": 0.5
+      },
+      "no_pose_blocks": 1
+    },
+    "akaze_raw": {
+      "pair": {
+        "candidates": 582,
+        "converged_candidates": 550,
+        "converged_cost_p50_p90": [
+          1.9586418975860718,
+          57.01988594969822
+        ],
+        "diagnostic_cost_within_9": 405,
+        "multiple_distinct_converged_near_modes": 19,
+        "multiple_near_seed_fits": 549,
+        "mode_search": "nine initial elevations; distinct converged fits do not prove global uniqueness"
+      },
+      "triplet_all": {
+        "candidates": 186,
+        "training_fit": 171,
+        "validation_found": 97,
+        "validation_source_supported": 97,
+        "visible_predictions": 71,
+        "family_compatible": 39,
+        "chosen_range_abs_error_m_p50_p90": [
+          0.03262389178408487,
+          0.13619617024034092
+        ],
+        "chosen_azimuth_abs_error_deg_p50_p90": [
+          0.553761471832777,
+          2.993551197961217
+        ],
+        "validation_success_ratio_all_candidates": 0.20967741935483872
+      },
+      "triplet_training_selected": {
+        "candidates": 125,
+        "training_fit": 125,
+        "validation_found": 71,
+        "validation_source_supported": 71,
+        "visible_predictions": 59,
+        "family_compatible": 38,
+        "chosen_range_abs_error_m_p50_p90": [
+          0.02459622469695688,
+          0.11893088557410075
+        ],
+        "chosen_azimuth_abs_error_deg_p50_p90": [
+          0.4317652719178388,
+          1.9082073847717722
+        ],
+        "validation_success_ratio_all_candidates": 0.304
+      },
+      "no_pose_blocks": 1
+    },
+    "akaze_source_positive": {
+      "pair": {
+        "candidates": 233,
+        "converged_candidates": 225,
+        "converged_cost_p50_p90": [
+          1.2849927115791715,
+          36.509162513422226
+        ],
+        "diagnostic_cost_within_9": 172,
+        "multiple_distinct_converged_near_modes": 5,
+        "multiple_near_seed_fits": 225,
+        "mode_search": "nine initial elevations; distinct converged fits do not prove global uniqueness"
+      },
+      "triplet_all": {
+        "candidates": 76,
+        "training_fit": 71,
+        "validation_found": 39,
+        "validation_source_supported": 26,
+        "visible_predictions": 30,
+        "family_compatible": 19,
+        "chosen_range_abs_error_m_p50_p90": [
+          0.03393451339296627,
+          0.14027887055687197
+        ],
+        "chosen_azimuth_abs_error_deg_p50_p90": [
+          0.37844805299027107,
+          2.554839893628525
+        ],
+        "validation_success_ratio_all_candidates": 0.25
+      },
+      "triplet_training_selected": {
+        "candidates": 51,
+        "training_fit": 51,
+        "validation_found": 31,
+        "validation_source_supported": 22,
+        "visible_predictions": 28,
+        "family_compatible": 19,
+        "chosen_range_abs_error_m_p50_p90": [
+          0.028610058240520875,
+          0.14182907700467237
+        ],
+        "chosen_azimuth_abs_error_deg_p50_p90": [
+          0.37566690822201865,
+          2.7636984041335606
+        ],
+        "validation_success_ratio_all_candidates": 0.37254901960784315
+      },
+      "no_pose_blocks": 1
+    },
+    "akaze_source_contrast": {
+      "pair": {
+        "candidates": 126,
+        "converged_candidates": 123,
+        "converged_cost_p50_p90": [
+          1.2472154874140504,
+          38.98700477560678
+        ],
+        "diagnostic_cost_within_9": 91,
+        "multiple_distinct_converged_near_modes": 3,
+        "multiple_near_seed_fits": 123,
+        "mode_search": "nine initial elevations; distinct converged fits do not prove global uniqueness"
+      },
+      "triplet_all": {
+        "candidates": 38,
+        "training_fit": 36,
+        "validation_found": 20,
+        "validation_source_supported": 11,
+        "visible_predictions": 15,
+        "family_compatible": 8,
+        "chosen_range_abs_error_m_p50_p90": [
+          0.016476174115386932,
+          0.203081082282374
+        ],
+        "chosen_azimuth_abs_error_deg_p50_p90": [
+          0.643681537488092,
+          3.555650284472343
+        ],
+        "validation_success_ratio_all_candidates": 0.21052631578947367
+      },
+      "triplet_training_selected": {
+        "candidates": 22,
+        "training_fit": 22,
+        "validation_found": 15,
+        "validation_source_supported": 9,
+        "visible_predictions": 13,
+        "family_compatible": 8,
+        "chosen_range_abs_error_m_p50_p90": [
+          0.01487014805075848,
+          0.2216898431858409
+        ],
+        "chosen_azimuth_abs_error_deg_p50_p90": [
+          0.643681537488092,
+          3.5759659823293948
+        ],
+        "validation_success_ratio_all_candidates": 0.36363636363636365
+      },
+      "no_pose_blocks": 1
+    }
+  },
+  "validation": "C is never used to fit or select A-B candidates; all lost C observations remain in denominator",
+  "compatibility_scope": "best prediction over training-compatible sampled modes; optimistic diagnostic, not physical identity or calibrated probability",
+  "pose_uncertainty_included": false,
+  "truth_used": false,
+  "map_qualified": false,
+  "pose_constraint_installed": false
+}

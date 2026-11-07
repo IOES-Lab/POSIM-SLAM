@@ -1,0 +1,61 @@
+{
+  "passed": true,
+  "flow_frames": 1235,
+  "bit_identical_observations": 76222,
+  "patch_information_cases": 2994,
+  "field_warp_cases": 1497,
+  "synthetic_warp_cases": 16,
+  "failure_controls": [
+    {
+      "case": "malformed",
+      "exit_code": 1,
+      "error": "[json.exception.parse_error.101] parse error at line 1, column 1: syntax error while parsing value - invalid literal; last read: 'b'"
+    },
+    {
+      "case": "truncated",
+      "exit_code": 1,
+      "error": "pixels_truncated"
+    },
+    {
+      "case": "duplicate-clock",
+      "exit_code": 1,
+      "error": "diagnostic_clock"
+    },
+    {
+      "case": "invalid-information-packet",
+      "exit_code": 1
+    },
+    {
+      "case": "invalid-information-packet",
+      "exit_code": 1
+    },
+    {
+      "case": "empty-or-black-reference",
+      "exit_code": 0,
+      "valid": false
+    },
+    {
+      "case": "empty-or-black-reference",
+      "exit_code": 0,
+      "valid": false
+    }
+  ],
+  "source_sha256": {
+    ".local/reference-patch-control-20261028/build/basalt_patch_information_probe": "0bbf0e56d827724811f90dcdce832a35f59883d422b8d9208816f7924ff21be3",
+    ".local/reference-patch-control-20261028/build/basalt_reference_photometry_probe": "fe86608af1b103522f8b2fd8015533b2dec8d47507723dce1efe866b56f86415",
+    ".local/reference-patch-control-20261028/build/basalt_reference_warp_probe": "40dd62542159d11847220357f715759e8ca7c80c03e5a7f5778eb358252321da",
+    ".local/posim-slam-reference-20261028/native/basalt/diagnostics/patch_information.cc": "220c3b785810c6b11f631426540f7aa46d7698c43108c80fbae592810964f659",
+    ".local/posim-slam-reference-20261028/native/basalt/diagnostics/reference_photometry.cc": "f946c4ae1711fbe6b797615d1248e11eda53d3fac7124a1c36755fb1634dc981",
+    ".local/posim-slam-reference-20261028/native/basalt/diagnostics/reference_warp.cc": "ac8acdfa280589b2ae979da3a06c9ee2d5f4401191acaf256794bc7c5f4be422",
+    ".local/patch-information-20261028/verify_component.py": "9a73681011992526ef6cd7520729013a1ef4041c352909c6b8b4375ee296789d",
+    ".local/patch-information-20261028/receipt.json": "34bf2b0f5047c65eedd4e21cb8c428de75f128155aba0a4fd7d525df2bb1fa57",
+    ".local/patch-information-20261028/photometric-tracks.jsonl": "66945b484ab77c17414993e67beed846e46017645688bdcad4145e7d23321b39",
+    ".local/patch-information-20261028/flow-receipt.json": "70f524d438e49cc81ae0508b7254b1d8ccc756c542cfbf1a22c506b25f253654",
+    ".local/patch-information-20261028/affine-receipt.json": "bd02c2e3ac1ff808116682d5ef63f4a19fc7348eae597fc80f520fb7335e811f",
+    ".local/patch-information-20261028/affine-synthetic.json": "14893361637d70ae15a81f6309522f0cef89a8d34786c35eaabd4d392eddd98d",
+    ".local/reference-patch-control-20261028/patch/calibration.json": "db8b4f5a35b430141b1062312865729bb6c2363e8b732647e75d2ad4a5998bfa",
+    ".local/reference-patch-control-20261028/patch/calibration.archive-export-1.json": "cfdf94543931eadfb9bce5551efd5bf674694d66a2afe947c1f3e6a2751441e7",
+    ".local/visual-ping-world-particles-20261028-a/multimodal-inputs/timeline.json": "2d8d714187780086caf484d262174ea11f8725bd17e0db46365c5404b179f394"
+  },
+  "scope": "macOS SDK native optional diagnostic targets; unchanged field calculations, owned-thread teardown and invalid packets; no estimator or platform qualification"
+}

@@ -1,0 +1,20 @@
+{
+  "capture_application": "06ad1d2b1bebdb5af9b299a592d37b601d120f3a",
+  "analysis_application": "1e9cb5733fb717c70d06801c55ff9bd26a8e9fb4",
+  "capture_library": "7f48596463fbff92818b4f4b0316ebe50c552303",
+  "source_integration": "ffecee9be9976f68c9e883d6cf3bbd6d40eb7729",
+  "source_prs_unmerged": true,
+  "native_worker_sha256": "38ec4ecc26aba87e55ee4abe60446196ed6bc6983fa335fb4461dac105e1e813",
+  "native_source_files_matched": 94,
+  "truth_is_estimator_input": false,
+  "rgb_is_estimator_input": false,
+  "map_qualified": false,
+  "product_defaults_changed": false,
+  "installed_sdk_changed": false,
+  "noise_admission_changed": false,
+  "diagnostic_sigma_is_hardware_calibration": false,
+  "acquisition_extrinsic": "Explicit 35 degree down inspection mount; product mount unchanged",
+  "raw_record_location": "/Volumes/ExternalHDD/POSIM/validation-data/posim-slam/sonar-translated-view-20261031b",
+  "raw_data_copied_in_full": false,
+  "native_estimation_rerun_by_verifier": false
+}

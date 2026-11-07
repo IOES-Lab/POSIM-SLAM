@@ -1,0 +1,288 @@
+[
+  {
+    "wall": 292841.176468791,
+    "value": {
+      "stamp": {
+        "sec": 1,
+        "nanosec": 10000000
+      },
+      "frame_id": "vehicle/dvl",
+      "valid": true,
+      "reason": "bottom_locked",
+      "velocity_m_s": [
+        -0.04689669071357717,
+        0.014731402161220958,
+        0.29903858211666656
+      ],
+      "covariance": [
+        8e-06,
+        4.440892098500626e-22,
+        1.1102230246251565e-22,
+        4.440892098500626e-22,
+        7.999999999999998e-06,
+        -4.440892098500626e-22,
+        1.1102230246251565e-22,
+        -4.440892098500626e-22,
+        1.333333333333334e-06
+      ],
+      "locked_beams": 4,
+      "range_m": 1.8833911418914795,
+      "session_nonce": "a721322dbbf2449898a38432ff688d01",
+      "version": "0.1.0",
+      "source": "/vehicle/sensors/dvl",
+      "native_source": "/vehicle/sensors/dvl"
+    }
+  },
+  {
+    "wall": 292842.181306833,
+    "value": {
+      "stamp": {
+        "sec": 2,
+        "nanosec": 10000000
+      },
+      "frame_id": "vehicle/dvl",
+      "valid": true,
+      "reason": "bottom_locked",
+      "velocity_m_s": [
+        0.011957316592488257,
+        0.0015143151482547453,
+        0.3617142364743201
+      ],
+      "covariance": [
+        8e-06,
+        4.440892098500626e-22,
+        1.1102230246251565e-22,
+        4.440892098500626e-22,
+        7.999999999999998e-06,
+        -4.440892098500626e-22,
+        1.1102230246251565e-22,
+        -4.440892098500626e-22,
+        1.333333333333334e-06
+      ],
+      "locked_beams": 4,
+      "range_m": 2.260005235671997,
+      "session_nonce": "a721322dbbf2449898a38432ff688d01",
+      "version": "0.1.0",
+      "source": "/vehicle/sensors/dvl",
+      "native_source": "/vehicle/sensors/dvl"
+    }
+  },
+  {
+    "wall": 292843.277331291,
+    "value": {
+      "stamp": {
+        "sec": 3,
+        "nanosec": 10000000
+      },
+      "frame_id": "vehicle/dvl",
+      "valid": true,
+      "reason": "bottom_locked",
+      "velocity_m_s": [
+        0.017811951097083355,
+        -0.013942717702085954,
+        0.3652711552241592
+      ],
+      "covariance": [
+        8e-06,
+        4.440892098500626e-22,
+        1.1102230246251565e-22,
+        4.440892098500626e-22,
+        7.999999999999998e-06,
+        -4.440892098500626e-22,
+        1.1102230246251565e-22,
+        -4.440892098500626e-22,
+        1.333333333333334e-06
+      ],
+      "locked_beams": 4,
+      "range_m": 2.6892580986022945,
+      "session_nonce": "a721322dbbf2449898a38432ff688d01",
+      "version": "0.1.0",
+      "source": "/vehicle/sensors/dvl",
+      "native_source": "/vehicle/sensors/dvl"
+    }
+  },
+  {
+    "wall": 292847.378859666,
+    "value": {
+      "valid": false,
+      "reason": "stale",
+      "velocity_m_s": null,
+      "covariance": null,
+      "frame_id": "vehicle/dvl",
+      "session_nonce": "a721322dbbf2449898a38432ff688d01",
+      "version": "0.1.0",
+      "source": "/vehicle/sensors/dvl",
+      "native_source": "/vehicle/sensors/dvl"
+    }
+  },
+  {
+    "wall": 292847.47551825,
+    "value": {
+      "stamp": {
+        "sec": 7,
+        "nanosec": 10000000
+      },
+      "frame_id": "vehicle/dvl",
+      "valid": true,
+      "reason": "bottom_locked",
+      "velocity_m_s": [
+        -0.04769520658188235,
+        0.04049626930119325,
+        -0.06658160694155732
+      ],
+      "covariance": [
+        8e-06,
+        4.440892098500626e-22,
+        1.1102230246251565e-22,
+        4.440892098500626e-22,
+        7.999999999999998e-06,
+        -4.440892098500626e-22,
+        1.1102230246251565e-22,
+        -4.440892098500626e-22,
+        1.333333333333334e-06
+      ],
+      "locked_beams": 4,
+      "range_m": 3.92133355140686,
+      "session_nonce": "a721322dbbf2449898a38432ff688d01",
+      "version": "0.1.0",
+      "source": "/vehicle/sensors/dvl",
+      "native_source": "/vehicle/sensors/dvl"
+    }
+  },
+  {
+    "wall": 292848.534332083,
+    "value": {
+      "stamp": {
+        "sec": 8,
+        "nanosec": 0
+      },
+      "frame_id": "vehicle/dvl",
+      "valid": true,
+      "reason": "bottom_locked",
+      "velocity_m_s": [
+        0.05314577114202261,
+        -0.010710979718240534,
+        0.17437282681741367
+      ],
+      "covariance": [
+        8e-06,
+        4.440892098500626e-22,
+        1.1102230246251565e-22,
+        4.440892098500626e-22,
+        7.999999999999998e-06,
+        -4.440892098500626e-22,
+        1.1102230246251565e-22,
+        -4.440892098500626e-22,
+        1.333333333333334e-06
+      ],
+      "locked_beams": 4,
+      "range_m": 3.8668785095214844,
+      "session_nonce": "a721322dbbf2449898a38432ff688d01",
+      "version": "0.1.0",
+      "source": "/vehicle/sensors/dvl",
+      "native_source": "/vehicle/sensors/dvl"
+    }
+  },
+  {
+    "wall": 292849.576798333,
+    "value": {
+      "stamp": {
+        "sec": 9,
+        "nanosec": 10000000
+      },
+      "frame_id": "vehicle/dvl",
+      "valid": true,
+      "reason": "bottom_locked",
+      "velocity_m_s": [
+        -0.03686953239248463,
+        -0.00158749821729739,
+        -0.12662806493432072
+      ],
+      "covariance": [
+        8e-06,
+        4.440892098500626e-22,
+        1.1102230246251565e-22,
+        4.440892098500626e-22,
+        7.999999999999998e-06,
+        -4.440892098500626e-22,
+        1.1102230246251565e-22,
+        -4.440892098500626e-22,
+        1.333333333333334e-06
+      ],
+      "locked_beams": 4,
+      "range_m": 3.9094974994659424,
+      "session_nonce": "a721322dbbf2449898a38432ff688d01",
+      "version": "0.1.0",
+      "source": "/vehicle/sensors/dvl",
+      "native_source": "/vehicle/sensors/dvl"
+    }
+  },
+  {
+    "wall": 292850.675950125,
+    "value": {
+      "stamp": {
+        "sec": 10,
+        "nanosec": 10000000
+      },
+      "frame_id": "vehicle/dvl",
+      "valid": true,
+      "reason": "bottom_locked",
+      "velocity_m_s": [
+        -0.015221571847582573,
+        0.012748594411620058,
+        -0.0026294069657800696
+      ],
+      "covariance": [
+        8e-06,
+        4.440892098500626e-22,
+        1.1102230246251565e-22,
+        4.440892098500626e-22,
+        7.999999999999998e-06,
+        -4.440892098500626e-22,
+        1.1102230246251565e-22,
+        -4.440892098500626e-22,
+        1.333333333333334e-06
+      ],
+      "locked_beams": 4,
+      "range_m": 3.8644130229949947,
+      "session_nonce": "a721322dbbf2449898a38432ff688d01",
+      "version": "0.1.0",
+      "source": "/vehicle/sensors/dvl",
+      "native_source": "/vehicle/sensors/dvl"
+    }
+  },
+  {
+    "wall": 292851.681172333,
+    "value": {
+      "stamp": {
+        "sec": 11,
+        "nanosec": 10000000
+      },
+      "frame_id": "vehicle/dvl",
+      "valid": true,
+      "reason": "bottom_locked",
+      "velocity_m_s": [
+        0.03466171108722098,
+        -0.022296370668161897,
+        0.046011051796795294
+      ],
+      "covariance": [
+        8e-06,
+        4.440892098500626e-22,
+        1.1102230246251565e-22,
+        4.440892098500626e-22,
+        7.999999999999998e-06,
+        -4.440892098500626e-22,
+        1.1102230246251565e-22,
+        -4.440892098500626e-22,
+        1.333333333333334e-06
+      ],
+      "locked_beams": 4,
+      "range_m": 3.896419525146484,
+      "session_nonce": "a721322dbbf2449898a38432ff688d01",
+      "version": "0.1.0",
+      "source": "/vehicle/sensors/dvl",
+      "native_source": "/vehicle/sensors/dvl"
+    }
+  }
+]

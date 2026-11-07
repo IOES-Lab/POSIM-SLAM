@@ -1,0 +1,33 @@
+{
+  "phase": "source_local_forward_model_only",
+  "frozen_before_new_measurement": true,
+  "acoustic_source": "ffecee9be9976f68c9e883d6cf3bbd6d40eb7729",
+  "library_baseline": "0e4519d9d666f2ade03d47277b0e194a7605ddb8",
+  "scope": "NumPy adaptation of actual RaySurfaceNormals and conditional power moments on supplied sensor-local finite surfaces; no native factor or map admission",
+  "normal_controls": [
+    "front_plane_17x19",
+    "slanted_plane_23x29",
+    "spherical_range_13x17",
+    "finite_occluder_256x256",
+    "missing_isolated_15x17",
+    "nonuniform_13x19",
+    "two_by_two",
+    "single_row",
+    "single_column",
+    "empty_returns"
+  ],
+  "reference": "compile and run unchanged POSIM RaySurfaceNormals.hh at declared source with existing SDK OpenCV; save complete input/output arrays",
+  "normal_absolute_tolerance": 2e-05,
+  "zero_mask_exact": true,
+  "benchmark": "Reuse existing analytic surface_pixel_moments and full-FFT PosimRangeResponse for 16/64 predeclared pixels, first unchanged implementation. No new Fourier approximation.",
+  "holdouts": "These supplied geometry and previously inspected translated images are development controls; no independent scene or native uncertainty claim",
+  "forbidden_changes": [
+    "installed SDK",
+    "native ABI or solver",
+    "sensor noise or defaults",
+    "freshness or admission",
+    "original 16 protected files",
+    "LIVE/runners"
+  ],
+  "next_gate": "Qualify native range-grid and correlated-power fidelity before fitting a finite-ground/occluder observation or fusing it with navigation."
+}

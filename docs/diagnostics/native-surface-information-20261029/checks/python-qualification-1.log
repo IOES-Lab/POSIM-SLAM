@@ -1,0 +1,9 @@
+Processing ./.local/native-surface-information-20261029/library
+  Preparing metadata (pyproject.toml): started
+  Preparing metadata (pyproject.toml): finished with status 'done'
+Building wheels for collected packages: posim-slam
+  Building wheel for posim-slam (pyproject.toml): started
+  Building wheel for posim-slam (pyproject.toml): finished with status 'done'
+  Created wheel for posim-slam: filename=posim_slam-0.1.0-py3-none-any.whl size=220548 sha256=52be11115277cf9fe76ac51621f6ae2457097e7173ef9f02f50b1e0dd343d8f5
+  Stored in directory: /private/var/folders/lr/br3mcpq16_j7q03pfkm_bhc40000gn/T/pip-ephem-wheel-cache-qjf4q5so/wheels/e3/bb/f3/8cb7b5a1b4037576488fc00d87e0f5ee07b8d540048b7dbed0
+Successfully built posim-slam

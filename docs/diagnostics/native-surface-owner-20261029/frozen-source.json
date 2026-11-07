@@ -1,0 +1,17 @@
+{
+  "source_sha256": {
+    "README.md": "0dcc73262c5332167989d37c8283008e1dd1014e6f7abdfa428c0e00ea9a9c88",
+    "README.ko.md": "db0c3776917c55f98564e4bb89d93fed5e8a488cbaba9251ffbbc827e2fef80b",
+    "tools/build_basalt.py": "6b6ae0be995e284c68d14c229d2b71323795af2ce431effef8d745c2d7cdbc5f",
+    "native/basalt/CMakeLists.txt": "40ae15e3e4154b1914dbb0ec115c665e68474b8ff7326edcee641d5545ac556f",
+    "native/basalt/surface_prior.hpp": "b2099b115bb15159805020a3b03a7664710b51bb67733716b5e4b882b0c8bbfc",
+    "native/basalt/surface_prior_probe_io.hpp": "0f416bceea2311fcce9c59cde84590546d08599a48b54e84fc7d8c9224610016",
+    "native/basalt/retired_pose_conditional.hpp": "503d3407873e9846fb341a4862ab5527bf49f6203d9ab82bff08ec43dd435d07",
+    "native/basalt/ping_optimizer.hpp": "1efca336f6c1518415c5ffc0173c3d5c85de8777833d88323d3cfb40b779f29b",
+    "native/basalt/surface_owner.hpp": "368fc62ea99631d5b78e23fb5ab14d1175075be20b179070c32440e98b8e085c",
+    "native/basalt/surface_owner_probe.cc": "5ac7f7fe3dcb0d846aa62b550a3d82760568b18e9c680097e5e18c2601b5aa44",
+    "native/basalt/test_surface_owner.py": "9cb3006c2995879c2ba430eabc6f0328bc531d6acf7b4a2bc7abf035eacb5aae"
+  },
+  "protected_user_edits_included": false,
+  "source_file_bytes": 1975847
+}

@@ -1,0 +1,29 @@
+{
+  "schema": 1,
+  "created_before_any_fit": true,
+  "source_integration": "ffecee9be9976f68c9e883d6cf3bbd6d40eb7729",
+  "training_indices": [
+    49,
+    88,
+    151
+  ],
+  "unused_temporal_indices": [
+    51,
+    90,
+    153
+  ],
+  "selection": "From each original index interval [2,65), [65,129), [129,193), choose most available bright+recovery paired angular-median hypotheses; tie earliest. Evaluation is +2 frames. Already inspected development record, not independent validation.",
+  "initialization": "Only paired point_map candidates in training views; XY single-link .75 m, largest cluster (tie smallest label). Preserve every candidate/cluster. Ground normal and world plane distance use median causal DVL plane means at training times. PCA XY rectangle encloses candidate cluster; each side at least .2m; median conditional height above ground. No scene, truth, RGB or assessment arrays.",
+  "queries": "Each view: 8 equally spaced range indices over initial prism vertex slant range span +/- .6m and 4 beam indices over vertex azimuth span +/- 8deg, clipped to native grid. Union with ranges [80,140,200,300] x beams [32,96,160,224]. Freeze before fitting. Evaluation query support is projected from same training seed.",
+  "families": [
+    "causal per-view DVL plane baseline",
+    "shared plane fit: 3 parameters",
+    "shared plane plus one finite opaque ground-supported rectangular prism: 10 parameters including common object/ground log-reflectivity ratio"
+  ],
+  "score": "Sum exponential marginal negative log mean score, profiling one positive common brightness gain per view. Pixel correlations are retained in final moments; the marginal fit is composite, never an independent-pixel confidence claim. No score covariance inversion.",
+  "search": "Deterministic bounded coordinate pattern search, positive/negative each coordinate in fixed order. Retain strictly improved candidate. Ground-only: 2 sweeps at scales [1,.5], steps [0.01,0.01,.05]. Prism joint: 2 sweeps at scales [1,.5], steps [.01,.01,.05,.10,.10,.10,.10,.05,.15,.5]. Recompute first hits and range-derived source normals for every candidate. Retain full trace.",
+  "bounds": "Ground slope deviations +/- .06, height deviation +/- .3m; prism XY center +/- .6m from seed; side lengths .1 to1.5m; height .05 to1m; yaw +/- pi; log material ratio +/- log(20). Search bounds are computational choices, not calibrated uncertainty.",
+  "final_evidence": "Every selected raw power, final exact full correlated covariance, full geometry vertices/triangles, initial/final candidate clouds, every fit step and unavailable case. Scene/truth/RGB allowed only after sealed result for assessment/overview. Never trim emitted geometry to pass.",
+  "scope": "Conditional fixed navigation/DVL means; single-prism shape prior; no inferred pose/plane covariance or native update. A better image score cannot accept a map. Ground support outside measured footprint and extra objects may be wrong.",
+  "resource": "Existing raw records only; no renderer/SDK mutation, native trial, noise/admission changes, artifacts or cleanup. Bounded arrays at actual 256x256 rays, 599x256 pixels, 15m."
+}

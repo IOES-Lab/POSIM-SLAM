@@ -1,0 +1,30 @@
+{
+  "scope": "All conditional measured-range hypotheses; no independent XYZ or qualified map",
+  "rows": [
+    {
+      "key": [
+        32010000000,
+        0,
+        1
+      ],
+      "world": [
+        4.982313959313939,
+        -2.3792140075557278,
+        -3.692948322090217
+      ]
+    },
+    {
+      "key": [
+        33010000000,
+        0,
+        1
+      ],
+      "world": [
+        4.866200506085753,
+        -2.5327672691227856,
+        -3.696271620544257
+      ]
+    }
+  ],
+  "map_qualified": false
+}

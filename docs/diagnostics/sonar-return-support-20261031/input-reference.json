@@ -1,0 +1,14 @@
+{
+  "previous_record": "sonar-inspection-scene-20261031",
+  "files": {
+    "calibration.json": "b0fb16310806f8efdb575408b733a63b2b11503edd1019a30d242301d5735ee4",
+    "scene-assessment-only.npz": "e47b848bd28c46911ee7b4a455343e786b1382737e937f6b8dba0b4e6a6e1678",
+    "context-camera.json": "526a933662dd02adde178a54c962d976da1a7cbf1ed51396128aaa3a5bf873a4",
+    "isometric-rgb.png": "7a8f1b8c85a134171529925609f168673b37eaaf7f3b0ea328e7863ea82ed59e",
+    "trajectory-assessment.npz": "8b297400f4a4791b88312270a258952f832cbd597b25b5a0ef3ad5e1b574490c",
+    "source-identity.json": "a9aaef4acda239946a7d67090b6a07b5547babdd5fa54cf446e26dc7fba5becd"
+  },
+  "original_navigation_states_sha256": "a5c07dfa9c121c5620086ead5819064e044469aa4ffef83180a7212795c41dba",
+  "no_sonar_or_rgb_in_navigation": true,
+  "raw_frames_not_duplicated": true
+}

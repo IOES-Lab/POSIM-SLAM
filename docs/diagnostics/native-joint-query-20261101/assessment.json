@@ -1,0 +1,77 @@
+{
+  "protocol": {
+    "scope": "Read native cross-time uncertainty without treating estimated poses as data.",
+    "assessment_only": true,
+    "map_accepted": false,
+    "stamps_ns": [
+      25010000000,
+      45010000000,
+      65010000000,
+      85010000000
+    ],
+    "joint_query_dimensions": 24,
+    "original_state_times_only": true,
+    "snapshot_sha256": "b57aa69c3d05748f3060841c60e5b8f54ffd8378fcbcc092e6d59c8a56d80f78",
+    "snapshot_compressed_sha256": "a34dc0eb925ab65deaecdd7ec4609c27323637c871ad044efb1ce2b5673ddf46",
+    "snapshot_source_bytes": 7926661,
+    "snapshot_file_bytes": 1489557,
+    "original_retirement_capture": true,
+    "live_root_treated_as_known": false,
+    "noise_or_initialization_changed": false,
+    "source_sha256": "757b1c6536bbcdcf27c42beb9b6e955a540dbfabaddb2a7d00798ca53ded2df2",
+    "component_sha256": {
+      "native_surface.py": "bf8ce19c007f09719139bab4294cf0e583f0a07ba031825f39ecce1a22e9458b",
+      "native_surface_information.py": "c536a7b848597490bcb2de04e2ac536a13fb42d5a6b6bfd8b27cdfb3a1422e09",
+      "retired_pose_archive.py": "18e2e81f229248aa59c498995d1b4e58af3ac9f3941754aeb35b62e6d0f7c9fb",
+      "surface_prior.py": "3df807f142d435dfc0d1b8bab716562cb70036e510a78c5ed1dea7ce8ead9e59",
+      "constrained_information.py": "a2228a63fd7c64bccec2b1bba892fd39d4251930cf7bd44a9e4f0f25f70a8448"
+    },
+    "native_trajectory_maximum_component_difference": 2.1267015926085264e-13,
+    "native_states_compared": 271,
+    "replay_input_hashes_unchanged": true
+  },
+  "rows": [
+    {
+      "stamp_ns": 25010000000,
+      "observable_position_three_sigma_m": 3.1287213081743577,
+      "observable_rotation_three_sigma_deg": 42.552112100185795,
+      "free_direction_component_norm": 0.0
+    },
+    {
+      "stamp_ns": 45010000000,
+      "observable_position_three_sigma_m": 3.4662887649071292,
+      "observable_rotation_three_sigma_deg": 80.33812090733004,
+      "free_direction_component_norm": 0.0
+    },
+    {
+      "stamp_ns": 65010000000,
+      "observable_position_three_sigma_m": 4.1833366908836025,
+      "observable_rotation_three_sigma_deg": 118.11142008391313,
+      "free_direction_component_norm": 0.0
+    },
+    {
+      "stamp_ns": 85010000000,
+      "observable_position_three_sigma_m": 10.949444704799754,
+      "observable_rotation_three_sigma_deg": 155.8649071902897,
+      "free_direction_component_norm": 0.0
+    }
+  ],
+  "root_rank": 226,
+  "root_columns": 226,
+  "root_constraint_rank": 0,
+  "unbounded_columns": 0,
+  "unbounded_rank": 0,
+  "maximum_between_time_correlation": 0.9999172248372205,
+  "workspace_bound_bytes": 10915968,
+  "active_native_counts": {
+    "imu_intervals": 14,
+    "dvl_observations": 5,
+    "pressure_observations": 5
+  },
+  "independent_pose_observations": false,
+  "live_coordinates_treated_as_known": false,
+  "information_scope": "local_frozen_weight_gauss_newton",
+  "uncertainty_scope": "Observable local frozen-weight Gauss-Newton covariance; explicit free directions retained; not map acceptance",
+  "native_map_qualified": false,
+  "output_sha256": "a91a2d4575bdae5ad4960446223a555aa59a952c6413cbb70a74339976d47d46"
+}

@@ -1,0 +1,45 @@
+{
+  "application_commit": "fd7c6e7f03263adcb8e123e18b6e7bac416c2a46",
+  "library_commit": "e6b483cd0c62aa6a37bd8630957cfefaf0843224",
+  "sdk_posim_commit": "8c47601c7dd4729e3edeabef79665760268fdbc4",
+  "inspected_sonar_integration_commit": "867d214cbe3c68033e80bc1ec4dbd4ef69e3cb41",
+  "interpretation": "SDK identity, inspected source and measured override binary are separate receipts; no new installed SDK qualification",
+  "hashes": {
+    "sonar_system_binary": {
+      "bytes": 717936,
+      "sha256": "60a4ede968b0570c42ff8925c9dd5f9397f96a6e89bd362c6026640d84cd3f08"
+    },
+    "sensor_system_binary": {
+      "bytes": 579200,
+      "sha256": "0cc6ffaae8fc654595a33364246e310e11b5824f562143ce9942b6d97c92f7cb"
+    },
+    "static_physical_scene": {
+      "bytes": 3874,
+      "sha256": "8875839fd45a26c4c31083b7a59ac0d755fb2b5a942742ab2f0914d7f2b59280"
+    },
+    "capture_calibration": {
+      "bytes": 6794,
+      "sha256": "4b77ff9c3fe039c13a3053a71de24ebcf0eec311fe21bdaa11f2258a701fb33f"
+    },
+    "source_amplitude_code": {
+      "bytes": 5995,
+      "sha256": "c9aa5d4e594b8ed97e7257e2e80acb72bb968294a4d13889fab353942dbe339b"
+    },
+    "point_factor_code": {
+      "bytes": 3103,
+      "sha256": "dabee1f424c78d4832652e51b923ba37691ec7abf209bc1b2561126a2a710bbd"
+    },
+    "point_triangulation_code": {
+      "bytes": 7289,
+      "sha256": "62a9a749c1fcc7de20e02d97249bdb0a90921c54a001d5da6114b925871ae435"
+    },
+    "joint_geometry_code": {
+      "bytes": 2691,
+      "sha256": "d757723dab6932b37daab3e04df86c4a06f4eae6f23b069ec28ccd529718b853"
+    },
+    "flow_code": {
+      "bytes": 7508,
+      "sha256": "055a29a24fb0fcb7b54d589f40b5cf9f438069c01fbc4c4cd6bd97ba05f32dfc"
+    }
+  }
+}

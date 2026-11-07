@@ -1,0 +1,16 @@
+{
+  "scope": "Retained controlled native fixture; source-aware geometric evaluation, not a new simulator run or estimator input",
+  "samples": 9,
+  "locked_beam_returns": 24,
+  "unlocked_beams": 12,
+  "engine_source": "gz-sensors 10.1.1",
+  "source_files_sha256": {
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/dvl-native-qualified/stationary/world.sdf": "dfc6e609ecc0e0f38d0e2f4260e2510bd32df7a0278c668fba563ca3e619f1b6",
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/dvl-native-qualified/moving/world.sdf": "6b1ed9dfeaae3ed57027464b32726e88cbba0e439449df460a325058f27712ff",
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/dvl-native-qualified/out_of_range/world.sdf": "6d65fa1bb24d94412b18fff3205cc626b4cbb757f16c49d6d8a483c3f6cfe845"
+  },
+  "upstream_url": "https://github.com/gazebosim/gz-sensors/blob/gz-sensors10_10.1.1/src/DopplerVelocityLog.cc",
+  "upstream_sha256": "a070ffe031a4c25d0dcc8c91252c0759c3aafaf35f396a56a6ba95ed2160ea86",
+  "continuous_cone_is_discrete_renderer": false,
+  "truth_is_estimator_input": false
+}

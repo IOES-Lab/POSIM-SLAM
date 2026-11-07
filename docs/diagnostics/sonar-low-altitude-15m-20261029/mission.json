@@ -1,0 +1,412 @@
+{
+  "request": {
+    "depth_m": 2.5,
+    "distance_m": 5.5,
+    "hold_seconds": 3,
+    "session_nonce": "9599940f58cf46aaae68a5f2c146b74f",
+    "return_home": false,
+    "waypoints": [
+      {
+        "latitude": 47.63017121865381,
+        "longitude": -122.3982391,
+        "depth_m": 2.5,
+        "hold_seconds": 0,
+        "yaw_rad": 0.0
+      },
+      {
+        "latitude": 47.63017661515623,
+        "longitude": -122.3982391,
+        "depth_m": 2.5,
+        "hold_seconds": 0,
+        "yaw_rad": 0.0
+      },
+      {
+        "latitude": 47.63017661513289,
+        "longitude": -122.3981659199938,
+        "depth_m": 2.5,
+        "hold_seconds": 0,
+        "yaw_rad": 0.0
+      },
+      {
+        "latitude": 47.630171218630466,
+        "longitude": -122.3981659199938,
+        "depth_m": 2.5,
+        "hold_seconds": 0,
+        "yaw_rad": 0.0
+      },
+      {
+        "latitude": 47.63017121865381,
+        "longitude": -122.3982391,
+        "depth_m": 2.5,
+        "hold_seconds": 0,
+        "yaw_rad": 0.0
+      },
+      {
+        "latitude": 47.63016582215138,
+        "longitude": -122.3982391,
+        "depth_m": 2.5,
+        "hold_seconds": 0,
+        "yaw_rad": 0.0
+      },
+      {
+        "latitude": 47.630165822128035,
+        "longitude": -122.3981659199938,
+        "depth_m": 2.5,
+        "hold_seconds": 0,
+        "yaw_rad": 0.0
+      }
+    ]
+  },
+  "preview": {
+    "session_nonce": "9599940f58cf46aaae68a5f2c146b74f",
+    "job_id": null,
+    "start": [
+      -0.06334512832909107,
+      0.02209912271347639,
+      -0.10239797604003666
+    ],
+    "start_geographic": {
+      "longitude": -122.39823994283626,
+      "latitude": 47.630200198763276
+    },
+    "yaw_rad": -0.010572521840052569,
+    "depth_m": 2.5,
+    "distance_m": 6.749759776410263,
+    "hold_seconds": 3.0,
+    "minimum_planned_clearance_m": 1.0737603074462387,
+    "waypoints": [
+      {
+        "phase": "waypoint",
+        "number": 1,
+        "position": [
+          3.9188697566941075e-16,
+          -3.1999999995284987,
+          -2.5
+        ],
+        "hold_seconds": 0.0,
+        "yaw_rad": 0.0,
+        "yaw_current_follow": false,
+        "latitude": 47.63017121865381,
+        "longitude": -122.3982391,
+        "depth_m": 2.5
+      },
+      {
+        "phase": "waypoint",
+        "number": 2,
+        "position": [
+          3.1840816772080164e-16,
+          -2.5999999995303935,
+          -2.5
+        ],
+        "hold_seconds": 0.0,
+        "yaw_rad": 0.0,
+        "yaw_current_follow": false,
+        "latitude": 47.63017661515623,
+        "longitude": -122.3982391,
+        "depth_m": 2.5
+      },
+      {
+        "phase": "waypoint",
+        "number": 3,
+        "position": [
+          5.499999435220955,
+          -2.5999999998481593,
+          -2.5
+        ],
+        "hold_seconds": 0.0,
+        "yaw_rad": 0.0,
+        "yaw_current_follow": false,
+        "latitude": 47.63017661513289,
+        "longitude": -122.3981659199938,
+        "depth_m": 2.5
+      },
+      {
+        "phase": "waypoint",
+        "number": 4,
+        "position": [
+          5.500000001601043,
+          -3.1999999999904856,
+          -2.5
+        ],
+        "hold_seconds": 0.0,
+        "yaw_rad": 0.0,
+        "yaw_current_follow": false,
+        "latitude": 47.630171218630466,
+        "longitude": -122.3981659199938,
+        "depth_m": 2.5
+      },
+      {
+        "phase": "waypoint",
+        "number": 5,
+        "position": [
+          3.9188697566941075e-16,
+          -3.1999999995284987,
+          -2.5
+        ],
+        "hold_seconds": 0.0,
+        "yaw_rad": 0.0,
+        "yaw_current_follow": false,
+        "latitude": 47.63017121865381,
+        "longitude": -122.3982391,
+        "depth_m": 2.5
+      },
+      {
+        "phase": "waypoint",
+        "number": 6,
+        "position": [
+          4.653657835370061e-16,
+          -3.7999999988650752,
+          -2.5
+        ],
+        "hold_seconds": 0.0,
+        "yaw_rad": 0.0,
+        "yaw_current_follow": false,
+        "latitude": 47.63016582215139,
+        "longitude": -122.3982391,
+        "depth_m": 2.5
+      },
+      {
+        "phase": "waypoint",
+        "number": 7,
+        "position": [
+          5.500000567578134,
+          -3.8000000004224574,
+          -2.5
+        ],
+        "hold_seconds": 0.0,
+        "yaw_rad": 0.0,
+        "yaw_current_follow": false,
+        "latitude": 47.630165822128035,
+        "longitude": -122.3981659199938,
+        "depth_m": 2.5
+      },
+      {
+        "phase": "surface",
+        "position": [
+          5.500000567578134,
+          -3.8000000004224574,
+          0.0
+        ],
+        "latitude": 47.630165822128035,
+        "longitude": -122.3981659199938,
+        "depth_m": 0.0
+      }
+    ],
+    "routing": {
+      "algorithm": "buffered-terrain-a-star",
+      "detoured_legs": 0,
+      "transit_points": 0,
+      "grid_step_m": 4.0,
+      "maximum_radius_m": 600.0,
+      "maximum_length_m": 2000.0,
+      "hull_radius_m": 0.5,
+      "tracking_margin_m": 2.0,
+      "search_nodes": 0,
+      "minimum_clearance_m": 1.0737603074462387,
+      "route_length_m": 24.816768708213324,
+      "scope": "confirmed static terrain only; no AIS or unrepresented obstacles"
+    },
+    "route_length_m": 24.816768708213324,
+    "route_kind": "map",
+    "arrival_policy": {
+      "horizontal_tolerance_m": 0.4,
+      "depth_acquire_tolerance_m": 0.2,
+      "depth_hold_tolerance_m": 0.5
+    },
+    "controller": "ArduSub GUIDED via MAVROS",
+    "surface_vehicle": false,
+    "streaming": false,
+    "position_source": "simulated Gazebo external navigation",
+    "validation_source": "Gazebo odometry",
+    "status": "preview",
+    "active": false,
+    "trace": []
+  },
+  "clearance": {
+    "clear": true,
+    "minimum_centerline_clearance_m": 0.7999999997557183,
+    "required_body_margin_m": 0.5,
+    "closest": {
+      "actor": "acoustic_validation_target_0/body/collision",
+      "segment": 3
+    },
+    "segments": 9,
+    "collision_boxes": 5,
+    "method": "exact segment-to-oriented-box distance; spherical body envelope",
+    "scope": "authored targets only; terrain checked separately by mission planner"
+  },
+  "start": {
+    "session_nonce": "9599940f58cf46aaae68a5f2c146b74f",
+    "job_id": null,
+    "start": [
+      -0.05619635548102987,
+      0.017857917402265205,
+      -0.11314617704468874
+    ],
+    "start_geographic": {
+      "longitude": -122.39823984771853,
+      "latitude": 47.63020016061716
+    },
+    "yaw_rad": -0.007112987167991764,
+    "depth_m": 2.5,
+    "distance_m": 6.741465962868094,
+    "hold_seconds": 3.0,
+    "minimum_planned_clearance_m": 1.0738000497208695,
+    "waypoints": [
+      {
+        "phase": "waypoint",
+        "number": 1,
+        "position": [
+          3.9188697566941075e-16,
+          -3.1999999995284987,
+          -2.5
+        ],
+        "hold_seconds": 0.0,
+        "yaw_rad": 0.0,
+        "yaw_current_follow": false,
+        "latitude": 47.63017121865381,
+        "longitude": -122.3982391,
+        "depth_m": 2.5
+      },
+      {
+        "phase": "waypoint",
+        "number": 2,
+        "position": [
+          3.1840816772080164e-16,
+          -2.5999999995303935,
+          -2.5
+        ],
+        "hold_seconds": 0.0,
+        "yaw_rad": 0.0,
+        "yaw_current_follow": false,
+        "latitude": 47.63017661515623,
+        "longitude": -122.3982391,
+        "depth_m": 2.5
+      },
+      {
+        "phase": "waypoint",
+        "number": 3,
+        "position": [
+          5.499999435220955,
+          -2.5999999998481593,
+          -2.5
+        ],
+        "hold_seconds": 0.0,
+        "yaw_rad": 0.0,
+        "yaw_current_follow": false,
+        "latitude": 47.63017661513289,
+        "longitude": -122.3981659199938,
+        "depth_m": 2.5
+      },
+      {
+        "phase": "waypoint",
+        "number": 4,
+        "position": [
+          5.500000001601043,
+          -3.1999999999904856,
+          -2.5
+        ],
+        "hold_seconds": 0.0,
+        "yaw_rad": 0.0,
+        "yaw_current_follow": false,
+        "latitude": 47.630171218630466,
+        "longitude": -122.3981659199938,
+        "depth_m": 2.5
+      },
+      {
+        "phase": "waypoint",
+        "number": 5,
+        "position": [
+          3.9188697566941075e-16,
+          -3.1999999995284987,
+          -2.5
+        ],
+        "hold_seconds": 0.0,
+        "yaw_rad": 0.0,
+        "yaw_current_follow": false,
+        "latitude": 47.63017121865381,
+        "longitude": -122.3982391,
+        "depth_m": 2.5
+      },
+      {
+        "phase": "waypoint",
+        "number": 6,
+        "position": [
+          4.653657835370061e-16,
+          -3.7999999988650752,
+          -2.5
+        ],
+        "hold_seconds": 0.0,
+        "yaw_rad": 0.0,
+        "yaw_current_follow": false,
+        "latitude": 47.63016582215139,
+        "longitude": -122.3982391,
+        "depth_m": 2.5
+      },
+      {
+        "phase": "waypoint",
+        "number": 7,
+        "position": [
+          5.500000567578134,
+          -3.8000000004224574,
+          -2.5
+        ],
+        "hold_seconds": 0.0,
+        "yaw_rad": 0.0,
+        "yaw_current_follow": false,
+        "latitude": 47.630165822128035,
+        "longitude": -122.3981659199938,
+        "depth_m": 2.5
+      },
+      {
+        "phase": "surface",
+        "position": [
+          5.500000567578134,
+          -3.8000000004224574,
+          0.0
+        ],
+        "latitude": 47.630165822128035,
+        "longitude": -122.3981659199938,
+        "depth_m": 0.0
+      }
+    ],
+    "routing": {
+      "algorithm": "buffered-terrain-a-star",
+      "detoured_legs": 0,
+      "transit_points": 0,
+      "grid_step_m": 4.0,
+      "maximum_radius_m": 600.0,
+      "maximum_length_m": 2000.0,
+      "hull_radius_m": 0.5,
+      "tracking_margin_m": 2.0,
+      "search_nodes": 0,
+      "minimum_clearance_m": 1.0738000497208695,
+      "route_length_m": 24.806848987315604,
+      "scope": "confirmed static terrain only; no AIS or unrepresented obstacles"
+    },
+    "route_length_m": 24.806848987315604,
+    "route_kind": "map",
+    "arrival_policy": {
+      "horizontal_tolerance_m": 0.4,
+      "depth_acquire_tolerance_m": 0.2,
+      "depth_hold_tolerance_m": 0.5
+    },
+    "controller": "ArduSub GUIDED via MAVROS",
+    "surface_vehicle": false,
+    "streaming": false,
+    "position_source": "simulated Gazebo external navigation",
+    "validation_source": "Gazebo odometry",
+    "id": "ba99d911296148288b1bf7e6db8fdd2e",
+    "status": "starting",
+    "active": true,
+    "phase": "starting",
+    "paused": false,
+    "waypoint_index": 0,
+    "arrivals": [],
+    "error": null,
+    "trace": [],
+    "trace_points_total": 0,
+    "trace_sampled": false
+  },
+  "start_stamp_ns": 7050000000
+}

@@ -1,0 +1,46 @@
+{
+  "integration": "7afd71e7b7a1a13eca8c4b8deb9c6e8461285cd5",
+  "main": "8c47601c7dd4729e3edeabef79665760268fdbc4",
+  "branch": "codex/sonar-slam-source-20261030",
+  "pr_heads": {
+    "6": "d51d7b85d7224d7b8420015a63e0f6896ddaa7a7",
+    "31": "7dc9602142cc66d043b53f9a275448867b5c665e",
+    "32": "f1055f48ebe57d7ea12d9009ce9cd4d554f72364",
+    "33": "5f327fd55d4301e4fed125b2a64bead6d5d4ceba",
+    "34": "3421795d0173095da54f2db8d7c7e82e8a0cc5ca",
+    "35": "02f6dccd57eee0e0c2dd417317d4a06ee65b907f",
+    "36": "fbfd000d094675fd301b51ccc29c07a40cc51c15"
+  },
+  "app_acquisition_head": "bd55d6629adab0503e06c32d1e09510ed91add53",
+  "library_acquisition_head": "95db070c62844223636d0e69df946380156bdd03",
+  "source_archive_sha256": "0885da7be7d6d33caa1b665734d050251c9ed1bc8a625a7ad2cbd8166b849abd",
+  "patches": {},
+  "library_sha256": "ce72d4455b344b4c2a004425ab9d4fb59dbffd1f5aee45510038a5b5435a3dfc",
+  "rendering_library_sha256": "5d1c6e45ab4110ae8f0dbbe082fb72f7e0fd0e2a4b46111e95ab1586a718913b",
+  "numeric_source": "Final integration, directly archived; no application patches",
+  "display_source": "11a2b6c487c507ca5697d64b232e5c4d00cc7dda; production source identical to final; subsequent test-only merge",
+  "platform": "Apple M2 / macOS / ROS 2 Lyrical / Gazebo Jetty 10.5 / WGPU Metal",
+  "external_dependencies": "Explicit existing Gazebo renderer 10.5 and Plugin 4 loader controls; installed SDK unchanged",
+  "renderer_source_sha256": "5d0a84e44db97878437c59c773accb30d6854deddef135b494c15abdba432bfe",
+  "renderer_scope": "Source-matching cached render is rebound to the selected development SDK; this field trial does not qualify an installed archive",
+  "sdk_replaced": false,
+  "new_provider_api": false,
+  "followups_merged_into6": false,
+  "main_merged": false,
+  "ci": {
+    "35": {
+      "head": "02f6dccd57eee0e0c2dd417317d4a06ee65b907f",
+      "run": 41040961905,
+      "conclusion": "success",
+      "scope": "Code Formatting Lint"
+    },
+    "36": {
+      "head": "fbfd000d094675fd301b51ccc29c07a40cc51c15",
+      "run": 41040961029,
+      "conclusion": "success",
+      "scope": "Code Formatting Lint"
+    }
+  },
+  "raw_record_path": "/Volumes/ExternalHDD/POSIM/validation-data/posim-slam/sonar-pr35-36-20261030",
+  "scope": "Sensor input and operator controls; algorithms/package version unchanged; no SLAM map acceptance"
+}

@@ -1,0 +1,73 @@
+{
+  "tests_run": 494,
+  "failures": 0,
+  "errors": 0,
+  "skipped": [
+    {
+      "test": "test_native_matches_reference_covariance (test_ground_surface_noise.SurfaceNoiseTests.test_native_matches_reference_covariance)",
+      "reason": "native ground probe required"
+    },
+    {
+      "test": "test_derivatives_follow_accumulated_pose_and_plane_coordinates (test_sonar_ground_joint.NativeGroundTests.test_derivatives_follow_accumulated_pose_and_plane_coordinates)",
+      "reason": "compiled native ground probe required"
+    },
+    {
+      "test": "test_joint_optimizer_corrects_relative_height_and_tilt (test_sonar_ground_joint.NativeGroundTests.test_joint_optimizer_corrects_relative_height_and_tilt)",
+      "reason": "compiled native ground probe required"
+    },
+    {
+      "test": "test_native_flat_plane_keeps_unobservable_directions (test_sonar_ground_joint.NativeGroundTests.test_native_flat_plane_keeps_unobservable_directions)",
+      "reason": "compiled native ground probe required"
+    },
+    {
+      "test": "test_native_matches_reference_and_retirement (test_sonar_ground_joint.NativeGroundTests.test_native_matches_reference_and_retirement)",
+      "reason": "compiled native ground probe required"
+    },
+    {
+      "test": "test_native_rejects_duplicate_beams_bad_noise_and_wrong_branch (test_sonar_ground_joint.NativeGroundTests.test_native_rejects_duplicate_beams_bad_noise_and_wrong_branch)",
+      "reason": "compiled native ground probe required"
+    },
+    {
+      "test": "test_predictive_association_matches_dense_conditional_gaussian (test_sonar_ground_joint.NativeGroundTests.test_predictive_association_matches_dense_conditional_gaussian)",
+      "reason": "compiled native ground probe required"
+    },
+    {
+      "test": "test_predictive_gate_detects_distributed_surface_disagreement (test_sonar_ground_joint.NativeGroundTests.test_predictive_gate_detects_distributed_surface_disagreement)",
+      "reason": "compiled native ground probe required"
+    },
+    {
+      "test": "test_predictive_gate_retains_plane_fit_uncertainty (test_sonar_ground_joint.NativeGroundTests.test_predictive_gate_retains_plane_fit_uncertainty)",
+      "reason": "compiled native ground probe required"
+    },
+    {
+      "test": "test_updated_plane_keeps_flat_yaw_unobservable (test_sonar_ground_joint.NativeGroundTests.test_updated_plane_keeps_flat_yaw_unobservable)",
+      "reason": "compiled native ground probe required"
+    },
+    {
+      "test": "test_native_roundtrip_and_malformed_payloads (test_sonar_packet.SonarPacket.test_native_roundtrip_and_malformed_payloads)",
+      "reason": "native decoder not configured"
+    },
+    {
+      "test": "test_accumulated_pose_and_plane_coordinates_remain_consistent (test_sonar_plane_native.MultiPlaneNativeTests.test_accumulated_pose_and_plane_coordinates_remain_consistent)",
+      "reason": "compiled native probe required"
+    },
+    {
+      "test": "test_duplicate_source_and_tied_rays_rejected (test_sonar_plane_native.MultiPlaneNativeTests.test_duplicate_source_and_tied_rays_rejected)",
+      "reason": "compiled native probe required"
+    },
+    {
+      "test": "test_optimizer_updates_each_plane_through_existing_trial_path (test_sonar_plane_native.MultiPlaneNativeTests.test_optimizer_updates_each_plane_through_existing_trial_path)",
+      "reason": "compiled native probe required"
+    },
+    {
+      "test": "test_retirement_keeps_both_planes_and_full_correlations (test_sonar_plane_native.MultiPlaneNativeTests.test_retirement_keeps_both_planes_and_full_correlations)",
+      "reason": "compiled native probe required"
+    },
+    {
+      "test": "test_shared_frame_cross_surface_covariance_matches_python (test_sonar_plane_native.MultiPlaneNativeTests.test_shared_frame_cross_surface_covariance_matches_python)",
+      "reason": "compiled native probe required"
+    }
+  ],
+  "installed_module": "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/native-surface-transport-20261029/library/src/posim_slam/__init__.py",
+  "cwd": "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/native-surface-transport-20261029"
+}

@@ -1,0 +1,28 @@
+{
+  "scope": "Read-only conditional range hypotheses; no accepted native SLAM cloud",
+  "point_counts": {
+    "dvl-only": 2,
+    "dvl-fls": 3
+  },
+  "marker_area_pt2": 64,
+  "height_limits_m": [
+    -4.9,
+    -1.5
+  ],
+  "rgb_stamp_ns": 35000000000,
+  "sonar_stamp_ns": 35000000000,
+  "context_stamp_ns": 35000000000,
+  "factor_delivery_stamp_ns": 33010000000,
+  "original_factor_stamps_ns": [
+    3010000000,
+    32010000000,
+    33010000000
+  ],
+  "map_qualified": false,
+  "source_sha256": {
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/native-surface-ranges-20261029/comparison.png": "7a8cdc5eda0ec78bef354e4bb0eee79af117c2c6d9c7571503cd37cd69e5ccea",
+    "/Volumes/ExternalHDD/POSIM/validation-data/posim-slam/sonar-low-altitude-15m-20261029/inputs/camera-0169.npz": "79bb10328e35022192a767242aabf4a395a85beebafd4716b8429f4b77b93e9e",
+    "/Volumes/ExternalHDD/POSIM/validation-data/posim-slam/sonar-low-altitude-15m-20261029/inputs/sonar-0067.npz": "29179bdcbe47b51f5dac2575aac78f3ea2e1b1403dbfd693364c0431492aafad",
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/sonar-low-altitude-15m-20261029/context-reference-35/isometric-rgb.png": "5936d1b324a3d894278cfc829843c2a5164394d591b6da522675dd001b531ca2"
+  }
+}

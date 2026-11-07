@@ -1,0 +1,87 @@
+{
+  "shared-early-window3-initial": {
+    "points": 24,
+    "surface_rmse_m": 0.03301851966691635,
+    "surface_p95_m": 0.034210026555859405,
+    "surface_p99_m": 0.03514888434966739,
+    "surface_max_m": 0.03540875344833072,
+    "beyond_10cm": 0,
+    "trajectory_rmse_m": 0.057181263966960466,
+    "nearest_surfaces_within_10cm": {
+      "acoustic_validation_target_0": 24,
+      "acoustic_validation_target_1": 0,
+      "acoustic_validation_target_2": 0,
+      "acoustic_validation_wall_0": 0,
+      "acoustic_validation_wall_1": 0,
+      "seabed": 0
+    }
+  },
+  "shared-early-window16-initial": {
+    "points": 146,
+    "surface_rmse_m": 0.03256710617414741,
+    "surface_p95_m": 0.040478903346859774,
+    "surface_p99_m": 0.0437247020600018,
+    "surface_max_m": 0.05293347268661197,
+    "beyond_10cm": 0,
+    "trajectory_rmse_m": 0.039121168574510326,
+    "nearest_surfaces_within_10cm": {
+      "acoustic_validation_target_0": 71,
+      "acoustic_validation_target_1": 0,
+      "acoustic_validation_target_2": 0,
+      "acoustic_validation_wall_0": 0,
+      "acoustic_validation_wall_1": 0,
+      "seabed": 75
+    }
+  },
+  "shared-late-window16-initial": {
+    "points": 2,
+    "surface_rmse_m": 0.053386232075583115,
+    "surface_p95_m": 0.05372590347484936,
+    "surface_p99_m": 0.05375621601299633,
+    "surface_max_m": 0.05376379414753307,
+    "beyond_10cm": 0,
+    "trajectory_rmse_m": 0.07186003552525888,
+    "nearest_surfaces_within_10cm": {
+      "acoustic_validation_target_0": 2,
+      "acoustic_validation_target_1": 0,
+      "acoustic_validation_target_2": 0,
+      "acoustic_validation_wall_0": 0,
+      "acoustic_validation_wall_1": 0,
+      "seabed": 0
+    }
+  },
+  "shared-ping-ros-1x-initial": {
+    "points": 3594,
+    "surface_rmse_m": 0.013410329613790559,
+    "surface_p95_m": 0.013782383356809409,
+    "surface_p99_m": 0.024870087491264976,
+    "surface_max_m": 0.47186332505115663,
+    "beyond_10cm": 8,
+    "trajectory_rmse_m": 0.0191748206994633,
+    "nearest_surfaces_within_10cm": {
+      "acoustic_validation_target_0": 72,
+      "acoustic_validation_target_1": 285,
+      "acoustic_validation_target_2": 89,
+      "acoustic_validation_wall_0": 81,
+      "acoustic_validation_wall_1": 112,
+      "seabed": 2947
+    }
+  },
+  "shared-ping-ros-1x-recovered": {
+    "points": 1382,
+    "surface_rmse_m": 0.008083651717212701,
+    "surface_p95_m": 0.01376498438090316,
+    "surface_p99_m": 0.022453664201598784,
+    "surface_max_m": 0.13149354502281874,
+    "beyond_10cm": 1,
+    "trajectory_rmse_m": 0.01648948717389519,
+    "nearest_surfaces_within_10cm": {
+      "acoustic_validation_target_0": 56,
+      "acoustic_validation_target_1": 1,
+      "acoustic_validation_target_2": 7,
+      "acoustic_validation_wall_0": 0,
+      "acoustic_validation_wall_1": 0,
+      "seabed": 1317
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "exit": 0,
+  "forced": false,
+  "error": null,
+  "groups": [
+    {
+      "pid": 68970,
+      "live_members": []
+    },
+    {
+      "pid": 69054,
+      "live_members": []
+    },
+    {
+      "pid": 68972,
+      "live_members": []
+    },
+    {
+      "pid": 68968,
+      "live_members": []
+    }
+  ]
+}

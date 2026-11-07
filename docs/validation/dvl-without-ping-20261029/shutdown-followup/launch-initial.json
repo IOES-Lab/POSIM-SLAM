@@ -1,0 +1,28 @@
+[
+  {
+    "mode": "group-active",
+    "exit_code": 0,
+    "parent_forced": false,
+    "elapsed_s": 0.07338462502229959,
+    "child_sigkill": false,
+    "state": {
+      "pid": 12170,
+      "blocked_signals": [],
+      "python_sigint": "<built-in function default_int_handler>",
+      "ros_handlers": "SignalHandlerOptions.ALL"
+    }
+  },
+  {
+    "mode": "group-active-paused",
+    "exit_code": -9,
+    "parent_forced": true,
+    "elapsed_s": 20.009915750008076,
+    "child_sigkill": true,
+    "state": {
+      "pid": 12238,
+      "blocked_signals": [],
+      "python_sigint": "<built-in function default_int_handler>",
+      "ros_handlers": "SignalHandlerOptions.ALL"
+    }
+  }
+]

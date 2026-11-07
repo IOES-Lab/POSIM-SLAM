@@ -1,0 +1,63 @@
+{
+  "folds": {
+    "chronological": {
+      "candidates": 1714,
+      "all_training_supported_candidates_evaluated": true,
+      "fixed_pose_three_sigma_m_min_p50_p90": [
+        0.12603850613735088,
+        0.26211530278062667,
+        0.5708109253213768
+      ],
+      "correlated_pose_three_sigma_m_min_p50_p90": [
+        0.19449974146608978,
+        0.3280378114278942,
+        0.7339977306543517
+      ],
+      "independent_pose_three_sigma_m_min_p50_p90": [
+        0.30663499838066544,
+        0.6492187042616102,
+        1.1814946350830666
+      ],
+      "fixed_pose_within_010_m": 0,
+      "correlated_pose_within_010_m": 0,
+      "exclusive_candidates": 391,
+      "training_assignments": 12922,
+      "distinct_training_pixel_keys": 6854,
+      "shared_assignments": 6068,
+      "seconds": 1.5077006249921396
+    },
+    "blocked": {
+      "candidates": 1852,
+      "all_training_supported_candidates_evaluated": true,
+      "fixed_pose_three_sigma_m_min_p50_p90": [
+        0.14219334210804696,
+        0.3132741845790001,
+        0.7214184069625775
+      ],
+      "correlated_pose_three_sigma_m_min_p50_p90": [
+        0.1972443602207254,
+        0.37901366296369127,
+        0.9059865063132148
+      ],
+      "independent_pose_three_sigma_m_min_p50_p90": [
+        0.3382962367337152,
+        0.7808140331904663,
+        1.4479490953492953
+      ],
+      "fixed_pose_within_010_m": 0,
+      "correlated_pose_within_010_m": 0,
+      "exclusive_candidates": 399,
+      "training_assignments": 10818,
+      "distinct_training_pixel_keys": 4995,
+      "shared_assignments": 5823,
+      "seconds": 1.2371674999594688
+    }
+  },
+  "native_coordinates_jacobian_finite_difference_passed": true,
+  "maximum_likelihood_frames": 16,
+  "frame_selection": "equispaced positive training support; other frames supply support only",
+  "covariance_method": "existing public marginal_plane_information Gaussian three-parameter operation applied to point Jacobians; no plane constraints",
+  "noise": "unchanged diagonal diagnostic scales; no branch/association/response-calibration uncertainty",
+  "map_qualified": false,
+  "scope": "same-snapshot correlated pose prior excludes all sonar factors; conditional-on-association local diagnostic only"
+}

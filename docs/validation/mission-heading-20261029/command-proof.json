@@ -1,0 +1,683 @@
+{
+  "passed": true,
+  "phases": [
+    {
+      "phase": "initial",
+      "planned_targets": 21,
+      "distinct_actual_commands": 21,
+      "matched_targets": [
+        {
+          "waypoint": 0,
+          "command_index": 0
+        },
+        {
+          "waypoint": 1,
+          "command_index": 1
+        },
+        {
+          "waypoint": 2,
+          "command_index": 2
+        },
+        {
+          "waypoint": 3,
+          "command_index": 3
+        },
+        {
+          "waypoint": 4,
+          "command_index": 4
+        },
+        {
+          "waypoint": 5,
+          "command_index": 5
+        },
+        {
+          "waypoint": 6,
+          "command_index": 6
+        },
+        {
+          "waypoint": 7,
+          "command_index": 7
+        },
+        {
+          "waypoint": 8,
+          "command_index": 8
+        },
+        {
+          "waypoint": 9,
+          "command_index": 9
+        },
+        {
+          "waypoint": 10,
+          "command_index": 10
+        },
+        {
+          "waypoint": 11,
+          "command_index": 11
+        },
+        {
+          "waypoint": 12,
+          "command_index": 12
+        },
+        {
+          "waypoint": 13,
+          "command_index": 13
+        },
+        {
+          "waypoint": 14,
+          "command_index": 14
+        },
+        {
+          "waypoint": 15,
+          "command_index": 15
+        },
+        {
+          "waypoint": 16,
+          "command_index": 16
+        },
+        {
+          "waypoint": 17,
+          "command_index": 17
+        },
+        {
+          "waypoint": 18,
+          "command_index": 18
+        },
+        {
+          "waypoint": 19,
+          "command_index": 19
+        },
+        {
+          "waypoint": 20,
+          "command_index": 20
+        }
+      ],
+      "planned_command_targets": [
+        {
+          "waypoint": 0,
+          "local_position": [
+            -0.08817323411226714,
+            0.01895865067986981,
+            -1.131023590108155
+          ],
+          "yaw": -2.9874633324363105
+        },
+        {
+          "waypoint": 1,
+          "local_position": [
+            -0.08817323411226714,
+            0.01895865067986981,
+            -0.531023590108155
+          ],
+          "yaw": -2.9874633324363105
+        },
+        {
+          "waypoint": 2,
+          "local_position": [
+            -0.08221972466952407,
+            2.018949790129287,
+            -0.531023590108155
+          ],
+          "yaw": 1.5678195676781033
+        },
+        {
+          "waypoint": 3,
+          "local_position": [
+            3.417763567260631,
+            2.008531153566072,
+            -0.531023590108155
+          ],
+          "yaw": -0.0029767587215967987
+        },
+        {
+          "waypoint": 4,
+          "local_position": [
+            3.417763567260631,
+            2.008531153566072,
+            -1.131023590108155
+          ],
+          "yaw": -0.0029767587215967987
+        },
+        {
+          "waypoint": 5,
+          "local_position": [
+            6.917746857772725,
+            1.998112515883966,
+            -1.131023590108155
+          ],
+          "yaw": -0.0029767590424845656
+        },
+        {
+          "waypoint": 6,
+          "local_position": [
+            6.905844643112806,
+            -2.001869775352948,
+            -1.131023590108155
+          ],
+          "yaw": -1.5737718848514375
+        },
+        {
+          "waypoint": 7,
+          "local_position": [
+            3.4058589513171387,
+            -1.9914511306660985,
+            -1.131023590108155
+          ],
+          "yaw": 3.138615894588257
+        },
+        {
+          "waypoint": 8,
+          "local_position": [
+            3.4058589513171387,
+            -1.9914511306660985,
+            -0.531023590108155
+          ],
+          "yaw": 3.138615894588257
+        },
+        {
+          "waypoint": 9,
+          "local_position": [
+            -0.09412674191005023,
+            -1.9810324884625874,
+            -0.531023590108155
+          ],
+          "yaw": 3.1386158952989964
+        },
+        {
+          "waypoint": 10,
+          "local_position": [
+            -0.08817323411226714,
+            0.01895865067986981,
+            -0.531023590108155
+          ],
+          "yaw": 1.5678195685001226
+        },
+        {
+          "waypoint": 11,
+          "local_position": [
+            -0.08221972466952407,
+            2.018949790129287,
+            -0.531023590108155
+          ],
+          "yaw": 1.5678195676781033
+        },
+        {
+          "waypoint": 12,
+          "local_position": [
+            3.417763567260631,
+            2.008531153566072,
+            -0.531023590108155
+          ],
+          "yaw": -0.0029767587215967987
+        },
+        {
+          "waypoint": 13,
+          "local_position": [
+            3.417763567260631,
+            2.008531153566072,
+            -1.131023590108155
+          ],
+          "yaw": -0.0029767587215967987
+        },
+        {
+          "waypoint": 14,
+          "local_position": [
+            6.917746857772725,
+            1.998112515883966,
+            -1.131023590108155
+          ],
+          "yaw": -0.0029767590424845656
+        },
+        {
+          "waypoint": 15,
+          "local_position": [
+            6.905844643112806,
+            -2.001869775352948,
+            -1.131023590108155
+          ],
+          "yaw": -1.5737718848514375
+        },
+        {
+          "waypoint": 16,
+          "local_position": [
+            3.4058589513171387,
+            -1.9914511306660985,
+            -1.131023590108155
+          ],
+          "yaw": 3.138615894588257
+        },
+        {
+          "waypoint": 17,
+          "local_position": [
+            3.4058589513171387,
+            -1.9914511306660985,
+            -0.531023590108155
+          ],
+          "yaw": 3.138615894588257
+        },
+        {
+          "waypoint": 18,
+          "local_position": [
+            -0.09412674191005023,
+            -1.9810324884625874,
+            -0.531023590108155
+          ],
+          "yaw": 3.1386158952989964
+        },
+        {
+          "waypoint": 19,
+          "local_position": [
+            -0.08817323411226714,
+            0.01895865067986981,
+            -0.531023590108155
+          ],
+          "yaw": 1.5678195685001226
+        },
+        {
+          "waypoint": 20,
+          "local_position": [
+            -0.08817323411226714,
+            0.01895865067986981,
+            0.068976409891845
+          ],
+          "yaw": 1.5678195685001226
+        }
+      ],
+      "vertical_or_hold_legs": [
+        {
+          "waypoint": 1,
+          "depth_change_m": 0.6,
+          "retained_yaw": -2.9874633324363105,
+          "previous_yaw": -2.9874633324363105,
+          "old_initial_heading_fallback": -0.010800165599286978,
+          "avoided_command_rotation_deg": 170.55023649180748
+        },
+        {
+          "waypoint": 4,
+          "depth_change_m": -0.6,
+          "retained_yaw": -0.0029767587215967987,
+          "previous_yaw": -0.0029767587215967987,
+          "old_initial_heading_fallback": -0.010800165599286978,
+          "avoided_command_rotation_deg": 0.44824819550527767
+        },
+        {
+          "waypoint": 8,
+          "depth_change_m": 0.6,
+          "retained_yaw": 3.138615894588257,
+          "previous_yaw": 3.138615894588257,
+          "old_initial_heading_fallback": -0.010800165599286978,
+          "avoided_command_rotation_deg": 179.55175182053404
+        },
+        {
+          "waypoint": 13,
+          "depth_change_m": -0.6,
+          "retained_yaw": -0.0029767587215967987,
+          "previous_yaw": -0.0029767587215967987,
+          "old_initial_heading_fallback": -0.010800165599286978,
+          "avoided_command_rotation_deg": 0.44824819550527767
+        },
+        {
+          "waypoint": 17,
+          "depth_change_m": 0.6,
+          "retained_yaw": 3.138615894588257,
+          "previous_yaw": 3.138615894588257,
+          "old_initial_heading_fallback": -0.010800165599286978,
+          "avoided_command_rotation_deg": 179.55175182053404
+        },
+        {
+          "waypoint": 20,
+          "depth_change_m": 0.6,
+          "retained_yaw": 1.5678195685001226,
+          "previous_yaw": 1.5678195685001226,
+          "old_initial_heading_fallback": -0.010800165599286978,
+          "avoided_command_rotation_deg": 90.4482482199604
+        }
+      ],
+      "changed_fallbacks": 6,
+      "scope": "MAVROS setpoint_raw/local received from the actual controller; old fallback is computed on this same plan, not claimed as a measured control run"
+    },
+    {
+      "phase": "recovered",
+      "planned_targets": 21,
+      "distinct_actual_commands": 21,
+      "matched_targets": [
+        {
+          "waypoint": 0,
+          "command_index": 0
+        },
+        {
+          "waypoint": 1,
+          "command_index": 1
+        },
+        {
+          "waypoint": 2,
+          "command_index": 2
+        },
+        {
+          "waypoint": 3,
+          "command_index": 3
+        },
+        {
+          "waypoint": 4,
+          "command_index": 4
+        },
+        {
+          "waypoint": 5,
+          "command_index": 5
+        },
+        {
+          "waypoint": 6,
+          "command_index": 6
+        },
+        {
+          "waypoint": 7,
+          "command_index": 7
+        },
+        {
+          "waypoint": 8,
+          "command_index": 8
+        },
+        {
+          "waypoint": 9,
+          "command_index": 9
+        },
+        {
+          "waypoint": 10,
+          "command_index": 10
+        },
+        {
+          "waypoint": 11,
+          "command_index": 11
+        },
+        {
+          "waypoint": 12,
+          "command_index": 12
+        },
+        {
+          "waypoint": 13,
+          "command_index": 13
+        },
+        {
+          "waypoint": 14,
+          "command_index": 14
+        },
+        {
+          "waypoint": 15,
+          "command_index": 15
+        },
+        {
+          "waypoint": 16,
+          "command_index": 16
+        },
+        {
+          "waypoint": 17,
+          "command_index": 17
+        },
+        {
+          "waypoint": 18,
+          "command_index": 18
+        },
+        {
+          "waypoint": 19,
+          "command_index": 19
+        },
+        {
+          "waypoint": 20,
+          "command_index": 20
+        }
+      ],
+      "planned_command_targets": [
+        {
+          "waypoint": 0,
+          "local_position": [
+            -0.022620701601727917,
+            -0.10633022102134027,
+            -1.1642202806897317
+          ],
+          "yaw": 1.589020592874915
+        },
+        {
+          "waypoint": 1,
+          "local_position": [
+            -0.022620701601727917,
+            -0.10633022102134027,
+            -0.5642202806897318
+          ],
+          "yaw": 1.589020592874915
+        },
+        {
+          "waypoint": 2,
+          "local_position": [
+            -2.0221864815879647,
+            -0.1480038602570562,
+            -0.5642202806897318
+          ],
+          "yaw": -3.1207543258814963
+        },
+        {
+          "waypoint": 3,
+          "local_position": [
+            -2.095115353137439,
+            3.35123627816195,
+            -0.5642202806897318
+          ],
+          "yaw": 1.5916346551882978
+        },
+        {
+          "waypoint": 4,
+          "local_position": [
+            -2.095115353137439,
+            3.35123627816195,
+            -1.1642202806897317
+          ],
+          "yaw": 1.5916346551882978
+        },
+        {
+          "waypoint": 5,
+          "local_position": [
+            -2.16804422259921,
+            6.850476420011277,
+            -1.1642202806897317
+          ],
+          "yaw": 1.5916346545715185
+        },
+        {
+          "waypoint": 6,
+          "local_position": [
+            1.8310873376256604,
+            6.93382359997056,
+            -1.1642202806897317
+          ],
+          "yaw": 0.02083830308429188
+        },
+        {
+          "waypoint": 7,
+          "local_position": [
+            1.9040162071156232,
+            3.4345835081921043,
+            -1.1642202806897317
+          ],
+          "yaw": -1.5499579987121306
+        },
+        {
+          "waypoint": 8,
+          "local_position": [
+            1.9040162071156232,
+            3.4345835081921043,
+            -0.5642202806897318
+          ],
+          "yaw": -1.5499579987121306
+        },
+        {
+          "waypoint": 9,
+          "local_position": [
+            1.9769450785003513,
+            -0.0646565807089392,
+            -0.5642202806897318
+          ],
+          "yaw": -1.5499579981537563
+        },
+        {
+          "waypoint": 10,
+          "local_position": [
+            -0.022620701601727917,
+            -0.10633022102134027,
+            -0.5642202806897318
+          ],
+          "yaw": -3.1207543253444774
+        },
+        {
+          "waypoint": 11,
+          "local_position": [
+            -2.0221864815879647,
+            -0.1480038602570562,
+            -0.5642202806897318
+          ],
+          "yaw": -3.1207543258814963
+        },
+        {
+          "waypoint": 12,
+          "local_position": [
+            -2.095115353137439,
+            3.35123627816195,
+            -0.5642202806897318
+          ],
+          "yaw": 1.5916346551882978
+        },
+        {
+          "waypoint": 13,
+          "local_position": [
+            -2.095115353137439,
+            3.35123627816195,
+            -1.1642202806897317
+          ],
+          "yaw": 1.5916346551882978
+        },
+        {
+          "waypoint": 14,
+          "local_position": [
+            -2.16804422259921,
+            6.850476420011277,
+            -1.1642202806897317
+          ],
+          "yaw": 1.5916346545715185
+        },
+        {
+          "waypoint": 15,
+          "local_position": [
+            1.8310873376256604,
+            6.93382359997056,
+            -1.1642202806897317
+          ],
+          "yaw": 0.02083830308429188
+        },
+        {
+          "waypoint": 16,
+          "local_position": [
+            1.9040162071156232,
+            3.4345835081921043,
+            -1.1642202806897317
+          ],
+          "yaw": -1.5499579987121306
+        },
+        {
+          "waypoint": 17,
+          "local_position": [
+            1.9040162071156232,
+            3.4345835081921043,
+            -0.5642202806897318
+          ],
+          "yaw": -1.5499579987121306
+        },
+        {
+          "waypoint": 18,
+          "local_position": [
+            1.9769450785003513,
+            -0.0646565807089392,
+            -0.5642202806897318
+          ],
+          "yaw": -1.5499579981537563
+        },
+        {
+          "waypoint": 19,
+          "local_position": [
+            -0.022620701601727917,
+            -0.10633022102134027,
+            -0.5642202806897318
+          ],
+          "yaw": -3.1207543253444774
+        },
+        {
+          "waypoint": 20,
+          "local_position": [
+            -0.022620701601727917,
+            -0.10633022102134027,
+            0.03577971931026813
+          ],
+          "yaw": -3.1207543253444774
+        }
+      ],
+      "vertical_or_hold_legs": [
+        {
+          "waypoint": 0,
+          "depth_change_m": -1.1125936867873805,
+          "retained_yaw": 1.589020592874915,
+          "previous_yaw": 1.589020592874915,
+          "old_initial_heading_fallback": 1.589020592874915,
+          "avoided_command_rotation_deg": 0.0
+        },
+        {
+          "waypoint": 1,
+          "depth_change_m": 0.6,
+          "retained_yaw": 1.589020592874915,
+          "previous_yaw": 1.589020592874915,
+          "old_initial_heading_fallback": 1.589020592874915,
+          "avoided_command_rotation_deg": 0.0
+        },
+        {
+          "waypoint": 4,
+          "depth_change_m": -0.6,
+          "retained_yaw": 1.5916346551882978,
+          "previous_yaw": 1.5916346551882978,
+          "old_initial_heading_fallback": 1.589020592874915,
+          "avoided_command_rotation_deg": 0.14977473794103838
+        },
+        {
+          "waypoint": 8,
+          "depth_change_m": 0.6,
+          "retained_yaw": -1.5499579987121306,
+          "previous_yaw": -1.5499579987121306,
+          "old_initial_heading_fallback": 1.589020592874915,
+          "avoided_command_rotation_deg": 179.85022527985709
+        },
+        {
+          "waypoint": 13,
+          "depth_change_m": -0.6,
+          "retained_yaw": 1.5916346551882978,
+          "previous_yaw": 1.5916346551882978,
+          "old_initial_heading_fallback": 1.589020592874915,
+          "avoided_command_rotation_deg": 0.14977473794103838
+        },
+        {
+          "waypoint": 17,
+          "depth_change_m": 0.6,
+          "retained_yaw": -1.5499579987121306,
+          "previous_yaw": -1.5499579987121306,
+          "old_initial_heading_fallback": 1.589020592874915,
+          "avoided_command_rotation_deg": 179.85022527985709
+        },
+        {
+          "waypoint": 20,
+          "depth_change_m": 0.6,
+          "retained_yaw": -3.1207543253444774,
+          "previous_yaw": -3.1207543253444774,
+          "old_initial_heading_fallback": 1.589020592874915,
+          "avoided_command_rotation_deg": 90.14977472945637
+        }
+      ],
+      "changed_fallbacks": 5,
+      "scope": "MAVROS setpoint_raw/local received from the actual controller; old fallback is computed on this same plan, not claimed as a measured control run"
+    }
+  ],
+  "commands_sha256": "317a6911dfe5f0107dcf3a83b64d7b19b072f8683e953d27ee49eea691c0ce36",
+  "mission_source_sha256": "bf513819e331cee9eac5bf93f4f94b3115e140049c803c60ac2c0233b0350a6a"
+}

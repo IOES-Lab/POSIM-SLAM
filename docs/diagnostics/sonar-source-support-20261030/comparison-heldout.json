@@ -1,0 +1,61 @@
+{
+  "sonar_stamp_ns": 35000000000,
+  "camera_stamp_ns": 35000000000,
+  "marker_area_pt2": 64,
+  "total_candidates": 1714,
+  "visible_candidates": 1714,
+  "qualified_map_points": 0,
+  "field_projection": {
+    "eye": [
+      0.0,
+      -5.0,
+      -0.15
+    ],
+    "camera_to_world": [
+      [
+        0.5773502691896257,
+        -0.7071067811865475,
+        0.4082482904638631
+      ],
+      [
+        0.5773502691896256,
+        0.7071067811865476,
+        0.408248290463863
+      ],
+      [
+        -0.5773502691896258,
+        0.0,
+        0.8164965809277259
+      ]
+    ],
+    "width": 1000,
+    "height": 800,
+    "horizontal_fov": 1.35
+  },
+  "colours": {
+    "colormap": "turbo",
+    "colour_entries": [
+      32,
+      255
+    ],
+    "height_limits_m": [
+      -4.3,
+      -0.8
+    ],
+    "measured_height_bounds_m": [
+      -4.62078969053083,
+      -2.77078969053083
+    ],
+    "range_policy": "explicit shared comparison height limits",
+    "colour_saturated_points": 7,
+    "coordinates_filtered": false
+  },
+  "context_rerender": true,
+  "context_wave_phase_matches": false,
+  "source_sha256": {
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/sonar-wall-corner-20261030c/record/inputs/sonar-0067.npz": "3ec7b2500b16ae92d4d749fb70473a2430611226da6123cc4515b66a6ea5d63e",
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/sonar-wall-corner-20261030c/record/inputs/camera-0169.npz": "b4f4ec9e59c6409f1ce6b0d5f5fb1508eea5746388e423b4d8fe021902871c38",
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/sonar-wall-corner-20261030c/context-reference/isometric-rgb.png": "3048c5ef71f02ae41f97834493c9b793c3aedd4619dd01acdda17c82a19793db",
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/sonar-echo-segments-20261030/comparison-heldout.png": "aca61be28e0f6751cbd4aeb85d2ff79f74bd3cdc8dee21eed42884b56f792457"
+  }
+}

@@ -1,0 +1,136 @@
+{
+  "linear": {
+    "velocity_initial": [
+      -0.0550664744839382,
+      0.019715716377166227,
+      0.06295534396492686
+    ],
+    "gravity_initial": [
+      -0.45226990208150947,
+      0.005657052371899507,
+      9.767222123238616
+    ],
+    "normalized_singular_values": [
+      1.4973110606663869,
+      1.4110322105299418,
+      1.2650211765800643,
+      0.3652345252734259,
+      0.1386028268420139,
+      0.11900466039937302
+    ],
+    "reduced_residual_rms_m": 0.015710616597487116,
+    "positive_depth_observations": 324,
+    "observations": 972,
+    "bias_estimated": false,
+    "covariance_estimated": false,
+    "observability_qualified": false,
+    "scope": "linear_seed_requires_refinement",
+    "stamp_ns": 73400000000,
+    "first_stamp_ns": 70400000000,
+    "last_measurement_ns": 73400000000,
+    "up_direction_imu": [
+      0.06402332971559939,
+      0.0013358890330919736,
+      -0.9979475079645321
+    ],
+    "velocity_imu": [
+      0.1899378193148784,
+      -0.0037358400152886664,
+      -0.0061274999949445085
+    ],
+    "gyro_bias": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "accel_bias": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "selected_tracks": 112,
+    "gravity_norm_m_s2": 9.777689301223077,
+    "first_image_direction_imu": [
+      0.09537770290570825,
+      0.0036024132954971793,
+      -0.9954346369334753
+    ],
+    "first_image_velocity_imu_m_s": [
+      0.20598798780201943,
+      -0.007233232161448245,
+      -0.004816278284061579
+    ]
+  },
+  "fixed_magnitude_tangent": {
+    "velocity_initial": [
+      -0.06237598605454371,
+      0.017717520687207184,
+      0.00600235641204789
+    ],
+    "gravity_initial": [
+      -0.44892040780135206,
+      0.006651083222268204,
+      9.796367206931937
+    ],
+    "normalized_singular_values": [
+      1.4973110606663869,
+      1.4110322105299418,
+      1.2650211765800643,
+      0.3652345252734259,
+      0.1386028268420139,
+      0.11900466039937302
+    ],
+    "reduced_residual_rms_m": 0.015812299007966463,
+    "positive_depth_observations": 305,
+    "observations": 972,
+    "bias_estimated": false,
+    "covariance_estimated": false,
+    "observability_qualified": false,
+    "scope": "linear_seed_requires_refinement",
+    "stamp_ns": 73400000000,
+    "first_stamp_ns": 70400000000,
+    "last_measurement_ns": 73400000000,
+    "up_direction_imu": [
+      0.06354543251524566,
+      0.0012373128508698953,
+      -0.9979781796529225
+    ],
+    "velocity_imu": [
+      0.1921359869314718,
+      -0.0028193371479285456,
+      0.024400626184180818
+    ],
+    "gyro_bias": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "accel_bias": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "selected_tracks": 112,
+    "gravity_norm_m_s2": 9.80665,
+    "first_image_direction_imu": [
+      0.09490098247984816,
+      0.0035040598927476396,
+      -0.9954805498293922
+    ],
+    "first_image_velocity_imu_m_s": [
+      0.20760774101551296,
+      -0.006215353166541641,
+      0.031623652813733784
+    ]
+  },
+  "scope": "Sensor-only diagnostic; original exposures/raw IMU; no simulator truth or prior VIO states",
+  "source": "VINS-Mono section V-B-3 gravity refinement concept; independent implementation, no VINS code",
+  "sha256": {
+    ".local/birth-live-ros-20261028/recovery-seed-joint/events.json": "c43836a63e87ba8fd3a919612a7306f4d36d8959450beec07e58689046efe041",
+    ".local/birth-live-ros-20261028/camera-imu/segment-1-calibration.json": "10ca4a57cb15b5060ffc3c4bfed829cc99f4d664a36ba562e3e8e36f181cd7cb",
+    ".local/birth-live-ros-20261028/camera-imu/segment-1-bootstrap.json": "1abe79526741114a6bfc9afcaaca9c98ef14973826f8a8d33972807415e56034",
+    ".local/visual-ping-world-particles-20261028-a/multimodal-inputs/timeline.json": "2d8d714187780086caf484d262174ea11f8725bd17e0db46365c5404b179f394",
+    ".local/posim-slam-reference-20261028/src/posim_slam/visual_inertial_seed.py": "0542fcec4b1564ed19bd0443bc1125d84b23f25dd13b114a2222617c9ea1c3e5",
+    ".local/birth-live-ros-20261028/diagnose_gravity_seed.py": "76b442d0a030dd346950e8a38fe92308a9f9062c26b544629fcab075ef78a018"
+  }
+}

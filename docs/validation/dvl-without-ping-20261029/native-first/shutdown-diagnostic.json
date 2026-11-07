@@ -1,0 +1,12 @@
+{
+  "dvl_child_forced_kill": true,
+  "evidence": [
+    "[INFO] [python-11]: sending signal 'SIGINT' to process[python-11]",
+    "[ERROR] [python-11]: process[python-11] failed to terminate '5' seconds after receiving 'SIGINT', escalating to 'SIGTERM'",
+    "[INFO] [python-11]: sending signal 'SIGTERM' to process[python-11]",
+    "[ERROR] [python-11]: process[python-11] failed to terminate '10.0' seconds after receiving 'SIGTERM', escalating to 'SIGKILL'",
+    "[INFO] [python-11]: sending signal 'SIGKILL' to process[python-11]"
+  ],
+  "supervisor_log_sha256": "c75118558182ddb7de8c5e767811bbd86fef4e8e54f70a1da25309688dc45273",
+  "scope": "Parent lifecycle is separate from child cleanup; child termination remains unresolved"
+}

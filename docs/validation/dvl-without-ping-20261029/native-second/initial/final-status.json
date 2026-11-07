@@ -1,0 +1,284 @@
+{
+  "status_sequence": 2152,
+  "stamp_ns": 238000000000,
+  "landmarks": 1855,
+  "ready": true,
+  "state": "experimental_tracking",
+  "reason": "visual_measurements_present",
+  "session_nonce": "dac71360aeaa4e83b58411db30371bc3",
+  "segment": 0,
+  "frame": "vehicle/vio_dac71360aeaa4e83b58411db30371bc3_segment_0",
+  "mode": "vio",
+  "version": "0.1.0",
+  "library": "basalt",
+  "revision": "0f3b2b52c807f70ff4e2973ce253c73329eea7bc",
+  "units": "m",
+  "scope": "experimental_accumulated_vio_landmarks",
+  "imu_orientation_used": false,
+  "inertial_fused": true,
+  "navigation_ready": false,
+  "initialization": "provisional_observability_not_qualified",
+  "mapping": {
+    "active_landmarks": 296,
+    "evicted_landmarks": 0,
+    "rejected_candidates": 173681,
+    "geometry_support": {
+      "active_eligible": 1,
+      "active_joint_observed": 295,
+      "active_unqualified": 295,
+      "admission_coordinate": "world_position",
+      "calibration_uncertainty_included": false,
+      "damping_included": false,
+      "error": null,
+      "gauge": "native_initial_position_and_yaw_prior",
+      "host_camera_uncertainty_scope": "diagnostic_only",
+      "map_qualified": false,
+      "metric_three_sigma_limit_m": 0.1,
+      "observed_outliers_withdrawn": 406,
+      "observed_reprojection_culling": true,
+      "pixel_sigma": 0.5,
+      "policy": "joint_linearized_position_information",
+      "pose_uncertainty_included": true
+    },
+    "loop_closure": false,
+    "dense": false,
+    "requested_world_three_sigma_limit_m": 0.1
+  },
+  "gravity_seed": {
+    "method": "camera_imu_projective_linear_seed",
+    "duration_s": 3.0,
+    "observability_qualified": false,
+    "frames": 16,
+    "submitted": {
+      "first_image_stamp_ns": 4600000000,
+      "direction_imu": [
+        -0.016133382503728578,
+        -0.00018775794361921015,
+        -0.9998698308859726
+      ],
+      "velocity_seed_imu_m_s": [
+        0.01726731917671076,
+        -0.01177768349065394,
+        -0.2963563955383165
+      ],
+      "last_measurement_ns": 4600000000,
+      "bootstrap_first_ns": 1400000000,
+      "bootstrap_last_ns": 4400000000,
+      "frames": 16,
+      "selected_tracks": 256,
+      "seed_method": "bearing_imu_ransac_fixed_gravity",
+      "inlier_tracks": 235,
+      "rejected_tracks": 21,
+      "pixel_sigma": 0.5,
+      "inlier_radius_px": 1.5,
+      "gravity_magnitude_m_s2": 9.80665,
+      "median_inlier_reprojection_px": 0.21547635264352843,
+      "covariance_estimated": false,
+      "observability_qualified": false,
+      "scope": "Measured robust bearing/IMU startup; uncertainty qualification pending"
+    }
+  },
+  "noise_profile": "explicit_research_assumption_not_sensor_calibration",
+  "states": 1633,
+  "published_points": 1000,
+  "worker_pid": 87999,
+  "failures": [],
+  "visual_support": {
+    "full_weight_reprojections": 291,
+    "huber_threshold_px": 1.0,
+    "observability_qualified": false,
+    "reprojected_landmarks": 295,
+    "reprojection_rmse_px": 0.2255368895555011,
+    "visual_measurements_present": true
+  },
+  "ping": {
+    "enabled": false,
+    "joint_enabled": false,
+    "fused": false,
+    "fused_states": 0,
+    "received": 0,
+    "sent": 0,
+    "matched": 0,
+    "unpaired": 0,
+    "late": 0
+  },
+  "pressure": {
+    "enabled": true,
+    "fused": true,
+    "fused_states": 231,
+    "received": 2383,
+    "queued": 234,
+    "last_fused_stamp_ns": 237050000000,
+    "native_stamp_ns": 238000000000
+  },
+  "dvl": {
+    "enabled": true,
+    "received": 239,
+    "valid": true,
+    "fused": true,
+    "fused_states": 233,
+    "last_fused_stamp_ns": 237010000000
+  },
+  "sonar": {
+    "enabled": false,
+    "received": 0,
+    "processed": 0,
+    "published_points": 0,
+    "frontend_opencv": null,
+    "map_qualified": false
+  },
+  "processing_ms": 55.72887504240498,
+  "max_processing_ms": 172.61829203926027,
+  "camera_reliability": "reliable",
+  "inputs": {
+    "counts": {
+      "imu": 23826,
+      "image": 1192,
+      "camera_info": 1192
+    },
+    "stamp_ns": {
+      "imu": 238300000000,
+      "image": 238200000000
+    },
+    "imu_age_s": 0.008750082983169705,
+    "image_age_s": 0.08910087496042252,
+    "ingress": {
+      "pending": 0,
+      "payload_bytes": 0,
+      "max_messages": 4096,
+      "max_payload_bytes": 67108864,
+      "peak_messages": 72,
+      "peak_payload_bytes": 4467456,
+      "received": 29107,
+      "rejected": 0,
+      "discarded_on_reset": 0,
+      "fault": null,
+      "running": true
+    },
+    "image_imu_sync": {
+      "pending": 0,
+      "payload_bytes": 0,
+      "received": 1192,
+      "released": 1192,
+      "discarded_on_reset": 0,
+      "peak_pending": 1,
+      "peak_payload_bytes": 1442048,
+      "imu_watermark_ns": 238300000000
+    },
+    "imu_dispatch": {
+      "stamp_ns": 238010000000,
+      "event_ns": 238000000000,
+      "sent_samples": 23362
+    },
+    "sensor_events": {
+      "pending": 3,
+      "capacity": 34,
+      "peak_pending": 8,
+      "last_stamp_ns": 238000000000,
+      "awaiting_stamp_ns": null
+    }
+  },
+  "processing_profile": {
+    "optical_flow_type": "patch",
+    "max_image_pixels": 120000,
+    "max_feature_cells": 200,
+    "max_image_rate_hz": 10.0,
+    "native_frontend_ack": "patch",
+    "max_status_write_ms": 1082.829374994617,
+    "max_tick_ms": 605.0900829723105,
+    "max_input_handler_ms": {
+      "dvl": 4.727833031211048,
+      "imu_status": 0.5692910053767264,
+      "pressure": 1.1343330261297524,
+      "imu": 3.4282499691471457,
+      "camera_info": 0.45145797776058316,
+      "image": 25.06483398610726
+    }
+  },
+  "max_stream_points": 1000,
+  "display_point_limits": [
+    1000,
+    2000,
+    5000,
+    0
+  ],
+  "estimate": {
+    "accel_bias": [
+      -0.0028996122361751855,
+      -0.0011155224215146334,
+      0.006908070173496284
+    ],
+    "dvl": null,
+    "ground": null,
+    "gyro_bias": [
+      -0.00011563513176777909,
+      -5.643589680073662e-05,
+      6.178023753457901e-05
+    ],
+    "initialization_window": {
+      "accel_bias": [
+        -0.002899472620392376,
+        -0.0011155907441639228,
+        0.006907627844444368
+      ],
+      "gyro_bias": [
+        -0.00011543383679360689,
+        -5.646508383449091e-05,
+        6.186197455592512e-05
+      ],
+      "oldest_stamp_ns": 237600000000,
+      "orientation_xyzw": [
+        -0.12536130149490263,
+        0.9921102980126006,
+        -0.0011588817701854623,
+        0.0005980450616500046
+      ],
+      "position": [
+        -0.00364802823579231,
+        0.19909826937754513,
+        0.44848777303461934
+      ],
+      "states": 3,
+      "velocity": [
+        0.011618636509319887,
+        -0.053497688846418034,
+        -0.14876791733668182
+      ]
+    },
+    "map_qualified": false,
+    "orientation_xyzw": [
+      -0.1277749993087177,
+      0.9917996944601558,
+      0.0020530563664773213,
+      0.0016433441376933265
+    ],
+    "ping_candidate": null,
+    "ping_fused": false,
+    "ping_observation": null,
+    "ping_owner_received": false,
+    "position": [
+      -0.00011398163682354028,
+      0.17833141788006168,
+      0.435799114579889
+    ],
+    "pressure": null,
+    "sonar": null,
+    "stamp_ns": 238000000000,
+    "state_clock": "camera",
+    "type": "state",
+    "velocity": [
+      0.006728825184983675,
+      -0.052854951174119306,
+      0.07698006848187751
+    ]
+  },
+  "status_file": {
+    "submitted": 2151,
+    "written": 2138,
+    "coalesced": 13,
+    "pending": false,
+    "running": true,
+    "max_write_ms": 1082.829374994617,
+    "error": null
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "kind": "generated",
+  "demo": true,
+  "demo_preset": "bluerov2",
+  "robot_id": "bluerov2",
+  "robot_name": "bluerov2",
+  "x": 0.0,
+  "y": 0.0,
+  "z": -2.0,
+  "depth_m": 2.0,
+  "streaming": false,
+  "control_mode": "autopilot",
+  "scenario": "none",
+  "competition": null,
+  "terrain_source": "Orca5 textured seafloor",
+  "spawn_latitude": 47.6302,
+  "spawn_longitude": -122.3982391,
+  "seafloor_at_spawn_m": -3.6470588235294117,
+  "demo_sensors": [
+    "camera",
+    "dvl"
+  ],
+  "sensor_configuration": {
+    "schema_version": 1,
+    "vehicle": "bluerov2",
+    "sensors": [
+      "camera",
+      "dvl"
+    ],
+    "configuration_id": "495335af63a80412b7c3"
+  },
+  "nonce": "c0693be457184beeaedb69a05605eba0",
+  "obstacles": [],
+  "status": "running",
+  "view_renderer": "browser"
+}

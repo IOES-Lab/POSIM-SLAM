@@ -1,0 +1,8 @@
+{
+  "escalation_logged": false,
+  "dvl_process_lines": [
+    "[INFO] [python-11]: sending signal 'SIGINT' to process[python-11]",
+    "[INFO] [python-11]: process has finished cleanly [pid 89909]"
+  ],
+  "log_sha256": "b8bb1e40789b02fb48ab9871ef376c7092c005ff44f0859def1bbff8db804369"
+}

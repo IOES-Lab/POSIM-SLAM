@@ -1,0 +1,199 @@
+{
+  "assessment_only": true,
+  "map_accepted": false,
+  "scene_used_for_inference": false,
+  "complete_frames": 4,
+  "complete_raw_pixels": 613376,
+  "complete_ray_cells": 262144,
+  "sampled_unique_texels": 13636,
+  "results": [
+    {
+      "index": 0,
+      "stamp_ns": 25010000000,
+      "rays": 65536,
+      "raw_conversion_delta_db": {
+        "count": 153344,
+        "rms": 7.553421499026242e-07,
+        "absolute_max": 4.544559743635546e-06,
+        "median_absolute": 3.637213676910278e-07
+      },
+      "arms": {
+        "captured_inputs": {
+          "pixels": 153344,
+          "gain": 1226583923.791058,
+          "residual_rms": 0.962933008420742,
+          "residual_max": 8.832104380242562
+        },
+        "ideal": {
+          "pixels": 153344,
+          "gain": 1667405469.8120868,
+          "residual_rms": 18.57236413424715,
+          "residual_max": 7098.362233092539,
+          "actual_only": 0,
+          "expected_only": 1,
+          "range_residual_m": {
+            "count": 65535,
+            "rms": 0.03956815227866173,
+            "absolute_max": 0.9329066276550293,
+            "median_absolute": 0.011713981628417969
+          }
+        },
+        "sampled": {
+          "pixels": 153344,
+          "gain": 1226897748.1660166,
+          "residual_rms": 0.9629835087595332,
+          "residual_max": 8.813685773338742,
+          "actual_only": 0,
+          "expected_only": 0,
+          "range_residual_m": {
+            "count": 65535,
+            "rms": 7.354907575063407e-05,
+            "absolute_max": 0.0011739730834960938,
+            "median_absolute": 3.528594970703125e-05
+          }
+        }
+      }
+    },
+    {
+      "index": 1,
+      "stamp_ns": 45010000000,
+      "rays": 65536,
+      "raw_conversion_delta_db": {
+        "count": 153344,
+        "rms": 7.714735715970755e-07,
+        "absolute_max": 4.69154487348078e-06,
+        "median_absolute": 3.782603910096327e-07
+      },
+      "arms": {
+        "captured_inputs": {
+          "pixels": 153344,
+          "gain": 1055715125.4441389,
+          "residual_rms": 0.9758130273470477,
+          "residual_max": 9.962472336419573
+        },
+        "ideal": {
+          "pixels": 153344,
+          "gain": 1540055416.5340657,
+          "residual_rms": 4.485199889355843,
+          "residual_max": 1019.3234064245719,
+          "actual_only": 3,
+          "expected_only": 3,
+          "range_residual_m": {
+            "count": 65510,
+            "rms": 0.0635782852768898,
+            "absolute_max": 2.4111709594726562,
+            "median_absolute": 0.010884284973144531
+          }
+        },
+        "sampled": {
+          "pixels": 153344,
+          "gain": 1055766429.934076,
+          "residual_rms": 0.9758779005850832,
+          "residual_max": 9.948786769686714,
+          "actual_only": 0,
+          "expected_only": 0,
+          "range_residual_m": {
+            "count": 65513,
+            "rms": 6.744376150891185e-05,
+            "absolute_max": 0.0018558502197265625,
+            "median_absolute": 2.86102294921875e-05
+          }
+        }
+      }
+    },
+    {
+      "index": 2,
+      "stamp_ns": 65010000000,
+      "rays": 65536,
+      "raw_conversion_delta_db": {
+        "count": 153344,
+        "rms": 7.661052932622381e-07,
+        "absolute_max": 4.577341343292574e-06,
+        "median_absolute": 3.7784452011635494e-07
+      },
+      "arms": {
+        "captured_inputs": {
+          "pixels": 153344,
+          "gain": 1131046561.1894264,
+          "residual_rms": 0.982874007205873,
+          "residual_max": 9.83031661709759
+        },
+        "ideal": {
+          "pixels": 153344,
+          "gain": 1633998105.6979687,
+          "residual_rms": 10.93976276524757,
+          "residual_max": 3015.8521453790713,
+          "actual_only": 3,
+          "expected_only": 4,
+          "range_residual_m": {
+            "count": 65509,
+            "rms": 0.03903314471244812,
+            "absolute_max": 0.9352982044219971,
+            "median_absolute": 0.012523651123046875
+          }
+        },
+        "sampled": {
+          "pixels": 153344,
+          "gain": 1130890976.5099342,
+          "residual_rms": 0.9830504550469955,
+          "residual_max": 9.852814523734446,
+          "actual_only": 0,
+          "expected_only": 0,
+          "range_residual_m": {
+            "count": 65512,
+            "rms": 8.071151387412101e-05,
+            "absolute_max": 0.0009412765502929688,
+            "median_absolute": 3.4809112548828125e-05
+          }
+        }
+      }
+    },
+    {
+      "index": 3,
+      "stamp_ns": 85010000000,
+      "rays": 65536,
+      "raw_conversion_delta_db": {
+        "count": 153344,
+        "rms": 7.854857051032076e-07,
+        "absolute_max": 4.714007104666962e-06,
+        "median_absolute": 4.0118039068559597e-07
+      },
+      "arms": {
+        "captured_inputs": {
+          "pixels": 153344,
+          "gain": 1161150842.8516722,
+          "residual_rms": 1.005068995082831,
+          "residual_max": 9.318165616261767
+        },
+        "ideal": {
+          "pixels": 153344,
+          "gain": 2200267542.2481084,
+          "residual_rms": 20.705314379420905,
+          "residual_max": 4998.34855135365,
+          "actual_only": 26,
+          "expected_only": 13,
+          "range_residual_m": {
+            "count": 64947,
+            "rms": 0.03739786893129349,
+            "absolute_max": 0.40497589111328125,
+            "median_absolute": 0.016554832458496094
+          }
+        },
+        "sampled": {
+          "pixels": 153344,
+          "gain": 1161047992.6106727,
+          "residual_rms": 1.00532950372044,
+          "residual_max": 9.320561337413602,
+          "actual_only": 0,
+          "expected_only": 0,
+          "range_residual_m": {
+            "count": 64973,
+            "rms": 9.729697194416076e-05,
+            "absolute_max": 0.0015058517456054688,
+            "median_absolute": 4.2438507080078125e-05
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "truth_scene_rgb_used": false,
+  "files": {
+    "protocol.json": "e1499e2f57be0289015570fedea9d978ab58e84776e9c0a41c094a76f4d490a4",
+    "run_fit.py": "29c16d7242f9d99e4fb296ad6441d0c33819f97447173b959ee10c27ff1fedea",
+    "seed.npz": "3970b128c675790b19c538f3aef130923d93a3af812f0827875728cbc5b9bc53",
+    "inputs.json": "937effa92b43469893853557fb05ebce35c2c82bf19b43088f0a80a70293db6f",
+    "component-source.json": "779f7c5319e3012335f0729eff1b6805a3f9e79aafee07df07863ce01d94e3c3",
+    "trace.jsonl": "05e5241c08bc4beca7fe679aa921246987774b22a268a14ec02dcb1663d43207",
+    "fit-output.json": "3dbf651b9fa8e80045949e6f66c93cd3390c85ccb670db414b671fe25bb036e5",
+    "fit-output.npz": "f694753641eced5004166d7a0c4073e20e0780b3c870c487ac16661a55dbfaa1"
+  }
+}

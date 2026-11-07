@@ -1,0 +1,12 @@
+{
+  "original_library_head": "bc2662412524cdc8db98a8b0c74bb49d24e1735b",
+  "failed_job": "https://github.com/IOES-Lab/POSIM-SLAM/actions/runs/41190135720/job/124505044026",
+  "phase": "new final-record verifier after all older scientific records passed",
+  "cause": "The verifier incorrectly required bit-identical float64 10**(dB/10) derived powers across ARM macOS and Linux x86 libm implementations.",
+  "mismatches": 1,
+  "pixels": 48,
+  "maximum_absolute_difference": 8.881784197001252e-16,
+  "maximum_relative_difference": 1.8632199e-16,
+  "correction": "Keep exact raw NPZ, source dB, serialized outputs and pixel hashes/identity. Compare only recomputed float64 power with eight machine epsilons relative and zero absolute floor. Reject 64-epsilon changes and loss/creation of weak nonzero returns.",
+  "fit_or_scientific_output_or_sensor_noise_or_map_admission_changed": false
+}

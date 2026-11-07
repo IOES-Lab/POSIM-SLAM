@@ -1,0 +1,17 @@
+{
+  "frames": 110,
+  "all_curves": 6606,
+  "fit_candidates": 509,
+  "fitted": 509,
+  "rejected": [],
+  "mirrored": 368,
+  "heldout_rms_m_p50_p90": [
+    0.022400964961431197,
+    0.031655986741859043
+  ],
+  "latency_ms_p50_p90": [
+    29.463625513017178,
+    38.657579169375836
+  ],
+  "scope": "sensor-only extraction and shape hypotheses; no native or map admission"
+}

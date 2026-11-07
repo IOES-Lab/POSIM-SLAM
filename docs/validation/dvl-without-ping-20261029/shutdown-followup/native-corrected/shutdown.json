@@ -1,0 +1,10 @@
+{
+  "dvl_process_lines": [
+    "[INFO] [python-11]: process started with pid [21532]",
+    "[INFO] [python-11]: sending signal 'SIGINT' to process[python-11]",
+    "[INFO] [python-11]: process has finished cleanly [pid 21532]"
+  ],
+  "sigkill_logged": false,
+  "termination_deadline_logged": false,
+  "source_log_sha256": "dad13d5f10b72a98c89a81fd557f4922eae4c7806f1f3b7aa03860f5c8ada72e"
+}

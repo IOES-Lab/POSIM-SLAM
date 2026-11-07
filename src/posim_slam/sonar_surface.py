@@ -7,7 +7,7 @@ Only NumPy is required. No ground truth, optical image or simulator scene input.
 from dataclasses import dataclass
 import math
 import numpy as np
-from .sonar_input import validate_frame
+from .sonar_input import validate_frame,log_quantile
 
 
 @dataclass(frozen=True)
@@ -141,17 +141,18 @@ def segment_surface(frame, *, ground_entry_band_m, config=SurfaceConfig()):
     background=np.full(rows,np.nan)
     for i in range(rows):
         candidates=smooth[i,after_ground[i]]
-        if len(candidates)>=max(8,beams//4):background[i]=np.quantile(candidates,.7)
-    reliable=np.isfinite(background)&(background>floor)
+        if len(candidates)>=max(8,beams//4):background[i]=log_quantile(candidates,.7)
+    reliable=np.isfinite(background)&np.isfinite(noise)&(background>floor)
     # Echo contrast uses the whole fan even before ground entry. This avoids
     # promoting broad range sidelobes merely because they exceed near noise.
-    base=np.quantile(smooth,.7,axis=1)
-    echo=(smooth>np.maximum(floor,base[:,None]+config.echo_excess_db))&(ranges[:,None]>.4)
+    base=log_quantile(smooth,.7,axis=1)
+    echo=(np.isfinite(noise)&np.isfinite(base[:,None])&np.isfinite(smooth)
+          &(smooth>np.maximum(floor,base[:,None]+config.echo_excess_db))&(ranges[:,None]>.4))
     dark=(smooth<background[:,None]-config.shadow_drop_db)&reliable[:,None]&after_ground
     onsets=np.full(beams,np.nan)
     echoes=[];shadows=[]
     for beam in range(beams):
-        for lo,hi in _runs((smooth[:,beam]>floor)&(ranges>=band[beam,0])&(ranges<=band[beam,1])):
+        for lo,hi in _runs(np.isfinite(noise)&(smooth[:,beam]>floor)&(ranges>=band[beam,0])&(ranges<=band[beam,1])):
             if ranges[hi-1]-ranges[lo]>=config.recovery_length_m:
                 # A prior-mask boundary is not an observed intensity transition.
                 if lo>0 and smooth[lo-1,beam]<=floor:onsets[beam]=ranges[lo]
@@ -175,7 +176,8 @@ def segment_surface(frame, *, ground_entry_band_m, config=SurfaceConfig()):
                                 range_end_m=float(ranges[hi]) if recovered else None))
     groups=_regions(shadows,config.min_region_beams)
     echo_groups=_regions(echoes,config.min_region_beams)
-    return dict(noise_db=noise,background_db=background,smoothed_db=smooth,
+    return dict(noise_db=noise if np.isfinite(noise) else None,noise_available=bool(np.isfinite(noise)),
+                background_db=background,smoothed_db=smooth,
                 ground_onset_m=onsets,echo_regions=echo_groups,shadow_candidates=groups,
                 scope='conditional intensity regions; no physical association or 3D landmarks',
                 map_qualified=False)

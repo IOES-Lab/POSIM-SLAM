@@ -1,0 +1,11 @@
+{
+  "binary": "libmultibeam_sonar.dylib",
+  "binary_sha256": "0090433756cb425eea803ce56a70c1af5adf844223054b2f1c25739bee0d8564",
+  "source": "ffecee9be9976f68c9e883d6cf3bbd6d40eb7729",
+  "input_sha256": "e279dce23ec69317d2bc073e25fbd09e63e3a3a1cd7a14cda466cb4a1cc15ba7",
+  "symbol_path_matches_requested_binary": true,
+  "median_operator_s": 0.012449000030755997,
+  "max_operator_s": 0.37270391697529703,
+  "new_renderer": false,
+  "installed_sdk_changed": false
+}

@@ -37,9 +37,11 @@ inline SonarPointRows sonarPointRows(const Eigen::Vector3d& position,
   if(!position.allFinite() || !lever.allFinite() || !point.allFinite() || !rotation(attitude) || !rotation(sonar_to_imu) ||
       !std::isfinite(measured_range) || !std::isfinite(measured_azimuth) || !std::isfinite(minimum) || !std::isfinite(maximum) ||
       !std::isfinite(horizontal_fov) || !std::isfinite(vertical_fov) || !(0<minimum && minimum<maximum) ||
-      measured_range<minimum || measured_range>maximum || !(0<horizontal_fov && horizontal_fov<=pi) ||
+      measured_range<=0 || !(0<horizontal_fov && horizontal_fov<=pi) ||
       !(0<vertical_fov && vertical_fov<pi) || !sonarWithinFov(measured_azimuth,horizontal_fov))
     throw std::invalid_argument("invalid_native_sonar_geometry");
+  // Physical visibility bounds the latent point below. A valid noisy range
+  // sample can lie outside that interval; the source decoder validates its grid.
   const Eigen::Vector3d difference=point-position;
   const Eigen::Vector3d local=sonar_to_imu.transpose()*(attitude.transpose()*difference-lever);
   const double x=local.x(),y=local.y(),z=local.z(),rho2=x*x+y*y,range=local.norm();

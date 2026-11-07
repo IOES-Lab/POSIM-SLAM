@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "frozen_before_new_raw_inspection_or_fit": true,
+  "source_integration": "ffecee9be9976f68c9e883d6cf3bbd6d40eb7729",
+  "library_base": "9a504fccb0e8b9f5724c45d0e5e6ef770f8deb01",
+  "initial_state": "Sealed fitted_prism of sonar-finite-geometry-fit-20261031; all ten parameters and seed unchanged at start",
+  "training_control_indices": [
+    49,
+    88,
+    151
+  ],
+  "training_height_diverse_indices": [
+    27,
+    49,
+    81,
+    88,
+    151
+  ],
+  "unused_temporal_indices": [
+    51,
+    90,
+    153
+  ],
+  "view_selection": "Before reading new raw pixels: among existing pose/plane-supported records, extremes of sensor origin z whose fitted seed center is predicted in the unchanged 120x20 degree/15m fan. Frozen indices27/81, about1.31m vertical baseline; old three about0.18m. Visibility is a supplied-shape prediction, not verified physical identity. No image score used in selection.",
+  "queries": "Original six views retain exact frozen query indices. New27/81 use 8x4 indices over the same sealed prism vertex slant span +/-0.6m and azimuth span +/-8deg, union with broad ranges[80,140,200,300]x beams[32,96,160,224]. Clip query indices only to actual source grid; retain duplicates removed by unique and actual count. Freeze before optimization.",
+  "models": "Same finite opaque ground/prism surface, source ray normals, all256x256 rays,599 bins,15m; ten geometry/material parameters. No pixel/ray subsampling in forward model. One material ratio, positive per-view common brightness.",
+  "search": "Both begin at identical sealed parameters and use the existing four-sweep coordinate schedule (scales1,.5, two sweeps each), same parameter order, steps and bounds. This controls additional search schedule, not equal wall time or exact evaluations when bounds cause skipped proposals.",
+  "comparison": "Three initial/control/diverse states evaluated on all eight views, all complete548 model surface samples/PLYs and full exact correlated moments. Every proposal/unavailable case retained. Compare initial3 only, new2 only, all5, and untouched temporal3 scores separately.",
+  "uncertainty": "Navigation and ground/material/shape conditioning remain explicit. A local search and better score do not establish identifiability, calibrated joint covariance, independent landmarks or a native factor.",
+  "assessment": "Seal all inferred geometry/results and producer/source hashes before scene/truth/RGB read. Reuse prior assessment reference and exact native context camera; all emitted samples, common full Turbo heights,64pt2 markers, vehicle/sensor positions/directions, environment caption in both repos. No point trimming.",
+  "scope": "Development data, previously inspected scene; no independent-scene claim. Native source, SDK, noise/freshness/admission untouched. Reuse original raw only; no renderer below80GiB and no Mac retry below70GiB. Do not repeat previous kernel/fit qualification."
+}

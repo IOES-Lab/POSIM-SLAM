@@ -1,0 +1,73 @@
+[
+  {
+    "name": "unchanged_scene",
+    "kind": "baseline"
+  },
+  {
+    "name": "without_single_view_seed",
+    "kind": "remove_unconfirmed_seed"
+  },
+  {
+    "name": "birth0_height-0.1",
+    "kind": "finite_box_birth",
+    "mode": 0,
+    "height_offset_m": -0.1,
+    "ground_prior_height_m": 0.1906373913560344
+  },
+  {
+    "name": "birth0_height+0.0",
+    "kind": "finite_box_birth",
+    "mode": 0,
+    "height_offset_m": 0.0,
+    "ground_prior_height_m": 0.2906373913560345
+  },
+  {
+    "name": "birth0_height+0.1",
+    "kind": "finite_box_birth",
+    "mode": 0,
+    "height_offset_m": 0.1,
+    "ground_prior_height_m": 0.3906373913560346
+  },
+  {
+    "name": "birth1_height-0.1",
+    "kind": "finite_box_birth",
+    "mode": 1,
+    "height_offset_m": -0.1,
+    "ground_prior_height_m": 0.1668242668836415
+  },
+  {
+    "name": "birth1_height+0.0",
+    "kind": "finite_box_birth",
+    "mode": 1,
+    "height_offset_m": 0.0,
+    "ground_prior_height_m": 0.2668242668836416
+  },
+  {
+    "name": "birth1_height+0.1",
+    "kind": "finite_box_birth",
+    "mode": 1,
+    "height_offset_m": 0.1,
+    "ground_prior_height_m": 0.36682426688364167
+  },
+  {
+    "name": "birth2_height-0.1",
+    "kind": "finite_box_birth",
+    "mode": 2,
+    "height_offset_m": -0.1,
+    "ground_prior_height_m": 0.20094098583740339
+  },
+  {
+    "name": "birth2_height+0.0",
+    "kind": "finite_box_birth",
+    "mode": 2,
+    "height_offset_m": 0.0,
+    "ground_prior_height_m": 0.3009409858374035
+  },
+  {
+    "name": "birth2_height+0.1",
+    "kind": "finite_box_birth",
+    "mode": 2,
+    "height_offset_m": 0.1,
+    "ground_prior_height_m": 0.40094098583740356
+  }
+]

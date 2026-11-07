@@ -1,0 +1,5 @@
+{
+  "src/posim_slam/sonar_surface_power.py": "ad81a4c615997ed505be174c30b37af0e8d83eaa27360654982ed27a63922620",
+  "src/posim_slam/sonar_source_surface.py": "cc31f9a88e9e12e797c0ba17f56904394b217edf0105f88134893cda7f360f8b",
+  "src/posim_slam/sonar_source_normals.py": "87647c8abf5baa386a9aabda194f08cb5a37af81cfeb57d1c5ba888aa8324ee5"
+}

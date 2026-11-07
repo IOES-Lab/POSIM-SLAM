@@ -1,0 +1,120 @@
+{
+  "imu": {
+    "schema_version": 1,
+    "vehicle": "bluerov2",
+    "input_topic": "/model/bluerov2/imu",
+    "output_topic": "/vehicle/sensors/imu",
+    "frame": "vehicle/imu",
+    "input_frames": [
+      "bluerov2/base_link/imu_sensor"
+    ],
+    "mount": {
+      "parent": "vehicle/base_link",
+      "child": "vehicle/imu",
+      "translation": [
+        0.0,
+        0.0,
+        -0.1
+      ],
+      "rotation": [
+        1.0,
+        0.0,
+        0.0,
+        6.123233995736766e-17
+      ]
+    },
+    "declared_rate_hz": 1000.0,
+    "orientation_used": false,
+    "simulated_bias_calibration": {
+      "available": true,
+      "source": "generated_sdf_noiseless_imu",
+      "gyro_bias": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "accel_bias": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "gyro_bias_covariance": [
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ]
+      ],
+      "accel_bias_covariance": [
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ]
+      ]
+    },
+    "specific_force_includes_gravity": true
+  },
+  "camera": {
+    "camera_frame": "vehicle/camera_down",
+    "camera_mount": {
+      "translation": [
+        -0.1,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        -0.7071067811865475,
+        0.7071067811865475,
+        -5.551115123125783e-17,
+        5.551115123125783e-17
+      ]
+    },
+    "imu_mount": {
+      "parent": "vehicle/base_link",
+      "child": "vehicle/imu",
+      "translation": [
+        0.0,
+        0.0,
+        -0.1
+      ],
+      "rotation": [
+        1.0,
+        0.0,
+        0.0,
+        6.123233995736766e-17
+      ]
+    },
+    "T_i_c_q_xyzw": [
+      -9.880895404303248e-17,
+      -1.2213348419483169e-17,
+      -0.7071067811865475,
+      -0.7071067811865475
+    ],
+    "T_i_c_translation_m": [
+      -0.1,
+      1.2246467991473533e-17,
+      -0.1
+    ]
+  }
+}

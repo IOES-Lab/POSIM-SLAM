@@ -1,0 +1,7 @@
+{
+  "frozen_before_full_native_mean_inspection": true,
+  "purpose": "Check the existing 512-evaluation native-kernel record at every pixel, beyond its originally selected 64 queries. No new GPU execution, renderer, SDK, sensor input or field acquisition.",
+  "inputs": "Reuse exact native-input depth, source normal, area, alpha and source profile plus all native full-image power sums from sonar-native-power-moments-20261031. Expected means use the existing exact Hamming amplitude with nonnegative per-source-beam sums. Quantify supplied float32 beam-mixing versus recomputed double matrix difference separately.",
+  "conditional_test": "Under independent proper-complex-Gaussian scattering across the 512 different frame counters, sum(power)/expected_mean has Gamma(shape512,scale1) at each pixel. Use two-sided Bonferroni family alpha.01 across all153344 pixels; dependence between pixels does not invalidate the union bound. Freeze these tails before examining full-image errors. This tests conditional kernel agreement, not hardware/calibrated field uncertainty.",
+  "scope": "Original selected-query success remains preserved. Report every full-image failure, intensity scale and mixing discrepancy; do not change tails, noise or map admission after seeing results."
+}

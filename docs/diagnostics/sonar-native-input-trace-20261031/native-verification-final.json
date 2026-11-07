@@ -1,0 +1,40 @@
+{
+  "native_frames": 6,
+  "complete_output_byte_identity": true,
+  "captured_frames": 4,
+  "every_input_array_and_scalar_byte_identical": true,
+  "complete_captured_outputs_match": true,
+  "total_recorded_bytes": 11210144,
+  "frame_and_byte_quotas_preserved": true,
+  "records": [
+    {
+      "frame": 60000,
+      "bytes": 2802536,
+      "sha256": "950d90d9608cbeb0fb0e3a5c516f9cdd18d4f3c9d37a33129ad5d94fb6d161b6",
+      "output_sha256": "059afd997bed882ed18fe047e852e40fad32937fa099e73d0a68d5efbfb9e836"
+    },
+    {
+      "frame": 60001,
+      "bytes": 2802536,
+      "sha256": "b5ddfa486961fc0d9361895214115298397658922ab5f606dfeb453782a5a1af",
+      "output_sha256": "8ee0faade16c79082e82cdc1d79075c643da9bebdb1ced7f08087b7f487903b7"
+    },
+    {
+      "frame": 60002,
+      "bytes": 2802536,
+      "sha256": "412c7fb6999decd2277ff7bbc81de2c292ef43f62b95eb5b037b939095e699e7",
+      "output_sha256": "f6fb56d804bc03409b9c274046b68b511a925a1756d9f38b25f0abc2bf1a556a"
+    },
+    {
+      "frame": 60003,
+      "bytes": 2802536,
+      "sha256": "752f13497c3d2eda0f89d3e26ebc35949c9c6ef6c4df544d01374c5d6b944bc9",
+      "output_sha256": "c12c0191f0ba31234e064607aa669c61d2933b2dd0a48e17e3e2f852471479e8"
+    }
+  ],
+  "supplied_grid_only": true,
+  "renderer_pose_is_synthetic": true,
+  "actual_field_input_acquired": false,
+  "installed_sdk_changed": false,
+  "new_renderer": false
+}

@@ -1,0 +1,10 @@
+{
+  "README.md": "5dc8d8ac26c0ee3446970b723631b03a8c0dbe86e118b39e116e172540e68ef4",
+  "assessment.json": "fb81f1284146b40425b032b64d9e84504ef84b50e11b9fd98f96924bfd81e28b",
+  "comparison.png": "0dd7a03ac54e2d7f7afff2a89552ac15be89a70119da5657881f27a89efc20a7",
+  "comparison.svg": "e106ec9a1c02cfe7159e9938fb3e08b2f5b5d0ae4ecfdb6ede9523ce4071738f",
+  "expected.npz": "223b91474e6cbb5f7cfcafe572c71c9655bcfb008b44eed781bae3bed3920276",
+  "input-ranges.json": "6865cb8fca4a611a03fafd0cd91cc84b32fc6dda04c70b459b2f1843d7cacb4c",
+  "plot.py": "727babcc89ea496e3039605f1ddc2b56b919cc62a3490f036a1cef5d2b3fac9b",
+  "verify.py": "988bd4fff5ad5693a779f0f3e71928a50f68c25ace164ff4f6c576fa230684e4"
+}

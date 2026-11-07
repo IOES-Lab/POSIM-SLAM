@@ -1,0 +1,55 @@
+........................................................................................s.............................................................................................................................................................................sssssssss.................................s.............sssss......{'iteration': 0, 'objective': 0.27851510185516043, 'relative_power_l2': 0.8608327741341347, 'positive_coefficients': 28, 'lipschitz': 28.707901748725167}
+{'iteration': 10, 'objective': 0.02784607185819552, 'relative_power_l2': 0.16180431105544535, 'positive_coefficients': 13, 'lipschitz': 28.707901748725167}
+{'iteration': 20, 'objective': 0.021168017931662026, 'relative_power_l2': 0.10896165786415778, 'positive_coefficients': 8, 'lipschitz': 28.707901748725167}
+{'iteration': 30, 'objective': 0.02077559477017228, 'relative_power_l2': 0.10335351962000607, 'positive_coefficients': 8, 'lipschitz': 28.707901748725167}
+{'iteration': 39, 'objective': 0.020567442894220998, 'relative_power_l2': 0.10054877148864254, 'positive_coefficients': 7, 'lipschitz': 28.707901748725167}
+.{'iteration': 0, 'objective': 0.17143612286667126, 'relative_power_l2': 0.2891367125898087, 'positive_coefficients': 3, 'lipschitz': 2.00805751151814}
+{'iteration': 10, 'objective': 0.00022489164297421246, 'relative_power_l2': 0.010472219326936915, 'positive_coefficients': 3, 'lipschitz': 2.00805751151814}
+{'iteration': 20, 'objective': 2.0054748956206882e-05, 'relative_power_l2': 0.003127236206930667, 'positive_coefficients': 3, 'lipschitz': 2.00805751151814}
+{'iteration': 30, 'objective': 6.423983838777574e-09, 'relative_power_l2': 5.596986902125776e-05, 'positive_coefficients': 3, 'lipschitz': 2.00805751151814}
+{'iteration': 40, 'objective': 1.7394078924771836e-11, 'relative_power_l2': 2.9124118464535788e-06, 'positive_coefficients': 2, 'lipschitz': 2.00805751151814}
+{'iteration': 50, 'objective': 5.537268633300657e-10, 'relative_power_l2': 1.6432357218574888e-05, 'positive_coefficients': 3, 'lipschitz': 2.00805751151814}
+{'iteration': 60, 'objective': 2.0091570325738545e-12, 'relative_power_l2': 9.898263517309928e-07, 'positive_coefficients': 3, 'lipschitz': 2.00805751151814}
+{'iteration': 70, 'objective': 6.66001461421442e-13, 'relative_power_l2': 5.698881962906676e-07, 'positive_coefficients': 2, 'lipschitz': 2.00805751151814}
+{'iteration': 80, 'objective': 4.260401647434805e-14, 'relative_power_l2': 1.4413761867342498e-07, 'positive_coefficients': 3, 'lipschitz': 2.00805751151814}
+{'iteration': 90, 'objective': 5.483987257934154e-16, 'relative_power_l2': 1.635310740932151e-08, 'positive_coefficients': 3, 'lipschitz': 2.00805751151814}
+{'iteration': 100, 'objective': 9.880456475675537e-17, 'relative_power_l2': 6.941296173854038e-09, 'positive_coefficients': 2, 'lipschitz': 2.00805751151814}
+{'iteration': 110, 'objective': 3.9591757163388934e-18, 'relative_power_l2': 1.3894869084526158e-09, 'positive_coefficients': 3, 'lipschitz': 2.00805751151814}
+{'iteration': 120, 'objective': 1.427769804956821e-19, 'relative_power_l2': 2.6386462307700115e-10, 'positive_coefficients': 3, 'lipschitz': 2.00805751151814}
+{'iteration': 130, 'objective': 5.326909513772334e-21, 'relative_power_l2': 5.096707739632779e-11, 'positive_coefficients': 2, 'lipschitz': 2.00805751151814}
+{'iteration': 140, 'objective': 3.1206466837725315e-22, 'relative_power_l2': 1.2336000300658577e-11, 'positive_coefficients': 3, 'lipschitz': 2.00805751151814}
+{'iteration': 150, 'objective': 3.518946218019958e-23, 'relative_power_l2': 4.142460590267428e-12, 'positive_coefficients': 3, 'lipschitz': 2.00805751151814}
+{'iteration': 160, 'objective': 9.004587658705185e-27, 'relative_power_l2': 6.626496697522138e-14, 'positive_coefficients': 2, 'lipschitz': 2.00805751151814}
+{'iteration': 170, 'objective': 9.946598054134802e-27, 'relative_power_l2': 6.964490573270308e-14, 'positive_coefficients': 3, 'lipschitz': 2.00805751151814}
+{'iteration': 180, 'objective': 8.053149076315859e-27, 'relative_power_l2': 6.266642793261688e-14, 'positive_coefficients': 3, 'lipschitz': 2.00805751151814}
+{'iteration': 190, 'objective': 1.6949537929984925e-29, 'relative_power_l2': 2.8749546756996666e-15, 'positive_coefficients': 3, 'lipschitz': 2.00805751151814}
+{'iteration': 199, 'objective': 2.0876271802115284e-30, 'relative_power_l2': 1.0089706705172987e-15, 'positive_coefficients': 3, 'lipschitz': 2.00805751151814}
+.....{'iteration': 0, 'objective': 0.27851510185516043, 'relative_power_l2': 0.8608327741341347, 'positive_coefficients': 28, 'lipschitz': 28.707901748725167}
+{'iteration': 10, 'objective': 0.02784607185819552, 'relative_power_l2': 0.16180431105544535, 'positive_coefficients': 13, 'lipschitz': 28.707901748725167}
+{'iteration': 20, 'objective': 0.021168017931662026, 'relative_power_l2': 0.10896165786415778, 'positive_coefficients': 8, 'lipschitz': 28.707901748725167}
+{'iteration': 30, 'objective': 0.02077559477017228, 'relative_power_l2': 0.10335351962000607, 'positive_coefficients': 8, 'lipschitz': 28.707901748725167}
+{'iteration': 39, 'objective': 0.020567442894220998, 'relative_power_l2': 0.10054877148864254, 'positive_coefficients': 7, 'lipschitz': 28.707901748725167}
+{'iteration': 0, 'objective': 0.16023599331813168, 'relative_power_l2': 0.6322814487648094, 'positive_coefficients': 198, 'lipschitz': 40.81712764343118}
+{'iteration': 10, 'objective': 0.027053756317340395, 'relative_power_l2': 0.1534015753660275, 'positive_coefficients': 34, 'lipschitz': 40.81712764343118}
+{'iteration': 20, 'objective': 0.022540754394353723, 'relative_power_l2': 0.12088647592980878, 'positive_coefficients': 26, 'lipschitz': 40.81712764343118}
+{'iteration': 30, 'objective': 0.019456950391911258, 'relative_power_l2': 0.09249233247934743, 'positive_coefficients': 19, 'lipschitz': 40.81712764343118}
+{'iteration': 40, 'objective': 0.01884388956689461, 'relative_power_l2': 0.0903722805303455, 'positive_coefficients': 20, 'lipschitz': 40.81712764343118}
+{'iteration': 50, 'objective': 0.017966242899372722, 'relative_power_l2': 0.07635506035908265, 'positive_coefficients': 18, 'lipschitz': 40.81712764343118}
+{'iteration': 59, 'objective': 0.017397299811985213, 'relative_power_l2': 0.06718665340730948, 'positive_coefficients': 14, 'lipschitz': 40.81712764343118}
+{'iteration': 0, 'objective': 0.27851510185516043, 'relative_power_l2': 0.8608327741341347, 'positive_coefficients': 28, 'lipschitz': 28.707901748725167}
+{'iteration': 10, 'objective': 0.02784607185819552, 'relative_power_l2': 0.16180431105544535, 'positive_coefficients': 13, 'lipschitz': 28.707901748725167}
+{'iteration': 20, 'objective': 0.021168017931662026, 'relative_power_l2': 0.10896165786415778, 'positive_coefficients': 8, 'lipschitz': 28.707901748725167}
+{'iteration': 30, 'objective': 0.02077559477017228, 'relative_power_l2': 0.10335351962000607, 'positive_coefficients': 8, 'lipschitz': 28.707901748725167}
+{'iteration': 39, 'objective': 0.020567442894220998, 'relative_power_l2': 0.10054877148864254, 'positive_coefficients': 7, 'lipschitz': 28.707901748725167}
+{'iteration': 0, 'objective': 0.16023599331813168, 'relative_power_l2': 0.6322814487648094, 'positive_coefficients': 198, 'lipschitz': 40.81712764343118}
+{'iteration': 10, 'objective': 0.027053756317340395, 'relative_power_l2': 0.1534015753660275, 'positive_coefficients': 34, 'lipschitz': 40.81712764343118}
+{'iteration': 20, 'objective': 0.022540754394353723, 'relative_power_l2': 0.12088647592980878, 'positive_coefficients': 26, 'lipschitz': 40.81712764343118}
+{'iteration': 30, 'objective': 0.019456950391911258, 'relative_power_l2': 0.09249233247934743, 'positive_coefficients': 19, 'lipschitz': 40.81712764343118}
+{'iteration': 40, 'objective': 0.01884388956689461, 'relative_power_l2': 0.0903722805303455, 'positive_coefficients': 20, 'lipschitz': 40.81712764343118}
+{'iteration': 50, 'objective': 0.017966242899372722, 'relative_power_l2': 0.07635506035908265, 'positive_coefficients': 18, 'lipschitz': 40.81712764343118}
+{'iteration': 59, 'objective': 0.017397299811985213, 'relative_power_l2': 0.06718665340730948, 'positive_coefficients': 14, 'lipschitz': 40.81712764343118}
+............................................................................................................
+----------------------------------------------------------------------
+Ran 443 tests in 13.212s
+
+OK (skipped=16)

@@ -1,0 +1,79 @@
+{
+  "tests": 443,
+  "skipped": [
+    {
+      "test": "test_native_matches_reference_covariance (test_ground_surface_noise.SurfaceNoiseTests.test_native_matches_reference_covariance)",
+      "reason": "native ground probe required"
+    },
+    {
+      "test": "test_derivatives_follow_accumulated_pose_and_plane_coordinates (test_sonar_ground_joint.NativeGroundTests.test_derivatives_follow_accumulated_pose_and_plane_coordinates)",
+      "reason": "compiled native ground probe required"
+    },
+    {
+      "test": "test_joint_optimizer_corrects_relative_height_and_tilt (test_sonar_ground_joint.NativeGroundTests.test_joint_optimizer_corrects_relative_height_and_tilt)",
+      "reason": "compiled native ground probe required"
+    },
+    {
+      "test": "test_native_flat_plane_keeps_unobservable_directions (test_sonar_ground_joint.NativeGroundTests.test_native_flat_plane_keeps_unobservable_directions)",
+      "reason": "compiled native ground probe required"
+    },
+    {
+      "test": "test_native_matches_reference_and_retirement (test_sonar_ground_joint.NativeGroundTests.test_native_matches_reference_and_retirement)",
+      "reason": "compiled native ground probe required"
+    },
+    {
+      "test": "test_native_rejects_duplicate_beams_bad_noise_and_wrong_branch (test_sonar_ground_joint.NativeGroundTests.test_native_rejects_duplicate_beams_bad_noise_and_wrong_branch)",
+      "reason": "compiled native ground probe required"
+    },
+    {
+      "test": "test_predictive_association_matches_dense_conditional_gaussian (test_sonar_ground_joint.NativeGroundTests.test_predictive_association_matches_dense_conditional_gaussian)",
+      "reason": "compiled native ground probe required"
+    },
+    {
+      "test": "test_predictive_gate_detects_distributed_surface_disagreement (test_sonar_ground_joint.NativeGroundTests.test_predictive_gate_detects_distributed_surface_disagreement)",
+      "reason": "compiled native ground probe required"
+    },
+    {
+      "test": "test_predictive_gate_retains_plane_fit_uncertainty (test_sonar_ground_joint.NativeGroundTests.test_predictive_gate_retains_plane_fit_uncertainty)",
+      "reason": "compiled native ground probe required"
+    },
+    {
+      "test": "test_updated_plane_keeps_flat_yaw_unobservable (test_sonar_ground_joint.NativeGroundTests.test_updated_plane_keeps_flat_yaw_unobservable)",
+      "reason": "compiled native ground probe required"
+    },
+    {
+      "test": "test_native_roundtrip_and_malformed_payloads (test_sonar_packet.SonarPacket.test_native_roundtrip_and_malformed_payloads)",
+      "reason": "native decoder not configured"
+    },
+    {
+      "test": "test_accumulated_pose_and_plane_coordinates_remain_consistent (test_sonar_plane_native.MultiPlaneNativeTests.test_accumulated_pose_and_plane_coordinates_remain_consistent)",
+      "reason": "compiled native probe required"
+    },
+    {
+      "test": "test_duplicate_source_and_tied_rays_rejected (test_sonar_plane_native.MultiPlaneNativeTests.test_duplicate_source_and_tied_rays_rejected)",
+      "reason": "compiled native probe required"
+    },
+    {
+      "test": "test_optimizer_updates_each_plane_through_existing_trial_path (test_sonar_plane_native.MultiPlaneNativeTests.test_optimizer_updates_each_plane_through_existing_trial_path)",
+      "reason": "compiled native probe required"
+    },
+    {
+      "test": "test_retirement_keeps_both_planes_and_full_correlations (test_sonar_plane_native.MultiPlaneNativeTests.test_retirement_keeps_both_planes_and_full_correlations)",
+      "reason": "compiled native probe required"
+    },
+    {
+      "test": "test_shared_frame_cross_surface_covariance_matches_python (test_sonar_plane_native.MultiPlaneNativeTests.test_shared_frame_cross_surface_covariance_matches_python)",
+      "reason": "compiled native probe required"
+    }
+  ],
+  "failures": 0,
+  "errors": 0,
+  "imported_from": "installed/posim_slam/__init__.py",
+  "cwd": "outside",
+  "source_tree": "3f319cde43e655fc3e1edb45fbdf22b204253adb",
+  "wheel_sha256": "654bf25a1741741e4b4347ef75beada4e6690d92356f5b2a84703f11dc38b1fb",
+  "wheel_bytes": 188894,
+  "dvl_surface_sha256": "74acf0bd3c74261b39aaaaafea89a77def0b144aa6f644eb77f5123e827067e4",
+  "receipt_repair": "Complete installed run passed. Receipt repair stringifies skipped TestCases and parses progress interleaved with solver stdout; original log retained. Only the 16 skipped cases are rechecked for their reasons.",
+  "scope": "Independent target installation outside source checkout; not a WWW-POSIM application package or live sonar map"
+}

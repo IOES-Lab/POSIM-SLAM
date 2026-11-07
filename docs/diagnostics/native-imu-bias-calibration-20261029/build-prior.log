@@ -1,0 +1,8 @@
+[100%] Building CXX object CMakeFiles/basalt_surface_prior_probe.dir/surface_prior_probe.cc.o
+[100%] Linking CXX executable basalt_surface_prior_probe
+[100%] Built target basalt_surface_prior_probe
+[ 78%] Built target opengv
+[ 98%] Built target basalt_core
+[ 98%] Building CXX object CMakeFiles/basalt_surface_prior_owner_probe.dir/surface_prior_owner_probe.cc.o
+[100%] Linking CXX executable basalt_surface_prior_owner_probe
+[100%] Built target basalt_surface_prior_owner_probe

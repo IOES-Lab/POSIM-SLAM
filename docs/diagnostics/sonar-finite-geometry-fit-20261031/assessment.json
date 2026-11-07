@@ -1,0 +1,92 @@
+{
+  "map_accepted": false,
+  "native_fusion": false,
+  "construction_was_sealed": true,
+  "geometry_is_restrictive_one_prism_hypothesis": true,
+  "points_are_model_surface_samples_not_measured_landmarks": true,
+  "alignment": {
+    "rotation": [
+      [
+        -0.9903724594049796,
+        -0.13842829064946172,
+        0.0
+      ],
+      [
+        0.13842829064946172,
+        -0.9903724594049796,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "translation": [
+      -0.02274078061066737,
+      0.010448829452008833,
+      -1.2924615732501334
+    ],
+    "scale": 1.0
+  },
+  "diagnostic_10cm_not_universal_acceptance": true,
+  "families": {
+    "initial_prism": {
+      "points": 548,
+      "all_surface_error_m": {
+        "rmse": 0.05389190097904222,
+        "median": 0.04003620138293662,
+        "p90": 0.08565885464489888,
+        "maximum": 0.11164296523708561,
+        "beyond_10cm": 35
+      },
+      "nearest_surface_counts": {
+        "seabed": 54,
+        "inspection_block_0": 494,
+        "inspection_block_1": 0,
+        "inspection_block_2": 0,
+        "inspection_wall_0": 0,
+        "inspection_wall_1": 0
+      },
+      "assessment_nearest_center_object": "inspection_block_0",
+      "target_surface_error_m": {
+        "rmse": 0.05788774415534394,
+        "median": 0.04003620138293662,
+        "p90": 0.10940222935513093,
+        "maximum": 0.11522711835330135,
+        "beyond_10cm": 82
+      }
+    },
+    "fitted_prism": {
+      "points": 548,
+      "all_surface_error_m": {
+        "rmse": 0.056534733325007795,
+        "median": 0.06262762755277265,
+        "p90": 0.08599776018645144,
+        "maximum": 0.10248601699311842,
+        "beyond_10cm": 3
+      },
+      "nearest_surface_counts": {
+        "seabed": 57,
+        "inspection_block_0": 491,
+        "inspection_block_1": 0,
+        "inspection_block_2": 0,
+        "inspection_wall_0": 0,
+        "inspection_wall_1": 0
+      },
+      "assessment_nearest_center_object": "inspection_block_0",
+      "target_surface_error_m": {
+        "rmse": 0.05988334286330105,
+        "median": 0.06271119360609845,
+        "p90": 0.0863068367287152,
+        "maximum": 0.12803853566142065,
+        "beyond_10cm": 32
+      }
+    }
+  },
+  "references": {
+    "sonar-inspection-scene-20261031/verify.py": "bcde76abfff75d519f941921db46604566ef07c5d2ffc4c057549f1e4fd7192f",
+    "sonar-inspection-scene-20261031/scene-assessment-only.npz": "e47b848bd28c46911ee7b4a455343e786b1382737e937f6b8dba0b4e6a6e1678",
+    "sonar-translated-shadow-20261031/assessment-summary.json": "d731e1aa71f694d1b151739c267dd6e71cc6fbf92bffc6f561f8d8f0b4df9a27"
+  }
+}

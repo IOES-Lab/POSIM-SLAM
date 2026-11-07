@@ -1,0 +1,7 @@
+{
+  "scope": "accumulated_local_vio_landmarks",
+  "points": 1117,
+  "stamp_ns": 123000000000,
+  "request_id": 1,
+  "frame": "vehicle/vio_a4052fd3fee54880be300be5f3543755_segment_0"
+}

@@ -1,0 +1,29 @@
+{
+  "proof": {
+    "passed": true,
+    "library": "libwwos-competition-hydrodynamics.dylib",
+    "sha256": "ddff52c026f8070d3029a75d3a5a28a348007227699d45d550b366cda13651c5",
+    "upstream_files": {
+      "Hydrodynamics.cc": "79501af3769a5f88594107d2940f56f4088116b4242bfcd88c78571d2bacf4cc",
+      "Hydrodynamics.hh": "bcf63691275feecfc0cdb4b5771a1eddba9b6286ddcc94717848d62ea7cf8e49",
+      "Collision.cc": "f1d486ca807d336d3cc69a344a1d1f15f91bcf3dc2e3fcbe5ad9df491b0d1745",
+      "Collision.hh": "240a57ce96edbe90bd2345f781e2ac4434f81adbaadf3ccc5e60711ccb38fc38"
+    },
+    "input_sha256": "22b8ea23b04f8d478f0764a9ccc70299a9dcc1e2cddd42f479f9ba9247eb8d4b",
+    "source_sha256": {
+      "source/Collision.cc": "f1d486ca807d336d3cc69a344a1d1f15f91bcf3dc2e3fcbe5ad9df491b0d1745",
+      "source/Collision.hh": "240a57ce96edbe90bd2345f781e2ac4434f81adbaadf3ccc5e60711ccb38fc38",
+      "source/CompetitionHydrodynamics.cc": "d84c455e4b7e2807f904a564aa09dbafabec6a8381266d02cee1c7d8ef5e3426",
+      "source/CompetitionHydrodynamics.hh": "0b0688372016a1dcbf072563e5e3c914145cc4a280cb1060bda9cd5af3517992",
+      "source/CurrentProfile.hh": "0ee87ceaac5e0db9815549060a108d9ddffe84c7c71594b064b01111a011b549",
+      "source/CurrentState.hh": "cceaf5176a5d7faee985fe80ee0df5b750919271e897f9e17266861d4be5c4c1",
+      "CMakeLists.txt": "ee61c9b64edce50d6669238876c48d5cc36bcea23c5f4443c62ab0a53f5806d7",
+      "COPYING": "161c64b235e64516a394ce4ae69af7f2d3155d6fdc14ba0a7b6fbe1aa8f2cc79",
+      "upstream.json": "5b63b33b0a3af965693cc102acb8ddfaafa0f71fa9965bc380ad60f9be4886aa"
+    },
+    "build_jobs": 2,
+    "wave_install_config_sha256": "d085baa1e8f3eb5995a0bb6b3aab3b42cf782768a8b614249eb99111122abee1",
+    "posim_commit": "8c47601c7dd4729e3edeabef79665760268fdbc4"
+  },
+  "bound_plugin": "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/world-gravity-20261029/native-downward/native-plugins/f721bd479f7d2bd58ec4/competition_current.dylib"
+}

@@ -1,0 +1,26 @@
+{
+  "stamp_ns": 4600000000,
+  "tilt_error_deg": 0.11533645116826548,
+  "velocity_error_m_s": 0.14416035165785065,
+  "true_up_imu": [
+    -0.01581977665915246,
+    -0.000493223742818568,
+    -0.9998747378530943
+  ],
+  "submitted_up_imu": [
+    -0.017804317789283677,
+    -0.00015757328402683492,
+    -0.9998414781547716
+  ],
+  "true_velocity_imu_m_s": [
+    0.010496028534550502,
+    -0.010107787976974748,
+    -0.36643239944437533
+  ],
+  "submitted_velocity_imu_m_s": [
+    0.06253037271805824,
+    -0.01833970173246774,
+    -0.23224272170637067
+  ],
+  "scope": "Original native submitted seed against separately recorded physical IMU pose/finite-difference velocity; evaluation-only. No alternate seed is fed to the worker."
+}

@@ -6,6 +6,17 @@ import numpy as np
 from posim_slam.surface_calibration import SurfaceCalibration
 
 class CalibrationTests(unittest.TestCase):
+    def test_configured_gravity_recovers_mean_surface(self):
+        for gravity in (9.8,9.80665,10.):
+            c=SurfaceCalibration(np.eye(3),[0,0,0],gravity_m_s2=gravity)
+            for i in range(8):
+                t=i*.2
+                plane=c.add(t,[0,0,-5],np.eye(3),t,101325+5*1025*gravity,1,t,[0,0,0,1])
+            np.testing.assert_allclose(plane,[0,0,1,0],atol=1e-12)
+        for gravity in (0,-1,float('nan'),float('inf')):
+            with self.subTest(gravity=gravity),self.assertRaises(ValueError):
+                SurfaceCalibration(np.eye(3),[0,0,0],gravity_m_s2=gravity)
+
     def test_moving_camera_and_pressure_lever_arm(self):
         c=SurfaceCalibration(np.eye(3),[0,0,-.2])
         for i in range(8):

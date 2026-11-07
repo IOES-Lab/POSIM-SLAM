@@ -1,0 +1,17 @@
+{
+  "sha256": {
+    "runtime/worlds/sensor_profiles.py": "4afe38e37f1973ff255ac3a80a52d053fa09bdc86986282329e4bcd955cad254",
+    "runtime/worlds/sensor_composition.py": "d1441fdfa573db4fd1d71f65f80065c3d9e23232a97f6b3844e9aaafeb2c25e7",
+    "runtime/worlds/launch.py": "3cf52d6b5bd27b35937dc3c2be65679e420c1b7a98909d21b8be0dc0da812f9a",
+    "runtime/worlds/practice_vio.py": "dcc0ff5323bde0248b6c6a8987aaddee1691c93aa059b275d8a6ae58a4042fb3",
+    "runtime/browser_adapter/demo_workspace.py": "db78c5657b1aa8382e9a9f512f75cb4170814d4f7ff63c4706fe83dbb6b2c21b",
+    "runtime/browser_adapter/slam.py": "690f2a44aa93f35e128534fea06491dc3c1dc6c5f454a6d2a7d558c0b1214e5d",
+    "web/components/WorkspacePanel.tsx": "bc96895bb64a26565c3dd69d87b9cabed796e688fd959353b890cf0a7c49f069",
+    "web/components/sensorSelection.ts": "853b7a2b086832f35e355952344b0ce94483e8e8ee8b749aa01dfe80789c962a",
+    "web/components/i18n.tsx": "b46f8b1fb4bd9cf0b52f02459f55d487f2a2d85bba8c5657ed2db5f9bcabdd06"
+  },
+  "engine_sdk_commit": "8c47601c7dd4729e3edeabef79665760268fdbc4",
+  "shader_override_commit": "0d075c9d63762aba3e401c3c8d5a52f36a4145db",
+  "native_binary_sha256": "cb5cbc7c254b668ea0b0e3c7ac0f2fe8dac0d4f07810bab2e8d3237ca18d1d87",
+  "scope": "Development SDK and source-bound profiles; installed packages unqualified"
+}

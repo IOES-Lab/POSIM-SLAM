@@ -1,0 +1,86 @@
+{
+  "cases": [
+    {
+      "mode": "disabled",
+      "expected_records": 0,
+      "passed": true
+    },
+    {
+      "mode": "basic",
+      "expected_records": 4,
+      "passed": true
+    },
+    {
+      "mode": "timing",
+      "expected_records": 3,
+      "passed": true
+    },
+    {
+      "mode": "no-frame",
+      "expected_records": 0,
+      "passed": true
+    },
+    {
+      "mode": "collision",
+      "expected_records": 0,
+      "passed": true
+    },
+    {
+      "mode": "bad-dir",
+      "expected_records": 0,
+      "passed": true
+    },
+    {
+      "mode": "oversized",
+      "expected_records": 0,
+      "passed": true
+    },
+    {
+      "mode": "threads",
+      "expected_records": 4,
+      "passed": true
+    },
+    {
+      "mode": "null-output",
+      "expected_records": 4,
+      "passed": true
+    },
+    {
+      "mode": "nonfinite-pose",
+      "expected_records": 4,
+      "passed": true
+    },
+    {
+      "mode": "reverse",
+      "expected_records": 4,
+      "passed": true
+    },
+    {
+      "mode": "throw-output",
+      "expected_records": 4,
+      "passed": true
+    },
+    {
+      "mode": "bad-start",
+      "expected_records": 0,
+      "passed": true
+    },
+    {
+      "mode": "overflow-start",
+      "expected_records": 0,
+      "passed": true
+    },
+    {
+      "mode": "bad-spacing",
+      "expected_records": 0,
+      "passed": true
+    },
+    {
+      "mode": "byte-limit",
+      "expected_records": 0,
+      "passed": true
+    }
+  ],
+  "reader_negative_controls": 3,
+  "original_function_calls_and_ieee_bytes_preserved": true
+}

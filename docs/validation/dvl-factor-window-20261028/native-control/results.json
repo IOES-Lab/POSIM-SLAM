@@ -1,0 +1,534 @@
+[
+  {
+    "passed": true,
+    "recent_states": 16,
+    "elapsed_s": 29.133718915982172,
+    "source_duration_s": 25,
+    "event_count": 287,
+    "mean_event_s": 0.10150958885453343,
+    "median_camera_s": 0.098021375015378,
+    "max_event_s": 0.2020835000439547,
+    "export": {
+      "points": 596,
+      "request_id": 1,
+      "stamp_ns": 38500000000,
+      "success": true,
+      "type": "export"
+    },
+    "final_state": {
+      "accel_bias": [
+        0.0035899870244069892,
+        0.0030404298401665547,
+        0.006631455336078543
+      ],
+      "dvl": null,
+      "ground": null,
+      "gyro_bias": [
+        -1.917000605374579e-05,
+        5.724726575589303e-05,
+        3.953595372027662e-05
+      ],
+      "initialization_window": {
+        "accel_bias": [
+          0.0035732950703209468,
+          0.003033362639002987,
+          0.006629913168197889
+        ],
+        "gyro_bias": [
+          -1.848989878203301e-05,
+          4.935836598105732e-05,
+          3.6507700293634274e-05
+        ],
+        "oldest_stamp_ns": 37150000000,
+        "orientation_xyzw": [
+          -0.20499770306256854,
+          -0.9783406575819598,
+          -0.007815921592139312,
+          0.02764798059235567
+        ],
+        "position": [
+          -4.096177788905205,
+          -0.3460639811748876,
+          -1.000810670180851
+        ],
+        "states": 16,
+        "velocity": [
+          -0.22694597736307254,
+          0.0914846215675482,
+          -0.0020353090517978983
+        ]
+      },
+      "map_qualified": false,
+      "orientation_xyzw": [
+        -0.20448885090351704,
+        -0.9783354519111116,
+        -0.0015747457305166973,
+        0.032273418875672436
+      ],
+      "ping_candidate": null,
+      "ping_fused": false,
+      "ping_observation": null,
+      "ping_owner_received": false,
+      "position": [
+        -4.837572876593036,
+        -0.019457500517572966,
+        -0.997899583993839
+      ],
+      "pressure": null,
+      "sonar": null,
+      "stamp_ns": 38500000000,
+      "state_clock": "camera",
+      "type": "state",
+      "velocity": [
+        -0.5568464375836477,
+        0.24496096592393193,
+        -0.009215782256568331
+      ]
+    },
+    "ready": {
+      "dvl_measurement_transport": "body_velocity_gyro_covariance_v1",
+      "estimation_threads": 2,
+      "feature_grid": 25,
+      "gravity_seed_required": true,
+      "gravity_seed_transport": "first_image_direction_v1",
+      "ground_surface_model": null,
+      "ground_transport": null,
+      "image_ping_transport": "exact_stamp_range_v1",
+      "imu_noise_model": "continuous_white_midpoint_acceleration_bridge_v1",
+      "inertial_fused": true,
+      "inertial_seed_transport": "first_imu_state_v1",
+      "joint_ping_enabled": false,
+      "joint_sonar_enabled": false,
+      "keyframe_hold_frames": 5,
+      "map_export": "segment_landmark_archive_ply_1",
+      "map_information_enabled": true,
+      "map_information_transport": "joint_linearized_world_v1",
+      "map_observation_culling": true,
+      "map_point_three_sigma_m": 0.1,
+      "max_recent_states": 16,
+      "opencv_threads": 1,
+      "optical_flow_type": "patch",
+      "ping_fused": false,
+      "pressure_measurement_transport": "height_unknown_datum_v1",
+      "processed_resolution": [
+        400,
+        300
+      ],
+      "protocol": 1,
+      "raw_resolution": [
+        800,
+        600
+      ],
+      "scope": "experimental local visual-inertial odometry with sparse landmark archive",
+      "sensor_state_transport": "ordered_camera_auxiliary_states_v1",
+      "sonar_auxiliary_transport": null,
+      "sonar_clock_transport": null,
+      "sonar_snapshot_transport": null,
+      "startup_tracks_transport": "preinitialize_camera_tracks_v1",
+      "state_clock": "camera",
+      "terrain_ping_transport": null,
+      "type": "ready"
+    },
+    "returncode": -15,
+    "threads_stopped": true
+  },
+  {
+    "passed": true,
+    "recent_states": 3,
+    "elapsed_s": 6.381539584021084,
+    "source_duration_s": 25,
+    "event_count": 287,
+    "mean_event_s": 0.022233748522332387,
+    "median_camera_s": 0.02288304199464619,
+    "max_event_s": 0.06498874997487292,
+    "export": {
+      "points": 432,
+      "request_id": 1,
+      "stamp_ns": 38500000000,
+      "success": true,
+      "type": "export"
+    },
+    "final_state": {
+      "accel_bias": [
+        0.003208807026310641,
+        0.004300466515218117,
+        0.006842841891052762
+      ],
+      "dvl": null,
+      "ground": null,
+      "gyro_bias": [
+        -1.173157352804509e-05,
+        2.865481908649597e-05,
+        3.1364636149671975e-05
+      ],
+      "initialization_window": {
+        "accel_bias": [
+          0.003208601365595256,
+          0.0043004172576821395,
+          0.0068427448369543275
+        ],
+        "gyro_bias": [
+          -1.1745639101489976e-05,
+          2.8499472439950848e-05,
+          3.130900192599141e-05
+        ],
+        "oldest_stamp_ns": 38300000000,
+        "orientation_xyzw": [
+          -0.20475198021821747,
+          -0.9781092099251918,
+          -0.0024816138546723287,
+          0.037051877805479784
+        ],
+        "position": [
+          -4.705439681065254,
+          -0.08109995524498427,
+          -0.9987858571099011
+        ],
+        "states": 3,
+        "velocity": [
+          -0.7484245221766722,
+          0.33708005163624116,
+          0.0027194462549669034
+        ]
+      },
+      "map_qualified": false,
+      "orientation_xyzw": [
+        -0.2046207399592285,
+        -0.9783038383665587,
+        -0.0015829088156599916,
+        0.03239516963186591
+      ],
+      "ping_candidate": null,
+      "ping_fused": false,
+      "ping_observation": null,
+      "ping_owner_received": false,
+      "position": [
+        -4.84150023717054,
+        -0.020139313474213973,
+        -0.998835950946978
+      ],
+      "pressure": null,
+      "sonar": null,
+      "stamp_ns": 38500000000,
+      "state_clock": "camera",
+      "type": "state",
+      "velocity": [
+        -0.5590174091153357,
+        0.24557832982049713,
+        -0.009395006008994384
+      ]
+    },
+    "ready": {
+      "dvl_measurement_transport": "body_velocity_gyro_covariance_v1",
+      "estimation_threads": 2,
+      "feature_grid": 25,
+      "gravity_seed_required": true,
+      "gravity_seed_transport": "first_image_direction_v1",
+      "ground_surface_model": null,
+      "ground_transport": null,
+      "image_ping_transport": "exact_stamp_range_v1",
+      "imu_noise_model": "continuous_white_midpoint_acceleration_bridge_v1",
+      "inertial_fused": true,
+      "inertial_seed_transport": "first_imu_state_v1",
+      "joint_ping_enabled": false,
+      "joint_sonar_enabled": false,
+      "keyframe_hold_frames": 5,
+      "map_export": "segment_landmark_archive_ply_1",
+      "map_information_enabled": true,
+      "map_information_transport": "joint_linearized_world_v1",
+      "map_observation_culling": true,
+      "map_point_three_sigma_m": 0.1,
+      "max_recent_states": 3,
+      "opencv_threads": 1,
+      "optical_flow_type": "patch",
+      "ping_fused": false,
+      "pressure_measurement_transport": "height_unknown_datum_v1",
+      "processed_resolution": [
+        400,
+        300
+      ],
+      "protocol": 1,
+      "raw_resolution": [
+        800,
+        600
+      ],
+      "scope": "experimental local visual-inertial odometry with sparse landmark archive",
+      "sensor_state_transport": "ordered_camera_auxiliary_states_v1",
+      "sonar_auxiliary_transport": null,
+      "sonar_clock_transport": null,
+      "sonar_snapshot_transport": null,
+      "startup_tracks_transport": "preinitialize_camera_tracks_v1",
+      "state_clock": "camera",
+      "terrain_ping_transport": null,
+      "type": "ready"
+    },
+    "returncode": -15,
+    "threads_stopped": true
+  },
+  {
+    "passed": true,
+    "recent_states": 3,
+    "elapsed_s": 6.326632166979834,
+    "source_duration_s": 25,
+    "event_count": 287,
+    "mean_event_s": 0.022042471067111886,
+    "median_camera_s": 0.02297412499319762,
+    "max_event_s": 0.04264283401425928,
+    "export": {
+      "points": 432,
+      "request_id": 1,
+      "stamp_ns": 38500000000,
+      "success": true,
+      "type": "export"
+    },
+    "final_state": {
+      "accel_bias": [
+        0.0032088070263101734,
+        0.004300466515215274,
+        0.006842841891051645
+      ],
+      "dvl": null,
+      "ground": null,
+      "gyro_bias": [
+        -1.1731573528015634e-05,
+        2.8654819086484745e-05,
+        3.136463614963053e-05
+      ],
+      "initialization_window": {
+        "accel_bias": [
+          0.003208601365594788,
+          0.004300417257679297,
+          0.006842744836953211
+        ],
+        "gyro_bias": [
+          -1.1745639101460523e-05,
+          2.8499472439939633e-05,
+          3.130900192595e-05
+        ],
+        "oldest_stamp_ns": 38300000000,
+        "orientation_xyzw": [
+          -0.20475198021821753,
+          -0.9781092099251918,
+          -0.002481613854672541,
+          0.03705187780547974
+        ],
+        "position": [
+          -4.705439681065256,
+          -0.08109995524499045,
+          -0.9987858571098992
+        ],
+        "states": 3,
+        "velocity": [
+          -0.7484245221766754,
+          0.3370800516362419,
+          0.002719446254966088
+        ]
+      },
+      "map_qualified": false,
+      "orientation_xyzw": [
+        -0.2046207399592286,
+        -0.9783038383665587,
+        -0.0015829088156602109,
+        0.032395169631865874
+      ],
+      "ping_candidate": null,
+      "ping_fused": false,
+      "ping_observation": null,
+      "ping_owner_received": false,
+      "position": [
+        -4.841500237170543,
+        -0.02013931347422002,
+        -0.9988359509469763
+      ],
+      "pressure": null,
+      "sonar": null,
+      "stamp_ns": 38500000000,
+      "state_clock": "camera",
+      "type": "state",
+      "velocity": [
+        -0.5590174091153394,
+        0.24557832982049763,
+        -0.009395006008995685
+      ]
+    },
+    "ready": {
+      "dvl_measurement_transport": "body_velocity_gyro_covariance_v1",
+      "estimation_threads": 2,
+      "feature_grid": 25,
+      "gravity_seed_required": true,
+      "gravity_seed_transport": "first_image_direction_v1",
+      "ground_surface_model": null,
+      "ground_transport": null,
+      "image_ping_transport": "exact_stamp_range_v1",
+      "imu_noise_model": "continuous_white_midpoint_acceleration_bridge_v1",
+      "inertial_fused": true,
+      "inertial_seed_transport": "first_imu_state_v1",
+      "joint_ping_enabled": false,
+      "joint_sonar_enabled": false,
+      "keyframe_hold_frames": 5,
+      "map_export": "segment_landmark_archive_ply_1",
+      "map_information_enabled": true,
+      "map_information_transport": "joint_linearized_world_v1",
+      "map_observation_culling": true,
+      "map_point_three_sigma_m": 0.1,
+      "max_recent_states": 3,
+      "opencv_threads": 1,
+      "optical_flow_type": "patch",
+      "ping_fused": false,
+      "pressure_measurement_transport": "height_unknown_datum_v1",
+      "processed_resolution": [
+        400,
+        300
+      ],
+      "protocol": 1,
+      "raw_resolution": [
+        800,
+        600
+      ],
+      "scope": "experimental local visual-inertial odometry with sparse landmark archive",
+      "sensor_state_transport": "ordered_camera_auxiliary_states_v1",
+      "sonar_auxiliary_transport": null,
+      "sonar_clock_transport": null,
+      "sonar_snapshot_transport": null,
+      "startup_tracks_transport": "preinitialize_camera_tracks_v1",
+      "state_clock": "camera",
+      "terrain_ping_transport": null,
+      "type": "ready"
+    },
+    "returncode": -15,
+    "threads_stopped": true
+  },
+  {
+    "passed": true,
+    "recent_states": 16,
+    "elapsed_s": 29.478449709014967,
+    "source_duration_s": 25,
+    "event_count": 287,
+    "mean_event_s": 0.10271074751007471,
+    "median_camera_s": 0.09920541697647423,
+    "max_event_s": 0.2040721250232309,
+    "export": {
+      "points": 596,
+      "request_id": 1,
+      "stamp_ns": 38500000000,
+      "success": true,
+      "type": "export"
+    },
+    "final_state": {
+      "accel_bias": [
+        0.0035899870244081467,
+        0.003040429840167971,
+        0.006631455336078143
+      ],
+      "dvl": null,
+      "ground": null,
+      "gyro_bias": [
+        -1.9170006053747277e-05,
+        5.72472657558969e-05,
+        3.953595372028312e-05
+      ],
+      "initialization_window": {
+        "accel_bias": [
+          0.0035732950703221055,
+          0.003033362639004403,
+          0.006629913168197485
+        ],
+        "gyro_bias": [
+          -1.8489898782034202e-05,
+          4.9358365981061385e-05,
+          3.6507700293640705e-05
+        ],
+        "oldest_stamp_ns": 37150000000,
+        "orientation_xyzw": [
+          -0.20499770306256854,
+          -0.9783406575819598,
+          -0.00781592159213922,
+          0.027647980592355632
+        ],
+        "position": [
+          -4.096177788905203,
+          -0.3460639811748862,
+          -1.0008106701808501
+        ],
+        "states": 16,
+        "velocity": [
+          -0.22694597736307157,
+          0.0914846215675484,
+          -0.002035309051797472
+        ]
+      },
+      "map_qualified": false,
+      "orientation_xyzw": [
+        -0.20448885090351707,
+        -0.9783354519111116,
+        -0.0015747457305166042,
+        0.0322734188756724
+      ],
+      "ping_candidate": null,
+      "ping_fused": false,
+      "ping_observation": null,
+      "ping_owner_received": false,
+      "position": [
+        -4.837572876593034,
+        -0.019457500517571485,
+        -0.9978995839938385
+      ],
+      "pressure": null,
+      "sonar": null,
+      "stamp_ns": 38500000000,
+      "state_clock": "camera",
+      "type": "state",
+      "velocity": [
+        -0.556846437583648,
+        0.24496096592393193,
+        -0.009215782256568373
+      ]
+    },
+    "ready": {
+      "dvl_measurement_transport": "body_velocity_gyro_covariance_v1",
+      "estimation_threads": 2,
+      "feature_grid": 25,
+      "gravity_seed_required": true,
+      "gravity_seed_transport": "first_image_direction_v1",
+      "ground_surface_model": null,
+      "ground_transport": null,
+      "image_ping_transport": "exact_stamp_range_v1",
+      "imu_noise_model": "continuous_white_midpoint_acceleration_bridge_v1",
+      "inertial_fused": true,
+      "inertial_seed_transport": "first_imu_state_v1",
+      "joint_ping_enabled": false,
+      "joint_sonar_enabled": false,
+      "keyframe_hold_frames": 5,
+      "map_export": "segment_landmark_archive_ply_1",
+      "map_information_enabled": true,
+      "map_information_transport": "joint_linearized_world_v1",
+      "map_observation_culling": true,
+      "map_point_three_sigma_m": 0.1,
+      "max_recent_states": 16,
+      "opencv_threads": 1,
+      "optical_flow_type": "patch",
+      "ping_fused": false,
+      "pressure_measurement_transport": "height_unknown_datum_v1",
+      "processed_resolution": [
+        400,
+        300
+      ],
+      "protocol": 1,
+      "raw_resolution": [
+        800,
+        600
+      ],
+      "scope": "experimental local visual-inertial odometry with sparse landmark archive",
+      "sensor_state_transport": "ordered_camera_auxiliary_states_v1",
+      "sonar_auxiliary_transport": null,
+      "sonar_clock_transport": null,
+      "sonar_snapshot_transport": null,
+      "startup_tracks_transport": "preinitialize_camera_tracks_v1",
+      "state_clock": "camera",
+      "terrain_ping_transport": null,
+      "type": "ready"
+    },
+    "returncode": -15,
+    "threads_stopped": true
+  }
+]

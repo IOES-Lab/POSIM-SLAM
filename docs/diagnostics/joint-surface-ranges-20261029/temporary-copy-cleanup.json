@@ -1,0 +1,9 @@
+{
+  "scope": "Only byte-identical documentation/image copies in the newly generated private test export",
+  "files": 1812,
+  "removed_copy_bytes": 367328242,
+  "free_before_bytes": 261925568512,
+  "free_after_bytes": 262297919488,
+  "canonical_sources_preserved": true,
+  "note": "Filesystem free-space delta can include concurrent CI/LIVE activity; removed file bytes are not claimed as exclusive reclaimed bytes"
+}

@@ -1,0 +1,58 @@
+{
+  "stamp": {
+    "sec": 2,
+    "nanosec": 0
+  },
+  "frame_id": "vehicle/dvl",
+  "valid": true,
+  "reason": "bottom_locked",
+  "velocity_m_s": [
+    0.005372052832790064,
+    0.00079879542145298,
+    -0.0007910627682971953
+  ],
+  "covariance": [
+    8e-06,
+    4.440892098500626e-22,
+    1.1102230246251565e-22,
+    4.440892098500626e-22,
+    7.999999999999998e-06,
+    -4.440892098500626e-22,
+    1.1102230246251565e-22,
+    -4.440892098500626e-22,
+    1.333333333333334e-06
+  ],
+  "locked_beams": 4,
+  "bottom_ranges": {
+    "schema": "posim-dvl-bottom-ranges-1",
+    "return_model": "minimum_within_beam_cones",
+    "minimum_slant_range_m": 1.6877981424331665,
+    "beams": [
+      {
+        "id": 1,
+        "locked": true,
+        "range_m": 1.72617769241333,
+        "variance_m2": null
+      },
+      {
+        "id": 2,
+        "locked": true,
+        "range_m": 1.6877981424331665,
+        "variance_m2": null
+      },
+      {
+        "id": 3,
+        "locked": true,
+        "range_m": 1.822814702987671,
+        "variance_m2": null
+      },
+      {
+        "id": 4,
+        "locked": true,
+        "range_m": 1.806815981864929,
+        "variance_m2": null
+      }
+    ]
+  },
+  "range_m": 1.6877981424331665
+}

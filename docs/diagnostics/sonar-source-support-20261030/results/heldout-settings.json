@@ -1,0 +1,15 @@
+{
+  "voxel_m": 0.05,
+  "minimum_positive_views": 3,
+  "minimum_baseline_m": 0.5,
+  "minimum_depth_span_m": 0.25,
+  "maximum_candidates": 300000,
+  "diagnostic_three_sigma_m": 0.1,
+  "range_sigma_m": 0.025083611719310284,
+  "azimuth_sigma_rad": 0.008213314126139591,
+  "split_policy": [
+    "first two thirds train, final third validate",
+    "alternating two-frame blocks"
+  ],
+  "scope": "training-only candidates; source support consistency, not association, occupancy or map admission"
+}

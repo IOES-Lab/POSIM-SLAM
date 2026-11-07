@@ -1,0 +1,54 @@
+{
+  "schema": "posim-dvl-range-calibration-1",
+  "frame": "vehicle/dvl",
+  "reference_to_sensor": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+  ],
+  "beams": [
+    {
+      "id": 1,
+      "axis": [
+        -0.35355339059327373,
+        0.3535533905932737,
+        -0.8660254037844387
+      ],
+      "aperture_rad": 0.03490658503988659
+    },
+    {
+      "id": 2,
+      "axis": [
+        0.3535533905932737,
+        0.35355339059327373,
+        -0.8660254037844387
+      ],
+      "aperture_rad": 0.03490658503988659
+    },
+    {
+      "id": 3,
+      "axis": [
+        -0.35355339059327373,
+        -0.3535533905932737,
+        -0.8660254037844387
+      ],
+      "aperture_rad": 0.03490658503988659
+    },
+    {
+      "id": 4,
+      "axis": [
+        0.3535533905932737,
+        -0.35355339059327373,
+        -0.8660254037844387
+      ],
+      "aperture_rad": 0.03490658503988659
+    }
+  ],
+  "range_min_m": 0.1,
+  "range_max_m": 20.0,
+  "resolution_m": 0.01,
+  "return_model": "minimum_within_beam_cones",
+  "aggregate": "minimum_beam_slant_range",
+  "range_variance_m2": null
+}

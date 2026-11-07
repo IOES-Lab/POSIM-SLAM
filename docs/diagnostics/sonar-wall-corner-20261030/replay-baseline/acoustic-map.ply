@@ -1,0 +1,10 @@
+ply
+format ascii 1.0
+comment scope local_acoustic_track_hypotheses
+comment map_qualified false; physical identity and joint uncertainty unverified
+comment stamp_ns 3010000000
+element vertex 0
+property double x
+property double y
+property double z
+end_header

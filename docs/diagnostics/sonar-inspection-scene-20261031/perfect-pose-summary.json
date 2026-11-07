@@ -1,0 +1,48 @@
+{
+  "point": {
+    "emitted_denominator": 64,
+    "fitted": 64,
+    "unavailable": 0,
+    "no_truth_in_native_replay": true,
+    "exact_poses_only_in_this_offline_control": true,
+    "scene_used_for_fit": false,
+    "local_rank_is_joint_uncertainty": false,
+    "map_qualified": false,
+    "outside_10cm": 40,
+    "surface_rmse_m": 0.3951099073182657,
+    "surface_median_m": 0.13258807935815997,
+    "fit_whitened_rms_median": 0.7504636794574561,
+    "measurement_only_max_position_3sigma_median_m": 0.8258659935019469,
+    "heldout_after_2s": {
+      "tracks_with_observations": 13,
+      "total_observations": 80,
+      "valid_geometry": 56,
+      "invalid_geometry": 24,
+      "range_rmse_m": 0.12363130141252729,
+      "azimuth_rmse_rad": 0.013999337537465387
+    }
+  },
+  "echo_boundary": {
+    "emitted_denominator": 32,
+    "fitted": 32,
+    "unavailable": 0,
+    "no_truth_in_native_replay": true,
+    "exact_poses_only_in_this_offline_control": true,
+    "scene_used_for_fit": false,
+    "local_rank_is_joint_uncertainty": false,
+    "map_qualified": false,
+    "outside_10cm": 29,
+    "surface_rmse_m": 0.7958865456023325,
+    "surface_median_m": 0.3134653433115031,
+    "fit_whitened_rms_median": 1.1038999712654425,
+    "measurement_only_max_position_3sigma_median_m": 0.8749683698288278,
+    "heldout_after_2s": {
+      "tracks_with_observations": 2,
+      "total_observations": 3,
+      "valid_geometry": 2,
+      "invalid_geometry": 1,
+      "range_rmse_m": 0.09049020520930617,
+      "azimuth_rmse_rad": 0.0071548921422781705
+    }
+  }
+}

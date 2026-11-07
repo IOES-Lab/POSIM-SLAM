@@ -1,0 +1,17 @@
+{
+  "revision": "7afd71e7b7a1a13eca8c4b8deb9c6e8461285cd5",
+  "libraries": {
+    "libmultibeam_sonar_system.dylib": "ce72d4455b344b4c2a004425ab9d4fb59dbffd1f5aee45510038a5b5435a3dfc",
+    "libmultibeam_sonar.dylib": "5d1c6e45ab4110ae8f0dbbe082fb72f7e0fd0e2a4b46111e95ab1586a718913b"
+  },
+  "native_test_sha256": "f9397ba766fefecfbd91c2791c7b7026efa91257a6d2b66188aa28a9981326d5",
+  "SDK_changed": false,
+  "default_intrinsic_libraries_verified": true,
+  "private_capture_sha256": {
+    "capture-panel.py": "f8722f7c227ae2df8b7f9f5a72e247d68be032d633f05d9bf1c6ce82666cab1f",
+    "run-panel-capture.py": "f3a1b1a50b9ddbc1f874a9e88392355893e475c141aeea025d0558d0a0abd47d",
+    "capture-sonoptix.py": "394ebde8e3ff8b562e8de506f75d827e8ae6a75f945bbabf65a51958ccbcea8f",
+    "run-sonoptix-capture.py": "7c66f389de50da0515b6e2079906d33f2025e2f5d31e6178a63e67325fb891bb",
+    "make-sonoptix-fixture.py": "7a02e8c2bd4df013a044dc2e806d6debfc3518eac20936c03dec64b21b45a5ba"
+  }
+}

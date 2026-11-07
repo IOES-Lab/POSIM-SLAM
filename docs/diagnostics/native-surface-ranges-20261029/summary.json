@@ -1,0 +1,124 @@
+{
+  "scope": "Original raw range integration, nonlinear new-plane initialization and retained failed correspondence; map unqualified",
+  "original_replays": {
+    "original-dvl-only": {
+      "states": 178,
+      "max_baseline_position_change_m": 0.00033531643762640674,
+      "rejected_before_native_install": false,
+      "rejection_reason": null,
+      "native_update": {
+        "accepted": true,
+        "conditional_nodes": 80,
+        "ledger_entries": 2,
+        "map_qualified": false,
+        "op": "update",
+        "optimized": true,
+        "owner_revision": 181,
+        "prior_revision": 180,
+        "request_id": 99,
+        "type": "surface_control"
+      },
+      "initialization": null,
+      "shutdown_returncode": -15
+    },
+    "original-dvl-fls": {
+      "states": 178,
+      "max_baseline_position_change_m": 0.00034843252129884873,
+      "rejected_before_native_install": false,
+      "rejection_reason": null,
+      "native_update": {
+        "accepted": true,
+        "conditional_nodes": 80,
+        "ledger_entries": 3,
+        "map_qualified": false,
+        "op": "update",
+        "optimized": true,
+        "owner_revision": 181,
+        "prior_revision": 180,
+        "request_id": 99,
+        "type": "surface_control"
+      },
+      "initialization": null,
+      "shutdown_returncode": -15
+    },
+    "guarded-dvl-only": {
+      "states": 178,
+      "max_baseline_position_change_m": 0.0003353084515592399,
+      "rejected_before_native_install": false,
+      "rejection_reason": null,
+      "native_update": {
+        "accepted": true,
+        "conditional_nodes": 80,
+        "ledger_entries": 2,
+        "map_qualified": false,
+        "op": "update",
+        "optimized": true,
+        "owner_revision": 181,
+        "prior_revision": 180,
+        "request_id": 99,
+        "type": "surface_control"
+      },
+      "initialization": {
+        "new_planes": [
+          0
+        ],
+        "initial_cost": 0.011363120637362879,
+        "final_cost": 6.470631575075349e-23,
+        "iterations": 7,
+        "added_prior": false
+      },
+      "shutdown_returncode": -15
+    },
+    "guarded-dvl-fls": {
+      "states": 178,
+      "max_baseline_position_change_m": 1.4436178375648796e-13,
+      "rejected_before_native_install": true,
+      "rejection_reason": "dvl_support_not_planar",
+      "native_update": null,
+      "initialization": null,
+      "shutdown_returncode": -15,
+      "complete_native_owner_unchanged": true
+    }
+  },
+  "source_and_wheel_tests_each": 503,
+  "source_and_wheel_optional_skips_each": 16,
+  "all_original_hypotheses": 664,
+  "all_original_patch_groups": 18,
+  "known_pose_preinitialization_status_counts": {
+    "finite_known_pose_conditional": 601,
+    "geometry_or_support_rejection": 10,
+    "unbounded_from_supported_cones": 53
+  },
+  "original_errors_above_10cm_by_status": {
+    "finite_known_pose_conditional": 36,
+    "geometry_or_support_rejection": 3,
+    "unbounded_from_supported_cones": 1
+  },
+  "uninitialized_fls_native_plane_delta": [
+    0.45604785594525926,
+    1.0031715800996528,
+    5.9914165026914326
+  ],
+  "uninitialized_fls_nonlinear_residuals_m": [
+    -0.0876312491106912,
+    -0.08555136948033404,
+    -0.26746016026053443
+  ],
+  "protected_files": 16,
+  "protected_files_exact": true,
+  "raw_sensor_data_copied": false,
+  "dataset_pointer": "../sonar-low-altitude-15m-20261029/data-pointer.json",
+  "noise_calibrated": false,
+  "velocity_range_cross_covariance_modelled": false,
+  "joint_landmark_uncertainty_available": false,
+  "physical_identity_verified": false,
+  "map_qualified": false,
+  "scope_notes": [
+    "Conditional rank excludes pose uncertainty and native prior; finite rank is not correspondence acceptance.",
+    "The new-plane initializer uses numerical damping only for its solve, never as native probability information.",
+    "The selected original FLS hypothesis is first by causal availability, not by residual.",
+    "Source-key recovery is unique original nominal-endpoint equality; historical XYZ never becomes a measurement.",
+    "All four clients close with SIGTERM -15 after complete offline replay; no normal-zero acquisition claim."
+  ],
+  "new_python_controls": 9
+}

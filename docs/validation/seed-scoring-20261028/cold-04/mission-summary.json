@@ -1,0 +1,10 @@
+{
+  "status": "completed",
+  "active": false,
+  "phase": "surface",
+  "waypoint_index": 20,
+  "error": null,
+  "route_length_m": 48.58368274237526,
+  "minimum_planned_clearance_m": 2.3633657732809965,
+  "waypoints": 21
+}

@@ -1,0 +1,14 @@
+{
+  "failed_record": ".local/vertical-pressure-field-20261028",
+  "observed_failure": "worker:imu_backlog",
+  "native_queue_capacity_samples": 256,
+  "recorded_imu_period_ns": 10000000,
+  "last_pre_reset_state_ns": 119500000000,
+  "last_pre_reset_received_imu_ns": 122120000000,
+  "last_pre_reset_input_lead_s": 2.62,
+  "maximum_input_lead_s": 2.62,
+  "maximum_intermediate_landmarks": 9144,
+  "first_reset_input_imu_ns": 122200000000,
+  "source_mechanism": "LiveVio.imu forwarded every raw sample immediately; SensorEvents required exact state acknowledgement before the next camera/auxiliary event. Native Basalt consumes IMU only through the current state event and one future sample.",
+  "fix_scope": "Dispatch the original contiguous IMU interval through the first sample strictly after each released camera or auxiliary event. Keep future samples in the existing bounded history. Reuse the same helper for camera and camera-free sonar sessions. No queue, native protocol, noise or map-admission threshold changes."
+}

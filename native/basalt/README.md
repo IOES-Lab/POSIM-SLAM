@@ -8,6 +8,609 @@ biases. `basalt_stream` and `LiveClient` provide the live worker interface; the
 host application supplies ROS transport, registration and session supervision.
 The worker maintains a sparse segment map without loop closure.
 
+`map_quality.native_settings()` enables persistent mapping with the default
+`full_graph_v1` backend. The explicit setting `map_backend: "conditional_paged_v1"`
+selects 12 recent active keyframes, an 8 MiB derived-row cache and a separate
+history-address quota of 10,922 keyframes. Input, retirement, numeric and export
+quotas remain independent. This optional policy creates its cache beside the
+session input database. The readiness response reports the selected policy;
+`validate_ready(ready, backend=...)` checks the requested provider contract.
+The bare binary leaves persistent mapping disabled.
+
+`map_quality.native_settings()`는 기본 `full_graph_v1` 백엔드로 지속 지도를
+켭니다. `map_backend: "conditional_paged_v1"`을 명시하면 최근 활성 키프레임
+12개·파생 행렬 캐시 8MiB·키프레임 이력 주소 상한 10,922개를 사용합니다.
+입력·퇴역·수치 데이터·내보내기 한도는 별도로 적용하며 이 선택 정책의 캐시는
+세션 입력 데이터베이스 옆에 만듭니다. 준비 응답은 선택 정책을 보고하고
+`validate_ready(ready, backend=...)`가 요청한 공급 모듈 규약을 검사합니다.
+네이티브 실행 파일을 설정 없이 호출하면 지속 지도는 꺼져 있습니다.
+
+`mapping_information.hpp` provides a bounded graph information calculation for
+mapping backends. It accepts whitened pose and point Jacobians, rejects reused
+image observations and factor identities, and includes shared pose uncertainty
+in world-point covariance. Rebuild the graph after each optimization. Two-view
+tracks may constrain the graph; retained points require three distinct qualified
+exposures, geometric support and the caller's world three-sigma limit. Unobserved
+world translation or yaw cannot be certified by a pseudoinverse. The caller owns
+the world reference and must establish independence from recovered VIO factors.
+The full-graph backend uses this interface for provisional admission. The selected live conditional backend queries `NativeMappingWindow`.
+
+The sparse pose backend uses LDLT and Takahashi's selected-inverse recursion.
+When a symmetric direct-address table and its fill mask fit within the existing
+numeric-cache payload, queries use that layout. The recursion keeps its operand
+order; entries outside the filled pattern use the explicit sparse solve and its
+residual check. `covarianceStorageBytes()` reports the selected-inverse arrays
+and fill metadata, separately from the solver and process memory.
+
+When a mapping output queue is attached, joint factor retirement supplies a
+detached keyframe snapshot after the marginal prior commits. The snapshot keeps
+pose information and eliminates velocity, bias and the unknown pressure datum
+with their cross-information. Its images have separate storage. `PersistentMapper` consumes the queue when `persistent_mapping: true`; it
+updates and reoptimizes one retained NFR graph on a separate thread. The compact
+input store recovers each retirement and extracts each new keyframe once, retaining
+features, nonlinear factors and pose seeds instead of raw images or large marginal
+matrices. Immutable revisions let optimization run independently of ingestion. Input
+overflow invalidates mapping without blocking the navigation estimator.
+[Persistent-map contract and bounds](../../docs/diagnostics/visual-map-quality.md).
+
+`PersistentMapper` retains its HashBoW index, pixel coordinates and image-pair
+results within the current segment. Chronological input queries only new frames.
+A delayed frame refreshes retrieval at its timestamp and later timestamps;
+previously evaluated pairs, including failed attempts, retain their results.
+Earlier accepted pairs remain available after a retrieval-ranking change.
+Frame sources, calibration and matching settings stay fixed within this owner.
+
+Matching uses two tasks with at most four complete feature frames in use.
+Descriptor, bearing and orientation arrays are released after use. The input
+store's compact quota also bounds retained matching numeric payload (96 MiB by
+default); the bare full-graph API frame limit is 203. This counts pixels, BoW/index values,
+evaluated pair keys and match data. Container overhead, the transactional index
+copy and caller-held older snapshots are additional. Cancellation or failure
+leaves the previous matching snapshot intact. Explicit checkpoints retain every
+evaluated pair. Restoration checks complete original features and matching
+settings; old pairs do not run RANSAC again. New pairs derive the RANSAC seed
+from their ordered timestamps and original image digests. The Stewenius solver,
+100-trial limit, inlier thresholds and nonlinear refinement use the pinned
+OpenGV implementation.
+
+`PersistentMapper`는 현재 구간의 HashBoW 색인·픽셀 좌표·영상쌍 평가 결과를
+보존합니다. 시간순 입력에서는 새 영상만 검색합니다. 늦게 도착한 영상은 해당
+시각과 이후 영상의 검색을 갱신하며, 이미 평가한 영상쌍은 실패한 결과까지
+재사용합니다. 검색 순위가 바뀌어도 이전에 채택한 영상쌍은 보존합니다.
+이 매칭 인스턴스에서 원본 프레임·보정값·매칭 설정은 고정됩니다.
+
+매칭은 두 작업자가 전체 특징 프레임을 최대 4개까지 읽으며 기술자·방향 벡터·
+방향값은 사용 후 해제합니다. 보존하는 매칭 수치 데이터에도 입력 저장소의
+압축 데이터 한도(기본 96MiB)를 적용하며 전체 그래프 API의 기본 프레임 한도는 203개입니다.
+픽셀·BoW와 색인 값·평가한 영상쌍 키·매칭 데이터를 계산하며 컨테이너 부가 공간,
+트랜잭션용 색인 사본과 호출자가 보유한 이전 사본은 별도입니다. 취소나 실패 시
+이전 매칭 사본을 보존합니다. 체크포인트는 평가한 모든 영상쌍을 보존합니다.
+복원 시 전체 원본 특징과 매칭 설정을 검사하며 기존 영상쌍에는 RANSAC을
+다시 수행하지 않습니다. 새 영상쌍은 순서가 있는 두 시각과 원본 영상 해시로
+RANSAC 난수 시드를 정합니다. Stewenius 해법, 최대 100회 반복, 인라이어 임계값과
+비선형 보정에는 고정 OpenGV 구현을 사용합니다.
+
+`NativeMappingGraph` keeps optimized poses and landmark parameters between
+updates. The pinned native track builder supplies current associations; original
+pixel identities identify extensions, merges and conflict removals. Surviving
+landmarks retain their host and seed, while new observations replace their source
+membership. Only tracks without a landmark use native triangulation. New frames
+use input pose seeds aligned to the retained map's yaw/translation gauge. Each
+changed likelihood runs the existing native optimizer for at most ten iterations,
+starting with its original trial controls. Failure
+or cancellation restores the previous graph, nonlinear means and solver controls.
+
+The graph reserves numeric storage for every track, including untriangulated
+ones, within the matching owner's compact quota (96 MiB by default). Container
+overhead, transaction copies and optimizer workspace are additional. Original
+inputs and matching results remain separately owned. An explicit `active_window`
+selects conditional updates and world-point covariance from that same owner.
+The optional `map_backend: "conditional_paged_v1"` setting selects the policy in the [map contract](../../docs/diagnostics/visual-map-quality.md). Default settings and a bare C++ constructor with `active_window=0` use the full bounded graph.
+
+`NativeMappingGraph`는 갱신 사이에도 최적화한 자세와 지도점 매개변수를 유지합니다.
+기존 네이티브 트랙 구성기로 현재 대응을 구하고 원본 픽셀 식별자로 트랙 연장·
+병합·충돌 제거를 구분합니다. 남는 지도점은 기준 영상과 초기값을 유지하면서
+관측 연결을 갱신하고, 지도점이 없는 트랙만 기존 삼각측량으로 초기화합니다.
+새 프레임은 입력 자세 초기값을 현재 지도의 방위·위치 기준에 맞춥니다. 변경된
+관측 모형마다 기존 네이티브 최적화를 원래 시도 설정으로 최대 10회 수행합니다.
+실패·취소 시 이전 그래프와
+자세·지도점·최적화 설정으로 복원합니다.
+
+삼각측량 전 트랙도 포함해 모든 트랙의 수치 저장 공간을 매칭 인스턴스의 압축
+데이터 한도(기본 96MiB) 안에서 예약합니다. 컨테이너 부가 공간·트랜잭션 사본·
+최적화 작업공간은 별도이며 원본 입력과 매칭 결과도 각각 보존합니다.
+`active_window`를 지정하면 조건부 갱신과 같은 소유자의 세계 좌표 점 공분산을
+사용합니다. `map_backend: "conditional_paged_v1"`을 명시하면 [지도 계약](../../docs/diagnostics/visual-map-quality.md)의 조건부 정책을 선택합니다. 기본 설정과 `active_window=0`인 C++ 생성자는 한도 내 전체 그래프를 계산합니다.
+
+A paged `MappingInputStore` accepts an explicit keyframe-history quota up to
+10,922 frames, within the existing 65,536-coordinate namespace. Its matching
+owner inherits that quota. `PersistentMapper` requires a nonzero `active_window`
+for history beyond 203 frames; a `SubmapRowStore` can bound resident derived rows.
+The existing input, retirement, numeric-byte, observation and admission limits
+apply independently. Dense collectors retain their 203-frame limit. The chosen
+reference timestamp remains fixed through window movement and checkpoint restore.
+
+페이지 저장을 사용하는 `MappingInputStore`는 기존 65,536좌표 공간 안에서
+최대 10,922프레임의 이력 한도를 명시할 수 있으며 매칭 소유자도 이를 적용합니다.
+`PersistentMapper`에서 203프레임을 넘는 이력을 사용하려면 `active_window`를
+지정해야 하며, `SubmapRowStore`로 파생 행렬의 상주 메모리를 제한할 수 있습니다.
+입력·퇴역·수치 바이트·관측·채택 한도는 각각 적용합니다. 전체 행렬을 모으는
+인터페이스의 한도는 203프레임입니다. 선택한 기준 시각은 구간 이동과 복원 후에도
+유지합니다.
+
+The native stream stores complete detector features, recovered factors, pose seeds and retirement identities in a session-owned `worker-map-inputs-*.sqlite` file beside its output. Each retirement commits in one SQLite transaction before publication. Immutable map snapshots retain page references; a read leases one checked feature frame, while optimization retains pixel observations and the bounded pose/factor graph. The SQLite page cache targets 2 MiB, memory mapping is disabled and the database is bounded to 96 MiB. Input limits and admission checks still apply. A storage error invalidates map output; the navigation estimator can continue. Restoring inputs requires matching epoch, calibration, mapper settings and limits; it does not restart navigation.
+
+지도 출력 큐를 연결하면 결합 제약을 제거할 때 주변화 사전정보가 확정된 뒤
+키프레임 사본을 전달합니다. 자세 정보를 보존하고 속도·편향·미지 압력 기준
+수심은 교차정보와 함께 제거합니다. 영상 저장 공간은 별도이며, 큐 수신 측이
+지속 지도 최적화와 출력 시점을 담당합니다. `persistent_mapping: true`이면
+`PersistentMapper`가 별도 스레드에서 보존한 NFR 그래프를 다시 최적화합니다.
+입력 저장소는 전달 정보별 제약 복원과 새 키프레임의 특징 검출을 한 번만 수행하고,
+원본 영상·큰 주변화 행렬 대신 특징·비선형 제약·자세 초기값을 보존합니다.
+불변 입력 회차로 수신 처리와 지도 최적화를 분리합니다.
+입력 큐 한도를 넘으면 항법 추정을 막지 않고 지도 출력을 무효화합니다.
+
+네이티브 스트림은 모든 검출 특징·복원 제약·자세 초기값·퇴출 식별자를 출력 옆의 세션별 `worker-map-inputs-*.sqlite`에 저장합니다. 전달 정보 한 건을 SQLite 트랜잭션으로 확정한 뒤 지도 생성 쪽에 전달합니다. 불변 지도 사본은 페이지 참조를 보관하고, 읽을 때 검증한 특징 프레임 하나를 임시로 소유합니다. 최적화는 픽셀 관측과 한도 내 자세·제약 그래프를 메모리에 보관합니다. SQLite 페이지 캐시 목표는 2MiB이며 메모리 매핑은 끄고 데이터베이스 크기는 96MiB로 제한합니다. 기존 입력 한도와 점 채택 기준은 유지합니다. 저장 오류는 지도 출력을 무효화하며 항법 추정은 계속할 수 있습니다. 입력 복원에는 같은 구간 식별자·보정값·지도 설정·한도가 필요하며 항법을 재시작하지 않습니다.
+
+`mapping_information.hpp`는 지도 최적화용으로 크기가 제한된 정보 계산을
+제공합니다. 잡음으로 정규화한 자세·지도점 야코비안을 받아 영상 관측과 제약의
+중복 사용을 거부하고, 공유 자세 오차를 세계 좌표 지도점 공분산에 반영합니다.
+최적화 후에는 그래프를 새로 구성합니다. 두 시점 트랙은 그래프를 구속할 수
+있으며, 점 저장에는 서로 다른 세 시점의 유효 관측, 기하 조건, 호출자가 지정한
+세계 좌표 3시그마 한도를 요구합니다. 관측되지 않은 전역 위치나 방위는
+의사역행렬만으로 유효 판정을 받지 못합니다. 세계 좌표 기준과 복원된 VIO 제약에
+대한 관측 독립성은 호출자가 확인해야 합니다. 전체 그래프 백엔드가 이 인터페이스를 잠정 점 채택에 사용하며, 선택된 조건부
+라이브 백엔드는 `NativeMappingWindow`에서 정보를 조회합니다.
+
+희소 자세 백엔드는 LDLT 분해와 Takahashi 선택 역행렬 재귀식을 사용합니다.
+대칭 배열과 채움 위치 표시에 필요한 공간이 기존 수치 캐시 예산 안이면
+이 배열로 원소를 조회합니다. 재귀식의 연산 순서를 유지하며 채움 영역 밖
+원소에는 희소 선형계 풀이와 잔차 검사를 적용합니다.
+`covarianceStorageBytes()`는 선택 역행렬 배열과 채움 위치 정보의 크기를
+보고하며 분해기와 프로세스 메모리는 별도입니다.
+
+`submap_information.hpp::SubmapInformation` represents one fixed tangent-space
+linearization as a bounded frontier and immutable Gaussian conditionals. It
+reuses the shared QR/SVD elimination and exact affine-support calculation.
+`append` consumes original measurement keys once; `seal` retains the marginal
+rows and removed-variable conditionals. `query` propagates mean, shared noise,
+null directions and cross-output covariance jointly. `appendLate` reconditions
+affected nodes and passes the new marginal message toward the frontier, where
+the original prior enters once. No world reference or damping is added.
+
+Tall likelihoods undergo QR reduction. Retained square-root rows and residuals
+are projected as `U_r^T J` and `U_r^T r`. The rank rule retains the source row
+count and inherited numeric precision; the residual constant is preserved.
+
+`includeConditional(originals, node)` exposes coordinates eliminated from an
+already-owned source group. Supply the complementary conditional from the same
+reduction as its retained marginal, including finite, free and deterministic
+directions. This operation adds no measurement. Original keys can supply that
+complement only once. Its pose correlations remain part of later observations.
+
+Defaults are 256 active scalar coordinates, 4,096 conditional nodes, 65,536 total
+coordinates and original keys, and 96 MiB of numeric payload. The frontier can
+be configured up to the shared 1,218-column bound. `temporary_columns=0` uses
+the frontier quota for elimination work; a nonzero value reserves a separate
+workspace at least as large as the frontier and at most 1,218 columns. This does
+not enlarge the retained frontier. Queries return at most 24
+joint scalar outputs. Numeric payload excludes allocation and identity storage;
+coordinate/key/node quotas also apply. Failed updates leave prior snapshots
+intact. Nonfinite query moments fail explicitly. The caller supplies whitened
+rows, exact constraints and consistent original tangent coordinates. Start a
+new instance for a new segment. The store is in-memory; durable paging,
+nonlinear relinearization and automatic native-map rollover are separate work.
+[Gaussian conditional elimination](https://borglab.github.io/gtsam/inference/)
+is the established method; GTSAM code is not a dependency of this utility.
+
+`SubmapInformation`은 하나의 고정 접선 좌표 선형화를 제한된 경계 상태와 불변
+가우스 조건부 정보로 표현합니다. 공통 QR/SVD 소거와 정확한 아핀 지지 계산을
+재사용합니다. `append`는 원본 측정 키를 한 번만 받으며 `seal`은 주변 정보와
+제거한 좌표의 조건부 정보를 보존합니다. `query`는 평균·공유 잡음·관측 불가
+방향·출력 간 교차 공분산을 함께 전파합니다. `appendLate`는 영향을 받은 조건부
+정보를 다시 계산하고 새 주변 정보를 경계까지 전달하며 기존 사전정보는 한 번만
+사용합니다. 새 기준 좌표 제약이나 감쇠항을 추가하지 않습니다.
+
+행이 많은 관측은 QR로 축소합니다. 보존할 제곱근 행과 잔차는
+`U_r^T J`와 `U_r^T r`로 투영합니다. 랭크 판정은 원본 행 수와 상속한 수치
+정밀도를 유지하며 잔차 상수도 보존합니다.
+
+`includeConditional(originals, node)`는 이미 반영한 원본 그룹에서 소거했던
+좌표를 조회·갱신 대상으로 연결합니다. 보존한 주변 정보와 같은 소거 계산에서
+얻은 조건부 정보를 제공하며 유한·관측 불가·결정적 방향을 포함합니다.
+측정을 추가하지 않고 원본 키마다 이 보완 정보를 한 번만 받습니다.
+후속 관측에도 자세와의 상관관계를 유지합니다.
+
+기본 한도는 활성 스칼라 좌표 256개, 조건부 노드 4,096개, 전체 좌표와 원본 키
+각 65,536개, 수치 데이터 96MiB입니다. 활성 한도는 공통 1,218열 한도 안에서
+설정합니다. `temporary_columns=0`은 소거 작업에도 활성 한도를 사용합니다.
+0보다 큰 값은 활성 한도 이상·1,218열 이하의 임시 작업공간을 지정하며 보존하는
+활성 경계의 한도는 바꾸지 않습니다. 조회는 스칼라 출력 최대 24개의 결합 공분산을 제공합니다. 수치 크기는
+할당기·식별 정보 저장 공간을 제외하며 별도의 좌표·키·노드 한도도 적용합니다.
+실패한 갱신은 이전 사본을 바꾸지 않고 비정상 평균·공분산은 오류로 반환합니다.
+호출자가 잡음으로 정규화한 행·정확한 제약·일관된 원래 접선 좌표를 제공하며 새
+구간은 새 인스턴스를 사용합니다. 저장소는 메모리 기반이며 영속 저장·비선형
+재선형화·네이티브 지도 자동 전환은 별도 작업입니다.
+
+`submap_linearization.hpp::SubmapLinearization` keeps a sealed conditional base
+and replaceable active likelihood groups. `replace` removes complete selected
+groups and rebuilds the active frontier from the base and replacement rows.
+Every removed original key must appear exactly once in the new groups; new
+measurements may join them. Previously published coordinates are preserved.
+`seal` incorporates active groups into the fixed conditional base.
+`retire(originals, kept)` transfers selected complete groups into that base and
+eliminates coordinates outside `kept`. Remaining active groups stay replaceable
+and their frontier coordinates must fit within `kept`; they may also reference
+historical coordinates with their shared uncertainty. `appendLate`
+updates that base before applying active groups once. Immutable snapshots retain
+their original answers when another revision is published.
+`includeConditional` exposes a complementary source conditional in the base.
+Replaceable new-view groups may reference those old landmark/pose coordinates.
+Each replacement reconditions the affected historical path from the same base,
+so a previous version of the new observation is not retained as extra evidence.
+Use the `SubmapLinearization` revision for publication identity; information
+forks have branch-local revision counters.
+
+The same coordinate, key and node quotas apply. The 96 MiB numeric budget counts
+retained active rows, both distinct frontier matrices and shared conditional
+nodes once. Changed base/active-branch nodes are both counted. The lineage context
+keeps no additional old numeric snapshot; caller-held old snapshots consume
+additional memory. Replacements
+must use consistent original tangent coordinates and residuals. Rehydrating
+sealed nonlinear factors, transporting a changed tangent reference and enabling
+automatic native rollover require the owning mapper. `mappingGraphRows` exposes
+the original observation identities and whitened Jacobian blocks used by the
+existing map-uncertainty calculation.
+
+`SubmapLinearization`은 확정된 조건부 정보와 교체 가능한 활성 관측 그룹을
+보존합니다. `replace`는 선택한 그룹 전체를 새 관측 행으로 바꾸고, 기존 조건부
+정보에서 활성 경계 상태를 다시 계산합니다. 교체한 원본 키는 새 그룹에 각각
+한 번씩 있어야 하며 새 측정도 추가할 수 있습니다. 이미 공개한 좌표는 유지합니다.
+`seal`은 활성 그룹을 고정 조건부 정보에 반영합니다.
+`retire(originals, kept)`는 선택한 관측 그룹 전체를 그 정보에 반영하고
+`kept` 밖의 좌표를 소거합니다. 남은 그룹의 활성 좌표는 `kept` 안에 있어야 하며
+과거 좌표도 공유 불확실성을 유지한 채 참조하고 계속 교체할 수 있습니다.
+`appendLate`는 기존 조건부
+정보를 갱신한 뒤 활성 그룹을 한 번씩 적용합니다. 새 개정본이 나와도 이전 불변
+사본의 조회 결과는 유지됩니다.
+`includeConditional`은 원본 소거 계산의 보완 조건부 정보를 연결합니다.
+새 시점의 교체 가능한 관측 그룹은 과거 지도점·자세 좌표를 참조할 수 있습니다.
+교체할 때마다 같은 기준 정보에서 영향을 받은 과거 경로를 다시 계산하므로
+교체 전 관측이 추가 증거로 남지 않습니다.
+공개 개정본은 `SubmapLinearization`의 개정 번호로 식별합니다. 하위 정보 분기의
+개정 번호는 각 분기 안에서만 증가합니다.
+
+좌표·원본 키·노드 한도는 같습니다. 수치 데이터 96MiB 한도에는 활성 관측 행,
+서로 다른 두 경계 행렬과 공유 조건부 노드가 각각 한 번씩 포함됩니다.
+기준 정보와 활성 분기에서 달라진 노드는 양쪽 모두 계산합니다. 계보 관리 객체는
+별도의 이전 수치 사본을 보존하지 않습니다. 호출자가 보관한 이전 사본은 추가
+메모리를 사용합니다. 교체 행과 잔차는 일관된 원래 접선
+좌표로 표현해야 합니다. 확정된 비선형 제약 복원, 접선 기준 변경에 따른 변환과
+네이티브 자동 구간 전환은 지도 소유자가 구현해야 합니다. `mappingGraphRows`는
+기존 지도 불확실성 계산에 쓰는 원본 관측 식별자와 잡음으로 정규화한 야코비안
+블록을 제공합니다.
+
+`native_mapping_linearization.hpp::nativeMappingRows` exposes the native
+optimizer's original likelihoods. It uses Basalt's host stereographic direction
+and inverse-distance coordinates, mounted camera calibration, pixel noise and
+Huber weights. Pose increments use world translation and left rotation. A zero
+inverse distance remains a projective observation; it does not become a finite
+exported map point. Invalid projections keep their original identities and zero
+row slots. The input mapper is unchanged. Frozen first-estimate pose references
+are rejected because this interface requires one current tangent.
+
+`streamNativeMappingRows` sends one factor or landmark group to its consumers
+at a time and returns costs/counts after the complete traversal. It retains the
+same original-identity checks, invalid row slots and numerical weights.
+Consumers stage changes until traversal succeeds. `nativeMappingRows` collects
+the same stream when simultaneous access is needed. `NativeMappingSchedule`
+orders historical groups by their latest incident pose. The native window
+transforms/eliminates each group and feeds local columns to 4,096-row QR batches.
+It retires a pose outside the active separator after its last historical group,
+retaining its conditional and shared correlations. The temporary frontier has the existing 1,218-scalar
+ceiling; the final active separator defaults to 256. Global keyframes, original
+identities and retained conditional storage keep their existing limits.
+
+`reduceNativeMappingPoint` eliminates each landmark with the shared SVD routine
+and returns pose residuals, landmark back-substitution and unobserved directions.
+The owning mapper keeps stable timestamp/coordinate identities, transports
+sealed priors when changing tangent references and supplies its original world
+reference once. These numerical interfaces add no prior or damping. Their active-window policy
+and retained-input bounds are selected by the caller.
+
+For a relative/gravity NFR graph, `nativeMappingReferenceIncrement` expresses a
+mean pose update with zero position/yaw change at the existing reference pose.
+It removes only common translation and world-yaw gauge freedoms, including the
+yaw derivative of a tilted reference. This coordinate convention adds no
+covariance information. Graphs with absolute position or yaw measurements must
+retain those measurements instead of applying this gauge-only helper.
+
+`NativeMappingWindow` in `native_mapping_window.hpp` optimizes an explicit set
+of active poses. Original factor groups wholly inside that set are relinearized;
+groups crossing its boundary retain a Gaussian conditional and landmark
+back-substitution. Archived poses and landmarks move with the solution. Active
+rows use fixed original coordinates, including the derivative of the current
+rotation, so they remain consistent with the sealed prior. The existing
+reference position and heading select a conditional mean coordinate convention;
+they supply no measurement or world covariance. Reference roll and pitch remain
+variables. This interface applies to relative/gravity NFR graphs.
+
+Pose history uses stable scalar addresses within the caller's `coordinates`
+budget (default 65,536). Local factor, landmark-span and elimination matrices
+keep their separate 1,218-column ceiling; node, original-key and numeric-byte
+quotas also apply. `prepareGrowth` preserves existing addresses when appending
+poses, and checkpoint restoration applies the new caller's capacity policy.
+World-point queries assemble only the requested points' source, host and
+reference columns, retaining shared errors. The full-graph API limits keyframes
+to 203; the selected conditional live policy uses its separate history quota.
+
+`NativeMappingWindow::retire(kept)` reduces the active pose set. Groups crossing
+its new boundary enter the historical information at their last accepted
+linearization; remaining groups stay replaceable. Original observations,
+current variables and old/new correlations are preserved. `kept` must be a
+nonempty proper subset retaining at least one active group. Source or variable
+edits outside the owner are rejected. Retirement anchors share the existing
+96 MiB numeric budget, with their capacity reserved during construction.
+New source frames and reassociation require further owner transitions;
+the owning `NativeMappingGraph` advances the selected live window with new input.
+
+`worldInformation()` returns current finite world points and their joint
+linearized covariance, including landmark conditional noise and shared old/new
+pose errors. It uses the original VIO position/world-z-rotation reference once,
+with the coupling to reference roll at tilted attitudes. Up to eight points are
+queried jointly; propagate both joint covariance and `unbounded_gram` when
+forming relative coordinates. Finite covariance alone cannot certify an
+unobserved direction. Zero
+reference weight remains unbounded. `worldLinearization()` reuses one solve
+across an export; updates invalidate it. These queries do not establish
+statistical calibration or replace the existing point-admission rules.
+
+`mapInformation()` applies the shared current-image support, three-exposure
+maturity and world three-sigma limit to covariance from the window's own
+retained information. `mappingOutput()` supplies both mapping paths with
+stable point IDs, complete candidates and eligible finite PLY coordinates.
+Weak and infinite candidates remain inspectable. Changed original
+observations or noise require a new owner before output can be certified.
+
+`NativeMappingCheckpoint` in `native_mapping_checkpoint.hpp` saves the original
+pose/landmark chart, stable pose order, active membership, elimination order
+and each source group's last linearization alongside the current-state graph.
+Original keys remain recorded when their current association is removed. Its CBOR-compatible document binds the original observations,
+calibration, weights and current variables with separate SHA-256 identities.
+Restore reconstructs each original group at its saved anchors, then rebuilds
+the saved elimination order. Source/state
+mismatches, corruption, invalid anchors and caller capacity failures are
+rejected; cancellation leaves the supplied graph unchanged.
+
+Pass the window to
+`MappingGraphRegistry::capture` while exclusively owning its mapper. The
+immutable snapshot keeps both states through later optimizer updates.
+`MappingGraphRegistry::write` stores them together in one checksummed
+`PSIMMAP2` file, published by a single rename. Read validates the original
+measurements, current variables and reference before returning the snapshot;
+`NativeMappingCheckpoint::restore(mapper, graph)` reconstructs its window.
+
+The window document uses `posim-slam-native-window-3`; the reader also accepts
+version 1 and 2 documents. Keep a compatible library with these archives.
+Point correspondence uses stable IDs, independent of container row order.
+Readers supporting only `PSIMMAP1` reject window archives. Calls to `write`
+without a window retain `PSIMMAP1`. File replacement is atomic; power-loss durability
+is not guaranteed. The owning `NativeMappingGraph` advances the selected live window.
+
+`writeWithInputs` stores the graph, optional native window and complete compact
+detector inputs in `PSIMMAP3`. Frame pages preserve pixels, orientations,
+256-bit descriptors, unprojected bearings and HashBoW values. The metadata
+checksum binds each page's hash, length and frame/image identity. `read` opens
+the graph and page index; `inputFrame(graph, stamp, max_encoded_bytes)` loads
+and checks only the requested page. A held file handle keeps a snapshot bound
+to its original file through pathname replacement. `restoreForMatching`
+rehydrates all frames of the current bounded graph, rebuilds retrieval and
+validates tracked pixel ownership before returning a mapper. It rejects
+graph-only archives without inventing descriptors. The 96 MiB archive cap
+includes the graph and all pages. The live mapper still retains its bounded
+input set. `NativeMappingGraph` advances the conditional window within that quota;
+automatic input eviction and navigation resumption require separate support.
+
+When `capture` receives the `NativeMappingGraph` owner, `writeWithInputs` uses
+`PSIMMAP4`. It includes evaluated pairs, descriptor/inlier indices, relative
+transforms, original input pose seeds and the next native track ID.
+`restoreInputs` provides original seeds and lazily read feature pages;
+`restoreNativeGraph` restores nonlinear means, solver controls and matching
+decisions. Its optional `row_store` places reconstructed numeric rows in the
+caller's bounded cache. Unmatched pixels are available for future associations. Changed
+original features, settings or seeds are rejected before publishing the matching
+state. Ordinary map publication keeps typed immutable values; checkpoint JSON
+is created only for explicit serialization or restoration. These records count
+toward the 96 MiB archive limit. A selected moving window also retains its
+source anchors and active-window policy; its matching and window checkpoints
+are bound by a digest. Restoration constructs the window before committing
+matching state. `PSIMMAP1`–`PSIMMAP3` remain readable.
+Live VIO/IMU state and automatic navigation restart require separate support.
+
+`step()` uses backtracking on the hybrid Gaussian/robust objective, rejects a
+step that loses a previously valid projection, and restores poses, landmarks
+and the published owner on cancellation or failure. Callers exclusively own
+the mapper during the window's lifetime. The separator defaults to 256 scalar
+coordinates, with the existing 1,218-coordinate hard limit. The 96 MiB logical
+numeric budget includes active/prior rows, conditional nodes, landmark
+back-substitution and coordinate anchors. The native owner reserves up to
+1,218 temporary elimination columns by default; an explicit
+`temporary_columns` value also bounds bootstrap work. The retained separator
+keeps its own quota. Caller-owned graphs, temporary solve
+storage and allocator overhead are additional. An undefined reference heading
+or a rotation change reaching the original chart's pi boundary requires a new
+owner. `prepareGrowth` handles changed source membership and host coordinates;
+callers commit it with their staged native graph. Original keys remain unique
+through source-group splitting. `NativeMappingGraph` keeps surviving tracks
+whole and rejects partial replacements or splits of committed tracks. The
+selected live policy pages derived rows and moves its calculation window.
+Automatic continuation beyond the retained-input quota remains unsupported.
+
+`SubmapRowStore(directory, cache_bytes)` optionally pages derived source rows
+and elimination messages to SQLite on a caller-selected working disk. Pass its
+shared owner to `NativeMappingGraph`, `NativeMappingWindow` or checkpoint
+restoration. Immutable metadata stays resident; each pinned numeric page counts
+until its last reader releases it, even after cache eviction. Reads verify
+SHA-256 and preserve float64 values. A full pinned cache, storage failure or
+corrupt page rejects the update without replacing the published graph. The
+existing logical quotas still apply. This disposable cache is reconstructed
+from source-owned checkpoints; it does not store durable inputs. Its directory
+must be new and its disk available while the owner is in use. SQLite reuses
+released pages and removes the cache after the last owner and snapshot release it.
+Caller matrices, solver workspace, metadata, SQLite cache and allocator overhead
+are additional to `cache_bytes`.
+
+`native_mapping_linearization.hpp::nativeMappingRows`는 네이티브 최적화기의
+원본 관측 우도를 제공합니다. Basalt의 기준 영상 내 평사투영 방향·역거리 좌표,
+카메라 장착 보정, 픽셀 잡음과 Huber 가중치를 사용합니다. 자세 증분은 세계 좌표
+이동과 왼쪽 회전입니다. 역거리가 0인 특징도 투영 관측으로 보존하지만 유한한
+지도점으로 내보내지는 않습니다. 투영 불가 관측은 원본 식별자와 0으로 채운 행을
+유지합니다. 입력 지도는 바꾸지 않습니다. 하나의 현재 접선 좌표를 사용하므로
+최초 추정 기준에 고정된 자세는 거부합니다.
+
+`streamNativeMappingRows`는 제약 또는 랜드마크 묶음을 한 번에 하나씩 전달하고,
+전체 순회가 성공하면 비용과 개수를 반환합니다. 원본 식별자 검사, 투영 불가
+관측의 행과 수치 가중치를 유지합니다. 호출자는 순회 성공 후 변경을 반영합니다.
+`nativeMappingRows`는 동시 접근이 필요할 때 같은 행을 모읍니다.
+`NativeMappingSchedule`은 연결된 마지막 자세의 시각으로 과거 관측 묶음을
+정렬합니다. 네이티브 구간은 각 묶음을 좌표 변환·소거하고 해당 열을 4,096행 QR
+묶음으로 전달합니다. 활성 경계 밖에서 마지막 과거 관측을 반영한 자세는 조건부
+정보와 공유 상관관계를 보존하며 소거합니다. 임시 계산 경계는 기존 한도인 스칼라 좌표 1,218개이며,
+최종 활성 경계의 기본값은 256개입니다. 전체 키프레임, 원본 식별자와 보존된
+조건부 정보의 저장 한도는 유지합니다.
+
+`reduceNativeMappingPoint`는 공유 SVD 계산으로 랜드마크를 소거하고 자세 잔차,
+랜드마크 역대입과 미관측 방향을 제공합니다. 지도 소유자가 시각·좌표 식별자를
+일관되게 유지하고, 접선 기준 변경 시 확정된 정보를 변환하며, 원래 세계 기준을
+한 번 반영해야 합니다. 이 선택형 수치 인터페이스는 사전정보나 감쇠를 추가하지
+않습니다. 활성 계산 구간과 보관 입력의 한도는 호출자가 선택합니다.
+
+상대 자세·중력 NFR 그래프의 `nativeMappingReferenceIncrement`는 기존 기준
+자세의 위치·방위 증분이 0인 좌표로 평균 자세 갱신을 표현합니다. 기울어진 기준
+자세의 방위 미분을 포함해 전체 공통 이동과 세계 수직축 회전 자유도만 제거합니다.
+공분산 정보는 추가하지 않습니다. 절대 위치나 방위 측정이 있는 그래프에는 이
+자유도 정렬 함수를 적용하지 않고 해당 측정 정보를 유지해야 합니다.
+
+`native_mapping_window.hpp`의 `NativeMappingWindow`는 지정한 활성 자세 집합을
+최적화합니다. 집합 내부의 원본 제약 그룹은 다시 선형화하고, 경계를 가로지르는
+그룹은 가우시안 조건부 정보와 랜드마크 역대입을 보존합니다. 과거 자세와 지도점도
+해에 따라 갱신됩니다. 활성 행은 현재 회전의 미분을 포함한 원래 좌표로 변환해
+확정된 정보와 같은 기준을 사용합니다. 기존 기준 위치·방위는 조건부 평균의
+좌표를 선택하며 측정이나 세계 공분산을 추가하지 않습니다. 기준 자세의 롤·피치는
+계속 추정합니다. 상대 자세·중력 NFR 그래프에 사용하는 인터페이스입니다.
+
+자세 이력은 호출자의 `coordinates` 한도(기본 스칼라 주소 65,536개) 안에서
+고정 주소를 사용합니다. 개별 제약·랜드마크 관측 구간·소거 행렬에는 별도의
+1,218열 한도를 적용하며 노드·원본 키·수치 데이터 용량도 제한합니다.
+`prepareGrowth`는 자세를 추가할 때 기존 주소를 보존하고, 체크포인트 복원은
+새 호출자의 용량 정책을 적용합니다. 세계 좌표 점 조회는 요청한 점의 원본·
+기준 영상 자세·세계 기준에 필요한 열만 모으며 공유 오차를 유지합니다.
+전체 그래프 API의 기본 한도는 203키프레임입니다. 선택된 조건부 라이브 정책은
+별도의 이력 한도를 사용합니다.
+
+`NativeMappingWindow::retire(kept)`는 활성 자세 집합을 줄입니다. 새 경계를
+가로지르는 그룹은 마지막으로 채택된 선형화 기준에서 과거 정보에 반영하고,
+남은 그룹은 계속 교체할 수 있습니다. 원본 관측·현재 변수·과거와 현재의
+상관관계는 유지합니다. `kept`는 기존 집합보다 작고 비어 있지 않아야 하며
+활성 그룹을 하나 이상 남겨야 합니다. 소유자 밖에서 원본이나 변수를 바꾸면
+거부합니다. 소거 기준값도 기존 수치 데이터 96MiB 한도에 포함하며 생성 시
+필요 용량을 예약합니다. 새 입력 프레임·관측 재연결·구간 확장의 소유권 전환은
+`NativeMappingGraph`가 담당합니다.
+
+`worldInformation()`은 현재의 유한한 세계 좌표 지도점과 결합 선형 공분산을
+반환합니다. 랜드마크 조건부 잡음과 과거·현재 자세의 공유 오차를 포함합니다.
+원래 VIO의 위치·세계 수직축 회전 기준을 한 번 반영하며, 기울어진 기준 자세의
+롤과 회전 기준 사이의 결합도 처리합니다. 최대 8점을 함께 조회하며 상대 좌표를
+계산할 때 결합 공분산과 `unbounded_gram`을 모두 전파합니다. 유한 공분산만으로
+관측 불가 방향을 유효 판정할 수 없습니다. 기준 가중치가 0이면 해당 자유도는 관측
+불가로 남습니다. `worldLinearization()`은 내보내기 동안 한 번의 풀이를 재사용하며
+갱신 후에는 다시 생성합니다. 통계적 보정이나 기존 점 채택 기준을 대신하지 않습니다.
+
+`mapInformation()`은 공통 영상 지지 조건·세 시점 성숙도·세계 좌표의 3시그마
+한도를 구간 소유자가 보존한 공분산에 적용합니다. `mappingOutput()`은 두 지도
+경로에서 고정 점 식별자·전체 후보·채택한 유한 점의 PLY 좌표를 생성합니다.
+약한 후보와 무한 거리 후보도 조회할 수 있습니다. 원래 관측이나 잡음이 바뀌면
+새 소유자를 구성한 뒤 점 채택을 판정합니다.
+
+`native_mapping_checkpoint.hpp`의 `NativeMappingCheckpoint`는 원래 자세·랜드마크
+좌표 기준·일정한 자세 순서·활성 자세 집합·소거 순서와 원본 그룹별 마지막 선형화
+기준값을 현재 상태의 지도 그래프와 함께 보존합니다. 현재 대응에서 빠진 원본
+식별자도 기록합니다. CBOR로
+저장할 수 있는 문서는 원본 관측·보정값·가중치와 현재 변수를 각각 SHA-256으로
+식별합니다. 복원은 각 원본 그룹을 저장된 기준값에서 재구성하고 저장된
+소거 순서로 계산합니다. 입력·상태 불일치, 손상, 잘못된 기준값과 호출자
+용량 초과를 거부하며 취소 시 입력 그래프를 유지합니다.
+
+지도 소유 스레드에서
+구간을 `MappingGraphRegistry::capture`에 전달하면 두 상태가 같은 불변 스냅샷에
+보존됩니다. 이후 최적화가 진행되어도 `MappingGraphRegistry::write`는 그 스냅샷을
+하나의 체크섬을 가진 `PSIMMAP2` 파일로 저장하고 한 번의 이름 변경으로 교체합니다.
+읽을 때 원본 관측·현재 변수·기준 자세의 일치를 검사하며
+`NativeMappingCheckpoint::restore(mapper, graph)`로 활성 구간을 복원합니다.
+
+구간 문서는 `posim-slam-native-window-3` 형식이며 판독기는
+버전 1·2 문서도 읽습니다. 이 파일과 호환되는 라이브러리를 함께 보존합니다.
+점 대응은 내부 행 순서와 관계없이 고유 ID를 사용합니다. `PSIMMAP1`만 지원하는
+판독기는 구간 파일을 거부하며 구간 없이 호출한 `write`는 `PSIMMAP1` 형식을 유지합니다.
+파일 교체는 원자적이지만 전원 차단 시 보존을 보장하지 않습니다.
+라이브 구간 이동은 입력을 소유한 `NativeMappingGraph`가 담당합니다.
+
+`writeWithInputs`는 그래프·선택한 네이티브 구간·전체 검출 특징 입력을
+`PSIMMAP3`에 저장합니다. 프레임 페이지는 픽셀·방향·256비트 기술자·역투영
+방향과 HashBoW 값을 보존합니다. 메타데이터 체크섬은 각 페이지의 해시·길이와
+프레임·영상 식별자를 연결합니다. `read`는 그래프와 페이지 색인을 열고
+`inputFrame(graph, stamp, max_encoded_bytes)`는 요청한 페이지만 읽어 검사합니다.
+열린 파일 핸들은 경로의 파일이 교체되어도 사본이 원래 파일을 읽도록 합니다.
+`restoreForMatching`은 현재 크기가 제한된 그래프의 모든 프레임을 복원하고
+검색 색인·관측 픽셀 소유권을 확인한 뒤 지도를 반환합니다. 기술자가 없는 그래프
+전용 파일은 재매칭용 복원을 거부합니다. 96MiB 파일 한도에는 그래프와 모든
+페이지가 포함됩니다. 라이브 지도는 여전히 제한된 입력 집합을 메모리에 유지하며
+입력 보관 한도 안에서 `NativeMappingGraph`가 조건부 구간을 확장합니다. 자동 입력 퇴출과 항법 재개에는 별도의 수명 주기 처리가 필요합니다.
+
+`capture`에 `NativeMappingGraph` 소유자를 전달하면 `writeWithInputs`는
+`PSIMMAP4`를 사용합니다. 평가한 영상쌍·기술자와 인라이어 번호·상대 변환·
+원래 입력 자세 초기값·다음 네이티브 트랙 번호를 함께 저장합니다. `restoreInputs`는
+원본 자세 초기값과 필요할 때 읽는 특징 페이지를 제공하며, `restoreNativeGraph`는
+현재 추정값·최적화 설정·매칭 판단을 복원합니다. 선택 인자 `row_store`를 전달하면
+복원하는 수치 행렬에 호출자가 지정한 캐시 한도를 적용합니다. 미연결 픽셀도 이후 대응에 사용할
+수 있습니다. 원본 특징·설정·초기값이 다르면 매칭 상태를 발행하기 전에 거부합니다.
+일반 지도 발행은 불변 자료형을 보관하고 명시적인 저장·복원에서만 체크포인트
+JSON을 만듭니다. 이 기록도 96MiB 파일 한도에 포함됩니다. 이동 구간을 선택하면
+원본 그룹의 기준값과 활성 구간 정책도 보존하며 매칭·구간 체크포인트를 해시로
+결합합니다. 복원은 구간을 구성한 뒤 매칭 상태를 확정합니다. `PSIMMAP1`–`PSIMMAP3`은
+계속 읽을 수 있습니다. 라이브 VIO/IMU 상태와 자동 항법 재시작은 별도 지원이 필요합니다.
+
+`step()`은 가우시안·강건 손실을 결합한 목적함수로 갱신 보폭을 조정합니다.
+유효했던 투영이 사라지는 갱신은 거부하며, 취소나 실패 시 자세·랜드마크·발행된
+정보를 복원합니다. 호출자는 구간 객체가 존재하는 동안 지도를 독점 사용합니다.
+경계는 기본 256개 스칼라 좌표이며 기존 절대 한도는 1,218개입니다. 수치 데이터
+96MiB에는 활성·확정 행렬, 조건부 노드, 랜드마크 역대입과 좌표 기준이 포함됩니다.
+네이티브 소유자는 기본적으로 최대 1,218열의 소거 임시 공간을 예약합니다.
+`temporary_columns`를 지정하면 초기 구성에도 그 한도를 적용하며,
+보존하는 활성 경계는 별도의 한도를 유지합니다.
+호출자 소유 그래프, 풀이 임시 공간과 할당 오버헤드는 별도입니다. 기준 방위를
+정의할 수 없거나 원래 회전 좌표에서 변화가 pi 경계에 도달하면 새 소유자가
+필요합니다. `prepareGrowth`는 원본 관측의 연결과 기준 영상 좌표 변경을 처리하며
+호출자가 준비한 네이티브 그래프와 함께 확정합니다. 원본 그룹을 분할해도 원본
+식별자는 중복 배정하지 않습니다. `NativeMappingGraph`는 남는 트랙 전체를 유지하고
+확정한 트랙의 일부 교체·분할은 거부합니다. 선택된 라이브 정책은 파생 행렬을
+페이지로 보관하며 계산 구간을 이동합니다. 보관 입력의 한도를 넘긴 뒤의
+자동 연속 처리는 지원하지 않습니다.
+
+선택형 `SubmapRowStore(directory, cache_bytes)`는 계산용 원본 관측 행렬과
+소거 중간 결과를 호출자가 지정한 작업 디스크의 SQLite에 보관합니다. 공유 객체를
+`NativeMappingGraph`, `NativeMappingWindow` 또는 체크포인트 복원에 전달합니다.
+불변 메타데이터는 메모리에 유지하며, 읽는 중인 수치 데이터는 캐시 목록에서
+제거돼도 마지막 사용자가 반환할 때까지 사용량에 포함됩니다. 읽을 때 SHA-256을
+검사하고 float64 값을 그대로 보존합니다. 읽는 데이터가 캐시 한도를 채우거나
+저장장치 오류·손상이 발생하면 발행된 그래프를 유지한 채 갱신을 거부합니다.
+기존 논리 용량 한도도 적용합니다. 이 임시 캐시는 원본 관측을 보존한
+체크포인트에서 재구성하며 영구 입력을 저장하지 않습니다. 새 디렉터리가
+필요하고 사용 중에는 해당 디스크에 접근할 수 있어야 합니다. SQLite는 반환된
+저장 공간을 재사용하며, 마지막 소유자와 상태 사본이 반환되면 캐시를 제거합니다.
+호출자 행렬·풀이 임시 공간·메타데이터·SQLite 캐시·할당 오버헤드는
+`cache_bytes`와 별도입니다.
+
 The build-local adapter maps initial gyro/accelerometer information weights
 to their physical state coordinates. Fresh builds check the actual constructor
 before visual-inertial qualification. [Initial bias prior and recorded limits](../../docs/diagnostics/imu-initial-prior.md).
@@ -45,11 +648,59 @@ bounded, one-state-at-a-time acknowledgement contract.
 `SensorEvents(state_clock="sonar")`는 소나와 이후 IMU를 정렬하고, 한 상태의
 응답을 확인한 뒤 다음 상태를 전달합니다.
 
-## Joint nuisance elimination / 공동 보조변수 소거
+## Visual reference patches / 시각 참조 패치
+
+[Optional native patch diagnostics](diagnostics/README.md) inspect conditioning,
+birth-reference residuals and local warp models without changing estimation.
+[선택형 네이티브 패치 진단](diagnostics/README.md)은 추정을 바꾸지 않고
+패치 조건·최초 참조 잔차·국소 변형 모델을 검사합니다.
+
+Camera calibration accepts `optical_flow_type: "frame_to_frame"` (default) or
+`"patch"`. These select the pinned Basalt previous-frame and birth-frame
+reference trackers. The worker acknowledges the selected value in `ready`;
+`LiveClient` rejects a mismatch. Camera-free sonar calibration rejects this
+camera setting. Both trackers retain Basalt's image pyramids, SE2 patch
+alignment and forward/backward consistency test.
+
+The build-local patch tracker retires a reference only after its identity is
+absent from every camera view. Retirement runs on the frontend owner after
+parallel tracking and filtering finish. `reference_patches` reports retained
+references; `reference_patch_peak` includes new and retiring references. Storage
+therefore follows live observations rather than all historical detections.
+This is not a fixed byte or process-memory limit. The 400-frame native probe
+checks identity retention, repeated blank-frame release and cross-camera
+ownership. Map accuracy, startup and recovery require separate measurements.
+
+카메라 보정 설정은 `optical_flow_type: "frame_to_frame"`(기본값) 또는
+`"patch"`를 받습니다. 고정한 Basalt의 이전 프레임 참조 또는 최초 프레임
+참조 추적기를 선택합니다. 워커는 `ready`에 실제 선택값을 보고하며,
+`LiveClient`는 요청과 다르면 거부합니다. 카메라 없는 소나 보정 설정에서는
+이 옵션을 거부합니다. 두 방식 모두 Basalt의 영상 피라미드, SE2 패치 정합,
+왕복 추적 일관성 검사를 사용합니다.
+
+빌드 사본의 패치 추적기는 모든 카메라에서 사라진 특징점의 참조만 해제합니다.
+병렬 추적과 필터링이 끝난 뒤 추적기 소유 스레드가 해제합니다.
+`reference_patches`는 남은 참조 수, `reference_patch_peak`는 새 참조와 해제될
+참조를 포함한 최대 수입니다. 저장량은 전체 과거 검출 수 대신 현재 관측에
+따릅니다. 고정 바이트 수나 프로세스 메모리 상한을 뜻하지 않습니다.
+400프레임 네이티브 시험은 특징점 ID 유지, 반복되는 빈 영상에서의 해제,
+여러 카메라의 소유 관계를 검사합니다. 지도 정확도·초기화·복구는 별도로
+측정해야 합니다.
+
+## Joint nuisance elimination / 보조변수 동시 소거
 
 `ping_joint.hpp` uses thin SVD to determine nuisance rank and minimum-norm back-substitution. For LM-damped trials, the smallest regularization diagonal bounds the smallest singular value from below. When it exceeds 16 times the SVD cutoff's Frobenius upper bound, full numerical rank is certified and Householder QR performs the same elimination and back-substitution. Other systems retain SVD. Marginalization remains undamped. Neither route forms a full left-singular-vector matrix. The independent NumPy full-SVD reference checks reduced information, gradient, residual cost and back-substitution for tall, wide, deficient, damped and extreme-scale systems.
 
 `ping_joint.hpp`는 thin SVD로 보조변수의 계수와 최소 노름 역대입을 구합니다. LM 감쇠가 적용된 시도에서는 가장 작은 정규화 대각값이 최소 특이값의 하한입니다. 이 값이 Frobenius 노름으로 구한 SVD 판정 임계값 상한의 16배보다 크면 수치적인 완전 계수가 보장되므로 Householder QR로 같은 소거·역대입을 수행합니다. 그 외에는 SVD를 유지하며, 주변화에는 감쇠를 적용하지 않습니다. 두 경로 모두 전체 좌특이벡터 행렬을 만들지 않습니다. 독립 NumPy 전체 SVD 기준으로 긴 행렬·넓은 행렬·계수 부족·감쇠·극단적인 크기 차이에서 축약 정보·기울기·잔차 비용·역대입을 검사합니다.
+
+Minimum-norm back-substitution refines its initial solution once through the
+same retained SVD subspace. Compensated products and sums evaluate the residual
+before correction. The rank cutoff, noise factor and free-direction basis stay
+unchanged.
+
+최소 노름 역대입은 처음 구한 해를 같은 SVD 부분공간에서 한 번 보정합니다.
+곱셈·덧셈의 반올림 오차를 보상해 잔차를 계산한 뒤 보정하며, 랭크 판정
+임계값·잡음 인자·미관측 방향 기저는 유지합니다.
 
 ## Raw DVL velocity factors / 원본 DVL 속도 제약
 
@@ -485,7 +1136,8 @@ to false and do not enable a qualified application provider.
 제거 근거로 쓰지 않습니다. 두 기능의 기본값은 false이며 앱 공급자의 품질
 검증을 통과시키지 않습니다.
 
-The native archive admits an ID after full-weight reprojection support in three
+With `persistent_mapping: false`, the legacy native archive admits an ID after
+full-weight reprojection support in three
 separate exposures with positive three-sigma inverse-range support. Current
 optimized camera poses and full-weight observations supply a pixel-noise-whitened
 point Jacobian. Thin SVD requires full rank and inverse-range sigma below one
@@ -512,7 +1164,7 @@ estimator points; `landmarks_accumulated` reports retained mature points and
 one pending export. Recordings remain read-only. Legacy active-window PLY files
 remain readable by `map_snapshot`, preserving their original scope.
 
-네이티브 누적 저장소는 서로 다른 영상 세 장에서 정상 가중치의 재투영 검사를 통과한
+`persistent_mapping: false`의 기존 누적 저장소는 서로 다른 영상 세 장에서 정상 가중치의 재투영 검사를 통과한
 ID를 채택하며 양의 역거리 3시그마 조건도 요구합니다. 현재 최적화된 카메라 자세와
 정상 가중치 관측으로 픽셀 잡음 백색화 점 Jacobian을 만들고 thin SVD로 완전 계수와
 역거리 표준편차가 추정 역거리의 1/3보다 작은지 확인합니다. 픽셀 표준편차는
@@ -1311,7 +1963,9 @@ IMU, 해당 시각의 트랙 스냅샷(있을 때), `LiveClient.sonar_tick(stamp
 
 
 `max_recent_states` in the calibration file sets the recent full IMU-state budget
-(integer, 3–64). Defaults are three without auxiliary events and six with them.
+(integer, 3–64). The default is three; `enable_auxiliary_sonar: true` selects six
+when no explicit budget is supplied. DVL and pressure factors do not raise this
+default. Their single-time measurements retire into the common correlated prior.
 The ready response reports the applied value. Count camera and auxiliary events
 across track initialization, with room for the next event. Three 2 Hz sonar
 observations span one second; six states cannot cover a 10 Hz camera stream.
@@ -1324,7 +1978,9 @@ before marginalization. State and nuisance column bounds derive from these
 budgets. Sensor observation-count limits remain separate.
 
 보정 파일의 `max_recent_states`로 최근 IMU 전체 상태 보관 개수를 지정합니다
-(정수 3–64). 기본값은 보조 이벤트가 없으면 3개, 있으면 6개이며, 준비 응답에서
+(정수 3–64). 기본값은 3개이며, 명시적 예산이 없을 때
+`enable_auxiliary_sonar: true`는 6개를 선택합니다. 단일 시각의 DVL·수압 측정은
+공통 주변화 사전정보로 전달하므로 이 기본값을 늘리지 않습니다. 준비 응답에서
 적용값을 확인합니다. 트랙 초기화 구간의 카메라·보조 이벤트를 모두 세고 다음
 이벤트를 위한 여유를 둡니다. 2Hz 소나 관측 3개는 1초에 걸치므로 카메라
 10Hz에서 상태 6개로는 부족합니다. 카메라 키프레임 보관은 보조 자세의 보관을
@@ -1515,3 +2171,53 @@ association, loop closure or terrain mesh export is provided by this mode.
 점과 평면의 연결, 루프 폐쇄, 지형 메시 내보내기가 없습니다.
 
 [Matched replay evidence / 같은 입력의 비교 검증](../../docs/diagnostics/terrain-ping.md).
+## Joint per-beam surfaces / 빔별 평면 제약
+
+`range_surface.hpp` provides an Eigen-only finite-cone/vertical-fan model with
+explicit full range covariance and state-dependent raw support. The
+`range_surface_group.hpp` owner adapter uses the existing grouped elimination,
+trial rollback and marginal-prior installation. The portable JSON probe checks
+Python parity; `basalt_range_surface_owner_probe` additionally exercises actual
+Basalt state increments, optimization and whole-group retirement. These
+diagnostics require supplied echo/plane membership; no live range transport or
+surface map is enabled. [Controls and retention audit](../../docs/diagnostics/joint-surface-ranges-20261029/README.md).
+
+`range_surface.hpp`는 Eigen만 사용하는 유한 원뿔·수직 팬 모델이며, 전체 거리
+공분산과 현재 상태에서 계산한 원본 관측 범위를 사용합니다. 소유자 어댑터는
+기존 묶음 소거·시험 갱신 복원·주변화 사전정보 설치를 사용합니다. 이식형
+JSON 검사기는 Python 계산을 대조하고, 소유자 검사기는 실제 Basalt 상태 갱신,
+최적화와 전체 관측 그룹 폐기를 검증합니다. 에코·평면 대응은 호출자가 제공하며,
+라이브 거리 전송과 표면 지도는 아직 활성화하지 않습니다.
+
+## Persistent surface information / 평면 정보의 지속 보존
+
+`surface_prior.hpp` keeps correlated pose, plane and pressure-datum square-root
+information across source-state retirement. `surface_prior_owner.hpp` reads
+actual 6/15-state references and accumulated coordinates, including planes and
+an explicit caller-owned pressure datum. The bridge is read-only. Production
+factor retirement, archived support and live installation require the complete
+owner transaction. [Source/native and delayed-owner controls](../../docs/diagnostics/persistent-surface-prior-20261029/README.md).
+
+원본 자세를 폐기한 뒤에도 자세·평면·압력 기준값의 상관된 정보를 보존합니다.
+실제 Basalt의 6/15차원 상태 참조와 누적 좌표를 읽는 연결부는 읽기 전용입니다.
+라이브 적용에는 모든 원본 제약의 폐기·보관된 지원 관측·사전정보 설치를 묶는
+완전한 소유자 처리가 필요합니다.
+
+
+## Reloadable mapping graph / 재로딩 가능한 지도 그래프
+
+
+The mapper identifies observations by original image timestamp, camera and feature index. Rebuilding tracks replaces the complete association graph and rejects duplicate pixel ownership. Point IDs follow each track's earliest original observation rather than internal track numbering.
+
+Published map snapshots retain immutable measurement and optimizer values. A full PLY refresh also saves `worker-map.graph.pmap` in the native output directory. Its `PSIMMAP4` archive preserves calibration, original observations and pose seeds, recovered factors, current poses/landmarks, optimizer controls, segment identity, all detector features and all evaluated image-pair decisions. Native graph restoration retains successful and failed matches, reconstructs retrieval and checks each complete original feature frame. Unmatched pixels remain available for later associations. The next native track ID and export identity ledger continue from the saved graph.
+
+The 96 MiB file limit includes metadata and all pages. Older graph-only archives retain their saved associations for relinearization. Raw images and live VIO/IMU history are separate; automatic continuation beyond the retained-input quota and navigation restart remain unavailable. Viewer-only requests do not write the archive. A write failure fails the export request while sensor processing continues.
+
+
+관측은 원본 영상 시각·카메라·특징 번호로 구분합니다. 트랙을 재구성하면 전체 관측 연결을 교체하고 픽셀의 중복 배정을 거부합니다. 점 ID는 내부 트랙 번호 대신 각 트랙의 가장 이른 원본 관측을 기준으로 유지합니다.
+
+발행된 지도 사본은 측정값과 최적화 값을 불변 데이터로 보관합니다. 전체 PLY 갱신은 네이티브 출력 디렉터리에 `worker-map.graph.pmap`도 저장합니다. `PSIMMAP4` 파일은 보정값·원본 관측과 입력 자세 초기값·복원 제약·현재 자세와 지도점·최적화 설정·구간 식별자·모든 검출 특징과 영상쌍 평가 결과를 보존합니다. 네이티브 그래프를 복원하면 성공·실패한 매칭 결과를 유지하고 검색 색인을 재구성하며 전체 원본 특징을 검사합니다. 아직 트랙에 연결되지 않은 픽셀도 이후 대응에 사용할 수 있습니다. 다음 네이티브 트랙 번호와 내보내기 ID 이력도 이어집니다.
+
+파일의 96MiB 한도에는 메타데이터와 모든 페이지가 포함됩니다. 이전 그래프 전용 파일은 저장된 관측 연결의 재계산에 사용합니다. 원본 영상과 라이브 VIO/IMU 이력은 별도이며 입력 보관 한도를 넘긴 뒤의 자동 연속 처리와 항법 재시작은 지원하지 않습니다. 화면 조회는 파일을 기록하지 않습니다. 기록 오류는 내보내기 요청을 실패 처리하며 센서 처리는 계속합니다.
+
+`MappingGraphRegistry::capture` replaces one optimized graph atomically. `write` and `read` bind its checksum, request, input revision and tracking timestamp. `restore` rebuilds the NFR optimizer with saved associations; `adopt` restores the identity ledger only into an empty registry with matching epoch/calibration/configuration. `mappingGraphInformation` calculates full-graph uncertainty; a conditional live or restored window uses `NativeMappingWindow::mapInformation`. The existing native keyframe/input and 100,000-identity bounds apply.

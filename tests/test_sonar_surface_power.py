@@ -26,6 +26,33 @@ class SurfacePowerTests(unittest.TestCase):
         self.assertTrue(np.all(ids[2:] == -1))
         self.assertEqual(scene.first_hits(np.zeros(3), d[:1], 4.)[0][0], 4.)
 
+    def test_calibrated_sampling_uses_actual_rays_for_plane_distance(self):
+        nominal = self.model()
+        rays = nominal.directions.reshape(5, 7, 3).copy()
+        angle = .06
+        rotation = np.array([[np.cos(angle), 0., np.sin(angle)], [0., 1., 0.],
+                             [-np.sin(angle), 0., np.cos(angle)]])
+        rays = rays@rotation.T
+        calibrated = self.model(sampled_ray_directions=rays)
+        scene = TriangleSurface(rectangle(3.))
+        observation = calibrated.observation(scene, np.zeros(3), np.eye(3))
+        np.testing.assert_allclose(observation.ranges, 3./rays[..., 0], rtol=1e-12)
+        self.assertGreater(np.max(abs(observation.ranges-
+            nominal.observation(scene, np.zeros(3), np.eye(3)).ranges)), .01)
+        np.testing.assert_array_equal(calibrated.azimuth_rad, nominal.azimuth_rad)
+        np.testing.assert_array_equal(calibrated.elevation_rad, nominal.elevation_rad)
+        before = calibrated.directions.copy()
+        rays[:] = 0.
+        np.testing.assert_array_equal(calibrated.directions, before)
+        self.assertFalse(calibrated.directions.flags.writeable)
+
+    def test_calibrated_sampling_rejects_invalid_shape_or_unit_vectors(self):
+        valid = self.model().directions.reshape(5, 7, 3)
+        for rays in (valid.reshape(-1, 3), np.zeros_like(valid),
+                     valid*1.01, np.full_like(valid, np.nan), np.ones_like(valid, dtype=bool)):
+            with self.assertRaisesRegex(ValueError, 'calibrated_ray_grid'):
+                self.model(sampled_ray_directions=rays)
+
     def test_bvh_matches_independent_axis_aligned_box_intervals(self):
         # All six faces of [2,4] x [-1,1] x [-1,1], forcing BVH subdivision.
         front, back = rectangle(2., 1., 1.), rectangle(4., 1., 1.)

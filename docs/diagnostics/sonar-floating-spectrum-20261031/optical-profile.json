@@ -1,0 +1,12 @@
+{
+  "profile": "surface-optics-visibility-1",
+  "source_sha256": "616f1babe8a4a5c24cf44293107a87a6a361ba131da8ceb2e1294e4d3d6c4207",
+  "shader_sha256": "0b568a78216bb3957f0d02cc546ee73493ca536f17fcd162f72727df298edb16",
+  "particle_cell_fraction": 0.1,
+  "particle_brightness": 0.07,
+  "caustic_multiplier": 1.2,
+  "visibility_m": 2.0,
+  "scene_transmission_at_visibility": 0.01,
+  "minimum_attenuation_per_m": 2.3025850929940455,
+  "scope": "PBR surface water-path attenuation; numeric depth and acoustic rays unchanged; sky/custom water materials retain their own optics"
+}

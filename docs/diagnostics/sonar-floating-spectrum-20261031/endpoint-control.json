@@ -1,0 +1,340 @@
+{
+  "binary": "/Volumes/ExternalHDD/POSIM/validation-data/posim-slam/sonar-floating-spectrum-20261031/install/lib/multibeam_sonar/libmultibeam_sonar.dylib",
+  "binary_sha256": "0090433756cb425eea803ce56a70c1af5adf844223054b2f1c25739bee0d8564",
+  "actual_symbol_path": "/Volumes/ExternalHDD/POSIM/validation-data/posim-slam/sonar-floating-spectrum-20261031/install/lib/multibeam_sonar/libmultibeam_sonar.dylib",
+  "sound_speed_m_s": 1500.0,
+  "bandwidth_hz": 29900.0,
+  "max_distance_m": 15.0,
+  "range_spacing_m": 0.02508361204013378,
+  "input": "Same synthetic single-reflector tensors, seeds and frame index; N intentionally differs",
+  "corrected_pass": 18,
+  "corrected_total": 18,
+  "baseline_fail": 6,
+  "rows": [
+    {
+      "samples": 598,
+      "seed": 73,
+      "depth_m": 0.2,
+      "peak_bin": 8,
+      "peak_range_m": 0.20066889632107024,
+      "range_error_m": 0.0006688963210702281,
+      "physical_grid_pass": true
+    },
+    {
+      "samples": 598,
+      "seed": 73,
+      "depth_m": 1.0,
+      "peak_bin": 40,
+      "peak_range_m": 1.0033444816053512,
+      "range_error_m": 0.0033444816053511683,
+      "physical_grid_pass": true
+    },
+    {
+      "samples": 598,
+      "seed": 73,
+      "depth_m": 5.213,
+      "peak_bin": 208,
+      "peak_range_m": 5.217391304347826,
+      "range_error_m": 0.004391304347826086,
+      "physical_grid_pass": true
+    },
+    {
+      "samples": 598,
+      "seed": 73,
+      "depth_m": 7.5,
+      "peak_bin": 299,
+      "peak_range_m": 7.5,
+      "range_error_m": 0.0,
+      "physical_grid_pass": true
+    },
+    {
+      "samples": 598,
+      "seed": 73,
+      "depth_m": 14.95,
+      "peak_bin": 596,
+      "peak_range_m": 14.949832775919733,
+      "range_error_m": 0.00016722408026659252,
+      "physical_grid_pass": true
+    },
+    {
+      "samples": 598,
+      "seed": 73,
+      "depth_m": 14.99,
+      "peak_bin": 0,
+      "peak_range_m": 0.0,
+      "range_error_m": 14.99,
+      "physical_grid_pass": false
+    },
+    {
+      "samples": 598,
+      "seed": 73,
+      "depth_m": 14.999,
+      "peak_bin": 0,
+      "peak_range_m": 0.0,
+      "range_error_m": 14.999,
+      "physical_grid_pass": false
+    },
+    {
+      "samples": 598,
+      "seed": 73,
+      "depth_m": 15.0,
+      "peak_bin": 0,
+      "peak_range_m": 0.0,
+      "range_error_m": 15.0,
+      "physical_grid_pass": false
+    },
+    {
+      "samples": 598,
+      "seed": 73,
+      "depth_m": 15.001,
+      "peak_bin": null,
+      "peak_range_m": null,
+      "range_error_m": null,
+      "physical_grid_pass": true
+    },
+    {
+      "samples": 598,
+      "seed": 9173,
+      "depth_m": 0.2,
+      "peak_bin": 8,
+      "peak_range_m": 0.20066889632107024,
+      "range_error_m": 0.0006688963210702281,
+      "physical_grid_pass": true
+    },
+    {
+      "samples": 598,
+      "seed": 9173,
+      "depth_m": 1.0,
+      "peak_bin": 40,
+      "peak_range_m": 1.0033444816053512,
+      "range_error_m": 0.0033444816053511683,
+      "physical_grid_pass": true
+    },
+    {
+      "samples": 598,
+      "seed": 9173,
+      "depth_m": 5.213,
+      "peak_bin": 208,
+      "peak_range_m": 5.217391304347826,
+      "range_error_m": 0.004391304347826086,
+      "physical_grid_pass": true
+    },
+    {
+      "samples": 598,
+      "seed": 9173,
+      "depth_m": 7.5,
+      "peak_bin": 299,
+      "peak_range_m": 7.5,
+      "range_error_m": 0.0,
+      "physical_grid_pass": true
+    },
+    {
+      "samples": 598,
+      "seed": 9173,
+      "depth_m": 14.95,
+      "peak_bin": 596,
+      "peak_range_m": 14.949832775919733,
+      "range_error_m": 0.00016722408026659252,
+      "physical_grid_pass": true
+    },
+    {
+      "samples": 598,
+      "seed": 9173,
+      "depth_m": 14.99,
+      "peak_bin": 0,
+      "peak_range_m": 0.0,
+      "range_error_m": 14.99,
+      "physical_grid_pass": false
+    },
+    {
+      "samples": 598,
+      "seed": 9173,
+      "depth_m": 14.999,
+      "peak_bin": 0,
+      "peak_range_m": 0.0,
+      "range_error_m": 14.999,
+      "physical_grid_pass": false
+    },
+    {
+      "samples": 598,
+      "seed": 9173,
+      "depth_m": 15.0,
+      "peak_bin": 0,
+      "peak_range_m": 0.0,
+      "range_error_m": 15.0,
+      "physical_grid_pass": false
+    },
+    {
+      "samples": 598,
+      "seed": 9173,
+      "depth_m": 15.001,
+      "peak_bin": null,
+      "peak_range_m": null,
+      "range_error_m": null,
+      "physical_grid_pass": true
+    },
+    {
+      "samples": 599,
+      "seed": 73,
+      "depth_m": 0.2,
+      "peak_bin": 8,
+      "peak_range_m": 0.20066889632107024,
+      "range_error_m": 0.0006688963210702281,
+      "physical_grid_pass": true
+    },
+    {
+      "samples": 599,
+      "seed": 73,
+      "depth_m": 1.0,
+      "peak_bin": 40,
+      "peak_range_m": 1.0033444816053512,
+      "range_error_m": 0.0033444816053511683,
+      "physical_grid_pass": true
+    },
+    {
+      "samples": 599,
+      "seed": 73,
+      "depth_m": 5.213,
+      "peak_bin": 208,
+      "peak_range_m": 5.217391304347826,
+      "range_error_m": 0.004391304347826086,
+      "physical_grid_pass": true
+    },
+    {
+      "samples": 599,
+      "seed": 73,
+      "depth_m": 7.5,
+      "peak_bin": 299,
+      "peak_range_m": 7.5,
+      "range_error_m": 0.0,
+      "physical_grid_pass": true
+    },
+    {
+      "samples": 599,
+      "seed": 73,
+      "depth_m": 14.95,
+      "peak_bin": 596,
+      "peak_range_m": 14.949832775919733,
+      "range_error_m": 0.00016722408026659252,
+      "physical_grid_pass": true
+    },
+    {
+      "samples": 599,
+      "seed": 73,
+      "depth_m": 14.99,
+      "peak_bin": 598,
+      "peak_range_m": 15.0,
+      "range_error_m": 0.009999999999999787,
+      "physical_grid_pass": true
+    },
+    {
+      "samples": 599,
+      "seed": 73,
+      "depth_m": 14.999,
+      "peak_bin": 598,
+      "peak_range_m": 15.0,
+      "range_error_m": 0.0009999999999994458,
+      "physical_grid_pass": true
+    },
+    {
+      "samples": 599,
+      "seed": 73,
+      "depth_m": 15.0,
+      "peak_bin": 598,
+      "peak_range_m": 15.0,
+      "range_error_m": 0.0,
+      "physical_grid_pass": true
+    },
+    {
+      "samples": 599,
+      "seed": 73,
+      "depth_m": 15.001,
+      "peak_bin": null,
+      "peak_range_m": null,
+      "range_error_m": null,
+      "physical_grid_pass": true
+    },
+    {
+      "samples": 599,
+      "seed": 9173,
+      "depth_m": 0.2,
+      "peak_bin": 8,
+      "peak_range_m": 0.20066889632107024,
+      "range_error_m": 0.0006688963210702281,
+      "physical_grid_pass": true
+    },
+    {
+      "samples": 599,
+      "seed": 9173,
+      "depth_m": 1.0,
+      "peak_bin": 40,
+      "peak_range_m": 1.0033444816053512,
+      "range_error_m": 0.0033444816053511683,
+      "physical_grid_pass": true
+    },
+    {
+      "samples": 599,
+      "seed": 9173,
+      "depth_m": 5.213,
+      "peak_bin": 208,
+      "peak_range_m": 5.217391304347826,
+      "range_error_m": 0.004391304347826086,
+      "physical_grid_pass": true
+    },
+    {
+      "samples": 599,
+      "seed": 9173,
+      "depth_m": 7.5,
+      "peak_bin": 299,
+      "peak_range_m": 7.5,
+      "range_error_m": 0.0,
+      "physical_grid_pass": true
+    },
+    {
+      "samples": 599,
+      "seed": 9173,
+      "depth_m": 14.95,
+      "peak_bin": 596,
+      "peak_range_m": 14.949832775919733,
+      "range_error_m": 0.00016722408026659252,
+      "physical_grid_pass": true
+    },
+    {
+      "samples": 599,
+      "seed": 9173,
+      "depth_m": 14.99,
+      "peak_bin": 598,
+      "peak_range_m": 15.0,
+      "range_error_m": 0.009999999999999787,
+      "physical_grid_pass": true
+    },
+    {
+      "samples": 599,
+      "seed": 9173,
+      "depth_m": 14.999,
+      "peak_bin": 598,
+      "peak_range_m": 15.0,
+      "range_error_m": 0.0009999999999994458,
+      "physical_grid_pass": true
+    },
+    {
+      "samples": 599,
+      "seed": 9173,
+      "depth_m": 15.0,
+      "peak_bin": 598,
+      "peak_range_m": 15.0,
+      "range_error_m": 0.0,
+      "physical_grid_pass": true
+    },
+    {
+      "samples": 599,
+      "seed": 9173,
+      "depth_m": 15.001,
+      "peak_bin": null,
+      "peak_range_m": null,
+      "range_error_m": null,
+      "physical_grid_pass": true
+    }
+  ],
+  "scope": "Native production operator/grid, not field or SLAM acceptance"
+}

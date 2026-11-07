@@ -1,0 +1,106 @@
+{
+  "README.md": {
+    "bytes": 7100,
+    "sha256": "a97aa986612fb2ae8982a5417d5d2b75fccdcd521b29cc1f743f376009100d19"
+  },
+  "frame_to_frame/calibration.archive-export-1.json": {
+    "bytes": 114335,
+    "sha256": "bcddf41db6d78051a9e2bb61477fb6455b10399e5f700b50b35a8e03cd4bbc10"
+  },
+  "frame_to_frame/calibration.json": {
+    "bytes": 920,
+    "sha256": "fb2a749f7532a3b3ea9462b51890d28590beaafa1df2ef6f4caebb3cc4ebd67b"
+  },
+  "frame_to_frame/comparison.json": {
+    "bytes": 145438,
+    "sha256": "4b8a719597d3842750107c0f5ef9936c75d72b287273cadfcb5c869a475b48b0"
+  },
+  "frame_to_frame/measured-seed.json": {
+    "bytes": 559,
+    "sha256": "be308b9c3ed7237798d5fb41a6d3687697c2a509965bda3d44d513a9de2de38c"
+  },
+  "frame_to_frame/receipt.json": {
+    "bytes": 151160,
+    "sha256": "f0347bb0eef32863f673b61b2bbbc39a8f60a5079b8d0813daac9ef8456e66f2"
+  },
+  "frame_to_frame/slam-rgb-comparison.png": {
+    "bytes": 985934,
+    "sha256": "36d68863e159fb672334c9b28763940eda252f9c3cdf517981385dfaa6da5560"
+  },
+  "frame_to_frame/visual-surface-evaluation.json": {
+    "bytes": 412505,
+    "sha256": "80be98351d59cbdd5d2a9047f6f9170b74e92d98ca756013656605865c6a3309"
+  },
+  "frame_to_frame/worker-map.ply": {
+    "bytes": 20927,
+    "sha256": "e7735916a666864fa05e7a9c35a267c3cdbfe6d19a05bfbe0ced2b095f6f465f"
+  },
+  "frame_to_frame/worst-tracks.json": {
+    "bytes": 40676,
+    "sha256": "9c0f0ae19547b6647fbe3953b4554c156c778434df2299a6b2294dcf7d3f5ebf"
+  },
+  "invalid-native-frontends.json": {
+    "bytes": 425,
+    "sha256": "96eb0b70b77b450aac976cd63fd18eec2d9a4d4b7b8a41e9efe7ac84be285d59"
+  },
+  "isometric-camera.json": {
+    "bytes": 630,
+    "sha256": "0f328acb242f112a11235a4b5e80c5d5d9b07094c14e162972b2460ff25d193d"
+  },
+  "isometric-rgb.png": {
+    "bytes": 769923,
+    "sha256": "7f7b4282c4e949de8ba0f9265878bcbd50b35be8db9f713854bab4ea8ebd21a9"
+  },
+  "lifecycle-probe.log": {
+    "bytes": 122,
+    "sha256": "dd13d5afff5f92dad27c680f0540a578e12a1821bac539f175d1999b1217474c"
+  },
+  "overview.json": {
+    "bytes": 1505,
+    "sha256": "ba595ace6c422ec4fcd327f706a4db9de4989cff69613d6a422134bca4066d2e"
+  },
+  "overview.png": {
+    "bytes": 916886,
+    "sha256": "889f1c0d0ec687f67d1d30bd111603ee158fbbd2f692e8d2f10346911f0d850d"
+  },
+  "patch/calibration.archive-export-1.json": {
+    "bytes": 99115,
+    "sha256": "cfdf94543931eadfb9bce5551efd5bf674694d66a2afe947c1f3e6a2751441e7"
+  },
+  "patch/calibration.json": {
+    "bytes": 911,
+    "sha256": "db8b4f5a35b430141b1062312865729bb6c2363e8b732647e75d2ad4a5998bfa"
+  },
+  "patch/comparison.json": {
+    "bytes": 145431,
+    "sha256": "b5b42d99255c0ed1231e0a7e5cc27175a2794b272f5c14eb250424b93fa00bb5"
+  },
+  "patch/measured-seed.json": {
+    "bytes": 559,
+    "sha256": "be308b9c3ed7237798d5fb41a6d3687697c2a509965bda3d44d513a9de2de38c"
+  },
+  "patch/receipt.json": {
+    "bytes": 151144,
+    "sha256": "a5696f38156143d955742dff98100bdeb19fd0be21f306cbec5c534abb77a44e"
+  },
+  "patch/slam-rgb-comparison.png": {
+    "bytes": 963886,
+    "sha256": "d26bef5506a1b5ffd71f9ef4a71edecae3cbc0af299af7a1e068f53e08916025"
+  },
+  "patch/visual-surface-evaluation.json": {
+    "bytes": 356385,
+    "sha256": "f2f691696bc08616c30677734c042cdaf207286df66430cce294c35639591d73"
+  },
+  "patch/worker-map.ply": {
+    "bytes": 18179,
+    "sha256": "6372b01f4a632b3416beeb5c0edcaffcb9139ab3dc01cac5bd60686b21e1b56c"
+  },
+  "patch/worst-tracks.json": {
+    "bytes": 51692,
+    "sha256": "e20c50b11542d8e466205030f775037d4805471718ac9c082f23dfc74805b30a"
+  },
+  "summary.json": {
+    "bytes": 152826,
+    "sha256": "dd72dba6619069e3cab47939b258dfbfefc6eb515d4395c9626ca6706b32dcef"
+  }
+}

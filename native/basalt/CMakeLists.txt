@@ -10,6 +10,7 @@ find_package(Eigen3 5.0.1 EXACT CONFIG REQUIRED)
 find_package(TBB CONFIG REQUIRED)
 find_package(OpenCV 4.13.0 EXACT CONFIG REQUIRED COMPONENTS core imgproc calib3d features2d imgcodecs)
 find_package(fmt CONFIG REQUIRED)
+find_package(SQLite3 REQUIRED)
 set(BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(BUILD_PYTHON OFF CACHE BOOL "" FORCE)
 add_compile_definitions(EIGEN_MPL2_ONLY EIGEN_DONT_PARALLELIZE BASALT_INSTANTIATIONS_DOUBLE)
@@ -23,6 +24,8 @@ set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS
  ${CMAKE_CURRENT_SOURCE_DIR}/prepare_joint_headers.py
  ${CMAKE_CURRENT_SOURCE_DIR}/imu_continuous.inc
  ${SOURCE_ROOT}/headers/include/basalt/imu/preintegration.h
+ ${B}/include/basalt/optical_flow/optical_flow.h
+ ${B}/include/basalt/optical_flow/patch_optical_flow.h
  ${B}/include/basalt/linearization/landmark_block.hpp
  ${B}/include/basalt/linearization/landmark_block_abs_dynamic.hpp
  ${B}/include/basalt/vi_estimator/ba_base.h
@@ -52,6 +55,8 @@ string(SUBSTRING "${BA_SOURCE}" ${MAP_START} ${MAP_LENGTH} MAP_ORIGINAL)
 file(READ ${CMAKE_CURRENT_SOURCE_DIR}/map_points.inc MAP_REPLACEMENT)
 string(REPLACE "${MAP_ORIGINAL}" "${MAP_REPLACEMENT}\n" BA_PATCHED "${BA_SOURCE}")
 file(CONFIGURE OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/ba_base.cpp" CONTENT "${BA_PATCHED}" @ONLY)
+add_library(posim_slam_submap_rows STATIC submap_row_store.cc submap_ownership_store.cc)
+target_link_libraries(posim_slam_submap_rows PUBLIC Eigen3::Eigen SQLite::SQLite3)
 add_library(basalt_core STATIC
  ${B}/src/linearization/landmark_block.cpp
  ${B}/src/linearization/linearization_abs_qr.cpp
@@ -66,6 +71,13 @@ add_library(basalt_core STATIC
  ${CMAKE_CURRENT_BINARY_DIR}/ba_base.cpp
  ${B}/src/vi_estimator/landmark_database.cpp
  ${B}/src/vi_estimator/marg_helper.cpp
+ ${B}/src/vi_estimator/nfr_mapper.cpp
+ ${CMAKE_CURRENT_SOURCE_DIR}/persistent_mapper.cc
+ ${CMAKE_CURRENT_SOURCE_DIR}/native_mapping_graph.cc
+ ${CMAKE_CURRENT_SOURCE_DIR}/mapping_match_checkpoint.cc
+ ${CMAKE_CURRENT_SOURCE_DIR}/mapping_input_store.cc
+ ${CMAKE_CURRENT_SOURCE_DIR}/mapping_input_archive.cc
+ ${CMAKE_CURRENT_SOURCE_DIR}/mapping_graph.cc
  ${B}/src/vi_estimator/sc_ba_base.cpp
  ${B}/src/vi_estimator/sqrt_ba_base.cpp
  ${JOINT_HEADERS}/sqrt_keypoint_vio.cpp
@@ -76,7 +88,7 @@ target_include_directories(basalt_core PUBLIC
  ${SOURCE_ROOT}/cereal/include ${SOURCE_ROOT}/magic_enum/include
  ${SOURCE_ROOT}/opengv/include ${SOURCE_ROOT}/json/single_include ${OpenCV_INCLUDE_DIRS})
 target_compile_options(basalt_core PRIVATE -Wno-error=missing-template-arg-list-after-template-kw)
-target_link_libraries(basalt_core PUBLIC Eigen3::Eigen TBB::tbb fmt::fmt opengv ${OpenCV_LIBS})
+target_link_libraries(basalt_core PUBLIC posim_slam_submap_rows Eigen3::Eigen TBB::tbb fmt::fmt SQLite::SQLite3 opengv ${OpenCV_LIBS})
 add_executable(basalt_synthetic_probe synthetic_probe.cc)
 target_link_libraries(basalt_synthetic_probe PRIVATE basalt_core)
 add_executable(basalt_initial_prior_probe initial_prior_probe.cc)
@@ -91,6 +103,44 @@ add_executable(basalt_stream stream.cc)
 add_executable(basalt_map_information_probe map_information_probe.cc)
 target_link_libraries(basalt_map_information_probe PRIVATE Eigen3::Eigen)
 target_compile_options(basalt_map_information_probe PRIVATE -UNDEBUG)
+add_executable(basalt_mapping_information_probe mapping_information_probe.cc)
+target_link_libraries(basalt_mapping_information_probe PRIVATE Eigen3::Eigen)
+target_compile_options(basalt_mapping_information_probe PRIVATE -UNDEBUG)
+add_executable(basalt_sparse_normal_information_probe sparse_normal_information_probe.cc)
+target_link_libraries(basalt_sparse_normal_information_probe PRIVATE Eigen3::Eigen)
+target_compile_options(basalt_sparse_normal_information_probe PRIVATE -UNDEBUG)
+add_executable(basalt_mapping_handoff_probe mapping_handoff_probe.cc)
+target_link_libraries(basalt_mapping_handoff_probe PRIVATE basalt_core)
+target_compile_options(basalt_mapping_handoff_probe PRIVATE -UNDEBUG)
+add_executable(basalt_persistent_mapper_probe persistent_mapper_probe.cc)
+target_link_libraries(basalt_persistent_mapper_probe PRIVATE basalt_core)
+target_compile_options(basalt_persistent_mapper_probe PRIVATE -UNDEBUG)
+add_executable(basalt_mapping_input_store_probe mapping_input_store_probe.cc)
+target_link_libraries(basalt_mapping_input_store_probe PRIVATE basalt_core)
+target_compile_options(basalt_mapping_input_store_probe PRIVATE -UNDEBUG)
+add_executable(basalt_mapping_feature_matcher_probe mapping_feature_matcher_probe.cc)
+target_link_libraries(basalt_mapping_feature_matcher_probe PRIVATE basalt_core)
+target_compile_options(basalt_mapping_feature_matcher_probe PRIVATE -UNDEBUG)
+add_executable(basalt_native_mapping_graph_probe native_mapping_graph_probe.cc)
+target_link_libraries(basalt_native_mapping_graph_probe PRIVATE basalt_core)
+target_compile_options(basalt_native_mapping_graph_probe PRIVATE -UNDEBUG)
+add_executable(basalt_native_mapping_stream_probe native_mapping_stream_probe.cc)
+target_link_libraries(basalt_native_mapping_stream_probe PRIVATE basalt_core)
+target_compile_options(basalt_native_mapping_stream_probe PRIVATE -UNDEBUG)
+add_executable(basalt_input_digest_probe input_digest_probe.cc)
+target_compile_options(basalt_input_digest_probe PRIVATE -UNDEBUG)
+add_executable(basalt_submap_information_probe submap_information_probe.cc)
+target_link_libraries(basalt_submap_information_probe PRIVATE Eigen3::Eigen)
+target_compile_options(basalt_submap_information_probe PRIVATE -UNDEBUG)
+add_executable(basalt_submap_factorization_probe submap_factorization_probe.cc)
+target_link_libraries(basalt_submap_factorization_probe PRIVATE posim_slam_submap_rows Eigen3::Eigen)
+target_compile_options(basalt_submap_factorization_probe PRIVATE -UNDEBUG)
+add_executable(basalt_mapping_graph_probe mapping_graph_probe.cc)
+target_link_libraries(basalt_mapping_graph_probe PRIVATE basalt_core)
+target_compile_options(basalt_mapping_graph_probe PRIVATE -UNDEBUG)
+add_executable(basalt_native_mapping_history_probe native_mapping_history_probe.cc)
+target_link_libraries(basalt_native_mapping_history_probe PRIVATE basalt_core)
+target_compile_options(basalt_native_mapping_history_probe PRIVATE -UNDEBUG)
 add_executable(basalt_archive_observation_probe archive_observation_probe.cc)
 target_link_libraries(basalt_archive_observation_probe PRIVATE basalt_core)
 target_compile_options(basalt_archive_observation_probe PRIVATE -UNDEBUG)
@@ -110,6 +160,14 @@ target_link_libraries(basalt_stream PRIVATE basalt_core)
 
 add_executable(basalt_input_probe input_probe.cc)
 target_link_libraries(basalt_input_probe PRIVATE basalt_core)
+add_executable(basalt_reference_patch_probe reference_patch_probe.cc)
+target_link_libraries(basalt_reference_patch_probe PRIVATE basalt_core)
+target_compile_options(basalt_reference_patch_probe PRIVATE -UNDEBUG)
+foreach(DIAGNOSTIC patch_information reference_photometry reference_warp)
+ add_executable(basalt_${DIAGNOSTIC}_probe EXCLUDE_FROM_ALL diagnostics/${DIAGNOSTIC}.cc)
+ target_link_libraries(basalt_${DIAGNOSTIC}_probe PRIVATE basalt_core)
+ target_compile_options(basalt_${DIAGNOSTIC}_probe PRIVATE -UNDEBUG)
+endforeach()
 add_executable(basalt_joint_landmark_probe joint_landmark_probe.cc)
 target_link_libraries(basalt_joint_landmark_probe PRIVATE basalt_core)
 add_executable(basalt_ping_geometry_probe ping_geometry_probe.cc)
@@ -148,6 +206,22 @@ target_link_libraries(basalt_terrain_ping_probe PRIVATE basalt_core)
 
 add_executable(basalt_sonar_ground_probe sonar_ground_probe.cc)
 target_link_libraries(basalt_sonar_ground_probe PRIVATE basalt_core)
+
+add_executable(basalt_range_surface_probe range_surface_probe.cc)
+target_link_libraries(basalt_range_surface_probe PRIVATE Eigen3::Eigen)
+target_include_directories(basalt_range_surface_probe PRIVATE ${SOURCE_ROOT}/json/single_include)
+add_executable(basalt_range_surface_owner_probe range_surface_owner_probe.cc)
+target_link_libraries(basalt_range_surface_owner_probe PRIVATE basalt_core)
+add_executable(basalt_surface_prior_probe surface_prior_probe.cc)
+target_link_libraries(basalt_surface_prior_probe PRIVATE Eigen3::Eigen)
+target_include_directories(basalt_surface_prior_probe PRIVATE ${SOURCE_ROOT}/json/single_include)
+add_executable(basalt_surface_prior_owner_probe surface_prior_owner_probe.cc)
+target_link_libraries(basalt_surface_prior_owner_probe PRIVATE basalt_core)
+add_executable(basalt_surface_owner_probe EXCLUDE_FROM_ALL surface_owner_probe.cc)
+target_link_libraries(basalt_surface_owner_probe PRIVATE basalt_core)
+add_executable(basalt_joint_information_probe joint_information_probe.cc)
+target_link_libraries(basalt_joint_information_probe PRIVATE Eigen3::Eigen)
+target_include_directories(basalt_joint_information_probe PRIVATE ${SOURCE_ROOT}/json/single_include)
 
 add_executable(basalt_ping_joint_probe ping_joint_probe.cc)
 target_link_libraries(basalt_ping_joint_probe PRIVATE Eigen3::Eigen)

@@ -1,0 +1,7 @@
+{
+  "classification": "fixture consistency failure before mission start",
+  "cause": "flat physical floor versus unchanged Orca5 navigation grid; route_goal_unsafe",
+  "correction": "same authored floor in owned session physics and planner grid; preserve unknown outside",
+  "production_policy_changed": false,
+  "partial_record_preserved": true
+}

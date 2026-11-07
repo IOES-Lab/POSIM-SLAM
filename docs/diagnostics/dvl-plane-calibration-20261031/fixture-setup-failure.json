@@ -1,0 +1,21 @@
+{
+  "passed": false,
+  "error": "AssertionError: {'0': 0, '1': 0, '2': 0, '3': 0, '4': 0, '5': 0}",
+  "callback_errors": [],
+  "counts": {
+    "0": 0,
+    "1": 0,
+    "2": 0,
+    "3": 0,
+    "4": 0,
+    "5": 0
+  },
+  "cleanup": {
+    "exit": 0,
+    "forced": false
+  },
+  "scope": "Original DVL packets on static known plane only; not SLAM or hardware uncertainty qualification",
+  "cause": "Unregistered XML prefix serializes ns0:type; source parser requires literal gz:type and instantiates no DVL sensor",
+  "correction": "Restore standard gz prefix; expanded XML and all six physical cases remain identical; previous native server exits0 normally",
+  "no_noise_or_data_admission_changes": true
+}

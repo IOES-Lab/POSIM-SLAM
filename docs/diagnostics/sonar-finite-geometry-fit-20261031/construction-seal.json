@@ -1,0 +1,14 @@
+{
+  "truth_scene_rgb_used": false,
+  "files": {
+    "protocol.json": "a384b01ef82d3d88c4ecb20f6881c2b3a3f1dfeca1814c02f29f4bd3cf685834",
+    "fit.py": "68e91f7a10ee768769ec7e7db86228f7cf1681524c4d62bd950531ee8461c759",
+    "inputs.json": "aa29a6a7c0c8094e1ac3d7b10958974c10693f4682a9025d1d3ca26e8be8089d",
+    "seed-candidates.npz": "2d6452bfe90eea3a528ba28fa6a672ee940a255b44661be8ac7faf7c0458b1cf",
+    "trace.jsonl": "453a0eec31f446f29698aef4757623b40403912f964ffcda74c0201b6b4d35bb",
+    "fit-output.npz": "60f657fb176c95e414f7131ffd4c6ec6565ae51d4919499e2a04d358350434ab",
+    "fit-output.json": "2175a690659e94e8a2ee7f2df8a759f6188393f1ed580aab15db4880f948660e"
+  },
+  "elapsed_s": 301.1192603330128,
+  "calls": 110
+}

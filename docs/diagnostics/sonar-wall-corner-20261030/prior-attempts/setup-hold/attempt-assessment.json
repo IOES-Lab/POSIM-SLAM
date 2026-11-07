@@ -1,0 +1,7 @@
+{
+  "classification": "setup failure before mission start",
+  "cause": "authored hold_seconds2 violates existing API minimum3",
+  "request_corrected_to_seconds": 3,
+  "source_threshold_changed": false,
+  "all_partial_sensor_data_preserved": true
+}

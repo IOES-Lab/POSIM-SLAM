@@ -1,0 +1,9 @@
+{
+  "retrieved_from_commit": "99bb12c89463e49e2aa958c6d2ce8510fa672120",
+  "scope": "Exact public module bytes matching the original dated experiment manifests; no private working-tree code",
+  "files": {
+    "sonar_surface_power.py": "78bfd8443431788dcf64b4fcc5fa2f9643b3b290bd15b17775ce19587b6e972f",
+    "sonar_source_surface.py": "99b3a3cfbf2bd40a93b54b7c8c0216dfe4110236752167ff77313aac2557fb4e",
+    "terrain_surface.py": "20076460d037746c957dd10996aa0d58c9e98f40daf8f27a65ba4a19a0ff510b"
+  }
+}

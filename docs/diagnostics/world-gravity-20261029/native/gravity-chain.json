@@ -1,0 +1,25 @@
+{
+  "world_gravity_vector_m_s2": [
+    0.0,
+    0.0,
+    -9.8
+  ],
+  "common_imu_gravity_m_s2": 9.8,
+  "inertial_dvl_gravity_m_s2": 9.8,
+  "native_argument_m_s2": 9.8,
+  "native_segment_gravity_m_s2": [
+    9.8,
+    9.8
+  ],
+  "pressure_reference_gravity_m_s2": 9.80665,
+  "passed": true,
+  "scope": "Actual generated model calibration and native worker configuration; pressure reference constant is independent",
+  "source_sha256": {
+    ".local/world-gravity-20261029/native-downward/demo-runtime/a4052fd3fee54880be300be5f3543755/world.sdf": "d97e1f3dedd188679d7c783916eef7d46e05a18614c36a53be4a4ebb9f109c33",
+    ".local/world-gravity-20261029/native-downward/demo-runtime/a4052fd3fee54880be300be5f3543755/common-imu-calibration.json": "62f918ded1d427b982f7a4bdbd683726a826e882e1292974a42fa4c34a47af11",
+    ".local/world-gravity-20261029/native-downward/demo-runtime/a4052fd3fee54880be300be5f3543755/inertial-dvl-calibration.json": "746b25087991d29fa88e266b108c04b9ed1ccee1c2858c6112ea9fc07bc54253",
+    ".local/world-gravity-20261029/native-downward/case/worker-command.json": "17d8b80d7149c36c2c10efc48cb37e5c03698ace2008fed5739328819ff97cd7",
+    ".local/world-gravity-20261029/native-downward/slam/a4052fd3fee54880be300be5f3543755/vio/segment-1-calibration.json": "3b37eb3fe280ecef99fa29ae64c7bd16d13589d5341ce6ce9c114998857b7474",
+    ".local/world-gravity-20261029/native-downward/slam/a4052fd3fee54880be300be5f3543755/vio/segment-0-calibration.json": "3b37eb3fe280ecef99fa29ae64c7bd16d13589d5341ce6ce9c114998857b7474"
+  }
+}

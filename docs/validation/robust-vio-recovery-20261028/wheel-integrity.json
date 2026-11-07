@@ -1,0 +1,12 @@
+{
+  "passed": true,
+  "tests": 8,
+  "isolated_python": true,
+  "installed_path": "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/birth-live-ros-20261028/relocated library",
+  "source_sha256": {
+    "visual_inertial_seed.py": "1b1804736f156eba71c9f0c7693bbc43be0dbc5404b0f5f71a7575e9109de9f2",
+    "visual_seed_consensus.py": "0b0d4907480b7511b9ef5ff046d7d10bf236a8ab906cbf0a71c7c51bb6a037bf",
+    "map_quality.py": "1398d452aa7cbed812f77e6c760269559b66c9360abd278c95d78e96a093310b"
+  },
+  "application_or_ros_imports": []
+}

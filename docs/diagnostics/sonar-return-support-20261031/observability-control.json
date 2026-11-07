@@ -1,0 +1,645 @@
+{
+  "scope": "Ideal fixed physical point, exact fixed poses, independent diagnostic range/azimuth noise; not an acquisition or map",
+  "sigma_range_m": 0.025083611719310284,
+  "sigma_azimuth_rad": 0.008213314126139591,
+  "rows": [
+    {
+      "source_range_m": 2.5,
+      "motion": "stationary",
+      "half_amplitude": 0.0,
+      "amplitude_unit": "deg",
+      "total_poses": 16,
+      "supported_observations": 16,
+      "unsupported": [],
+      "singular_values": [
+        194.80565036564954,
+        159.4666687062714,
+        2.3968682547264647e-14
+      ],
+      "local_rank": 2,
+      "fixed_pose_measurement_position_3sigma_m": null,
+      "point_world": [
+        2.5884317821184473,
+        -1.232595164407831e-32,
+        -3.1572445186386284
+      ]
+    },
+    {
+      "source_range_m": 2.5,
+      "motion": "yaw",
+      "half_amplitude": 15.0,
+      "amplitude_unit": "deg",
+      "total_poses": 16,
+      "supported_observations": 16,
+      "unsupported": [],
+      "singular_values": [
+        194.2631394903674,
+        159.4757557672177,
+        10.617768325574445
+      ],
+      "local_rank": 3,
+      "fixed_pose_measurement_position_3sigma_m": 0.2825452494357088,
+      "point_world": [
+        2.5884317821184473,
+        -1.232595164407831e-32,
+        -3.1572445186386284
+      ]
+    },
+    {
+      "source_range_m": 2.5,
+      "motion": "yaw",
+      "half_amplitude": 45.0,
+      "amplitude_unit": "deg",
+      "total_poses": 16,
+      "supported_observations": 16,
+      "unsupported": [],
+      "singular_values": [
+        190.68915397759034,
+        159.53243735662917,
+        29.11261926023166
+      ],
+      "local_rank": 3,
+      "fixed_pose_measurement_position_3sigma_m": 0.1030480965379179,
+      "point_world": [
+        2.5884317821184473,
+        -1.232595164407831e-32,
+        -3.1572445186386284
+      ]
+    },
+    {
+      "source_range_m": 2.5,
+      "motion": "yaw",
+      "half_amplitude": 55.0,
+      "amplitude_unit": "deg",
+      "total_poses": 16,
+      "supported_observations": 16,
+      "unsupported": [],
+      "singular_values": [
+        189.18002290848065,
+        159.55514315155006,
+        34.01630419157089
+      ],
+      "local_rank": 3,
+      "fixed_pose_measurement_position_3sigma_m": 0.08819300248212704,
+      "point_world": [
+        2.5884317821184473,
+        -1.232595164407831e-32,
+        -3.1572445186386284
+      ]
+    },
+    {
+      "source_range_m": 2.5,
+      "motion": "roll",
+      "half_amplitude": 5.0,
+      "amplitude_unit": "deg",
+      "total_poses": 16,
+      "supported_observations": 16,
+      "unsupported": [],
+      "singular_values": [
+        194.5542861291291,
+        159.4668495330233,
+        9.80613849707347
+      ],
+      "local_rank": 3,
+      "fixed_pose_measurement_position_3sigma_m": 0.30593082087259077,
+      "point_world": [
+        2.5884317821184473,
+        -1.232595164407831e-32,
+        -3.1572445186386284
+      ]
+    },
+    {
+      "source_range_m": 2.5,
+      "motion": "roll",
+      "half_amplitude": 10.0,
+      "amplitude_unit": "deg",
+      "total_poses": 16,
+      "supported_observations": 16,
+      "unsupported": [],
+      "singular_values": [
+        193.80436225853103,
+        159.46739364740588,
+        19.55745329483432
+      ],
+      "local_rank": 3,
+      "fixed_pose_measurement_position_3sigma_m": 0.15339420500072906,
+      "point_world": [
+        2.5884317821184473,
+        -1.232595164407831e-32,
+        -3.1572445186386284
+      ]
+    },
+    {
+      "source_range_m": 2.5,
+      "motion": "roll",
+      "half_amplitude": 15.0,
+      "amplitude_unit": "deg",
+      "total_poses": 16,
+      "supported_observations": 16,
+      "unsupported": [],
+      "singular_values": [
+        192.56819007500712,
+        159.46830621508477,
+        29.20082609348031
+      ],
+      "local_rank": 3,
+      "fixed_pose_measurement_position_3sigma_m": 0.10273681951312372,
+      "point_world": [
+        2.5884317821184473,
+        -1.232595164407831e-32,
+        -3.1572445186386284
+      ]
+    },
+    {
+      "source_range_m": 2.5,
+      "motion": "roll",
+      "half_amplitude": 20.0,
+      "amplitude_unit": "deg",
+      "total_poses": 16,
+      "supported_observations": 16,
+      "unsupported": [],
+      "singular_values": [
+        190.86566034239382,
+        159.46959673842568,
+        38.68641422155828
+      ],
+      "local_rank": 3,
+      "fixed_pose_measurement_position_3sigma_m": 0.07754660286732463,
+      "point_world": [
+        2.5884317821184473,
+        -1.232595164407831e-32,
+        -3.1572445186386284
+      ]
+    },
+    {
+      "source_range_m": 2.5,
+      "motion": "vertical",
+      "half_amplitude": 0.25,
+      "amplitude_unit": "m",
+      "total_poses": 16,
+      "supported_observations": 16,
+      "unsupported": [],
+      "singular_values": [
+        194.9355745226707,
+        159.2017201443476,
+        9.188619665463204
+      ],
+      "local_rank": 3,
+      "fixed_pose_measurement_position_3sigma_m": 0.32649082334705254,
+      "point_world": [
+        2.5884317821184473,
+        -1.232595164407831e-32,
+        -3.1572445186386284
+      ]
+    },
+    {
+      "source_range_m": 2.5,
+      "motion": "vertical",
+      "half_amplitude": 0.5,
+      "amplitude_unit": "m",
+      "total_poses": 16,
+      "supported_observations": 15,
+      "unsupported": [
+        {
+          "stamp_ns": 500000000,
+          "reason": "sonar_point_outside_fov"
+        }
+      ],
+      "singular_values": [
+        188.1984110864337,
+        153.52463308912934,
+        16.445495169094226
+      ],
+      "local_rank": 3,
+      "fixed_pose_measurement_position_3sigma_m": 0.1824207765806806,
+      "point_world": [
+        2.5884317821184473,
+        -1.232595164407831e-32,
+        -3.1572445186386284
+      ]
+    },
+    {
+      "source_range_m": 5.0,
+      "motion": "stationary",
+      "half_amplitude": 0.0,
+      "amplitude_unit": "deg",
+      "total_poses": 16,
+      "supported_observations": 16,
+      "unsupported": [],
+      "singular_values": [
+        159.46666870627138,
+        97.40282518282477,
+        1.750598572913956e-14
+      ],
+      "local_rank": 2,
+      "fixed_pose_measurement_position_3sigma_m": null,
+      "point_world": [
+        4.936863564236894,
+        -2.465190328815662e-32,
+        -4.014489037277257
+      ]
+    },
+    {
+      "source_range_m": 5.0,
+      "motion": "yaw",
+      "half_amplitude": 15.0,
+      "amplitude_unit": "deg",
+      "total_poses": 16,
+      "supported_observations": 16,
+      "unsupported": [],
+      "singular_values": [
+        159.46372911936265,
+        97.20429482065389,
+        5.321896649114087
+      ],
+      "local_rank": 3,
+      "fixed_pose_measurement_position_3sigma_m": 0.5637088049237854,
+      "point_world": [
+        4.936863564236894,
+        -2.465190328815662e-32,
+        -4.014489037277257
+      ]
+    },
+    {
+      "source_range_m": 5.0,
+      "motion": "yaw",
+      "half_amplitude": 45.0,
+      "amplitude_unit": "deg",
+      "total_poses": 16,
+      "supported_observations": 16,
+      "unsupported": [],
+      "singular_values": [
+        159.44319528720476,
+        95.90919068562616,
+        14.844128159799027
+      ],
+      "local_rank": 3,
+      "fixed_pose_measurement_position_3sigma_m": 0.20210011444960582,
+      "point_world": [
+        4.936863564236894,
+        -2.465190328815662e-32,
+        -4.014489037277257
+      ]
+    },
+    {
+      "source_range_m": 5.0,
+      "motion": "yaw",
+      "half_amplitude": 55.0,
+      "amplitude_unit": "deg",
+      "total_poses": 16,
+      "supported_observations": 16,
+      "unsupported": [],
+      "singular_values": [
+        159.43395081735315,
+        95.37843187071542,
+        17.484344797543894
+      ],
+      "local_rank": 3,
+      "fixed_pose_measurement_position_3sigma_m": 0.17158206582733507,
+      "point_world": [
+        4.936863564236894,
+        -2.465190328815662e-32,
+        -4.014489037277257
+      ]
+    },
+    {
+      "source_range_m": 5.0,
+      "motion": "roll",
+      "half_amplitude": 5.0,
+      "amplitude_unit": "deg",
+      "total_poses": 16,
+      "supported_observations": 16,
+      "unsupported": [],
+      "singular_values": [
+        159.46661118238745,
+        97.27842834792469,
+        4.903279413825021
+      ],
+      "local_rank": 3,
+      "fixed_pose_measurement_position_3sigma_m": 0.6118354160159347,
+      "point_world": [
+        4.936863564236894,
+        -2.465190328815662e-32,
+        -4.014489037277257
+      ]
+    },
+    {
+      "source_range_m": 5.0,
+      "motion": "roll",
+      "half_amplitude": 10.0,
+      "amplitude_unit": "deg",
+      "total_poses": 16,
+      "supported_observations": 16,
+      "unsupported": [],
+      "singular_values": [
+        159.4664386072741,
+        96.90718194232308,
+        9.780386996736159
+      ],
+      "local_rank": 3,
+      "fixed_pose_measurement_position_3sigma_m": 0.30673632863414696,
+      "point_world": [
+        4.936863564236894,
+        -2.465190328815662e-32,
+        -4.014489037277257
+      ]
+    },
+    {
+      "source_range_m": 5.0,
+      "motion": "roll",
+      "half_amplitude": 15.0,
+      "amplitude_unit": "deg",
+      "total_poses": 16,
+      "supported_observations": 16,
+      "unsupported": [],
+      "singular_values": [
+        159.4661510127071,
+        96.2948353037777,
+        14.605901097658615
+      ],
+      "local_rank": 3,
+      "fixed_pose_measurement_position_3sigma_m": 0.20539643394414825,
+      "point_world": [
+        4.936863564236894,
+        -2.465190328815662e-32,
+        -4.014489037277257
+      ]
+    },
+    {
+      "source_range_m": 5.0,
+      "motion": "roll",
+      "half_amplitude": 20.0,
+      "amplitude_unit": "deg",
+      "total_poses": 16,
+      "supported_observations": 16,
+      "unsupported": [],
+      "singular_values": [
+        159.46574858755721,
+        95.45070349364222,
+        19.355843376946762
+      ],
+      "local_rank": 3,
+      "fixed_pose_measurement_position_3sigma_m": 0.15499195470723154,
+      "point_world": [
+        4.936863564236894,
+        -2.465190328815662e-32,
+        -4.014489037277257
+      ]
+    },
+    {
+      "source_range_m": 5.0,
+      "motion": "vertical",
+      "half_amplitude": 0.25,
+      "amplitude_unit": "m",
+      "total_poses": 16,
+      "supported_observations": 16,
+      "unsupported": [],
+      "singular_values": [
+        159.40027219942826,
+        97.41905360943596,
+        4.601266241361508
+      ],
+      "local_rank": 3,
+      "fixed_pose_measurement_position_3sigma_m": 0.6519944386248565,
+      "point_world": [
+        4.936863564236894,
+        -2.465190328815662e-32,
+        -4.014489037277257
+      ]
+    },
+    {
+      "source_range_m": 5.0,
+      "motion": "vertical",
+      "half_amplitude": 0.5,
+      "amplitude_unit": "m",
+      "total_poses": 16,
+      "supported_observations": 16,
+      "unsupported": [],
+      "singular_values": [
+        159.20172014434763,
+        97.46778726133536,
+        9.1886196654632
+      ],
+      "local_rank": 3,
+      "fixed_pose_measurement_position_3sigma_m": 0.3264908233470527,
+      "point_world": [
+        4.936863564236894,
+        -2.465190328815662e-32,
+        -4.014489037277257
+      ]
+    },
+    {
+      "source_range_m": 10.0,
+      "motion": "stationary",
+      "half_amplitude": 0.0,
+      "amplitude_unit": "deg",
+      "total_poses": 16,
+      "supported_observations": 16,
+      "unsupported": [],
+      "singular_values": [
+        159.46666870627138,
+        48.701412591412385,
+        2.3968682547264644e-14
+      ],
+      "local_rank": 2,
+      "fixed_pose_measurement_position_3sigma_m": null,
+      "point_world": [
+        9.633727128473788,
+        -4.930380657631324e-32,
+        -5.728978074554513
+      ]
+    },
+    {
+      "source_range_m": 10.0,
+      "motion": "yaw",
+      "half_amplitude": 15.0,
+      "amplitude_unit": "deg",
+      "total_poses": 16,
+      "supported_observations": 16,
+      "unsupported": [],
+      "singular_values": [
+        159.46560702912674,
+        48.618245698634446,
+        2.6638739864408483
+      ],
+      "local_rank": 3,
+      "fixed_pose_measurement_position_3sigma_m": 1.1261793970998768,
+      "point_world": [
+        9.633727128473788,
+        -4.930380657631324e-32,
+        -5.728978074554513
+      ]
+    },
+    {
+      "source_range_m": 10.0,
+      "motion": "yaw",
+      "half_amplitude": 45.0,
+      "amplitude_unit": "deg",
+      "total_poses": 16,
+      "supported_observations": 16,
+      "unsupported": [],
+      "singular_values": [
+        159.4582319617216,
+        48.08230988645488,
+        7.4891124316039175
+      ],
+      "local_rank": 3,
+      "fixed_pose_measurement_position_3sigma_m": 0.4005815144849548,
+      "point_world": [
+        9.633727128473788,
+        -4.930380657631324e-32,
+        -5.728978074554513
+      ]
+    },
+    {
+      "source_range_m": 10.0,
+      "motion": "yaw",
+      "half_amplitude": 55.0,
+      "amplitude_unit": "deg",
+      "total_poses": 16,
+      "supported_observations": 16,
+      "unsupported": [],
+      "singular_values": [
+        159.45491172485976,
+        47.869380746851306,
+        8.855024762420001
+      ],
+      "local_rank": 3,
+      "fixed_pose_measurement_position_3sigma_m": 0.3387906957337662,
+      "point_world": [
+        9.633727128473788,
+        -4.930380657631324e-32,
+        -5.728978074554513
+      ]
+    },
+    {
+      "source_range_m": 10.0,
+      "motion": "roll",
+      "half_amplitude": 5.0,
+      "amplitude_unit": "deg",
+      "total_poses": 16,
+      "supported_observations": 16,
+      "unsupported": [],
+      "singular_values": [
+        159.4666479265802,
+        48.63949368805303,
+        2.451686074850065
+      ],
+      "local_rank": 3,
+      "fixed_pose_measurement_position_3sigma_m": 1.223647689145303,
+      "point_world": [
+        9.633727128473788,
+        -4.930380657631324e-32,
+        -5.728978074554513
+      ]
+    },
+    {
+      "source_range_m": 10.0,
+      "motion": "roll",
+      "half_amplitude": 10.0,
+      "amplitude_unit": "deg",
+      "total_poses": 16,
+      "supported_observations": 16,
+      "unsupported": [],
+      "singular_values": [
+        159.4665858229503,
+        48.45467662472945,
+        4.890559594130244
+      ],
+      "local_rank": 3,
+      "fixed_pose_measurement_position_3sigma_m": 0.613426734151377,
+      "point_world": [
+        9.633727128473788,
+        -4.930380657631324e-32,
+        -5.728978074554513
+      ]
+    },
+    {
+      "source_range_m": 10.0,
+      "motion": "roll",
+      "half_amplitude": 15.0,
+      "amplitude_unit": "deg",
+      "total_poses": 16,
+      "supported_observations": 16,
+      "unsupported": [],
+      "singular_values": [
+        159.46648310175132,
+        48.14974221774225,
+        7.304159371726754
+      ],
+      "local_rank": 3,
+      "fixed_pose_measurement_position_3sigma_m": 0.4107248825391907,
+      "point_world": [
+        9.633727128473788,
+        -4.930380657631324e-32,
+        -5.728978074554513
+      ]
+    },
+    {
+      "source_range_m": 10.0,
+      "motion": "roll",
+      "half_amplitude": 20.0,
+      "amplitude_unit": "deg",
+      "total_poses": 16,
+      "supported_observations": 16,
+      "unsupported": [],
+      "singular_values": [
+        159.4663409398745,
+        47.72920234550775,
+        9.680700767817237
+      ],
+      "local_rank": 3,
+      "fixed_pose_measurement_position_3sigma_m": 0.30989492103436095,
+      "point_world": [
+        9.633727128473788,
+        -4.930380657631324e-32,
+        -5.728978074554513
+      ]
+    },
+    {
+      "source_range_m": 10.0,
+      "motion": "vertical",
+      "half_amplitude": 0.25,
+      "amplitude_unit": "m",
+      "total_poses": 16,
+      "supported_observations": 16,
+      "unsupported": [],
+      "singular_values": [
+        159.4500596281838,
+        48.70344076722003,
+        2.301502301615997
+      ],
+      "local_rank": 3,
+      "fixed_pose_measurement_position_3sigma_m": 1.3034964153168798,
+      "point_world": [
+        9.633727128473788,
+        -4.930380657631324e-32,
+        -5.728978074554513
+      ]
+    },
+    {
+      "source_range_m": 10.0,
+      "motion": "vertical",
+      "half_amplitude": 0.5,
+      "amplitude_unit": "m",
+      "total_poses": 16,
+      "supported_observations": 16,
+      "unsupported": [],
+      "singular_values": [
+        159.40027219942826,
+        48.70952680471798,
+        4.601266241361505
+      ],
+      "local_rank": 3,
+      "fixed_pose_measurement_position_3sigma_m": 0.651994438624857,
+      "point_world": [
+        9.633727128473788,
+        -4.930380657631324e-32,
+        -5.728978074554513
+      ]
+    }
+  ],
+  "installed_sdk_modified": false,
+  "actual_roll_control_executed": false,
+  "hardware_accuracy_claim": false
+}

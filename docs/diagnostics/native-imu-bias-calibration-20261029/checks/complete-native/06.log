@@ -1,0 +1,6 @@
+{"camera_packets": 0, "dvl_enabled": false, "states": 61, "acoustic_states": 54, "max_retained_states": 15, "max_position_error_m": 0.0012419220335915086, "scope": "analytic sensor/ownership fixture; no image or terrain acceptance"}
+......
+----------------------------------------------------------------------
+Ran 6 tests in 8.214s
+
+OK

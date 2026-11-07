@@ -44,7 +44,7 @@ angular extent and 60% consensus. Rays are sampled at least 2° apart, with a
 not a known horizontal floor. Surviving measured entries supply points;
 no mesh is filled and points are not projected onto the fitted plane.
 
-소나 좌표계 평면은 `n·x = -h`입니다. 개구 경계 광선 `u`와 시작 거리 `r`은
+소나 좌표계 평면은 `n·x = -h`입니다. 개구 경계 음선 `u`와 시작 거리 `r`은
 `u·(n/h) = -1/r`를 만족합니다. RANSAC으로 초기화한 뒤 미터 단위 거리 잔차를
 줄이고, **전체** 수직 팬의 해석적 첫 교점과 맞는지 확인합니다. 중력과 30° 경사
 한계로 하향 개구 경계를 구분할 수 있어야 합니다. 2° 이상 떨어진 빔에서 최소
@@ -62,7 +62,7 @@ does not add factors to the native optimizer. No new third-party dependency is
 introduced; the Python component remains Apache-2.0.
 
 선택형 오프라인 단일 Ping 검사는 원래 시각이 정확히 일치하는 관측, 보정된
-장착·바이어스와 평면의 최소 광선 거리를 사용합니다. 잔차 0.15 m와 지지점에서
+장착·바이어스와 평면의 최소 음선 거리를 사용합니다. 잔차 0.15 m와 지지점에서
 최대 5 m 외삽은 명시적 모델 한계이며 측정 공분산이나 관측된 공통 면적이
 아닙니다. 누락·잘린 Ping, 성립하지 않는 기하와 불일치는 평면을 제외합니다.
 굴곡진 해저나 중간 물체는 공통 평면 가정을 깨뜨릴 수 있습니다. 네이티브
@@ -196,7 +196,7 @@ The sensor diagnostic below compares actual ray geometry with acoustic onsets.
 Sampled ray endpoints have surface-distance p90 2.00 cm; weak acoustic onsets
 can precede the local geometric return by metres. Geometry is diagnostic only.
 
-아래 센서 진단에서 표본 광선 끝점의 실제 표면 거리 p90은 2.00 cm이지만,
+아래 센서 진단에서 표본 음선 끝점의 실제 표면 거리 p90은 2.00 cm이지만,
 약한 음향 시작 신호는 해당 방위의 기하학적 반사보다 수 m 앞설 수 있습니다.
 이 기하 정보는 진단에만 사용합니다.
 

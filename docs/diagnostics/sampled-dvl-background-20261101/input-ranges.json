@@ -1,0 +1,2506 @@
+{
+  "schema": "posim-slam-original-sampled-dvl-input-1",
+  "snapshot_sha256": "9109f6e7e9281ecd1495de46b3c22164f503680e3dd3fc64e51b25268b82c9c0",
+  "calibration": {
+    "bottom_ranges": {
+      "reference_to_sensor": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "range_variance_m2": null,
+      "beams": [
+        {
+          "id": 1,
+          "axis": [
+            -0.35355339059327373,
+            0.3535533905932737,
+            -0.8660254037844387
+          ],
+          "aperture_rad": 0.03490658503988659
+        },
+        {
+          "id": 2,
+          "axis": [
+            0.3535533905932737,
+            0.35355339059327373,
+            -0.8660254037844387
+          ],
+          "aperture_rad": 0.03490658503988659
+        },
+        {
+          "id": 3,
+          "axis": [
+            -0.35355339059327373,
+            -0.3535533905932737,
+            -0.8660254037844387
+          ],
+          "aperture_rad": 0.03490658503988659
+        },
+        {
+          "id": 4,
+          "axis": [
+            0.3535533905932737,
+            -0.35355339059327373,
+            -0.8660254037844387
+          ],
+          "aperture_rad": 0.03490658503988659
+        }
+      ],
+      "resolution_m": 0.01,
+      "range_min_m": 0.1,
+      "range_max_m": 20.0
+    },
+    "estimator": {
+      "dvl_to_imu": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          -1.0,
+          1.2246467991473532e-16
+        ],
+        [
+          0.0,
+          -1.2246467991473532e-16,
+          -1.0
+        ]
+      ],
+      "imu_to_dvl": [
+        0.0,
+        -2.4492935982947052e-18,
+        0.01999999999999999
+      ]
+    }
+  },
+  "packets": [
+    {
+      "stamp_ns": 3010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 2.698573112487793,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 2.6892580986022945,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 2.746767520904541,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 2.753278255462646,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 4010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 3.1167531013488765,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 3.0923643112182617,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 3.183106422424316,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 3.181110620498657,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 5010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 3.566266059875488,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 3.497074604034424,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 3.6153001785278316,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 3.5711905956268306,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 6010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 3.931357383728027,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 3.934036493301391,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 4.012426853179932,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 4.045738220214844,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 7010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 3.9830298423767085,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 3.92133355140686,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 4.048059463500977,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 4.012628555297852,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 8010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 3.935274839401245,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 3.8668785095214844,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 3.976516962051391,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 3.934650421142578,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 9010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 3.9410235881805415,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 3.904727697372436,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 4.0406928062438965,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 4.031879901885986,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 10010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 3.9562687873840328,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 3.839485883712768,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 4.05683708190918,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 3.96170973777771,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 11010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 3.9045104980468746,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 3.811862468719482,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 3.967280626296997,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 3.8993344306945796,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 12010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 3.8999483585357666,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 3.8379676342010494,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 3.96989369392395,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 3.9235389232635494,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 13010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 3.89580750465393,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 3.825485467910766,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 3.982673168182373,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 3.9370834827423096,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 14010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 3.867946863174438,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 3.788496494293213,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 3.899259805679321,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 3.853679895401001,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 15010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 3.7124090194702144,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 3.6983821392059326,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 3.7940955162048335,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 3.818564891815185,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 16010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 3.5329988002777095,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 3.5243575572967525,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 3.5512197017669678,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 3.5752396583557124,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 17010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 3.4248156547546387,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 3.4097521305084224,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 3.4843909740448,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 3.501285314559936,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 18010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 3.228734493255615,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 3.2169208526611324,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 3.2450611591339107,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 3.2648890018463135,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 19010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 3.117623805999756,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 3.130242109298706,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 3.1430408954620357,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 3.183230400085449,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 20010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 2.9098293781280513,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 2.909820079803467,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 2.8943085670471187,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 2.9122283458709712,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 21010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 2.8071846961975098,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 2.7935280799865723,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 2.805149793624878,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 2.808385610580444,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 22010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 2.570709228515625,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 2.614328145980835,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 2.5620803833007812,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 2.6154534816741943,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 23010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 2.544471025466919,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 2.4949729442596436,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 2.5270111560821533,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 2.486872911453247,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 24010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 2.419761896133423,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 2.455136775970459,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 2.386199474334717,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 2.429929733276367,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 25010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 2.447183847427368,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 2.4227795600891113,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 2.4410674571990967,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 2.4259097576141357,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 26010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 2.460817337036133,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 2.4184772968292236,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 2.445842981338501,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 2.4124913215637203,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 27010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 2.4185211658477783,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 2.454927444458008,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 2.4084875583648677,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 2.453141689300537,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 28010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 2.488192319869995,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 2.403272867202759,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 2.4729621410369873,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 2.397585868835449,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 29010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 2.4789009094238277,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 2.408493995666504,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 2.478511333465576,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 2.4139020442962646,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 30010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 2.460602283477783,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 2.444505453109741,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 2.4523539543151855,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 2.4362363815307617,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 31010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 2.4351019859313965,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 2.4120213985443115,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 2.4602956771850586,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 2.430585622787475,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 32010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 2.4020326137542725,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 2.44745135307312,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 2.4297685623168945,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 2.4688992500305176,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 33010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 2.4362246990203857,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 2.3936092853546143,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 2.4817440509796143,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 2.4298882484436035,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 34010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 2.403153896331787,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 2.4339280128479004,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 2.4427311420440674,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 2.4670910835266113,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 35010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 2.4200963973999023,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 2.4049389362335205,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 2.452299356460571,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 2.429580211639404,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 36010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 2.4271574020385738,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 2.4083807468414307,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 2.466649293899536,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 2.4401116371154785,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 37010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 2.3892126083374023,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 2.4218475818634033,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 2.442167043685913,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 2.4684157371520996,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 38010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 2.4648334980010986,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 2.3772923946380615,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 2.491276502609253,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 2.3918261528015137,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 39010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 2.389850378036499,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 2.427461147308349,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 2.4399023056030273,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 2.4663476943969727,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 40010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 2.4226877689361572,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 2.4008865356445312,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 2.442976474761963,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 2.410975694656372,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 41010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 2.4115185737609863,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 2.3857064247131348,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 2.458339214324951,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 2.42592191696167,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 42010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 2.349177598953247,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 2.4125802516937256,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 2.4041693210601807,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 2.4675300121307373,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 43010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 2.3621726036071777,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 2.3957855701446533,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 2.3939473628997803,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 2.426923990249634,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 44010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 2.371290922164917,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 2.4018213748931885,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 2.411196708679199,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 2.441627025604248,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 45010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 2.3597979545593257,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 2.392578601837158,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 2.4173765182495117,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 2.4518556594848633,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 46010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 2.3809890747070312,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 2.3884546756744385,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 2.4149045944213867,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 2.4238791465759277,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 47010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 2.354235887527466,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 2.4128479957580566,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 2.3983263969421387,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 2.4593613147735596,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 48010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 2.392801523208618,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 2.347580671310425,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 2.4642224311828613,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 2.3990881443023677,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 49010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 2.3592047691345215,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 2.392194986343384,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 2.426156520843506,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 2.446615695953369,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 50010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 2.3937580585479736,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 2.405752420425415,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 2.4296915531158447,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 2.4285759925842285,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 51010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 2.4362292289733887,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 2.3887932300567627,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 2.4708335399627686,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 2.413341522216797,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 52010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 2.3989808559417725,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 2.4675445556640625,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 2.423232078552246,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 2.484652519226074,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 53010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 2.4571754932403564,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 2.404329299926758,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 2.47621750831604,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 2.415264368057251,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 54010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 2.43300199508667,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 2.4127910137176514,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 2.45916485786438,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 2.4315035343170166,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 55010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 2.4246270656585693,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 2.4244585037231445,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 2.4477360248565674,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 2.4400289058685303,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 56010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 2.4221410751342773,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 2.4118196964263916,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 2.4540934562683105,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 2.435837984085083,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 57010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 2.434504270553589,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 2.408888816833496,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 2.4420928955078125,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 2.4210739135742188,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 58010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 2.445383310317993,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 2.3914647102355957,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 2.4709227085113525,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 2.4204914569854736,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 59010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 2.439316511154175,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 2.4526116847991943,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 2.4115989208221436,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 2.4290931224823,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 60010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 2.457799911499023,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 2.4226131439208984,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 2.4480259418487544,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 2.420001983642578,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 61010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 2.478158950805664,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 2.4585585594177246,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 2.4405159950256348,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 2.4304842948913574,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 62010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 2.455629587173462,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 2.450602054595947,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 2.434168100357055,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 2.4386255741119385,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 63010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 2.461916446685791,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 2.44262957572937,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 2.45410418510437,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 2.444340705871582,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 64010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 2.476072072982788,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 2.458704710006714,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 2.4477782249450684,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 2.4396984577178955,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 65010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 2.445629119873047,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 2.4541280269622803,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 2.44559907913208,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 2.4628870487213135,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 66010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 2.492953300476074,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 2.403231859207153,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 2.493419647216797,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 2.410559892654419,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 67010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 2.4343135356903076,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 2.4432733058929443,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 2.419467687606811,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 2.4289228916168213,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 68010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 2.4499504566192627,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 2.4025135040283203,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 2.469271659851074,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 2.417487382888794,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 69010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 2.4418599605560303,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 2.433894634246826,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 2.4597229957580566,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 2.444676160812378,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 70010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 2.393965244293213,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 2.435452461242676,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 2.444018840789795,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 2.4791789054870605,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 71010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 2.477710247039795,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 2.377847671508789,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 2.5044355392456055,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 2.3948681354522705,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 72010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 2.386085748672485,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 2.4320995807647705,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 2.417884349822998,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 2.457233190536499,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 73010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 2.4585118293762207,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 2.3930070400238037,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 2.484621286392212,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 2.4098639488220215,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 74010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 2.3904190063476562,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 2.448472261428833,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 2.429694175720215,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 2.481891632080078,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 75010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 2.431262731552124,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 2.4036993980407715,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 2.465380907058716,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 2.4291369915008545,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 76010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 2.4482486248016353,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 2.413545846939087,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 2.451680898666382,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 2.424753427505493,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 77010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 2.45596981048584,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 2.4330995082855225,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 2.414210319519043,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 2.39408802986145,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 78010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 2.420015811920166,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 2.466923713684082,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 2.387376308441162,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 2.416168212890625,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 79010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 2.37761116027832,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 2.516289710998535,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 2.3621535301208496,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 2.4827687740325928,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 80010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 2.4523727893829346,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 2.4308156967163086,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 2.419637441635132,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 2.3821792602539062,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 81010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 2.4048900604248047,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 2.5090949535369873,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 2.3499186038970947,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 2.4368796348571777,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 82010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 2.4354395866394043,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 2.417656898498535,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 2.4020333290100098,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 2.3765227794647212,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 83010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 2.387591600418091,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 2.5315301418304443,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 2.3277084827423096,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 2.468316078186035,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 84010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 2.486371278762817,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 2.3959808349609375,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 2.4166274070739746,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 2.337064504623413,
+          "variance_m2": null
+        }
+      ]
+    },
+    {
+      "stamp_ns": 85010000000,
+      "beams": [
+        {
+          "id": 1,
+          "locked": true,
+          "range_m": 2.3529536724090576,
+          "variance_m2": null
+        },
+        {
+          "id": 2,
+          "locked": true,
+          "range_m": 2.516791582107544,
+          "variance_m2": null
+        },
+        {
+          "id": 3,
+          "locked": true,
+          "range_m": 2.3111934661865234,
+          "variance_m2": null
+        },
+        {
+          "id": 4,
+          "locked": true,
+          "range_m": 2.4795570373535156,
+          "variance_m2": null
+        }
+      ]
+    }
+  ],
+  "training_packet_indices": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+  ],
+  "independent_stddev_m": 0.02,
+  "packet_shared_stddev_m": 0.01,
+  "uncertainty_scope": "Uncalibrated frozen model assumption; range variance is unreported, resolution is angular scan spacing at unit distance",
+  "velocity_range_dependence": "Conditional noise independence assumed, not demonstrated; shared native pose dependence retained",
+  "truth_geometry_rgb_sonar_input": false,
+  "original_dvl_packets": 90,
+  "original_timeline_sha256": "c8525fe458d563bc0bf14a847d9d8dfa0d3bf489321652292cdc034ff4f4039d"
+}

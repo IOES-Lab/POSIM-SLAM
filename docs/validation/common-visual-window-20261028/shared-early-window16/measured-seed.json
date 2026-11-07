@@ -1,0 +1,22 @@
+{
+  "bootstrap_first_ns": 69300000000,
+  "bootstrap_last_ns": 72300000000,
+  "frames": 16,
+  "selected_tracks": 143,
+  "inlier_tracks": 100,
+  "seed_method": "bearing_imu_ransac_fixed_gravity",
+  "handoff_image_stamp_ns": 72500000000,
+  "truth_input": false,
+  "first_image_stamp_ns": 69300000000,
+  "direction_imu": [
+    0.0888264054642093,
+    0.00233466780789537,
+    -0.9960443860684797
+  ],
+  "velocity_seed_imu_m_s": [
+    0.8282209281425649,
+    0.013673724700274427,
+    0.06408878347528735
+  ],
+  "resume_stamp_ns": 69220000000
+}

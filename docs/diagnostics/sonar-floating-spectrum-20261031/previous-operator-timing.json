@@ -1,0 +1,57 @@
+{
+  "protocol": {
+    "scope": "Frozen renderer-derived geometry; source numerical comparison only",
+    "source_revision": "7afd71e7b7a1a13eca8c4b8deb9c6e8461285cd5",
+    "native_accumulation": "fixed-point",
+    "binary_file": "libmultibeam_sonar.dylib",
+    "binary_sha256": "5d1c6e45ab4110ae8f0dbbe082fb72f7e0fd0e2a4b46111e95ab1586a718913b",
+    "seed": 73,
+    "frames": [],
+    "shape": [
+      256,
+      256,
+      599
+    ],
+    "range_max_m": 15.0,
+    "source_level_db": 220.0,
+    "attenuation": 0.004075575619935989,
+    "reflectivity": 0.001,
+    "area_scaler": 2.2486176021629944e-05,
+    "full_resolution": true,
+    "selected_tail_m": [
+      10.0,
+      15.0
+    ],
+    "normal": "Captured RGB8/255, supplied identically to all controls",
+    "changes": "Only per-scatterer spectral rounding differs between CPU references",
+    "installed_sdk_changed": false,
+    "renderer_or_live_estimator_restarted": false
+  },
+  "rows": [],
+  "benchmark": {
+    "scope": "Warm production operator/readback/copy/free only; renderer/ROS throughput is not qualified",
+    "warmups": 3,
+    "samples": 16,
+    "times_s": [
+      0.011559375037904829,
+      0.010144124971702695,
+      0.009980625007301569,
+      0.010769125015940517,
+      0.010472833993844688,
+      0.010357332997955382,
+      0.010779000003822148,
+      0.010324583039619029,
+      0.01123291696421802,
+      0.010620167013257742,
+      0.010573790990747511,
+      0.012071208970155567,
+      0.010589708050247282,
+      0.010289500001817942,
+      0.01004729198757559,
+      0.01136004104046151
+    ],
+    "median_s": 0.010581749520497397,
+    "p95_s": 0.011687333520967513,
+    "maximum_s": 0.012071208970155567
+  }
+}

@@ -25,6 +25,36 @@ depth-support comparison figures.
 라이선스, 원본 소스 리비전을 위 고지 파일에 보존합니다. 시각 지도의 깊이 지지
 비교 그림에도 같은 고지가 적용됩니다.
 
+## POSIM acoustic-model adaptation / POSIM 음향 모델 이식
+
+The `gazebo_sampling.py` runtime adapter and the retained `sampling.py` in the
+[renderer-sampling record](docs/diagnostics/sonar-renderer-sampling-20261101/README.md)
+follows Gazebo Rendering 10.0.2 `Ogre2GpuRays.cc`, upstream blob
+`7365a9a621a320c57107240a6d009be0085a26bb`, Copyright 2018 Open Source Robotics
+Foundation, under Apache-2.0. Its notice and source link are retained in the
+adapters and record. The DVL scan/cone interpretation also follows gz-sensors
+10.1.1 `DopplerVelocityLog.cc`, Copyright 2022 Open Source Robotics Foundation.
+The wheel retains their [source attribution and Apache-2.0 license](src/posim_slam/data/notices/gazebo-sampling.txt).
+It adds no Gazebo binary dependency to the wheel.
+
+실행 모듈 `gazebo_sampling.py`와 보존한 문서용 `sampling.py`는 위 Gazebo
+Rendering 고정 소스의 cubemap 샘플링을 참조합니다. DVL 격자·원뿔 해석은
+gz-sensors 10.1.1을 따릅니다. Open Source Robotics Foundation의 저작권과
+Apache-2.0 라이선스를 wheel에 보존하며 Gazebo 바이너리 의존성은 추가하지 않습니다.
+
+`sonar_source_normals.py` adapts
+[POSIM RaySurfaceNormals.hh](https://github.com/IOES-Lab/POSIM/blob/ffecee9be9976f68c9e883d6cf3bbd6d40eb7729/gazebo/posim_gz_multibeam_sonar/multibeam_sonar/RaySurfaceNormals.hh),
+revision `ffecee9be9976f68c9e883d6cf3bbd6d40eb7729`, under Apache-2.0.
+The NumPy adaptation preserves the spherical range geometry, one-sided
+tangents, 1.5° support and local plane-fit rule. The source SPDX notice and
+[Apache-2.0 license](LICENSE) are retained. This utility adds no native POSIM or
+OpenCV binary to the Python wheel.
+
+`sonar_source_normals.py`는 위 POSIM 고정 리비전의 Apache-2.0 함수를 NumPy로
+이식합니다. 구면 거리 격자, 한쪽 접선 선택, 1.5° 이웃 범위와 국소 평면 적합
+규칙을 유지합니다. 원본 SPDX 고지와 Apache-2.0 라이선스를 보존합니다.
+이 유틸리티는 Python wheel에 네이티브 POSIM·OpenCV 바이너리를 추가하지 않습니다.
+
 ## Estimator dependencies / 추정기 의존성
 
 The offline [CPU depth reference](docs/validation/visual-dense-reference-20261027/README.md)
@@ -119,6 +149,17 @@ Kimera 기본 빌드의 Triangle 고지에는 상업 시스템 배포 시 저자
 
 ## Experimental Basalt research recipe / 실험적 Basalt 연구
 
+The native continuous-input store links the selected SDK's SQLite library
+(the current development SDK supplies **3.53.4**). SQLite's deliverable code is
+[public domain](https://sqlite.org/copyright.html). The Python wheel does not
+redistribute the SQLite binary. Native packaging retains its SDK version record.
+
+네이티브 연속 입력 저장소는 선택된 SDK의 SQLite를 연결합니다. 현재 개발 SDK는
+**3.53.4**를 제공합니다. 배포되는 SQLite 코드는 위 공식 안내의 퍼블릭 도메인입니다.
+Python wheel은 SQLite 바이너리를 재배포하지 않으며 네이티브 패키지는 SDK 버전
+기록을 보존합니다.
+
+
 The original hydrostatic-height factor and unknown-datum marginalization in
 `native/basalt/pressure_factors.hpp` are POSIM-SLAM Apache-2.0 code. They add no
 third-party dependency; the Basalt and SDK notices below still apply.
@@ -139,10 +180,27 @@ notices do not substitute for the experimental SDK's Eigen 5.0.1 notices.
 No GUI/AprilTag/camera-driver target is linked. This research recipe does not
 qualify another dependency closure for application redistribution.
 
+[`mapping_feature_matcher.hpp`](native/basalt/mapping_feature_matcher.hpp) adapts
+the pinned Basalt `NfrMapper::match_all` and `findInliersRansac` under BSD-3-Clause
+and retains the full original notice. It manages feature ownership and gives
+each image pair its own input-derived random seed. Descriptor matching and the
+OpenGV Stewenius solver, refinement, thresholds and 100-trial limit are retained.
+
+위 매칭 연결부는 고정 Basalt의 `NfrMapper::match_all`과 `findInliersRansac`에서
+파생되며 BSD-3-Clause 원본 고지를 파일에 보존합니다. 특징 소유권을 관리하고
+영상쌍별 입력으로 난수 시드를 정합니다. 기술자 대응과 OpenGV Stewenius 해법,
+비선형 보정, 임계값 및 최대 100회 반복은 유지합니다.
+
 The build-local IMU interval extension preserves the pinned Basalt header's
 BSD-3-Clause notice. Its source and preparation script are included under
 `native/basalt/imu_continuous.inc` and `prepare_joint_headers.py`; it introduces
 no additional dependency.
+
+The build-local optical-flow overlays preserve Basalt's BSD-3-Clause headers.
+`prepare_joint_headers.py` verifies their pinned hashes, adds reference-count
+diagnostics and retires unobserved birth-frame patches using the Apache-2.0
+`reference_patches.hpp`. The original dependency checkout remains unchanged.
+Both tracking algorithms originate in Basalt; this adds no dependency.
 
 선택형 연구 대상의 고정 버전과 고지는 위 파일에서 관리합니다. 외부 소스는 Python
 wheel에 포함하지 않으며 빌더가 정확한 원본 체크아웃을 검사하고 고지를 보존합니다.
@@ -152,3 +210,9 @@ Stella용 Eigen 3.4.0 고지를 이 연구 대상에 대신 적용하지 않습�
 
 빌드 사본의 IMU 구간 확장은 고정 Basalt 헤더의 BSD-3-Clause 고지를 보존합니다.
 확장 소스와 생성 스크립트를 위 경로로 제공하며 추가 의존성은 없습니다.
+
+빌드 사본의 광학 흐름 변경은 Basalt의 BSD-3-Clause 헤더를 보존합니다.
+`prepare_joint_headers.py`가 고정한 원본 해시를 검사하고 참조 수 진단값과
+관측이 끝난 최초 프레임 패치의 해제를 추가합니다. 해제 함수
+`reference_patches.hpp`는 Apache-2.0 코드입니다. 원본 의존성 체크아웃은
+바꾸지 않습니다. 두 추적 알고리즘은 Basalt에서 제공하며 새 의존성은 없습니다.

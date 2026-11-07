@@ -1,0 +1,50 @@
+[
+  {
+    "stamp_ns": 2500000000,
+    "position_three_sigma_major_m": 0.00030000000000000003,
+    "rotation_three_sigma_major_rad": 0.00030000000000000003,
+    "root_rank": 10,
+    "root_columns": 16,
+    "root_constraint_rank": 6
+  },
+  {
+    "stamp_ns": 12500000000,
+    "position_three_sigma_major_m": 0.06248477094600672,
+    "rotation_three_sigma_major_rad": 0.010866876288108387,
+    "root_rank": 226,
+    "root_columns": 226,
+    "root_constraint_rank": 0
+  },
+  {
+    "stamp_ns": 22500000000,
+    "position_three_sigma_major_m": 0.09667522145721416,
+    "rotation_three_sigma_major_rad": 0.020293233318248862,
+    "root_rank": 226,
+    "root_columns": 226,
+    "root_constraint_rank": 0
+  },
+  {
+    "stamp_ns": 32500000000,
+    "position_three_sigma_major_m": 0.1320308857670746,
+    "rotation_three_sigma_major_rad": 0.03257501441334079,
+    "root_rank": 226,
+    "root_columns": 226,
+    "root_constraint_rank": 0
+  },
+  {
+    "stamp_ns": 42500000000,
+    "position_three_sigma_major_m": 0.1458952476438584,
+    "rotation_three_sigma_major_rad": 0.047391073836291056,
+    "root_rank": 226,
+    "root_columns": 226,
+    "root_constraint_rank": 0
+  },
+  {
+    "stamp_ns": 52500000000,
+    "position_three_sigma_major_m": 0.15091179826702955,
+    "rotation_three_sigma_major_rad": 0.06437677014156801,
+    "root_rank": 226,
+    "root_columns": 226,
+    "root_constraint_rank": 0
+  }
+]

@@ -1,0 +1,7 @@
+{
+  "collect.py": "4f0ae9e4757e65eb38185382797e62a9416cd62f2086ebf3dc101b9cfd692793",
+  "run-collect.py": "dfc4a77622b0c9a3a80a4cfc506e55339f8d076cd7986a754933849b055d4bcd",
+  "host.py": "a43b0cdc69cadd7656926e6920bac7ecb71259153592252707f9aa1e1223f470",
+  "audit-record.py": "2b0b0daa9af3e9fb86a18f448821c70c54feb86a72e0ca39afcf08cae64272c7",
+  "gz-shim.py": "2a2cb9c95adbf73cbd9eda3bb5f0795ce3a648b25ebdce5bfc11c8af07cc5369"
+}

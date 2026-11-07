@@ -5,6 +5,8 @@
 #include "sonar_factors.hpp"
 #include "dvl_factors.hpp"
 #include "pressure_factors.hpp"
+#include "retired_pose_conditional.hpp"
+#include "mapping_handoff.hpp"
 #include <memory>
 #include <basalt/imu/preintegration.h>
 
@@ -17,6 +19,8 @@ struct PreparedPingPrior {
   PressureDatumPrior pressure_prior;
   PingMarginalLayout layout;
   basalt::MargLinData<double> prior;
+  std::optional<RetiredPoseConditional> pose_conditional;
+  basalt::MargData::Ptr mapping_handoff;
 };
 
 // Read-only preparation on the estimator thread. Specs must have been rebuilt
@@ -27,8 +31,11 @@ inline PreparedPingPrior preparePingPrior(basalt::BundleAdjustmentBase<double>& 
     const basalt::MargLinData<double>& previous,const basalt::ImuLinData<double>& imu,
     const std::set<int64_t>& removed,const std::set<int64_t>& pose_only,
     const std::unordered_set<basalt::KeypointId>& lost,SonarFactorStore* sonar=nullptr,DvlFactorStore* dvl=nullptr,
-    PressureFactorStore* pressure=nullptr) {
+    PressureFactorStore* pressure=nullptr,bool capture_pose_conditional=false,
+    const MappingHandoffRequest* mapping=nullptr) {
   PreparedPingPrior result;
+  if(capture_pose_conditional && (!groups.empty() || !owner.lmdb.getLandmarks().empty() || (sonar && sonar->size())))
+    throw std::invalid_argument("pose_conditional_capture_requires_no_acoustic_or_visual_factors");
   result.retirement=planPingRetirement(owner,groups,removed,removed,lost);
   std::vector<std::pair<int64_t,int64_t>> intervals;
   for(const auto& [start,measurement]:imu.imu_meas) {
@@ -114,6 +121,21 @@ inline PreparedPingPrior preparePingPrior(basalt::BundleAdjustmentBase<double>& 
     const auto reduced=marginalizePressureSystem(j,r,result.layout.source,result.layout.retained,delta,pressure->datum());
     result.prior=reduced.states;result.pressure_prior=reduced.datum;
   } else result.prior=marginalizeJointSystem(j,r,result.layout.source,result.layout.retained,delta);
+  if(mapping)result.mapping_handoff=prepareMappingHandoff(owner,result.layout.source,j,r,*mapping);
+  if(capture_pose_conditional) {
+    Eigen::MatrixXd actual=result.prior.H;Eigen::VectorXd offset=result.prior.b;
+    if(pressure) {
+      actual.conservativeResize(actual.rows(),actual.cols()+1);actual.col(actual.cols()-1).setZero();
+      if(result.pressure_prior.active) {
+        const auto row=actual.rows();actual.conservativeResize(row+1,Eigen::NoChange);offset.conservativeResize(row+1);
+        actual.row(row).head(result.layout.retained.total_size)=result.pressure_prior.states;
+        actual(row,result.layout.retained.total_size)=result.pressure_prior.datum;
+        offset[row]=result.pressure_prior.b-result.pressure_prior.datum*result.pressure_prior.reference;
+      }
+    }
+    result.pose_conditional=captureRetiredPoseConditional(owner,result.layout.source,result.layout.retained,j,r,
+        pressure ? std::optional<double>(pressure->datum()) : std::nullopt,actual,offset);
+  }
   return result;
 }
 }

@@ -1,0 +1,10 @@
+{
+  "stamp_ns": 28000000000,
+  "frame": "vehicle/camera",
+  "storage": "source",
+  "source_encoding": "rgb8",
+  "source_step": 1920,
+  "source_sha256": "3244b897f312c2831f22056eb9b51fc546a0975867fa11fd6c073c4696367550",
+  "input_gray8_sha256": "00ee1265dc30d3f74f0a114c86fdb40cdc08eebb203da2b4442eafadd54b746b",
+  "file": "camera-0133.npz"
+}

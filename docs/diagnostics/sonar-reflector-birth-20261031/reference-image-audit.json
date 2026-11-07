@@ -1,0 +1,67 @@
+{
+  "assessment_only": true,
+  "inference_unchanged": true,
+  "reference_is_not_renderer_grid": true,
+  "map_accepted": false,
+  "native_update": false,
+  "results": [
+    {
+      "index": 27,
+      "arm": "full_scene_navigation_pose",
+      "gain": 1.1866547358683623,
+      "score": 166295.5009440275,
+      "pixels": 153344,
+      "residual_rms": 2.610116477853043,
+      "residual_max": 286.32752618634635
+    },
+    {
+      "index": 27,
+      "arm": "full_scene_true_pose",
+      "gain": 1.171939020998164,
+      "score": 164141.89149813127,
+      "pixels": 153344,
+      "residual_rms": 2.3518850453432276,
+      "residual_max": 261.3751644158578
+    },
+    {
+      "index": 81,
+      "arm": "full_scene_navigation_pose",
+      "gain": 1.4389914442478653,
+      "score": 231722.14790666167,
+      "pixels": 153344,
+      "residual_rms": 5.242631093838197,
+      "residual_max": 788.238263399798
+    },
+    {
+      "index": 81,
+      "arm": "full_scene_true_pose",
+      "gain": 1.2594403742027447,
+      "score": 209882.45171257254,
+      "pixels": 153344,
+      "residual_rms": 2.6614351211943363,
+      "residual_max": 553.7934717907408
+    },
+    {
+      "index": 88,
+      "arm": "full_scene_navigation_pose",
+      "gain": 1.9469291037011331,
+      "score": 267528.1533993933,
+      "pixels": 153344,
+      "residual_rms": 44.53691086596685,
+      "residual_max": 13336.424780806163
+    },
+    {
+      "index": 88,
+      "arm": "full_scene_true_pose",
+      "gain": 2.050149656932401,
+      "score": 272631.0198057038,
+      "pixels": 153344,
+      "residual_rms": 45.13118897769227,
+      "residual_max": 13687.767687581969
+    }
+  ],
+  "references": {
+    "sonar-height-diversity-fit-20261031/field-forward-audit.npz": "c173e0f840d4160c5be2869918eb02c2a7214d48f6db987beb33c5320c5b10f1"
+  },
+  "protocol_sha256": "86e9383aa34a0e818f28d8616fb5fcad5fa62ee32e83714f2060f3d5cb2f2ae9"
+}

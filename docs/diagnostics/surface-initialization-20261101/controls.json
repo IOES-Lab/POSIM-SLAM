@@ -1,0 +1,121 @@
+{
+  "schema": "posim-slam-surface-initialization-controls-1",
+  "baseline_commit": "893bec1e118b26a638f87eb7024122f587f80546",
+  "optimizer_source_sha256": "aa189cb935047dfd6b9796c1ad09084a8ad4e11b9d2e88a704972d11decbda9b",
+  "coarse_reference_control": {
+    "initial_distance_error_m": 0.2,
+    "noise_and_observations_unchanged": true,
+    "owner_updated": false,
+    "initial_strict_rejection": "dvl_support_not_planar",
+    "solved_reference_passes_unchanged_support": true,
+    "initialization": {
+      "new_planes": [
+        0
+      ],
+      "initial_cost": 66.66666666666679,
+      "final_cost": 1.2512944547820073e-22,
+      "iterations": 3,
+      "added_prior": false
+    }
+  },
+  "constant_owned_cost_before": [
+    {
+      "offset": 1e-05,
+      "status": "initialized",
+      "initialization": {
+        "new_planes": [
+          0
+        ],
+        "initial_cost": 50000000.000000164,
+        "final_cost": 50000000.0,
+        "iterations": 1,
+        "added_prior": false
+      }
+    },
+    {
+      "offset": 1e-06,
+      "status": "rejected",
+      "reason": "native_surface_nonlinear_seed_not_converged"
+    },
+    {
+      "offset": 1e-07,
+      "status": "rejected",
+      "reason": "native_surface_nonlinear_seed_not_converged"
+    }
+  ],
+  "constant_owned_cost_after": [
+    {
+      "offset": 1e-05,
+      "initialization": {
+        "new_planes": [
+          0
+        ],
+        "initial_cost": 50000000.000000164,
+        "final_cost": 50000000.0,
+        "iterations": 2,
+        "added_prior": false,
+        "termination": "undamped_step"
+      },
+      "new_plane_residual_m": [
+        3.703704010149522e-13,
+        3.703704010149522e-13
+      ],
+      "all_support_checked": true,
+      "original_rows": 3
+    },
+    {
+      "offset": 1e-06,
+      "initialization": {
+        "new_planes": [
+          0
+        ],
+        "initial_cost": 50000000.0,
+        "final_cost": 50000000.0,
+        "iterations": 1,
+        "added_prior": false,
+        "termination": "undamped_step"
+      },
+      "new_plane_residual_m": [
+        3.332223386109945e-10,
+        3.332223386109945e-10
+      ],
+      "all_support_checked": true,
+      "original_rows": 3
+    },
+    {
+      "offset": 1e-07,
+      "initialization": {
+        "new_planes": [
+          0
+        ],
+        "initial_cost": 50000000.0,
+        "final_cost": 50000000.0,
+        "iterations": 1,
+        "added_prior": false,
+        "termination": "undamped_step"
+      },
+      "new_plane_residual_m": [
+        3.332223386109945e-11,
+        3.332223386109945e-11
+      ],
+      "all_support_checked": true,
+      "original_rows": 3
+    }
+  ],
+  "local_original_field_trace": {
+    "cost": 4.582786104581732,
+    "gradient_inf": 1.3647978136077654e-05,
+    "undamped_step_norm": 8.343220568300038e-11,
+    "undamped_predicted_decrease": 5.611633081837355e-16,
+    "cost_spacing": 8.881784197001252e-16,
+    "branch_changes": 0,
+    "cost_convention": "sum of squared whitened residuals",
+    "undamped_predicted_decrease_convention": "half sum of squared whitened residuals",
+    "predicted_total_cost_decrease": 1.122326616367471e-15,
+    "predicted_total_cost_decrease_in_ulp": 1.263627432815133
+  },
+  "original_record_payload_unchanged": true,
+  "original_field_support_still_rejected": true,
+  "native_owner_updated": false,
+  "map_accepted": false
+}

@@ -1,0 +1,28 @@
+{
+  "source_stamp_ns": 36010000000,
+  "owner_revision": 202,
+  "prior_revision": 201,
+  "root_rank": 226,
+  "root_columns": 226,
+  "root_constraint_rank": 0,
+  "workspace_bound_bytes": 4976768,
+  "active_native_counts": {
+    "imu_intervals": 14,
+    "dvl_observations": 5,
+    "pressure_observations": 4
+  },
+  "stamps_ns": [
+    35500000000,
+    36010000000
+  ],
+  "snapshot_sha256": "be66ee8c89926716fa0807ccd7e2981b07650099e1d96b7d3e9af7fa4ba4165e",
+  "prefix_states": 108,
+  "all_prefix_means_match_original": true,
+  "covariance_minimum_eigenvalue": 2.3838379130171484e-07,
+  "covariance_maximum_eigenvalue": 0.004335784912787451,
+  "free_columns": 0,
+  "same_snapshot_means": true,
+  "sonar_factors_omitted": true,
+  "map_qualified": false,
+  "scope": "Read-only same-posterior query; no independent-pose or fitted-pose prior"
+}

@@ -1,0 +1,18 @@
+{
+  "application_commit": "6fef53197ad54a2622dd5408df6a5eaf72ee199a",
+  "library_commit": "d5d7a81abef983aa72baefb2cd3c2c4d63950ac0",
+  "engine_sdk_commit": "8c47601c7dd4729e3edeabef79665760268fdbc4",
+  "native_binary_sha256": "cb5cbc7c254b668ea0b0e3c7ac0f2fe8dac0d4f07810bab2e8d3237ca18d1d87",
+  "source_sha256": {
+    "runtime/practice_slam/vio_live.py": "bed4e0221284cfbafde5269a6a06159ca9aee2009f1b0e3bbe1efb9460d6df30",
+    "runtime/worlds/practice_vio.py": "dcc0ff5323bde0248b6c6a8987aaddee1691c93aa059b275d8a6ae58a4042fb3",
+    "runtime/worlds/inertial_source.py": "81989051bedc8c84756d7b3f65a1d2304cff20f6782014f823b7c24bfe6c714a",
+    "runtime/worlds/launch.py": "3cf52d6b5bd27b35937dc3c2be65679e420c1b7a98909d21b8be0dc0da812f9a",
+    "runtime/worlds/practice_surface.py": "32af6ecca5527f53ddd54fdf2265215d7a8e788524cac3e2f08bb79022a3bf72",
+    "runtime/water_pressure/WaterPressure.cc": "6a4f6410f7b23d0020fd42c08b542f78902ac8204eacc00ca2748451ca14eeee"
+  },
+  "record_helper_sha256": "b3cc26a6125f8e8205aba0494368a73a804954beef211de741eb38e5aebbbfee",
+  "world_gravity_m_s2": 9.8,
+  "measured_vio_gravity_m_s2": 9.80665,
+  "pressure_reference_gravity_m_s2": 9.80665
+}

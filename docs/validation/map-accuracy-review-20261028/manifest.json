@@ -1,0 +1,14 @@
+{
+  "metrics.json": {
+    "sha256": "3906359910d7711d713a22cfbf98d40870b87ea812abc9ed42ad15a75003a169",
+    "bytes": 1442
+  },
+  "summarize.py": {
+    "sha256": "44eab4092f6de8ca6f05a77434d356b050be8a88878d58044937340a31c5ca18",
+    "bytes": 2189
+  },
+  "README.md": {
+    "sha256": "9df6d9e0700a1eba035100b916526e1aa019cfed420d1346419d825eca9c00e3",
+    "bytes": 5795
+  }
+}

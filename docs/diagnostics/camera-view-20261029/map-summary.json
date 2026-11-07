@@ -1,0 +1,46 @@
+[
+  {
+    "run": "downward-shallow",
+    "phase": "initial",
+    "points": 1211,
+    "rmse_m": 0.014716069449915716,
+    "max_m": 0.2474260881264435,
+    "above_10cm": 2,
+    "trajectory_rmse_m": 0.06694494334904802,
+    "coordinates_filtered": false,
+    "scope": "Nearest authored surface distance; not feature identity or obstacle completeness"
+  },
+  {
+    "run": "downward-shallow",
+    "phase": "recovered",
+    "points": 1395,
+    "rmse_m": 0.009161593772265495,
+    "max_m": 0.11118312553859333,
+    "above_10cm": 1,
+    "trajectory_rmse_m": 0.050430268431848876,
+    "coordinates_filtered": false,
+    "scope": "Nearest authored surface distance; not feature identity or obstacle completeness"
+  },
+  {
+    "run": "forward-inspection",
+    "phase": "initial",
+    "points": 29,
+    "rmse_m": 0.44399484234583897,
+    "max_m": 2.3672046444272508,
+    "above_10cm": 3,
+    "trajectory_rmse_m": 0.07529181708904975,
+    "coordinates_filtered": false,
+    "scope": "Nearest authored surface distance; not feature identity or obstacle completeness"
+  },
+  {
+    "run": "forward-inspection",
+    "phase": "recovered",
+    "points": 40,
+    "rmse_m": 0.044411030777277836,
+    "max_m": 0.18308172815364984,
+    "above_10cm": 1,
+    "trajectory_rmse_m": 0.05511796560120734,
+    "coordinates_filtered": false,
+    "scope": "Nearest authored surface distance; not feature identity or obstacle completeness"
+  }
+]

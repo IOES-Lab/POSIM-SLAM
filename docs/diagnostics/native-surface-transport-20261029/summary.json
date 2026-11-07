@@ -1,0 +1,38 @@
+{
+  "scope": "Native stream lifecycle and synthetic late likelihoods; physical sonar map remains unqualified",
+  "native_test_counts": {
+    "01.log": 5,
+    "03.log": 1,
+    "02.log": 6,
+    "05.log": 3,
+    "04.log": 4
+  },
+  "native_test_total": 19,
+  "synthetic_owner_tests": 10,
+  "reference_api_tests": 16,
+  "python_tests_per_source_or_wheel": 494,
+  "python_optional_skips_per_run": 16,
+  "states_per_original_replay": 178,
+  "unchanged_previous_baseline": true,
+  "owner_vs_legacy_max_position_difference_m": 1.4436178375648796e-13,
+  "owner_vs_legacy_max_quaternion_component_difference": 1.4432899320127035e-14,
+  "controls": 248,
+  "snapshots": 35,
+  "max_conditional_nodes": 81,
+  "max_snapshot_bytes": 2654542,
+  "max_root_columns": 226,
+  "max_native_ack_round_trip_ms": 22.31529203709215,
+  "timing_scope": "Acknowledgment time excludes Python file decoding/recovery; replay is paced offline, not live throughput acceptance",
+  "original_replay_wall_s": {
+    "off": 5.7,
+    "on": 26.2
+  },
+  "archive_horizon_s": 30,
+  "raw_inputs": "Use ../sonar-low-altitude-15m-20261029/data-pointer.json; no raw data copied",
+  "original_shutdown": {
+    "off": -15,
+    "on": -15
+  },
+  "map_qualified": false,
+  "installed_provider_qualified": false
+}

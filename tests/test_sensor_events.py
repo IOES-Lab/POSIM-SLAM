@@ -5,6 +5,46 @@ from posim_slam.sensor_events import SensorEvents
 
 
 class SensorEventsTests(unittest.TestCase):
+    def test_optional_outage_keeps_camera_imu_clock_without_reusing_dvl(self):
+        q=SensorEvents(sonar=False,dvl=True,optional_streams=('dvl',))
+        q.push('imu',41);q.push('camera',10,'first');q.push('dvl',10,'velocity')
+        self.assertEqual(self.drain(q)[0]['dvl'],'velocity')
+        q.push('camera',20,'second');q.push('camera',30,'third')
+        self.assertIsNone(q.next_event())
+        q.suspend('dvl')
+        events=self.drain(q)
+        self.assertEqual([e['stamp_ns'] for e in events],[20,30])
+        self.assertTrue(all(e['dvl'] is None for e in events))
+        self.assertEqual(q.latest['dvl'],10)
+        self.assertTrue(q.push('dvl',40,'fresh velocity'))
+        q.push('camera',40,'fourth')
+        self.assertEqual(self.drain(q)[0]['dvl'],'fresh velocity')
+        self.assertFalse(q.suspended)
+
+    def test_resumed_late_packet_cannot_overtake_unacknowledged_native_state(self):
+        q=SensorEvents(sonar=False,dvl=True,optional_streams=('dvl',))
+        q.suspend('dvl');q.push('camera',20,'image');q.push('imu',31)
+        self.assertEqual(q.next_event()['stamp_ns'],20)
+        for t in (10,20):self.assertFalse(q.push('dvl',t,'late'))
+        self.assertEqual(q.late_optional_dropped,2)
+        self.assertIn('dvl',q.suspended)
+        self.assertIsNone(q.next_event())
+        q.acknowledge(20);self.assertTrue(q.push('dvl',30,'new'))
+        q.push('camera',30,'next')
+        self.assertEqual(self.drain(q)[0]['dvl'],'new')
+        with self.assertRaisesRegex(ValueError,'input_clock'):q.push('dvl',29,'clock reset')
+
+    def test_suspension_preserves_real_queued_packets_and_requires_future_imu(self):
+        q=SensorEvents(sonar=False,dvl=True,optional_streams=('dvl',))
+        q.push('camera',10,'image');q.push('dvl',10,'real');q.push('imu',10)
+        q.suspend('dvl');self.assertIsNone(q.next_event())
+        q.push('imu',11);self.assertEqual(self.drain(q)[0]['dvl'],'real')
+        for kind in ('camera','imu','pressure'):
+            q=SensorEvents(sonar=False,dvl=True,pressure=True,optional_streams=('dvl',))
+            with self.assertRaisesRegex(ValueError,'suspend_required'):q.suspend(kind)
+        with self.assertRaisesRegex(ValueError,'optional_streams'):
+            SensorEvents(sonar=False,optional_streams=('dvl',))
+
     def test_camera_dvl_clock_has_no_sonar_dependency_under_delayed_arrival(self):
         for order in set(itertools.permutations('ccddi')):
             q=SensorEvents(sonar=False,dvl=True)

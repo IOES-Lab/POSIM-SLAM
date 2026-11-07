@@ -1,0 +1,17 @@
+{
+  "error": null,
+  "callback_errors": [],
+  "sonar_frames": 193,
+  "camera_frames": 483,
+  "imu_samples": 9685,
+  "dvl_samples": 97,
+  "pressure_samples": 968,
+  "truth_assessment_samples": 2419,
+  "isometric_frames": 98,
+  "native_dvl_samples": 97,
+  "sonar_reference_frames": 194,
+  "mission_start_ns": 8530000000,
+  "passed": true,
+  "scope": "Raw physical sensor capture, no sonar SLAM acceptance",
+  "ping_present": false
+}

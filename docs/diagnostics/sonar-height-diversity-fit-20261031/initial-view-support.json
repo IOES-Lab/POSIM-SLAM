@@ -1,0 +1,23 @@
+{
+  "views": [
+    {
+      "index": 27,
+      "predicted_object_hit_rays": 471,
+      "predicted_object_power_fraction": 0.013594976834551405,
+      "queries": 48,
+      "raw_positive_selected": 48,
+      "shape_conditioned": true,
+      "physical_identity_verified": false
+    },
+    {
+      "index": 81,
+      "predicted_object_hit_rays": 5893,
+      "predicted_object_power_fraction": 0.6210241882395615,
+      "queries": 48,
+      "raw_positive_selected": 48,
+      "shape_conditioned": true,
+      "physical_identity_verified": false
+    }
+  ],
+  "truth_scene_rgb_used": false
+}

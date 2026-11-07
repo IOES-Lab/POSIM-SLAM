@@ -1,0 +1,69 @@
+{
+  "protected_files": {
+    "scripts/evaluate_sonar_terrain_surface.py": {
+      "expected": "b37b9887c11b7cbc005364c337860c0832fa360ba079a2af17a297f4cee259f4",
+      "current": "b37b9887c11b7cbc005364c337860c0832fa360ba079a2af17a297f4cee259f4"
+    },
+    "libraries/posim-slam/src/posim_slam/terrain_surface.py": {
+      "expected": "e8e9543ff3be94eae8cd8095816c58684e6205572de99a80e9d4e60f2c339b41",
+      "current": "e8e9543ff3be94eae8cd8095816c58684e6205572de99a80e9d4e60f2c339b41"
+    },
+    "libraries/posim-slam/tests/test_surface_step.py": {
+      "expected": "89d32a989623ebbe87993406d7bd59c27b2f2409511fd2e18834bf2169c2b712",
+      "current": "89d32a989623ebbe87993406d7bd59c27b2f2409511fd2e18834bf2169c2b712"
+    },
+    "docs/validation/sonar-underwater-20261023/renderer-source-hashes.json": {
+      "expected": "17a74c9b9db543ce3e3b1ef6976a677a607965a755e6c3edc3eaf6dd7baa3974",
+      "current": "17a74c9b9db543ce3e3b1ef6976a677a607965a755e6c3edc3eaf6dd7baa3974"
+    },
+    "docs/validation/sonar-underwater-20261023/128-paired-images.npz": {
+      "expected": "260f65276254be96996d6a089a7bc90129ac5b7f623ddaee085fa6768b6eea57",
+      "current": "260f65276254be96996d6a089a7bc90129ac5b7f623ddaee085fa6768b6eea57"
+    },
+    "docs/validation/sonar-underwater-20261023/256-paired-images.npz": {
+      "expected": "96acf574d2027975557f7f910b1393d8d1595ff3add20cb7d6eaa23ef5c7e2bd",
+      "current": "96acf574d2027975557f7f910b1393d8d1595ff3add20cb7d6eaa23ef5c7e2bd"
+    },
+    "docs/validation/sonar-underwater-20261023/256-appearance.json": {
+      "expected": "384e5156e487d3d7d1302da359132520797f973fb8cc3ad8af336df1953eeb3b",
+      "current": "384e5156e487d3d7d1302da359132520797f973fb8cc3ad8af336df1953eeb3b"
+    },
+    "docs/validation/sonar-underwater-20261023/en-390.png": {
+      "expected": "79b4396ce11d4357630b0f7cb6635e843d17024ecb619e73cc8d9e6c7edc7463",
+      "current": "79b4396ce11d4357630b0f7cb6635e843d17024ecb619e73cc8d9e6c7edc7463"
+    },
+    "docs/validation/sonar-underwater-20261023/ko-1440.png": {
+      "expected": "1c5ee0aa01305f81c77b150028b84ec68b4f337b5bb2614366a05aaa4d7a0502",
+      "current": "1c5ee0aa01305f81c77b150028b84ec68b4f337b5bb2614366a05aaa4d7a0502"
+    },
+    "docs/validation/sonar-underwater-20261023/128-receipt.json": {
+      "expected": "a958882378f2832e2a6f32b243929d3fc04e0e2741997aa9501d37c91d1c643a",
+      "current": "a958882378f2832e2a6f32b243929d3fc04e0e2741997aa9501d37c91d1c643a"
+    },
+    "docs/validation/sonar-underwater-20261023/README.md": {
+      "expected": "ceb70da82c9a7931bdce4931614056d963a0350ddf244f4271f33d95a4b38036",
+      "current": "ceb70da82c9a7931bdce4931614056d963a0350ddf244f4271f33d95a4b38036"
+    },
+    "docs/validation/sonar-underwater-20261023/ko-390.png": {
+      "expected": "b74fabd7b04b223c2901a3d3e089d574e9d7ca7d50370162cb51eb5f9ce6145d",
+      "current": "b74fabd7b04b223c2901a3d3e089d574e9d7ca7d50370162cb51eb5f9ce6145d"
+    },
+    "docs/validation/sonar-underwater-20261023/render-check.json": {
+      "expected": "83d6f9f6e91902e710959e83845a9693be7710697993bad68bcef61e2314d637",
+      "current": "83d6f9f6e91902e710959e83845a9693be7710697993bad68bcef61e2314d637"
+    },
+    "docs/validation/sonar-underwater-20261023/en-1440.png": {
+      "expected": "e60c2ab7369f17e19975a7e3eff24dc39362fa97e64b3932a6e71a1993da052e",
+      "current": "e60c2ab7369f17e19975a7e3eff24dc39362fa97e64b3932a6e71a1993da052e"
+    },
+    "docs/validation/sonar-underwater-20261023/256-receipt.json": {
+      "expected": "698ea5292d2883f9ee691798f97281d39166e67094bafd9b64030dcab26f7447",
+      "current": "698ea5292d2883f9ee691798f97281d39166e67094bafd9b64030dcab26f7447"
+    },
+    "docs/validation/sonar-underwater-20261023/128-appearance.json": {
+      "expected": "384e5156e487d3d7d1302da359132520797f973fb8cc3ad8af336df1953eeb3b",
+      "current": "384e5156e487d3d7d1302da359132520797f973fb8cc3ad8af336df1953eeb3b"
+    }
+  },
+  "all_exact": true
+}

@@ -1,0 +1,16 @@
+{
+  "observed_statistics": [
+    2.215065991903991,
+    0.1989100998342987
+  ],
+  "thresholds": [
+    3.919762511326785,
+    0.27738856666559264
+  ],
+  "passed": true,
+  "source": "ffecee9be9976f68c9e883d6cf3bbd6d40eb7729",
+  "frames": 512,
+  "pixels": 64,
+  "scope": "Retained renderer-derived ranges supplied to current native WGPU operator; conditional stochastic moments only, not Gazebo acquisition or hardware calibration",
+  "no_gain_fit": true
+}
