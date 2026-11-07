@@ -79,3 +79,13 @@ IMU 바이어스·잡음 좌표 규약을 명시합니다. 초기값은 최적�
 스레드나 콜백 등록 스레드에서 실행될 수 있습니다. `None`으로 알림을
 해제합니다. `close()`는 읽기 스레드가 끝난 뒤 반환합니다. 응답이 없을 때도
 입력 최신성과 워커 기한을 검사하는 독립 타이머를 유지합니다.
+
+## Managed current-field example / 조류 현장 예제
+
+[English measured example](diagnostics/managed-current-20261108/README.md) ·
+[한국어 실측 예제](diagnostics/managed-current-20261108/README.ko.md).
+
+The example retains all maps and the 1.536 m outlier; physical lock loss and
+installed use remain unverified.
+예제는 모든 지도와 1.536m 이상점을 보존하며 물리적 bottom-lock 상실과
+설치형 운용은 아직 검증하지 않았습니다.
