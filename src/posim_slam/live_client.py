@@ -27,6 +27,9 @@ class LiveClient:
         if ('record_current_state_information' in self.processing_request
                 and type(self.processing_request['record_current_state_information']) is not bool):
             raise ValueError('invalid_current_state_information_request')
+        if ('retain_startup_measurements' in self.processing_request
+                and type(self.processing_request['retain_startup_measurements']) is not bool):
+            raise ValueError('invalid_startup_retention_request')
         if ('optical_flow_type' in self.processing_request
                 and self.processing_request['optical_flow_type'] not in ('frame_to_frame','patch')):
             raise ValueError('invalid_optical_flow_type')
@@ -40,7 +43,7 @@ class LiveClient:
         self.budget_lock=threading.Lock();self.pending_bytes=0
         self.closed=threading.Event()
         self.ready=threading.Event()
-        self.startup_tracks_transport=False;self.inertial_seed_transport=False
+        self.startup_tracks_transport=False;self.inertial_seed_transport=False;self.retained_startup_transport=False
         self.ping_transport=False;self.gravity_seed_transport=False;self.sonar_transport=False;self.sonar_auxiliary_transport=False
         self.sonar_clock_transport=False;self.dvl_transport=False;self.sensor_state_transport=False;self.pressure_transport=False;self.terrain_ping_transport=False
         self.ground_transport=False
@@ -102,6 +105,7 @@ class LiveClient:
                         raise ValueError('worker_gravity_seed_unsupported')
                     self.startup_tracks_transport=value.get('startup_tracks_transport')=='preinitialize_camera_tracks_v1'
                     self.inertial_seed_transport=value.get('inertial_seed_transport')=='first_imu_state_v1'
+                    self.retained_startup_transport=value.get('retained_startup_transport')=='original_frontend_once_v1'
                     self.ping_transport=value.get("image_ping_transport")=="exact_stamp_range_v1"
                     self.sonar_auxiliary_transport=value.get("sonar_auxiliary_transport")=="ordered_imu_state_v1"
                     self.sonar_transport=value.get("sonar_snapshot_transport")=="exact_image_track_snapshot_v1"
@@ -139,6 +143,9 @@ class LiveClient:
 
     def _check_processing_ready(self,value):
         request=self.processing_request
+        if (request.get('retain_startup_measurements',False) and
+                value.get('retained_startup_transport')!='original_frontend_once_v1'):
+            raise ValueError('worker_startup_retention_unsupported')
         if (request.get('record_current_state_information',False) and
                 value.get('current_state_information_transport')!='undamped_joint_selected_state_v1'):
             raise ValueError('worker_current_state_information_unsupported')
@@ -206,8 +213,7 @@ class LiveClient:
         if not getattr(self,'startup_tracks_transport',False):raise ValueError('worker_startup_tracks_unsupported')
         self.send(14,self._image_header(stamp_ns,width,height,pixels)+pixels)
 
-    def image(self,stamp_ns,width,height,pixels,*,ping=None):
-        payload=self._image_header(stamp_ns,width,height,pixels)
+    def _image_ping(self,stamp_ns,ping):
         if ping is not None:
             if (not isinstance(ping,(tuple,list)) or len(ping)!=2 or
                 type(ping[0]) is not int or ping[0]!=stamp_ns or
@@ -216,7 +222,26 @@ class LiveClient:
                 raise ValueError('invalid_exact_image_ping')
             if not getattr(self,'ping_transport',False):
                 raise ValueError('worker_image_ping_unsupported')
-            payload+=struct.pack('<qd',*ping)
+            return struct.pack('<qd',*ping)
+        return b''
+
+    def retained_image(self,stamp_ns,*,ping=None):
+        """Hand an acknowledged original startup result to VIO exactly once.
+
+        Send the first-state seed and original IMU before chronological calls.
+        No pixels or second frontend pass are sent. Fresh images resume after
+        every retained result has been consumed. Capability is opt-in.
+        """
+        if not self.processing_request.get('retain_startup_measurements',False):
+            raise ValueError('worker_startup_retention_not_requested')
+        if not getattr(self,'retained_startup_transport',False):
+            raise ValueError('worker_startup_retention_unsupported')
+        if type(stamp_ns) is not int or not 0<stamp_ns<2**63:
+            raise ValueError('invalid_retained_image_stamp')
+        self.send(16,struct.pack('<q',stamp_ns)+self._image_ping(stamp_ns,ping))
+
+    def image(self,stamp_ns,width,height,pixels,*,ping=None):
+        payload=self._image_header(stamp_ns,width,height,pixels)+self._image_ping(stamp_ns,ping)
         self.send(5 if ping is not None else 2,payload+pixels)
 
     def sonar_snapshot(self,stamp_ns,tracks):

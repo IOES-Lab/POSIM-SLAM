@@ -553,6 +553,8 @@ PYTHONPATH=src python tools/evaluate_stationary_initialization.py --output /tmp/
 
 선택형 [현재 상태 정보](docs/native-state-information.md#현재-네이티브-상태-정보)는 감쇠 없는 네이티브 측정 정보에서 위치·회전·속도·IMU 바이어스의 전체 교차 공분산과 관측불능 방향을 보존합니다. 카메라·IMU 워커 보정의 `record_current_state_information`으로 켭니다. 기본값은 꺼짐이며 초기화 합격 판정은 별도입니다.
 
+[초기 측정 보존](docs/native-startup-history.md#초기-측정-보존)은 원본 특징 추적 결과를 원본 IMU·선택한 보조 입력과 함께 같은 VIO 최적화로 한 번만 넘깁니다. `retain_startup_measurements`를 켜고 첫 상태 초기값을 보낸 뒤 `LiveClient.retained_image`를 시각 순서로 호출합니다. 기본값은 꺼짐이며 따라잡는 동안 호스트는 초기화 상태를 유지합니다.
+
 선택형 네이티브 입력 `record_visual_tracks: true`는 같은 폴더의
 `*.visual-tracks.jsonl`에 최대 1,800개 지도 프레임을 기록하고, 초과하면
 명시적인 잘림 표시를 남깁니다. 실제 추적 ID·픽셀, 사용 가능한 최적화된

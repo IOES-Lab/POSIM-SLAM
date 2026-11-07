@@ -14,6 +14,7 @@
 #include "sonar_ground_packet.hpp"
 #include "surface_protocol.hpp"
 #include "native_state_information.hpp"
+#include "startup_history.hpp"
 #include <basalt/vi_estimator/sqrt_keypoint_vio.h>
 #include <tbb/global_control.h>
 #include <opencv2/core.hpp>
@@ -166,6 +167,12 @@ int main(int argc,char** argv) {
     if(state_information_enabled && (sonar_clock || sonar_enabled || terrain_enabled || ground_enabled || surface_enabled))
       fail("unsupported_current_state_information_profile");
     int64_t last_state_information_stamp=0;
+    if(input_settings.contains("retain_startup_measurements") &&
+        !input_settings.at("retain_startup_measurements").is_boolean())
+      fail("invalid_startup_retention_request");
+    const bool retain_startup=input_settings.value("retain_startup_measurements",false);
+    if(retain_startup && (!require_gravity_seed || sonar_clock || sonar_enabled || terrain_enabled || ground_enabled || surface_enabled))
+      fail("unsupported_startup_retention_profile");
     if(capture_pose_conditionals && (terrain_enabled || ground_enabled || input_settings.value("enable_joint_ping",false)))
       fail("pose_conditional_capture_requires_no_ping_or_ground_factors");
     if(ground_enabled && (!sonar_clock || terrain_enabled || input_settings.value("enable_joint_ping",false)))
@@ -568,7 +575,8 @@ int main(int argc,char** argv) {
     vio->imu_data_queue.set_capacity(256);
     vio->out_state_queue=&states;vio->out_vis_queue=&maps;
     if(persistent_map)vio->out_marg_queue=&persistent_map->input;
-    struct SensorEvent {int64_t stamp;bool image;bool startup=false;uint64_t control=0;};
+    struct SensorEvent {int64_t stamp;bool image;bool startup=false;uint64_t control=0;basalt::OpticalFlowResult::Ptr retained;};
+    posim_slam::StartupHistory<basalt::OpticalFlowResult> startup_history;
     tbb::concurrent_bounded_queue<SensorEvent> events;
     tbb::concurrent_bounded_queue<basalt::OpticalFlowResult::Ptr> tracked;
     events.set_capacity(4);tracked.set_capacity(2);
@@ -581,7 +589,10 @@ int main(int argc,char** argv) {
           vio->vision_data_queue.push(command);continue;
         }
         basalt::OpticalFlowResult::Ptr result;
-        if(event.image) {
+        if(event.retained) {
+          result=std::move(event.retained);
+          if(result->t_ns!=event.stamp)fail("retained_frontend_event_order");
+        }else if(event.image) {
           tracked.pop(result);
           if(!result || result->t_ns!=event.stamp)fail("frontend_event_order");
         }else {
@@ -596,6 +607,7 @@ int main(int argc,char** argv) {
             tracks.push_back({{"id",id},{"pixel",{pixel.x(),pixel.y()}}});
           }
           if(tracks.size()>4096)fail("startup_track_capacity");
+          if(retain_startup)startup_history.retain(event.stamp,result);
           emit({{"type","startup_tracks"},{"stamp_ns",event.stamp},
                 {"optical_flow_type",config.optical_flow_type},
                 {"reference_patches",result->reference_patch_count},{"reference_patch_peak",result->reference_patch_peak},
@@ -859,7 +871,7 @@ int main(int argc,char** argv) {
       vio->initialize(stamp,Sophus::SE3d(q,Vec3::Zero()),q*initial_velocity_imu,
                       initial_gyro_bias,initial_accel_bias);
     };
-    emit({{"type","ready"},{"current_state_information_transport",state_information_enabled?Json("undamped_joint_selected_state_v1"):Json(nullptr)},{"startup_tracks_transport",!sonar_clock && require_gravity_seed ? Json("preinitialize_camera_tracks_v1") : Json(nullptr)},{"inertial_seed_transport","first_imu_state_v1"},{"state_clock",state_clock},{"gravity_seed_transport",sonar_clock ? "first_sensor_direction_v1" : "first_image_direction_v1"},{"gravity_seed_required",require_gravity_seed},{"protocol",1},{"inertial_fused",true},{"map_export",sonar_clock ? Json(nullptr) : Json("segment_landmark_archive_ply_1")},
+    emit({{"type","ready"},{"retained_startup_transport",retain_startup?Json("original_frontend_once_v1"):Json(nullptr)},{"current_state_information_transport",state_information_enabled?Json("undamped_joint_selected_state_v1"):Json(nullptr)},{"startup_tracks_transport",!sonar_clock && require_gravity_seed ? Json("preinitialize_camera_tracks_v1") : Json(nullptr)},{"inertial_seed_transport","first_imu_state_v1"},{"state_clock",state_clock},{"gravity_seed_transport",sonar_clock ? "first_sensor_direction_v1" : "first_image_direction_v1"},{"gravity_seed_required",require_gravity_seed},{"protocol",1},{"inertial_fused",true},{"map_export",sonar_clock ? Json(nullptr) : Json("segment_landmark_archive_ply_1")},
           {"map_information_transport",persistent_mapping?"persistent_nfr_world_v1":"joint_linearized_world_v1"},
           {"persistent_map_transport",persistent_mapping?Json("retained_keyframe_reoptimization_v1"):Json(nullptr)},
           {"map_backend",persistent_mapping?Json(map_backend):Json(nullptr)},
@@ -913,7 +925,8 @@ int main(int argc,char** argv) {
       if(!std::cin)std::_Exit(0);
       auto type=u32(header),size=u32(header+4);
       if(type==3 && size==0)std::_Exit(0);
-      if((type!=1 && type!=2 && type!=4 && type!=5 && type!=6 && type!=7 && type!=8 && type!=9 && type!=10 && type!=11 && type!=12 && type!=13 && type!=14 && type!=15) ||
+      if((type!=1 && type!=2 && type!=4 && type!=5 && type!=6 && type!=7 && type!=8 && type!=9 && type!=10 && type!=11 && type!=12 && type!=13 && type!=14 && type!=15 && type!=16) ||
+          (type==16 && !retain_startup) ||
           (type==15 && !surface_enabled) ||
           (type==7 && !sonar_enabled) || (type==8 && !auxiliary_enabled && !sonar_clock && !ordered_auxiliary) ||
           (type==9 && !dvl_enabled) || (type==10 && !pressure_enabled) || (type==11 && !terrain_enabled) || (type==12 && !ground_enabled) || size>(type==15 ? 4096 : type==13 ? 104 : type==12 ? 2608 : type==7 ? posim_slam::sonarSnapshotLimit : type==9 ? 216 : std::max(uint32_t(56),uint32_t(c.width*c.height+32))))
@@ -1053,11 +1066,16 @@ int main(int argc,char** argv) {
         imu_stamp=d->t_ns;
         if(!vio->imu_data_queue.try_push(d))fail("imu_backlog");
       } else {
-        const int offset=type==5 ? 32 : 16;
-        if(size!=uint32_t(c.width*c.height+offset))fail("image_packet_size");
+        const bool retained=type==16;
+        const bool with_ping=retained ? size==24 : type==5;
+        const int offset=retained ? (with_ping?24:8) : (with_ping?32:16);
+        if(size!=uint32_t((retained?0:c.width*c.height)+offset))fail("image_packet_size");
         int64_t stamp=int64_t(u64(bytes.data()));
-        if(u32(bytes.data()+8)!=uint32_t(c.width) || u32(bytes.data()+12)!=uint32_t(c.height))fail("image_shape");
+        if(!retained && (u32(bytes.data()+8)!=uint32_t(c.width) || u32(bytes.data()+12)!=uint32_t(c.height)))fail("image_shape");
         if(stamp<=0 || !imu_stamp || (image_stamp && (stamp<=event_stamp || stamp-image_stamp>500000000)))fail("image_gap_or_reset");
+        // Parser-owned cursors include startup results still in the frontend.
+        // Queue emptiness alone races with asynchronous result production.
+        if(retain_startup && !retained && image_stamp<startup_last)fail("startup_history_pending");
         {
           std::lock_guard<std::mutex> lock(ping_mutex);
           if(terrain_enabled) {
@@ -1071,23 +1089,27 @@ int main(int argc,char** argv) {
           const auto depth=pending_pressure.upper_bound(event_stamp);
           if(depth!=pending_pressure.end() && depth->first<stamp)fail("pressure_observation_missing_state");
         }
-        if(type==5) {
-          const auto ping_stamp=int64_t(u64(bytes.data()+16));
-          const auto range=number(bytes.data()+24);
+        if(with_ping) {
+          const auto ping_offset=retained?8:16;
+          const auto ping_stamp=int64_t(u64(bytes.data()+ping_offset));
+          const auto range=number(bytes.data()+ping_offset+8);
           if(ping_stamp!=stamp || !std::isfinite(range) || range<=0 || range>1000)
             fail("invalid_exact_image_ping");
           std::lock_guard<std::mutex> lock(ping_mutex);
           if(image_pings.size()>=64)fail("image_ping_backlog");
           image_pings.emplace(stamp,PendingPing{range,false});
         }
-        if(!image_stamp && startup_last && (stamp<=startup_last || stamp-startup_last>500000000))
+        auto retained_result=retained ? startup_history.take(stamp) : basalt::OpticalFlowResult::Ptr{};
+        if(!retained && !image_stamp && startup_last && (stamp<=startup_last || stamp-startup_last>500000000))
           fail("startup_to_estimator_clock");
         if(!image_stamp && require_gravity_seed) {
           if(gravity_stamp!=stamp)fail("gravity_seed_image_stamp");
           initialize_seed(stamp);
         }
         image_stamp=stamp;event_stamp=stamp;auxiliary_since_image=false;
-        submit_image(stamp,bytes.data()+offset,false);
+        if(retained) {
+          if(!events.try_push({stamp,true,false,0,std::move(retained_result)}))fail("sensor_event_backlog");
+        }else submit_image(stamp,bytes.data()+offset,false);
       }
     }} catch(const std::exception& error) {fail(error.what());}
   } catch(const std::exception& error) {fail(error.what());}

@@ -44,6 +44,11 @@ jobs:
             -I/usr/include/eigen3 native/basalt/native_state_information_probe.cc \
             -o "$RUNNER_TEMP/native_state_information_probe"
           "$RUNNER_TEMP/native_state_information_probe"
+      - name: Check original startup result ownership and chronological handoff
+        run: |
+          c++ -std=c++17 -O2 -UNDEBUG -pthread native/basalt/startup_history_probe.cc \
+            -o "$RUNNER_TEMP/startup_history_probe"
+          "$RUNNER_TEMP/startup_history_probe"
       - name: Check mapping observation ownership and world covariance
         run: |
           c++ -std=c++17 -O2 -UNDEBUG -DEIGEN_MPL2_ONLY -DEIGEN_DONT_PARALLELIZE \

@@ -604,6 +604,8 @@ Native stream states include `initialization_window`: the oldest retained optimi
 
 An optional [current-state information report](docs/native-state-information.md) retains the full position/rotation/velocity/IMU-bias cross covariance and projected free modes from the undamped native likelihood. Enable `record_current_state_information` in the camera/IMU worker calibration. It is disabled by default and does not qualify initialization.
 
+[Retained startup measurements](docs/native-startup-history.md) hand original frontend results to the same VIO optimizer exactly once, with original IMU and optional auxiliary inputs. Enable `retain_startup_measurements` and use chronological `LiveClient.retained_image` calls after the first-state seed. The default is disabled; the host keeps initialization active while catching up.
+
 Optional native input setting `record_visual_tracks: true` writes a sibling
 `*.visual-tracks.jsonl` file for up to 1,800 map frames, followed by an explicit
 truncation marker. Each row preserves actual frontend IDs/pixels, available
