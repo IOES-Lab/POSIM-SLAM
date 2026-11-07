@@ -164,6 +164,10 @@ null directions and cross-output covariance jointly. `appendLate` reconditions
 affected nodes and passes the new marginal message toward the frontier, where
 the original prior enters once. No world reference or damping is added.
 
+Tall likelihoods undergo QR reduction. Retained square-root rows and residuals
+are projected as `U_r^T J` and `U_r^T r`. The rank rule retains the source row
+count and inherited numeric precision; the residual constant is preserved.
+
 `includeConditional(originals, node)` exposes coordinates eliminated from an
 already-owned source group. Supply the complementary conditional from the same
 reduction as its retained marginal, including finite, free and deterministic
@@ -192,6 +196,10 @@ is the established method; GTSAM code is not a dependency of this utility.
 방향·출력 간 교차 공분산을 함께 전파합니다. `appendLate`는 영향을 받은 조건부
 정보를 다시 계산하고 새 주변 정보를 경계까지 전달하며 기존 사전정보는 한 번만
 사용합니다. 새 기준 좌표 제약이나 감쇠항을 추가하지 않습니다.
+
+행이 많은 관측은 QR로 축소합니다. 보존할 제곱근 행과 잔차는
+`U_r^T J`와 `U_r^T r`로 투영합니다. 랭크 판정은 원본 행 수와 상속한 수치
+정밀도를 유지하며 잔차 상수도 보존합니다.
 
 `includeConditional(originals, node)`는 이미 반영한 원본 그룹에서 소거했던
 좌표를 조회·갱신 대상으로 연결합니다. 보존한 주변 정보와 같은 소거 계산에서

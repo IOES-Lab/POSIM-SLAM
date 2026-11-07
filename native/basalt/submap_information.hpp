@@ -411,7 +411,7 @@ class SubmapInformation {
     // Use the same dimension-relative SVD rule as the information split, at
     // the source row count. Shrinking a matrix must not promote QR residuals
     // below its original precision into new measurements.
-    Eigen::BDCSVD<Eigen::MatrixXd> svd(j,Eigen::ComputeThinU|Eigen::ComputeThinV);
+    Eigen::BDCSVD<Eigen::MatrixXd> svd(j,Eigen::ComputeThinU);
     if(svd.info()!=Eigen::Success)throw std::runtime_error("submap_compaction_svd_failed");
     const auto& singular=svd.singularValues();
     const double tolerance=std::max(roundoff,std::max(source_rows,j.cols())*std::numeric_limits<double>::epsilon()*singular[0]);
@@ -419,7 +419,9 @@ class SubmapInformation {
     const Eigen::VectorXd projected=svd.matrixU().leftCols(rank).transpose()*r;
     const double constant=(r-svd.matrixU().leftCols(rank)*projected).stableNorm();
     Eigen::MatrixXd reduced=Eigen::MatrixXd::Zero(rank+1,j.cols());
-    reduced.topRows(rank)=singular.head(rank).asDiagonal()*svd.matrixV().leftCols(rank).transpose();
+    // Form the retained square root from the input rows. Reconstructing it
+    // from right singular vectors can mix weak and free directions.
+    reduced.topRows(rank).noalias()=svd.matrixU().leftCols(rank).transpose()*j;
     r.resize(rank+1);r.head(rank)=projected;r[rank]=constant;j=std::move(reduced);
     roundoff=rank?tolerance:0;return true;
   }

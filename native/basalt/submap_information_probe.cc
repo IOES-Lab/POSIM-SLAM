@@ -585,6 +585,46 @@ void wideWeakAndUnobservedDirections() {
     close(all.unbounded_gram,free,1e-9);
   }
 }
+void mixedWeakAndFreeAxes() {
+  // Mix the measured, weak and free coordinate axes before compressing
+  // repeated observations. Check the same marginal after source rescaling
+  // and an optional exact constraint on the weak measured direction.
+  for(int n:{6,24,48,72})for(double scale:{1e-4,1.,1e4})for(bool constrained:{false,true}) {
+    const auto order=coordinates(0,n);const int weak=n-3;
+    Eigen::MatrixXd rotation=Eigen::MatrixXd::Identity(n,n);
+    rotation(0,0)=.8;rotation(0,weak)=.6;rotation(weak,0)=-.6;rotation(weak,weak)=.8;
+    rotation(1,1)=.6;rotation(1,n-2)=.8;rotation(n-2,1)=-.8;rotation(n-2,n-2)=.6;
+    Eigen::VectorXd singular=Eigen::VectorXd::Constant(n,scale);
+    singular[weak]=scale*1e-8;singular.tail(2).setZero();
+    Eigen::VectorXd latent=Eigen::VectorXd::Zero(n),weights=Eigen::VectorXd::Zero(n);
+    for(int i=0;i<n-2;++i)latent[i]=.01*(i+1);
+    const Eigen::VectorXd mean=rotation.transpose()*latent;Store store;int batch=0;
+    for(int count:{4*n+3,n+5,7}) {
+      Eigen::MatrixXd j(count,n),c(0,n);Eigen::VectorXd r(count),target;
+      for(int row=0;row<count;++row) {
+        const int k=row%n;j.row(row)=singular[k]*rotation.row(k);r[row]=-j.row(row).dot(mean);
+        if(row==count-1){j.row(row).setZero();r[row]=.75;}
+        else weights[k]+=singular[k]*singular[k];
+      }
+      if(constrained && batch==2){c=rotation.row(weak);target=Eigen::VectorXd::Constant(1,latent[weak]);}
+      store.append({"mixed-axes-"+std::to_string(batch++)},order,j,r,c,target);
+    }
+    const auto solution=store.solve(store.snapshot());
+    for(int begin=0;begin<n;begin+=24) {
+      const int count=std::min(24,n-begin);
+      const auto result=store.query(solution,order,rotation.middleRows(begin,count));
+      Eigen::MatrixXd covariance=Eigen::MatrixXd::Zero(count,count),free=Eigen::MatrixXd::Zero(count,count);
+      for(int i=0;i<count;++i) {
+        const int k=begin+i;
+        if(k>=n-2)free(i,i)=1;
+        else if(!constrained || k!=weak)covariance(i,i)=1/weights[k];
+      }
+      assert((result.mean-latent.segment(begin,count)).norm()<=1e-8);
+      close(result.covariance,covariance,1e-10);
+      assert((result.unbounded_gram-free).norm()<=1e-10);
+    }
+  }
+}
 void sourcePrecisionSurvivesRestrictedColumns() {
   using posim_slam::splitConstrainedInformation;
   const double source_floor=8.423593620084742e-12;
@@ -617,6 +657,7 @@ int main() {
   replaceOriginalLikelihoods();replaceRankAndExactSupport();boundedReplacements();selectiveRetirement();correlatedReobservation();batchedOriginals();
   batchedRelativeGauge();
   wideWeakAndUnobservedDirections();
+  mixedWeakAndFreeAxes();
   sourcePrecisionSurvivesRestrictedColumns();
   std::cout<<"Submap information: batch mean/covariance, shared noise, unobserved gauge, exact support, immutable ownership and bounded-frontier chain pass.\n";
 }
