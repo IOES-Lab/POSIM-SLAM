@@ -4,6 +4,7 @@
 #include <Eigen/Dense>
 #include <Eigen/SVD>
 #include <algorithm>
+#include <cmath>
 #include <limits>
 #include <stdexcept>
 
@@ -63,16 +64,34 @@ inline JointInformationSplit splitJointInformation(const Eigen::MatrixXd& j,
   const Eigen::Index rank=(singular.array()>tolerance).count();
   Eigen::MatrixXd combined(j.rows(),retained+1);combined.leftCols(retained)=j.leftCols(retained);combined.col(retained)=residual;
   Eigen::MatrixXd backsub=Eigen::MatrixXd::Zero(count,retained+1);
+  const Eigen::MatrixXd inverse_factor=svd.matrixV().leftCols(rank)*singular.head(rank).cwiseInverse().asDiagonal();
   if(include_conditional) {
     const Eigen::MatrixXd observed=svd.matrixU().leftCols(rank);
     out.conditional_jacobian=observed.transpose()*j;out.conditional_residual=observed.transpose()*residual;
-    out.observable_noise_factor=svd.matrixV().leftCols(rank)*singular.head(rank).cwiseInverse().asDiagonal();
+    out.observable_noise_factor=inverse_factor;
     out.unobservable_basis=svd.matrixV().rightCols(count-rank);
   }
   if(rank) {
     const Eigen::MatrixXd observed=svd.matrixU().leftCols(rank);
-    backsub.noalias()=-(svd.matrixV().leftCols(rank)*singular.head(rank).cwiseInverse().asDiagonal())*
-        (observed.transpose()*combined);
+    backsub.noalias()=-inverse_factor*(observed.transpose()*combined);
+    // Reuse the same retained SVD for one residual correction. Compensated
+    // products keep cancellation in the represented rows out of the mean.
+    Eigen::MatrixXd error(combined.rows(),combined.cols());
+    for(Eigen::Index row=0;row<combined.rows();++row)for(Eigen::Index column=0;column<combined.cols();++column) {
+      double sum=combined(row,column),compensation=0;
+      for(Eigen::Index k=0;k<count;++k) {
+        const double a=nuisance(row,k),b=backsub(k,column);
+        volatile double rounded_product=a*b;
+        const double product=rounded_product;
+        const double product_error=std::fma(a,b,-product);
+        const double next=sum+product,part=next-sum;
+        compensation+=(sum-(next-part))+(product-part)+product_error;
+        sum=next;
+      }
+      error(row,column)=sum+compensation;
+    }
+    if(!error.allFinite())throw std::runtime_error("joint_patch_refinement_nonfinite");
+    backsub.noalias()-=inverse_factor*(observed.transpose()*error);
     if(rank<j.rows()) {
       Eigen::HouseholderQR<Eigen::MatrixXd> qr(observed);
       combined=(qr.householderQ().adjoint()*combined).eval();
