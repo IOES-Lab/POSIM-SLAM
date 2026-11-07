@@ -56,13 +56,28 @@ class SubmapInformation {
     std::shared_ptr<const int> owner;
   };
   using Snapshot=std::shared_ptr<const Data>;
+ private:
+  struct QueryPlan {
+    struct Node {std::vector<size_t> removed,kept;};
+    std::vector<Coordinate> coordinates;
+    std::vector<size_t> frontier;
+    std::vector<Node> nodes;
+    size_t index(Coordinate key) const {
+      const auto found=std::lower_bound(coordinates.begin(),coordinates.end(),key);
+      if(found==coordinates.end() || *found!=key)throw std::invalid_argument("unknown_submap_query_coordinate");
+      return size_t(found-coordinates.begin());
+    }
+  };
+ public:
   class Solution {
     friend class SubmapInformation;
     Snapshot input;
+    std::shared_ptr<const QueryPlan> plan;
     Eigen::VectorXd mean;
     Eigen::MatrixXd noise,unbounded;
-    Solution(Snapshot state,Eigen::VectorXd value,Eigen::MatrixXd finite,Eigen::MatrixXd free)
-      :input(std::move(state)),mean(std::move(value)),noise(std::move(finite)),unbounded(std::move(free)) {}
+    Solution(Snapshot state,Eigen::VectorXd value,Eigen::MatrixXd finite,Eigen::MatrixXd free,
+        std::shared_ptr<const QueryPlan> routing)
+      :input(std::move(state)),plan(std::move(routing)),mean(std::move(value)),noise(std::move(finite)),unbounded(std::move(free)) {}
    public:
     Solution(const Solution&)=default;Solution(Solution&&)=default;
   };
@@ -295,7 +310,7 @@ class SubmapInformation {
   Solution solve(const Snapshot& input) const {
     requireOwner(input);
     const auto split=splitConstrainedInformation(input->jacobian,input->residual,0,input->constraints,input->target,input->roundoff);
-    return {input,split.reduced.backsub_offset,split.noise,split.unbounded};
+    return {input,split.reduced.backsub_offset,split.noise,split.unbounded,queryPlan(input)};
   }
   // Evaluate all outputs jointly. Each conditional noise is counted once, so
   // cross-point covariance and relative-coordinate cancellation are preserved.
@@ -306,12 +321,16 @@ class SubmapInformation {
         solution.mean.size()!=n || solution.noise.rows()!=n || solution.unbounded.rows()!=n ||
         !solution.mean.allFinite() || !solution.noise.allFinite() || !solution.unbounded.allFinite())
       throw std::invalid_argument("submap_query_shape");
-    std::map<Coordinate,Eigen::VectorXd> coefficients;
+    const auto& plan=*solution.plan;
+    // Only symbolic routing belongs to the immutable solution. Numeric work is
+    // local to each query, preserving old snapshots and concurrent readers.
+    Eigen::MatrixXd coefficients(rows,plan.coordinates.size());
+    std::vector<unsigned char> present(plan.coordinates.size(),0);size_t count=0;
     for(size_t i=0;i<coordinates.size();++i) {
-      if(!solution.input->known.count(coordinates[i]))throw std::invalid_argument("unknown_submap_query_coordinate");
+      const auto column=plan.index(coordinates[i]);
       // Skip exactly zero support only. A tolerance (or squared norm, which
       // can underflow) would discard valid small coefficients.
-      if((derivative.col(i).array()!=0.).any())coefficients.emplace(coordinates[i],derivative.col(i));
+      if((derivative.col(i).array()!=0.).any()){coefficients.col(column)=derivative.col(i);present[column]=1;++count;}
     }
     Query result;result.mean=Eigen::VectorXd::Zero(rows);result.covariance=Eigen::MatrixXd::Zero(rows,rows);
     result.unbounded_gram=Eigen::MatrixXd::Zero(rows,rows);
@@ -321,39 +340,51 @@ class SubmapInformation {
       result.covariance.noalias()+=finite*finite.transpose();result.unbounded_gram.noalias()+=free*free.transpose();
       if(free.norm()>1e-8*std::max(1.,weights.norm()*unbounded.norm()))observed=false;
     };
-    for(const auto& pointer:solution.input->nodes) {
-      const auto& node=*pointer;bool used=false;
-      for(Coordinate coordinate:node.removed)if(coefficients.count(coordinate)){used=true;break;}
+    for(size_t node_index=0;node_index<solution.input->nodes.size();++node_index) {
+      const auto& node=*solution.input->nodes[node_index];const auto& route=plan.nodes[node_index];bool used=false;
+      for(auto column:route.removed)if(present[column]){used=true;break;}
       if(!used)continue;
       Eigen::MatrixXd weights=Eigen::MatrixXd::Zero(rows,node.removed.size());
       for(size_t i=0;i<node.removed.size();++i) {
-        auto found=coefficients.find(node.removed[i]);if(found==coefficients.end())continue;
-        weights.col(i)=found->second;coefficients.erase(found);
+        const auto column=route.removed[i];if(!present[column])continue;
+        weights.col(i)=coefficients.col(column);present[column]=0;--count;
       }
       result.mean.noalias()+=weights*node.offset;uncertainty(weights,node.noise,node.unbounded);
       const Eigen::MatrixXd next=weights*node.regression;
       for(size_t i=0;i<node.kept.size();++i) {
         if(!(next.col(i).array()!=0.).any())continue;
-        auto found=coefficients.find(node.kept[i]);
-        if(found==coefficients.end())coefficients.emplace(node.kept[i],next.col(i));
+        const auto column=route.kept[i];
+        if(!present[column]){coefficients.col(column)=next.col(i);present[column]=1;++count;}
         else {
-          found->second+=next.col(i);
-          if(!(found->second.array()!=0.).any())coefficients.erase(found);
+          coefficients.col(column)+=next.col(i);
+          if(!(coefficients.col(column).array()!=0.).any()){present[column]=0;--count;}
         }
       }
     }
     Eigen::MatrixXd weights=Eigen::MatrixXd::Zero(rows,n);
     for(size_t i=0;i<solution.input->order.size();++i) {
-      auto found=coefficients.find(solution.input->order[i]);
-      if(found!=coefficients.end()){weights.col(i)=found->second;coefficients.erase(found);}
+      const auto column=plan.frontier[i];
+      if(present[column]){weights.col(i)=coefficients.col(column);present[column]=0;--count;}
     }
-    if(!coefficients.empty())throw std::logic_error("submap_conditional_closure");
+    if(count)throw std::logic_error("submap_conditional_closure");
     result.mean.noalias()+=weights*solution.mean;uncertainty(weights,solution.noise,solution.unbounded);
     if(!result.mean.allFinite() || !result.covariance.allFinite() || !result.unbounded_gram.allFinite())
       throw std::runtime_error("submap_nonfinite_query");
     result.observed=observed;return result;
   }
  private:
+  static std::shared_ptr<const QueryPlan> queryPlan(const Snapshot& input) {
+    auto plan=std::make_shared<QueryPlan>();
+    plan->coordinates.assign(input->known.begin(),input->known.end());
+    for(auto coordinate:input->order)plan->frontier.push_back(plan->index(coordinate));
+    for(const auto& node:input->nodes) {
+      QueryPlan::Node route;
+      for(auto coordinate:node->removed)route.removed.push_back(plan->index(coordinate));
+      for(auto coordinate:node->kept)route.kept.push_back(plan->index(coordinate));
+      plan->nodes.push_back(std::move(route));
+    }
+    return plan;
+  }
   // The linearization owner holds the actual base/current snapshots. Its
   // information context needs only the lineage and limits, not an extra old
   // snapshot that would keep retired numeric payload alive outside its quota.

@@ -3,6 +3,7 @@
 #include "submap_linearization.hpp"
 #include <cassert>
 #include <iostream>
+#include <future>
 #include <numeric>
 
 namespace {
@@ -59,6 +60,32 @@ void denseAndLateAdjustment() {
   Store other;rejects([&]{other.solve(before);},"submap_snapshot_owner");
   rejects([&]{other.query(old_solution,{8},Eigen::MatrixXd::Identity(1,1));},"submap_snapshot_owner");
 }
+void sparseLabelsAndConcurrentSnapshots() {
+  const std::vector<int64_t> ids={3,91,1000000000000LL,1000000000091LL};
+  Store store;const Eigen::Vector4d weights(1,2,3,4),mean(1,-2,3,-4);
+  store.append({"original-sparse-labels"},ids,weights.asDiagonal().toDenseMatrix(),-weights.cwiseProduct(mean));
+  store.seal({ids[1],ids[3]});
+  const auto saved=store.solve(store.snapshot());auto copy=saved;auto moved=std::move(copy);
+  const std::vector<int64_t> reversed={ids[3],ids[2],ids[1],ids[0]};
+  Eigen::Vector4d expected_mean=mean.reverse();
+  const Eigen::Matrix4d covariance=weights.cwiseInverse().array().square().matrix().reverse().asDiagonal();
+  auto check=[&] {
+    for(int rows:{1,3,12,24}) {
+      Eigen::MatrixXd derivative(rows,4);
+      for(int r=0;r<rows;++r)for(int c=0;c<4;++c)derivative(r,c)=(r+c)%3?std::cos(.2*r+.3*c):0.;
+      derivative.row(0).setZero();derivative(0,3)=1e-200;
+      const auto result=store.query(moved,reversed,derivative);
+      assert(result.observed && result.mean[0]!=0);
+      close(result.mean,derivative*expected_mean);
+      close(result.covariance,derivative*covariance*derivative.transpose());
+    }
+  };
+  std::vector<std::future<void>> readers;
+  for(int i=0;i<8;++i)readers.push_back(std::async(std::launch::async,check));
+  store.append({"new-reference-after-snapshot"},{ids[3]},Eigen::MatrixXd::Constant(1,1,2),Eigen::VectorXd::Constant(1,3));
+  for(auto& reader:readers)reader.get();check();
+}
+
 void unobservedReference() {
   Store store;Eigen::MatrixXd j=Eigen::MatrixXd::Zero(6,12);j.leftCols(6)=-Eigen::MatrixXd::Identity(6,6);j.rightCols(6).setIdentity();
   const Eigen::VectorXd move=Eigen::VectorXd::LinSpaced(6,.1,.6);
@@ -585,6 +612,7 @@ void sourcePrecisionSurvivesRestrictedColumns() {
 }
 } // namespace
 int main() {
+  sparseLabelsAndConcurrentSnapshots();
   denseAndLateAdjustment();unobservedReference();exactZeroQuerySupport();exactConstraintsAndCapacity();pressureDatumAndClosedFrontier();longChain();
   replaceOriginalLikelihoods();replaceRankAndExactSupport();boundedReplacements();selectiveRetirement();correlatedReobservation();batchedOriginals();
   batchedRelativeGauge();
