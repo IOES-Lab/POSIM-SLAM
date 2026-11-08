@@ -530,6 +530,10 @@ pose/velocity covariance remains positive definite.
 
 ## Streaming inertial ownership
 
+The native persistent mapper can expose a separate map-aligned IMU pose mean
+without modifying local VIO. See [map/local coordinates and API](docs/map-local-mean.md)
+for worker acknowledgement, causal revision ownership and uncertainty limits.
+
 `InertialDvlSession` owns moving initialization and subsequent IMU/DVL updates.
 It waits for at least 12 seconds of actual bottom-locked DVL coverage and raw IMU,
 then checks maximum posterior 3-sigma bounds (3 degrees attitude, 0.1 m/s velocity).

@@ -27,6 +27,7 @@ struct PersistentMapSnapshot : MappingOutput {
   double optimize_seconds=0;
   uint64_t background_updates_superseded=0;
   std::string error;
+  nlohmann::json alignment=nullptr;
   MappingGraphRegistry::Snapshot graph;
 };
 using PersistentMapLimits=MappingInputLimits;

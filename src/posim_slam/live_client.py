@@ -14,6 +14,7 @@ import subprocess
 import shutil
 import tempfile
 import threading
+from .map_alignment import CONTRACT as MAP_ALIGNMENT_CONTRACT, MapAlignment
 
 
 class WorkerNotReady(RuntimeError):
@@ -49,6 +50,9 @@ class LiveClient:
         self.sonar_clock_transport=False;self.dvl_transport=False;self.sensor_state_transport=False;self.pressure_transport=False;self.terrain_ping_transport=False
         self.ground_transport=False
         self.map_view_transport=False
+        self.map_alignment_transport=False
+        self.map_alignment=None
+        self.map_alignment_epoch=None
         self.surface_transport=False;self.surface_directory=None;self._surface_files={};self._surface_request_id=0
         self._surface_lock=threading.Lock();options={}
         if self.processing_request.get('enable_surface_owner',False):
@@ -114,6 +118,14 @@ class LiveClient:
                     self.terrain_ping_transport=value.get('terrain_ping_transport')=='exact_sensor_range_v1'
                     self.ground_transport=value.get('ground_transport')=='exact_beam_entries_v1'
                     self.map_view_transport=value.get('map_snapshot_view')=='published_snapshot_v1'
+                    self.map_alignment_transport=value.get('map_alignment_transport')==MAP_ALIGNMENT_CONTRACT
+                    if self.map_alignment_transport:
+                        self.map_alignment_epoch=value.get('mapping_epoch')
+                        if not isinstance(self.map_alignment_epoch,str) or not self.map_alignment_epoch:
+                            raise ValueError('worker_map_alignment_epoch')
+                        expected=self.processing_request.get('map_epoch')
+                        if expected is not None and expected!=self.map_alignment_epoch:
+                            raise ValueError('worker_map_alignment_epoch')
                     self.surface_transport=value.get('native_surface_transport')=='snapshot_increment_owner_queue_v1'
                     if self.processing_request.get('enable_surface_owner',False) and not self.surface_transport:
                         raise ValueError('worker_surface_owner_unsupported')
@@ -398,6 +410,17 @@ class LiveClient:
 
     def surface_release(self,request_id):
         self._surface_request(request_id);self.send(15,json.dumps(dict(op='release',request_id=request_id)).encode())
+
+    def map_aligned_pose(self,state,map_packet):
+        """Consume one matched pair on the caller's owner thread, not the reader.
+
+        Older workers supply no transform. No identity correction is invented.
+        A new LiveClient owns a new alignment epoch after every worker restart.
+        """
+        if self.fault:raise RuntimeError(self.fault)
+        if not self.ready.is_set() or not self.map_alignment_transport:return None
+        if self.map_alignment is None:self.map_alignment=MapAlignment(self.map_alignment_epoch)
+        return self.map_alignment.paired_pose(state,map_packet)
 
     def poll(self):
         if self.fault:raise RuntimeError(self.fault)

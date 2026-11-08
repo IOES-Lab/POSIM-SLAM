@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 #include "persistent_mapper.hpp"
+#include "mapping_alignment.hpp"
 #include "mapping_graph_information.hpp"
 #include "mapping_feature_matcher.hpp"
 #include "native_mapping_graph.hpp"
@@ -150,6 +151,10 @@ std::shared_ptr<PersistentMapSnapshot> PersistentMapper::build(const Batch& batc
   auto result=std::make_shared<PersistentMapSnapshot>();
   result->background_updates_superseded=background_updates_superseded_;
   result->revision=batch.revision;result->optimized_through_ns=batch.input->frames.rbegin()->first;
+  const auto anchor=result->optimized_through_ns;
+  result->alignment=mappingAlignment(epoch(),batch.revision,anchor,
+    (gauge*mapper.getFramePoses().at(anchor).getPose()).matrix(),
+    batch.input->poses.at(anchor).getPose().matrix());
   result->keyframes=batch.input->frames.size();result->retirements=batch.input->revision;
   result->source_image_bytes=batch.input->source_image_bytes;
   result->source_factor_matrix_bytes=batch.input->source_factor_matrix_bytes;

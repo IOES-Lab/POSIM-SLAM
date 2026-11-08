@@ -49,6 +49,14 @@ jobs:
           c++ -std=c++17 -O2 -UNDEBUG -pthread native/basalt/startup_history_probe.cc \
             -o "$RUNNER_TEMP/startup_history_probe"
           "$RUNNER_TEMP/startup_history_probe"
+      - name: Check source-pinned map and local coordinate composition
+        run: |
+          c++ -std=c++17 -O2 -UNDEBUG -DEIGEN_MPL2_ONLY -DEIGEN_DONT_PARALLELIZE \
+            -I/usr/include/eigen3 native/basalt/mapping_alignment_probe.cc \
+            -o "$RUNNER_TEMP/mapping_alignment_probe"
+          "$RUNNER_TEMP/mapping_alignment_probe"
+          POSIM_SLAM_ALIGNMENT_PROBE="$RUNNER_TEMP/mapping_alignment_probe" \
+            python -m unittest discover -s tests -p test_map_alignment.py
       - name: Check mapping observation ownership and world covariance
         run: |
           c++ -std=c++17 -O2 -UNDEBUG -DEIGEN_MPL2_ONLY -DEIGEN_DONT_PARALLELIZE \

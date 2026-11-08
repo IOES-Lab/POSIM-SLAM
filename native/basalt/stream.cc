@@ -5,6 +5,7 @@
 #include "visual_support.hpp"
 #include "landmark_archive.hpp"
 #include "persistent_mapper.hpp"
+#include "mapping_alignment.hpp"
 #include "ping_input.hpp"
 #include "ping_factors.hpp"
 #include "sonar_packet.hpp"
@@ -846,6 +847,7 @@ int main(int argc,char** argv) {
             {"pending",m.revision==0},{"error",m.error.empty()?Json(nullptr):Json(m.error)}};
         }
         emit({{"type","map"},{"stamp_ns",data->t_ns},{"point_geometry",geometry},
+              {"mapping_alignment",full->mapping && full->mapping->error.empty()?full->mapping->alignment:Json(nullptr)},
               {"optical_flow_type",config.optical_flow_type},
               {"reference_patches",data->opt_flow_res ? data->opt_flow_res->reference_patch_count : 0},
               {"reference_patch_peak",data->opt_flow_res ? data->opt_flow_res->reference_patch_peak : 0},
@@ -880,6 +882,7 @@ int main(int argc,char** argv) {
           {"map_row_cache_bytes",conditional_mapping?posim_slam::PagedMappingPolicy::row_cache_bytes:0},
           {"map_snapshot_update",persistent_mapping?Json("retained_revision_v1"):Json(nullptr)},
           {"map_snapshot_view",persistent_mapping?Json("published_snapshot_v1"):Json(nullptr)},
+          {"map_alignment_transport",persistent_mapping?Json(posim_slam::kMappingAlignment):Json(nullptr)},
           {"map_graph_snapshot",persistent_mapping?Json("original_measurements_cbor_v1"):Json(nullptr)},
           {"map_point_identity",persistent_mapping?Json("original_observation_anchor_v1"):Json(nullptr)},
           {"mapping_epoch",persistent_mapping?Json(persistent_map->epoch()):Json(nullptr)},

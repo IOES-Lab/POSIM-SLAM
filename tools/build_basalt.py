@@ -115,6 +115,7 @@ def build(engine, source, output, jobs=2):
     mapping_directory.mkdir()
     run([output / 'build/basalt_persistent_mapper_probe', mapping_directory], timeout=60)
     run([output / 'build/basalt_mapping_request_probe'], timeout=30)
+    run([output / 'build/basalt_mapping_alignment_probe'], timeout=30)
     results = {}
     for mode in ('tracks', 'images'):
         path = output / (mode + '.csv')

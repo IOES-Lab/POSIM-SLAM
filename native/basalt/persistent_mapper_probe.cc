@@ -49,9 +49,12 @@ int main(int argc,char** argv) {
   const auto pinned=map.snapshot();
   assert(pinned->error.empty() && pinned->revision==1 && pinned->keyframes==2);
   assert(posim_slam::MappingGraphRegistry::document(pinned->graph).at("input_revision")==1);
+  assert(pinned->alignment.at("optimization_revision")==1 && pinned->alignment.at("epoch")=="pinned-request");
+  assert(pinned->alignment.at("anchor_stamp_ns")==20 && pinned->alignment.at("navigation_ready")==false);
   assert(map.requestUpdate()>=3);map.finish();
   const auto complete=map.snapshot();
   assert(complete->error.empty() && complete->revision==5 && complete->keyframes==6);
+  assert(complete->alignment.at("optimization_revision")==5 && complete->alignment.at("anchor_stamp_ns")==60);
   assert(posim_slam::MappingGraphRegistry::document(complete->graph).at("frames").size()==6);
   assert(pinned->revision==1 && pinned->keyframes==2 && map.requestUpdate()==0);
  }
