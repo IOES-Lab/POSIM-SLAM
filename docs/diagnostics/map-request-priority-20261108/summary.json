@@ -1,0 +1,383 @@
+{
+  "schema": "map-request-priority-validation-1",
+  "source_head": "d2e20319823c20a14b261241c4f4663987ac5b59",
+  "binary_sha256": "2c445bd2b1326a4cff82bc72171c7892e383a11d00bed637a74e696be6991d87",
+  "implementation": "Cooperative rollback of an older background graph transaction for an explicit pinned export; requested transactions are never preempted",
+  "source_controls": [
+    "normal CMake source build",
+    "existing persistent mapper probe",
+    "three threaded request-policy controls"
+  ],
+  "frozen_rollback": {
+    "source_head": "d2e20319823c20a14b261241c4f4663987ac5b59",
+    "original_graph_byte_identical": true,
+    "full_resumed_numeric_byte_identical": true,
+    "numeric_sha256": "885279e9de63ecaa8c409a2277bf102b903c847201ecb64f1cb29a9f9e8071c9",
+    "source_inputs_unchanged": true,
+    "points": 3859,
+    "quality_points": 8177,
+    "keyframes": 237,
+    "scope": "Frozen original input numeric/transaction control; no live product acceptance"
+  },
+  "staged_storage_rollback": {
+    "source_head": "d2e20319823c20a14b261241c4f4663987ac5b59",
+    "original_graph_byte_identical": true,
+    "full_resumed_numeric_byte_identical": true,
+    "numeric_sha256": "885279e9de63ecaa8c409a2277bf102b903c847201ecb64f1cb29a9f9e8071c9",
+    "source_inputs_unchanged": true,
+    "points": 3859,
+    "quality_points": 8177,
+    "keyframes": 237,
+    "scope": "Frozen original input numeric/transaction control; no live product acceptance"
+  },
+  "native_wire": {
+    "native_export_passed": true,
+    "original_wrapper_exit": 1,
+    "wrapper_failure": "integer internal packet-count keys compared with JSON string keys; archived source and failed verdict retained",
+    "all_original_wire_payloads_exact": true,
+    "packet_counts": {
+      "14": 16,
+      "13": 1,
+      "1": 17942,
+      "16": 16,
+      "9": 107,
+      "8": 314,
+      "10": 179,
+      "2": 1759,
+      "4": 1
+    },
+    "payload_sha256": "3ab5e62b248e41c3921c0e47acd33cc96b7f9e91fb98081b51c5e70706453449",
+    "exports": [
+      {
+        "wall_s": 184.5453068339266,
+        "optimization_revision": 220,
+        "optimized_through_ns": 180900000000,
+        "points": 3585,
+        "request_id": 1,
+        "requested_mapping_revision": 220,
+        "snapshot_policy": "update",
+        "stamp_ns": 187900000000,
+        "success": true,
+        "type": "export"
+      }
+    ],
+    "background_updates_superseded": 1,
+    "maximum_send_lag_s": 0.0030023748986423016,
+    "posthoc_audit_only": true,
+    "recaptured": false,
+    "product_qualified": false
+  },
+  "native_latency": {
+    "original_native_deadline_s": 10,
+    "request": {
+      "wall_s": 177.51248187501915,
+      "request_id": 1
+    },
+    "response": {
+      "wall_s": 184.5453068339266,
+      "optimization_revision": 220,
+      "optimized_through_ns": 180900000000,
+      "points": 3585,
+      "request_id": 1,
+      "requested_mapping_revision": 220,
+      "snapshot_policy": "update",
+      "stamp_ns": 187900000000,
+      "success": true,
+      "type": "export"
+    },
+    "response_elapsed_s": 7.03282495890744,
+    "send_lag_bound_s": 0.0030023748986423016,
+    "all_wire_payloads_exact": true,
+    "scope": "Recorded request wall schedule to observed native response; transport/polling included"
+  },
+  "native_map": {
+    "schema": "source-owned-original-wire-map-assessment-1",
+    "scope": "Complete export by the source-owned request-priority worker; original physical input replay only; no product or HTTP acceptance",
+    "reference_stamp_ns": 11800000000,
+    "alignment_rotation": [
+      [
+        0.36489139313373353,
+        -0.931050090605722,
+        0.0
+      ],
+      [
+        0.931050090605722,
+        0.36489139313373353,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "alignment_translation": [
+      -0.13348562739817238,
+      0.16691653009900886,
+      -0.1844706004972939
+    ],
+    "gauge": "Initial yaw and translation only, scale1; no trajectory fit or per-phase alignment",
+    "points": 3585,
+    "all_points_retained": true,
+    "median_m": 0.004274173186693098,
+    "p95_m": 0.01883225453007673,
+    "rmse_m": 0.00936182147776403,
+    "maximum_m": 0.09667254774257028,
+    "above_10cm": 0,
+    "above_20cm": 0,
+    "source_ply_sha256": "d7f2b997795788c6c2e094443de955c8338dc8e301dc4ab7156ab51998068f00",
+    "checkpoint_sha256": "6116e481a6dcb19e13aca8048430f9085802b8557e544a68f0c807a9406691f9",
+    "source_graph_digest_verified": true,
+    "truth_used_for": "Assessment and annotation only",
+    "product_qualified": false
+  },
+  "application": {
+    "passed": true,
+    "visual_export": {
+      "session_nonce": "joint-ros-replay",
+      "frame": "vehicle/vio_joint-ros-replay_segment_0",
+      "segment": 0,
+      "points": 3724,
+      "stamp_ns": 187700000000,
+      "request_id": 1,
+      "snapshot_policy": "update",
+      "requested_mapping_revision": 219,
+      "optimization_revision": 219,
+      "optimized_through_ns": 180900000000
+    },
+    "initial_ping_fusion": {
+      "input_enabled": false,
+      "joint_enabled": false,
+      "received": 0,
+      "optimized_states": 0
+    },
+    "initial_pressure_fusion": {
+      "enabled": true,
+      "optimized_states": 176,
+      "last_fused_stamp_ns": 187550000000
+    },
+    "pressure_fusion": {
+      "enabled": true,
+      "optimized_states": 183,
+      "last_fused_stamp_ns": 194550000000
+    },
+    "initial_dvl_fusion": {
+      "optimized_states": 104,
+      "last_fused_stamp_ns": 188010000000
+    },
+    "dvl_fusion": {
+      "optimized_states": 111,
+      "last_fused_stamp_ns": 195000000000
+    },
+    "continuous_export": true,
+    "export_input_messages": 848,
+    "export_suppressed_messages": 0,
+    "camera_prefetch": {
+      "mode": "bounded_async_v1",
+      "max_bytes": 402653184,
+      "lookahead": 16,
+      "reserved_bytes": 0,
+      "peak_reserved_bytes": 9185536,
+      "loaded": 1848,
+      "released": 1848,
+      "pending": 0,
+      "thread_alive": false,
+      "closed": true
+    },
+    "initial_export_at_ns": 181690000000,
+    "replay_speed": 1.0,
+    "retained_startup_measurements": true,
+    "processing_profile": {
+      "optical_flow_type": "patch",
+      "max_image_pixels": 120000,
+      "max_feature_cells": 200
+    },
+    "map_backend": "conditional_paged_v1",
+    "native_map_backend_ack": "conditional_paged_v1"
+  },
+  "application_map": {
+    "schema": "request-priority-application-map-assessment-1",
+    "scope": "Complete application-owner HTTP export on preserved physical inputs; no new field or installed-package acceptance",
+    "reference_stamp_ns": 11900000000,
+    "alignment_rotation": [
+      [
+        -0.2797798232634128,
+        0.9600641908199126,
+        0.0
+      ],
+      [
+        -0.9600641908199126,
+        -0.2797798232634128,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "alignment_translation": [
+      -0.13459710823330623,
+      0.17655455395596165,
+      -0.18328416906488693
+    ],
+    "gauge": "Initial yaw and translation only, scale1; no trajectory fit or per-phase alignment",
+    "points": 3724,
+    "all_points_retained": true,
+    "median_m": 0.004190053861222953,
+    "p95_m": 0.018644539040789353,
+    "rmse_m": 0.009344619428771907,
+    "maximum_m": 0.09135354769201864,
+    "above_10cm": 0,
+    "above_20cm": 0,
+    "source_ply_sha256": "80f95f3e96effd6a01878c2f52c4cc1f06a76ac0c85c7d9af48eaed7ad1ba38a",
+    "checkpoint_sha256": "74ab94da95d7d45c7ce9fea8481fbab7caf1e0b39935bf783be35c58eda7a601",
+    "source_graph_digest_verified": true,
+    "truth_used_for": "Assessment and annotation only",
+    "product_qualified": false,
+    "downloaded_ply_sha256": "668913454f61e0422045319fb2ef777856b193eadf7b002a603353af3235cc23",
+    "native_ply_sha256": "80f95f3e96effd6a01878c2f52c4cc1f06a76ac0c85c7d9af48eaed7ad1ba38a",
+    "all_coordinate_bytes_identical": true,
+    "coordinate_payload_sha256": "55733e1d4b2ad42410deb7a194cd889a1182764bceaa9d4f8bed3c9170788f10",
+    "header_difference": "Application adds session_nonce/frame_id/units/library/navigation_ready provenance; coordinate payload unchanged"
+  },
+  "continuous_local_trajectory": {
+    "evaluated": true,
+    "states": 2133,
+    "duration_s": 183.10000000000002,
+    "evaluation_alignment": {
+      "rotation": [
+        [
+          -0.2797798232634128,
+          0.9600641908199126,
+          0.0
+        ],
+        [
+          -0.9600641908199126,
+          -0.2797798232634128,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "translation": [
+        -0.13459710823330623,
+        0.17655455395596165,
+        -0.18328416906488693
+      ],
+      "scale": 1.0
+    },
+    "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+    "position_rmse_m": 0.9351206277471541,
+    "position_max_m": 2.3564240879185254,
+    "rotation_rmse_rad": 0.028581187065800148,
+    "rotation_max_rad": 0.04446522896064838,
+    "truth_distance_m": 86.83575745566492,
+    "estimated_distance_m": 83.41908644150803,
+    "rpe_1s_pairs": 2122,
+    "rpe_1s_position_rmse_m": 0.10372476932333403,
+    "rpe_1s_rotation_rmse_rad": 0.0036027579136908706,
+    "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery",
+    "all_native_states_retained": true,
+    "source": "Original continuous native local VIO states, no optimized-map replacement",
+    "truth_used_for": "Assessment only"
+  },
+  "continuity": {
+    "native_states": 2133,
+    "during_loss_native_states": 848,
+    "during_loss_minimum_landmarks": 2570,
+    "during_loss_status_samples": 981,
+    "frames": [
+      "vehicle/vio_joint-ros-replay_segment_0"
+    ],
+    "worker_pids": [
+      83872
+    ],
+    "failures": [],
+    "map_errors": [],
+    "background_updates_superseded": 1,
+    "scope": "Observed continuity of original physical lock-loss replay; no during-loss HTTP request was made",
+    "during_loss_http_qualified": false
+  },
+  "input_reconstruction": {
+    "passed": true,
+    "packets": 20777,
+    "images_reconstructed": 1798,
+    "payload_sha256": "9e3f598629f7fe126e55d3f222a82439e8f47cd8ea1b7da929f33ff6a851b39c",
+    "counts": {
+      "14": 16,
+      "13": 1,
+      "1": 18332,
+      "16": 16,
+      "9": 111,
+      "8": 319,
+      "10": 183,
+      "2": 1798,
+      "4": 1
+    },
+    "every_packet_verified": true,
+    "all_inputs_retained": true,
+    "reference_source_required": true
+  },
+  "original_output_guard_failure": {
+    "name": "original-time-app-export",
+    "at": "2026-11-08T01:19:03.873876+00:00",
+    "exit_code": -15,
+    "guard": "output_bytes",
+    "elapsed_seconds": 186.733342166,
+    "peak_owned_rss_bytes": 982728704,
+    "remaining_owned_processes": [],
+    "monitor_error": null
+  },
+  "application_resource_receipt": {
+    "name": "original-time-app-export",
+    "at": "2026-11-08T01:28:41.978682+00:00",
+    "exit_code": 0,
+    "guard": null,
+    "elapsed_seconds": 192.7800304160919,
+    "peak_owned_rss_bytes": 1111097344,
+    "remaining_owned_processes": [],
+    "monitor_error": null
+  },
+  "reconstruction_resource_receipt": {
+    "name": "reconstruct-every-input",
+    "at": "2026-11-08T01:28:48.186629+00:00",
+    "exit_code": 0,
+    "guard": null,
+    "elapsed_seconds": 6.098376374924555,
+    "peak_owned_rss_bytes": 136429568,
+    "remaining_owned_processes": [],
+    "monitor_error": null
+  },
+  "all_complete_maps_preserved": true,
+  "point_error_tuning": false,
+  "native_deadline_s": 10,
+  "output_limit_bytes": 536870912,
+  "owned_rss_limit_bytes": 3221225472,
+  "global_sdk_activated": false,
+  "live_services_changed": false,
+  "internal_disk_used": false,
+  "map_qualified": false,
+  "product_qualified": false,
+  "source_receipt_sha256": "2ef576eb58f792b3c8ac9a6a30f366063f14a8b20fe1a3ab3d20109a068dac8e",
+  "unresolved": [
+    "continuous position drift during physical DVL lock loss",
+    "pre-loss/during-loss HTTP request evidence",
+    "default full-graph capacity",
+    "longer missions and installed packages",
+    "actual IMU fusion in every supported sensor profile",
+    "remaining sonar/VRX/survey goal"
+  ],
+  "live_guard": {
+    "all_healthy": true,
+    "services_changed": false
+  },
+  "diagnostic_storage": {
+    "previous_bytes": 557392663,
+    "deduplicated_bytes": 262849552,
+    "policy": "Every image packet is referenced by original file/pixel/full-payload hashes and reconstructed after the timed replay; nonimage packets and every native output remain intact"
+  }
+}
