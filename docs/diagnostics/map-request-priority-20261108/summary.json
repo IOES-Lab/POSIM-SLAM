@@ -197,7 +197,7 @@
   },
   "application_map": {
     "schema": "request-priority-application-map-assessment-1",
-    "scope": "Complete application-owner HTTP export on preserved physical inputs; no new field or installed-package acceptance",
+    "scope": "Complete application-owner ROS service export on preserved physical inputs; browser HTTP route, GUI and installed package not exercised",
     "reference_stamp_ns": 11900000000,
     "alignment_rotation": [
       [
@@ -377,7 +377,7 @@
   },
   "diagnostic_storage": {
     "previous_bytes": 557392663,
-    "deduplicated_bytes": 262849552,
+    "deduplicated_bytes": 262849941,
     "policy": "Every image packet is referenced by original file/pixel/full-payload hashes and reconstructed after the timed replay; nonimage packets and every native output remain intact"
   }
 }

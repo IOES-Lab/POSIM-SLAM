@@ -17,11 +17,11 @@ existing native 10-second deadline. Its wrapper subsequently fails a JSON key-ty
 comparison; that verdict and the independent native audit remain separate.
 
 The application ROS owner replays the same physical camera/IMU/DVL/pressure
-record at 1x, with Ping absent. Complete HTTP export returns 3,724 points at
+record at 1x, with Ping absent. The ROS export service returns 3,724 points at
 187.7 seconds, through mapping revision 219. One background transaction is
 rolled back. All 2,133 native states remain; 848 occur during physical DVL lock
 loss, with at least 2,570 landmarks and the same worker/frame. No faults or map
-errors are observed. A during-loss HTTP export request was not made.
+errors are observed. No browser HTTP route or during-loss export request was exercised.
 
 All-point surface median/P95/RMSE/maximum are 4.190/18.645/9.345/91.354 mm.
 No point exceeds 10 cm. Continuous local position RMSE/maximum remain
