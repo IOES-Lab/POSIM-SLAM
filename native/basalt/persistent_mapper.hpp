@@ -25,6 +25,7 @@ struct PersistentMapSnapshot : MappingOutput {
   size_t graph_new_frames=0,graph_new_tracks=0,graph_extended_tracks=0,graph_merged_components=0,
     graph_removed_tracks=0,graph_preserved_landmarks=0,graph_initialized_landmarks=0,graph_numeric_bytes=0;
   double optimize_seconds=0;
+  uint64_t background_updates_superseded=0;
   std::string error;
   MappingGraphRegistry::Snapshot graph;
 };
@@ -65,19 +66,22 @@ class PersistentMapper {
   void setReference(int64_t stamp,const Sophus::SE3d& pose);
   void invalidate(const std::string& error);
   Snapshot snapshot() const;
-  // Pin the accepted input snapshot, not only its revision. Once the in-flight
-  // update completes, serve that snapshot before later background input.
+  // Pin the accepted input snapshot, not only its revision. An older background
+  // transaction may roll back to serve it first. A requested transaction runs
+  // to completion, so repeated requests cannot starve published progress.
   // Ingestion continues; newer explicit requests may coalesce this request.
   uint64_t requestUpdate();
   const std::string& epoch() const {return graph_registry_.epoch();}
   void finish();
 
  private:
+  friend struct PersistentMapperProbe;
   struct Batch {
     MappingInputStore::Snapshot input;
     int64_t reference_stamp=0;
     Sophus::SE3d reference_pose;
     uint64_t revision=0;
+    bool requested=false;
   };
   void ingest();
   void optimize();
@@ -98,6 +102,7 @@ class PersistentMapper {
   std::string error_;
   Snapshot latest_;
   uint64_t requested_revision_=0;
+  uint64_t background_updates_superseded_=0;
   MappingInputStore::Snapshot requested_input_;
   std::thread ingest_thread_,mapper_thread_;
 };

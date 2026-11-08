@@ -9,7 +9,13 @@
 #include <numeric>
 
 namespace posim_slam {
-
+namespace {
+// A scheduling decision, distinct from a malformed measurement or I/O fault.
+// The graph and matching owners unwind their staged transactions first.
+struct MappingUpdateSuperseded final:std::exception {
+  const char* what() const noexcept override {return "mapping_update_superseded";}
+};
+}
 
 PersistentMapper::PersistentMapper(const basalt::Calibration<double>& calibration,
     const basalt::VioConfig& config,double three_sigma_m,PersistentMapLimits limits,std::string epoch,std::filesystem::path input_archive,
@@ -104,6 +110,7 @@ void PersistentMapper::optimize() {
       batch=retained_;
       if(requested_input_ && requested_input_->revision>completed) {
         batch.input=requested_input_;batch.revision=requested_input_->revision;
+        batch.requested=true;
       }
     }
     try {
@@ -112,13 +119,21 @@ void PersistentMapper::optimize() {
       if(error_.empty())latest_=std::move(result);
       completed=batch.revision;
       if(requested_input_ && requested_input_->revision<=completed)requested_input_.reset();
+    } catch(const MappingUpdateSuperseded&) {
+      // No measurements were consumed or published by the aborted graph
+      // transaction. Keep the completed snapshot and the pinned request.
+      ++background_updates_superseded_;
     } catch(const std::exception& error){invalidate(error.what());return;}
   }
 }
 std::shared_ptr<PersistentMapSnapshot> PersistentMapper::build(const Batch& batch) {
   const auto started=std::chrono::steady_clock::now();
-  const auto updated=graph_->update(batch.input,10,[this] {
-    std::lock_guard<std::mutex> lock(mutex_);return !error_.empty();
+  const auto updated=graph_->update(batch.input,10,[this,&batch] {
+    std::lock_guard<std::mutex> lock(mutex_);
+    if(!error_.empty())return true;
+    if(!batch.requested && requested_input_ && requested_input_->revision>batch.revision)
+      throw MappingUpdateSuperseded();
+    return false;
   },batch.reference_stamp);auto& mapper=graph_->mapper();
   if(!mapper.getFramePoses().count(batch.reference_stamp))
     throw std::runtime_error("mapping_pose_image_or_reference_mismatch");
@@ -133,6 +148,7 @@ std::shared_ptr<PersistentMapSnapshot> PersistentMapper::build(const Batch& batc
   const Sophus::SO3d rotation=Sophus::SO3d::exp(Eigen::Vector3d(0,0,yaw));
   const Sophus::SE3d gauge(rotation,batch.reference_pose.translation()-rotation*reference.translation());
   auto result=std::make_shared<PersistentMapSnapshot>();
+  result->background_updates_superseded=background_updates_superseded_;
   result->revision=batch.revision;result->optimized_through_ns=batch.input->frames.rbegin()->first;
   result->keyframes=batch.input->frames.size();result->retirements=batch.input->revision;
   result->source_image_bytes=batch.input->source_image_bytes;

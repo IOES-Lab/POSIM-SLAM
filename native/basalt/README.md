@@ -17,6 +17,12 @@ session input database. The readiness response reports the selected policy;
 `validate_ready(ready, backend=...)` checks the requested provider contract.
 The bare binary leaves persistent mapping disabled.
 
+An explicit export pins the accepted input revision. It can supersede an older
+background transaction through the graph's rollback path. A requested transaction
+runs to completion, so repeated requests preserve forward progress. Input ingestion
+and the last completed map remain available. Genuine source and storage failures
+still invalidate mapping. Map diagnostics report `background_updates_superseded`.
+
 `map_quality.native_settings()`는 기본 `full_graph_v1` 백엔드로 지속 지도를
 켭니다. `map_backend: "conditional_paged_v1"`을 명시하면 최근 활성 키프레임
 12개·파생 행렬 캐시 8MiB·키프레임 이력 주소 상한 10,922개를 사용합니다.
@@ -24,6 +30,12 @@ The bare binary leaves persistent mapping disabled.
 세션 입력 데이터베이스 옆에 만듭니다. 준비 응답은 선택 정책을 보고하고
 `validate_ready(ready, backend=...)`가 요청한 공급 모듈 규약을 검사합니다.
 네이티브 실행 파일을 설정 없이 호출하면 지속 지도는 꺼져 있습니다.
+
+명시적 내보내기는 수용된 입력 리비전을 고정합니다. 이전 백그라운드 계산은
+그래프의 롤백 경로로 중단할 수 있습니다. 요청한 계산은 완료까지 진행하여
+반복 요청에도 결과가 계속 생성됩니다. 입력 수신과 마지막 완료 지도는
+유지합니다. 실제 입력·저장 오류는 지도를 무효화하며, 지도 진단에는
+`background_updates_superseded` 횟수가 포함됩니다.
 
 `mapping_information.hpp` provides a bounded graph information calculation for
 mapping backends. It accepts whitened pose and point Jacobians, rejects reused

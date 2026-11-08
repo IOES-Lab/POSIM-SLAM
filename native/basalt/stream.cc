@@ -833,6 +833,7 @@ int main(int argc,char** argv) {
             {"eligible_points",m.points.size()},{"world_observed_points",m.observed},{"nonfinite_candidates",m.nonfinite},
             {"optimization_revision",m.revision},{"optimized_through_ns",m.optimized_through_ns},
             {"keyframes",m.keyframes},{"retirements",m.retirements},{"optimize_seconds",m.optimize_seconds},
+            {"background_updates_superseded",m.background_updates_superseded},
             {"source_image_bytes",m.source_image_bytes},{"source_factor_matrix_bytes",m.source_factor_matrix_bytes},
             {"compact_input_bytes",m.compact_input_bytes},
             {"row_cache_resident_bytes",m.row_cache_resident_bytes},{"row_cache_peak_bytes",m.row_cache_peak_bytes},
