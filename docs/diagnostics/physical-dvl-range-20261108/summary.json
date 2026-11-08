@@ -286,5 +286,140 @@
       }
     ],
     "passed": false
+  },
+  "finer_graph_timing": {
+    "export": [
+      {
+        "wall_s": 186.22799670812674,
+        "optimization_revision": 220,
+        "optimized_through_ns": 180900000000,
+        "points": 3628,
+        "request_id": 1,
+        "requested_mapping_revision": 220,
+        "snapshot_policy": "update",
+        "stamp_ns": 189000000000,
+        "success": true,
+        "type": "export"
+      }
+    ],
+    "requested_revision": 220,
+    "window_growth_s": 3.684608791,
+    "nonlinear_s": 0.900482167,
+    "matching_s": 0.220641875,
+    "maximum_send_lag_s": 0.002397916978225112,
+    "native_export_only": true,
+    "product_qualified": false
+  },
+  "timing_only_map": {
+    "schema": "timing-only-paged-map-assessment-1",
+    "scope": "Complete native timing-only export; no HTTP or product acceptance",
+    "reference_stamp_ns": 11800000000,
+    "alignment_rotation": [
+      [
+        0.36489139313373353,
+        -0.931050090605722,
+        0.0
+      ],
+      [
+        0.931050090605722,
+        0.36489139313373353,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "alignment_translation": [
+      -0.13348562739817238,
+      0.16691653009900886,
+      -0.1844706004972939
+    ],
+    "gauge": "Initial yaw and translation only, scale1; no trajectory fit or per-phase alignment",
+    "points": 3628,
+    "all_points_retained": true,
+    "median_m": 0.004161727738766885,
+    "p95_m": 0.0191745499442719,
+    "rmse_m": 0.009570343754661684,
+    "maximum_m": 0.09624363089867405,
+    "above_10cm": 0,
+    "above_20cm": 0,
+    "source_ply_sha256": "24c419f20db2a8be885016b02de998288af1979105918667f45d191be2acafc3",
+    "checkpoint_sha256": "55893fa38877dd561c0d512868f6ee260d43994817b29148834f5c2300bcfa03",
+    "source_graph_digest_verified": true,
+    "truth_used_for": "Assessment and annotation only",
+    "product_qualified": false
+  },
+  "optimized_keyframe_assessment": {
+    "schema": "optimized-map-keyframe-assessment-1",
+    "scope": "Optimized map keyframes only, not continuous local VIO states; timing-only native run",
+    "metrics": {
+      "evaluated": true,
+      "states": 227,
+      "duration_s": 169.10000000000002,
+      "evaluation_alignment": {
+        "rotation": [
+          [
+            0.364891378031769,
+            -0.9310500965243904,
+            0.0
+          ],
+          [
+            0.9310500965243904,
+            0.364891378031769,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "translation": [
+          -0.13348562739817238,
+          0.16691653009900886,
+          -0.1844706004972939
+        ],
+        "scale": 1.0
+      },
+      "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+      "position_rmse_m": 1.5592456531881507,
+      "position_max_m": 4.410369535083604,
+      "rotation_rmse_rad": 0.00440516509672136,
+      "rotation_max_rad": 0.015339296802022336,
+      "truth_distance_m": 84.17233549701726,
+      "estimated_distance_m": 75.39620560522376,
+      "rpe_1s_pairs": 7,
+      "rpe_1s_position_rmse_m": 0.0012164496015171983,
+      "rpe_1s_rotation_rmse_rad": 0.0005899824374878166,
+      "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+    },
+    "phases": {
+      "before_loss": {
+        "keyframes": 81,
+        "rmse_m": 0.008138541911244296,
+        "maximum_m": 0.01581280775328198,
+        "first_error_m": 0.0,
+        "last_error_m": 0.01581280775328198
+      },
+      "during_loss": {
+        "keyframes": 102,
+        "rmse_m": 2.3260752929199406,
+        "maximum_m": 4.410369535083604,
+        "first_error_m": 0.016371812948208532,
+        "last_error_m": 0.0069603893378191685
+      },
+      "returned": {
+        "keyframes": 44,
+        "rmse_m": 0.009325077273316561,
+        "maximum_m": 0.01533493778881226,
+        "first_error_m": 0.006053856386362241,
+        "last_error_m": 0.01331732623326307
+      }
+    },
+    "all_keyframes_retained": true,
+    "truth_used_for": "Assessment only",
+    "product_qualified": false
   }
 }
