@@ -1,0 +1,15 @@
+[workspace]
+name = "posim-slam-native-mapping-controls"
+channels = ["conda-forge"]
+platforms = ["linux-64"]
+
+[dependencies]
+python = "3.12.*"
+cmake = "==4.4.4"
+ninja = "==1.13.2"
+clangxx_linux-64 = "*"
+eigen = "==5.0.1"
+libopencv = { version = "==4.13.0", build = "headless*" }
+tbb-devel = "==2023.1.0"
+fmt = "==12.1.0"
+sqlite = "==3.53.4"

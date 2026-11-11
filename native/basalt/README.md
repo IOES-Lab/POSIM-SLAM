@@ -875,6 +875,22 @@ rejected; the builder never resets a checkout. CMake 4 requires the explicit
 an explicit `cassert` include. Upstream source is not patched. Parallelism is
 limited to 1–4 build jobs and two estimation workers.
 
+The research builder runs the complete graph/window/input archive probe within
+60 seconds after compilation. It checks deferred tracking capture, byte-identical
+archive output, rejected callbacks and preservation of an existing archive.
+The `Native mapping controls` workflow runs the same probe on a GitHub-hosted
+Linux runner using the locked environment in `ci/pixi.lock` and the pinned
+dependency checkouts. Its graph archives and source-bound receipt are retained
+as a workflow artifact. Physical ROS replay and installed-runtime acceptance
+have their own gates.
+
+연구용 빌더는 컴파일 후 60초 한도로 전체 그래프·활성 구간·입력 아카이브
+probe를 실행합니다. 지연된 tracking 캡처, 아카이브 바이트 일치, 거부된 callback과
+기존 파일 보존을 검사합니다. `Native mapping controls`는 `ci/pixi.lock`의 Linux
+환경과 고정 의존성 소스로 같은 probe를 GitHub 호스팅 러너에서 실행하고 그래프
+파일·소스 결합 receipt를 artifact로 보존합니다. 실제 ROS 재생과 설치형 runtime
+수용은 각각의 게이트를 따릅니다.
+
 The executable generates a deterministic 12-second six-axis motion with a
 one-second stationary start, 5 Hz camera observations and 200 Hz IMU. Two paths
 run separately: noisy projected feature tracks and rendered grayscale images
