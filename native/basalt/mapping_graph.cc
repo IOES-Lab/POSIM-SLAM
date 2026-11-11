@@ -452,6 +452,8 @@ void MappingGraphRegistry::writeArchive(const std::filesystem::path& path,const 
   // before capture so appending identity cannot copy the large envelope.
   bytes.reserve(prepared_bytes+64);
   if(capture_tracking_stamp) {
+    output.flush();
+    if(!output)throw std::runtime_error("mapping_graph_archive_write_failed");
     tracking_stamp=capture_tracking_stamp();
     if(tracking_stamp<=0 || tracking_stamp<latest_frame_stamp)
       throw std::invalid_argument("mapping_graph_export_timing");

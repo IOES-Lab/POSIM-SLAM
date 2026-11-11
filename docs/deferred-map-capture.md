@@ -2,7 +2,9 @@
 
 `MappingGraphRegistry::writeWithInputsAtCapture` prepares the complete immutable
 graph and its original input pages before calling the supplied tracking-time
-callback once. The timestamp must be positive and cover every graph frame.
+callback once. It flushes the input pages to the unpublished temporary file
+and checks stream errors before capture. This is a stream flush, not a disk
+durability guarantee. The timestamp must be positive and cover every graph frame.
 The callback can throw to reject publication. The existing `writeWithInputs`
 API keeps its caller-supplied timestamp and archive format.
 
@@ -21,7 +23,9 @@ must require a successful response and validate its request and session.
 # 지도 내보내기의 지연된 추적 자세 캡처
 
 `MappingGraphRegistry::writeWithInputsAtCapture`는 불변 지도 그래프와 원본 입력
-페이지를 모두 준비한 뒤 추적 시각 callback을 한 번 호출합니다. 시각은 양수이며
+페이지를 모두 준비한 뒤 추적 시각 callback을 한 번 호출합니다.
+캡처 전에 입력 페이지를 미게시 임시 파일로 flush하고 스트림 오류를 확인합니다.
+이는 스트림 버퍼의 쓰기 완료이며 디스크 영구 저장을 보장하지는 않습니다. 시각은 양수이며
 모든 그래프 프레임의 시각 이상이어야 합니다. Callback이 예외를 발생시키면
 파일 게시를 거부합니다. 기존 `writeWithInputs` API는 호출자가 준 시각과
 아카이브 형식을 유지합니다.
