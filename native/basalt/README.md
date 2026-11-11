@@ -881,7 +881,9 @@ archive output, rejected callbacks and preservation of an existing archive.
 The `Native mapping controls` workflow runs the same probe on a GitHub-hosted
 Linux runner using the locked environment in `ci/pixi.lock` and the pinned
 dependency checkouts. Its graph archives and source-bound receipt are retained
-as a workflow artifact. Physical ROS replay and installed-runtime acceptance
+as a workflow artifact. The CI SDK lives outside the CMake source tree because
+OpenGV's exported include paths must not point inside that tree.
+Physical ROS replay and installed-runtime acceptance
 have their own gates.
 
 연구용 빌더는 컴파일 후 60초 한도로 전체 그래프·활성 구간·입력 아카이브
@@ -889,7 +891,8 @@ probe를 실행합니다. 지연된 tracking 캡처, 아카이브 바이트 일�
 기존 파일 보존을 검사합니다. `Native mapping controls`는 `ci/pixi.lock`의 Linux
 환경과 고정 의존성 소스로 같은 probe를 GitHub 호스팅 러너에서 실행하고 그래프
 파일·소스 결합 receipt를 artifact로 보존합니다. 실제 ROS 재생과 설치형 runtime
-수용은 각각의 게이트를 따릅니다.
+수용은 각각의 게이트를 따릅니다. OpenGV의 내보낸 include 경로가 소스 트리 안을
+가리키지 않도록 CI SDK는 CMake 소스 트리 밖에 둡니다.
 
 The executable generates a deterministic 12-second six-axis motion with a
 one-second stationary start, 5 Hz camera observations and 200 Hz IMU. Two paths

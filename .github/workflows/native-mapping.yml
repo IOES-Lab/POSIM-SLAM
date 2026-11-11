@@ -31,14 +31,18 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Stage the locked SDK outside the CMake source tree
+        run: |
+          mkdir "$RUNNER_TEMP/mapping-environment"
+          cp native/basalt/ci/pixi.toml native/basalt/ci/pixi.lock "$RUNNER_TEMP/mapping-environment/"
       - uses: prefix-dev/setup-pixi@v0.11.3
         with:
           pixi-version: v0.83.0
-          manifest-path: native/basalt/ci/pixi.toml
+          manifest-path: ${{ runner.temp }}/mapping-environment/pixi.toml
           locked: true
       - name: Compile and run the complete graph archive probe
         run: |
-          pixi run --locked --manifest-path native/basalt/ci/pixi.toml python - <<'PY'
+          pixi run --locked --manifest-path "$RUNNER_TEMP/mapping-environment/pixi.toml" python - <<'PY'
           from pathlib import Path
           import hashlib, json, os, subprocess, sys
           from tools.build_basalt import fetch_sources, run, verify_sources
