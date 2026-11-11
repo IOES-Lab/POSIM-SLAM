@@ -16,7 +16,8 @@ source. The receipt also matches the raw job log.
 This is Linux C++ control evidence. A fresh arm64 worker build and the original
 190-second host HTTP/ROS replay remain pending. The earlier arm64 binary is not
 reused as evidence for the changed native source. The independent integrity run
-`43024427418` is still running; its Python 3.12 and native Ping jobs have passed.
+`43024427418` passed Python 3.10/3.12 and native Ping.
+[Terminal job results](integrity-cbe24fc.json).
 
 ## Earlier failure and historical arm64 binding
 
@@ -61,8 +62,8 @@ Artifact `13858140002`의 ZIP SHA-256은 위 영문과 같습니다. 아카이�
 
 Linux C++ 대조 범위입니다. 새 arm64 worker build와 원래 190초 호스트
 HTTP/ROS 재생은 남아 있습니다. 변경된 native source의 근거로 이전 arm64
-바이너리를 재사용하지 않습니다. 별도 integrity run `43024427418`은 실행 중이며
-Python 3.12와 native Ping 작업은 통과했습니다.
+바이너리를 재사용하지 않습니다. 별도 integrity run `43024427418`의 Python
+3.10/3.12와 native Ping 작업도 모두 통과했습니다. 위 JSON에 종료 결과가 있습니다.
 
 ## 이전 실패와 과거 arm64 바인딩
 

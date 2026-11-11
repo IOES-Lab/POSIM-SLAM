@@ -1,0 +1,27 @@
+{
+  "schema": "posim-slam-integrity-ci-1",
+  "revision": "cbe24fc9e543dfcb70ebe3be027175167a49be83",
+  "run_id": 43024427418,
+  "url": "https://github.com/IOES-Lab/POSIM-SLAM/actions/runs/43024427418",
+  "jobs": [
+    {
+      "id": 130535398360,
+      "name": "independent-python (3.12)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 130535398721,
+      "name": "independent-python (3.10)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 130535398818,
+      "name": "native-ping",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "passed": true
+}
