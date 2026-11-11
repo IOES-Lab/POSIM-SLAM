@@ -1,0 +1,112 @@
+{
+  "dvl-only": {
+    "states": 178,
+    "max_previous_pose_component_change": 0.0,
+    "joint_checks": [
+      {
+        "root_rank": 228,
+        "root_columns": 229,
+        "blocks": [
+          {
+            "kind": "state",
+            "ident": 3010000000,
+            "unbounded_directions": 0,
+            "position_three_sigma_observable_major_m": 0.015194852836287829,
+            "position_three_sigma_known_root_major_m": 0.014819496740533957
+          },
+          {
+            "kind": "state",
+            "ident": 33010000000,
+            "unbounded_directions": 0,
+            "position_three_sigma_observable_major_m": 5.424483801181102,
+            "position_three_sigma_known_root_major_m": 0.0
+          },
+          {
+            "kind": "pressure",
+            "ident": 0,
+            "unbounded_directions": 0
+          },
+          {
+            "kind": "plane",
+            "ident": 0,
+            "unbounded_directions": 1
+          }
+        ],
+        "workspace_bound_bytes": 28378816,
+        "active_native_counts": {
+          "imu_intervals": 14,
+          "dvl_observations": 5,
+          "pressure_observations": 4
+        },
+        "continued_original_support": null,
+        "rejected_before_native_install": false,
+        "reason": null
+      },
+      {
+        "root_rank": 228,
+        "root_columns": 229,
+        "blocks": [
+          {
+            "kind": "state",
+            "ident": 33010000000,
+            "unbounded_directions": 0,
+            "position_three_sigma_observable_major_m": 3.360649979187307,
+            "position_three_sigma_known_root_major_m": 0.047119524801538415
+          },
+          {
+            "kind": "pressure",
+            "ident": 0,
+            "unbounded_directions": 0
+          },
+          {
+            "kind": "plane",
+            "ident": 0,
+            "unbounded_directions": 1
+          }
+        ],
+        "workspace_bound_bytes": 8426224,
+        "active_native_counts": {
+          "imu_intervals": 14,
+          "dvl_observations": 5,
+          "pressure_observations": 4
+        },
+        "continued_original_support": true,
+        "rejected_before_native_install": false,
+        "reason": null
+      }
+    ]
+  },
+  "dvl-fls": {
+    "states": 178,
+    "max_previous_pose_component_change": 0.0,
+    "joint_checks": [
+      {
+        "root_rank": 226,
+        "root_columns": 226,
+        "blocks": [
+          {
+            "kind": "state",
+            "ident": 33010000000,
+            "unbounded_directions": 0,
+            "position_three_sigma_observable_major_m": 5.4244838011724035,
+            "position_three_sigma_known_root_major_m": 0.0
+          },
+          {
+            "kind": "pressure",
+            "ident": 0,
+            "unbounded_directions": 0
+          }
+        ],
+        "workspace_bound_bytes": 3314456,
+        "active_native_counts": {
+          "imu_intervals": 14,
+          "dvl_observations": 5,
+          "pressure_observations": 4
+        },
+        "continued_original_support": null,
+        "rejected_before_native_install": true,
+        "reason": "dvl_support_not_planar"
+      }
+    ]
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "binary_sha256": "0090433756cb425eea803ce56a70c1af5adf844223054b2f1c25739bee0d8564",
+  "source": "ffecee9be9976f68c9e883d6cf3bbd6d40eb7729",
+  "function": "__ZN2gz7sensors18WgpuComputeBackend7ComputeERKNS0_17SonarComputeInputERNS0_18SonarComputeOutputE",
+  "calls": [
+    "79fd4:\tea 96 03 94\tbl\t_sonar_wgpu_compute",
+    "7a120:\t59 ab 03 94\tbl\t_sonar_wgpu_free"
+  ],
+  "new_renderer": false,
+  "sdk_changed": false,
+  "apple_reference": "https://developer.apple.com/library/archive/documentation/DeveloperTools/Conceptual/DynamicLibraries/100-Articles/UsingDynamicLibraries.html"
+}

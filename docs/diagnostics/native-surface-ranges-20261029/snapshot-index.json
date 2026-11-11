@@ -1,0 +1,10 @@
+{
+  "original-dvl-only/snapshot-before.json.gz": "snapshots/8edb0f44e8ec990ac3d29c0571467827607a3b0d6454704584972d122610e98e.json.gz",
+  "original-dvl-only/snapshot-after.json.gz": "snapshots/8a13ce4058e9a8e3c4aaefc6a04c410a018efc7cc3e080c6a54797704a906fd0.json.gz",
+  "original-dvl-fls/snapshot-before.json.gz": "snapshots/8edb0f44e8ec990ac3d29c0571467827607a3b0d6454704584972d122610e98e.json.gz",
+  "original-dvl-fls/snapshot-after.json.gz": "snapshots/ec02659155a630f1efe5d02bc87cb00aefab3c60ce551c0aea8149a8a023e235.json.gz",
+  "guarded-dvl-only/snapshot-before.json.gz": "snapshots/8edb0f44e8ec990ac3d29c0571467827607a3b0d6454704584972d122610e98e.json.gz",
+  "guarded-dvl-only/snapshot-after.json.gz": "snapshots/3249b2a17874410dfbec68574cbf741115dc2118865d17797b101c905f5aa4ac.json.gz",
+  "guarded-dvl-fls/snapshot-before.json.gz": "snapshots/8edb0f44e8ec990ac3d29c0571467827607a3b0d6454704584972d122610e98e.json.gz",
+  "guarded-dvl-fls/snapshot-after.json.gz": "snapshots/3771600971f6304787c48092236ad10f4588ad5351cbbf3f6092d991055d66f3.json.gz"
+}

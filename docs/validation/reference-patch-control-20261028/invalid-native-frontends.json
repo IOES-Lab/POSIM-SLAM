@@ -1,0 +1,20 @@
+{
+  "passed": true,
+  "controls": [
+    {
+      "value": "other",
+      "returncode": 1,
+      "error": "invalid_optical_flow_type"
+    },
+    {
+      "value": null,
+      "returncode": 1,
+      "error": "[json.exception.type_error.302] type must be string, but is null"
+    },
+    {
+      "value": true,
+      "returncode": 1,
+      "error": "[json.exception.type_error.302] type must be string, but is boolean"
+    }
+  ]
+}

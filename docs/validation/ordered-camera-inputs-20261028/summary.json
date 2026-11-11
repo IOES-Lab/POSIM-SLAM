@@ -1,0 +1,141 @@
+{
+  "recording": {
+    "camera_frames": 1248,
+    "sonar_frames": 250,
+    "imu_samples": 12511,
+    "ping_samples": 1251,
+    "dvl_samples": 125,
+    "pressure_samples": 1251,
+    "errors": [],
+    "first_imu_stamp_ns": 8870000000,
+    "last_imu_stamp_ns": 133970000000,
+    "timeline_sha256": "42d4416ad0444835f3d50be7c5e4db27a514a024cd3deda3fa686f94da501b26"
+  },
+  "source_binding": {
+    "application_base": "26da571355cd64c84da729a44139a36c9e578585",
+    "component_code": "6f043c314d7dea91575794e3395af76be5326486",
+    "owner_sha256": "2c44132cc0fa01871e3bb8dd6e9fd47f28cda5c54f158513bff14324df9bab31",
+    "native_sha256": "cb5cbc7c254b668ea0b0e3c7ac0f2fe8dac0d4f07810bab2e8d3237ca18d1d87"
+  },
+  "field": {
+    "passed": false,
+    "failure": "native map unavailable after survey",
+    "maximum_archived_landmarks": 0,
+    "initialization": {
+      "visually_constrained_poses": 10,
+      "initial_cloud_points": 0,
+      "map_required_before_motion": false,
+      "mission_started_before_tracking": true
+    },
+    "recovery": {
+      "killed_owned_worker": 99175,
+      "old_frame": "vehicle/vio_83a9f4cc17614bbda885f66f8e4c0cca_segment_0",
+      "new_frame": "vehicle/vio_83a9f4cc17614bbda885f66f8e4c0cca_segment_1",
+      "new_pose_count": 5,
+      "acceptance": "five visually constrained poses; bootstrap predictions retained separately",
+      "empty_new_segment_clouds": 13
+    },
+    "live_poses": 1126,
+    "segment_stable": true,
+    "clearance": {
+      "clear": true,
+      "minimum_centerline_clearance_m": 0.8470335643304404,
+      "required_body_margin_m": 0.5,
+      "closest": {
+        "actor": "acoustic_validation_target_1/body/collision",
+        "segment": 807
+      },
+      "segments": 3003,
+      "collision_boxes": 5,
+      "method": "exact segment-to-oriented-box distance; spherical body envelope",
+      "scope": "authored targets only; terrain checked separately by mission planner"
+    },
+    "mapping": {
+      "active_landmarks": 837,
+      "evicted_landmarks": 0,
+      "rejected_candidates": 661245,
+      "geometry_support": {
+        "active_eligible": 0,
+        "active_joint_observed": 837,
+        "active_unqualified": 837,
+        "admission_coordinate": "world_position",
+        "calibration_uncertainty_included": false,
+        "damping_included": false,
+        "error": null,
+        "gauge": "native_initial_position_and_yaw_prior",
+        "host_camera_uncertainty_scope": "diagnostic_only",
+        "map_qualified": false,
+        "metric_three_sigma_limit_m": 0.1,
+        "observed_outliers_withdrawn": 0,
+        "observed_reprojection_culling": true,
+        "pixel_sigma": 0.5,
+        "policy": "joint_linearized_position_information",
+        "pose_uncertainty_included": true
+      },
+      "loop_closure": false,
+      "dense": false,
+      "requested_world_three_sigma_limit_m": 0.1
+    },
+    "motion": {
+      "metrics": {
+        "evaluated": true,
+        "states": 1126,
+        "duration_s": 112.5,
+        "evaluation_alignment": {
+          "rotation": [
+            [
+              -0.9921669151349678,
+              -0.12491922394716388,
+              0.0
+            ],
+            [
+              0.12491922394716388,
+              -0.9921669151349678,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "translation": [
+            -0.04615208245883501,
+            0.011224448690987172,
+            -0.7945228082407846
+          ],
+          "scale": 1.0
+        },
+        "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+        "position_rmse_m": 0.02363286214448849,
+        "position_max_m": 0.052809264060587315,
+        "rotation_rmse_rad": 0.00319311816813253,
+        "rotation_max_rad": 0.012342584257479852,
+        "truth_distance_m": 45.828848082716476,
+        "estimated_distance_m": 45.876651973673944,
+        "rpe_1s_pairs": 1116,
+        "rpe_1s_position_rmse_m": 0.0032694726531003887,
+        "rpe_1s_rotation_rmse_rad": 0.0019089977748157343,
+        "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+      },
+      "accepted": true,
+      "checks": {
+        "evaluated": true,
+        "states": true,
+        "duration": true,
+        "actual_motion": true,
+        "position_rmse": true,
+        "position_max": true
+      },
+      "criteria": {
+        "minimum_states": 250,
+        "minimum_duration_s": 29.0,
+        "minimum_truth_distance_m": 0.5,
+        "maximum_position_rmse_m": 0.1,
+        "maximum_position_error_m": 0.25
+      },
+      "scope": "Single recorded motion position gate; map geometry, orientation, repeatability and installed-app qualification remain separate"
+    }
+  },
+  "scope": "Input ordering and recording preservation; full goal and field map quality remain incomplete"
+}

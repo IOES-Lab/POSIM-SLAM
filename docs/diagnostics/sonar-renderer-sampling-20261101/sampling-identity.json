@@ -1,0 +1,18 @@
+{
+  "upstream_url": "https://github.com/gazebosim/gz-rendering/blob/gz-rendering10_10.0.2/ogre2/src/Ogre2GpuRays.cc",
+  "upstream_git_blob": "7365a9a621a320c57107240a6d009be0085a26bb",
+  "installed_ogre2_sha256": "14c6ae4c3d65427b4dda7175974fb75064d4a44e1e1d65fcda470aace5fac681",
+  "nominal_grid": [
+    256,
+    256
+  ],
+  "first_pass_texture": [
+    256,
+    256
+  ],
+  "texel_filter": "nearest",
+  "sampled_unique_texels": 13636,
+  "nominal_ray_cells": 65536,
+  "normal_angle_source": "Same float32 C++ start + index * step as the source; frozen calibration, not image-fitted",
+  "scene_or_pose_used_to_calibrate": false
+}

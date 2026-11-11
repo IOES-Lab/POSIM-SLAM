@@ -92,6 +92,30 @@ class SonarClockTests(unittest.TestCase):
                 reason = 'invalid_inertial_seed' if malformed else 'inertial_seed_contract'
                 with self.assertRaisesRegex(RuntimeError, reason):self.receive(client, 'state')
 
+    def test_sampled_range_beyond_clip_keeps_native_state_processing(self):
+        # A source-grid coordinate is noisy evidence; physical point support
+        # remains bounded by the ten-metre calibration. This synthetic stream
+        # supplies no map-point seed and does not qualify a reconstruction.
+        with tempfile.TemporaryDirectory() as folder:
+            client=self.worker(Path(folder));initial=1_000_000_000;next_imu=initial
+            client.gravity_seed(initial,[0,0,1]);observations=[];states=[]
+            spacing=1500./(2*29900.)
+            for index in range(12):
+                stamp=initial+index*200_000_000;t=index*.2
+                while next_imu<=stamp+10_000_000:
+                    client.imu(next_imu,[0,0,0],[.02,0,9.80665]);next_imu+=10_000_000
+                distance=9.999-.01*t*t
+                measured=round(distance/spacing)*spacing
+                observations.append(dict(stamp_ns=stamp,range_m=measured,azimuth_rad=0.))
+                if index>=2:
+                    client.sonar_snapshot(stamp,[dict(id=17,observations=list(observations),
+                        covariance=np.diag([.025**2,.008**2]*len(observations)))])
+                client.sonar_tick(stamp);state=self.receive(client,'state')
+                self.assertFalse(state['map_qualified']);self.assertTrue(np.isfinite(state['position']).all())
+                states.append(state)
+            self.assertGreater(observations[0]['range_m'],10.)
+            self.assertEqual(states[-1]['stamp_ns'],initial+2_200_000_000)
+
     def test_acoustic_states_marginalize_without_any_camera(self, with_dvl=False):
         with tempfile.TemporaryDirectory() as folder:
             client = self.worker(Path(folder))

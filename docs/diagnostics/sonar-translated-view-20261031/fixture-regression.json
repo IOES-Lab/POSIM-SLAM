@@ -1,0 +1,9 @@
+{
+  "original_pre_mission_failure": "/Volumes/ExternalHDD/POSIM/validation-data/posim-slam/sonar-translated-view-20261031/record/receipt.json",
+  "original_native_cleanup": "/Volumes/ExternalHDD/POSIM/validation-data/posim-slam/sonar-translated-view-20261031/lifecycle.json",
+  "same_error_reproduced": true,
+  "dedicated_configuration_passed": true,
+  "product_code_changed": false,
+  "physical_settings_changed": false,
+  "old_inputs_preserved": true
+}

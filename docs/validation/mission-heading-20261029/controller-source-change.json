@@ -1,0 +1,7 @@
+{
+  "application_base": "05839d40c95fc2ab38c94400a06f185ae6cd8a80",
+  "source": "runtime/browser_adapter/mission.py",
+  "before_sha256": "d9a58ae75809393c2b6f7abf2c2b49db7c0549d9fb14520e4c6a9f4dd27e6b42",
+  "after_sha256": "bf513819e331cee9eac5bf93f4f94b3115e140049c803c60ac2c0233b0350a6a",
+  "scope": "Only generic waypoint heading retention changes in native stage"
+}

@@ -1,0 +1,792 @@
+{
+  "request": {
+    "depth_m": 0.6,
+    "distance_m": 7.0,
+    "hold_seconds": 3,
+    "session_nonce": "a4052fd3fee54880be300be5f3543755",
+    "return_home": false,
+    "waypoints": [
+      {
+        "latitude": 47.63020014578648,
+        "longitude": -122.39824024659926,
+        "depth_m": 1.2,
+        "hold_seconds": 3
+      },
+      {
+        "latitude": 47.63020014578648,
+        "longitude": -122.39824024659926,
+        "depth_m": 0.6,
+        "hold_seconds": 0
+      },
+      {
+        "latitude": 47.630218134111225,
+        "longitude": -122.39824021048673,
+        "depth_m": 0.6,
+        "hold_seconds": 0
+      },
+      {
+        "latitude": 47.63021809138219,
+        "longitude": -122.39819364140911,
+        "depth_m": 0.6,
+        "hold_seconds": 0
+      },
+      {
+        "latitude": 47.63021809138219,
+        "longitude": -122.39819364140911,
+        "depth_m": 1.2,
+        "hold_seconds": 3
+      },
+      {
+        "latitude": 47.63021804863426,
+        "longitude": -122.39814707233157,
+        "depth_m": 1.2,
+        "hold_seconds": 0
+      },
+      {
+        "latitude": 47.630182071984734,
+        "longitude": -122.3981471445566,
+        "depth_m": 1.2,
+        "hold_seconds": 0
+      },
+      {
+        "latitude": 47.630182114732676,
+        "longitude": -122.39819371363414,
+        "depth_m": 1.2,
+        "hold_seconds": 0
+      },
+      {
+        "latitude": 47.630182114732676,
+        "longitude": -122.39819371363414,
+        "depth_m": 0.6,
+        "hold_seconds": 3
+      },
+      {
+        "latitude": 47.6301821574617,
+        "longitude": -122.39824028271177,
+        "depth_m": 0.6,
+        "hold_seconds": 0
+      },
+      {
+        "latitude": 47.63020014578648,
+        "longitude": -122.39824024659926,
+        "depth_m": 0.6,
+        "hold_seconds": 0
+      },
+      {
+        "latitude": 47.630218134111225,
+        "longitude": -122.39824021048673,
+        "depth_m": 0.6,
+        "hold_seconds": 0
+      },
+      {
+        "latitude": 47.63021809138219,
+        "longitude": -122.39819364140911,
+        "depth_m": 0.6,
+        "hold_seconds": 0
+      },
+      {
+        "latitude": 47.63021809138219,
+        "longitude": -122.39819364140911,
+        "depth_m": 1.2,
+        "hold_seconds": 3
+      },
+      {
+        "latitude": 47.63021804863426,
+        "longitude": -122.39814707233157,
+        "depth_m": 1.2,
+        "hold_seconds": 0
+      },
+      {
+        "latitude": 47.630182071984734,
+        "longitude": -122.3981471445566,
+        "depth_m": 1.2,
+        "hold_seconds": 0
+      },
+      {
+        "latitude": 47.630182114732676,
+        "longitude": -122.39819371363414,
+        "depth_m": 1.2,
+        "hold_seconds": 0
+      },
+      {
+        "latitude": 47.630182114732676,
+        "longitude": -122.39819371363414,
+        "depth_m": 0.6,
+        "hold_seconds": 3
+      },
+      {
+        "latitude": 47.6301821574617,
+        "longitude": -122.39824028271177,
+        "depth_m": 0.6,
+        "hold_seconds": 0
+      },
+      {
+        "latitude": 47.63020014578648,
+        "longitude": -122.39824024659926,
+        "depth_m": 0.6,
+        "hold_seconds": 0
+      }
+    ]
+  },
+  "preview": {
+    "session_nonce": "a4052fd3fee54880be300be5f3543755",
+    "job_id": null,
+    "start": [
+      -0.007467739943731134,
+      0.15817776678223744,
+      -0.08035208520811046
+    ],
+    "start_geographic": {
+      "longitude": -122.39823919936175,
+      "latitude": 47.63020142267783
+    },
+    "yaw_rad": 1.5822160431962966,
+    "depth_m": 1.2,
+    "distance_m": 7.245376498652466,
+    "hold_seconds": 3.0,
+    "minimum_planned_clearance_m": 2.3628967220179042,
+    "waypoints": [
+      {
+        "phase": "waypoint",
+        "number": 1,
+        "position": [
+          -0.08617507326764486,
+          0.016208997522427077,
+          -1.2
+        ],
+        "hold_seconds": 3.0,
+        "latitude": 47.63020014578648,
+        "longitude": -122.39824024659926,
+        "depth_m": 1.2
+      },
+      {
+        "phase": "waypoint",
+        "number": 2,
+        "position": [
+          -0.08617507326764486,
+          0.016208997522427077,
+          -0.6
+        ],
+        "hold_seconds": 0.0,
+        "latitude": 47.63020014578648,
+        "longitude": -122.39824024659926,
+        "depth_m": 0.6
+      },
+      {
+        "phase": "waypoint",
+        "number": 3,
+        "position": [
+          -0.08346093188186592,
+          2.0162071565543944,
+          -0.6
+        ],
+        "hold_seconds": 0.0,
+        "latitude": 47.63021813411122,
+        "longitude": -122.39824021048672,
+        "depth_m": 0.6
+      },
+      {
+        "phase": "waypoint",
+        "number": 4,
+        "position": [
+          3.416534643669668,
+          2.0114574092113644,
+          -0.6
+        ],
+        "hold_seconds": 0.0,
+        "latitude": 47.63021809138218,
+        "longitude": -122.39819364140911,
+        "depth_m": 0.6
+      },
+      {
+        "phase": "waypoint",
+        "number": 5,
+        "position": [
+          3.416534643669668,
+          2.0114574092113644,
+          -1.2
+        ],
+        "hold_seconds": 3.0,
+        "latitude": 47.63021809138218,
+        "longitude": -122.39819364140911,
+        "depth_m": 1.2
+      },
+      {
+        "phase": "waypoint",
+        "number": 6,
+        "position": [
+          6.916530220870399,
+          2.0067076644179025,
+          -1.2
+        ],
+        "hold_seconds": 0.0,
+        "latitude": 47.63021804863426,
+        "longitude": -122.39814707233155,
+        "depth_m": 1.2
+      },
+      {
+        "phase": "waypoint",
+        "number": 7,
+        "position": [
+          6.911106739415404,
+          -1.993288658887924,
+          -1.2
+        ],
+        "hold_seconds": 0.0,
+        "latitude": 47.630182071984734,
+        "longitude": -122.39814714455662,
+        "depth_m": 1.2
+      },
+      {
+        "phase": "waypoint",
+        "number": 8,
+        "position": [
+          3.4111087610186535,
+          -1.9885389091986716,
+          -1.2
+        ],
+        "hold_seconds": 0.0,
+        "latitude": 47.630182114732676,
+        "longitude": -122.39819371363416,
+        "depth_m": 1.2
+      },
+      {
+        "phase": "waypoint",
+        "number": 9,
+        "position": [
+          3.4111087610186535,
+          -1.9885389091986716,
+          -0.6
+        ],
+        "hold_seconds": 3.0,
+        "latitude": 47.630182114732676,
+        "longitude": -122.39819371363416,
+        "depth_m": 0.6
+      },
+      {
+        "phase": "waypoint",
+        "number": 10,
+        "position": [
+          -0.08888921653556936,
+          -1.9837891604336606,
+          -0.6
+        ],
+        "hold_seconds": 0.0,
+        "latitude": 47.63018215746169,
+        "longitude": -122.39824028271178,
+        "depth_m": 0.6
+      },
+      {
+        "phase": "waypoint",
+        "number": 11,
+        "position": [
+          -0.08617507326764486,
+          0.016208997522427077,
+          -0.6
+        ],
+        "hold_seconds": 0.0,
+        "latitude": 47.63020014578648,
+        "longitude": -122.39824024659926,
+        "depth_m": 0.6
+      },
+      {
+        "phase": "waypoint",
+        "number": 12,
+        "position": [
+          -0.08346093188186592,
+          2.0162071565543944,
+          -0.6
+        ],
+        "hold_seconds": 0.0,
+        "latitude": 47.63021813411122,
+        "longitude": -122.39824021048672,
+        "depth_m": 0.6
+      },
+      {
+        "phase": "waypoint",
+        "number": 13,
+        "position": [
+          3.416534643669668,
+          2.0114574092113644,
+          -0.6
+        ],
+        "hold_seconds": 0.0,
+        "latitude": 47.63021809138218,
+        "longitude": -122.39819364140911,
+        "depth_m": 0.6
+      },
+      {
+        "phase": "waypoint",
+        "number": 14,
+        "position": [
+          3.416534643669668,
+          2.0114574092113644,
+          -1.2
+        ],
+        "hold_seconds": 3.0,
+        "latitude": 47.63021809138218,
+        "longitude": -122.39819364140911,
+        "depth_m": 1.2
+      },
+      {
+        "phase": "waypoint",
+        "number": 15,
+        "position": [
+          6.916530220870399,
+          2.0067076644179025,
+          -1.2
+        ],
+        "hold_seconds": 0.0,
+        "latitude": 47.63021804863426,
+        "longitude": -122.39814707233155,
+        "depth_m": 1.2
+      },
+      {
+        "phase": "waypoint",
+        "number": 16,
+        "position": [
+          6.911106739415404,
+          -1.993288658887924,
+          -1.2
+        ],
+        "hold_seconds": 0.0,
+        "latitude": 47.630182071984734,
+        "longitude": -122.39814714455662,
+        "depth_m": 1.2
+      },
+      {
+        "phase": "waypoint",
+        "number": 17,
+        "position": [
+          3.4111087610186535,
+          -1.9885389091986716,
+          -1.2
+        ],
+        "hold_seconds": 0.0,
+        "latitude": 47.630182114732676,
+        "longitude": -122.39819371363416,
+        "depth_m": 1.2
+      },
+      {
+        "phase": "waypoint",
+        "number": 18,
+        "position": [
+          3.4111087610186535,
+          -1.9885389091986716,
+          -0.6
+        ],
+        "hold_seconds": 3.0,
+        "latitude": 47.630182114732676,
+        "longitude": -122.39819371363416,
+        "depth_m": 0.6
+      },
+      {
+        "phase": "waypoint",
+        "number": 19,
+        "position": [
+          -0.08888921653556936,
+          -1.9837891604336606,
+          -0.6
+        ],
+        "hold_seconds": 0.0,
+        "latitude": 47.63018215746169,
+        "longitude": -122.39824028271178,
+        "depth_m": 0.6
+      },
+      {
+        "phase": "waypoint",
+        "number": 20,
+        "position": [
+          -0.08617507326764486,
+          0.016208997522427077,
+          -0.6
+        ],
+        "hold_seconds": 0.0,
+        "latitude": 47.63020014578648,
+        "longitude": -122.39824024659926,
+        "depth_m": 0.6
+      },
+      {
+        "phase": "surface",
+        "position": [
+          -0.08617507326764486,
+          0.016208997522427077,
+          0.0
+        ],
+        "latitude": 47.63020014578648,
+        "longitude": -122.39824024659926,
+        "depth_m": 0.0
+      }
+    ],
+    "routing": {
+      "algorithm": "buffered-terrain-a-star",
+      "detoured_legs": 0,
+      "transit_points": 0,
+      "grid_step_m": 4.0,
+      "maximum_radius_m": 600.0,
+      "maximum_length_m": 2000.0,
+      "hull_radius_m": 0.5,
+      "tracking_margin_m": 2.0,
+      "search_nodes": 0,
+      "minimum_clearance_m": 2.3628967220179042,
+      "route_length_m": 48.73135380466801,
+      "scope": "confirmed static terrain only; no AIS or unrepresented obstacles"
+    },
+    "route_length_m": 48.73135380466801,
+    "route_kind": "map",
+    "arrival_policy": {
+      "horizontal_tolerance_m": 0.4,
+      "depth_acquire_tolerance_m": 0.2,
+      "depth_hold_tolerance_m": 0.5
+    },
+    "controller": "ArduSub GUIDED via MAVROS",
+    "surface_vehicle": false,
+    "streaming": false,
+    "position_source": "simulated Gazebo external navigation",
+    "validation_source": "Gazebo odometry",
+    "status": "preview",
+    "active": false,
+    "trace": []
+  },
+  "clearance": {
+    "clear": true,
+    "minimum_centerline_clearance_m": 0.8331380104890915,
+    "required_body_margin_m": 0.5,
+    "closest": {
+      "actor": "acoustic_validation_target_1/body/collision",
+      "segment": 6
+    },
+    "segments": 22,
+    "collision_boxes": 5,
+    "method": "exact segment-to-oriented-box distance; spherical body envelope",
+    "scope": "authored targets only; terrain checked separately by mission planner"
+  },
+  "result": {
+    "session_nonce": "a4052fd3fee54880be300be5f3543755",
+    "job_id": null,
+    "start": [
+      -0.023615537768348422,
+      0.18191525154057506,
+      -0.09025180456408433
+    ],
+    "start_geographic": {
+      "longitude": -122.39823941421568,
+      "latitude": 47.630201636176814
+    },
+    "yaw_rad": 1.5906876115955284,
+    "depth_m": 1.2,
+    "distance_m": 7.267866613636497,
+    "hold_seconds": 3.0,
+    "minimum_planned_clearance_m": 2.3628967220179042,
+    "waypoints": [
+      {
+        "phase": "waypoint",
+        "number": 1,
+        "position": [
+          -0.08617507326764486,
+          0.016208997522427077,
+          -1.2
+        ],
+        "hold_seconds": 3.0,
+        "latitude": 47.63020014578648,
+        "longitude": -122.39824024659926,
+        "depth_m": 1.2
+      },
+      {
+        "phase": "waypoint",
+        "number": 2,
+        "position": [
+          -0.08617507326764486,
+          0.016208997522427077,
+          -0.6
+        ],
+        "hold_seconds": 0.0,
+        "latitude": 47.63020014578648,
+        "longitude": -122.39824024659926,
+        "depth_m": 0.6
+      },
+      {
+        "phase": "waypoint",
+        "number": 3,
+        "position": [
+          -0.08346093188186592,
+          2.0162071565543944,
+          -0.6
+        ],
+        "hold_seconds": 0.0,
+        "latitude": 47.63021813411122,
+        "longitude": -122.39824021048672,
+        "depth_m": 0.6
+      },
+      {
+        "phase": "waypoint",
+        "number": 4,
+        "position": [
+          3.416534643669668,
+          2.0114574092113644,
+          -0.6
+        ],
+        "hold_seconds": 0.0,
+        "latitude": 47.63021809138218,
+        "longitude": -122.39819364140911,
+        "depth_m": 0.6
+      },
+      {
+        "phase": "waypoint",
+        "number": 5,
+        "position": [
+          3.416534643669668,
+          2.0114574092113644,
+          -1.2
+        ],
+        "hold_seconds": 3.0,
+        "latitude": 47.63021809138218,
+        "longitude": -122.39819364140911,
+        "depth_m": 1.2
+      },
+      {
+        "phase": "waypoint",
+        "number": 6,
+        "position": [
+          6.916530220870399,
+          2.0067076644179025,
+          -1.2
+        ],
+        "hold_seconds": 0.0,
+        "latitude": 47.63021804863426,
+        "longitude": -122.39814707233155,
+        "depth_m": 1.2
+      },
+      {
+        "phase": "waypoint",
+        "number": 7,
+        "position": [
+          6.911106739415404,
+          -1.993288658887924,
+          -1.2
+        ],
+        "hold_seconds": 0.0,
+        "latitude": 47.630182071984734,
+        "longitude": -122.39814714455662,
+        "depth_m": 1.2
+      },
+      {
+        "phase": "waypoint",
+        "number": 8,
+        "position": [
+          3.4111087610186535,
+          -1.9885389091986716,
+          -1.2
+        ],
+        "hold_seconds": 0.0,
+        "latitude": 47.630182114732676,
+        "longitude": -122.39819371363416,
+        "depth_m": 1.2
+      },
+      {
+        "phase": "waypoint",
+        "number": 9,
+        "position": [
+          3.4111087610186535,
+          -1.9885389091986716,
+          -0.6
+        ],
+        "hold_seconds": 3.0,
+        "latitude": 47.630182114732676,
+        "longitude": -122.39819371363416,
+        "depth_m": 0.6
+      },
+      {
+        "phase": "waypoint",
+        "number": 10,
+        "position": [
+          -0.08888921653556936,
+          -1.9837891604336606,
+          -0.6
+        ],
+        "hold_seconds": 0.0,
+        "latitude": 47.63018215746169,
+        "longitude": -122.39824028271178,
+        "depth_m": 0.6
+      },
+      {
+        "phase": "waypoint",
+        "number": 11,
+        "position": [
+          -0.08617507326764486,
+          0.016208997522427077,
+          -0.6
+        ],
+        "hold_seconds": 0.0,
+        "latitude": 47.63020014578648,
+        "longitude": -122.39824024659926,
+        "depth_m": 0.6
+      },
+      {
+        "phase": "waypoint",
+        "number": 12,
+        "position": [
+          -0.08346093188186592,
+          2.0162071565543944,
+          -0.6
+        ],
+        "hold_seconds": 0.0,
+        "latitude": 47.63021813411122,
+        "longitude": -122.39824021048672,
+        "depth_m": 0.6
+      },
+      {
+        "phase": "waypoint",
+        "number": 13,
+        "position": [
+          3.416534643669668,
+          2.0114574092113644,
+          -0.6
+        ],
+        "hold_seconds": 0.0,
+        "latitude": 47.63021809138218,
+        "longitude": -122.39819364140911,
+        "depth_m": 0.6
+      },
+      {
+        "phase": "waypoint",
+        "number": 14,
+        "position": [
+          3.416534643669668,
+          2.0114574092113644,
+          -1.2
+        ],
+        "hold_seconds": 3.0,
+        "latitude": 47.63021809138218,
+        "longitude": -122.39819364140911,
+        "depth_m": 1.2
+      },
+      {
+        "phase": "waypoint",
+        "number": 15,
+        "position": [
+          6.916530220870399,
+          2.0067076644179025,
+          -1.2
+        ],
+        "hold_seconds": 0.0,
+        "latitude": 47.63021804863426,
+        "longitude": -122.39814707233155,
+        "depth_m": 1.2
+      },
+      {
+        "phase": "waypoint",
+        "number": 16,
+        "position": [
+          6.911106739415404,
+          -1.993288658887924,
+          -1.2
+        ],
+        "hold_seconds": 0.0,
+        "latitude": 47.630182071984734,
+        "longitude": -122.39814714455662,
+        "depth_m": 1.2
+      },
+      {
+        "phase": "waypoint",
+        "number": 17,
+        "position": [
+          3.4111087610186535,
+          -1.9885389091986716,
+          -1.2
+        ],
+        "hold_seconds": 0.0,
+        "latitude": 47.630182114732676,
+        "longitude": -122.39819371363416,
+        "depth_m": 1.2
+      },
+      {
+        "phase": "waypoint",
+        "number": 18,
+        "position": [
+          3.4111087610186535,
+          -1.9885389091986716,
+          -0.6
+        ],
+        "hold_seconds": 3.0,
+        "latitude": 47.630182114732676,
+        "longitude": -122.39819371363416,
+        "depth_m": 0.6
+      },
+      {
+        "phase": "waypoint",
+        "number": 19,
+        "position": [
+          -0.08888921653556936,
+          -1.9837891604336606,
+          -0.6
+        ],
+        "hold_seconds": 0.0,
+        "latitude": 47.63018215746169,
+        "longitude": -122.39824028271178,
+        "depth_m": 0.6
+      },
+      {
+        "phase": "waypoint",
+        "number": 20,
+        "position": [
+          -0.08617507326764486,
+          0.016208997522427077,
+          -0.6
+        ],
+        "hold_seconds": 0.0,
+        "latitude": 47.63020014578648,
+        "longitude": -122.39824024659926,
+        "depth_m": 0.6
+      },
+      {
+        "phase": "surface",
+        "position": [
+          -0.08617507326764486,
+          0.016208997522427077,
+          0.0
+        ],
+        "latitude": 47.63020014578648,
+        "longitude": -122.39824024659926,
+        "depth_m": 0.0
+      }
+    ],
+    "routing": {
+      "algorithm": "buffered-terrain-a-star",
+      "detoured_legs": 0,
+      "transit_points": 0,
+      "grid_step_m": 4.0,
+      "maximum_radius_m": 600.0,
+      "maximum_length_m": 2000.0,
+      "hull_radius_m": 0.5,
+      "tracking_margin_m": 2.0,
+      "search_nodes": 0,
+      "minimum_clearance_m": 2.3628967220179042,
+      "route_length_m": 48.72379416168363,
+      "scope": "confirmed static terrain only; no AIS or unrepresented obstacles"
+    },
+    "route_length_m": 48.72379416168363,
+    "route_kind": "map",
+    "arrival_policy": {
+      "horizontal_tolerance_m": 0.4,
+      "depth_acquire_tolerance_m": 0.2,
+      "depth_hold_tolerance_m": 0.5
+    },
+    "controller": "ArduSub GUIDED via MAVROS",
+    "surface_vehicle": false,
+    "streaming": false,
+    "position_source": "simulated Gazebo external navigation",
+    "validation_source": "Gazebo odometry",
+    "id": "213306cf147446839174d9beffb16692",
+    "status": "starting",
+    "active": true,
+    "phase": "starting",
+    "paused": false,
+    "waypoint_index": 0,
+    "arrivals": [],
+    "error": null,
+    "trace": [],
+    "trace_points_total": 0,
+    "trace_sampled": false
+  }
+}

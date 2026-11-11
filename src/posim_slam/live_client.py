@@ -6,11 +6,15 @@ old estimates on a fault; restarting a worker never stitches trajectories.
 import json
 import math
 import numbers
+import os
 from pathlib import Path
 import queue
 import struct
 import subprocess
+import shutil
+import tempfile
 import threading
+from .map_alignment import CONTRACT as MAP_ALIGNMENT_CONTRACT, MapAlignment
 
 
 class WorkerNotReady(RuntimeError):
@@ -21,6 +25,15 @@ class LiveClient:
     def __init__(self, binary, calibration, log):
         self.processing_request=json.loads(Path(calibration).read_text())
         if not isinstance(self.processing_request,dict):raise ValueError('invalid_worker_calibration')
+        if ('record_current_state_information' in self.processing_request
+                and type(self.processing_request['record_current_state_information']) is not bool):
+            raise ValueError('invalid_current_state_information_request')
+        if ('retain_startup_measurements' in self.processing_request
+                and type(self.processing_request['retain_startup_measurements']) is not bool):
+            raise ValueError('invalid_startup_retention_request')
+        if ('optical_flow_type' in self.processing_request
+                and self.processing_request['optical_flow_type'] not in ('frame_to_frame','patch')):
+            raise ValueError('invalid_optical_flow_type')
         for name,low,high in (('max_image_pixels',1024,1920*1080),('max_feature_cells',32,512)):
             if name in self.processing_request:
                 value=self.processing_request[name]
@@ -30,13 +43,28 @@ class LiveClient:
         self.fault=None
         self.budget_lock=threading.Lock();self.pending_bytes=0
         self.closed=threading.Event()
+        self.output_notification=None
         self.ready=threading.Event()
-        self.startup_tracks_transport=False;self.inertial_seed_transport=False
+        self.startup_tracks_transport=False;self.inertial_seed_transport=False;self.retained_startup_transport=False
         self.ping_transport=False;self.gravity_seed_transport=False;self.sonar_transport=False;self.sonar_auxiliary_transport=False
         self.sonar_clock_transport=False;self.dvl_transport=False;self.sensor_state_transport=False;self.pressure_transport=False;self.terrain_ping_transport=False
         self.ground_transport=False
-        self.process=subprocess.Popen([str(Path(binary).resolve()),str(Path(calibration).resolve())],
-            stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=log,bufsize=65536)
+        self.map_view_transport=False
+        self.map_alignment_transport=False
+        self.map_alignment=None
+        self.map_alignment_epoch=None
+        self.surface_transport=False;self.surface_directory=None;self._surface_files={};self._surface_request_id=0
+        self._surface_lock=threading.Lock();options={}
+        if self.processing_request.get('enable_surface_owner',False):
+            self.surface_directory=Path(tempfile.mkdtemp(prefix='worker-surface-',dir=Path(calibration).resolve().parent))
+            info=self.surface_directory.stat();self._surface_directory_identity=(info.st_dev,info.st_ino)
+            options['env']={**os.environ,'POSIM_SLAM_SURFACE_DIRECTORY':str(self.surface_directory)}
+        try:
+            self.process=subprocess.Popen([str(Path(binary).resolve()),str(Path(calibration).resolve())],
+                stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=log,bufsize=65536,**options)
+        except BaseException:
+            if self.surface_directory is not None:shutil.rmtree(self.surface_directory)
+            raise
         self.writer=threading.Thread(target=self._write,daemon=True)
         self.reader=threading.Thread(target=self._read,daemon=True)
         self.writer.start();self.reader.start()
@@ -66,7 +94,7 @@ class LiveClient:
                 value=json.loads(line)
                 if not isinstance(value,dict):raise ValueError('worker_output_object')
                 if value.get('type')=='error':raise ValueError('worker:'+str(value.get('reason')))
-                if value.get('type') not in ('ready','state','map','export','startup_tracks'):raise ValueError('worker_output_type')
+                if value.get('type') not in ('ready','state','map','export','startup_tracks','surface_control'):raise ValueError('worker_output_type')
                 if value['type']=='ready':
                     if self.ready.is_set() or value.get('protocol')!=1 or value.get('inertial_fused') is not True:
                         raise ValueError('worker_protocol')
@@ -82,12 +110,25 @@ class LiveClient:
                         raise ValueError('worker_gravity_seed_unsupported')
                     self.startup_tracks_transport=value.get('startup_tracks_transport')=='preinitialize_camera_tracks_v1'
                     self.inertial_seed_transport=value.get('inertial_seed_transport')=='first_imu_state_v1'
+                    self.retained_startup_transport=value.get('retained_startup_transport')=='original_frontend_once_v1'
                     self.ping_transport=value.get("image_ping_transport")=="exact_stamp_range_v1"
                     self.sonar_auxiliary_transport=value.get("sonar_auxiliary_transport")=="ordered_imu_state_v1"
                     self.sonar_transport=value.get("sonar_snapshot_transport")=="exact_image_track_snapshot_v1"
                     self.dvl_transport=value.get('dvl_measurement_transport')=='body_velocity_gyro_covariance_v1'
                     self.terrain_ping_transport=value.get('terrain_ping_transport')=='exact_sensor_range_v1'
                     self.ground_transport=value.get('ground_transport')=='exact_beam_entries_v1'
+                    self.map_view_transport=value.get('map_snapshot_view')=='published_snapshot_v1'
+                    self.map_alignment_transport=value.get('map_alignment_transport')==MAP_ALIGNMENT_CONTRACT
+                    if self.map_alignment_transport:
+                        self.map_alignment_epoch=value.get('mapping_epoch')
+                        if not isinstance(self.map_alignment_epoch,str) or not self.map_alignment_epoch:
+                            raise ValueError('worker_map_alignment_epoch')
+                        expected=self.processing_request.get('map_epoch')
+                        if expected is not None and expected!=self.map_alignment_epoch:
+                            raise ValueError('worker_map_alignment_epoch')
+                    self.surface_transport=value.get('native_surface_transport')=='snapshot_increment_owner_queue_v1'
+                    if self.processing_request.get('enable_surface_owner',False) and not self.surface_transport:
+                        raise ValueError('worker_surface_owner_unsupported')
                     if self.processing_request.get('enable_sonar_ground',False) and not self.ground_transport:
                         raise ValueError('worker_ground_unsupported')
                     if self.processing_request.get('enable_terrain_ping',False) and not self.terrain_ping_transport:
@@ -102,14 +143,59 @@ class LiveClient:
                         raise ValueError('worker_pressure_unsupported')
                 elif not self.ready.is_set():
                     raise ValueError('worker_output_before_ready')
+                if value['type']=='surface_control':
+                    if not self.surface_transport or type(value.get('request_id')) is not int or type(value.get('accepted')) is not bool:
+                        raise ValueError('worker_surface_control_response')
+                    with self._surface_lock:path=self._surface_files.pop(value['request_id'],None)
+                    if path is not None:path.unlink(missing_ok=True)
                 # Never silently drop poses/maps while calling the segment live.
                 self.output.put_nowait(value)
                 if value['type']=='ready':self.ready.set()
+                self._notify_output()
         except (OSError,ValueError,EOFError,queue.Full) as error:
             if not self.closed.is_set():self.fault=str(error) or 'worker_output_backlog'
 
+    def set_output_notification(self,callback):
+        """Wake a caller's event loop when output is available; never consume it.
+
+        The optional callback must return immediately and may run on the reader
+        or installing thread. Wakeups can coalesce; drain with poll(). Passing
+        None removes the callback. close() joins the reader before returning.
+        """
+        if callback is not None and not callable(callback):
+            raise ValueError('invalid_worker_output_notification')
+        self.output_notification=callback
+        if not self.output.empty():self._notify_output()
+
+    def _notify_output(self):
+        callback=self.output_notification
+        if callback is not None and not self.closed.is_set():
+            try:callback()
+            except Exception as error:
+                self.fault='worker_output_notification_failed'
+                raise ValueError(self.fault) from error
+
     def _check_processing_ready(self,value):
         request=self.processing_request
+        if (request.get('retain_startup_measurements',False) and
+                value.get('retained_startup_transport')!='original_frontend_once_v1'):
+            raise ValueError('worker_startup_retention_unsupported')
+        if (request.get('record_current_state_information',False) and
+                value.get('current_state_information_transport')!='undamped_joint_selected_state_v1'):
+            raise ValueError('worker_current_state_information_unsupported')
+        if 'map_backend' in request:
+            from .map_quality import validate_ready
+            validate_ready(value,epoch=request.get('map_epoch'),backend=request['map_backend'])
+        if 'initial_imu_bias_calibration' in request:
+            from .imu_bias_calibration import InitialImuBiasCalibration
+            calibration=InitialImuBiasCalibration.read(request['initial_imu_bias_calibration']);rows=calibration.rows()
+            report=value.get('initial_imu_bias_calibration')
+            expected=dict(source=calibration.source,scope='first_state',finite_modes=len(rows['jacobian']),
+                exact_modes=len(rows['constraint_jacobian']),stochastic_evolution_unchanged=True,generic_initial_bias_prior_replaced=True)
+            if (not isinstance(report,dict) or any(type(report.get(k)) is not type(v) or report[k]!=v for k,v in expected.items())):
+                raise ValueError('worker_initial_bias_calibration_contract')
+        if 'optical_flow_type' in request and value.get('optical_flow_type')!=request['optical_flow_type']:
+            raise ValueError('worker_optical_flow_type')
         pixels=request.get('max_image_pixels');cells=request.get('max_feature_cells')
         if pixels is None and cells is None:return
         size=value.get('processed_resolution')
@@ -161,8 +247,7 @@ class LiveClient:
         if not getattr(self,'startup_tracks_transport',False):raise ValueError('worker_startup_tracks_unsupported')
         self.send(14,self._image_header(stamp_ns,width,height,pixels)+pixels)
 
-    def image(self,stamp_ns,width,height,pixels,*,ping=None):
-        payload=self._image_header(stamp_ns,width,height,pixels)
+    def _image_ping(self,stamp_ns,ping):
         if ping is not None:
             if (not isinstance(ping,(tuple,list)) or len(ping)!=2 or
                 type(ping[0]) is not int or ping[0]!=stamp_ns or
@@ -171,7 +256,26 @@ class LiveClient:
                 raise ValueError('invalid_exact_image_ping')
             if not getattr(self,'ping_transport',False):
                 raise ValueError('worker_image_ping_unsupported')
-            payload+=struct.pack('<qd',*ping)
+            return struct.pack('<qd',*ping)
+        return b''
+
+    def retained_image(self,stamp_ns,*,ping=None):
+        """Hand an acknowledged original startup result to VIO exactly once.
+
+        Send the first-state seed and original IMU before chronological calls.
+        No pixels or second frontend pass are sent. Fresh images resume after
+        every retained result has been consumed. Capability is opt-in.
+        """
+        if not self.processing_request.get('retain_startup_measurements',False):
+            raise ValueError('worker_startup_retention_not_requested')
+        if not getattr(self,'retained_startup_transport',False):
+            raise ValueError('worker_startup_retention_unsupported')
+        if type(stamp_ns) is not int or not 0<stamp_ns<2**63:
+            raise ValueError('invalid_retained_image_stamp')
+        self.send(16,struct.pack('<q',stamp_ns)+self._image_ping(stamp_ns,ping))
+
+    def image(self,stamp_ns,width,height,pixels,*,ping=None):
+        payload=self._image_header(stamp_ns,width,height,pixels)+self._image_ping(stamp_ns,ping)
         self.send(5 if ping is not None else 2,payload+pixels)
 
     def sonar_snapshot(self,stamp_ns,tracks):
@@ -246,10 +350,77 @@ class LiveClient:
         if not getattr(self,'inertial_seed_transport',False):raise ValueError('worker_inertial_seed_unsupported')
         self.send(13,struct.pack('<q12d',stamp_ns,*(x for v in vectors for x in v)))
 
-    def snapshot(self,request_id):
+    def snapshot(self,request_id,*,refresh=True):
         if type(request_id) is not int or not 0<request_id<2**63:
             raise ValueError('invalid_snapshot_request_id')
-        self.send(4,struct.pack('<Q',request_id))
+        if type(refresh) is not bool:raise ValueError('invalid_snapshot_policy')
+        if not refresh and not getattr(self,'map_view_transport',False):raise ValueError('worker_map_view_unsupported')
+        self.send(4,struct.pack('<Q',request_id)+(b'' if refresh else b'\x00'))
+
+    def _surface_request(self,request_id):
+        if not self.ready.is_set():raise WorkerNotReady('worker_not_ready')
+        if not self.surface_transport or self.surface_directory is None:raise ValueError('worker_surface_owner_unsupported')
+        with self._surface_lock:
+            if type(request_id) is not int or not self._surface_request_id<request_id<2**63:
+                raise ValueError('ordered_surface_request_id_required')
+            self._surface_request_id=request_id
+
+    def surface_snapshot(self,request_id):
+        self._surface_request(request_id)
+        self.send(15,json.dumps(dict(op='snapshot',request_id=request_id)).encode())
+
+    def read_surface_snapshot(self,response):
+        from .native_surface import NativeSurfaceSnapshot
+        if response.get('type')!='surface_control' or response.get('op')!='snapshot' or response.get('accepted') is not True:
+            raise ValueError('accepted_native_surface_snapshot_required')
+        return NativeSurfaceSnapshot.read_file(response['file'],self.surface_directory)
+
+    def surface_update(self,request_id,increment):
+        from .native_surface import NativeSurfaceIncrement,MAX_SNAPSHOT_BYTES
+        if not isinstance(increment,NativeSurfaceIncrement):raise ValueError('prepared_native_surface_increment_required')
+        self._surface_request(request_id)
+        data=json.dumps(increment.as_packet(),allow_nan=False,separators=(',',':')).encode()
+        if len(data)>MAX_SNAPSHOT_BYTES:raise ValueError('native_surface_update_file_capacity')
+        path=self.surface_directory/('worker-surface-update-'+str(request_id)+'.json')
+        temporary=path.with_suffix('.tmp')
+        with self._surface_lock:
+            if self._surface_files:raise RuntimeError('native_surface_update_pending')
+            self._surface_files[request_id]=None
+        created=False;temporary_created=False
+        try:
+            with temporary.open('xb') as stream:
+                temporary_created=True;stream.write(data)
+            if path.exists() or path.is_symlink():raise ValueError('native_surface_update_path_exists')
+            temporary.rename(path);created=True;temporary_created=False
+            with self._surface_lock:self._surface_files[request_id]=path
+            self.send(15,json.dumps(dict(op='update',request_id=request_id,path=str(path),bytes=len(data))).encode())
+        except BaseException:
+            with self._surface_lock:self._surface_files.pop(request_id,None)
+            if created:path.unlink(missing_ok=True)
+            if temporary_created:temporary.unlink(missing_ok=True)
+            raise
+
+    def surface_expire(self,request_id,closed_through_ns,*,protect=()):
+        protect=list(protect)
+        if (type(closed_through_ns) is not int or not 0<=closed_through_ns<2**63 or len(protect)>73
+                or any(type(t) is not int or not 0<t<2**63 for t in protect) or len(set(protect))!=len(protect)):
+            raise ValueError('bounded_native_surface_expiry_required')
+        self._surface_request(request_id)
+        self.send(15,json.dumps(dict(op='expire',request_id=request_id,closed_through_ns=closed_through_ns,protected_states=protect)).encode())
+
+    def surface_release(self,request_id):
+        self._surface_request(request_id);self.send(15,json.dumps(dict(op='release',request_id=request_id)).encode())
+
+    def map_aligned_pose(self,state,map_packet):
+        """Consume one matched pair on the caller's owner thread, not the reader.
+
+        Older workers supply no transform. No identity correction is invented.
+        A new LiveClient owns a new alignment epoch after every worker restart.
+        """
+        if self.fault:raise RuntimeError(self.fault)
+        if not self.ready.is_set() or not self.map_alignment_transport:return None
+        if self.map_alignment is None:self.map_alignment=MapAlignment(self.map_alignment_epoch)
+        return self.map_alignment.paired_pose(state,map_packet)
 
     def poll(self):
         if self.fault:raise RuntimeError(self.fault)
@@ -273,4 +444,9 @@ class LiveClient:
         finally:self.process.stdout.close()
         while not self.input.empty():self.input.get_nowait()
         if self.writer.is_alive() or self.reader.is_alive():raise RuntimeError('worker_thread_cleanup_failed')
+        if self.surface_directory is not None and self.surface_directory.exists():
+            info=self.surface_directory.lstat()
+            if self.surface_directory.is_symlink() or (info.st_dev,info.st_ino)!=self._surface_directory_identity:
+                raise RuntimeError('native_surface_directory_identity_changed')
+            shutil.rmtree(self.surface_directory)
         return self.process.returncode

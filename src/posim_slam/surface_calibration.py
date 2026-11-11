@@ -9,7 +9,7 @@ import numpy as np
 
 
 class SurfaceCalibration:
-    def __init__(self, imu_to_camera, camera_to_pressure, reference_pa=101325., density=1025.):
+    def __init__(self, imu_to_camera, camera_to_pressure, reference_pa=101325., density=1025.,*,gravity_m_s2=9.80665):
         self.rotation=np.asarray(imu_to_camera,dtype=float)
         self.offset=np.asarray(camera_to_pressure,dtype=float)
         if (self.rotation.shape!=(3,3) or self.offset.shape!=(3,) or
@@ -19,7 +19,9 @@ class SurfaceCalibration:
             raise ValueError('invalid_surface_extrinsics')
         if not 50000<reference_pa<150000 or not 900<density<1200:
             raise ValueError('invalid_surface_pressure_reference')
+        if not math.isfinite(gravity_m_s2) or gravity_m_s2<=0:raise ValueError('invalid_pressure_gravity')
         self.reference_pa,self.density=reference_pa,density
+        self.gravity_m_s2=gravity_m_s2
         self.reset()
 
     def reset(self):
@@ -41,7 +43,7 @@ class SurfaceCalibration:
         if self.last_stamp is not None and (t<=self.last_stamp or t-self.last_stamp>1.):
             self.reset()
         self.last_stamp=t
-        depth=(pressure_pa-self.reference_pa)/(self.density*9.80665)
+        depth=(pressure_pa-self.reference_pa)/(self.density*self.gravity_m_s2)
         if not 0<=depth<=300:
             self.reset();raise ValueError('invalid_surface_depth')
         x,y,z,w=q/np.linalg.norm(q)

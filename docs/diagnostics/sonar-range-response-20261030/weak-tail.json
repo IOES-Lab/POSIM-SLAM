@@ -1,0 +1,11 @@
+{
+  "scope": "Fixed 10-15 m tail across every beam; renderer hit ranges are below this interval. No tail is discarded.",
+  "measured_tail_mean": 0.2984481490950611,
+  "predicted_tail_mean": 0.06456041972795515,
+  "ratio": 4.622772750745157,
+  "cells": 51200,
+  "rendered_max_range_m": 8.161138886395806,
+  "mean_power_geometry_conditioned": true,
+  "quantization_cause_established": false,
+  "weak_tail_calibration_complete": false
+}

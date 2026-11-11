@@ -1,0 +1,32 @@
+[
+  {
+    "profile": "dvl-transport",
+    "exit": 0,
+    "points": 1425,
+    "recovered_points": 1459
+  },
+  {
+    "profile": "dvl-lock",
+    "exit": 0,
+    "points": 1425,
+    "recovered_points": 2897
+  },
+  {
+    "profile": "no-ping",
+    "exit": 0,
+    "points": 1246,
+    "recovered_points": 994
+  },
+  {
+    "profile": "ping-fused",
+    "exit": 0,
+    "points": 1135,
+    "recovered_points": 1142
+  },
+  {
+    "profile": "ping-received",
+    "exit": 0,
+    "points": 1346,
+    "recovered_points": 994
+  }
+]

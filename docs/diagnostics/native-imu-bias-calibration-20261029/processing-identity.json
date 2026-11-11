@@ -1,0 +1,69 @@
+{
+  "only_initial_calibration_changes": true,
+  "imu_noise_and_bias_random_walk_unchanged": true,
+  "original_timestamp_arrays_unchanged": true,
+  "initial_calibration": {
+    "schema": "posim-slam-initial-imu-bias-calibration-1",
+    "frame": "input_imu",
+    "scope": "first_state",
+    "mean": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "covariance": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "source": "generated_sdf_noiseless_imu"
+  }
+}

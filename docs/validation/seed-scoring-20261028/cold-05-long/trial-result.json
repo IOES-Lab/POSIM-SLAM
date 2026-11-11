@@ -1,0 +1,13 @@
+{
+  "passed": false,
+  "error": "RuntimeError('physical_mission_failed')",
+  "session_nonce": "91ec90c762a74153bfbd8dd03f532402",
+  "harness_sha256": "29d21b8de35e1388d0318df3bee782bc12c1100e4b245d6bb2f43ed7e3228b1d",
+  "elapsed_s": 468.88189187500393,
+  "operating_s": 451.24586395797087,
+  "completed_missions": 3,
+  "exports": 4,
+  "points": 5725,
+  "failures": [],
+  "max_tick_ms": 371.00212497171015
+}

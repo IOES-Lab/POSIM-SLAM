@@ -1,0 +1,20 @@
+{
+  "README.md": "6541c911aaabd8f2e655dc7d8805bc0fde58becec56bea43ec4791ac4b6417d0",
+  "comparison-recovered.json.gz": "c0c1a05fef17233e5fa30a547235616368bfa19ef6aa90860b44a60d9bbf2e87",
+  "comparison.json.gz": "13e763060497f4c624c7e23154357c44a8b5eea5106fae92a09da2b0e5c5f889",
+  "field-lifecycle.json.gz": "ca987827169cbb85c227680fca4a64ccdcc56adf49bf7e29632fa697753ead55",
+  "field-live-vio-probe.json.gz": "8cd35ed15db7fa884f1df131312246057f9e233235e18760da5c7a2acdf38edf",
+  "field-motion-assessment.json.gz": "17805293fc5b1f5f3841c362fa258980a1dfd68b743b571fd858a8042480eefa",
+  "field-owned-process-check.json.gz": "711a5f439157f66cf028164bbc3be028a46be7557673c978f74e9b211c6ab751",
+  "field-validation-inputs.json.gz": "ff38c817af418a0d96e011afa716dbd2e3b8b87bab9b65fa2fa65fe931bdc350",
+  "initial-map.ply": "9695186291cd61312078051ca6e49a4508c45bb31b1fea1a2cd466a0244bd820",
+  "initial-rgb-pcl.png": "6fcf519af79c3acaa814c7644b3b6df15ffb0d3fb90e398834ec2ff82c12840f",
+  "poses.json.gz": "f748b8ed3c6269e0697211b50dd9e13369eb88d375e65151fbba3d70b4241efc",
+  "receipt.json.gz": "35df52d7e440bbc753c18f6fb31bf135e205d71f6b70434cfb9458cda2f2cf32",
+  "recovered-map.ply": "02b24b98fc5fb087590869b407e691f0bd161777223066318fe5fd60a6c1d67e",
+  "recovered-rgb-pcl.png": "3099f26a1d32e23c9c9f55c6aeda1aa5bf7441e1e7dca43f5c9aab0fde900bf1",
+  "summarize.py": "36489a525915ff5fc0426bd9f31f64e847e40471fe6640abf50d9f4a991dda04",
+  "summary.json": "98332e2de97b1d3d4ad92e5f4917459ccf819f3995cd188b72e667fcda5f4b9b",
+  "visual-surface-evaluation-recovered.json.gz": "fd87de8f4cdd5a2b57d84ce3a600cd919b9131e822d53a47207cb167cb79f920",
+  "visual-surface-evaluation.json.gz": "92a4e5aff19ae6f2656689f1d599f7f2a18857458efb0a0a3e710dd44780db11"
+}

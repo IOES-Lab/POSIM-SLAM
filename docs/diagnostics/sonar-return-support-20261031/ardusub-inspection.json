@@ -1,0 +1,18 @@
+{
+  "binary_sha256": "b5621cef9989d8803cec192107958bd27a547fed2e7d2849835f59407e0d80a3",
+  "version_strings": [
+    "ArduSub V4.5.7 (30257f01)",
+    "ArduSub V4.5.7"
+  ],
+  "manual_control_symbols": [
+    "0000000100007f88 (__TEXT,__text) external __ZN3Sub39transform_manual_control_to_rc_overrideEsssstthssssssss"
+  ],
+  "source_match_proved": false,
+  "scope": "Read-only binary inspection; no process launched or control command sent",
+  "pinned_source": "https://github.com/ArduPilot/ardupilot/tree/30257f01",
+  "source_inspection": {
+    "joystick.cpp": "s/t are raw RC offset units in this revision; current-master scaling differs",
+    "mode_guided.cpp": "position/velocity submodes take roll/pitch from pilot channels; no SET_ATTITUDE_TARGET mode switch needed"
+  },
+  "actual_manual_extension_response_verified": false
+}

@@ -1,0 +1,23 @@
+{
+  "visibility": {
+    "initial_multiple_reflectors": {
+      "object_samples": 160,
+      "inside_recorded_crop": 160,
+      "behind_camera": 0,
+      "complete_mesh_samples": 3939
+    },
+    "fitted_partial_scene": {
+      "object_samples": 240,
+      "inside_recorded_crop": 240,
+      "behind_camera": 0,
+      "complete_mesh_samples": 4019
+    }
+  },
+  "projection": "recorded camera and separate whole-mesh orthographic view",
+  "references": {
+    "sonar-translated-view-20261031/context-isometric-rgb.png": "54acfca24f37c7ad0a65504f2919a8baf21322212ff901214026d687a7970493",
+    "sonar-translated-view-20261031/context-receipt.json": "7c9f8ebbb7b84cd7618805b81f0c1e00f59e99b0bd5fdaf7fc02f9c9b91efb7d",
+    "sonar-translated-view-20261031/calibration.json": "ca182e637bb52644c1fa81bcdd5d9f4984eeb2e7f6712de9427c407c6c1a9dd2"
+  },
+  "markers_pt_squared": 64
+}

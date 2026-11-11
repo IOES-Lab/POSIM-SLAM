@@ -1,0 +1,16 @@
+{
+  "libraries": {
+    "lib/libgz-sensors-dvl.10.1.1.dylib": "ccf443a8611545c8fee2ab515781eddc74584fd0c21fc3f4ce90532231a25424",
+    "lib/libgz-sim-dvl-system.10.5.0.dylib": "4cbea6b88a98d265f5568065e0328a8ded2e133f7882069f7b123beb47b6536a"
+  },
+  "configuration": {
+    "rate_hz": 1,
+    "beams": 4,
+    "tilt_deg": 30,
+    "range_m": [
+      0.1,
+      20
+    ],
+    "noise_stddev_m_s": 0.002
+  }
+}

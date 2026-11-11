@@ -1,0 +1,1423 @@
+{
+  "passed": true,
+  "error": null,
+  "rows": [
+    {
+      "kind": "raw",
+      "key": "raw_0000",
+      "stamp_ns": 396000000,
+      "shape": [
+        599,
+        256
+      ],
+      "raw_payload_sha256": "f2640c55377c2d627b045b31e0690d3f5ee5ee36b727d2d10a731c757ad845c9"
+    },
+    {
+      "kind": "normal",
+      "key": "normal_0000",
+      "stamp_ns": 396000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "1db31108b8fe38a8271b7c26c27a2b9e64d5f52e6d98403e2c61002813e37ff9"
+    },
+    {
+      "kind": "raw",
+      "key": "raw_0001",
+      "stamp_ns": 500000000,
+      "shape": [
+        599,
+        256
+      ],
+      "raw_payload_sha256": "f799ca5b0df8f414cbf202f7ba99f8f9494daf2a428f155b8d6907248980896b"
+    },
+    {
+      "kind": "normal",
+      "key": "normal_0001",
+      "stamp_ns": 500000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "1db31108b8fe38a8271b7c26c27a2b9e64d5f52e6d98403e2c61002813e37ff9"
+    },
+    {
+      "kind": "depth",
+      "key": "depth_0000",
+      "stamp_ns": 1000000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "015e0bf23c6982ebb4699f371439a93ab891ffe4cb6cc9b73b3f6b884809324f"
+    },
+    {
+      "kind": "raw",
+      "key": "raw_0002",
+      "stamp_ns": 1000000000,
+      "shape": [
+        599,
+        256
+      ],
+      "raw_payload_sha256": "76de7c161ec24c6228ad7190051e3573db125ea7e1c77f2ba7b9a9549fcd9d81"
+    },
+    {
+      "kind": "normal",
+      "key": "normal_0002",
+      "stamp_ns": 1000000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "1db31108b8fe38a8271b7c26c27a2b9e64d5f52e6d98403e2c61002813e37ff9"
+    },
+    {
+      "kind": "raw",
+      "key": "raw_0003",
+      "stamp_ns": 1500000000,
+      "shape": [
+        599,
+        256
+      ],
+      "raw_payload_sha256": "0777073ab83476d8f4d6dc3eff4377445714a7869d32d5aae2f7b0394e890f08"
+    },
+    {
+      "kind": "normal",
+      "key": "normal_0003",
+      "stamp_ns": 1500000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "1db31108b8fe38a8271b7c26c27a2b9e64d5f52e6d98403e2c61002813e37ff9"
+    },
+    {
+      "kind": "depth",
+      "key": "depth_0001",
+      "stamp_ns": 2000000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "015e0bf23c6982ebb4699f371439a93ab891ffe4cb6cc9b73b3f6b884809324f"
+    },
+    {
+      "kind": "raw",
+      "key": "raw_0004",
+      "stamp_ns": 2000000000,
+      "shape": [
+        599,
+        256
+      ],
+      "raw_payload_sha256": "7347fbb613aaf41b69b979e66cc1ca6d9946b0ce2268b585a53b93b9e3f08512"
+    },
+    {
+      "kind": "normal",
+      "key": "normal_0004",
+      "stamp_ns": 2000000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "1db31108b8fe38a8271b7c26c27a2b9e64d5f52e6d98403e2c61002813e37ff9"
+    },
+    {
+      "kind": "depth",
+      "key": "depth_0002",
+      "stamp_ns": 2500000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "015e0bf23c6982ebb4699f371439a93ab891ffe4cb6cc9b73b3f6b884809324f"
+    },
+    {
+      "kind": "raw",
+      "key": "raw_0005",
+      "stamp_ns": 2500000000,
+      "shape": [
+        599,
+        256
+      ],
+      "raw_payload_sha256": "01b7b35c63648b5b925b5dbebc9a9a1834a566ff54cf94b59d943cb4d2254cfb"
+    },
+    {
+      "kind": "normal",
+      "key": "normal_0005",
+      "stamp_ns": 2500000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "1db31108b8fe38a8271b7c26c27a2b9e64d5f52e6d98403e2c61002813e37ff9"
+    },
+    {
+      "kind": "raw",
+      "key": "raw_0006",
+      "stamp_ns": 3000000000,
+      "shape": [
+        599,
+        256
+      ],
+      "raw_payload_sha256": "105d0a1b17b79a0abfa056cdc5336cc2f346602bd9e378b73b2c1b59c5f453cd"
+    },
+    {
+      "kind": "normal",
+      "key": "normal_0006",
+      "stamp_ns": 3000000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "1db31108b8fe38a8271b7c26c27a2b9e64d5f52e6d98403e2c61002813e37ff9"
+    },
+    {
+      "kind": "raw",
+      "key": "raw_0007",
+      "stamp_ns": 3500000000,
+      "shape": [
+        599,
+        256
+      ],
+      "raw_payload_sha256": "6399851237b3946c660b85809d45a9d7c9159b8dfbb0d7143245d60532f3f433"
+    },
+    {
+      "kind": "normal",
+      "key": "normal_0007",
+      "stamp_ns": 3500000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "1db31108b8fe38a8271b7c26c27a2b9e64d5f52e6d98403e2c61002813e37ff9"
+    },
+    {
+      "kind": "raw",
+      "key": "raw_0008",
+      "stamp_ns": 4000000000,
+      "shape": [
+        599,
+        256
+      ],
+      "raw_payload_sha256": "0ae166100f05659388f89a4e228039d708b0506d9cb0fa6e870e669e21cd0920"
+    },
+    {
+      "kind": "normal",
+      "key": "normal_0008",
+      "stamp_ns": 4000000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "1db31108b8fe38a8271b7c26c27a2b9e64d5f52e6d98403e2c61002813e37ff9"
+    },
+    {
+      "kind": "depth",
+      "key": "depth_0003",
+      "stamp_ns": 4500000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "015e0bf23c6982ebb4699f371439a93ab891ffe4cb6cc9b73b3f6b884809324f"
+    },
+    {
+      "kind": "raw",
+      "key": "raw_0009",
+      "stamp_ns": 4500000000,
+      "shape": [
+        599,
+        256
+      ],
+      "raw_payload_sha256": "a5dffb482ce85edd02de3070c076dbc10dee9ed9705d6b2638ea878325d8a451"
+    },
+    {
+      "kind": "normal",
+      "key": "normal_0009",
+      "stamp_ns": 4500000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "1db31108b8fe38a8271b7c26c27a2b9e64d5f52e6d98403e2c61002813e37ff9"
+    },
+    {
+      "kind": "raw",
+      "key": "raw_0010",
+      "stamp_ns": 5000000000,
+      "shape": [
+        599,
+        256
+      ],
+      "raw_payload_sha256": "e4c8d84f50f2353913244ed6705021033b3d0e471880181c4de57d1298d96fc4"
+    },
+    {
+      "kind": "normal",
+      "key": "normal_0010",
+      "stamp_ns": 5000000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "1db31108b8fe38a8271b7c26c27a2b9e64d5f52e6d98403e2c61002813e37ff9"
+    },
+    {
+      "kind": "depth",
+      "key": "depth_0004",
+      "stamp_ns": 5500000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "015e0bf23c6982ebb4699f371439a93ab891ffe4cb6cc9b73b3f6b884809324f"
+    },
+    {
+      "kind": "raw",
+      "key": "raw_0011",
+      "stamp_ns": 5500000000,
+      "shape": [
+        599,
+        256
+      ],
+      "raw_payload_sha256": "fb262a330268328e06bf9b9b544837c183fe9def8514ebb9d18caaeb7a38280b"
+    },
+    {
+      "kind": "normal",
+      "key": "normal_0011",
+      "stamp_ns": 5500000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "1db31108b8fe38a8271b7c26c27a2b9e64d5f52e6d98403e2c61002813e37ff9"
+    },
+    {
+      "kind": "depth",
+      "key": "depth_0005",
+      "stamp_ns": 6000000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "015e0bf23c6982ebb4699f371439a93ab891ffe4cb6cc9b73b3f6b884809324f"
+    },
+    {
+      "kind": "raw",
+      "key": "raw_0012",
+      "stamp_ns": 6000000000,
+      "shape": [
+        599,
+        256
+      ],
+      "raw_payload_sha256": "1ce65f2097bf625b8bd947a97aa524dfdcc8045c6b0e040d012a3672ecc77e3b"
+    },
+    {
+      "kind": "normal",
+      "key": "normal_0012",
+      "stamp_ns": 6000000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "1db31108b8fe38a8271b7c26c27a2b9e64d5f52e6d98403e2c61002813e37ff9"
+    },
+    {
+      "kind": "depth",
+      "key": "depth_0006",
+      "stamp_ns": 6500000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "015e0bf23c6982ebb4699f371439a93ab891ffe4cb6cc9b73b3f6b884809324f"
+    },
+    {
+      "kind": "raw",
+      "key": "raw_0013",
+      "stamp_ns": 6500000000,
+      "shape": [
+        599,
+        256
+      ],
+      "raw_payload_sha256": "6e616b6b173991b4e5d6e1e109911d64b53075b57ecdec468e00d458865a7856"
+    },
+    {
+      "kind": "normal",
+      "key": "normal_0013",
+      "stamp_ns": 6500000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "1db31108b8fe38a8271b7c26c27a2b9e64d5f52e6d98403e2c61002813e37ff9"
+    },
+    {
+      "kind": "depth",
+      "key": "depth_0007",
+      "stamp_ns": 7000000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "015e0bf23c6982ebb4699f371439a93ab891ffe4cb6cc9b73b3f6b884809324f"
+    },
+    {
+      "kind": "raw",
+      "key": "raw_0014",
+      "stamp_ns": 7000000000,
+      "shape": [
+        599,
+        256
+      ],
+      "raw_payload_sha256": "32b4340cc2536f16d1a37d4a4f3d396e92369660a0db6ab4c9aef9cbf9cfc172"
+    },
+    {
+      "kind": "normal",
+      "key": "normal_0014",
+      "stamp_ns": 7000000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "1db31108b8fe38a8271b7c26c27a2b9e64d5f52e6d98403e2c61002813e37ff9"
+    },
+    {
+      "kind": "raw",
+      "key": "raw_0015",
+      "stamp_ns": 7500000000,
+      "shape": [
+        599,
+        256
+      ],
+      "raw_payload_sha256": "ade9754bae1f4131344926242a2c1ee63de4579b81a740c886d3576b773ffbfd"
+    },
+    {
+      "kind": "normal",
+      "key": "normal_0015",
+      "stamp_ns": 7500000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "1db31108b8fe38a8271b7c26c27a2b9e64d5f52e6d98403e2c61002813e37ff9"
+    },
+    {
+      "kind": "raw",
+      "key": "raw_0016",
+      "stamp_ns": 8000000000,
+      "shape": [
+        599,
+        256
+      ],
+      "raw_payload_sha256": "188809fbc12dcda62b8050d384475c66691384666f8b78615c19e2c539d47a84"
+    },
+    {
+      "kind": "normal",
+      "key": "normal_0016",
+      "stamp_ns": 8000000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "1db31108b8fe38a8271b7c26c27a2b9e64d5f52e6d98403e2c61002813e37ff9"
+    },
+    {
+      "kind": "depth",
+      "key": "depth_0008",
+      "stamp_ns": 8500000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "015e0bf23c6982ebb4699f371439a93ab891ffe4cb6cc9b73b3f6b884809324f"
+    },
+    {
+      "kind": "raw",
+      "key": "raw_0017",
+      "stamp_ns": 8500000000,
+      "shape": [
+        599,
+        256
+      ],
+      "raw_payload_sha256": "0ab283ab4bc7b7ecfa1b77ed8d25eed32256389f226b71433cc80f80cd850d99"
+    },
+    {
+      "kind": "normal",
+      "key": "normal_0017",
+      "stamp_ns": 8500000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "1db31108b8fe38a8271b7c26c27a2b9e64d5f52e6d98403e2c61002813e37ff9"
+    },
+    {
+      "kind": "depth",
+      "key": "depth_0009",
+      "stamp_ns": 9000000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "015e0bf23c6982ebb4699f371439a93ab891ffe4cb6cc9b73b3f6b884809324f"
+    },
+    {
+      "kind": "raw",
+      "key": "raw_0018",
+      "stamp_ns": 9000000000,
+      "shape": [
+        599,
+        256
+      ],
+      "raw_payload_sha256": "5909ac55b351cc620ed3544c1a1cb32474107280af02dd1da9e213f401e68f8f"
+    },
+    {
+      "kind": "normal",
+      "key": "normal_0018",
+      "stamp_ns": 9000000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "1db31108b8fe38a8271b7c26c27a2b9e64d5f52e6d98403e2c61002813e37ff9"
+    },
+    {
+      "kind": "depth",
+      "key": "depth_0010",
+      "stamp_ns": 9500000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "015e0bf23c6982ebb4699f371439a93ab891ffe4cb6cc9b73b3f6b884809324f"
+    },
+    {
+      "kind": "raw",
+      "key": "raw_0019",
+      "stamp_ns": 9500000000,
+      "shape": [
+        599,
+        256
+      ],
+      "raw_payload_sha256": "25376fef576ccd06952c9ee83c745b17bd82e7d6e8afe4dd2d61c9673bb30862"
+    },
+    {
+      "kind": "normal",
+      "key": "normal_0019",
+      "stamp_ns": 9500000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "1db31108b8fe38a8271b7c26c27a2b9e64d5f52e6d98403e2c61002813e37ff9"
+    },
+    {
+      "kind": "depth",
+      "key": "depth_0011",
+      "stamp_ns": 10000000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "015e0bf23c6982ebb4699f371439a93ab891ffe4cb6cc9b73b3f6b884809324f"
+    },
+    {
+      "kind": "raw",
+      "key": "raw_0020",
+      "stamp_ns": 10000000000,
+      "shape": [
+        599,
+        256
+      ],
+      "raw_payload_sha256": "3e708d451a74d7f41d1e8bfc21997b2dcf01682a5d81aabdec4f4ccbacdc6eb3"
+    },
+    {
+      "kind": "normal",
+      "key": "normal_0020",
+      "stamp_ns": 10000000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "1db31108b8fe38a8271b7c26c27a2b9e64d5f52e6d98403e2c61002813e37ff9"
+    },
+    {
+      "kind": "raw",
+      "key": "raw_0021",
+      "stamp_ns": 10500000000,
+      "shape": [
+        599,
+        256
+      ],
+      "raw_payload_sha256": "fba4ae0dc9313bbbd49993954238643ad0a440816fdcf493e72745a1554f77ef"
+    },
+    {
+      "kind": "normal",
+      "key": "normal_0021",
+      "stamp_ns": 10500000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "1db31108b8fe38a8271b7c26c27a2b9e64d5f52e6d98403e2c61002813e37ff9"
+    },
+    {
+      "kind": "depth",
+      "key": "depth_0012",
+      "stamp_ns": 11000000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "015e0bf23c6982ebb4699f371439a93ab891ffe4cb6cc9b73b3f6b884809324f"
+    },
+    {
+      "kind": "raw",
+      "key": "raw_0022",
+      "stamp_ns": 11000000000,
+      "shape": [
+        599,
+        256
+      ],
+      "raw_payload_sha256": "0e44169deb386660033581acc4bb1575445e2021ed806078816d33fcca6644a6"
+    },
+    {
+      "kind": "normal",
+      "key": "normal_0022",
+      "stamp_ns": 11000000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "1db31108b8fe38a8271b7c26c27a2b9e64d5f52e6d98403e2c61002813e37ff9"
+    },
+    {
+      "kind": "depth",
+      "key": "depth_0013",
+      "stamp_ns": 11500000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "015e0bf23c6982ebb4699f371439a93ab891ffe4cb6cc9b73b3f6b884809324f"
+    },
+    {
+      "kind": "raw",
+      "key": "raw_0023",
+      "stamp_ns": 11500000000,
+      "shape": [
+        599,
+        256
+      ],
+      "raw_payload_sha256": "b02f7efdb5074a301bd0ff701e801b89d3ec0e91dcfdf368ff7ab637a9b6080c"
+    },
+    {
+      "kind": "normal",
+      "key": "normal_0023",
+      "stamp_ns": 11500000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "1db31108b8fe38a8271b7c26c27a2b9e64d5f52e6d98403e2c61002813e37ff9"
+    },
+    {
+      "kind": "raw",
+      "key": "raw_0024",
+      "stamp_ns": 12000000000,
+      "shape": [
+        599,
+        256
+      ],
+      "raw_payload_sha256": "770b7153ec1dcd2e9a61d41cdd76b629d426664b8eb28974ae63b05ace832107"
+    },
+    {
+      "kind": "normal",
+      "key": "normal_0024",
+      "stamp_ns": 12000000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "1db31108b8fe38a8271b7c26c27a2b9e64d5f52e6d98403e2c61002813e37ff9"
+    },
+    {
+      "kind": "raw",
+      "key": "raw_0025",
+      "stamp_ns": 12500000000,
+      "shape": [
+        599,
+        256
+      ],
+      "raw_payload_sha256": "366e1ab65adfb165e1b6c160e1f8b4ed2e3ba901f8baec3ebe41443e68c7a486"
+    },
+    {
+      "kind": "normal",
+      "key": "normal_0025",
+      "stamp_ns": 12500000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "1db31108b8fe38a8271b7c26c27a2b9e64d5f52e6d98403e2c61002813e37ff9"
+    },
+    {
+      "kind": "raw",
+      "key": "raw_0026",
+      "stamp_ns": 13000000000,
+      "shape": [
+        599,
+        256
+      ],
+      "raw_payload_sha256": "19355e246b1be775ee926ad338df1f5fa2b1253986c879363172346fd6fe0fc8"
+    },
+    {
+      "kind": "normal",
+      "key": "normal_0026",
+      "stamp_ns": 13000000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "1db31108b8fe38a8271b7c26c27a2b9e64d5f52e6d98403e2c61002813e37ff9"
+    },
+    {
+      "kind": "depth",
+      "key": "depth_0014",
+      "stamp_ns": 13500000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "015e0bf23c6982ebb4699f371439a93ab891ffe4cb6cc9b73b3f6b884809324f"
+    },
+    {
+      "kind": "raw",
+      "key": "raw_0027",
+      "stamp_ns": 13500000000,
+      "shape": [
+        599,
+        256
+      ],
+      "raw_payload_sha256": "4c154cc8c4bac53bcca8018b4c8394bfea74ec7ed1e559b1357b3b4a511fa89f"
+    },
+    {
+      "kind": "normal",
+      "key": "normal_0027",
+      "stamp_ns": 13500000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "1db31108b8fe38a8271b7c26c27a2b9e64d5f52e6d98403e2c61002813e37ff9"
+    },
+    {
+      "kind": "raw",
+      "key": "raw_0028",
+      "stamp_ns": 14000000000,
+      "shape": [
+        599,
+        256
+      ],
+      "raw_payload_sha256": "b0af5b83abe320138677aafadb5ebf45da6116669872cdc29658064d49aa6af0"
+    },
+    {
+      "kind": "normal",
+      "key": "normal_0028",
+      "stamp_ns": 14000000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "1db31108b8fe38a8271b7c26c27a2b9e64d5f52e6d98403e2c61002813e37ff9"
+    },
+    {
+      "kind": "depth",
+      "key": "depth_0015",
+      "stamp_ns": 14500000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "015e0bf23c6982ebb4699f371439a93ab891ffe4cb6cc9b73b3f6b884809324f"
+    },
+    {
+      "kind": "raw",
+      "key": "raw_0029",
+      "stamp_ns": 14500000000,
+      "shape": [
+        599,
+        256
+      ],
+      "raw_payload_sha256": "ea3a6c1dcb3e1263441d06def87c465c1a321a8300e6d6cfa0943c7bfb7d7976"
+    },
+    {
+      "kind": "normal",
+      "key": "normal_0029",
+      "stamp_ns": 14500000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "1db31108b8fe38a8271b7c26c27a2b9e64d5f52e6d98403e2c61002813e37ff9"
+    },
+    {
+      "kind": "depth",
+      "key": "depth_0016",
+      "stamp_ns": 15000000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "015e0bf23c6982ebb4699f371439a93ab891ffe4cb6cc9b73b3f6b884809324f"
+    },
+    {
+      "kind": "raw",
+      "key": "raw_0030",
+      "stamp_ns": 15000000000,
+      "shape": [
+        599,
+        256
+      ],
+      "raw_payload_sha256": "bf140fe5f3550dfaa7c7af77e65623437ec2b7c5b56960c84fbc82fd44e6cc4e"
+    },
+    {
+      "kind": "normal",
+      "key": "normal_0030",
+      "stamp_ns": 15000000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "1db31108b8fe38a8271b7c26c27a2b9e64d5f52e6d98403e2c61002813e37ff9"
+    },
+    {
+      "kind": "depth",
+      "key": "depth_0017",
+      "stamp_ns": 15500000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "015e0bf23c6982ebb4699f371439a93ab891ffe4cb6cc9b73b3f6b884809324f"
+    },
+    {
+      "kind": "raw",
+      "key": "raw_0031",
+      "stamp_ns": 15500000000,
+      "shape": [
+        599,
+        256
+      ],
+      "raw_payload_sha256": "56ef3c1136095726b1600dc2a25b99f3bb5c50f71d4f63377855976a6d1d8409"
+    },
+    {
+      "kind": "normal",
+      "key": "normal_0031",
+      "stamp_ns": 15500000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "1db31108b8fe38a8271b7c26c27a2b9e64d5f52e6d98403e2c61002813e37ff9"
+    },
+    {
+      "kind": "depth",
+      "key": "depth_0018",
+      "stamp_ns": 16000000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "015e0bf23c6982ebb4699f371439a93ab891ffe4cb6cc9b73b3f6b884809324f"
+    },
+    {
+      "kind": "raw",
+      "key": "raw_0032",
+      "stamp_ns": 16000000000,
+      "shape": [
+        599,
+        256
+      ],
+      "raw_payload_sha256": "5c1aa7bbd753e9a7ea3276696c63eae73d2a68e18aa2a0539e85adbe935aad64"
+    },
+    {
+      "kind": "normal",
+      "key": "normal_0032",
+      "stamp_ns": 16000000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "1db31108b8fe38a8271b7c26c27a2b9e64d5f52e6d98403e2c61002813e37ff9"
+    },
+    {
+      "kind": "raw",
+      "key": "raw_0033",
+      "stamp_ns": 16500000000,
+      "shape": [
+        599,
+        256
+      ],
+      "raw_payload_sha256": "b567b3c19ef6a9c64fdf6cb6520af360b49c0143d19a11feba7e7e20a303543e"
+    },
+    {
+      "kind": "normal",
+      "key": "normal_0033",
+      "stamp_ns": 16500000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "1db31108b8fe38a8271b7c26c27a2b9e64d5f52e6d98403e2c61002813e37ff9"
+    },
+    {
+      "kind": "depth",
+      "key": "depth_0019",
+      "stamp_ns": 17000000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "015e0bf23c6982ebb4699f371439a93ab891ffe4cb6cc9b73b3f6b884809324f"
+    },
+    {
+      "kind": "raw",
+      "key": "raw_0034",
+      "stamp_ns": 17000000000,
+      "shape": [
+        599,
+        256
+      ],
+      "raw_payload_sha256": "280af9c68a9ae5cea400bc6ccffdb97a7bc4d56e15a3ebb03e59c36ce1d48716"
+    },
+    {
+      "kind": "normal",
+      "key": "normal_0034",
+      "stamp_ns": 17000000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "1db31108b8fe38a8271b7c26c27a2b9e64d5f52e6d98403e2c61002813e37ff9"
+    },
+    {
+      "kind": "raw",
+      "key": "raw_0035",
+      "stamp_ns": 17500000000,
+      "shape": [
+        599,
+        256
+      ],
+      "raw_payload_sha256": "78a3b1b785c5677f6909e8d6fc73a500b224433f23b51ba1e0d998338ab7f451"
+    },
+    {
+      "kind": "normal",
+      "key": "normal_0035",
+      "stamp_ns": 17500000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "1db31108b8fe38a8271b7c26c27a2b9e64d5f52e6d98403e2c61002813e37ff9"
+    },
+    {
+      "kind": "depth",
+      "key": "depth_0020",
+      "stamp_ns": 18000000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "015e0bf23c6982ebb4699f371439a93ab891ffe4cb6cc9b73b3f6b884809324f"
+    },
+    {
+      "kind": "raw",
+      "key": "raw_0036",
+      "stamp_ns": 18000000000,
+      "shape": [
+        599,
+        256
+      ],
+      "raw_payload_sha256": "7e3bc4a6b274160c9ee32c4ba19f6d86b98f00ba9afa36375c5955e7e61f7e57"
+    },
+    {
+      "kind": "normal",
+      "key": "normal_0036",
+      "stamp_ns": 18000000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "1db31108b8fe38a8271b7c26c27a2b9e64d5f52e6d98403e2c61002813e37ff9"
+    },
+    {
+      "kind": "depth",
+      "key": "depth_0021",
+      "stamp_ns": 18500000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "015e0bf23c6982ebb4699f371439a93ab891ffe4cb6cc9b73b3f6b884809324f"
+    },
+    {
+      "kind": "raw",
+      "key": "raw_0037",
+      "stamp_ns": 18500000000,
+      "shape": [
+        599,
+        256
+      ],
+      "raw_payload_sha256": "58a52edeca1453042fc69aeabfdfe726d06fd568d87b297a498a05a73084be52"
+    },
+    {
+      "kind": "normal",
+      "key": "normal_0037",
+      "stamp_ns": 18500000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "1db31108b8fe38a8271b7c26c27a2b9e64d5f52e6d98403e2c61002813e37ff9"
+    },
+    {
+      "kind": "raw",
+      "key": "raw_0038",
+      "stamp_ns": 19000000000,
+      "shape": [
+        599,
+        256
+      ],
+      "raw_payload_sha256": "a255b4feb9dd5c62712794191268b487816b2bce7080eac94d1aa008ebdbfbca"
+    },
+    {
+      "kind": "normal",
+      "key": "normal_0038",
+      "stamp_ns": 19000000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "1db31108b8fe38a8271b7c26c27a2b9e64d5f52e6d98403e2c61002813e37ff9"
+    },
+    {
+      "kind": "raw",
+      "key": "raw_0039",
+      "stamp_ns": 19500000000,
+      "shape": [
+        599,
+        256
+      ],
+      "raw_payload_sha256": "a594a6c206e74574016f71b0e8671acf88d00aefc8d555d27830282c3922264c"
+    },
+    {
+      "kind": "normal",
+      "key": "normal_0039",
+      "stamp_ns": 19500000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "1db31108b8fe38a8271b7c26c27a2b9e64d5f52e6d98403e2c61002813e37ff9"
+    },
+    {
+      "kind": "raw",
+      "key": "raw_0040",
+      "stamp_ns": 20000000000,
+      "shape": [
+        599,
+        256
+      ],
+      "raw_payload_sha256": "2d1e100e1bede7740f7ed017113b12c51d9b08bef69fe030245c2db0a32e7a8a"
+    },
+    {
+      "kind": "normal",
+      "key": "normal_0040",
+      "stamp_ns": 20000000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "1db31108b8fe38a8271b7c26c27a2b9e64d5f52e6d98403e2c61002813e37ff9"
+    },
+    {
+      "kind": "depth",
+      "key": "depth_0022",
+      "stamp_ns": 20500000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "015e0bf23c6982ebb4699f371439a93ab891ffe4cb6cc9b73b3f6b884809324f"
+    },
+    {
+      "kind": "raw",
+      "key": "raw_0041",
+      "stamp_ns": 20500000000,
+      "shape": [
+        599,
+        256
+      ],
+      "raw_payload_sha256": "edaefcaff5b19a2b0b31f2a9f19bb7861388c0ac40b16acc351f337bd49364bf"
+    },
+    {
+      "kind": "normal",
+      "key": "normal_0041",
+      "stamp_ns": 20500000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "1db31108b8fe38a8271b7c26c27a2b9e64d5f52e6d98403e2c61002813e37ff9"
+    },
+    {
+      "kind": "raw",
+      "key": "raw_0042",
+      "stamp_ns": 21000000000,
+      "shape": [
+        599,
+        256
+      ],
+      "raw_payload_sha256": "c4581dca280469b031ed05650afed7c753dce64fd6f9ea4aa351d25afc25e6b4"
+    },
+    {
+      "kind": "normal",
+      "key": "normal_0042",
+      "stamp_ns": 21000000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "1db31108b8fe38a8271b7c26c27a2b9e64d5f52e6d98403e2c61002813e37ff9"
+    },
+    {
+      "kind": "raw",
+      "key": "raw_0043",
+      "stamp_ns": 21500000000,
+      "shape": [
+        599,
+        256
+      ],
+      "raw_payload_sha256": "c8d6a1f29a45716b68060e833884781fa4677c1df0174b3a50c9f3b0546e19ff"
+    },
+    {
+      "kind": "normal",
+      "key": "normal_0043",
+      "stamp_ns": 21500000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "1db31108b8fe38a8271b7c26c27a2b9e64d5f52e6d98403e2c61002813e37ff9"
+    },
+    {
+      "kind": "raw",
+      "key": "raw_0044",
+      "stamp_ns": 22000000000,
+      "shape": [
+        599,
+        256
+      ],
+      "raw_payload_sha256": "4860e07797a6524ae954c80fbb44aed05af43bbaea3d5ccdb7c0ccef017ba6f4"
+    },
+    {
+      "kind": "normal",
+      "key": "normal_0044",
+      "stamp_ns": 22000000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "1db31108b8fe38a8271b7c26c27a2b9e64d5f52e6d98403e2c61002813e37ff9"
+    },
+    {
+      "kind": "raw",
+      "key": "raw_0045",
+      "stamp_ns": 22500000000,
+      "shape": [
+        599,
+        256
+      ],
+      "raw_payload_sha256": "6da3c3048fc90cdbc68a47c0448e1fa4f53bd0fec02b1cd13fec85bc1a56078f"
+    },
+    {
+      "kind": "normal",
+      "key": "normal_0045",
+      "stamp_ns": 22500000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "1db31108b8fe38a8271b7c26c27a2b9e64d5f52e6d98403e2c61002813e37ff9"
+    },
+    {
+      "kind": "raw",
+      "key": "raw_0046",
+      "stamp_ns": 23000000000,
+      "shape": [
+        599,
+        256
+      ],
+      "raw_payload_sha256": "2192be3ec36dac599abbf94b25ee27546c0c657263be89082a7be265cff1e168"
+    },
+    {
+      "kind": "normal",
+      "key": "normal_0046",
+      "stamp_ns": 23000000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "1db31108b8fe38a8271b7c26c27a2b9e64d5f52e6d98403e2c61002813e37ff9"
+    },
+    {
+      "kind": "depth",
+      "key": "depth_0023",
+      "stamp_ns": 23500000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "015e0bf23c6982ebb4699f371439a93ab891ffe4cb6cc9b73b3f6b884809324f"
+    },
+    {
+      "kind": "raw",
+      "key": "raw_0047",
+      "stamp_ns": 23500000000,
+      "shape": [
+        599,
+        256
+      ],
+      "raw_payload_sha256": "a66de19159bf1f6043c4d14845606708db6d48a22ff3efb09cd4876645dff985"
+    },
+    {
+      "kind": "normal",
+      "key": "normal_0047",
+      "stamp_ns": 23500000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "1db31108b8fe38a8271b7c26c27a2b9e64d5f52e6d98403e2c61002813e37ff9"
+    },
+    {
+      "kind": "raw",
+      "key": "raw_0048",
+      "stamp_ns": 24000000000,
+      "shape": [
+        599,
+        256
+      ],
+      "raw_payload_sha256": "94d9dc516af404f2ca4b68d150d419080e7d82cf3a0a142fcacefe9223eb3eef"
+    },
+    {
+      "kind": "normal",
+      "key": "normal_0048",
+      "stamp_ns": 24000000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "1db31108b8fe38a8271b7c26c27a2b9e64d5f52e6d98403e2c61002813e37ff9"
+    },
+    {
+      "kind": "raw",
+      "key": "raw_0049",
+      "stamp_ns": 24502000000,
+      "shape": [
+        599,
+        256
+      ],
+      "raw_payload_sha256": "d587cedb20a8a5d63f19430f4e903ca5f417b63a3f35d0e5028051360fea14c5"
+    },
+    {
+      "kind": "normal",
+      "key": "normal_0049",
+      "stamp_ns": 24502000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "1db31108b8fe38a8271b7c26c27a2b9e64d5f52e6d98403e2c61002813e37ff9"
+    },
+    {
+      "kind": "raw",
+      "key": "raw_0050",
+      "stamp_ns": 25000000000,
+      "shape": [
+        599,
+        256
+      ],
+      "raw_payload_sha256": "d1d90fafd078670464becedc4fe136a4f6d3957532437dcba4c99919d3d20d6e"
+    },
+    {
+      "kind": "normal",
+      "key": "normal_0050",
+      "stamp_ns": 25000000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "1db31108b8fe38a8271b7c26c27a2b9e64d5f52e6d98403e2c61002813e37ff9"
+    },
+    {
+      "kind": "depth",
+      "key": "depth_0024",
+      "stamp_ns": 25500000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "015e0bf23c6982ebb4699f371439a93ab891ffe4cb6cc9b73b3f6b884809324f"
+    },
+    {
+      "kind": "raw",
+      "key": "raw_0051",
+      "stamp_ns": 25500000000,
+      "shape": [
+        599,
+        256
+      ],
+      "raw_payload_sha256": "4db545ca2bf79205a5620af2fcde0d6ec156f2aa0664a67e79350d3f8128937a"
+    },
+    {
+      "kind": "normal",
+      "key": "normal_0051",
+      "stamp_ns": 25500000000,
+      "shape": [
+        256,
+        256,
+        3
+      ],
+      "raw_payload_sha256": "1db31108b8fe38a8271b7c26c27a2b9e64d5f52e6d98403e2c61002813e37ff9"
+    }
+  ],
+  "cleanup": [
+    {
+      "name": "point-cloud-bridge",
+      "pid": 45184,
+      "exit": 0,
+      "forced": false
+    },
+    {
+      "name": "gazebo",
+      "pid": 45183,
+      "exit": 0,
+      "forced": false
+    }
+  ],
+  "matched_stamps_ns": [
+    1000000000,
+    2000000000,
+    2500000000,
+    4500000000,
+    5500000000,
+    6000000000,
+    6500000000,
+    7000000000,
+    8500000000,
+    9000000000,
+    9500000000,
+    10000000000,
+    11000000000,
+    11500000000,
+    13500000000,
+    14500000000,
+    15000000000,
+    15500000000,
+    16000000000,
+    17000000000,
+    18000000000,
+    18500000000,
+    20500000000,
+    23500000000,
+    25500000000
+  ],
+  "fence_ns": 396000000,
+  "calibration": {
+    "beams": 256,
+    "horizontal_fov": 2.0943951023931953,
+    "range_max": 15.0,
+    "bandwidth_hz": 29900.0,
+    "sound_speed_m_s": 1500.0
+  },
+  "scope": "Exact demo intrinsics, static forward sensor and known flat panel; no vehicle/environment/SLAM qualification"
+}

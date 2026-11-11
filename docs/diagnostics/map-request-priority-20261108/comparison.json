@@ -1,0 +1,82 @@
+{
+  "total_points": 3724,
+  "visible_points": 3143,
+  "outside_points": 581,
+  "complete_map_panel_points": 3724,
+  "marker_area_pt2": 36,
+  "colour_policy": {
+    "colormap": "turbo",
+    "colour_entries": [
+      32,
+      255
+    ],
+    "height_limits_m": [
+      -4.0,
+      -1.5
+    ],
+    "measured_height_bounds_m": [
+      -4.2165120895971135,
+      -1.8541752155889348
+    ],
+    "range_policy": "explicit shared comparison height limits",
+    "colour_saturated_points": 6,
+    "coordinates_filtered": false
+  },
+  "rgb_stamp_ns": 38000000000,
+  "rgb_role": "Within-mission reference; same exposure as the mapping input and vehicle annotations",
+  "mapping_input": {
+    "stamp_ns": 38000000000,
+    "frame": "vehicle/camera_down",
+    "storage": "estimator-gray8",
+    "source_encoding": "rgb8",
+    "source_step": 2400,
+    "source_sha256": "bb07646c86d5f1e9fef8ac52a12cb8a65467b1b88f5b2a8022d2a7e82e89df4b",
+    "input_gray8_sha256": "690e25b2679e2c718ca4c54c0629c5d1819cd5ebf8c53742e725dd9200bdb643",
+    "file": "camera-0272.npz"
+  },
+  "body_at_input": [
+    5.119687197220191,
+    1.434843724331115,
+    -0.5779490540343959
+  ],
+  "camera_origin": [
+    5.024751285586954,
+    1.4356532820474905,
+    -0.7312021691696847
+  ],
+  "camera_direction": [
+    0.03338621000475692,
+    0.0034129371500739372,
+    -0.9994366977660601
+  ],
+  "dvl_origin": [
+    5.123693542420762,
+    1.4352532767891237,
+    -0.6978814577663232
+  ],
+  "dvl_directions": [
+    [
+      -0.32343017077294567,
+      0.3575576914149742,
+      -0.8760966966858038
+    ],
+    [
+      0.3832795214056634,
+      0.3554532204087354,
+      -0.8524962267201566
+    ],
+    [
+      -0.3254529094052604,
+      -0.34954183986176796,
+      -0.8785789127595207
+    ],
+    [
+      0.3812567827733487,
+      -0.35164631086800685,
+      -0.8549784427938735
+    ]
+  ],
+  "all_points_retained": true,
+  "product_qualified": false,
+  "truth_used_for": "assessment and annotation only"
+}

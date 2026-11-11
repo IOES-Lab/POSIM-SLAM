@@ -1,0 +1,129 @@
+{
+  "dvl-only": {
+    "plane_normal": [
+      0.01615100523449208,
+      -0.00619182076956411,
+      0.9998503920014595
+    ],
+    "plane_distance_m": -2.2646521669383644,
+    "plane_delta": [
+      0.0005023999259588926,
+      0.0035021223446174013,
+      -0.0019520635424399113
+    ],
+    "before_conditional_information": {
+      "0": {
+        "cone_rows": 2,
+        "all_rows": 2,
+        "cone_information": {
+          "rank": 2,
+          "singular_values": [
+            408.48283690558696,
+            6.912791818113275
+          ],
+          "unbounded_basis": [
+            [
+              0.07211670046029509
+            ],
+            [
+              0.16536951770799344
+            ],
+            [
+              0.983591431503826
+            ]
+          ],
+          "noise_factor": [
+            [
+              -0.000563024150909303,
+              0.14039454957280872
+            ],
+            [
+              -0.002342392108700293,
+              -0.034577841943335574
+            ],
+            [
+              0.00043510311663400323,
+              -0.00448018403892585
+            ]
+          ]
+        },
+        "all_range_information": {
+          "rank": 2,
+          "singular_values": [
+            408.48283690558696,
+            6.912791818113275
+          ],
+          "unbounded_basis": [
+            [
+              0.07211670046029509
+            ],
+            [
+              0.16536951770799344
+            ],
+            [
+              0.983591431503826
+            ]
+          ],
+          "noise_factor": [
+            [
+              -0.000563024150909303,
+              0.14039454957280872
+            ],
+            [
+              -0.002342392108700293,
+              -0.034577841943335574
+            ],
+            [
+              0.00043510311663400323,
+              -0.00448018403892585
+            ]
+          ]
+        },
+        "fan_predictions": [],
+        "scope": "Selected rows with poses fixed; support-only seeds add no information; excludes owner prior and joint pose uncertainty"
+      }
+    },
+    "before_nonlinear_residual_m": [
+      0.002984652587354253,
+      -0.001566834251017779
+    ],
+    "after_full_geometry_error": null,
+    "after_rows": [
+      {
+        "key": [
+          32010000000,
+          0,
+          1
+        ],
+        "predicted_range_m": 1.3366864413044117,
+        "residual_m": -1.4731290068459302e-05,
+        "conditional_hit": [
+          1.2049222100896917,
+          5.427740100085972,
+          -2.250842021947105
+        ],
+        "geometry_error": null
+      },
+      {
+        "key": [
+          33010000000,
+          0,
+          1
+        ],
+        "predicted_range_m": 1.3674609824568,
+        "residual_m": -1.7540112134506458e-05,
+        "conditional_hit": [
+          1.380630475423655,
+          5.349052562573276,
+          -2.2541676037229674
+        ],
+        "geometry_error": null
+      }
+    ],
+    "all_original_factor_rows_retained": true,
+    "fixed_gaussian_update_is_not_nonlinear_relinearization": true,
+    "physical_identity_verified": false,
+    "noise_calibrated": false,
+    "map_qualified": false
+  }
+}

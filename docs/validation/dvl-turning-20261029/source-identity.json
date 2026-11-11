@@ -1,0 +1,19 @@
+{
+  "measured_application_commit": "35fb319b03ca7d4b8e215016b4d6b8da5902ed17",
+  "engine_sdk_commit": "8c47601c7dd4729e3edeabef79665760268fdbc4",
+  "library_commit": "839a0b187d3af470b1c8dc73725319d736c7e3f5",
+  "hydrodynamics_input_sha256": "22b8ea23b04f8d478f0764a9ccc70299a9dcc1e2cddd42f479f9ba9247eb8d4b",
+  "hydrodynamics_library_sha256": "ddff52c026f8070d3029a75d3a5a28a348007227699d45d550b366cda13651c5",
+  "shader_override_commit": "0d075c9d63762aba3e401c3c8d5a52f36a4145db",
+  "native_binary_sha256": "cb5cbc7c254b668ea0b0e3c7ac0f2fe8dac0d4f07810bab2e8d3237ca18d1d87",
+  "asyncio_upstream_commit": "23dc7c9f05c6e85033dba4ca7a0c807cbede2a8f",
+  "sha256": {
+    "runtime/worlds/sensor_profiles.py": "4afe38e37f1973ff255ac3a80a52d053fa09bdc86986282329e4bcd955cad254",
+    "runtime/worlds/sensor_composition.py": "d1441fdfa573db4fd1d71f65f80065c3d9e23232a97f6b3844e9aaafeb2c25e7",
+    "runtime/worlds/practice_vio.py": "dcc0ff5323bde0248b6c6a8987aaddee1691c93aa059b275d8a6ae58a4042fb3",
+    "runtime/browser_adapter/slam.py": "690f2a44aa93f35e128534fea06491dc3c1dc6c5f454a6d2a7d558c0b1214e5d",
+    "scripts/render_native_slam_comparison.py": "fcaaa52e7ad25e4ce38ca4bcd42cd012f118e963de872a791a5db3963d4cad4c",
+    "scripts/pointcloud_figure.py": "45737b995528c7cb71633a07d26e387b5bcb9ddfd0d1e2921ccf5e3611ecc662"
+  },
+  "installed_qualified": false
+}

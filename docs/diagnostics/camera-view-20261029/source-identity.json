@@ -1,0 +1,26 @@
+{
+  "application_commit": "9b9854accf08cd8c47f9ad124cbaed61bb645fca",
+  "library_commit": "1a2c8d8a8554d548dc9056c5d4ea518c531d32e3",
+  "engine_sdk_commit": "8c47601c7dd4729e3edeabef79665760268fdbc4",
+  "native_binary_sha256": "cb5cbc7c254b668ea0b0e3c7ac0f2fe8dac0d4f07810bab2e8d3237ca18d1d87",
+  "shader_override_commit": "0d075c9d63762aba3e401c3c8d5a52f36a4145db",
+  "asyncio_upstream_commit": "23dc7c9f05c6e85033dba4ca7a0c807cbede2a8f",
+  "local_demo_payload_candidate": true,
+  "downward_api_prototype": true,
+  "api_difference": "After downward run, reject explicit VRX payload overrides because its stock model lacks the common payload mount; BlueROV composition is unchanged.",
+  "installed_qualified": false,
+  "whole_slam_goal_complete": false,
+  "source_sha256": {
+    "runtime/browser_adapter/mission.py": "bf513819e331cee9eac5bf93f4f94b3115e140049c803c60ac2c0233b0350a6a",
+    "runtime/browser_adapter/workspace.py": "0e51ff3b8be2150ad0708d858af57c1d6b3130fd23c62ce91a25018d024c53f7",
+    "runtime/browser_adapter/demo_workspace.py": "7703f9452e88603f494b0a00a43e9f889c596837ff6f91e230d56080e8a6a45a",
+    "runtime/worlds/sensor_composition.py": "d1441fdfa573db4fd1d71f65f80065c3d9e23232a97f6b3844e9aaafeb2c25e7",
+    "runtime/worlds/sensor_profiles.py": "4afe38e37f1973ff255ac3a80a52d053fa09bdc86986282329e4bcd955cad254",
+    "runtime/worlds/practice_vio.py": "dcc0ff5323bde0248b6c6a8987aaddee1691c93aa059b275d8a6ae58a4042fb3",
+    "runtime/browser_adapter/slam.py": "690f2a44aa93f35e128534fea06491dc3c1dc6c5f454a6d2a7d558c0b1214e5d",
+    "scripts/render_native_slam_comparison.py": "6a679ed124a507cd9b20c1486dc9bf71084ae8b17f33bce38f22dcbc39c05719",
+    "scripts/pointcloud_figure.py": "45737b995528c7cb71633a07d26e387b5bcb9ddfd0d1e2921ccf5e3611ecc662"
+  },
+  "route_scope": "Shallow camera pair reuses identical requested geographic waypoints; inspection changes depth, route extent and heading together, not a depth-only ablation.",
+  "camera_scope": "Raw camera sizes differ: downward 800x600, forward 640x480; both use unchanged max_image_pixels=120000 and max_feature_cells=200."
+}

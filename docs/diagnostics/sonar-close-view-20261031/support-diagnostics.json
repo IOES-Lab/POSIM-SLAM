@@ -1,0 +1,2338 @@
+{
+  "scope": "Support diagnostics on all emitted chains; nominal poses only, no map admission or changed matching policy",
+  "sampling_control": {
+    "raw_id_different_frames": 82,
+    "canonical_birth_different_frames": 2,
+    "canonical_different_detections": 3,
+    "changed": [
+      {
+        "stamp_ns": 35500000000,
+        "pixels": [
+          6
+        ]
+      },
+      {
+        "stamp_ns": 68010000000,
+        "pixels": [
+          5,
+          7
+        ]
+      }
+    ],
+    "continuous_curve_guaranteed": false
+  },
+  "modes": {
+    "descriptor": {
+      "total": 170,
+      "median_duration_s": 1.49,
+      "maximum_duration_s": 8.51,
+      "median_full_yaw_span_deg": 0.3400979094668188,
+      "maximum_full_yaw_span_deg": 90.03739360681298,
+      "full_yaw_at_least_20deg": 11,
+      "construction_yaw_at_least_20deg": 11,
+      "all_tracks": [
+        {
+          "track_id": 60,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 0.722865403280885,
+          "construction_yaw_span_deg": 0.722865403280885,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 81,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 0.6342777874029532,
+          "construction_yaw_span_deg": 0.6342777874029532,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 93,
+          "count": 4,
+          "duration_s": 1.49,
+          "construction_duration_s": 1.49,
+          "full_yaw_span_deg": 2.447721125195636,
+          "construction_yaw_span_deg": 2.447721125195636,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 185,
+          "count": 4,
+          "duration_s": 1.49,
+          "construction_duration_s": 1.49,
+          "full_yaw_span_deg": 0.040279235966108995,
+          "construction_yaw_span_deg": 0.040279235966108995,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 192,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 0.03557803875236764,
+          "construction_yaw_span_deg": 0.03557803875236764,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 223,
+          "count": 4,
+          "duration_s": 1.49,
+          "construction_duration_s": 1.49,
+          "full_yaw_span_deg": 0.04623006214619449,
+          "construction_yaw_span_deg": 0.04623006214619449,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 233,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 0.021825711434869128,
+          "construction_yaw_span_deg": 0.021825711434869128,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 235,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 0.021825711434869128,
+          "construction_yaw_span_deg": 0.021825711434869128,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 245,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 0.04152886493245314,
+          "construction_yaw_span_deg": 0.04152886493245314,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 250,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 0.04347236215698701,
+          "construction_yaw_span_deg": 0.04347236215698701,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 264,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 0.04347236215698701,
+          "construction_yaw_span_deg": 0.04347236215698701,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 294,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 0.03606211483602458,
+          "construction_yaw_span_deg": 0.03606211483602458,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 297,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 0.03606211483602458,
+          "construction_yaw_span_deg": 0.03606211483602458,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 301,
+          "count": 6,
+          "duration_s": 2.49,
+          "construction_duration_s": 2.49,
+          "full_yaw_span_deg": 0.2506976751002544,
+          "construction_yaw_span_deg": 0.2506976751002544,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 317,
+          "count": 6,
+          "duration_s": 2.51,
+          "construction_duration_s": 2.51,
+          "full_yaw_span_deg": 0.21751730377168893,
+          "construction_yaw_span_deg": 0.21751730377168893,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 318,
+          "count": 8,
+          "duration_s": 3.51,
+          "construction_duration_s": 3.51,
+          "full_yaw_span_deg": 0.21751730377168893,
+          "construction_yaw_span_deg": 0.21751730377168893,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 320,
+          "count": 13,
+          "duration_s": 6.0,
+          "construction_duration_s": 3.51,
+          "full_yaw_span_deg": 10.795761662096332,
+          "construction_yaw_span_deg": 0.21751730377168893,
+          "heldout": 2,
+          "fit_available": true
+        },
+        {
+          "track_id": 338,
+          "count": 4,
+          "duration_s": 1.49,
+          "construction_duration_s": 1.49,
+          "full_yaw_span_deg": 0.21463556026422984,
+          "construction_yaw_span_deg": 0.21463556026422984,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 353,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 0.18170599244352797,
+          "construction_yaw_span_deg": 0.18170599244352797,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 357,
+          "count": 4,
+          "duration_s": 1.51,
+          "construction_duration_s": 1.51,
+          "full_yaw_span_deg": 0.18170599244352797,
+          "construction_yaw_span_deg": 0.18170599244352797,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 363,
+          "count": 10,
+          "duration_s": 4.51,
+          "construction_duration_s": 3.51,
+          "full_yaw_span_deg": 0.4986513184280675,
+          "construction_yaw_span_deg": 0.2068049279079571,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 364,
+          "count": 7,
+          "duration_s": 3.0,
+          "construction_duration_s": 3.0,
+          "full_yaw_span_deg": 0.2068049279079571,
+          "construction_yaw_span_deg": 0.2068049279079571,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 366,
+          "count": 11,
+          "duration_s": 5.0,
+          "construction_duration_s": 3.51,
+          "full_yaw_span_deg": 10.795761662096332,
+          "construction_yaw_span_deg": 0.2068049279079571,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 367,
+          "count": 6,
+          "duration_s": 2.51,
+          "construction_duration_s": 2.51,
+          "full_yaw_span_deg": 0.2068049279079571,
+          "construction_yaw_span_deg": 0.2068049279079571,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 371,
+          "count": 9,
+          "duration_s": 4.01,
+          "construction_duration_s": 3.51,
+          "full_yaw_span_deg": 0.2068049279079571,
+          "construction_yaw_span_deg": 0.2068049279079571,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 372,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 0.18170599244352797,
+          "construction_yaw_span_deg": 0.18170599244352797,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 375,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 0.18170599244352797,
+          "construction_yaw_span_deg": 0.18170599244352797,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 376,
+          "count": 4,
+          "duration_s": 1.51,
+          "construction_duration_s": 1.51,
+          "full_yaw_span_deg": 0.18170599244352797,
+          "construction_yaw_span_deg": 0.18170599244352797,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 382,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 0.06781878887919249,
+          "construction_yaw_span_deg": 0.06781878887919249,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 383,
+          "count": 4,
+          "duration_s": 1.49,
+          "construction_duration_s": 1.49,
+          "full_yaw_span_deg": 0.09291772434362161,
+          "construction_yaw_span_deg": 0.09291772434362161,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 387,
+          "count": 4,
+          "duration_s": 1.49,
+          "construction_duration_s": 1.49,
+          "full_yaw_span_deg": 0.09291772434362161,
+          "construction_yaw_span_deg": 0.09291772434362161,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 388,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 0.06781878887919249,
+          "construction_yaw_span_deg": 0.06781878887919249,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 393,
+          "count": 6,
+          "duration_s": 2.49,
+          "construction_duration_s": 2.49,
+          "full_yaw_span_deg": 0.15770971991543759,
+          "construction_yaw_span_deg": 0.15770971991543759,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 404,
+          "count": 8,
+          "duration_s": 3.49,
+          "construction_duration_s": 3.49,
+          "full_yaw_span_deg": 10.795761662096332,
+          "construction_yaw_span_deg": 10.795761662096332,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 406,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 0.15770971991543759,
+          "construction_yaw_span_deg": 0.15770971991543759,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 407,
+          "count": 4,
+          "duration_s": 1.49,
+          "construction_duration_s": 1.49,
+          "full_yaw_span_deg": 0.15770971991543759,
+          "construction_yaw_span_deg": 0.15770971991543759,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 417,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 0.15770971991543759,
+          "construction_yaw_span_deg": 0.15770971991543759,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 423,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 0.15770971991543759,
+          "construction_yaw_span_deg": 0.15770971991543759,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 426,
+          "count": 4,
+          "duration_s": 1.51,
+          "construction_duration_s": 1.51,
+          "full_yaw_span_deg": 0.15770971991543759,
+          "construction_yaw_span_deg": 0.15770971991543759,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 436,
+          "count": 4,
+          "duration_s": 1.5,
+          "construction_duration_s": 1.5,
+          "full_yaw_span_deg": 0.12747406419944912,
+          "construction_yaw_span_deg": 0.12747406419944912,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 452,
+          "count": 3,
+          "duration_s": 1.01,
+          "construction_duration_s": 1.01,
+          "full_yaw_span_deg": 0.02811338588050899,
+          "construction_yaw_span_deg": 0.02811338588050899,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 453,
+          "count": 18,
+          "duration_s": 8.51,
+          "construction_duration_s": 3.51,
+          "full_yaw_span_deg": 45.9011938308497,
+          "construction_yaw_span_deg": 45.52643067498032,
+          "heldout": 7,
+          "fit_available": true
+        },
+        {
+          "track_id": 455,
+          "count": 4,
+          "duration_s": 1.51,
+          "construction_duration_s": 1.51,
+          "full_yaw_span_deg": 0.35019543211660786,
+          "construction_yaw_span_deg": 0.35019543211660786,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 457,
+          "count": 6,
+          "duration_s": 2.5,
+          "construction_duration_s": 2.5,
+          "full_yaw_span_deg": 39.359246388876656,
+          "construction_yaw_span_deg": 39.359246388876656,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 459,
+          "count": 4,
+          "duration_s": 1.51,
+          "construction_duration_s": 1.51,
+          "full_yaw_span_deg": 0.35019543211660786,
+          "construction_yaw_span_deg": 0.35019543211660786,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 463,
+          "count": 4,
+          "duration_s": 1.51,
+          "construction_duration_s": 1.51,
+          "full_yaw_span_deg": 0.35019543211660786,
+          "construction_yaw_span_deg": 0.35019543211660786,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 466,
+          "count": 3,
+          "duration_s": 1.01,
+          "construction_duration_s": 1.01,
+          "full_yaw_span_deg": 0.02811338588050899,
+          "construction_yaw_span_deg": 0.02811338588050899,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 467,
+          "count": 4,
+          "duration_s": 1.49,
+          "construction_duration_s": 1.49,
+          "full_yaw_span_deg": 10.795761662096332,
+          "construction_yaw_span_deg": 10.795761662096332,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 469,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 0.35019543211660786,
+          "construction_yaw_span_deg": 0.35019543211660786,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 470,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 0.35019543211660786,
+          "construction_yaw_span_deg": 0.35019543211660786,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 532,
+          "count": 10,
+          "duration_s": 4.51,
+          "construction_duration_s": 3.51,
+          "full_yaw_span_deg": 0.603656149388075,
+          "construction_yaw_span_deg": 0.5725806604011322,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 536,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 0.13540207742726135,
+          "construction_yaw_span_deg": 0.13540207742726135,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 539,
+          "count": 5,
+          "duration_s": 2.0,
+          "construction_duration_s": 2.0,
+          "full_yaw_span_deg": 0.47908974430970463,
+          "construction_yaw_span_deg": 0.47908974430970463,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 540,
+          "count": 10,
+          "duration_s": 4.51,
+          "construction_duration_s": 3.51,
+          "full_yaw_span_deg": 0.603656149388075,
+          "construction_yaw_span_deg": 0.5725806604011322,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 549,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 0.44782792591700965,
+          "construction_yaw_span_deg": 0.44782792591700965,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 555,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 0.44782792591700965,
+          "construction_yaw_span_deg": 0.44782792591700965,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 559,
+          "count": 8,
+          "duration_s": 3.51,
+          "construction_duration_s": 3.51,
+          "full_yaw_span_deg": 0.603656149388075,
+          "construction_yaw_span_deg": 0.603656149388075,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 560,
+          "count": 8,
+          "duration_s": 3.51,
+          "construction_duration_s": 3.51,
+          "full_yaw_span_deg": 0.603656149388075,
+          "construction_yaw_span_deg": 0.603656149388075,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 569,
+          "count": 6,
+          "duration_s": 2.49,
+          "construction_duration_s": 2.49,
+          "full_yaw_span_deg": 0.603656149388075,
+          "construction_yaw_span_deg": 0.603656149388075,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 570,
+          "count": 4,
+          "duration_s": 1.49,
+          "construction_duration_s": 1.49,
+          "full_yaw_span_deg": 0.3628766006390825,
+          "construction_yaw_span_deg": 0.3628766006390825,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 584,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 0.3628766006390825,
+          "construction_yaw_span_deg": 0.3628766006390825,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 587,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 0.3628766006390825,
+          "construction_yaw_span_deg": 0.3628766006390825,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 591,
+          "count": 6,
+          "duration_s": 2.5,
+          "construction_duration_s": 2.5,
+          "full_yaw_span_deg": 5.218414145470398,
+          "construction_yaw_span_deg": 5.218414145470398,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 600,
+          "count": 4,
+          "duration_s": 1.51,
+          "construction_duration_s": 1.51,
+          "full_yaw_span_deg": 0.603656149388075,
+          "construction_yaw_span_deg": 0.603656149388075,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 603,
+          "count": 4,
+          "duration_s": 1.51,
+          "construction_duration_s": 1.51,
+          "full_yaw_span_deg": 0.603656149388075,
+          "construction_yaw_span_deg": 0.603656149388075,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 623,
+          "count": 3,
+          "duration_s": 1.01,
+          "construction_duration_s": 1.01,
+          "full_yaw_span_deg": 5.218414145470398,
+          "construction_yaw_span_deg": 5.218414145470398,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 631,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 33.1967883544809,
+          "construction_yaw_span_deg": 33.1967883544809,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 714,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 1.2436796733044617,
+          "construction_yaw_span_deg": 1.2436796733044617,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 715,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 1.2436796733044617,
+          "construction_yaw_span_deg": 1.2436796733044617,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 718,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 1.2436796733044617,
+          "construction_yaw_span_deg": 1.2436796733044617,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 721,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 1.2436796733044617,
+          "construction_yaw_span_deg": 1.2436796733044617,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 725,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 1.2436796733044617,
+          "construction_yaw_span_deg": 1.2436796733044617,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 732,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 1.2436796733044617,
+          "construction_yaw_span_deg": 1.2436796733044617,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 746,
+          "count": 8,
+          "duration_s": 3.51,
+          "construction_duration_s": 3.51,
+          "full_yaw_span_deg": 0.3570639177210318,
+          "construction_yaw_span_deg": 0.3570639177210318,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 750,
+          "count": 7,
+          "duration_s": 3.0,
+          "construction_duration_s": 3.0,
+          "full_yaw_span_deg": 0.3570639177210318,
+          "construction_yaw_span_deg": 0.3570639177210318,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 752,
+          "count": 7,
+          "duration_s": 3.0,
+          "construction_duration_s": 3.0,
+          "full_yaw_span_deg": 0.3570639177210318,
+          "construction_yaw_span_deg": 0.3570639177210318,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 754,
+          "count": 4,
+          "duration_s": 1.49,
+          "construction_duration_s": 1.49,
+          "full_yaw_span_deg": 0.14993840878509052,
+          "construction_yaw_span_deg": 0.14993840878509052,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 769,
+          "count": 5,
+          "duration_s": 2.0,
+          "construction_duration_s": 2.0,
+          "full_yaw_span_deg": 0.27082778805801405,
+          "construction_yaw_span_deg": 0.27082778805801405,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 773,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 0.14993840878509052,
+          "construction_yaw_span_deg": 0.14993840878509052,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 784,
+          "count": 6,
+          "duration_s": 2.49,
+          "construction_duration_s": 2.49,
+          "full_yaw_span_deg": 0.7412026953045188,
+          "construction_yaw_span_deg": 0.7412026953045188,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 785,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 0.20498114285986896,
+          "construction_yaw_span_deg": 0.20498114285986896,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 786,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 0.24204442623071404,
+          "construction_yaw_span_deg": 0.24204442623071404,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 788,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 0.24204442623071404,
+          "construction_yaw_span_deg": 0.24204442623071404,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 806,
+          "count": 4,
+          "duration_s": 1.49,
+          "construction_duration_s": 1.49,
+          "full_yaw_span_deg": 0.5362215524446499,
+          "construction_yaw_span_deg": 0.5362215524446499,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 808,
+          "count": 4,
+          "duration_s": 1.49,
+          "construction_duration_s": 1.49,
+          "full_yaw_span_deg": 0.5362215524446499,
+          "construction_yaw_span_deg": 0.5362215524446499,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 819,
+          "count": 4,
+          "duration_s": 1.51,
+          "construction_duration_s": 1.51,
+          "full_yaw_span_deg": 27.810124429072125,
+          "construction_yaw_span_deg": 27.810124429072125,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 824,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 0.47037490724650477,
+          "construction_yaw_span_deg": 0.47037490724650477,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 906,
+          "count": 4,
+          "duration_s": 1.49,
+          "construction_duration_s": 1.49,
+          "full_yaw_span_deg": 3.5385692065541066,
+          "construction_yaw_span_deg": 3.5385692065541066,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 907,
+          "count": 7,
+          "duration_s": 3.0,
+          "construction_duration_s": 3.0,
+          "full_yaw_span_deg": 3.5385692065541066,
+          "construction_yaw_span_deg": 3.5385692065541066,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 915,
+          "count": 8,
+          "duration_s": 3.49,
+          "construction_duration_s": 3.49,
+          "full_yaw_span_deg": 3.688694458097658,
+          "construction_yaw_span_deg": 3.688694458097658,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 918,
+          "count": 4,
+          "duration_s": 1.49,
+          "construction_duration_s": 1.49,
+          "full_yaw_span_deg": 3.5385692065541066,
+          "construction_yaw_span_deg": 3.5385692065541066,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 926,
+          "count": 4,
+          "duration_s": 1.49,
+          "construction_duration_s": 1.49,
+          "full_yaw_span_deg": 3.5385692065541066,
+          "construction_yaw_span_deg": 3.5385692065541066,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 927,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 3.4754338230488404,
+          "construction_yaw_span_deg": 3.4754338230488404,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 932,
+          "count": 9,
+          "duration_s": 4.0,
+          "construction_duration_s": 3.51,
+          "full_yaw_span_deg": 0.5606687670703818,
+          "construction_yaw_span_deg": 0.5606687670703818,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 934,
+          "count": 6,
+          "duration_s": 2.51,
+          "construction_duration_s": 2.51,
+          "full_yaw_span_deg": 0.20026397277680008,
+          "construction_yaw_span_deg": 0.20026397277680008,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 937,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 0.09825280771888675,
+          "construction_yaw_span_deg": 0.09825280771888675,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 946,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 0.11497282545721545,
+          "construction_yaw_span_deg": 0.11497282545721545,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 958,
+          "count": 5,
+          "duration_s": 2.0,
+          "construction_duration_s": 2.0,
+          "full_yaw_span_deg": 0.5606687670703818,
+          "construction_yaw_span_deg": 0.5606687670703818,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 984,
+          "count": 4,
+          "duration_s": 1.49,
+          "construction_duration_s": 1.49,
+          "full_yaw_span_deg": 0.5606687670703818,
+          "construction_yaw_span_deg": 0.5606687670703818,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 987,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 0.5606687670703818,
+          "construction_yaw_span_deg": 0.5606687670703818,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 988,
+          "count": 4,
+          "duration_s": 1.49,
+          "construction_duration_s": 1.49,
+          "full_yaw_span_deg": 0.5606687670703818,
+          "construction_yaw_span_deg": 0.5606687670703818,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 996,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 0.5606687670703818,
+          "construction_yaw_span_deg": 0.5606687670703818,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 1000,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 0.5606687670703818,
+          "construction_yaw_span_deg": 0.5606687670703818,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 1092,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 11.00164182799304,
+          "construction_yaw_span_deg": 11.00164182799304,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 1093,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 11.00164182799304,
+          "construction_yaw_span_deg": 11.00164182799304,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 1105,
+          "count": 10,
+          "duration_s": 4.49,
+          "construction_duration_s": 3.49,
+          "full_yaw_span_deg": 11.00164182799304,
+          "construction_yaw_span_deg": 11.00164182799304,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 1107,
+          "count": 4,
+          "duration_s": 1.49,
+          "construction_duration_s": 1.49,
+          "full_yaw_span_deg": 11.00164182799304,
+          "construction_yaw_span_deg": 11.00164182799304,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 1113,
+          "count": 4,
+          "duration_s": 1.51,
+          "construction_duration_s": 1.51,
+          "full_yaw_span_deg": 0.36157250773462507,
+          "construction_yaw_span_deg": 0.36157250773462507,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 1115,
+          "count": 5,
+          "duration_s": 2.0,
+          "construction_duration_s": 2.0,
+          "full_yaw_span_deg": 0.5012002741824708,
+          "construction_yaw_span_deg": 0.5012002741824708,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 1116,
+          "count": 8,
+          "duration_s": 3.51,
+          "construction_duration_s": 3.51,
+          "full_yaw_span_deg": 0.5335145445015921,
+          "construction_yaw_span_deg": 0.5335145445015921,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 1117,
+          "count": 10,
+          "duration_s": 4.51,
+          "construction_duration_s": 3.51,
+          "full_yaw_span_deg": 12.75908606330316,
+          "construction_yaw_span_deg": 0.5335145445015921,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 1118,
+          "count": 7,
+          "duration_s": 3.0,
+          "construction_duration_s": 3.0,
+          "full_yaw_span_deg": 0.5335145445015921,
+          "construction_yaw_span_deg": 0.5335145445015921,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 1124,
+          "count": 4,
+          "duration_s": 1.51,
+          "construction_duration_s": 1.51,
+          "full_yaw_span_deg": 0.36157250773462507,
+          "construction_yaw_span_deg": 0.36157250773462507,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 1158,
+          "count": 4,
+          "duration_s": 1.49,
+          "construction_duration_s": 1.49,
+          "full_yaw_span_deg": 0.218308175610549,
+          "construction_yaw_span_deg": 0.218308175610549,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 1173,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 0.07896782215402903,
+          "construction_yaw_span_deg": 0.07896782215402903,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 1179,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 0.07896782215402903,
+          "construction_yaw_span_deg": 0.07896782215402903,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 1217,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 40.072687371577615,
+          "construction_yaw_span_deg": 40.072687371577615,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 1247,
+          "count": 13,
+          "duration_s": 6.0,
+          "construction_duration_s": 3.49,
+          "full_yaw_span_deg": 33.24521676799321,
+          "construction_yaw_span_deg": 33.24521676799321,
+          "heldout": 2,
+          "fit_available": true
+        },
+        {
+          "track_id": 1252,
+          "count": 11,
+          "duration_s": 5.0,
+          "construction_duration_s": 3.51,
+          "full_yaw_span_deg": 5.030136166919246,
+          "construction_yaw_span_deg": 5.030136166919246,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 1256,
+          "count": 12,
+          "duration_s": 5.51,
+          "construction_duration_s": 3.51,
+          "full_yaw_span_deg": 7.958790545994054,
+          "construction_yaw_span_deg": 5.030136166919246,
+          "heldout": 1,
+          "fit_available": true
+        },
+        {
+          "track_id": 1258,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 4.798873066781703,
+          "construction_yaw_span_deg": 4.798873066781703,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 1260,
+          "count": 10,
+          "duration_s": 4.51,
+          "construction_duration_s": 3.51,
+          "full_yaw_span_deg": 5.030136166919246,
+          "construction_yaw_span_deg": 5.030136166919246,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 1262,
+          "count": 6,
+          "duration_s": 2.51,
+          "construction_duration_s": 2.51,
+          "full_yaw_span_deg": 4.897699986366237,
+          "construction_yaw_span_deg": 4.897699986366237,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 1276,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 0.0803564201169012,
+          "construction_yaw_span_deg": 0.0803564201169012,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 1280,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 0.0803564201169012,
+          "construction_yaw_span_deg": 0.0803564201169012,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 1281,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 0.0803564201169012,
+          "construction_yaw_span_deg": 0.0803564201169012,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 1283,
+          "count": 4,
+          "duration_s": 1.49,
+          "construction_duration_s": 1.49,
+          "full_yaw_span_deg": 0.12576019849677134,
+          "construction_yaw_span_deg": 0.12576019849677134,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 1284,
+          "count": 4,
+          "duration_s": 1.49,
+          "construction_duration_s": 1.49,
+          "full_yaw_span_deg": 0.12576019849677134,
+          "construction_yaw_span_deg": 0.12576019849677134,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 1287,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 0.0803564201169012,
+          "construction_yaw_span_deg": 0.0803564201169012,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 1297,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 0.0803564201169012,
+          "construction_yaw_span_deg": 0.0803564201169012,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 1303,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 0.09882691958453411,
+          "construction_yaw_span_deg": 0.09882691958453411,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 1306,
+          "count": 10,
+          "duration_s": 4.51,
+          "construction_duration_s": 3.51,
+          "full_yaw_span_deg": 7.958790545994054,
+          "construction_yaw_span_deg": 0.23126310013754298,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 1315,
+          "count": 7,
+          "duration_s": 3.0,
+          "construction_duration_s": 3.0,
+          "full_yaw_span_deg": 0.177839958932879,
+          "construction_yaw_span_deg": 0.177839958932879,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 1321,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 0.045403778379870134,
+          "construction_yaw_span_deg": 0.045403778379870134,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 1326,
+          "count": 5,
+          "duration_s": 2.0,
+          "construction_duration_s": 2.0,
+          "full_yaw_span_deg": 0.177839958932879,
+          "construction_yaw_span_deg": 0.177839958932879,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 1333,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 0.16159294532642168,
+          "construction_yaw_span_deg": 0.16159294532642168,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 1337,
+          "count": 7,
+          "duration_s": 3.0,
+          "construction_duration_s": 3.0,
+          "full_yaw_span_deg": 0.1992951310126567,
+          "construction_yaw_span_deg": 0.1992951310126567,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 1338,
+          "count": 5,
+          "duration_s": 2.0,
+          "construction_duration_s": 2.0,
+          "full_yaw_span_deg": 0.16159294532642168,
+          "construction_yaw_span_deg": 0.16159294532642168,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 1343,
+          "count": 4,
+          "duration_s": 1.51,
+          "construction_duration_s": 1.51,
+          "full_yaw_span_deg": 0.16159294532642168,
+          "construction_yaw_span_deg": 0.16159294532642168,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 1346,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 0.16159294532642168,
+          "construction_yaw_span_deg": 0.16159294532642168,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 1347,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 0.16159294532642168,
+          "construction_yaw_span_deg": 0.16159294532642168,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 1348,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 0.16159294532642168,
+          "construction_yaw_span_deg": 0.16159294532642168,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 1349,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 0.16159294532642168,
+          "construction_yaw_span_deg": 0.16159294532642168,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 1353,
+          "count": 5,
+          "duration_s": 2.0,
+          "construction_duration_s": 2.0,
+          "full_yaw_span_deg": 0.16159294532642168,
+          "construction_yaw_span_deg": 0.16159294532642168,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 1354,
+          "count": 6,
+          "duration_s": 2.49,
+          "construction_duration_s": 2.49,
+          "full_yaw_span_deg": 0.1992951310126567,
+          "construction_yaw_span_deg": 0.1992951310126567,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 1355,
+          "count": 6,
+          "duration_s": 2.49,
+          "construction_duration_s": 2.49,
+          "full_yaw_span_deg": 0.1992951310126567,
+          "construction_yaw_span_deg": 0.1992951310126567,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 1357,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 0.16159294532642168,
+          "construction_yaw_span_deg": 0.16159294532642168,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 1365,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 0.16159294532642168,
+          "construction_yaw_span_deg": 0.16159294532642168,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 1378,
+          "count": 5,
+          "duration_s": 2.0,
+          "construction_duration_s": 2.0,
+          "full_yaw_span_deg": 7.868134852396906,
+          "construction_yaw_span_deg": 7.868134852396906,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 1379,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 0.037229937662144774,
+          "construction_yaw_span_deg": 0.037229937662144774,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 1380,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 0.037229937662144774,
+          "construction_yaw_span_deg": 0.037229937662144774,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 1381,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 0.037229937662144774,
+          "construction_yaw_span_deg": 0.037229937662144774,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 1384,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 0.037229937662144774,
+          "construction_yaw_span_deg": 0.037229937662144774,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 1385,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 0.037229937662144774,
+          "construction_yaw_span_deg": 0.037229937662144774,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 1386,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 0.037229937662144774,
+          "construction_yaw_span_deg": 0.037229937662144774,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 1394,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 0.10863943741550833,
+          "construction_yaw_span_deg": 0.10863943741550833,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 1402,
+          "count": 5,
+          "duration_s": 2.0,
+          "construction_duration_s": 2.0,
+          "full_yaw_span_deg": 35.68019894859567,
+          "construction_yaw_span_deg": 35.68019894859567,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 1405,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 0.10863943741550833,
+          "construction_yaw_span_deg": 0.10863943741550833,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 1406,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 7.868134852396906,
+          "construction_yaw_span_deg": 7.868134852396906,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 1434,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 35.571559511180155,
+          "construction_yaw_span_deg": 35.571559511180155,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 1481,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 59.573887291791145,
+          "construction_yaw_span_deg": 59.573887291791145,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 1491,
+          "count": 4,
+          "duration_s": 1.49,
+          "construction_duration_s": 1.49,
+          "full_yaw_span_deg": 90.03739360681298,
+          "construction_yaw_span_deg": 90.03739360681298,
+          "heldout": 0,
+          "fit_available": false
+        },
+        {
+          "track_id": 1504,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 43.57102201977656,
+          "construction_yaw_span_deg": 43.57102201977656,
+          "heldout": 0,
+          "fit_available": false
+        },
+        {
+          "track_id": 1557,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 0.14857695612226357,
+          "construction_yaw_span_deg": 0.14857695612226357,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 1581,
+          "count": 3,
+          "duration_s": 1.01,
+          "construction_duration_s": 1.01,
+          "full_yaw_span_deg": 0.16461974717192093,
+          "construction_yaw_span_deg": 0.16461974717192093,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 1621,
+          "count": 6,
+          "duration_s": 2.51,
+          "construction_duration_s": 2.51,
+          "full_yaw_span_deg": 0.3038273841849752,
+          "construction_yaw_span_deg": 0.3038273841849752,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 1654,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 0.3419429467792596,
+          "construction_yaw_span_deg": 0.3419429467792596,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 1660,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 0.36351768932445705,
+          "construction_yaw_span_deg": 0.36351768932445705,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 1678,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 0.2135828636870566,
+          "construction_yaw_span_deg": 0.2135828636870566,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 1695,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 0.33825287215437794,
+          "construction_yaw_span_deg": 0.33825287215437794,
+          "heldout": 0,
+          "fit_available": true
+        }
+      ]
+    },
+    "projective": {
+      "total": 59,
+      "median_duration_s": 3.51,
+      "maximum_duration_s": 10.51,
+      "median_full_yaw_span_deg": 1.5612851397289138,
+      "maximum_full_yaw_span_deg": 91.87226122329831,
+      "full_yaw_at_least_20deg": 18,
+      "construction_yaw_at_least_20deg": 15,
+      "all_tracks": [
+        {
+          "track_id": 123,
+          "count": 4,
+          "duration_s": 3.51,
+          "construction_duration_s": 3.51,
+          "full_yaw_span_deg": 0.07551007630260269,
+          "construction_yaw_span_deg": 0.07551007630260269,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 125,
+          "count": 4,
+          "duration_s": 3.0,
+          "construction_duration_s": 3.0,
+          "full_yaw_span_deg": 0.05838556208147491,
+          "construction_yaw_span_deg": 0.05838556208147491,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 127,
+          "count": 4,
+          "duration_s": 3.0,
+          "construction_duration_s": 3.0,
+          "full_yaw_span_deg": 0.05566924117565575,
+          "construction_yaw_span_deg": 0.05566924117565575,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 159,
+          "count": 8,
+          "duration_s": 7.0,
+          "construction_duration_s": 7.0,
+          "full_yaw_span_deg": 0.274472069821121,
+          "construction_yaw_span_deg": 0.274472069821121,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 191,
+          "count": 3,
+          "duration_s": 2.0,
+          "construction_duration_s": 2.0,
+          "full_yaw_span_deg": 0.016994103390362936,
+          "construction_yaw_span_deg": 0.016994103390362936,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 196,
+          "count": 10,
+          "duration_s": 7.99,
+          "construction_duration_s": 6.5,
+          "full_yaw_span_deg": 39.11129274554884,
+          "construction_yaw_span_deg": 0.10224178878879477,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 224,
+          "count": 6,
+          "duration_s": 3.0,
+          "construction_duration_s": 3.0,
+          "full_yaw_span_deg": 0.2506976751002544,
+          "construction_yaw_span_deg": 0.2506976751002544,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 241,
+          "count": 7,
+          "duration_s": 4.51,
+          "construction_duration_s": 4.51,
+          "full_yaw_span_deg": 0.4986513184280675,
+          "construction_yaw_span_deg": 0.4986513184280675,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 245,
+          "count": 5,
+          "duration_s": 4.51,
+          "construction_duration_s": 4.51,
+          "full_yaw_span_deg": 0.4986513184280675,
+          "construction_yaw_span_deg": 0.4986513184280675,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 251,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 0.18170599244352797,
+          "construction_yaw_span_deg": 0.18170599244352797,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 254,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 0.18170599244352797,
+          "construction_yaw_span_deg": 0.18170599244352797,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 257,
+          "count": 10,
+          "duration_s": 4.49,
+          "construction_duration_s": 3.5,
+          "full_yaw_span_deg": 10.795761662096332,
+          "construction_yaw_span_deg": 0.15770971991543759,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 260,
+          "count": 5,
+          "duration_s": 4.0,
+          "construction_duration_s": 4.0,
+          "full_yaw_span_deg": 0.35019543211660786,
+          "construction_yaw_span_deg": 0.35019543211660786,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 268,
+          "count": 4,
+          "duration_s": 4.5,
+          "construction_duration_s": 4.5,
+          "full_yaw_span_deg": 39.01666108599579,
+          "construction_yaw_span_deg": 39.01666108599579,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 270,
+          "count": 3,
+          "duration_s": 3.0,
+          "construction_duration_s": 3.0,
+          "full_yaw_span_deg": 0.449556110435548,
+          "construction_yaw_span_deg": 0.449556110435548,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 271,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 0.15770971991543759,
+          "construction_yaw_span_deg": 0.15770971991543759,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 288,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 0.10210274912451461,
+          "construction_yaw_span_deg": 0.10210274912451461,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 293,
+          "count": 4,
+          "duration_s": 1.51,
+          "construction_duration_s": 1.51,
+          "full_yaw_span_deg": 0.35019543211660786,
+          "construction_yaw_span_deg": 0.35019543211660786,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 317,
+          "count": 3,
+          "duration_s": 3.5,
+          "construction_duration_s": 3.5,
+          "full_yaw_span_deg": 6.1479953523470225,
+          "construction_yaw_span_deg": 6.1479953523470225,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 319,
+          "count": 11,
+          "duration_s": 7.5,
+          "construction_duration_s": 5.01,
+          "full_yaw_span_deg": 91.87226122329831,
+          "construction_yaw_span_deg": 6.541947441973048,
+          "heldout": 2,
+          "fit_available": true
+        },
+        {
+          "track_id": 326,
+          "count": 10,
+          "duration_s": 10.51,
+          "construction_duration_s": 8.0,
+          "full_yaw_span_deg": 91.87226122329831,
+          "construction_yaw_span_deg": 91.87226122329831,
+          "heldout": 1,
+          "fit_available": true
+        },
+        {
+          "track_id": 327,
+          "count": 5,
+          "duration_s": 3.0,
+          "construction_duration_s": 3.0,
+          "full_yaw_span_deg": 0.40654572372492165,
+          "construction_yaw_span_deg": 0.40654572372492165,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 333,
+          "count": 3,
+          "duration_s": 1.49,
+          "construction_duration_s": 1.49,
+          "full_yaw_span_deg": 0.3436876668824433,
+          "construction_yaw_span_deg": 0.3436876668824433,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 339,
+          "count": 3,
+          "duration_s": 2.0,
+          "construction_duration_s": 2.0,
+          "full_yaw_span_deg": 0.47908974430970463,
+          "construction_yaw_span_deg": 0.47908974430970463,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 348,
+          "count": 6,
+          "duration_s": 2.49,
+          "construction_duration_s": 2.49,
+          "full_yaw_span_deg": 0.603656149388075,
+          "construction_yaw_span_deg": 0.603656149388075,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 353,
+          "count": 4,
+          "duration_s": 2.0,
+          "construction_duration_s": 2.0,
+          "full_yaw_span_deg": 0.39395208962602535,
+          "construction_yaw_span_deg": 0.39395208962602535,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 370,
+          "count": 8,
+          "duration_s": 7.0,
+          "construction_duration_s": 7.0,
+          "full_yaw_span_deg": 90.06438385190236,
+          "construction_yaw_span_deg": 90.06438385190236,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 398,
+          "count": 7,
+          "duration_s": 6.0,
+          "construction_duration_s": 6.0,
+          "full_yaw_span_deg": 58.57599313319905,
+          "construction_yaw_span_deg": 58.57599313319905,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 410,
+          "count": 5,
+          "duration_s": 4.0,
+          "construction_duration_s": 4.0,
+          "full_yaw_span_deg": 1.5612851397289138,
+          "construction_yaw_span_deg": 1.5612851397289138,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 414,
+          "count": 6,
+          "duration_s": 4.0,
+          "construction_duration_s": 4.0,
+          "full_yaw_span_deg": 1.5612851397289138,
+          "construction_yaw_span_deg": 1.5612851397289138,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 433,
+          "count": 3,
+          "duration_s": 1.0,
+          "construction_duration_s": 1.0,
+          "full_yaw_span_deg": 0.24204442623071404,
+          "construction_yaw_span_deg": 0.24204442623071404,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 473,
+          "count": 7,
+          "duration_s": 5.49,
+          "construction_duration_s": 5.49,
+          "full_yaw_span_deg": 62.99781800060074,
+          "construction_yaw_span_deg": 62.99781800060074,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 494,
+          "count": 5,
+          "duration_s": 4.0,
+          "construction_duration_s": 4.0,
+          "full_yaw_span_deg": 3.5385692065541066,
+          "construction_yaw_span_deg": 3.5385692065541066,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 502,
+          "count": 5,
+          "duration_s": 3.49,
+          "construction_duration_s": 3.49,
+          "full_yaw_span_deg": 3.688694458097658,
+          "construction_yaw_span_deg": 3.688694458097658,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 520,
+          "count": 5,
+          "duration_s": 3.49,
+          "construction_duration_s": 3.49,
+          "full_yaw_span_deg": 49.78250207618515,
+          "construction_yaw_span_deg": 49.78250207618515,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 552,
+          "count": 8,
+          "duration_s": 7.51,
+          "construction_duration_s": 7.51,
+          "full_yaw_span_deg": 91.14794588362206,
+          "construction_yaw_span_deg": 91.14794588362206,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 559,
+          "count": 17,
+          "duration_s": 10.49,
+          "construction_duration_s": 3.49,
+          "full_yaw_span_deg": 70.05233922030875,
+          "construction_yaw_span_deg": 70.05233922030875,
+          "heldout": 7,
+          "fit_available": true
+        },
+        {
+          "track_id": 561,
+          "count": 3,
+          "duration_s": 1.49,
+          "construction_duration_s": 1.49,
+          "full_yaw_span_deg": 70.05233922030875,
+          "construction_yaw_span_deg": 70.05233922030875,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 571,
+          "count": 4,
+          "duration_s": 5.0,
+          "construction_duration_s": 5.0,
+          "full_yaw_span_deg": 41.18517686490962,
+          "construction_yaw_span_deg": 41.18517686490962,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 575,
+          "count": 4,
+          "duration_s": 3.49,
+          "construction_duration_s": 3.49,
+          "full_yaw_span_deg": 11.00164182799304,
+          "construction_yaw_span_deg": 11.00164182799304,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 583,
+          "count": 9,
+          "duration_s": 4.51,
+          "construction_duration_s": 3.51,
+          "full_yaw_span_deg": 12.75908606330316,
+          "construction_yaw_span_deg": 0.5335145445015921,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 585,
+          "count": 5,
+          "duration_s": 4.0,
+          "construction_duration_s": 4.0,
+          "full_yaw_span_deg": 0.9014792927995138,
+          "construction_yaw_span_deg": 0.9014792927995138,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 588,
+          "count": 6,
+          "duration_s": 3.51,
+          "construction_duration_s": 3.51,
+          "full_yaw_span_deg": 0.45454672234756305,
+          "construction_yaw_span_deg": 0.45454672234756305,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 597,
+          "count": 3,
+          "duration_s": 2.51,
+          "construction_duration_s": 2.51,
+          "full_yaw_span_deg": 0.02148546983529611,
+          "construction_yaw_span_deg": 0.02148546983529611,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 636,
+          "count": 3,
+          "duration_s": 3.49,
+          "construction_duration_s": 3.49,
+          "full_yaw_span_deg": 33.24521676799321,
+          "construction_yaw_span_deg": 33.24521676799321,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 638,
+          "count": 3,
+          "duration_s": 2.0,
+          "construction_duration_s": 2.0,
+          "full_yaw_span_deg": 33.067376809060335,
+          "construction_yaw_span_deg": 33.067376809060335,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 640,
+          "count": 5,
+          "duration_s": 3.49,
+          "construction_duration_s": 3.49,
+          "full_yaw_span_deg": 33.24521676799321,
+          "construction_yaw_span_deg": 33.24521676799321,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 645,
+          "count": 5,
+          "duration_s": 3.51,
+          "construction_duration_s": 3.51,
+          "full_yaw_span_deg": 4.907214887994139,
+          "construction_yaw_span_deg": 4.907214887994139,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 647,
+          "count": 9,
+          "duration_s": 5.0,
+          "construction_duration_s": 4.49,
+          "full_yaw_span_deg": 7.868134852396906,
+          "construction_yaw_span_deg": 0.16754068545263182,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 648,
+          "count": 8,
+          "duration_s": 4.0,
+          "construction_duration_s": 4.0,
+          "full_yaw_span_deg": 0.2581963790497802,
+          "construction_yaw_span_deg": 0.2581963790497802,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 649,
+          "count": 6,
+          "duration_s": 4.49,
+          "construction_duration_s": 4.49,
+          "full_yaw_span_deg": 0.2581963790497802,
+          "construction_yaw_span_deg": 0.2581963790497802,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 652,
+          "count": 7,
+          "duration_s": 6.0,
+          "construction_duration_s": 6.0,
+          "full_yaw_span_deg": 65.79298494766823,
+          "construction_yaw_span_deg": 65.79298494766823,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 656,
+          "count": 9,
+          "duration_s": 5.49,
+          "construction_duration_s": 5.0,
+          "full_yaw_span_deg": 35.68019894859567,
+          "construction_yaw_span_deg": 7.868134852396906,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 665,
+          "count": 7,
+          "duration_s": 4.0,
+          "construction_duration_s": 4.0,
+          "full_yaw_span_deg": 7.958790545994054,
+          "construction_yaw_span_deg": 7.958790545994054,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 668,
+          "count": 4,
+          "duration_s": 4.0,
+          "construction_duration_s": 4.0,
+          "full_yaw_span_deg": 7.830904914734761,
+          "construction_yaw_span_deg": 7.830904914734761,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 669,
+          "count": 4,
+          "duration_s": 2.0,
+          "construction_duration_s": 2.0,
+          "full_yaw_span_deg": 0.177839958932879,
+          "construction_yaw_span_deg": 0.177839958932879,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 675,
+          "count": 3,
+          "duration_s": 3.0,
+          "construction_duration_s": 3.0,
+          "full_yaw_span_deg": 0.1992951310126567,
+          "construction_yaw_span_deg": 0.1992951310126567,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 677,
+          "count": 5,
+          "duration_s": 4.0,
+          "construction_duration_s": 4.0,
+          "full_yaw_span_deg": 35.64296901093352,
+          "construction_yaw_span_deg": 35.64296901093352,
+          "heldout": 0,
+          "fit_available": true
+        },
+        {
+          "track_id": 687,
+          "count": 3,
+          "duration_s": 2.0,
+          "construction_duration_s": 2.0,
+          "full_yaw_span_deg": 0.1992951310126567,
+          "construction_yaw_span_deg": 0.1992951310126567,
+          "heldout": 0,
+          "fit_available": true
+        }
+      ]
+    }
+  }
+}

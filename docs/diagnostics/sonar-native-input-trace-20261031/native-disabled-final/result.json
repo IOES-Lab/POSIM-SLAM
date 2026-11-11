@@ -1,0 +1,42 @@
+{
+  "frames": [
+    {
+      "frame": 60000,
+      "sha256": "059afd997bed882ed18fe047e852e40fad32937fa099e73d0a68d5efbfb9e836"
+    },
+    {
+      "frame": 60001,
+      "sha256": "8ee0faade16c79082e82cdc1d79075c643da9bebdb1ced7f08087b7f487903b7"
+    },
+    {
+      "frame": 60002,
+      "sha256": "f6fb56d804bc03409b9c274046b68b511a925a1756d9f38b25f0abc2bf1a556a"
+    },
+    {
+      "frame": 60003,
+      "sha256": "c12c0191f0ba31234e064607aa669c61d2933b2dd0a48e17e3e2f852471479e8"
+    },
+    {
+      "frame": 60004,
+      "sha256": "cca93267c5a5684d2dc53a8534c9a8361e6873c2b7cf09568540866c15a8a150"
+    },
+    {
+      "frame": 60005,
+      "sha256": "fde37fc67b6577c2f219e015b06aaad2b5dabdcbeff415d1cfbd81079223741a"
+    }
+  ],
+  "first_frame_matches_prior_unmodified_native_bytes": true,
+  "binary_sha256": "9454fa9736c0bd285cc20452c0519eb325e0417ac4e284e410a40074b20f77b3",
+  "input_sha256": "9ad5bfbf9e05751449ac80bee1a5b1ea0435b1fe279e3ed59217e406e9dfb145",
+  "inputs": {
+    "depth": "5d40cb50e39648cd82d16fcf055203e1f5176e6ca8c30e4e445d144782764efe",
+    "normal": "db749c81b78714197f57426529de9e6a96d3a0ac0b9df9f7eae7254ce4b24870",
+    "mixing": "073de4af0f4eab85906b31f3eb61340fc4b202b42dc0f41dd8a1bbfa6f5faf27",
+    "window": "782320df342a8ce61d14a6e7d5da71c25619a9916e6f55dd339b384a82ffe67e"
+  },
+  "field_capture": false,
+  "supplied_reference_grid": true,
+  "render_pose_is_synthetic": true,
+  "installed_sdk_changed": false,
+  "new_renderer": false
+}

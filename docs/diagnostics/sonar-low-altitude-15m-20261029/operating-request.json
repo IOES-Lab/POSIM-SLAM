@@ -1,0 +1,11 @@
+{
+  "depth_m": 2.5,
+  "strip_center_y_m": -3.2,
+  "length_m": 5.5,
+  "width_m": 1.2,
+  "lanes": 3,
+  "heading_rad": 0.0,
+  "scenario_authored": true,
+  "truth_is_estimator_input": false,
+  "reason": "Forward-sonar ground support must later be traversed by bottom-locked DVL; fixed noise/support gates"
+}

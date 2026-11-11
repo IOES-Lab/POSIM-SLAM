@@ -1,0 +1,218 @@
+[
+  {
+    "segment": 0,
+    "stamp_ns": 21400000000,
+    "latest_image_stamp_ns": 24200000000,
+    "states": 90,
+    "landmarks": 0,
+    "sensor_events": {
+      "pending": 34,
+      "capacity": 34,
+      "peak_pending": 34,
+      "last_stamp_ns": 21400000000,
+      "awaiting_stamp_ns": null
+    },
+    "ingress": {
+      "pending": 0,
+      "payload_bytes": 0,
+      "max_messages": 4096,
+      "max_payload_bytes": 67108864,
+      "peak_messages": 25,
+      "peak_payload_bytes": 1011372,
+      "received": 2284,
+      "rejected": 0,
+      "discarded_on_reset": 0,
+      "fault": null,
+      "running": true
+    },
+    "processing_ms": 139.30254202568904,
+    "processing_profile": {
+      "optical_flow_type": "patch",
+      "max_image_pixels": 120000,
+      "max_feature_cells": 200,
+      "max_image_rate_hz": 10.0,
+      "native_frontend_ack": "patch",
+      "max_status_write_ms": 7.781875028740615,
+      "max_tick_ms": 306.63491698214784,
+      "max_input_handler_ms": {
+        "imu": 0.351790979038924,
+        "pressure": 0.8450000314041972,
+        "camera_info": 0.33075001556426287,
+        "imu_status": 0.0770839978940785,
+        "image": 0.028582988306879997,
+        "ping": 5.594249989371747,
+        "dvl": 1.3608750305138528
+      }
+    },
+    "dvl": {
+      "enabled": true,
+      "received": 15,
+      "valid": true,
+      "fused": true,
+      "fused_states": 8,
+      "last_fused_stamp_ns": 21000000000
+    }
+  },
+  {
+    "segment": 1,
+    "stamp_ns": 38800000000,
+    "latest_image_stamp_ns": 41600000000,
+    "states": 114,
+    "landmarks": 0,
+    "sensor_events": {
+      "pending": 34,
+      "capacity": 34,
+      "peak_pending": 34,
+      "last_stamp_ns": 38800000000,
+      "awaiting_stamp_ns": null
+    },
+    "ingress": {
+      "pending": 1,
+      "payload_bytes": 2048,
+      "max_messages": 4096,
+      "max_payload_bytes": 67108864,
+      "peak_messages": 25,
+      "peak_payload_bytes": 1011372,
+      "received": 4904,
+      "rejected": 0,
+      "discarded_on_reset": 1,
+      "fault": null,
+      "running": true
+    },
+    "processing_ms": 119.44741697516292,
+    "processing_profile": {
+      "optical_flow_type": "patch",
+      "max_image_pixels": 120000,
+      "max_feature_cells": 200,
+      "max_image_rate_hz": 10.0,
+      "native_frontend_ack": "patch",
+      "max_status_write_ms": 7.781875028740615,
+      "max_tick_ms": 306.63491698214784,
+      "max_input_handler_ms": {
+        "imu": 0.351790979038924,
+        "pressure": 0.8450000314041972,
+        "camera_info": 0.33075001556426287,
+        "imu_status": 0.0770839978940785,
+        "image": 0.05829101428389549,
+        "ping": 35.383916983846575,
+        "dvl": 1.3608750305138528
+      }
+    },
+    "dvl": {
+      "enabled": true,
+      "received": 17,
+      "valid": true,
+      "fused": true,
+      "fused_states": 10,
+      "last_fused_stamp_ns": 38000000000
+    }
+  },
+  {
+    "segment": 2,
+    "stamp_ns": 59400000000,
+    "latest_image_stamp_ns": 62200000000,
+    "states": 148,
+    "landmarks": 396,
+    "sensor_events": {
+      "pending": 34,
+      "capacity": 34,
+      "peak_pending": 34,
+      "last_stamp_ns": 59400000000,
+      "awaiting_stamp_ns": null
+    },
+    "ingress": {
+      "pending": 0,
+      "payload_bytes": 0,
+      "max_messages": 4096,
+      "max_payload_bytes": 67108864,
+      "peak_messages": 25,
+      "peak_payload_bytes": 1011372,
+      "received": 8017,
+      "rejected": 0,
+      "discarded_on_reset": 2,
+      "fault": null,
+      "running": true
+    },
+    "processing_ms": 119.04445895925164,
+    "processing_profile": {
+      "optical_flow_type": "patch",
+      "max_image_pixels": 120000,
+      "max_feature_cells": 200,
+      "max_image_rate_hz": 10.0,
+      "native_frontend_ack": "patch",
+      "max_status_write_ms": 7.781875028740615,
+      "max_tick_ms": 306.63491698214784,
+      "max_input_handler_ms": {
+        "imu": 0.39479200495406985,
+        "pressure": 0.8450000314041972,
+        "camera_info": 0.33075001556426287,
+        "imu_status": 0.0770839978940785,
+        "image": 0.05829101428389549,
+        "ping": 35.383916983846575,
+        "dvl": 1.3608750305138528
+      }
+    },
+    "dvl": {
+      "enabled": true,
+      "received": 20,
+      "valid": true,
+      "fused": true,
+      "fused_states": 13,
+      "last_fused_stamp_ns": 59010000000
+    }
+  },
+  {
+    "segment": 3,
+    "stamp_ns": 0,
+    "latest_image_stamp_ns": 62700000000,
+    "states": 0,
+    "landmarks": 0,
+    "sensor_events": {
+      "pending": 0,
+      "capacity": 34,
+      "peak_pending": 0,
+      "last_stamp_ns": 0,
+      "awaiting_stamp_ns": null
+    },
+    "ingress": {
+      "pending": 1,
+      "payload_bytes": 2048,
+      "max_messages": 4096,
+      "max_payload_bytes": 67108864,
+      "peak_messages": 25,
+      "peak_payload_bytes": 1011372,
+      "received": 8090,
+      "rejected": 0,
+      "discarded_on_reset": 2,
+      "fault": null,
+      "running": true
+    },
+    "processing_ms": null,
+    "processing_profile": {
+      "optical_flow_type": "patch",
+      "max_image_pixels": 120000,
+      "max_feature_cells": 200,
+      "max_image_rate_hz": 10.0,
+      "native_frontend_ack": null,
+      "max_status_write_ms": 7.781875028740615,
+      "max_tick_ms": 306.63491698214784,
+      "max_input_handler_ms": {
+        "imu": 0.39479200495406985,
+        "pressure": 0.8450000314041972,
+        "camera_info": 0.33075001556426287,
+        "imu_status": 0.0770839978940785,
+        "image": 0.05829101428389549,
+        "ping": 35.383916983846575,
+        "dvl": 1.3608750305138528
+      }
+    },
+    "dvl": {
+      "enabled": true,
+      "received": 0,
+      "valid": false,
+      "fused": false,
+      "fused_states": 0,
+      "last_fused_stamp_ns": 0
+    }
+  }
+]

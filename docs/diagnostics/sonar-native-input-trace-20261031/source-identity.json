@@ -1,0 +1,16 @@
+{
+  "acoustic_base": "ffecee9be9976f68c9e883d6cf3bbd6d40eb7729",
+  "diagnostic_source": "8d131df47fd745815bd15f36365a4bd49aa13e47",
+  "branch": "codex/sonar-native-input-trace-20261031",
+  "original_prs_merged": false,
+  "trace_schema": "PSNWG001",
+  "original_binary_sha256": "0090433756cb425eea803ce56a70c1af5adf844223054b2f1c25739bee0d8564",
+  "probe_binary_sha256": "9454fa9736c0bd285cc20452c0519eb325e0417ac4e284e410a40074b20f77b3",
+  "compiled_probe_extra_export": "native_replay.cc; diagnostic-only supplied-grid entrypoint",
+  "default_recording": false,
+  "max_frames": 4,
+  "max_bytes": 41943040,
+  "field_capture": false,
+  "installed_sdk_changed": false,
+  "new_renderer": false
+}

@@ -1,0 +1,8 @@
+{
+  "fixed_before_reference_scene_access": true,
+  "families": "Assess unchanged baseline and the scene selected from training only. Do not select among alternatives using reference errors or unused scores.",
+  "sampling": "Every referenced mesh vertex plus the complete 2-division barycentric grid (6 points) on every retained face, retaining duplicates. Unreferenced scaffold vertices remain in serialized geometry but are not a surface after explicit face removal. No error/visibility pruning. Separate prior-ground, existing-object and new-born-object errors so large ground counts cannot hide a false birth.",
+  "references": "Reuse the existing fixed evaluation gauge, complete retained scene and native RGB only after the construction seal. No new gauge fit, pose truth correction or oracle birth initialization. The historic 10cm statistic is diagnostic, not a universal acceptance rule.",
+  "plots": "Reuse the previous generic finite-scene renderer. Verify its default figures/receipt remain byte-identical. Whole-scene orthographic clouds and exact-recorded-camera object crops retain all points, 64pt squared markers, common Turbo heights, vehicle/sensor directions and environment caption.",
+  "scope": "No map admission, native update or physical identity/confidence claim regardless of nearest-surface error or image-score improvement."
+}

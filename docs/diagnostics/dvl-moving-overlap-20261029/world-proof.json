@@ -1,0 +1,16 @@
+{
+  "original_world": "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/dvl-cone-moving-20261029/capture/demo-runtime/838aca060ece44ba9202abde7f95ea6a/world-waves-underwater-payloads.sdf",
+  "world": "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/dvl-cone-moving-20261029/capture/demo-runtime/838aca060ece44ba9202abde7f95ea6a/world-waves-underwater-payloads-capture-controls.sdf",
+  "original_sha256": "d50870b89db62fe93c8737dec4a8aa7943e698ce256fffa62b372509d662b9dc",
+  "world_sha256": "fc55507f39e241621ae68b6798bd9abe31e96f461afc6c39d2e3b033f2969421",
+  "targets_sha256": "d4795f6c127d739cc1fa4e75eb0329ed55ac3f67d4e593555ae033e06e0bebf6",
+  "sensor_system": "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/sonar-current-main-20261029/assembled-gz-render-init/build/libgz-sim-sensors-system.10.5.0.dylib",
+  "isometric_camera": {
+    "pose": "0 -4 -0.15 0 0.6154797086703875 0.7853981633974483",
+    "topic": "/validation/slam/isometric_rgb",
+    "width": 1000,
+    "height": 800,
+    "horizontal_fov": 1.35
+  },
+  "scope": "Physical scene/context camera and explicit measured SDK overrides; no estimator truth inputs"
+}

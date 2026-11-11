@@ -1,0 +1,19 @@
+{
+  "date": "2026-11-11",
+  "base_commit": "9fa2e8bb2e55a087fbf2299e26d52b66efe766e7",
+  "source_sha256": {
+    "native/basalt/mapping_graph.hpp": "366923f0ec52e6a5a7f4c13631d1bf46314d56691b703aaee17d9a9261fdc433",
+    "native/basalt/mapping_graph.cc": "4eea4aa1cd2c7ef079a239c26c18bb2bf3a638eccd5e3e7e9cfce86e828b413d",
+    "native/basalt/stream.cc": "59b7873493a735f3fdb6f9740848d6d25d557a130421e8b66de31e57518ef329"
+  },
+  "previously_linked_binary_sha256": "407b69034f384359b28309289df0584eb74c77d21e2485365cb0695d37e40840",
+  "compilation_scope": "Exact three implementation files match the previously compiled and linked arm64 candidate. No new worker build in this checkpoint.",
+  "python_live_client_tests": 22,
+  "python_live_client_tests_passed": true,
+  "new_mapping_graph_probe_compiled": false,
+  "new_mapping_graph_probe_executed": false,
+  "complete_190_second_replay_passed": false,
+  "reason": "Protected host service health failed admission. Initial guarded worker launch produced no poses before an inventory guard stop.",
+  "navigation_ready": false,
+  "installed_runtime_qualified": false
+}

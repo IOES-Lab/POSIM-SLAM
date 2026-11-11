@@ -1,0 +1,21 @@
+{
+  "stamps_ns": [
+    35500000000,
+    36010000000
+  ],
+  "variants": [
+    "lk_source_positive",
+    "lk_source_contrast"
+  ],
+  "noise_sigma": [
+    0.025083611719310284,
+    0.008213314126139591
+  ],
+  "training_cost_cutoff": 9.0,
+  "elevation_initializations": 9,
+  "navigation_prior": "same native snapshot at B; full correlated 12x12 covariance, counted once",
+  "measurement_covariance": "same declared diagonal diagnostic scales; no hardware/cross-echo calibration claim",
+  "modes": "best stationary mode plus nine coherent seed selections within best training cost+1; not exhaustive",
+  "native_update_installed": false,
+  "truth_used": false
+}

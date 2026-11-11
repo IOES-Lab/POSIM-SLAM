@@ -1,0 +1,997 @@
+{
+  "scope": "Optimistic post-estimation fixed-point diagnostic with perfect pose conditioning; not deployable method, not map admission, no calibrated confidence claim",
+  "truth_is_estimator_input": false,
+  "source_points": 46,
+  "fitted": 46,
+  "rows": [
+    {
+      "source_id": 22,
+      "status": "conditional_fit",
+      "observations": 8,
+      "first_ns": 2500000000,
+      "last_ns": 6010000000,
+      "fit": [
+        7.863525358519169,
+        -2.8504390058999483,
+        -3.594545791334608
+      ],
+      "range_rms_m": 0.004692639528175056,
+      "azimuth_rms_deg": 0.31933454979338927,
+      "normalized_residual_rms": 0.4977337325111644,
+      "maximum_elevation_abs_deg": 4.594182461200095,
+      "outside_vertical_fan": false,
+      "minimum_information_eigenvalue": 26.39136785893664,
+      "optimistic_three_sigma_major_m": 0.5839696876827145,
+      "native_to_conditional_m": 0.016406694118475677,
+      "surface_error_m": 0.3506268162209753
+    },
+    {
+      "source_id": 30,
+      "status": "conditional_fit",
+      "observations": 11,
+      "first_ns": 2500000000,
+      "last_ns": 7500000000,
+      "fit": [
+        7.91785643960766,
+        -2.3534619612865497,
+        -3.5535037942434373
+      ],
+      "range_rms_m": 0.004877620032007903,
+      "azimuth_rms_deg": 0.3431102992368864,
+      "normalized_residual_rms": 0.5335789686349581,
+      "maximum_elevation_abs_deg": 5.004271192165534,
+      "outside_vertical_fan": false,
+      "minimum_information_eigenvalue": 41.50100556840936,
+      "optimistic_three_sigma_major_m": 0.4656846735568138,
+      "native_to_conditional_m": 0.0272541799910142,
+      "surface_error_m": 0.04285643960766006
+    },
+    {
+      "source_id": 32,
+      "status": "conditional_fit",
+      "observations": 11,
+      "first_ns": 2500000000,
+      "last_ns": 7500000000,
+      "fit": [
+        7.713798138799051,
+        -2.5743883073942464,
+        -3.593104004206771
+      ],
+      "range_rms_m": 0.010230958237508914,
+      "azimuth_rms_deg": 0.24971177667797786,
+      "normalized_residual_rms": 0.47325339521437265,
+      "maximum_elevation_abs_deg": 5.024924328568366,
+      "outside_vertical_fan": false,
+      "minimum_information_eigenvalue": 42.14041996345706,
+      "optimistic_three_sigma_major_m": 0.4621381537782249,
+      "native_to_conditional_m": 0.025968762149916103,
+      "surface_error_m": 0.17753777156321102
+    },
+    {
+      "source_id": 189,
+      "status": "conditional_fit",
+      "observations": 10,
+      "first_ns": 2500000000,
+      "last_ns": 7010000000,
+      "fit": [
+        7.70827687702828,
+        -3.098289837950842,
+        -3.1878476793708854
+      ],
+      "range_rms_m": 0.02580471825764238,
+      "azimuth_rms_deg": 0.2447485848719047,
+      "normalized_residual_rms": 0.8151125884392998,
+      "maximum_elevation_abs_deg": 6.9182062780879265,
+      "outside_vertical_fan": false,
+      "minimum_information_eigenvalue": 39.955027483134124,
+      "optimistic_three_sigma_major_m": 0.47460852831086275,
+      "native_to_conditional_m": 0.021496076126384267,
+      "surface_error_m": 0.6210856059583799
+    },
+    {
+      "source_id": 194,
+      "status": "conditional_fit",
+      "observations": 11,
+      "first_ns": 2500000000,
+      "last_ns": 7500000000,
+      "fit": [
+        7.8887340444899925,
+        -1.9254098490674394,
+        -3.6649566838339203
+      ],
+      "range_rms_m": 0.007462186807319825,
+      "azimuth_rms_deg": 0.2605578365470775,
+      "normalized_residual_rms": 0.44444871659674307,
+      "maximum_elevation_abs_deg": 5.068115072979242,
+      "outside_vertical_fan": false,
+      "minimum_information_eigenvalue": 42.02563337897895,
+      "optimistic_three_sigma_major_m": 0.4627688532196515,
+      "native_to_conditional_m": 0.028953412696385426,
+      "surface_error_m": 0.013734044489992492
+    },
+    {
+      "source_id": 462,
+      "status": "conditional_fit",
+      "observations": 11,
+      "first_ns": 3010000000,
+      "last_ns": 8010000000,
+      "fit": [
+        7.793740073595184,
+        3.2964251608778605,
+        -3.2362272032985437
+      ],
+      "range_rms_m": 0.016910064175644984,
+      "azimuth_rms_deg": 0.15988314282446697,
+      "normalized_residual_rms": 0.5338101697781861,
+      "maximum_elevation_abs_deg": 4.555853815687668,
+      "outside_vertical_fan": false,
+      "minimum_information_eigenvalue": 29.57062147626144,
+      "optimistic_three_sigma_major_m": 0.5516848130057564,
+      "native_to_conditional_m": 0.03808973413984526,
+      "surface_error_m": 0.04642516087786052
+    },
+    {
+      "source_id": 740,
+      "status": "conditional_fit",
+      "observations": 11,
+      "first_ns": 4010000000,
+      "last_ns": 9010000000,
+      "fit": [
+        7.828418878859765,
+        -2.2236905516350656,
+        -3.410306347033501
+      ],
+      "range_rms_m": 0.007190714425502029,
+      "azimuth_rms_deg": 0.2177358469162867,
+      "normalized_residual_rms": 0.3848768600015087,
+      "maximum_elevation_abs_deg": 3.6464306905323833,
+      "outside_vertical_fan": false,
+      "minimum_information_eigenvalue": 12.314439114174636,
+      "optimistic_three_sigma_major_m": 0.8548972829747417,
+      "native_to_conditional_m": 0.04670503491271156,
+      "surface_error_m": 0.04658112114023538
+    },
+    {
+      "source_id": 410,
+      "status": "conditional_fit",
+      "observations": 10,
+      "first_ns": 11500000000,
+      "last_ns": 16000000000,
+      "fit": [
+        5.053869743094581,
+        3.6602158743493365,
+        -1.7625191408203922
+      ],
+      "range_rms_m": 0.013491299472248482,
+      "azimuth_rms_deg": 0.3648128600930953,
+      "normalized_residual_rms": 0.6671819153085675,
+      "maximum_elevation_abs_deg": 3.9993326931442326,
+      "outside_vertical_fan": false,
+      "minimum_information_eigenvalue": 13.108130514303737,
+      "optimistic_three_sigma_major_m": 0.8286113470849608,
+      "native_to_conditional_m": 0.16227440750724018,
+      "surface_error_m": 0.2008523475877126
+    },
+    {
+      "source_id": 2130,
+      "status": "conditional_fit",
+      "observations": 7,
+      "first_ns": 13500000000,
+      "last_ns": 16500000000,
+      "fit": [
+        5.543099101002155,
+        3.5094610607419625,
+        -1.1931907529524202
+      ],
+      "range_rms_m": 0.052241165130532986,
+      "azimuth_rms_deg": 1.0828929413500612,
+      "normalized_residual_rms": 2.1946344301206397,
+      "maximum_elevation_abs_deg": 16.318423063840168,
+      "outside_vertical_fan": true,
+      "minimum_information_eigenvalue": 28.82630649947271,
+      "optimistic_three_sigma_major_m": 0.5587618604597837,
+      "native_to_conditional_m": 0.4713197708625095,
+      "surface_error_m": 0.009461060741962513
+    },
+    {
+      "source_id": 2241,
+      "status": "conditional_fit",
+      "observations": 7,
+      "first_ns": 14500000000,
+      "last_ns": 17500000000,
+      "fit": [
+        5.16578685148463,
+        3.3876100879878317,
+        -1.5920128190412162
+      ],
+      "range_rms_m": 0.013844840104088416,
+      "azimuth_rms_deg": 0.9876938278587185,
+      "normalized_residual_rms": 1.5345707751000717,
+      "maximum_elevation_abs_deg": 11.843875980669436,
+      "outside_vertical_fan": true,
+      "minimum_information_eigenvalue": 35.87361270078252,
+      "optimistic_three_sigma_major_m": 0.5008800073769053,
+      "native_to_conditional_m": 0.15612188053511028,
+      "surface_error_m": 0.009213148515370584
+    },
+    {
+      "source_id": 2330,
+      "status": "conditional_fit",
+      "observations": 5,
+      "first_ns": 15010000000,
+      "last_ns": 17010000000,
+      "fit": [
+        8.155454273438329,
+        0.4466413216390727,
+        -3.1440087554020213
+      ],
+      "range_rms_m": 0.012106975030098603,
+      "azimuth_rms_deg": 1.0988266693962192,
+      "normalized_residual_rms": 1.6860043619144958,
+      "maximum_elevation_abs_deg": 4.352846786858562,
+      "outside_vertical_fan": false,
+      "minimum_information_eigenvalue": 5.692185552137481,
+      "optimistic_three_sigma_major_m": 1.257423956808443,
+      "native_to_conditional_m": 0.133676228362371,
+      "surface_error_m": 0.030454273438328627
+    },
+    {
+      "source_id": 2408,
+      "status": "conditional_fit",
+      "observations": 7,
+      "first_ns": 15500000000,
+      "last_ns": 18500000000,
+      "fit": [
+        8.103273362797152,
+        -2.5975325995557577,
+        -3.2024858088334223
+      ],
+      "range_rms_m": 0.01793851459064774,
+      "azimuth_rms_deg": 0.5855278832936814,
+      "normalized_residual_rms": 1.0147876066494297,
+      "maximum_elevation_abs_deg": 7.012520812496159,
+      "outside_vertical_fan": false,
+      "minimum_information_eigenvalue": 14.627443282619966,
+      "optimistic_three_sigma_major_m": 0.7843990216310475,
+      "native_to_conditional_m": 0.3042654300614469,
+      "surface_error_m": 0.09753259955575766
+    },
+    {
+      "source_id": 2439,
+      "status": "conditional_fit",
+      "observations": 7,
+      "first_ns": 15500000000,
+      "last_ns": 18500000000,
+      "fit": [
+        8.2744421203724,
+        -2.1150624643926847,
+        -2.969346122549823
+      ],
+      "range_rms_m": 0.009433046057511866,
+      "azimuth_rms_deg": 0.6621025966251941,
+      "normalized_residual_rms": 1.0298017325375575,
+      "maximum_elevation_abs_deg": 9.86980688734055,
+      "outside_vertical_fan": false,
+      "minimum_information_eigenvalue": 17.802151997113263,
+      "optimistic_three_sigma_major_m": 0.7110252149918365,
+      "native_to_conditional_m": 0.15981106738158363,
+      "surface_error_m": 0.14944212037240057
+    },
+    {
+      "source_id": 2597,
+      "status": "conditional_fit",
+      "observations": 9,
+      "first_ns": 16500000000,
+      "last_ns": 20500000000,
+      "fit": [
+        7.857744660231495,
+        -2.465422750532195,
+        -3.080197741145811
+      ],
+      "range_rms_m": 0.009440992025199664,
+      "azimuth_rms_deg": 0.28257726863607224,
+      "normalized_residual_rms": 0.5011161713374584,
+      "maximum_elevation_abs_deg": 9.644284460134788,
+      "outside_vertical_fan": false,
+      "minimum_information_eigenvalue": 23.83767794544389,
+      "optimistic_three_sigma_major_m": 0.6144538655181118,
+      "native_to_conditional_m": 0.13926325181218,
+      "surface_error_m": 0.01725533976850535
+    },
+    {
+      "source_id": 2880,
+      "status": "conditional_fit",
+      "observations": 10,
+      "first_ns": 17500000000,
+      "last_ns": 22010000000,
+      "fit": [
+        5.689621004776708,
+        3.442193502669137,
+        -2.260942705907646
+      ],
+      "range_rms_m": 0.04169953647973873,
+      "azimuth_rms_deg": 1.292841293611417,
+      "normalized_residual_rms": 2.2705985291529283,
+      "maximum_elevation_abs_deg": 12.696142896928523,
+      "outside_vertical_fan": true,
+      "minimum_information_eigenvalue": 24.00140096234803,
+      "optimistic_three_sigma_major_m": 0.6123545633381318,
+      "native_to_conditional_m": 0.21205163903492175,
+      "surface_error_m": 0.05780649733086296
+    },
+    {
+      "source_id": 2718,
+      "status": "conditional_fit",
+      "observations": 10,
+      "first_ns": 17500000000,
+      "last_ns": 22010000000,
+      "fit": [
+        7.6919954642477375,
+        -2.7522904139174953,
+        -3.1927740898863775
+      ],
+      "range_rms_m": 0.015216809019048691,
+      "azimuth_rms_deg": 0.5161248145092919,
+      "normalized_residual_rms": 0.8862590648832743,
+      "maximum_elevation_abs_deg": 9.432522861061285,
+      "outside_vertical_fan": false,
+      "minimum_information_eigenvalue": 12.335438092073572,
+      "optimistic_three_sigma_major_m": 0.854169314678533,
+      "native_to_conditional_m": 0.1759614167034927,
+      "surface_error_m": 0.3116746910812012
+    },
+    {
+      "source_id": 3396,
+      "status": "conditional_fit",
+      "observations": 9,
+      "first_ns": 22010000000,
+      "last_ns": 26000000000,
+      "fit": [
+        7.6765944134956285,
+        -2.434250914447414,
+        -4.222904416509478
+      ],
+      "range_rms_m": 0.013384070675969745,
+      "azimuth_rms_deg": 0.37440832106339905,
+      "normalized_residual_rms": 0.6773895811134445,
+      "maximum_elevation_abs_deg": 8.624889016029437,
+      "outside_vertical_fan": false,
+      "minimum_information_eigenvalue": 17.719958235526462,
+      "optimistic_three_sigma_major_m": 0.7126723470717253,
+      "native_to_conditional_m": 0.1653260570715085,
+      "surface_error_m": 0.07709558349052248
+    },
+    {
+      "source_id": 4584,
+      "status": "conditional_fit",
+      "observations": 9,
+      "first_ns": 22010000000,
+      "last_ns": 26000000000,
+      "fit": [
+        7.773776196555849,
+        -2.6283447073475825,
+        -4.388312202887588
+      ],
+      "range_rms_m": 0.013785595240624436,
+      "azimuth_rms_deg": 0.23189209060028274,
+      "normalized_residual_rms": 0.5219518359467026,
+      "maximum_elevation_abs_deg": 9.674822661344475,
+      "outside_vertical_fan": false,
+      "minimum_information_eigenvalue": 17.228998824221026,
+      "optimistic_three_sigma_major_m": 0.7227552150942554,
+      "native_to_conditional_m": 0.16562232453281994,
+      "surface_error_m": 0.0883122028875869
+    },
+    {
+      "source_id": 1974,
+      "status": "conditional_fit",
+      "observations": 9,
+      "first_ns": 22500000000,
+      "last_ns": 26500000000,
+      "fit": [
+        7.7022029943745505,
+        3.306922227010882,
+        -3.3393404523262933
+      ],
+      "range_rms_m": 0.0075348922036226115,
+      "azimuth_rms_deg": 0.31836496063316544,
+      "normalized_residual_rms": 0.5234126407148518,
+      "maximum_elevation_abs_deg": 6.6072761724496285,
+      "outside_vertical_fan": false,
+      "minimum_information_eigenvalue": 10.6573855568415,
+      "optimistic_three_sigma_major_m": 0.9189585353172018,
+      "native_to_conditional_m": 0.13133716516695662,
+      "surface_error_m": 0.05692222701088178
+    },
+    {
+      "source_id": 5327,
+      "status": "conditional_fit",
+      "observations": 10,
+      "first_ns": 24000000000,
+      "last_ns": 28500000000,
+      "fit": [
+        7.739199382284561,
+        -2.5512103356539186,
+        -3.43622476331411
+      ],
+      "range_rms_m": 0.01478531385121886,
+      "azimuth_rms_deg": 0.33317420355360455,
+      "normalized_residual_rms": 0.6514207898350327,
+      "maximum_elevation_abs_deg": 4.052351469018765,
+      "outside_vertical_fan": false,
+      "minimum_information_eigenvalue": 14.128311196709967,
+      "optimistic_three_sigma_major_m": 0.7981345820113261,
+      "native_to_conditional_m": 0.19441541280389538,
+      "surface_error_m": 0.14513547550368902
+    },
+    {
+      "source_id": 6999,
+      "status": "conditional_fit",
+      "observations": 10,
+      "first_ns": 30500000000,
+      "last_ns": 35000000000,
+      "fit": [
+        7.648438740679283,
+        3.1363501718789206,
+        -2.845287338026445
+      ],
+      "range_rms_m": 0.03587330918242594,
+      "azimuth_rms_deg": 0.5167255608979918,
+      "normalized_residual_rms": 1.2749554479355305,
+      "maximum_elevation_abs_deg": 8.9900292087836,
+      "outside_vertical_fan": false,
+      "minimum_information_eigenvalue": 27.316441365704268,
+      "optimistic_three_sigma_major_m": 0.5739964337263757,
+      "native_to_conditional_m": 0.14754623292828264,
+      "surface_error_m": 0.11364982812107938
+    },
+    {
+      "source_id": 2196,
+      "status": "conditional_fit",
+      "observations": 10,
+      "first_ns": 30500000000,
+      "last_ns": 35000000000,
+      "fit": [
+        7.923947838118111,
+        2.966114149340259,
+        -3.6463748405483374
+      ],
+      "range_rms_m": 0.006791096329236949,
+      "azimuth_rms_deg": 0.1806760310019347,
+      "normalized_residual_rms": 0.3321946383504521,
+      "maximum_elevation_abs_deg": 3.082819737338517,
+      "outside_vertical_fan": false,
+      "minimum_information_eigenvalue": 17.963582006393956,
+      "optimistic_three_sigma_major_m": 0.7078231854045282,
+      "native_to_conditional_m": 0.13102876381455206,
+      "surface_error_m": 0.04894783811811099
+    },
+    {
+      "source_id": 6022,
+      "status": "conditional_fit",
+      "observations": 10,
+      "first_ns": 30500000000,
+      "last_ns": 35000000000,
+      "fit": [
+        7.78316494740602,
+        2.988924825271291,
+        -3.683280649187492
+      ],
+      "range_rms_m": 0.02015085935522734,
+      "azimuth_rms_deg": 0.1441954917474628,
+      "normalized_residual_rms": 0.6079711264681248,
+      "maximum_elevation_abs_deg": 4.336420885637378,
+      "outside_vertical_fan": false,
+      "minimum_information_eigenvalue": 18.648050284930346,
+      "optimistic_three_sigma_major_m": 0.694711581315507,
+      "native_to_conditional_m": 0.1270889726605921,
+      "surface_error_m": 0.09183505259398039
+    },
+    {
+      "source_id": 9136,
+      "status": "conditional_fit",
+      "observations": 11,
+      "first_ns": 39010000000,
+      "last_ns": 44010000000,
+      "fit": [
+        7.741888876525947,
+        3.0438145148907947,
+        -3.7311540275477157
+      ],
+      "range_rms_m": 0.009335528398995355,
+      "azimuth_rms_deg": 0.1887823820240357,
+      "normalized_residual_rms": 0.3869410009436305,
+      "maximum_elevation_abs_deg": 7.2177845362408934,
+      "outside_vertical_fan": false,
+      "minimum_information_eigenvalue": 93.46294431501329,
+      "optimistic_three_sigma_major_m": 0.3103141115451086,
+      "native_to_conditional_m": 0.10724537180039656,
+      "surface_error_m": 0.13311112347405274
+    },
+    {
+      "source_id": 1992,
+      "status": "conditional_fit",
+      "observations": 11,
+      "first_ns": 41000000000,
+      "last_ns": 46000000000,
+      "fit": [
+        7.730644750470286,
+        3.158561987871258,
+        -3.7610755307122266
+      ],
+      "range_rms_m": 0.014664510583242842,
+      "azimuth_rms_deg": 0.1314049679075788,
+      "normalized_residual_rms": 0.45812611642251017,
+      "maximum_elevation_abs_deg": 6.904833506679975,
+      "outside_vertical_fan": false,
+      "minimum_information_eigenvalue": 160.39038823279142,
+      "optimistic_three_sigma_major_m": 0.23688201322948194,
+      "native_to_conditional_m": 0.11200189437234055,
+      "surface_error_m": 0.09143801212874215
+    },
+    {
+      "source_id": 6937,
+      "status": "conditional_fit",
+      "observations": 10,
+      "first_ns": 47000000000,
+      "last_ns": 51500000000,
+      "fit": [
+        7.813560685182655,
+        3.3066241775024467,
+        -3.198989871205259
+      ],
+      "range_rms_m": 0.014316684590854993,
+      "azimuth_rms_deg": 0.10850231067849164,
+      "normalized_residual_rms": 0.43527381932705206,
+      "maximum_elevation_abs_deg": 8.550460855975398,
+      "outside_vertical_fan": false,
+      "minimum_information_eigenvalue": 12.02424785812717,
+      "optimistic_three_sigma_major_m": 0.8651517583500647,
+      "native_to_conditional_m": 0.09094663872225242,
+      "surface_error_m": 0.05662417750244675
+    },
+    {
+      "source_id": 10910,
+      "status": "conditional_fit",
+      "observations": 10,
+      "first_ns": 47000000000,
+      "last_ns": 51500000000,
+      "fit": [
+        7.807770855048124,
+        -2.5029065868806017,
+        -3.864599508612791
+      ],
+      "range_rms_m": 0.013633365334445117,
+      "azimuth_rms_deg": 0.22839537562288864,
+      "normalized_residual_rms": 0.5152502485544641,
+      "maximum_elevation_abs_deg": 2.0545118524142363,
+      "outside_vertical_fan": false,
+      "minimum_information_eigenvalue": 11.784222310239924,
+      "optimistic_three_sigma_major_m": 0.8739182147214947,
+      "native_to_conditional_m": 0.12168633245343928,
+      "surface_error_m": 0.06729194735074016
+    },
+    {
+      "source_id": 11382,
+      "status": "conditional_fit",
+      "observations": 10,
+      "first_ns": 47000000000,
+      "last_ns": 51500000000,
+      "fit": [
+        8.071524738335123,
+        2.8255767513846104,
+        -3.656340229596803
+      ],
+      "range_rms_m": 0.010023393472669515,
+      "azimuth_rms_deg": 0.13516341982439453,
+      "normalized_residual_rms": 0.3479771720691083,
+      "maximum_elevation_abs_deg": 4.901079071400611,
+      "outside_vertical_fan": false,
+      "minimum_information_eigenvalue": 11.141582541018717,
+      "optimistic_three_sigma_major_m": 0.8987684396105412,
+      "native_to_conditional_m": 0.0953433746595379,
+      "surface_error_m": 0.05347526166487704
+    },
+    {
+      "source_id": 0,
+      "status": "conditional_fit",
+      "observations": 10,
+      "first_ns": 47000000000,
+      "last_ns": 51500000000,
+      "fit": [
+        7.972548286604568,
+        3.2323925137057126,
+        -3.2385955613329074
+      ],
+      "range_rms_m": 0.013729236802058136,
+      "azimuth_rms_deg": 0.11887088564312999,
+      "normalized_residual_rms": 0.4262551854627371,
+      "maximum_elevation_abs_deg": 8.589193535967322,
+      "outside_vertical_fan": false,
+      "minimum_information_eigenvalue": 11.620310323982984,
+      "optimistic_three_sigma_major_m": 0.8800602218976421,
+      "native_to_conditional_m": 0.09290097075546516,
+      "surface_error_m": 0.09754828660456827
+    },
+    {
+      "source_id": 17,
+      "status": "conditional_fit",
+      "observations": 10,
+      "first_ns": 47000000000,
+      "last_ns": 51500000000,
+      "fit": [
+        7.9981765526843,
+        2.9782563397972037,
+        -3.304647893725498
+      ],
+      "range_rms_m": 0.01251490237348205,
+      "azimuth_rms_deg": 0.13294860917572113,
+      "normalized_residual_rms": 0.4054280282601095,
+      "maximum_elevation_abs_deg": 8.177070959142101,
+      "outside_vertical_fan": false,
+      "minimum_information_eigenvalue": 11.932693171679379,
+      "optimistic_three_sigma_major_m": 0.8684643946051718,
+      "native_to_conditional_m": 0.09401047970637874,
+      "surface_error_m": 0.12317655268430006
+    },
+    {
+      "source_id": 852,
+      "status": "conditional_fit",
+      "observations": 10,
+      "first_ns": 47000000000,
+      "last_ns": 51500000000,
+      "fit": [
+        7.912742633247146,
+        3.1264016314517376,
+        -3.116306073200069
+      ],
+      "range_rms_m": 0.012937376003966904,
+      "azimuth_rms_deg": 0.10647655037496029,
+      "normalized_residual_rms": 0.3982546633913699,
+      "maximum_elevation_abs_deg": 9.7841115506898,
+      "outside_vertical_fan": false,
+      "minimum_information_eigenvalue": 12.30575205093086,
+      "optimistic_three_sigma_major_m": 0.8551989807714578,
+      "native_to_conditional_m": 0.09253198303096166,
+      "surface_error_m": 0.037742633247145996
+    },
+    {
+      "source_id": 10918,
+      "status": "conditional_fit",
+      "observations": 10,
+      "first_ns": 47500000000,
+      "last_ns": 52000000000,
+      "fit": [
+        7.9626181111660745,
+        -2.6434301768739417,
+        -4.0166301291238815
+      ],
+      "range_rms_m": 0.017398587276160237,
+      "azimuth_rms_deg": 0.2795411294124966,
+      "normalized_residual_rms": 0.6457473975337779,
+      "maximum_elevation_abs_deg": 6.75353326840059,
+      "outside_vertical_fan": false,
+      "minimum_information_eigenvalue": 32.44019302162233,
+      "optimistic_three_sigma_major_m": 0.5267196733973629,
+      "native_to_conditional_m": 0.12467025958804427,
+      "surface_error_m": 0.01663012912388151
+    },
+    {
+      "source_id": 11995,
+      "status": "conditional_fit",
+      "observations": 10,
+      "first_ns": 47500000000,
+      "last_ns": 52000000000,
+      "fit": [
+        7.848043386178933,
+        -2.2389352742559785,
+        -3.757269947011924
+      ],
+      "range_rms_m": 0.008644605241909832,
+      "azimuth_rms_deg": 0.2836573819375923,
+      "normalized_residual_rms": 0.4909709499587849,
+      "maximum_elevation_abs_deg": 5.135297628046447,
+      "outside_vertical_fan": false,
+      "minimum_information_eigenvalue": 37.58819921153904,
+      "optimistic_three_sigma_major_m": 0.4893228479890702,
+      "native_to_conditional_m": 0.12120774436907679,
+      "surface_error_m": 0.026956613821067066
+    },
+    {
+      "source_id": 12604,
+      "status": "conditional_fit",
+      "observations": 10,
+      "first_ns": 48010000000,
+      "last_ns": 52500000000,
+      "fit": [
+        6.296202017893246,
+        3.198429770274594,
+        -2.4487230305720864
+      ],
+      "range_rms_m": 0.0873049174321266,
+      "azimuth_rms_deg": 1.2023358819749954,
+      "normalized_residual_rms": 3.053040323179928,
+      "maximum_elevation_abs_deg": 12.879902591449072,
+      "outside_vertical_fan": true,
+      "minimum_information_eigenvalue": 118.6450671599814,
+      "optimistic_three_sigma_major_m": 0.275420594549895,
+      "native_to_conditional_m": 0.6558917475188835,
+      "surface_error_m": 0.05157022972540615
+    },
+    {
+      "source_id": 13664,
+      "status": "conditional_fit",
+      "observations": 4,
+      "first_ns": 50500000000,
+      "last_ns": 52000000000,
+      "fit": [
+        8.072272103759557,
+        -1.9984817425077794,
+        -3.795552902690511
+      ],
+      "range_rms_m": 0.015835605863781507,
+      "azimuth_rms_deg": 0.6367257562200861,
+      "normalized_residual_rms": 1.0557649286958108,
+      "maximum_elevation_abs_deg": 4.568750457515622,
+      "outside_vertical_fan": false,
+      "minimum_information_eigenvalue": 17.86588787524789,
+      "optimistic_three_sigma_major_m": 0.7097558040780512,
+      "native_to_conditional_m": 0.12552224925531275,
+      "surface_error_m": 0.05272789624044272
+    },
+    {
+      "source_id": 13464,
+      "status": "conditional_fit",
+      "observations": 5,
+      "first_ns": 50000000000,
+      "last_ns": 52000000000,
+      "fit": [
+        7.66523043790168,
+        3.5457308227998467,
+        -3.472627883303588
+      ],
+      "range_rms_m": 0.025159252035221322,
+      "azimuth_rms_deg": 0.18528235314117977,
+      "normalized_residual_rms": 0.7619250369942472,
+      "maximum_elevation_abs_deg": 3.7581601943058307,
+      "outside_vertical_fan": false,
+      "minimum_information_eigenvalue": 21.792506601465362,
+      "optimistic_three_sigma_major_m": 0.6426398633561469,
+      "native_to_conditional_m": 0.0918872208818131,
+      "surface_error_m": 0.04573082279984675
+    },
+    {
+      "source_id": 13747,
+      "status": "conditional_fit",
+      "observations": 5,
+      "first_ns": 51010000000,
+      "last_ns": 53000000000,
+      "fit": [
+        8.235487416537419,
+        -0.06485317843534495,
+        -2.6207620741605897
+      ],
+      "range_rms_m": 0.06739676726329612,
+      "azimuth_rms_deg": 0.9624987890043621,
+      "normalized_residual_rms": 2.387743804885369,
+      "maximum_elevation_abs_deg": 13.426745775927818,
+      "outside_vertical_fan": true,
+      "minimum_information_eigenvalue": 47.78796204113023,
+      "optimistic_three_sigma_major_m": 0.43397228986814024,
+      "native_to_conditional_m": 0.30798197959775236,
+      "surface_error_m": 0.11048741653741878
+    },
+    {
+      "source_id": 13936,
+      "status": "conditional_fit",
+      "observations": 3,
+      "first_ns": 51500000000,
+      "last_ns": 52500000000,
+      "fit": [
+        8.160173169196481,
+        -1.8761415190914534,
+        -3.108710965792412
+      ],
+      "range_rms_m": 0.03396975677313192,
+      "azimuth_rms_deg": 0.3758199149715373,
+      "normalized_residual_rms": 1.1117131924844816,
+      "maximum_elevation_abs_deg": 6.773013647932086,
+      "outside_vertical_fan": false,
+      "minimum_information_eigenvalue": 10.159408657086553,
+      "optimistic_three_sigma_major_m": 0.9412110987806728,
+      "native_to_conditional_m": 0.153667795707604,
+      "surface_error_m": 0.03517316919648117
+    },
+    {
+      "source_id": 14155,
+      "status": "conditional_fit",
+      "observations": 5,
+      "first_ns": 52500000000,
+      "last_ns": 54500000000,
+      "fit": [
+        8.390575570358576,
+        -2.4474480958511724,
+        -2.111059422846628
+      ],
+      "range_rms_m": 0.04553378575211253,
+      "azimuth_rms_deg": 0.3206759625048855,
+      "normalized_residual_rms": 1.3710576386104987,
+      "maximum_elevation_abs_deg": 7.375324069675375,
+      "outside_vertical_fan": false,
+      "minimum_information_eigenvalue": 23.422377076220684,
+      "optimistic_three_sigma_major_m": 0.6198773539671268,
+      "native_to_conditional_m": 0.8689479763418387,
+      "surface_error_m": 0.2655755703585765
+    },
+    {
+      "source_id": 14157,
+      "status": "conditional_fit",
+      "observations": 6,
+      "first_ns": 52500000000,
+      "last_ns": 55000000000,
+      "fit": [
+        8.563146690316335,
+        3.2008509062709707,
+        -1.5302494642318862
+      ],
+      "range_rms_m": 0.0721945243281164,
+      "azimuth_rms_deg": 0.6364855814982733,
+      "normalized_residual_rms": 2.2486795081634394,
+      "maximum_elevation_abs_deg": 12.582676433446649,
+      "outside_vertical_fan": true,
+      "minimum_information_eigenvalue": 31.586090355121115,
+      "optimistic_three_sigma_major_m": 0.5337935454119606,
+      "native_to_conditional_m": 1.3636579143484675,
+      "surface_error_m": 0.43814669031633535
+    },
+    {
+      "source_id": 14159,
+      "status": "conditional_fit",
+      "observations": 4,
+      "first_ns": 52500000000,
+      "last_ns": 54000000000,
+      "fit": [
+        8.270682678636788,
+        -0.921730540178924,
+        -2.497916941247055
+      ],
+      "range_rms_m": 0.032081693337000027,
+      "azimuth_rms_deg": 0.946573956829837,
+      "normalized_residual_rms": 1.6855008298676804,
+      "maximum_elevation_abs_deg": 3.637901696303879,
+      "outside_vertical_fan": false,
+      "minimum_information_eigenvalue": 13.590145054123253,
+      "optimistic_three_sigma_major_m": 0.8137841157826956,
+      "native_to_conditional_m": 0.4045470768097025,
+      "surface_error_m": 0.1456826786367884
+    },
+    {
+      "source_id": 14170,
+      "status": "conditional_fit",
+      "observations": 6,
+      "first_ns": 52500000000,
+      "last_ns": 55000000000,
+      "fit": [
+        8.2810800864297,
+        -2.564678050581904,
+        -1.4042995661420334
+      ],
+      "range_rms_m": 0.07903750726643353,
+      "azimuth_rms_deg": 0.6987581900654224,
+      "normalized_residual_rms": 2.4630645699190628,
+      "maximum_elevation_abs_deg": 14.146377629896872,
+      "outside_vertical_fan": true,
+      "minimum_information_eigenvalue": 38.14785856095198,
+      "optimistic_three_sigma_major_m": 0.48572020858263715,
+      "native_to_conditional_m": 1.5810745225296507,
+      "surface_error_m": 0.16895041759930027
+    },
+    {
+      "source_id": 14180,
+      "status": "conditional_fit",
+      "observations": 4,
+      "first_ns": 52500000000,
+      "last_ns": 54000000000,
+      "fit": [
+        7.895723451948309,
+        -1.4382573550396534,
+        -1.6853752895301473
+      ],
+      "range_rms_m": 0.0036133387927806257,
+      "azimuth_rms_deg": 0.8923623118684333,
+      "normalized_residual_rms": 1.344728689469498,
+      "maximum_elevation_abs_deg": 11.706589605653011,
+      "outside_vertical_fan": true,
+      "minimum_information_eigenvalue": 17.378820135628708,
+      "optimistic_three_sigma_major_m": 0.7196330663589452,
+      "native_to_conditional_m": 0.35703936157520744,
+      "surface_error_m": 0.02072345194830927
+    },
+    {
+      "source_id": 14185,
+      "status": "conditional_fit",
+      "observations": 8,
+      "first_ns": 52500000000,
+      "last_ns": 56010000000,
+      "fit": [
+        8.431356679493954,
+        -2.0606620362395174,
+        -1.1638773720152515
+      ],
+      "range_rms_m": 0.06646340105825647,
+      "azimuth_rms_deg": 0.5338341402555961,
+      "normalized_residual_rms": 2.0380912194082894,
+      "maximum_elevation_abs_deg": 17.318959657910344,
+      "outside_vertical_fan": true,
+      "minimum_information_eigenvalue": 54.59387695824298,
+      "optimistic_three_sigma_major_m": 0.40602173848305334,
+      "native_to_conditional_m": 0.7392195143323793,
+      "surface_error_m": 0.3063566794939536
+    },
+    {
+      "source_id": 14246,
+      "status": "conditional_fit",
+      "observations": 8,
+      "first_ns": 52500000000,
+      "last_ns": 56010000000,
+      "fit": [
+        7.6436916351647035,
+        -2.3115232113825064,
+        -1.4985016049810191
+      ],
+      "range_rms_m": 0.029882777447224024,
+      "azimuth_rms_deg": 1.2564222676804198,
+      "normalized_residual_rms": 2.067318444592724,
+      "maximum_elevation_abs_deg": 12.644238754909834,
+      "outside_vertical_fan": true,
+      "minimum_information_eigenvalue": 64.76234521313751,
+      "optimistic_three_sigma_major_m": 0.3727863236371603,
+      "native_to_conditional_m": 0.580292183894704,
+      "surface_error_m": 0.2313083648352965
+    },
+    {
+      "source_id": 14338,
+      "status": "conditional_fit",
+      "observations": 7,
+      "first_ns": 53000000000,
+      "last_ns": 56010000000,
+      "fit": [
+        7.5098390552375704,
+        -2.598301033949381,
+        -1.3777710472610512
+      ],
+      "range_rms_m": 0.026572641398166716,
+      "azimuth_rms_deg": 0.8366170251853265,
+      "normalized_residual_rms": 1.4633628758254726,
+      "maximum_elevation_abs_deg": 10.75485656751018,
+      "outside_vertical_fan": true,
+      "minimum_information_eigenvalue": 37.71438567413392,
+      "optimistic_three_sigma_major_m": 0.48850356308236464,
+      "native_to_conditional_m": 0.5824338792990919,
+      "surface_error_m": 0.37816082406207474
+    }
+  ],
+  "summary": {
+    "normalized_residual_rms_p50_p90": [
+      0.6722857482110061,
+      2.22165696914204
+    ],
+    "range_rms_m_p50_p90": [
+      0.014490597587048917,
+      0.059352283094394734
+    ],
+    "major_three_sigma_over_010_m": 46,
+    "outside_vertical_fan": 11,
+    "conditional_surface_error_m_p50_p90_max": [
+      0.08270389318905469,
+      0.3090156852875774,
+      0.6210856059583799
+    ]
+  },
+  "source_sha256": {
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/sonar-wall-corner-20261030c/conditional_fit.py": "931e839ebc46d00167e59c949ddf3c196799464844825304811bea02595e6596",
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/sonar-wall-corner-20261030c/replay-uncalibrated-baseline/submitted-snapshots.json": "603f0c19b79eb0947ba5febce81dec2563cc96e0af5adbe72feba7490dcf5df6",
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/sonar-wall-corner-20261030c/replay-uncalibrated-baseline/acoustic-map.json": "21fdd38ef0b0c78035086436b20d757aacd0dc02b460d3c78de95415d4c6e287",
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/sonar-wall-corner-20261030c/record/inputs/truth-assessment-only.json": "a98ec50ef55707ac5e908461a21edda8e55aa8bb6771bcbfff4e90f01399362e"
+  }
+}

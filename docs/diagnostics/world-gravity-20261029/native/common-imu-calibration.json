@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "vehicle": "bluerov2",
+  "input_topic": "/model/bluerov2/imu",
+  "output_topic": "/vehicle/sensors/imu",
+  "frame": "vehicle/imu",
+  "input_frames": [
+    "bluerov2/base_link/imu_sensor"
+  ],
+  "mount": {
+    "parent": "vehicle/base_link",
+    "child": "vehicle/imu",
+    "translation": [
+      0.0,
+      0.0,
+      -0.1
+    ],
+    "rotation": [
+      1.0,
+      0.0,
+      0.0,
+      6.123233995736766e-17
+    ]
+  },
+  "declared_rate_hz": 1000.0,
+  "orientation_used": false,
+  "simulated_bias_calibration": {
+    "available": true,
+    "source": "generated_sdf_noiseless_imu",
+    "gyro_bias": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "accel_bias": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "gyro_bias_covariance": [
+      [
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "accel_bias_covariance": [
+      [
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ]
+  },
+  "specific_force_includes_gravity": true,
+  "gravity_m_s2": 9.8
+}

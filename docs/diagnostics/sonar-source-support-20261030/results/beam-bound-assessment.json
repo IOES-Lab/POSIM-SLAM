@@ -1,0 +1,51 @@
+{
+  "all": {
+    "count": 26802,
+    "any_visible_ray_m_p50_p90": [
+      0.0327438398491644,
+      0.44538270001953756
+    ],
+    "any_surface_first_m_p50_p90": [
+      0.061346176688608756,
+      2.4821041250176745
+    ],
+    "global_first_m_p50_p90": [
+      0.07321067569256812,
+      2.508799055878774
+    ],
+    "any_visible_ray_within_010_m": 20999
+  },
+  "positive": {
+    "count": 4014,
+    "any_visible_ray_m_p50_p90": [
+      0.010778329024208944,
+      0.03761157315330732
+    ],
+    "any_surface_first_m_p50_p90": [
+      0.03048427057148473,
+      2.5327466004642565
+    ],
+    "global_first_m_p50_p90": [
+      0.03991471380023537,
+      2.5715549231933434
+    ],
+    "any_visible_ray_within_010_m": 3884
+  },
+  "unresolved": {
+    "count": 22788,
+    "any_visible_ray_m_p50_p90": [
+      0.04029264745624639,
+      0.6185602040459977
+    ],
+    "any_surface_first_m_p50_p90": [
+      0.06635255480446123,
+      2.465627879371384
+    ],
+    "global_first_m_p50_p90": [
+      0.07760711920311092,
+      2.4922429530102064
+    ],
+    "any_visible_ray_within_010_m": 17115
+  },
+  "scope": "post-query assessment; angular bounds do not remove range sidelobes or establish geometry; unresolved is not free space"
+}

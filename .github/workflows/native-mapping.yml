@@ -1,0 +1,82 @@
+name: Native mapping controls
+on:
+  pull_request:
+    paths:
+      - native/basalt/**
+      - tools/build_basalt.py
+      - .github/workflows/native-mapping.yml
+  push:
+    branches: [main]
+    paths:
+      - native/basalt/**
+      - tools/build_basalt.py
+      - .github/workflows/native-mapping.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: native-mapping-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  graph-archive:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    env:
+      GIT_CONFIG_COUNT: '2'
+      GIT_CONFIG_KEY_0: gc.auto
+      GIT_CONFIG_VALUE_0: '0'
+      GIT_CONFIG_KEY_1: maintenance.auto
+      GIT_CONFIG_VALUE_1: 'false'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Stage the locked SDK outside the CMake source tree
+        run: |
+          mkdir "$RUNNER_TEMP/mapping-environment"
+          cp native/basalt/ci/pixi.toml native/basalt/ci/pixi.lock "$RUNNER_TEMP/mapping-environment/"
+      - uses: prefix-dev/setup-pixi@v0.11.3
+        with:
+          pixi-version: v0.83.0
+          manifest-path: ${{ runner.temp }}/mapping-environment/pixi.toml
+          locked: true
+      - name: Compile and run the complete graph archive probe
+        run: |
+          pixi run --locked --manifest-path "$RUNNER_TEMP/mapping-environment/pixi.toml" python - <<'PY'
+          from pathlib import Path
+          import hashlib, json, os, subprocess, sys
+          from tools.build_basalt import fetch_sources, run, verify_sources
+
+          temporary = Path(os.environ['RUNNER_TEMP'])
+          source = temporary / 'basalt-sources'
+          build = temporary / 'mapping-build'
+          controls = temporary / 'mapping-controls'
+          fetch_sources(source)
+          run(['cmake', '-S', 'native/basalt', '-B', build, '-G', 'Ninja',
+               '-DCMAKE_BUILD_TYPE=Release', '-DCMAKE_POLICY_VERSION_MINIMUM=3.5',
+               '-DCMAKE_PREFIX_PATH=' + sys.prefix, '-DSOURCE_ROOT=' + str(source)])
+          run(['cmake', '--build', build, '--target', 'basalt_mapping_graph_probe', '--parallel', 1])
+          controls.mkdir()
+          binary = build / 'basalt_mapping_graph_probe'
+          run([binary, controls], timeout=60)
+          digest = lambda path: hashlib.sha256(path.read_bytes()).hexdigest()
+          receipt = dict(schema='posim-slam-native-mapping-controls-1', passed=True,
+              scope='Complete graph/window/input archive probe; no ROS, renderer or physical replay',
+              revision=subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
+              sources=verify_sources(source), binary_sha256=digest(binary),
+              lock_sha256=digest(Path('native/basalt/ci/pixi.lock')),
+              probe_sha256=digest(Path('native/basalt/mapping_graph_probe.cc')),
+              archive_sha256={str(p.relative_to(controls)): digest(p)
+                              for p in sorted(controls.rglob('*')) if p.is_file()})
+          (temporary / 'mapping-receipt.json').write_text(json.dumps(receipt, indent=2) + '\n')
+          print('NATIVE_MAPPING_RECEIPT=' + json.dumps(receipt))
+          PY
+      - name: Preserve graph archives and receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: native-mapping-${{ github.event.pull_request.head.sha || github.sha }}
+          path: |
+            ${{ runner.temp }}/mapping-controls
+            ${{ runner.temp }}/mapping-receipt.json
+          if-no-files-found: warn

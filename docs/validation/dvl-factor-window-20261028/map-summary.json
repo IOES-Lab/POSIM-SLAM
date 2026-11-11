@@ -1,0 +1,128 @@
+[
+  {
+    "profile": "dvl-default-no-ping-factors",
+    "phase": "initial",
+    "points": 1375,
+    "rmse_m": 0.01402049925888737,
+    "max_m": 0.1662861067661983,
+    "above_10cm": 5,
+    "trajectory_rmse_m": 0.0090115735692589
+  },
+  {
+    "profile": "dvl-default-no-ping-factors",
+    "phase": "recovered",
+    "points": 3014,
+    "rmse_m": 0.013001470251114977,
+    "max_m": 0.1662861067661983,
+    "above_10cm": 7,
+    "trajectory_rmse_m": 0.013653704614025621
+  },
+  {
+    "profile": "dvl-default-joint-ping",
+    "phase": "initial",
+    "points": 1195,
+    "rmse_m": 0.014331480663232619,
+    "max_m": 0.15284593681198344,
+    "above_10cm": 3,
+    "trajectory_rmse_m": 0.009323986321442254
+  },
+  {
+    "profile": "dvl-default-joint-ping",
+    "phase": "recovered",
+    "points": 2518,
+    "rmse_m": 0.012703738719618171,
+    "max_m": 0.15284593681198344,
+    "above_10cm": 4,
+    "trajectory_rmse_m": 0.014266761661588379
+  },
+  {
+    "profile": "dvl-default-transport-no-ping-factors",
+    "phase": "initial",
+    "points": 1425,
+    "rmse_m": 0.011367673886986077,
+    "max_m": 0.15737634164423273,
+    "above_10cm": 3,
+    "trajectory_rmse_m": 0.009872383290075639
+  },
+  {
+    "profile": "dvl-default-transport-no-ping-factors",
+    "phase": "recovered",
+    "points": 1459,
+    "rmse_m": 0.01196629925532259,
+    "max_m": 0.1223328316693979,
+    "above_10cm": 1,
+    "trajectory_rmse_m": 0.007551702331978446
+  },
+  {
+    "profile": "dvl-default-transport-joint-ping",
+    "phase": "initial",
+    "points": 1194,
+    "rmse_m": 0.014335231870607064,
+    "max_m": 0.15284593681198344,
+    "above_10cm": 3,
+    "trajectory_rmse_m": 0.009329508021006837
+  },
+  {
+    "profile": "dvl-default-transport-joint-ping",
+    "phase": "recovered",
+    "points": 1208,
+    "rmse_m": 0.012152668317285498,
+    "max_m": 0.16752197389657075,
+    "above_10cm": 1,
+    "trajectory_rmse_m": 0.007798138209778962
+  },
+  {
+    "profile": "joint-ping-default-state",
+    "phase": "initial",
+    "points": 1135,
+    "rmse_m": 0.017954056859179238,
+    "max_m": 0.23822913467865628,
+    "above_10cm": 2,
+    "trajectory_rmse_m": 0.015088782768873031
+  },
+  {
+    "profile": "joint-ping-default-state",
+    "phase": "recovered",
+    "points": 1142,
+    "rmse_m": 0.013134224450493934,
+    "max_m": 0.14669540776160428,
+    "above_10cm": 3,
+    "trajectory_rmse_m": 0.014720295716675628
+  },
+  {
+    "profile": "receive-only-ping-default-state",
+    "phase": "initial",
+    "points": 1346,
+    "rmse_m": 0.019421606967711853,
+    "max_m": 0.17032561325347986,
+    "above_10cm": 3,
+    "trajectory_rmse_m": 0.020881997921112897
+  },
+  {
+    "profile": "receive-only-ping-default-state",
+    "phase": "recovered",
+    "points": 994,
+    "rmse_m": 0.017318232163612092,
+    "max_m": 0.14583506244587238,
+    "above_10cm": 2,
+    "trajectory_rmse_m": 0.03058426317595926
+  },
+  {
+    "profile": "no-ping-default-state",
+    "phase": "initial",
+    "points": 1346,
+    "rmse_m": 0.019421606967711853,
+    "max_m": 0.17032561325347986,
+    "above_10cm": 3,
+    "trajectory_rmse_m": 0.02088199792110505
+  },
+  {
+    "profile": "no-ping-default-state",
+    "phase": "recovered",
+    "points": 994,
+    "rmse_m": 0.017318232163612092,
+    "max_m": 0.14583506244587238,
+    "above_10cm": 2,
+    "trajectory_rmse_m": 0.03058426317596172
+  }
+]

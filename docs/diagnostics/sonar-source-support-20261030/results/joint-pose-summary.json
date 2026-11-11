@@ -1,0 +1,16 @@
+{
+  "root_rank": 226,
+  "root_columns": 226,
+  "root_constraint_rank": 0,
+  "workspace_bound_bytes": 23669032,
+  "source_stamp_ns": 52500000000,
+  "owner_revision": 315,
+  "prior_revision": 311,
+  "poses": 41,
+  "first_ns": 32500000000,
+  "last_ns": 52500000000,
+  "seconds": 0.15059741697041318,
+  "free_columns": 0,
+  "source": "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/sonar-wall-corner-20261030c/replay-navigation/snapshot-52500000000.json.gz",
+  "scope": "same-snapshot recovered native means and joint pose covariance; no acoustic rows"
+}

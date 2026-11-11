@@ -1,0 +1,58 @@
+{
+  "replay_inputs_covered": true,
+  "whole_recording_harness_passed": false,
+  "original_harness_errors": [
+    {
+      "error": "bounded_recording_timeout"
+    },
+    {
+      "error": "incomplete_camera_interval"
+    },
+    {
+      "error": "noncontiguous_camera_clock"
+    }
+  ],
+  "consumed_camera_interval_ns": [
+    1400000000,
+    60000000000
+  ],
+  "consumed_camera_frames": 294,
+  "max_imu_gap_ns": 10000000,
+  "original_camera_interval_ns": [
+    40000000,
+    60000000000
+  ],
+  "initial_exposure_ns": 40000000,
+  "initial_acquisition_gap_ns": 160000000,
+  "nominal_last_exposure_before_cutoff_ns": 60000000000,
+  "requested_wall_end_exposure_ns": 60040000000,
+  "bytes": 46761455,
+  "budget_bytes": 134217728,
+  "dvl": {
+    "measurements": 56,
+    "valid": 56,
+    "interpolated_gyro": 0,
+    "unknown_gyro_covariance_inputs": 56,
+    "gyro_model_sigma_rad_s": 0.01,
+    "uncertainty": "reported gyro covariance plus explicit isotropic model variance; IMU cross-correlation not modelled",
+    "poses_used": false,
+    "pressure_used": false
+  },
+  "pressure": {
+    "measurements": 56,
+    "valid": 56,
+    "invalid_surface": 0,
+    "decimated": 498,
+    "minimum_period_ns": 1000000000,
+    "decimation": "first eligible original sample; no retiming or averaging",
+    "reference_pa": 101325.0,
+    "density_kg_m3": 1025.0,
+    "gravity_m_s2": 9.80665,
+    "datum": "one unknown native shared scalar; no absolute world height or first-sample subtraction",
+    "uncertainty": "reported independent pressure variance; fixed calibrated density and gravity; no wave dynamic pressure model",
+    "poses_used": false,
+    "terrain_used": false
+  },
+  "scope": "Exact stored gray8/hash/calibration/clock/auxiliary input audit. First acquisition exposure and retained tail are outside the consumed bootstrap-to-camera window. No timestamp, pixel or estimator gate is changed.",
+  "harness_error_cause": "First exposure is 0.04 s, then regular 0.2 s ticks. No 60.04 s exposure exists; the helper waits for it until its wall deadline. Keep its original failed receipt."
+}

@@ -1,0 +1,58 @@
+{
+  "colormap": "turbo",
+  "colour_entries": [
+    32,
+    255
+  ],
+  "height_limits_m": [
+    -3.7223788338292634,
+    -1.8549334793675931
+  ],
+  "measured_height_bounds_m": [
+    -4.019539764462808,
+    -1.1249879508603604
+  ],
+  "range_policy": "P2/P98 over every exported point; constant-range fallback to measured bounds",
+  "colour_saturated_points": 130,
+  "coordinates_filtered": false,
+  "marker_area_pt2": 64,
+  "shared_height_normalization": true,
+  "all_points_retained": true,
+  "camera": {
+    "eye": [
+      0.0,
+      -4.0,
+      -0.15
+    ],
+    "camera_to_world": [
+      [
+        0.5773502691896258,
+        -0.7071067811865475,
+        0.408248290463863
+      ],
+      [
+        0.5773502691896257,
+        0.7071067811865476,
+        0.40824829046386296
+      ],
+      [
+        -0.5773502691896257,
+        0,
+        0.816496580927726
+      ]
+    ],
+    "horizontal_fov": 1.35,
+    "width": 1000,
+    "height": 800,
+    "stamp_ns": 138400000000,
+    "projection": "perspective",
+    "viewpoint": "isometric direction; positive X forward, Y left, Z up",
+    "partition": "inertial-init-ea52359cabe84d3dbeb10b280aa751dc",
+    "topic": "/validation/slam/isometric_rgb"
+  },
+  "input_sha256": {
+    "isometric-rgb.png": "7f7b4282c4e949de8ba0f9265878bcbd50b35be8db9f713854bab4ea8ebd21a9",
+    "isometric-camera.json": "0f328acb242f112a11235a4b5e80c5d5d9b07094c14e162972b2460ff25d193d"
+  },
+  "source_summary_sha256": "dd72dba6619069e3cab47939b258dfbfefc6eb515d4395c9626ca6706b32dcef"
+}

@@ -1,0 +1,14 @@
+{
+  "binary_sha256": "9454fa9736c0bd285cc20452c0519eb325e0417ac4e284e410a40074b20f77b3",
+  "based_on_source": "ffecee9be9976f68c9e883d6cf3bbd6d40eb7729",
+  "installed_sdk_changed": false,
+  "new_renderer": false,
+  "source_sha256": {
+    "MultibeamSonarSensor.cc": "7fb44b0b1660f481b5908c254d8d4a965ecba0c7ce6e6b31eff6b2841012ad97",
+    "sonar_compute_wgpu.cc": "f02b7df65bf44b0d29e344da154fcc56c782da2bab7debbab6acaf27094d5d56",
+    "native_replay.cc": "3964cc420ef862a914d7a7fb65221b63b2d5912431ad81cf337b0c29abd9c118",
+    "sonar_native_trace.hh": "fd23285fbab9029b8f3dccaddae3e9c175e4784977bdb730824bf04c28f48aa6",
+    "MultibeamSonarSensor.hh": "f14d321389c2c7646ea6dca1e375430043a8e10b91cd76867c4e09c7a521c02e"
+  },
+  "binary_bytes": 4845624
+}

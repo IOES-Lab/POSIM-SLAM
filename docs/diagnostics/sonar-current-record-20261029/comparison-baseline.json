@@ -1,0 +1,36 @@
+{
+  "method": "baseline",
+  "sonar_stamp_ns": 36000000000,
+  "camera_stamp_ns": 36000000000,
+  "isometric_stamp_ns": 36000000000,
+  "all_points_retained": 96,
+  "marker_area_pt2": 64,
+  "colours": {
+    "colormap": "turbo",
+    "colour_entries": [
+      32,
+      255
+    ],
+    "height_limits_m": [
+      -4.7,
+      -1.5
+    ],
+    "measured_height_bounds_m": [
+      -4.599308537481372,
+      -1.6464252650675097
+    ],
+    "range_policy": "explicit shared comparison height limits",
+    "colour_saturated_points": 0,
+    "coordinates_filtered": false
+  },
+  "scope": "Measured input and complete unqualified hypothesis comparison",
+  "context_is_clear_water_reference": true,
+  "source_sha256": {
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/sonar-moving-current-20261029/record/inputs/sonar-0069.npz": "35154a0f43b2183d939cacd8fce55044af4d12c3eb3ef23f07c3c92e7c7e1501",
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/sonar-moving-current-20261029/record/inputs/camera-0173.npz": "f32d46a1a0f5ee1f841e400e87d5dbd1a0d9f1051b47ecbc134adea90176abd1",
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/sonar-moving-current-20261029/record/inputs/isometric-0035.npz": "10002256ba3966f546aff6e3d7e410243b0949441be89438c19803dacb7d5f0c",
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/sonar-moving-current-20261029/context-reference/isometric-rgb.png": "694418ab06066505c1b4213a8ec87a23f070954a7eefb85f2cf2bc152ee2a19b",
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/sonar-moving-current-20261029/context-reference/receipt.json": "0b41bdabeb342b533b8ee231bb1af8b6918e3ce5703574a91b28d8cecdd55c45",
+    "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/sonar-moving-current-20261029/comparison-baseline.png": "7142fb14f942f470cecd0ad90d9adbb09a20464d0085f43cec29734e8fa06b79"
+  }
+}

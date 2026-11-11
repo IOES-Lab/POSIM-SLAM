@@ -1,0 +1,36 @@
+{
+  "mode": "seed-3",
+  "status": "conditioned",
+  "observations": 25,
+  "selected": 20,
+  "rows": 20,
+  "nuisance_rank": 60,
+  "nuisance_nullity": 0,
+  "pose_information_singular_values": [
+    207.01932960146078,
+    146.33732296888954,
+    68.60804023304226,
+    24.392611704227814,
+    19.476086429935624,
+    0.9581387263025306,
+    1.1493698614156296e-13,
+    6.502060289836384e-14,
+    3.602081753879206e-14,
+    3.1486048439068196e-14,
+    1.366859754082855e-14,
+    6.62359767389288e-15
+  ],
+  "position_step_norm_m": [
+    0.0008119278926186404,
+    0.0015464760605138268
+  ],
+  "attitude_coordinate_step_norm_rad": [
+    0.0002858439783534831,
+    0.0003491849313593784
+  ],
+  "normalized_innovation_cost": 19.543531737555107,
+  "covariance_reduction_minimum_eigenvalue": -1.977816522598615e-21,
+  "navigation_prior_count": 1,
+  "point_prior_count": 0,
+  "qualified": false
+}

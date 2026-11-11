@@ -1,0 +1,30 @@
+{
+  "candidates": 130451,
+  "positive_seed_cells": 3915,
+  "positive_seed_without_navigation": 99,
+  "settings": {
+    "voxel_m": 0.05,
+    "minimum_positive_views": 3,
+    "minimum_baseline_m": 0.5,
+    "minimum_depth_span_m": 0.25,
+    "maximum_candidates": 300000,
+    "projection": "enclosing voxel sphere to range/bearing rectangle; possible support, not occupancy probability",
+    "absence": "not negative/free-space evidence",
+    "pose_uncertainty_included": false
+  },
+  "modes": {
+    "positive": {
+      "selected_candidates": 124917,
+      "optimistic_three_sigma_within_010_m": 0,
+      "seconds": 2.1380995420040563
+    },
+    "contrast": {
+      "selected_candidates": 109922,
+      "optimistic_three_sigma_within_010_m": 6418,
+      "seconds": 2.529721833008807
+    }
+  },
+  "map_qualified": false,
+  "joint_uncertainty_available": false,
+  "scope": "possible multi-view echo-support voxels under nominal emitted navigation; no probabilistic occupancy or independent XYZ observations"
+}

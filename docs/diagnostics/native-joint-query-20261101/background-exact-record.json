@@ -1,0 +1,302 @@
+{
+  "protocol": {
+    "scope": "Assess frozen scene hypotheses at four exact captured renderer poses.\n\nThe earlier eight-frame pose control retains its interpolation limitation.\nThese independent field frames have exact source snapshots. Reference geometry\nand poses enter assessment only, never scene construction or map admission.\n",
+    "assessment_only": true,
+    "map_accepted": false,
+    "native_update": false,
+    "new_field_started": false,
+    "geometry_fit": false,
+    "all_captured_traces": true,
+    "expected_cases": 20,
+    "selected_pixels": false,
+    "scene_arms": [
+      "frozen_baseline",
+      "frozen_birth",
+      "ground_reference_baseline",
+      "ground_reference_birth",
+      "full_reference"
+    ],
+    "pose": "exact captured renderer sensor pose; no fitting",
+    "source_coefficients": 0.001,
+    "nuisance": "One scalar image gain only",
+    "uncertainty_scope": "Optimistic fixed-pose diagnosis, not covariance or estimator acceptance",
+    "source_sha256": "aabb77f22ed40a331d3e71caf6a8a1d9d2e5627fc22a5f670653d9ac16f714d4",
+    "helper_sha256": "1f830aef6c48fcac80409f139a156f6692d2c5849202089b5f359857ecc6e24d",
+    "references": {
+      "/Volumes/ExternalHDD/POSIM/validation-data/posim-slam/sonar-native-input-trace-20261031/field-portable/inputs.json": "40e8457cb51f090fdcbfc85f454b06393d166c6f0e19405e23dc041949f270a1",
+      "/Volumes/ExternalHDD/POSIM/validation-data/posim-slam/sonar-native-input-trace-20261031/field-scene-assessment.npz": "e47b848bd28c46911ee7b4a455343e786b1382737e937f6b8dba0b4e6a6e1678",
+      "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/libraries/posim-slam/docs/diagnostics/sonar-reflector-birth-20261031/scenes.npz": "2e8f91e49b619b8ea56270db48c2304b8b5d5936ba7b6d8d5d1d8a71d4f58dc3",
+      "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/libraries/posim-slam/docs/diagnostics/sonar-reflector-birth-20261031/construction-seal.json": "982f3bd3ccc611f6adfd6845782c2646e2490d048a2f39b037afb0f15fced0a0",
+      "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/libraries/posim-slam/docs/diagnostics/sonar-translated-shadow-20261031/assessment-summary.json": "d731e1aa71f694d1b151739c267dd6e71cc6fbf92bffc6f561f8d8f0b4df9a27",
+      "/Volumes/ExternalHDD/POSIM/validation-data/posim-slam/sonar-native-input-trace-20261031/field-portable/calibration.npz": "eb0d455a53bb78780c6a981f779c671eaad98308c895a64a9d233a44215f8464"
+    },
+    "frames": [
+      {
+        "index": 0,
+        "trace": "traces/sonar-native-0.bin.gz",
+        "trace_sha256": "fc1cd00d1653849272a18304b5b37d5d083d3b0ebdd1e942fb96235ebf36abf6",
+        "raw": "raw/sonar-0047.npz",
+        "raw_sha256": "594fbffacb746169a63e44052a2b450a9316decae77ca05e4bb80cdc8802cc9a",
+        "stamp_ns": 25010000000
+      },
+      {
+        "index": 1,
+        "trace": "traces/sonar-native-1.bin.gz",
+        "trace_sha256": "43a0d04d6ade2b8e19486b4e6bfe419e7ff4fe0e6d5dfc40841f49b55dbb893f",
+        "raw": "raw/sonar-0087.npz",
+        "raw_sha256": "25df3c78656c2e577266b66b313fa5837ca79dac673c288c07f9ef30a70ff7e0",
+        "stamp_ns": 45010000000
+      },
+      {
+        "index": 2,
+        "trace": "traces/sonar-native-2.bin.gz",
+        "trace_sha256": "d2cbff80658fafe57f63a451652fb7f0b5381b8742783397597102334ce8ad73",
+        "raw": "raw/sonar-0127.npz",
+        "raw_sha256": "1c6cb55925110d51e98266a181b525e691970896dfc0caaceb6b588379a10ad9",
+        "stamp_ns": 65010000000
+      },
+      {
+        "index": 3,
+        "trace": "traces/sonar-native-3.bin.gz",
+        "trace_sha256": "7a4876335d705d7c997b2073e3688d08cf215cfe6b4de3d6a74e12872f28717f",
+        "raw": "raw/sonar-0167.npz",
+        "raw_sha256": "986845c65b5ee9370c27e28b632fc4e1ada8285782ab82d434047f5ea3110132",
+        "stamp_ns": 85010000000
+      }
+    ],
+    "maximum_output_bytes": 67108864
+  },
+  "complete": true,
+  "cases": [
+    {
+      "frame": 0,
+      "stamp_ns": 25010000000,
+      "scene_arm": "frozen_baseline",
+      "pixels": 153344,
+      "score": 460425.3721248702,
+      "gain": 6.26591094708423,
+      "residual_rms": 69.20445065011019,
+      "valid_return_rays": 65523,
+      "elapsed_s": 5.11832858400885
+    },
+    {
+      "frame": 0,
+      "stamp_ns": 25010000000,
+      "scene_arm": "frozen_birth",
+      "pixels": 153344,
+      "score": 467428.75048199436,
+      "gain": 6.354200565190221,
+      "residual_rms": 68.2053593919131,
+      "valid_return_rays": 65523,
+      "elapsed_s": 5.161311834002845
+    },
+    {
+      "frame": 0,
+      "stamp_ns": 25010000000,
+      "scene_arm": "ground_reference_baseline",
+      "pixels": 153344,
+      "score": 219574.6298645316,
+      "gain": 1.2933827758052623,
+      "residual_rms": 14.813429503521368,
+      "valid_return_rays": 65535,
+      "elapsed_s": 5.137604874907993
+    },
+    {
+      "frame": 0,
+      "stamp_ns": 25010000000,
+      "scene_arm": "ground_reference_birth",
+      "pixels": 153344,
+      "score": 233042.2657275567,
+      "gain": 1.3707936498396966,
+      "residual_rms": 14.678625559993826,
+      "valid_return_rays": 65535,
+      "elapsed_s": 5.080683709005825
+    },
+    {
+      "frame": 0,
+      "stamp_ns": 25010000000,
+      "scene_arm": "full_reference",
+      "pixels": 153344,
+      "score": 191186.0541868217,
+      "gain": 1.0559139346181783,
+      "residual_rms": 0.9629831686681694,
+      "valid_return_rays": 65535,
+      "elapsed_s": 5.085853000055067,
+      "return_mask_disagreements": 0,
+      "range_rms_m": 7.354907575063407e-05
+    },
+    {
+      "frame": 1,
+      "stamp_ns": 45010000000,
+      "scene_arm": "frozen_baseline",
+      "pixels": 153344,
+      "score": 410101.4516194795,
+      "gain": 4.400975155196206,
+      "residual_rms": 17.43225350242235,
+      "valid_return_rays": 65430,
+      "elapsed_s": 4.87219429097604
+    },
+    {
+      "frame": 1,
+      "stamp_ns": 45010000000,
+      "scene_arm": "frozen_birth",
+      "pixels": 153344,
+      "score": 403638.85320998164,
+      "gain": 3.587979098998893,
+      "residual_rms": 16.39071468816822,
+      "valid_return_rays": 65430,
+      "elapsed_s": 4.919579582987353
+    },
+    {
+      "frame": 1,
+      "stamp_ns": 45010000000,
+      "scene_arm": "ground_reference_baseline",
+      "pixels": 153344,
+      "score": 364071.6833896624,
+      "gain": 3.2339377556879887,
+      "residual_rms": 17.555027975934046,
+      "valid_return_rays": 65513,
+      "elapsed_s": 4.985553374979645
+    },
+    {
+      "frame": 1,
+      "stamp_ns": 45010000000,
+      "scene_arm": "ground_reference_birth",
+      "pixels": 153344,
+      "score": 354744.3946928353,
+      "gain": 2.6094557357932415,
+      "residual_rms": 16.155986468120577,
+      "valid_return_rays": 65513,
+      "elapsed_s": 5.120956875034608
+    },
+    {
+      "frame": 1,
+      "stamp_ns": 45010000000,
+      "scene_arm": "full_reference",
+      "pixels": 153344,
+      "score": 162612.5537699644,
+      "gain": 0.9086319921664742,
+      "residual_rms": 0.9758781031641177,
+      "valid_return_rays": 65513,
+      "elapsed_s": 5.118630500044674,
+      "return_mask_disagreements": 0,
+      "range_rms_m": 6.744376150891185e-05
+    },
+    {
+      "frame": 2,
+      "stamp_ns": 65010000000,
+      "scene_arm": "frozen_baseline",
+      "pixels": 153344,
+      "score": 475729.3735719711,
+      "gain": 6.588502215886571,
+      "residual_rms": 72.45829176684921,
+      "valid_return_rays": 65478,
+      "elapsed_s": 5.01656749995891
+    },
+    {
+      "frame": 2,
+      "stamp_ns": 65010000000,
+      "scene_arm": "frozen_birth",
+      "pixels": 153344,
+      "score": 482100.34538812924,
+      "gain": 6.621555743527741,
+      "residual_rms": 71.90827339919241,
+      "valid_return_rays": 65478,
+      "elapsed_s": 5.058523042011075
+    },
+    {
+      "frame": 2,
+      "stamp_ns": 65010000000,
+      "scene_arm": "ground_reference_baseline",
+      "pixels": 153344,
+      "score": 247135.37550855303,
+      "gain": 1.4847210781482258,
+      "residual_rms": 38.715160624133716,
+      "valid_return_rays": 65512,
+      "elapsed_s": 5.155134000000544
+    },
+    {
+      "frame": 2,
+      "stamp_ns": 65010000000,
+      "scene_arm": "ground_reference_birth",
+      "pixels": 153344,
+      "score": 256246.26287937668,
+      "gain": 1.5215916434621384,
+      "residual_rms": 37.833569228871056,
+      "valid_return_rays": 65512,
+      "elapsed_s": 5.0493198750773445
+    },
+    {
+      "frame": 2,
+      "stamp_ns": 65010000000,
+      "scene_arm": "full_reference",
+      "pixels": 153344,
+      "score": 186354.87456049692,
+      "gain": 0.9732878713235652,
+      "residual_rms": 0.9830509119913896,
+      "valid_return_rays": 65512,
+      "elapsed_s": 5.034498000051826,
+      "return_mask_disagreements": 0,
+      "range_rms_m": 8.071151387412101e-05
+    },
+    {
+      "frame": 3,
+      "stamp_ns": 85010000000,
+      "scene_arm": "frozen_baseline",
+      "pixels": 153344,
+      "score": 619617.7521077535,
+      "gain": 16.797083873923263,
+      "residual_rms": 58.7834966268681,
+      "valid_return_rays": 64519,
+      "elapsed_s": 4.804604333010502
+    },
+    {
+      "frame": 3,
+      "stamp_ns": 85010000000,
+      "scene_arm": "frozen_birth",
+      "pixels": 153344,
+      "score": 619617.7521077535,
+      "gain": 16.797083873923263,
+      "residual_rms": 58.7834966268681,
+      "valid_return_rays": 64519,
+      "elapsed_s": 5.349993583979085
+    },
+    {
+      "frame": 3,
+      "stamp_ns": 85010000000,
+      "scene_arm": "ground_reference_baseline",
+      "pixels": 153344,
+      "score": 194500.99684578215,
+      "gain": 0.9992432311533637,
+      "residual_rms": 1.0053298175394754,
+      "valid_return_rays": 64973,
+      "elapsed_s": 6.244964958052151
+    },
+    {
+      "frame": 3,
+      "stamp_ns": 85010000000,
+      "scene_arm": "ground_reference_birth",
+      "pixels": 153344,
+      "score": 194500.99684578215,
+      "gain": 0.9992432311533637,
+      "residual_rms": 1.0053298175394754,
+      "valid_return_rays": 64973,
+      "elapsed_s": 5.713295958004892
+    },
+    {
+      "frame": 3,
+      "stamp_ns": 85010000000,
+      "scene_arm": "full_reference",
+      "pixels": 153344,
+      "score": 194500.99684578215,
+      "gain": 0.9992432311533637,
+      "residual_rms": 1.0053298175394754,
+      "valid_return_rays": 64973,
+      "elapsed_s": 5.881322667002678,
+      "return_mask_disagreements": 0,
+      "range_rms_m": 9.729697194416076e-05
+    }
+  ],
+  "profiles_sha256": "cde25b479fd3045de4fdf38f05926262c251f0a6b4ec8db472c0e4d3ba1294a7",
+  "elapsed_s": 104.09607904101722
+}

@@ -1,0 +1,65 @@
+{
+  "navigation": {
+    "states": 177,
+    "all_states_assessed": true,
+    "truth_is_estimator_input": false,
+    "map_qualified": false,
+    "position_rmse_m": 0.015643671809255154,
+    "rotation_rmse_deg": 0.10721548744166946
+  },
+  "uncalibrated-navigation": {
+    "states": 177,
+    "all_states_assessed": true,
+    "truth_is_estimator_input": false,
+    "map_qualified": false,
+    "position_rmse_m": 0.03089890178587787,
+    "rotation_rmse_deg": 1.062633864578337
+  },
+  "uncalibrated-baseline": {
+    "states": 177,
+    "all_states_assessed": true,
+    "truth_is_estimator_input": false,
+    "map_qualified": false,
+    "point_count": 46,
+    "all_emitted_points_assessed": true,
+    "surface_error_m": {
+      "rmse": 0.20134142606327532,
+      "median": 0.10190627821783504,
+      "p90": 0.336988877277967,
+      "maximum": 0.6282634295542
+    },
+    "diagnostic_counts": {
+      "0.05": {
+        "within": 15,
+        "outside": 31,
+        "nearest_surface": {
+          "acoustic_validation_wall_0": 8,
+          "acoustic_validation_wall_1": 5,
+          "acoustic_validation_floor": 2
+        }
+      },
+      "0.1": {
+        "within": 23,
+        "outside": 23,
+        "nearest_surface": {
+          "acoustic_validation_wall_0": 14,
+          "acoustic_validation_wall_1": 7,
+          "acoustic_validation_floor": 2
+        }
+      },
+      "0.2": {
+        "within": 37,
+        "outside": 9,
+        "nearest_surface": {
+          "acoustic_validation_wall_0": 25,
+          "acoustic_validation_wall_1": 9,
+          "acoustic_validation_floor": 3
+        }
+      }
+    },
+    "physical_identity_verified": false,
+    "joint_uncertainty_available": false,
+    "position_rmse_m": 0.07035073963713102,
+    "rotation_rmse_deg": 0.755600618997976
+  }
+}

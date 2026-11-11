@@ -1,0 +1,76 @@
+{
+  "passed": true,
+  "error": null,
+  "startup": {
+    "visually_constrained_poses": 10,
+    "initial_cloud_points": 0,
+    "map_required_before_motion": false,
+    "mission_started_before_tracking": true
+  },
+  "recovery": {
+    "killed_owned_worker": 51930,
+    "old_frame": "vehicle/vio_e05c9c15b3a447a9b639209b9fcb91b4_segment_0",
+    "new_frame": "vehicle/vio_e05c9c15b3a447a9b639209b9fcb91b4_segment_1",
+    "new_pose_count": 5,
+    "acceptance": "five visually constrained poses; bootstrap predictions retained separately",
+    "empty_new_segment_clouds": 12
+  },
+  "mission": {
+    "live_poses": 1125,
+    "segment_stable": true,
+    "observed_target_clearance": {
+      "clear": true,
+      "minimum_centerline_clearance_m": 0.8320114492751229,
+      "required_body_margin_m": 0.5,
+      "closest": {
+        "actor": "acoustic_validation_target_1/body/collision",
+        "segment": 2011
+      },
+      "segments": 3003,
+      "collision_boxes": 5,
+      "method": "exact segment-to-oriented-box distance; spherical body envelope",
+      "scope": "authored targets only; terrain checked separately by mission planner"
+    }
+  },
+  "mission_status": "completed",
+  "native_export": {
+    "scope": "accumulated_local_vio_landmarks",
+    "points": 9138,
+    "stamp_ns": 129100000000,
+    "request_id": 1
+  },
+  "density_default": {
+    "shown": 1000,
+    "total": 9138,
+    "source": "ros_sample"
+  },
+  "density_views": [
+    {
+      "limit": 2000,
+      "shown": 2000,
+      "total": 9138,
+      "source": "native_archive",
+      "stamp_ns": 129100000000
+    },
+    {
+      "limit": 5000,
+      "shown": 5000,
+      "total": 9138,
+      "source": "native_archive",
+      "stamp_ns": 129200000000
+    },
+    {
+      "limit": 0,
+      "shown": 9138,
+      "total": 9138,
+      "source": "native_archive",
+      "stamp_ns": 129200000000
+    }
+  ],
+  "maximum_native_imu_lead_ns": 10000000,
+  "sensor_event_peak": 20,
+  "failures": [
+    "[Errno 32] Broken pipe"
+  ],
+  "probe_sha256": "813d3fc73605a47a38a60e91fd5f4cacb6459c2606fc88769bbdd078ded15dbf"
+}

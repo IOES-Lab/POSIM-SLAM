@@ -1,0 +1,24 @@
+{
+  "sonar_stamp_ns": 36010000000,
+  "camera_stamp_ns": 36000000000,
+  "context_recorded_pose_stamp_ns": 36010000000,
+  "context_rerender": true,
+  "original_rgb_visibility_m": 2.0,
+  "context_haze_absorption": false,
+  "particles_caustics_surface": true,
+  "sensor_origin_and_pitch": "same RGB/sonar origin, 0.35 rad down",
+  "all_selected_points_shown": [
+    13,
+    13
+  ],
+  "original_pairs": 14,
+  "selected": 13,
+  "admitted_map_points": 0,
+  "point_markers_pt2": 64,
+  "height_limits_m": [
+    -4.559613322644424,
+    -2.703407453515126
+  ],
+  "scope": "Fixed best contrast mode; no selection by assessment error; reprofile is separate from the failed linear point step",
+  "qualified": false
+}

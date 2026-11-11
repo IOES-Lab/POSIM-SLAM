@@ -1,0 +1,182 @@
+{
+  "protocol": {
+    "scope": "Paired native initial-bias ablation; truth enters assessment only.",
+    "map_accepted": false,
+    "assessment_only": true,
+    "change": "Only explicit first-state bias calibration; same stochastic evolution, gauge and original sensors",
+    "input_and_worker_hashes_identical": true,
+    "raw_frontend_trace_identical": true,
+    "all_state_times_identical": true,
+    "reference_geometry_used_in_inference": false,
+    "initial_calibration": {
+      "schema": "posim-slam-initial-imu-bias-calibration-1",
+      "frame": "input_imu",
+      "scope": "first_state",
+      "mean": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "covariance": [
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      ],
+      "source": "generated_sdf_noiseless_imu"
+    },
+    "native_report": {
+      "exact_modes": 6,
+      "finite_modes": 0,
+      "generic_initial_bias_prior_replaced": true,
+      "scope": "first_state",
+      "source": "generated_sdf_noiseless_imu",
+      "stochastic_evolution_unchanged": true
+    },
+    "source_sha256": "1092f4110460e4f703d04480d430e35f0d5896534afa7b5f321b735f65bb7244",
+    "snapshot_sha256": "61021138f0452c160f112187795e3aaaf6fcdd93deb6fea27c168d541f3ac43a",
+    "source_hashes": {
+      "field-replay-joint-information/receipt.json": "2bb31778d0b9d17c25c4539afff07ed8a1efc986c7e81deaf927953f907eb8d4",
+      "field-replay-certified-initial-bias/receipt.json": "70a0099ee9821a0a20dc31250bf53f982975f723910c72bf7aa97e8fea6afcda",
+      "field-initial-bias-provenance.json": "5c5ee5ab4a70c3f283726b89590b6bb369e480ea4a626769347e64875daa9cf6",
+      "field-input-20261101/record/calibration.json": "ca182e637bb52644c1fa81bcdd5d9f4984eeb2e7f6712de9427c407c6c1a9dd2",
+      "field-input-20261101/record/inputs/truth-assessment-only.json": "0bafa86ab76614011b0fa50d13e5a35e9c7b7fe4cd2e914cdd85f50539472f41"
+    },
+    "library_query_sha256": "c536a7b848597490bcb2de04e2ac536a13fb42d5a6b6bfd8b27cdfb3a1422e09"
+  },
+  "rows": [
+    {
+      "stamp_ns": 25010000000,
+      "observable_position_three_sigma_m": 0.13170074203620943,
+      "observable_rotation_three_sigma_deg": 1.3232445433428015,
+      "free_direction_component_norm": 0.0,
+      "unknown_bias_position_three_sigma_m": 3.1287213081743577,
+      "unknown_bias_rotation_three_sigma_deg": 42.552112100185795
+    },
+    {
+      "stamp_ns": 45010000000,
+      "observable_position_three_sigma_m": 0.1664337455771064,
+      "observable_rotation_three_sigma_deg": 2.945317917752596,
+      "free_direction_component_norm": 0.0,
+      "unknown_bias_position_three_sigma_m": 3.4662887649071292,
+      "unknown_bias_rotation_three_sigma_deg": 80.33812090733004
+    },
+    {
+      "stamp_ns": 65010000000,
+      "observable_position_three_sigma_m": 0.20773267793619027,
+      "observable_rotation_three_sigma_deg": 5.0547725073057554,
+      "free_direction_component_norm": 0.0,
+      "unknown_bias_position_three_sigma_m": 4.1833366908836025,
+      "unknown_bias_rotation_three_sigma_deg": 118.11142008391313
+    },
+    {
+      "stamp_ns": 85010000000,
+      "observable_position_three_sigma_m": 0.6385710740273997,
+      "observable_rotation_three_sigma_deg": 7.554075144823298,
+      "free_direction_component_norm": 0.0,
+      "unknown_bias_position_three_sigma_m": 10.949444704799754,
+      "unknown_bias_rotation_three_sigma_deg": 155.8649071902897
+    }
+  ],
+  "trajectory": {
+    "evaluated": true,
+    "states": 271,
+    "duration_s": 89.99000000000001,
+    "evaluation_alignment": {
+      "rotation": [
+        [
+          -0.3500267890356228,
+          0.9367396900726539,
+          0.0
+        ],
+        [
+          -0.9367396900726539,
+          -0.3500267890356228,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "translation": [
+        -0.03615098629101532,
+        0.013741345638258146,
+        -1.4421382325049623
+      ],
+      "scale": 1.0
+    },
+    "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+    "position_rmse_m": 0.02724117341689089,
+    "position_max_m": 0.049269579853497954,
+    "rotation_rmse_rad": 0.0017642385578589888,
+    "rotation_max_rad": 0.008080040043586822,
+    "truth_distance_m": 24.247508589442198,
+    "estimated_distance_m": 24.336956220229595,
+    "rpe_1s_pairs": 268,
+    "rpe_1s_position_rmse_m": 0.005563488927308843,
+    "rpe_1s_rotation_rmse_rad": 0.002312610453137629,
+    "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+  },
+  "root_rank": 226,
+  "root_columns": 226,
+  "root_constraint_rank": 0,
+  "unbounded_columns": 0,
+  "unbounded_rank": 0,
+  "maximum_between_time_correlation": 0.967854497486903,
+  "workspace_bound_bytes": 10915968,
+  "map_accepted": false,
+  "uncertainty_scope": "Local frozen-weight joint Gauss-Newton approximation; no calibrated global confidence claim",
+  "files": {
+    "joint-pose-marginal.npz": "70f60d204e5c0245d7ff4ab717ffc47491ee10a07af391ee3da42494c3e25fe8",
+    "all-271-aligned-states.csv": "8a052aa1c5d827aa45fdc80fbc8e84c101d436ba6cacd2ffc55e9e48fe4101e3"
+  }
+}

@@ -26,6 +26,16 @@ def exp_so3(value):
     return np.eye(3)+a*cross+b*cross@cross
 
 
+def left_jacobian_so3(value):
+    """Map accumulated exponential coordinates to a fresh left rotation."""
+    value=vector(value);angle=float(np.linalg.norm(value));cross=skew(value)
+    if angle<1e-7:
+        b=.5-angle**2/24;c=1/6-angle**2/120
+    else:
+        b=(1-math.cos(angle))/angle**2;c=(angle-math.sin(angle))/angle**3
+    return np.eye(3)+b*cross+c*cross@cross
+
+
 def error_transition(mid,omega,accel,dt,noise):
     """Shared midpoint right-error dynamics and integrated process noise.
 

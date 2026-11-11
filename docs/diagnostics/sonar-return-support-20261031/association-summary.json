@@ -1,0 +1,44 @@
+{
+  "descriptor": {
+    "frames": 93,
+    "detections": 2670,
+    "unique_tracks": 1578,
+    "repeated_tracks": 208,
+    "fitted": 208,
+    "fit_unavailable": 0,
+    "matched": 1092,
+    "ambiguous": 0,
+    "association_seconds": 0.00569983400000007,
+    "total_seconds": 6.562055959,
+    "opencv_version": "4.10.0",
+    "pose_uncertainty_used": false,
+    "physical_identity_verified": false,
+    "map_qualified": false,
+    "native_fusion": false
+  },
+  "projective": {
+    "frames": 93,
+    "detections": 2670,
+    "unique_tracks": 636,
+    "repeated_tracks": 63,
+    "fitted": 63,
+    "fit_unavailable": 0,
+    "matched": 344,
+    "ambiguous": 1690,
+    "association_seconds": 1.2388192080000007,
+    "total_seconds": 2.9114439579999996,
+    "opencv_version": "4.10.0",
+    "pose_uncertainty_used": false,
+    "physical_identity_verified": false,
+    "map_qualified": false,
+    "native_fusion": false
+  },
+  "sampling_control": {
+    "coarse": 65,
+    "fine": 257,
+    "different_frames": [
+      30500000000
+    ],
+    "continuous_curve_guaranteed": false
+  }
+}

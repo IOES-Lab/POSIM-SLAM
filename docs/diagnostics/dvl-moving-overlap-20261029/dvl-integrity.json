@@ -1,0 +1,10 @@
+{
+  "original_native_reports": 68,
+  "common_reports": 67,
+  "all_common_reports_exactly_matched": true,
+  "locked_beam_ranges": 268,
+  "unknown_range_variances": 268,
+  "recorded_minimum_is_vertical_altitude": false,
+  "extra_native_reports": 1,
+  "scope": "Exact original-time native-to-common DVL range/lock preservation; no pose or range fusion"
+}

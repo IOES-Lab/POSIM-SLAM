@@ -1,0 +1,16 @@
+{
+  "error": "HTTPError: HTTP Error 409: Conflict",
+  "callback_errors": [],
+  "sonar_frames": 12,
+  "camera_frames": 30,
+  "imu_samples": 600,
+  "dvl_samples": 6,
+  "pressure_samples": 60,
+  "truth_assessment_samples": 172,
+  "isometric_frames": 8,
+  "native_dvl_samples": 7,
+  "mission_start_ns": null,
+  "passed": false,
+  "scope": "Raw physical sensor capture, no sonar SLAM acceptance",
+  "ping_present": false
+}

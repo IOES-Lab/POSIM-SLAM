@@ -16,7 +16,8 @@ namespace posim_slam {
 struct MapPoseInformation {
   Eigen::MatrixXd covariance_root, nullspace;
 };
-inline MapPoseInformation mapPoseInformation(const Eigen::MatrixXd& normal) {
+inline MapPoseInformation mapPoseInformation(const Eigen::MatrixXd& normal,
+    const Eigen::VectorXd& parameter_scale=Eigen::VectorXd()) {
   const auto n=normal.rows();
   if(n<1 || n>kMaxJointColumns || normal.cols()!=n || !normal.allFinite() ||
       (normal-normal.transpose()).norm()>1e-10*std::max(1.,normal.norm()))
@@ -25,7 +26,13 @@ inline MapPoseInformation mapPoseInformation(const Eigen::MatrixXd& normal) {
   if(normal.diagonal().minCoeff()<-1e-12*std::max(1.,diagonal))
     throw std::invalid_argument("indefinite_map_pose_normal");
   Eigen::VectorXd scale(n);
-  for(Eigen::Index i=0;i<n;++i)scale[i]=normal(i,i)>0 ? 1/std::sqrt(normal(i,i)) : 1.;
+  if(parameter_scale.size()) {
+    if(parameter_scale.size()!=n || !parameter_scale.allFinite() || parameter_scale.minCoeff()<=0)
+      throw std::invalid_argument("invalid_map_parameter_scale");
+    scale=parameter_scale;
+  } else {
+    for(Eigen::Index i=0;i<n;++i)scale[i]=normal(i,i)>0 ? 1/std::sqrt(normal(i,i)) : 1.;
+  }
   const Eigen::MatrixXd symmetric=.5*(normal+normal.transpose());
   const Eigen::MatrixXd scaled=scale.asDiagonal()*symmetric*scale.asDiagonal();
   Eigen::SelfAdjointEigenSolver<Eigen::MatrixXd> eigen(scaled);

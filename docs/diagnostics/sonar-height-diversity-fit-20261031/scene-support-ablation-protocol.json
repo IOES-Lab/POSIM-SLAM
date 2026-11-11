@@ -1,0 +1,18 @@
+{
+  "scope": "Adaptive post-seal assessment, chosen after full-scene audit; not independent validation",
+  "reason": "Full reference scene at the same navigation poses predicts all three images better than the sealed one-prism/plane family. Separate ground shape from missing other reflectors.",
+  "indices": [
+    27,
+    81,
+    88
+  ],
+  "arms": [
+    "reference seabed only",
+    "reference seabed plus reference inspection_block_0",
+    "sealed fitted plane plus the same reference inspection_block_0"
+  ],
+  "comparison_reference": "Previously retained full scene at identical navigation poses",
+  "shared": "Same original raw powers, frozen48 queries, sensor-navigation poses, uniform triangle reflectivity .001, source ray/normal/Fourier operator, and profiled common brightness. Surface removal changes true first-hit occlusion; zero reflectivity is not substituted for removal.",
+  "retention": "All selected exact means/covariances, per-query residuals, material/geometry identities and first-hit count. Original raw and complete reference mesh stay shared. No inferred point or scientific fit changes.",
+  "interpretation": "Ground+same target versus fitted-plane+same target tests this specific fitted ground approximation. Ground+target versus complete scene tests omitted reflectors/visibility. These are reference-geometry conditionals, never estimator inputs or a hardware calibration."
+}

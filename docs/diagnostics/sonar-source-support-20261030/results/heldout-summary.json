@@ -1,0 +1,165 @@
+{
+  "settings": {
+    "voxel_m": 0.05,
+    "minimum_positive_views": 3,
+    "minimum_baseline_m": 0.5,
+    "minimum_depth_span_m": 0.25,
+    "maximum_candidates": 300000,
+    "diagnostic_three_sigma_m": 0.1,
+    "range_sigma_m": 0.025083611719310284,
+    "azimuth_sigma_rad": 0.008213314126139591,
+    "split_policy": [
+      "first two thirds train, final third validate",
+      "alternating two-frame blocks"
+    ],
+    "scope": "training-only candidates; source support consistency, not association, occupancy or map admission"
+  },
+  "folds": {
+    "chronological": {
+      "training_stamps_ns": [
+        32500000000,
+        33010000000,
+        33500000000,
+        34010000000,
+        34500000000,
+        35000000000,
+        35500000000,
+        36010000000,
+        36500000000,
+        37010000000,
+        37500000000,
+        38010000000,
+        38500000000,
+        39010000000,
+        39500000000,
+        40010000000,
+        40500000000,
+        41000000000,
+        41500000000,
+        42010000000,
+        42500000000,
+        43010000000,
+        43500000000,
+        44010000000,
+        44500000000,
+        45010000000,
+        45500000000
+      ],
+      "validation_stamps_ns": [
+        46000000000,
+        46500000000,
+        47000000000,
+        47500000000,
+        48010000000,
+        48500000000,
+        49010000000,
+        49500000000,
+        50000000000,
+        50500000000,
+        51010000000,
+        51500000000,
+        52000000000,
+        52500000000
+      ],
+      "seeds": 27,
+      "candidates": 18074,
+      "support_selected": {
+        "candidates": 1714,
+        "visible_in_validation": 1712,
+        "validation_positive_views": 4937,
+        "validation_visible_views": 21683,
+        "validation_support_fraction_p10_p50_p90": [
+          0.0,
+          0.16666666666666666,
+          0.5
+        ],
+        "zero_positive_validation_views": 270
+      },
+      "optimistic_selected": {
+        "candidates": 0,
+        "visible_in_validation": 0,
+        "validation_positive_views": 0,
+        "validation_visible_views": 0,
+        "validation_support_fraction_p10_p50_p90": null,
+        "zero_positive_validation_views": 0
+      },
+      "smallest_optimistic_three_sigma_m": 0.1159054675628739,
+      "seconds": 0.28237116598756984
+    },
+    "blocked": {
+      "training_stamps_ns": [
+        32500000000,
+        33010000000,
+        34500000000,
+        35000000000,
+        36500000000,
+        37010000000,
+        38500000000,
+        39010000000,
+        40500000000,
+        41000000000,
+        42500000000,
+        43010000000,
+        44500000000,
+        45010000000,
+        46500000000,
+        47000000000,
+        48500000000,
+        49010000000,
+        50500000000,
+        51010000000,
+        52500000000
+      ],
+      "validation_stamps_ns": [
+        33500000000,
+        34010000000,
+        35500000000,
+        36010000000,
+        37500000000,
+        38010000000,
+        39500000000,
+        40010000000,
+        41500000000,
+        42010000000,
+        43500000000,
+        44010000000,
+        45500000000,
+        46000000000,
+        47500000000,
+        48010000000,
+        49500000000,
+        50000000000,
+        51500000000,
+        52000000000
+      ],
+      "seeds": 21,
+      "candidates": 20860,
+      "support_selected": {
+        "candidates": 1852,
+        "visible_in_validation": 1852,
+        "validation_positive_views": 9250,
+        "validation_visible_views": 27753,
+        "validation_support_fraction_p10_p50_p90": [
+          0.1111111111111111,
+          0.3,
+          0.6666666666666666
+        ],
+        "zero_positive_validation_views": 52
+      },
+      "optimistic_selected": {
+        "candidates": 0,
+        "visible_in_validation": 0,
+        "validation_positive_views": 0,
+        "validation_visible_views": 0,
+        "validation_support_fraction_p10_p50_p90": null,
+        "zero_positive_validation_views": 0
+      },
+      "smallest_optimistic_three_sigma_m": 0.1421933421080464,
+      "seconds": 0.277376500016544
+    }
+  },
+  "truth_used": false,
+  "accepted_map": false,
+  "pose_uncertainty_in_selection": false,
+  "navigation": "same 52.5-second native snapshot; navigation sensors from all times, no sonar factors; retrospective local mapping diagnostic"
+}

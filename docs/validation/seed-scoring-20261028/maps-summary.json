@@ -1,0 +1,50 @@
+[
+  {
+    "profile": "joint-ping",
+    "phase": "initial",
+    "points": 1182,
+    "rmse_m": 0.016826188696503343,
+    "maximum_m": 0.22633701266600662,
+    "above_10cm": 5
+  },
+  {
+    "profile": "joint-ping",
+    "phase": "recovered",
+    "points": 1142,
+    "rmse_m": 0.013134224450493934,
+    "maximum_m": 0.14669540776160428,
+    "above_10cm": 3
+  },
+  {
+    "profile": "receive-only-ping",
+    "phase": "initial",
+    "points": 1346,
+    "rmse_m": 0.019421606967711853,
+    "maximum_m": 0.17032561325347986,
+    "above_10cm": 3
+  },
+  {
+    "profile": "receive-only-ping",
+    "phase": "recovered",
+    "points": 994,
+    "rmse_m": 0.017318232163612092,
+    "maximum_m": 0.14583506244587238,
+    "above_10cm": 2
+  },
+  {
+    "profile": "no-ping",
+    "phase": "initial",
+    "points": 1346,
+    "rmse_m": 0.019421606967711853,
+    "maximum_m": 0.17032561325347986,
+    "above_10cm": 3
+  },
+  {
+    "profile": "no-ping",
+    "phase": "recovered",
+    "points": 994,
+    "rmse_m": 0.017318232163612092,
+    "maximum_m": 0.14583506244587238,
+    "above_10cm": 2
+  }
+]

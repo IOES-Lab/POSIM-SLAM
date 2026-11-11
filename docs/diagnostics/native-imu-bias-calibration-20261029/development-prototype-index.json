@@ -1,0 +1,373 @@
+{
+  "scope": "Pre-publication prototype uses information schema 1 even with exact rows; final schema 2 prevents legacy readers from ignoring exact support. Complete prototype outputs stay local and are not qualified.",
+  "files": {
+    "uncalibrated-dvl-only/snapshot-before.json.gz": {
+      "sha256": "5fa5528e28a4dc4293790d26dbbeb9b6c66e9ee04d7ec71579e137e142467800",
+      "bytes": 551481
+    },
+    "uncalibrated-dvl-only/snapshot-after.json.gz": {
+      "sha256": "e5fae8224116e01a088562385f0e564aad55a9514acc798acbdd54dbacaaac3b",
+      "bytes": 571162
+    },
+    "uncalibrated-dvl-only/events.json": {
+      "sha256": "8d44618241da8b5484af323e81dd985f7bc2ea1f7c61b67aced7f1a2c922d796",
+      "bytes": 311961
+    },
+    "uncalibrated-dvl-only/acoustic-map.ply": {
+      "sha256": "34a2648c98984f0f9a8a54a069b263af81eb1af9d35dbf488e65548dac7d517a",
+      "bytes": 248
+    },
+    "uncalibrated-dvl-only/calibration.json": {
+      "sha256": "7960cff0f81c90799cb4fdb41a8f57e26030e9b4f3fa3e3ee0b557d9f0929687",
+      "bytes": 544
+    },
+    "uncalibrated-dvl-only/increment.json.gz": {
+      "sha256": "28765d7f6023218576f836934404b28375c1e71b56ff076dd3d60a10ae04d7cc",
+      "bytes": 37500
+    },
+    "uncalibrated-dvl-only/range-owner-controls.json": {
+      "sha256": "5f3cc1e55745b143d02e63e43d658b1ab4bf6aed7b1b1cf8cda200128c67dfe9",
+      "bytes": 159644
+    },
+    "uncalibrated-dvl-only/original-request.json": {
+      "sha256": "29cb7cd9005d409de446de25ccd3a1bdf2c4415a4a896311cc0c8a24b08970c6",
+      "bytes": 10675
+    },
+    "uncalibrated-dvl-only/worker.log": {
+      "sha256": "6bd828e380bc5f7e2b9ed032b98815c0c98724b5a8c2e600a991d15600e73b20",
+      "bytes": 1816
+    },
+    "uncalibrated-dvl-only/initial-joint.json": {
+      "sha256": "12500428c5d087e81a27aae0ea4f5ae37bc4ec7e3d1911bee375c884f96e646e",
+      "bytes": 6174
+    },
+    "uncalibrated-dvl-only/ground-map.json": {
+      "sha256": "8df73fe2763b6f863366b958992e9c9f7987e455aaf4e2092803ffb4dd78cef4",
+      "bytes": 98
+    },
+    "uncalibrated-dvl-only/dvl-calibration.json": {
+      "sha256": "a12115f1a7c41c2631bcbb131019f281eb660010a260c5ec00d62191e8ccae5e",
+      "bytes": 217
+    },
+    "uncalibrated-dvl-only/snapshot-initial.json.gz": {
+      "sha256": "e24e0ce73c3475ddf92f73844f6fd592d2b44e998d8202898aecbfdad855ec68",
+      "bytes": 514
+    },
+    "uncalibrated-dvl-only/submitted-snapshots.json": {
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "bytes": 3
+    },
+    "uncalibrated-dvl-only/trajectory-metrics.json": {
+      "sha256": "70f4859cf2fa6f0214da714dc3e06df19107142db7514210171712ea00df8e3b",
+      "bytes": 1082
+    },
+    "uncalibrated-dvl-only/aligned-assessment.csv": {
+      "sha256": "e5f34b6e5f626b58f4a1a00cfe84277921be1661719cb2509d833ca2cf45a4d8",
+      "bytes": 40865
+    },
+    "uncalibrated-dvl-only/acoustic-tracks.jsonl": {
+      "sha256": "89ffbb51ab209745d186ce9383f861655c03e0bea830a708ce0ecbfb9e272cc0",
+      "bytes": 5876129
+    },
+    "uncalibrated-dvl-only/sonar-calibration.json": {
+      "sha256": "5d699a2db4e16789867a494d24f43b782d67d041816d37ebded899c116f6bbc5",
+      "bytes": 871
+    },
+    "uncalibrated-dvl-only/acoustic-map.json": {
+      "sha256": "45e056493f31c2ecb174399e01454bff7101c7b8570a9f4f1e08a0896e37cbd0",
+      "bytes": 203
+    },
+    "uncalibrated-dvl-only/ground-observations.json": {
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "bytes": 3
+    },
+    "uncalibrated-dvl-only/states.csv": {
+      "sha256": "5238d5f253ea66a74235b12ca7d5a923102ce3bba37aa9b08bccaccfec8832bb",
+      "bytes": 27154
+    },
+    "uncalibrated-dvl-only/pressure-calibration.json": {
+      "sha256": "3ab11a2ace01528983048c44aa882650f722d2b4550ae87b5520479c7cc30078",
+      "bytes": 103
+    },
+    "uncalibrated-dvl-only/snapshot-later.json.gz": {
+      "sha256": "22b80d0c01fc01cede807b4a2609f834ea25fbcb94f7b2628be45e194c705f70",
+      "bytes": 667738
+    },
+    "uncalibrated-dvl-only/receipt.json": {
+      "sha256": "ef1e2b6a52289ba3451c7f39b5e3bdae6a9d9f9436000973663e738cf489f75f",
+      "bytes": 44171
+    },
+    "uncalibrated-dvl-fls/snapshot-before.json.gz": {
+      "sha256": "5fa5528e28a4dc4293790d26dbbeb9b6c66e9ee04d7ec71579e137e142467800",
+      "bytes": 551481
+    },
+    "uncalibrated-dvl-fls/snapshot-after.json.gz": {
+      "sha256": "48e0f6d6e4cae23c8a9721471d9fd99526b51065bbebc6df756224ccc29c3b3d",
+      "bytes": 551480
+    },
+    "uncalibrated-dvl-fls/events.json": {
+      "sha256": "a16751be77a8b9ca1c492e75b8ea0058fd5aa503a5db7bc1b2750ab1f7cf223b",
+      "bytes": 311992
+    },
+    "uncalibrated-dvl-fls/acoustic-map.ply": {
+      "sha256": "34a2648c98984f0f9a8a54a069b263af81eb1af9d35dbf488e65548dac7d517a",
+      "bytes": 248
+    },
+    "uncalibrated-dvl-fls/calibration.json": {
+      "sha256": "7960cff0f81c90799cb4fdb41a8f57e26030e9b4f3fa3e3ee0b557d9f0929687",
+      "bytes": 544
+    },
+    "uncalibrated-dvl-fls/range-owner-controls.json": {
+      "sha256": "7b2b106254b3b166e5e2c72bad2656675c45fe2c179edc2761696c41ade6f912",
+      "bytes": 63573
+    },
+    "uncalibrated-dvl-fls/original-request.json": {
+      "sha256": "f7182c23c7b41793b766cdb77fc8292879b3f100322515eaf53b8a57f867d64c",
+      "bytes": 11746
+    },
+    "uncalibrated-dvl-fls/worker.log": {
+      "sha256": "6bd828e380bc5f7e2b9ed032b98815c0c98724b5a8c2e600a991d15600e73b20",
+      "bytes": 1816
+    },
+    "uncalibrated-dvl-fls/initial-joint.json": {
+      "sha256": "12500428c5d087e81a27aae0ea4f5ae37bc4ec7e3d1911bee375c884f96e646e",
+      "bytes": 6174
+    },
+    "uncalibrated-dvl-fls/ground-map.json": {
+      "sha256": "8df73fe2763b6f863366b958992e9c9f7987e455aaf4e2092803ffb4dd78cef4",
+      "bytes": 98
+    },
+    "uncalibrated-dvl-fls/dvl-calibration.json": {
+      "sha256": "a12115f1a7c41c2631bcbb131019f281eb660010a260c5ec00d62191e8ccae5e",
+      "bytes": 217
+    },
+    "uncalibrated-dvl-fls/snapshot-initial.json.gz": {
+      "sha256": "e24e0ce73c3475ddf92f73844f6fd592d2b44e998d8202898aecbfdad855ec68",
+      "bytes": 514
+    },
+    "uncalibrated-dvl-fls/submitted-snapshots.json": {
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "bytes": 3
+    },
+    "uncalibrated-dvl-fls/trajectory-metrics.json": {
+      "sha256": "f308c132dd7c24b4364e4df2b34d4fca96319810185b200082be5a939af95121",
+      "bytes": 1079
+    },
+    "uncalibrated-dvl-fls/aligned-assessment.csv": {
+      "sha256": "07fd91f5517c850c77e1dc6300f7cc8fad4f1561b783c50482ab4920b2616dc3",
+      "bytes": 40865
+    },
+    "uncalibrated-dvl-fls/acoustic-tracks.jsonl": {
+      "sha256": "89ffbb51ab209745d186ce9383f861655c03e0bea830a708ce0ecbfb9e272cc0",
+      "bytes": 5876129
+    },
+    "uncalibrated-dvl-fls/sonar-calibration.json": {
+      "sha256": "5d699a2db4e16789867a494d24f43b782d67d041816d37ebded899c116f6bbc5",
+      "bytes": 871
+    },
+    "uncalibrated-dvl-fls/acoustic-map.json": {
+      "sha256": "45e056493f31c2ecb174399e01454bff7101c7b8570a9f4f1e08a0896e37cbd0",
+      "bytes": 203
+    },
+    "uncalibrated-dvl-fls/ground-observations.json": {
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "bytes": 3
+    },
+    "uncalibrated-dvl-fls/states.csv": {
+      "sha256": "b0a6f8b97d308b766529ed71c4133eda357722e7ba83aa88d2b0ee97838f81bb",
+      "bytes": 27117
+    },
+    "uncalibrated-dvl-fls/pressure-calibration.json": {
+      "sha256": "3ab11a2ace01528983048c44aa882650f722d2b4550ae87b5520479c7cc30078",
+      "bytes": 103
+    },
+    "uncalibrated-dvl-fls/receipt.json": {
+      "sha256": "e1877020f73cea2e38552eef48bc0aec99a75ab532cf61470c813e4e8e3b9fac",
+      "bytes": 44169
+    },
+    "calibrated-dvl-only/snapshot-before.json.gz": {
+      "sha256": "e312c7e37995c8f4518bd99763bed2a3ab14537be5599115cbf736da3048ded6",
+      "bytes": 552244
+    },
+    "calibrated-dvl-only/snapshot-after.json.gz": {
+      "sha256": "54b3bf3aed78cb5d100607c837934703c038258795c57c39e0140294ff392693",
+      "bytes": 572117
+    },
+    "calibrated-dvl-only/events.json": {
+      "sha256": "6c293fd33746c7e4e15874b366a90de806f5b27661b8d56c939aff6a7953c804",
+      "bytes": 311230
+    },
+    "calibrated-dvl-only/acoustic-map.ply": {
+      "sha256": "34a2648c98984f0f9a8a54a069b263af81eb1af9d35dbf488e65548dac7d517a",
+      "bytes": 248
+    },
+    "calibrated-dvl-only/calibration.json": {
+      "sha256": "6fc02ac1a4e859e4838471dffb69bbc8bfa68ed80a2dab0c748de14e7fcbd3b1",
+      "bytes": 968
+    },
+    "calibrated-dvl-only/increment.json.gz": {
+      "sha256": "1a05dbd2e0fa21f979258e4a04216f238f771f0abd50a8c440b818a18998381e",
+      "bytes": 37565
+    },
+    "calibrated-dvl-only/range-owner-controls.json": {
+      "sha256": "a536394373e4f43ca353e89528c3b348aaae1d69d4e776f80b0f672fb5ecab05",
+      "bytes": 159717
+    },
+    "calibrated-dvl-only/original-request.json": {
+      "sha256": "405195ce9931534f1b750a601dc6a352f4832c1c3928a9833e1ba40d53a2c572",
+      "bytes": 10673
+    },
+    "calibrated-dvl-only/worker.log": {
+      "sha256": "da783fe08882ecc10441bf98c83f93617323ae1189dc81fb6b2b2999638cf38b",
+      "bytes": 1366
+    },
+    "calibrated-dvl-only/initial-joint.json": {
+      "sha256": "96c1c193d2a9656eafb0115882472dbbdaf45410df68bb2d54fdd52ace19e76c",
+      "bytes": 6024
+    },
+    "calibrated-dvl-only/ground-map.json": {
+      "sha256": "8df73fe2763b6f863366b958992e9c9f7987e455aaf4e2092803ffb4dd78cef4",
+      "bytes": 98
+    },
+    "calibrated-dvl-only/dvl-calibration.json": {
+      "sha256": "a12115f1a7c41c2631bcbb131019f281eb660010a260c5ec00d62191e8ccae5e",
+      "bytes": 217
+    },
+    "calibrated-dvl-only/snapshot-initial.json.gz": {
+      "sha256": "026eb21982ded9d81452a40d317afd7431d562bfb6fda34f1822d9692430ac04",
+      "bytes": 533
+    },
+    "calibrated-dvl-only/submitted-snapshots.json": {
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "bytes": 3
+    },
+    "calibrated-dvl-only/trajectory-metrics.json": {
+      "sha256": "17d688b3d6edce230bc980aab380e9c7071fd80a45fe18d4c22ec7fe5a0c272f",
+      "bytes": 1085
+    },
+    "calibrated-dvl-only/aligned-assessment.csv": {
+      "sha256": "1f5a00eb4a595837f63ff5e2282cbcb15aab7f022c79612eb14ce0d334cdb0eb",
+      "bytes": 40861
+    },
+    "calibrated-dvl-only/acoustic-tracks.jsonl": {
+      "sha256": "89ffbb51ab209745d186ce9383f861655c03e0bea830a708ce0ecbfb9e272cc0",
+      "bytes": 5876129
+    },
+    "calibrated-dvl-only/sonar-calibration.json": {
+      "sha256": "5d699a2db4e16789867a494d24f43b782d67d041816d37ebded899c116f6bbc5",
+      "bytes": 871
+    },
+    "calibrated-dvl-only/acoustic-map.json": {
+      "sha256": "45e056493f31c2ecb174399e01454bff7101c7b8570a9f4f1e08a0896e37cbd0",
+      "bytes": 203
+    },
+    "calibrated-dvl-only/ground-observations.json": {
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "bytes": 3
+    },
+    "calibrated-dvl-only/states.csv": {
+      "sha256": "3b73c85478e083101a50fdc81d881e0d02824e00e1db7e4434480e7af2a6823f",
+      "bytes": 27124
+    },
+    "calibrated-dvl-only/pressure-calibration.json": {
+      "sha256": "3ab11a2ace01528983048c44aa882650f722d2b4550ae87b5520479c7cc30078",
+      "bytes": 103
+    },
+    "calibrated-dvl-only/snapshot-later.json.gz": {
+      "sha256": "3447b7b4125ecc2953c98a7861d87fb95e558273c911ad5fdded8a38b79b5451",
+      "bytes": 672346
+    },
+    "calibrated-dvl-only/receipt.json": {
+      "sha256": "01f79a0e3f22a4316e2dfcd8afdfe219bc617124a2252d8f8ee027e193d338f3",
+      "bytes": 44169
+    },
+    "calibrated-dvl-fls/snapshot-before.json.gz": {
+      "sha256": "e312c7e37995c8f4518bd99763bed2a3ab14537be5599115cbf736da3048ded6",
+      "bytes": 552244
+    },
+    "calibrated-dvl-fls/snapshot-after.json.gz": {
+      "sha256": "dcce884b5ef9ad454a8b3cc8e406278550468fa3b7372cbee1d3e577bf2e8c60",
+      "bytes": 552243
+    },
+    "calibrated-dvl-fls/events.json": {
+      "sha256": "5f0df2a04afe2883b0e79b0c3147a2950ef4edb154bce0ca5cd98e159b184770",
+      "bytes": 311178
+    },
+    "calibrated-dvl-fls/acoustic-map.ply": {
+      "sha256": "34a2648c98984f0f9a8a54a069b263af81eb1af9d35dbf488e65548dac7d517a",
+      "bytes": 248
+    },
+    "calibrated-dvl-fls/calibration.json": {
+      "sha256": "6fc02ac1a4e859e4838471dffb69bbc8bfa68ed80a2dab0c748de14e7fcbd3b1",
+      "bytes": 968
+    },
+    "calibrated-dvl-fls/range-owner-controls.json": {
+      "sha256": "170ad09cd0ffd7afc3edfe9d7d27f64d928980d778c3adc33128eb7cd99e38a7",
+      "bytes": 63572
+    },
+    "calibrated-dvl-fls/original-request.json": {
+      "sha256": "774cd8477a05daa74940941cb89f8fe7d2c2bdaf0aeddf3253a039091c23376e",
+      "bytes": 11744
+    },
+    "calibrated-dvl-fls/worker.log": {
+      "sha256": "da783fe08882ecc10441bf98c83f93617323ae1189dc81fb6b2b2999638cf38b",
+      "bytes": 1366
+    },
+    "calibrated-dvl-fls/initial-joint.json": {
+      "sha256": "96c1c193d2a9656eafb0115882472dbbdaf45410df68bb2d54fdd52ace19e76c",
+      "bytes": 6024
+    },
+    "calibrated-dvl-fls/ground-map.json": {
+      "sha256": "8df73fe2763b6f863366b958992e9c9f7987e455aaf4e2092803ffb4dd78cef4",
+      "bytes": 98
+    },
+    "calibrated-dvl-fls/dvl-calibration.json": {
+      "sha256": "a12115f1a7c41c2631bcbb131019f281eb660010a260c5ec00d62191e8ccae5e",
+      "bytes": 217
+    },
+    "calibrated-dvl-fls/snapshot-initial.json.gz": {
+      "sha256": "026eb21982ded9d81452a40d317afd7431d562bfb6fda34f1822d9692430ac04",
+      "bytes": 533
+    },
+    "calibrated-dvl-fls/submitted-snapshots.json": {
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "bytes": 3
+    },
+    "calibrated-dvl-fls/trajectory-metrics.json": {
+      "sha256": "9f969db8d35cd2fdc165a5e5233873078f3f526629430950f9a8562ca4617a47",
+      "bytes": 1085
+    },
+    "calibrated-dvl-fls/aligned-assessment.csv": {
+      "sha256": "fa9e581d7e4e9f5d5e9be30669431a1eecb1a0c858c4c20b55040bf2725aab02",
+      "bytes": 40861
+    },
+    "calibrated-dvl-fls/acoustic-tracks.jsonl": {
+      "sha256": "89ffbb51ab209745d186ce9383f861655c03e0bea830a708ce0ecbfb9e272cc0",
+      "bytes": 5876129
+    },
+    "calibrated-dvl-fls/sonar-calibration.json": {
+      "sha256": "5d699a2db4e16789867a494d24f43b782d67d041816d37ebded899c116f6bbc5",
+      "bytes": 871
+    },
+    "calibrated-dvl-fls/acoustic-map.json": {
+      "sha256": "45e056493f31c2ecb174399e01454bff7101c7b8570a9f4f1e08a0896e37cbd0",
+      "bytes": 203
+    },
+    "calibrated-dvl-fls/ground-observations.json": {
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "bytes": 3
+    },
+    "calibrated-dvl-fls/states.csv": {
+      "sha256": "a38e70b662a21ff1dd32a5b91f5e45a7992366243c21f7db96bb38831c4ea316",
+      "bytes": 27130
+    },
+    "calibrated-dvl-fls/pressure-calibration.json": {
+      "sha256": "3ab11a2ace01528983048c44aa882650f722d2b4550ae87b5520479c7cc30078",
+      "bytes": 103
+    },
+    "calibrated-dvl-fls/receipt.json": {
+      "sha256": "13bb3e9ad2919bc00eb7c341b99ab27da865b5a64e21c7ca91b7a90dfd97e567",
+      "bytes": 44170
+    }
+  }
+}

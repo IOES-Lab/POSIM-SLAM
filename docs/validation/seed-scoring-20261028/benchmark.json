@@ -1,0 +1,116 @@
+{
+  "passed": true,
+  "scope": "Compare scalar and batched startup scoring using measured camera/IMU only.",
+  "truth_input": false,
+  "tolerance": 1e-10,
+  "hypotheses": 256,
+  "pixel_sigma": 0.5,
+  "python": "3.14.7",
+  "numpy": "2.5.3",
+  "architecture": "arm64",
+  "sha256": {
+    "fixture.json.gz": "951357faddb768d6e5f56cd97253968b710b5341355c6df1957b4c088cbb5072",
+    "scalar_reference.py": "0b0d4907480b7511b9ef5ff046d7d10bf236a8ab906cbf0a71c7c51bb6a037bf",
+    "reproduce.py": "d69c631fa2f2f0d50fd3b57f7ebe9be0a60046be042e1ad2651127f3a6293072",
+    "visual_inertial_seed.py": "1b1804736f156eba71c9f0c7693bbc43be0dbc5404b0f5f71a7575e9109de9f2",
+    "visual_seed_consensus.py": "177639689666148a2ee513899a0473d59ff78b101a19ac18b3dab5fec82239f5"
+  },
+  "windows": [
+    {
+      "window": "recovery-window",
+      "max_absolute_numeric_difference": 0.0,
+      "runs": [
+        {
+          "mode": "scalar",
+          "elapsed_s": 0.5538054589997046,
+          "selected_tracks": 112,
+          "inlier_tracks": 45,
+          "rejected_tracks": 67
+        },
+        {
+          "mode": "batched",
+          "elapsed_s": 0.1941152079962194,
+          "selected_tracks": 112,
+          "inlier_tracks": 45,
+          "rejected_tracks": 67
+        },
+        {
+          "mode": "scalar",
+          "elapsed_s": 0.5363574589719065,
+          "selected_tracks": 112,
+          "inlier_tracks": 45,
+          "rejected_tracks": 67
+        },
+        {
+          "mode": "batched",
+          "elapsed_s": 0.2076732920249924,
+          "selected_tracks": 112,
+          "inlier_tracks": 45,
+          "rejected_tracks": 67
+        },
+        {
+          "mode": "scalar",
+          "elapsed_s": 0.5231994590139948,
+          "selected_tracks": 112,
+          "inlier_tracks": 45,
+          "rejected_tracks": 67
+        },
+        {
+          "mode": "batched",
+          "elapsed_s": 0.19713887496618554,
+          "selected_tracks": 112,
+          "inlier_tracks": 45,
+          "rejected_tracks": 67
+        }
+      ]
+    },
+    {
+      "window": "early-covered-window",
+      "max_absolute_numeric_difference": 0.0,
+      "runs": [
+        {
+          "mode": "scalar",
+          "elapsed_s": 0.8222142920130864,
+          "selected_tracks": 143,
+          "inlier_tracks": 100,
+          "rejected_tracks": 43
+        },
+        {
+          "mode": "batched",
+          "elapsed_s": 0.22807829198427498,
+          "selected_tracks": 143,
+          "inlier_tracks": 100,
+          "rejected_tracks": 43
+        },
+        {
+          "mode": "scalar",
+          "elapsed_s": 0.8133808330167085,
+          "selected_tracks": 143,
+          "inlier_tracks": 100,
+          "rejected_tracks": 43
+        },
+        {
+          "mode": "batched",
+          "elapsed_s": 0.22013758297543973,
+          "selected_tracks": 143,
+          "inlier_tracks": 100,
+          "rejected_tracks": 43
+        },
+        {
+          "mode": "scalar",
+          "elapsed_s": 0.8175638330285437,
+          "selected_tracks": 143,
+          "inlier_tracks": 100,
+          "rejected_tracks": 43
+        },
+        {
+          "mode": "batched",
+          "elapsed_s": 0.22234008298255503,
+          "selected_tracks": 143,
+          "inlier_tracks": 100,
+          "rejected_tracks": 43
+        }
+      ]
+    }
+  ]
+}

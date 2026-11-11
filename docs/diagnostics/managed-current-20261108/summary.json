@@ -1,0 +1,238 @@
+{
+  "maps": {
+    "before": {
+      "points": 1550,
+      "stamp_ns": 45300000000,
+      "all_points_retained": true,
+      "median_m": 0.005332335149795808,
+      "p95_m": 0.023049996933416337,
+      "rmse_m": 0.04084785833522086,
+      "maximum_m": 1.5360651729159907,
+      "above_10cm": 2,
+      "above_20cm": 1,
+      "fixture_gate": false,
+      "covered_objects": 2,
+      "map_sha256": "2fd87221b2fc1d679eca0e22b4519e0c2ac7cc54d661407180e99a6bfa37c810"
+    },
+    "after": {
+      "points": 1758,
+      "stamp_ns": 53000000000,
+      "all_points_retained": true,
+      "median_m": 0.005684892274740505,
+      "p95_m": 0.024954873703810596,
+      "rmse_m": 0.03864465615148204,
+      "maximum_m": 1.5360583198448272,
+      "above_10cm": 2,
+      "above_20cm": 1,
+      "fixture_gate": true,
+      "covered_objects": 5,
+      "map_sha256": "9b648b882ed736d4a91c9e1867f53a36f174656fb3d4ed0b7566796c07ac12ab"
+    },
+    "final": {
+      "points": 2940,
+      "stamp_ns": 81000000000,
+      "all_points_retained": true,
+      "median_m": 0.004747642562933585,
+      "p95_m": 0.020682568102925014,
+      "rmse_m": 0.03003605578841062,
+      "maximum_m": 1.5356146551119507,
+      "above_10cm": 2,
+      "above_20cm": 1,
+      "fixture_gate": true,
+      "covered_objects": 7,
+      "map_sha256": "d678e37e126c05e7f58cd6766ca699b3fb018bc8ae360a4cbd77da3fc0543766"
+    }
+  },
+  "environment": {
+    "samples": 45,
+    "confirmed_current_samples": 39,
+    "confirmed_wave_samples": 39,
+    "current_m_s": 0.15,
+    "direction_deg": 90,
+    "wind_m_s": 2,
+    "wind_direction_deg": 135,
+    "steepness": 1,
+    "wave_height_range_m": [
+      0.012214001712599065,
+      0.014328231793852914
+    ],
+    "wave_current_coupling": false,
+    "confirmed_sim_interval_s": [
+      9.96,
+      85.32
+    ],
+    "trailing_unavailable_samples_after_mission": 6,
+    "trailing_sample_classification": "Preserved stale readbacks after completed mission and final stopped simulation; not confirmed operating samples"
+  },
+  "mission": {
+    "status": "completed",
+    "arrivals": 8,
+    "mission_seconds": 60.12,
+    "live_poses": 613,
+    "segment_stable": true,
+    "position_acceptance": {
+      "metrics": {
+        "evaluated": true,
+        "states": 613,
+        "duration_s": 61.50000000000001,
+        "evaluation_alignment": {
+          "rotation": [
+            [
+              0.5367633310190169,
+              -0.8437328525507166,
+              0.0
+            ],
+            [
+              0.8437328525507166,
+              0.5367633310190169,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "translation": [
+            -0.14857781653039132,
+            0.4551896661762235,
+            -0.21477254170823779
+          ],
+          "scale": 1.0
+        },
+        "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+        "position_rmse_m": 0.02941000124236301,
+        "position_max_m": 0.056899073675111524,
+        "rotation_rmse_rad": 0.004807273385803984,
+        "rotation_max_rad": 0.009808807209358976,
+        "truth_distance_m": 27.635970417472375,
+        "estimated_distance_m": 27.668866012963917,
+        "rpe_1s_pairs": 601,
+        "rpe_1s_position_rmse_m": 0.0043034917799855,
+        "rpe_1s_rotation_rmse_rad": 0.002074542640187211,
+        "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+      },
+      "accepted": true,
+      "checks": {
+        "evaluated": true,
+        "states": true,
+        "duration": true,
+        "actual_motion": true,
+        "position_rmse": true,
+        "position_max": true
+      },
+      "criteria": {
+        "minimum_states": 250,
+        "minimum_duration_s": 29.0,
+        "minimum_truth_distance_m": 0.5,
+        "maximum_position_rmse_m": 0.1,
+        "maximum_position_error_m": 0.25
+      },
+      "scope": "Single recorded motion position gate; map geometry, orientation, repeatability and installed-app qualification remain separate"
+    }
+  },
+  "dvl_gap": {
+    "passed": true,
+    "checks": {
+      "same_segment": true,
+      "retained_map": true,
+      "suspended": true,
+      "continued_states": true,
+      "no_repeated_auxiliary": true,
+      "fresh_return": true,
+      "export_withheld": true,
+      "recovered_export": true
+    },
+    "suspended_statuses": 61,
+    "before_stamp_ns": 45000000000,
+    "after_stamp_ns": 53000000000
+  },
+  "startup_measurements": {
+    "phase": "live",
+    "first_stamp_ns": 14700000000,
+    "last_retained_stamp_ns": 17700000000,
+    "track_acknowledgements": 16,
+    "state_acknowledgements": 16,
+    "received": {
+      "camera": 16,
+      "dvl": 5,
+      "pressure": 48
+    },
+    "stored": {
+      "camera": 16,
+      "dvl": 4,
+      "pressure": 3
+    },
+    "released": {
+      "camera": 16,
+      "dvl": 4,
+      "pressure": 3
+    },
+    "before_initial_epoch": {
+      "camera": 0,
+      "dvl": 1,
+      "pressure": 14
+    },
+    "pending": {
+      "camera": 0,
+      "dvl": 0,
+      "pressure": 0
+    },
+    "handed_over": true,
+    "catchup_target_ns": 18000000000,
+    "preserved_native_states": 25
+  },
+  "observer_intentional_worker_recovery": {
+    "killed_owned_worker": 87345,
+    "old_frame": "vehicle/vio_3bd4b44c948c40efba9b8fa4529eb0ee_segment_0",
+    "new_frame": "vehicle/vio_3bd4b44c948c40efba9b8fa4529eb0ee_segment_1",
+    "new_pose_count": 5,
+    "acceptance": "five visually constrained poses; bootstrap predictions retained separately",
+    "empty_new_segment_clouds": 5
+  },
+  "resource": {
+    "elapsed_seconds": 118.962543416,
+    "peak_owned_rss_bytes": 2003353600,
+    "guard": null,
+    "remaining_owned_processes": []
+  },
+  "map_alignment": {
+    "rotation": [
+      [
+        0.5367633310190169,
+        -0.8437328525507166,
+        0.0
+      ],
+      [
+        0.8437328525507166,
+        0.5367633310190169,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "translation": [
+      -0.14857781653039132,
+      0.4551896661762235,
+      -0.21477254170823779
+    ],
+    "scale": 1
+  },
+  "rgb_reference": {
+    "stamp_ns": 84400000000,
+    "role": "Same-session static field context, captured after the final map; not a simultaneous vehicle pose"
+  },
+  "physical_bottom_lock_loss_verified": false,
+  "initialization_covariance_calibrated": false,
+  "installed_app_verified": false,
+  "product_qualified": false,
+  "truth_used_for": "assessment and visualization only",
+  "native_cpp_commit": "2ae4dcd89fd5a313aa0a0b8238b769e7993aa8c6",
+  "library_python_commit": "7c5167058759fbb3dd2af5bd411f3255c0093727",
+  "worker_sha256": "f8d90d89a92049a4b613414c8731d796035ac4fc96f824b4981d7b2fbbb20a95",
+  "application_commit": "cb59972df513e0bf35f2903d2e8bd45c56bd2a16",
+  "figure_sha256": "5eb8939e880097ba306d695bc18ba9aa8a6c5eb1a90f8c6aecdaf3735ab9db1b"
+}

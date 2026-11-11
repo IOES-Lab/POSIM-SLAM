@@ -1,0 +1,41 @@
+.....FF
+======================================================================
+FAIL: test_delayed_plane_information_uses_actual_remaining_owner_poses (test_surface_prior_owner.PersistentPriorOwnerTests.test_delayed_plane_information_uses_actual_remaining_owner_poses)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/persistent-surface-20261029/library/native/basalt/test_surface_prior_owner.py", line 32, in test_delayed_plane_information_uses_actual_remaining_owner_poses
+    case=delayed_case();first=self.compare(first_input(case),case['first'])
+                              ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/persistent-surface-20261029/library/native/basalt/test_surface_prior_owner.py", line 25, in compare
+    self.assertEqual(prior.order,reference.order);self.assertEqual(prior.ledger,reference.ledger)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Tuples differ: (Vari[98 chars]68144, -0.019390479720887276, 0.03968074196279[517 chars].0))) != (Vari[98 chars]681441, -0.019390479720887286, 0.0396807419627[515 chars].0)))
+
+First differing element 0:
+Varia[97 chars]68144, -0.019390479720887276, 0.03968074196279[107 chars]494))
+Varia[97 chars]681441, -0.019390479720887286, 0.0396807419627[106 chars]494))
+
+Diff is 2425 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_full_inertial_plane_pressure_coordinates_and_reference_guards (test_surface_prior_owner.PersistentPriorOwnerTests.test_full_inertial_plane_pressure_coordinates_and_reference_guards)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/persistent-surface-20261029/library/native/basalt/test_surface_prior_owner.py", line 48, in test_full_inertial_plane_pressure_coordinates_and_reference_guards
+    case=delayed_case();first=self.compare(first_input(case),case['first']);args=next_input(case,first['prior'])
+                              ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/persistent-surface-20261029/library/native/basalt/test_surface_prior_owner.py", line 25, in compare
+    self.assertEqual(prior.order,reference.order);self.assertEqual(prior.ledger,reference.ledger)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Tuples differ: (Vari[98 chars]68144, -0.019390479720887276, 0.03968074196279[517 chars].0))) != (Vari[98 chars]681441, -0.019390479720887286, 0.0396807419627[515 chars].0)))
+
+First differing element 0:
+Varia[97 chars]68144, -0.019390479720887276, 0.03968074196279[107 chars]494))
+Varia[97 chars]681441, -0.019390479720887286, 0.0396807419627[106 chars]494))
+
+Diff is 2425 characters long. Set self.maxDiff to None to see it.
+
+----------------------------------------------------------------------
+Ran 7 tests in 1.299s
+
+FAILED (failures=2)

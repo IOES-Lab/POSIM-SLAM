@@ -1,0 +1,47 @@
+{
+  "input-provenance.json": {
+    "stored": "input-provenance.json.gz",
+    "uncompressed_bytes": 209198,
+    "uncompressed_sha256": "b2ce7655c655522280d1fde5556560d23fab2f5b631e769f45e46bb8d9c02cb4"
+  },
+  "dvl-planes.json": {
+    "stored": "dvl-planes.json.gz",
+    "uncompressed_bytes": 242724,
+    "uncompressed_sha256": "299c19377665d3ed5021d5a034d428ed2c5759e368cf4d2d82a1ca57397b18f5"
+  },
+  "oracle-mean-control.json": {
+    "stored": "oracle-mean-control.json.gz",
+    "uncompressed_bytes": 248976,
+    "uncompressed_sha256": "9250379e06bbaf603d6af3616f58debea8fc89ecbdfa0bd7fc5b2267bfcf7234"
+  },
+  "beam-support-control.json": {
+    "stored": "beam-support-control.json.gz",
+    "uncompressed_bytes": 379620,
+    "uncompressed_sha256": "a089fc693ef363e4ba29b70fd2a5af029652887207915f91316781a800d76e97"
+  },
+  "angular_median-complete.json": {
+    "stored": "angular_median-complete.json.xz",
+    "uncompressed_bytes": 38408281,
+    "uncompressed_sha256": "ac6e0929342370e7cfd8949dc8c851c521766563a1bb6e94876d6f61efeaba06"
+  },
+  "angular_median-component-snapshots.json": {
+    "stored": "angular_median-component-snapshots.json.gz",
+    "uncompressed_bytes": 41918,
+    "uncompressed_sha256": "1d14da9ad84b0f64ba5d481fe5cc168453e1a98f4e945add6a297e02fe424a57"
+  },
+  "physical_plane-complete.json": {
+    "stored": "physical_plane-complete.json.xz",
+    "uncompressed_bytes": 32811907,
+    "uncompressed_sha256": "4c9bfa277c7ec972e92bb131d0f44f7de2ec003a5e6d571d577ee999c7ceef6f"
+  },
+  "original-dvl.json": {
+    "stored": "original-dvl.json.gz",
+    "uncompressed_bytes": 149082,
+    "uncompressed_sha256": "5a51563e870cd88e358c64f9c758ff68301ae4b6a651373f9c799d9170e8a52e"
+  },
+  "original-sonar-index.json": {
+    "stored": "original-sonar-index.json.gz",
+    "uncompressed_bytes": 37622,
+    "uncompressed_sha256": "5e67d67d598981428207d6fc36d1707db5ae6dedd0f6d2e4dc7b8cf982fc007b"
+  }
+}

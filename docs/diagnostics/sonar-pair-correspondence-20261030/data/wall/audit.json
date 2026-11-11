@@ -1,0 +1,86 @@
+{
+  "streams": {
+    "sonar": {
+      "count": 110,
+      "first_ns": 1500000000,
+      "last_ns": 56010000000,
+      "median_period_s": 0.5,
+      "max_gap_s": 0.51
+    },
+    "camera": {
+      "count": 276,
+      "first_ns": 1200000000,
+      "last_ns": 56200000000,
+      "median_period_s": 0.2,
+      "max_gap_s": 0.2
+    },
+    "imu": {
+      "count": 5521,
+      "first_ns": 1120000000,
+      "last_ns": 56320000000,
+      "median_period_s": 0.01,
+      "max_gap_s": 0.01
+    },
+    "dvl": {
+      "count": 55,
+      "first_ns": 2010000000,
+      "last_ns": 56010000000,
+      "median_period_s": 1.0,
+      "max_gap_s": 1.01
+    },
+    "pressure": {
+      "count": 552,
+      "first_ns": 1150000000,
+      "last_ns": 56250000000,
+      "median_period_s": 0.1,
+      "max_gap_s": 0.1
+    }
+  },
+  "replay_window": {
+    "first_stamp_ns": 2500000000,
+    "last_stamp_ns": 56010000000,
+    "covered_intervals": 107,
+    "raw_recording_all_intervals_covered": true,
+    "excluded_boundary_intervals": [
+      {
+        "start_ns": 1500000000,
+        "end_ns": 2010000000,
+        "imu_bracketed": true,
+        "max_imu_gap_ns": 10000000,
+        "replayable": true
+      },
+      {
+        "start_ns": 2010000000,
+        "end_ns": 2500000000,
+        "imu_bracketed": true,
+        "max_imu_gap_ns": 10000000,
+        "replayable": true
+      }
+    ]
+  },
+  "source_camera_checksums_verified": true,
+  "raw_sonar_checksums_verified": true,
+  "camera_sonar_exact_pairs": 19,
+  "nearest_camera_sonar_max_gap_s": 0.1,
+  "dvl_valid": 55,
+  "dvl_total": 55,
+  "motion": {
+    "xyz_extent_m": [
+      4.644024820933859,
+      1.0826176442377267,
+      2.6920403233876704
+    ],
+    "path_length_m": 12.990823078053717,
+    "yaw_span_deg": 49.23775703653802,
+    "assessment_truth_only": true
+  },
+  "mission": {
+    "status": "completed",
+    "active": false,
+    "waypoint_index": 6
+  },
+  "requested_imu_rate_hz": 1000.0,
+  "physics_step_s": 0.01,
+  "actual_imu_rate_hz": 100.0,
+  "scope": "Raw coverage, checksum and operating-geometry assessment; no estimator accuracy claim"
+}

@@ -12,7 +12,7 @@ generator; only intensity, fan calibration and gravity enter the frontend.
 True intersections and plane normals are used separately for evaluation.
 
 실험용 해저 추출기에 WGPU 소나 계산기가 만든 정지 평면의 반복 영상을 입력합니다.
-자세 추정기는 실행하지 않습니다. 해석 기하는 음향 생성기의 합성 광선 거리와
+자세 추정기는 실행하지 않습니다. 해석 기하는 음향 생성기의 합성 음선 거리와
 입사각을 만들며, 추출기는 강도·시야 보정값·중력만 받습니다. 참 교차 거리와
 평면 법선은 별도로 평가에 사용합니다.
 
@@ -22,7 +22,7 @@ the backend's beam mixing and an identity-matrix control. Range spacing is
 2.508 cm. Hamming weighting and constant reflectivity are used. This is a
 simulator diagnostic, not a calibrated Sonoptix hardware model.
 
-수평 256빔·수직 256광선·120° × 20° 시야·최대 10 m를 사용합니다. 조건당
+수평 256빔·수직 256음선·120° × 20° 시야·최대 10 m를 사용합니다. 조건당
 24프레임이며, 빔 사이 신호 혼합이 있는 모델과 단위행렬 대조군을 비교합니다.
 거리 간격은 2.508 cm입니다. Hamming 가중과 일정한 반사율을 사용하며,
 Sonoptix 실측 보정 모델이 아닌 시뮬레이터 진단입니다.

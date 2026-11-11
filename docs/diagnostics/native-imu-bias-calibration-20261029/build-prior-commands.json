@@ -1,0 +1,10 @@
+[
+  "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/posim332f629-sdk/bin/cmake",
+  "--build",
+  "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/native-imu-bias-calibration-20261029/native-build",
+  "--parallel",
+  "2",
+  "--target",
+  "basalt_surface_prior_probe",
+  "basalt_surface_prior_owner_probe"
+]

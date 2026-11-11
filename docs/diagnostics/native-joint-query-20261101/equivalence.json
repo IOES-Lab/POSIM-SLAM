@@ -1,0 +1,59 @@
+{
+  "scope": "Same captured native snapshot, original/new recovery, unchanged 32 MiB cap.",
+  "snapshot_sha256": "a34dc0eb925ab65deaecdd7ec4609c27323637c871ad044efb1ce2b5673ddf46",
+  "original_query_sha256": "0e208dea3f2fb1464ddcf156b41b071df9ab93e3d2eaffe380a869b5d756cd67",
+  "current_query_sha256": "c536a7b848597490bcb2de04e2ac536a13fb42d5a6b6bfd8b27cdfb3a1422e09",
+  "source_sha256": "6f7725fb7c13c5ff838ce85f400e0084c092cc8b032060be6242cb4d586b4e4e",
+  "tests": [
+    {
+      "stamps": [
+        85010000000
+      ],
+      "previous_capacity_rejection": false,
+      "maximum_absolute_differences": {
+        "deltas": 0.0,
+        "linearized_mode": 0.0,
+        "observable_covariance": 0.0
+      },
+      "previous_workspace_bound_bytes": 4943360,
+      "new_workspace_bound_bytes": 6640128
+    },
+    {
+      "stamps": [
+        65010000000,
+        85010000000
+      ],
+      "previous_capacity_rejection": false,
+      "maximum_absolute_differences": {
+        "deltas": 1.3322676295501878e-15,
+        "linearized_mode": 1.3322676295501878e-15,
+        "observable_covariance": 6.217248937900877e-15
+      },
+      "previous_workspace_bound_bytes": 16856320,
+      "new_workspace_bound_bytes": 7347072
+    },
+    {
+      "stamps": [
+        45010000000,
+        65010000000,
+        85010000000
+      ],
+      "previous_capacity_rejection": true,
+      "new_workspace_bound_bytes": 8784768
+    },
+    {
+      "stamps": [
+        25010000000,
+        45010000000,
+        65010000000,
+        85010000000
+      ],
+      "previous_capacity_rejection": true,
+      "new_workspace_bound_bytes": 10915968
+    }
+  ],
+  "default_budget_unchanged": true,
+  "posterior_approximated": false,
+  "independent_poses_substituted": false,
+  "map_accepted": false
+}

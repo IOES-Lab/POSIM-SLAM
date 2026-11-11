@@ -1,0 +1,48 @@
+{
+  "scope": "Isolate native state-window work on identical measured pixels/IMU/DVL/pressure.",
+  "truth_input": false,
+  "first_stamp_ns": 13500000000,
+  "last_stamp_ns": 38500000000,
+  "measured_duration_s": 25.0,
+  "event_count": 287,
+  "camera_count": 251,
+  "dvl_count": 25,
+  "pressure_count": 25,
+  "seed": {
+    "first_image_stamp_ns": 13500000000,
+    "direction_imu": [
+      0.02893223178683725,
+      -0.0061282362797979925,
+      -0.9995625896780704
+    ],
+    "velocity_seed_imu_m_s": [
+      0.02574391545083291,
+      0.02116012419724385,
+      -0.015370613016904148
+    ],
+    "last_measurement_ns": 13500000000,
+    "bootstrap_first_ns": 10300000000,
+    "bootstrap_last_ns": 13300000000,
+    "frames": 16,
+    "selected_tracks": 184,
+    "seed_method": "bearing_imu_ransac_fixed_gravity",
+    "inlier_tracks": 183,
+    "rejected_tracks": 1,
+    "pixel_sigma": 0.5,
+    "inlier_radius_px": 1.5,
+    "gravity_magnitude_m_s2": 9.80665,
+    "median_inlier_reprojection_px": 0.20719840237499723,
+    "covariance_estimated": false,
+    "observability_qualified": false,
+    "scope": "Measured robust bearing/IMU startup; uncertainty qualification pending"
+  },
+  "binary_sha256": "cb5cbc7c254b668ea0b0e3c7ac0f2fe8dac0d4f07810bab2e8d3237ca18d1d87",
+  "input_sha256": {
+    "timeline.json": "1e7b3168c3e3eb75efcacfbbc5aefd9637b838b0a6065e14cea71f2c2480809e",
+    "sensor-model.sdf": "8d4622f62f36542ef8e8b942de7ed712cf61ddfa9b7216f5fe033016bf566a0e"
+  },
+  "calibration_sha256": "76ecb037bf543b347f2a6337ec24ba58a874841bc6190a3275a4687abb8988ee",
+  "source_sha256": "df1f065fcc50c3b76f5f32654ad319578041500eda57a7f68e595e3511687e25",
+  "predecoded_pixels": true,
+  "scope_limit": "Native-only throughput control, without ROS scheduling; changing the retained window can change estimates and needs independent accuracy/loss-recovery qualification"
+}

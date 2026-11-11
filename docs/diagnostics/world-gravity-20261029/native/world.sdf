@@ -1,0 +1,96 @@
+<?xml version='1.0' encoding='utf-8'?>
+<sdf version="1.6">
+  <world name="wwos_gebco">
+    <physics name="default_physics" type="tpe">
+      <max_step_size>0.001</max_step_size>
+      <real_time_update_rate>1000</real_time_update_rate>
+      <real_time_factor>1.0</real_time_factor>
+    </physics>
+    <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics">
+    </plugin>
+    <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands">
+    </plugin>
+    <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster">
+    </plugin>
+    <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+    <plugin filename="gz-sim-imu-system" name="gz::sim::systems::Imu">
+    </plugin>
+    <plugin filename="gz-sim-dvl-system" name="gz::sim::systems::DopplerVelocityLogSystem" />
+    <spherical_coordinates>
+      <surface_model>EARTH_WGS84</surface_model>
+      <world_frame_orientation>ENU</world_frame_orientation>
+      <latitude_deg>47.6302</latitude_deg>
+      <longitude_deg>-122.3982391</longitude_deg>
+      <elevation>0</elevation>
+      <heading_deg>0</heading_deg>
+    </spherical_coordinates>
+    <scene>
+      <ambient>0.5 0.5 0.5 1</ambient>
+      <background>0.015 0.09 0.12 1</background>
+      <shadows>true</shadows>
+    </scene>
+    <light name="sun" type="directional">
+      <cast_shadows>true</cast_shadows>
+      <pose>0 0 10 0 0 0</pose>
+      <diffuse>0.9 0.9 0.9 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <direction>-0.5 0.1 -0.9</direction>
+    </light>
+    <magnetic_field>2.156e-5 0 -4.271e-5</magnetic_field>
+    <gravity>0 0 -9.8</gravity>
+    <plugin filename="gz-sim-navsat-system" name="gz::sim::systems::NavSat" />
+    <plugin filename="gz-sim-magnetometer-system" name="gz::sim::systems::Magnetometer" />
+    <model name="gebco_terrain">
+      <static>true</static>
+      <pose>0 0 0 0 0 0</pose>
+      <link name="terrain">
+        <collision name="orca5_seafloor_collision">
+          <geometry>
+            <mesh>
+              <uri>/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/world-gravity-20261029/native-downward/demo-runtime/a4052fd3fee54880be300be5f3543755/orca5-seafloor.dae</uri>
+            </mesh>
+          </geometry>
+        </collision>
+        <visual name="seabed">
+          <geometry>
+            <mesh>
+              <uri>/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/world-gravity-20261029/native-downward/demo-runtime/a4052fd3fee54880be300be5f3543755/orca5-seafloor.dae</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <diffuse>1 1 1 1</diffuse>
+            <pbr>
+              <metal>
+                <albedo_map>/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/world-gravity-20261029/native-downward/demo-runtime/a4052fd3fee54880be300be5f3543755/orca5-seafloor.jpg</albedo_map>
+                <roughness>1</roughness>
+                <metalness>0</metalness>
+              </metal>
+            </pbr>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="bluerov_mean_water_surface">
+      <static>true</static>
+      <link name="water">
+        <visual name="interface">
+          <pose>0 0 0.01 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>2000 2000 0.02</size>
+            </box>
+          </geometry>
+          <cast_shadows>false</cast_shadows>
+          <material>
+            <double_sided>true</double_sided>
+            <ambient>0.06 0.25 0.30 1</ambient>
+            <diffuse>0.08 0.32 0.38 1</diffuse>
+          </material>
+          <visibility_flags>536870912</visibility_flags>
+        </visual>
+      </link>
+    </model>
+  </world>
+</sdf>

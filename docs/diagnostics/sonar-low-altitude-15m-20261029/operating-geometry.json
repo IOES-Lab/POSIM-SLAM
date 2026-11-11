@@ -1,0 +1,313 @@
+{
+  "assessment_only": true,
+  "truth_is_estimator_input": false,
+  "rows": [
+    {
+      "stamp_ns": 1330000000,
+      "body_above_seabed_m": 1.8936533266358915,
+      "flat_level_near_fan_intersection_m": 3.781190358489795
+    },
+    {
+      "stamp_ns": 2330000000,
+      "body_above_seabed_m": 2.2507222777171583,
+      "flat_level_near_fan_intersection_m": 4.49417496668263
+    },
+    {
+      "stamp_ns": 3330000000,
+      "body_above_seabed_m": 2.6164874171768533,
+      "flat_level_near_fan_intersection_m": 5.224523863887404
+    },
+    {
+      "stamp_ns": 4330000000,
+      "body_above_seabed_m": 2.982354252980052,
+      "flat_level_near_fan_intersection_m": 5.955075825311029
+    },
+    {
+      "stamp_ns": 5330000000,
+      "body_above_seabed_m": 3.348022258963577,
+      "flat_level_near_fan_intersection_m": 6.685230769294051
+    },
+    {
+      "stamp_ns": 6330000000,
+      "body_above_seabed_m": 3.5648423253190606,
+      "flat_level_near_fan_intersection_m": 7.118170596715858
+    },
+    {
+      "stamp_ns": 7330000000,
+      "body_above_seabed_m": 3.5250679017168727,
+      "flat_level_near_fan_intersection_m": 7.038750216584157
+    },
+    {
+      "stamp_ns": 8330000000,
+      "body_above_seabed_m": 3.542105122670542,
+      "flat_level_near_fan_intersection_m": 7.072769630116369
+    },
+    {
+      "stamp_ns": 9330000000,
+      "body_above_seabed_m": 3.5682224584907325,
+      "flat_level_near_fan_intersection_m": 7.1249199455958045
+    },
+    {
+      "stamp_ns": 10330000000,
+      "body_above_seabed_m": 3.5920109864864056,
+      "flat_level_near_fan_intersection_m": 7.172420167222801
+    },
+    {
+      "stamp_ns": 11330000000,
+      "body_above_seabed_m": 3.509679657762248,
+      "flat_level_near_fan_intersection_m": 7.008023431033243
+    },
+    {
+      "stamp_ns": 12330000000,
+      "body_above_seabed_m": 3.525606923557466,
+      "flat_level_near_fan_intersection_m": 7.039826519283283
+    },
+    {
+      "stamp_ns": 13330000000,
+      "body_above_seabed_m": 3.3606497363407573,
+      "flat_level_near_fan_intersection_m": 6.710444938666576
+    },
+    {
+      "stamp_ns": 14330000000,
+      "body_above_seabed_m": 3.0381215167110405,
+      "flat_level_near_fan_intersection_m": 6.066430230561952
+    },
+    {
+      "stamp_ns": 15330000000,
+      "body_above_seabed_m": 2.712617528087167,
+      "flat_level_near_fan_intersection_m": 5.416473595879992
+    },
+    {
+      "stamp_ns": 16330000000,
+      "body_above_seabed_m": 2.260128720050653,
+      "flat_level_near_fan_intersection_m": 4.512957469561489
+    },
+    {
+      "stamp_ns": 17330000000,
+      "body_above_seabed_m": 1.9943808134752041,
+      "flat_level_near_fan_intersection_m": 3.98231999331495
+    },
+    {
+      "stamp_ns": 18330000000,
+      "body_above_seabed_m": 1.796780783774853,
+      "flat_level_near_fan_intersection_m": 3.587758160570403
+    },
+    {
+      "stamp_ns": 19330000000,
+      "body_above_seabed_m": 1.4447757419796954,
+      "flat_level_near_fan_intersection_m": 2.8848850150722307
+    },
+    {
+      "stamp_ns": 20330000000,
+      "body_above_seabed_m": 1.3502638668315883,
+      "flat_level_near_fan_intersection_m": 2.6961665278781237
+    },
+    {
+      "stamp_ns": 21330000000,
+      "body_above_seabed_m": 1.333123802332321,
+      "flat_level_near_fan_intersection_m": 2.6619417594282098
+    },
+    {
+      "stamp_ns": 22330000000,
+      "body_above_seabed_m": 1.3256870065959832,
+      "flat_level_near_fan_intersection_m": 2.6470921879988634
+    },
+    {
+      "stamp_ns": 23330000000,
+      "body_above_seabed_m": 1.3259264936152708,
+      "flat_level_near_fan_intersection_m": 2.647570388520351
+    },
+    {
+      "stamp_ns": 24330000000,
+      "body_above_seabed_m": 1.3277041453240255,
+      "flat_level_near_fan_intersection_m": 2.651119950315718
+    },
+    {
+      "stamp_ns": 25330000000,
+      "body_above_seabed_m": 1.3269774190850048,
+      "flat_level_near_fan_intersection_m": 2.649668845084578
+    },
+    {
+      "stamp_ns": 26330000000,
+      "body_above_seabed_m": 1.3102514850089957,
+      "flat_level_near_fan_intersection_m": 2.616270999884847
+    },
+    {
+      "stamp_ns": 27330000000,
+      "body_above_seabed_m": 1.3100289392872244,
+      "flat_level_near_fan_intersection_m": 2.6158266272398394
+    },
+    {
+      "stamp_ns": 28330000000,
+      "body_above_seabed_m": 1.312044375665225,
+      "flat_level_near_fan_intersection_m": 2.6198509903550162
+    },
+    {
+      "stamp_ns": 29330000000,
+      "body_above_seabed_m": 1.3128440549755487,
+      "flat_level_near_fan_intersection_m": 2.621447766098257
+    },
+    {
+      "stamp_ns": 30330000000,
+      "body_above_seabed_m": 1.2942262340683706,
+      "flat_level_near_fan_intersection_m": 2.5842722578253814
+    },
+    {
+      "stamp_ns": 31330000000,
+      "body_above_seabed_m": 1.2863437035461636,
+      "flat_level_near_fan_intersection_m": 2.5685326564992925
+    },
+    {
+      "stamp_ns": 32330000000,
+      "body_above_seabed_m": 1.2976665782977306,
+      "flat_level_near_fan_intersection_m": 2.5911418343455206
+    },
+    {
+      "stamp_ns": 33330000000,
+      "body_above_seabed_m": 1.28631405352469,
+      "flat_level_near_fan_intersection_m": 2.5684734522226975
+    },
+    {
+      "stamp_ns": 34330000000,
+      "body_above_seabed_m": 1.2875753237367311,
+      "flat_level_near_fan_intersection_m": 2.5709919188808437
+    },
+    {
+      "stamp_ns": 35330000000,
+      "body_above_seabed_m": 1.2966968208141036,
+      "flat_level_near_fan_intersection_m": 2.5892054515897196
+    },
+    {
+      "stamp_ns": 36330000000,
+      "body_above_seabed_m": 1.3081620672167205,
+      "flat_level_near_fan_intersection_m": 2.612098912893062
+    },
+    {
+      "stamp_ns": 37330000000,
+      "body_above_seabed_m": 1.30392926783147,
+      "flat_level_near_fan_intersection_m": 2.603646985605313
+    },
+    {
+      "stamp_ns": 38330000000,
+      "body_above_seabed_m": 1.3084453822727236,
+      "flat_level_near_fan_intersection_m": 2.612664627928177
+    },
+    {
+      "stamp_ns": 39330000000,
+      "body_above_seabed_m": 1.3011964566249472,
+      "flat_level_near_fan_intersection_m": 2.598190189875952
+    },
+    {
+      "stamp_ns": 40330000000,
+      "body_above_seabed_m": 1.3089700930191492,
+      "flat_level_near_fan_intersection_m": 2.613712354662249
+    },
+    {
+      "stamp_ns": 41330000000,
+      "body_above_seabed_m": 1.3043849370839244,
+      "flat_level_near_fan_intersection_m": 2.6045568523479767
+    },
+    {
+      "stamp_ns": 42330000000,
+      "body_above_seabed_m": 1.3101581182815596,
+      "flat_level_near_fan_intersection_m": 2.616084567994374
+    },
+    {
+      "stamp_ns": 43330000000,
+      "body_above_seabed_m": 1.3190470547166173,
+      "flat_level_near_fan_intersection_m": 2.6338337305642616
+    },
+    {
+      "stamp_ns": 44330000000,
+      "body_above_seabed_m": 1.3101741000640943,
+      "flat_level_near_fan_intersection_m": 2.61611647994002
+    },
+    {
+      "stamp_ns": 45330000000,
+      "body_above_seabed_m": 1.315877681791222,
+      "flat_level_near_fan_intersection_m": 2.6275052214441406
+    },
+    {
+      "stamp_ns": 46330000000,
+      "body_above_seabed_m": 1.3081693728120798,
+      "flat_level_near_fan_intersection_m": 2.6121135004875002
+    },
+    {
+      "stamp_ns": 47330000000,
+      "body_above_seabed_m": 1.2997379608692525,
+      "flat_level_near_fan_intersection_m": 2.5952779091476055
+    },
+    {
+      "stamp_ns": 48330000000,
+      "body_above_seabed_m": 1.2904345816399467,
+      "flat_level_near_fan_intersection_m": 2.5767011995944795
+    },
+    {
+      "stamp_ns": 49330000000,
+      "body_above_seabed_m": 1.3032797081425231,
+      "flat_level_near_fan_intersection_m": 2.6023499642347367
+    },
+    {
+      "stamp_ns": 50330000000,
+      "body_above_seabed_m": 1.2948787597517217,
+      "flat_level_near_fan_intersection_m": 2.585575201604926
+    },
+    {
+      "stamp_ns": 51330000000,
+      "body_above_seabed_m": 1.2864862225247014,
+      "flat_level_near_fan_intersection_m": 2.5688172341355306
+    },
+    {
+      "stamp_ns": 52330000000,
+      "body_above_seabed_m": 1.2820150317555554,
+      "flat_level_near_fan_intersection_m": 2.559889294058295
+    },
+    {
+      "stamp_ns": 53330000000,
+      "body_above_seabed_m": 1.2993790120595818,
+      "flat_level_near_fan_intersection_m": 2.594561170893973
+    },
+    {
+      "stamp_ns": 54330000000,
+      "body_above_seabed_m": 1.735263407618432,
+      "flat_level_near_fan_intersection_m": 3.464922102707857
+    },
+    {
+      "stamp_ns": 55330000000,
+      "body_above_seabed_m": 2.444080465671963,
+      "flat_level_near_fan_intersection_m": 4.880266816624678
+    },
+    {
+      "stamp_ns": 56330000000,
+      "body_above_seabed_m": 2.8522485005133724,
+      "flat_level_near_fan_intersection_m": 5.695284547841549
+    },
+    {
+      "stamp_ns": 57330000000,
+      "body_above_seabed_m": 3.4085479286078084,
+      "flat_level_near_fan_intersection_m": 6.806086617236652
+    },
+    {
+      "stamp_ns": 58330000000,
+      "body_above_seabed_m": 3.6335618779064727,
+      "flat_level_near_fan_intersection_m": 7.255387745191956
+    },
+    {
+      "stamp_ns": 59330000000,
+      "body_above_seabed_m": 3.4438191130134532,
+      "flat_level_near_fan_intersection_m": 6.876515063949266
+    }
+  ],
+  "body_above_seabed_m": {
+    "minimum": 1.2820150317555554,
+    "median": 1.3259264936152708,
+    "maximum": 3.6335618779064727
+  },
+  "flat_level_near_fan_intersection_m": {
+    "minimum": 2.559889294058295,
+    "median": 2.647570388520351,
+    "maximum": 7.255387745191956
+  },
+  "scene_sha256": "277c49dd9c3b2ec1c9d3c3754be9d076c7b0438ccd29e9ae11355869849fbeb2",
+  "scope": "Terrain and independent truth assessment only. Flat/level fan estimate explains operational geometry; not an actual acoustic return or sensor altitude."
+}

@@ -1,0 +1,22 @@
+{
+  "languages": [
+    "en",
+    "ko"
+  ],
+  "pages": [
+    "specifications",
+    "slam-fusion"
+  ],
+  "viewports": [
+    [
+      1280,
+      900
+    ],
+    [
+      390,
+      844
+    ]
+  ],
+  "horizontal_overflow": false,
+  "source_and_generated_html_checked": true
+}

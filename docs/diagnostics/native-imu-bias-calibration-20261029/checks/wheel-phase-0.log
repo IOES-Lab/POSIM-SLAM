@@ -1,0 +1,9 @@
+Processing ./.local/native-imu-bias-calibration-20261029/library
+  Preparing metadata (pyproject.toml): started
+  Preparing metadata (pyproject.toml): finished with status 'done'
+Building wheels for collected packages: posim-slam
+  Building wheel for posim-slam (pyproject.toml): started
+  Building wheel for posim-slam (pyproject.toml): finished with status 'done'
+  Created wheel for posim-slam: filename=posim_slam-0.1.0-py3-none-any.whl size=224687 sha256=87d67a08bbd398c8d55e624fb8f93dd7f9e50aa7266020b58a67799999f94e53
+  Stored in directory: /private/var/folders/lr/br3mcpq16_j7q03pfkm_bhc40000gn/T/pip-ephem-wheel-cache-lds6jmnf/wheels/c7/25/04/8edd2b0519ea3a4ed487f64ed1b5b821a09eb2396a1ffc716f
+Successfully built posim-slam

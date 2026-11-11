@@ -1,0 +1,7 @@
+{
+  "frozen_before_native_supplied_grid_execution": true,
+  "purpose": "Check whether the full-reference frame88 grid itself triggers a conditional native-kernel discrepancy missed by the earlier grid. No renderer, world or SDK mutation; use the already source-bound 00904337 binary through its public C ABI.",
+  "input": "Frame88 full-reference-scene/true-pose ranges from the previous sealed assessment audit, reprojected to nominal XYZ only for the public native-control adapter. Save the exact depth/normal/mixing/window arrays actually supplied. This is not the actual renderer grid and cannot establish sensor time/rasterization alignment.",
+  "execution": "64 distinct frame counters60000..60063, seed73, unchanged native profile and .05s minimum call interval. Retain all-pixel sum/squared sums and first full complex frame. The selected64 queries are worst raw/expected reference-control ratios, explicitly adaptive diagnostics rather than independent feature validation.",
+  "conditional_test": "Same two-sided Bonferroni Gamma family alpha.01 over all153344 pixels, with shape64. Preserve every failure; never adjust the tails or sensor noise after inspection. Actual original field raw is not changed or replaced."
+}

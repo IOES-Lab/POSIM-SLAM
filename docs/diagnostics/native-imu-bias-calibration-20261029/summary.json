@@ -1,0 +1,74 @@
+{
+  "uncalibrated-dvl-only": {
+    "states": 178,
+    "max_old_pose_component_change": 0.0,
+    "position_rmse_m": 0.02113339723765737,
+    "rotation_rmse_rad": 0.007616791937395852,
+    "relative_translation_three_sigma_major_m": 5.4243845629740965,
+    "current_rotation_three_sigma_major_rad": 1.215606197395497,
+    "current_gyro_bias_three_sigma_major_rad_s": 0.03986272190942966,
+    "initial_exact_modes": 0,
+    "root_rank": 228,
+    "root_columns": 229,
+    "workspace_bound_bytes": 30368544,
+    "rows_rejected": null,
+    "continued_support": [
+      true
+    ],
+    "raw_truth_used_only_after_replay": true,
+    "map_qualified": false
+  },
+  "uncalibrated-dvl-fls": {
+    "states": 178,
+    "max_old_pose_component_change": 0.0,
+    "position_rmse_m": 0.02113892619415619,
+    "rotation_rmse_rad": 0.00762485405560406,
+    "relative_translation_three_sigma_major_m": 5.424384562965387,
+    "current_rotation_three_sigma_major_rad": 1.2156061973936092,
+    "current_gyro_bias_three_sigma_major_rad_s": 0.0398627219093635,
+    "initial_exact_modes": 0,
+    "root_rank": 226,
+    "root_columns": 226,
+    "workspace_bound_bytes": 29669760,
+    "rows_rejected": "dvl_support_not_planar",
+    "continued_support": [],
+    "raw_truth_used_only_after_replay": true,
+    "map_qualified": false
+  },
+  "calibrated-dvl-only": {
+    "states": 178,
+    "max_old_pose_component_change": 0.04985661287844456,
+    "position_rmse_m": 0.02519783749934358,
+    "rotation_rmse_rad": 0.0014169422003136745,
+    "relative_translation_three_sigma_major_m": 0.17458418733230915,
+    "current_rotation_three_sigma_major_rad": 0.03325694895686659,
+    "current_gyro_bias_three_sigma_major_rad_s": 0.0016566208742230567,
+    "initial_exact_modes": 6,
+    "root_rank": 228,
+    "root_columns": 229,
+    "workspace_bound_bytes": 30368544,
+    "rows_rejected": null,
+    "continued_support": [
+      true
+    ],
+    "raw_truth_used_only_after_replay": true,
+    "map_qualified": false
+  },
+  "calibrated-dvl-fls": {
+    "states": 178,
+    "max_old_pose_component_change": 0.049915122731473804,
+    "position_rmse_m": 0.025189880924715375,
+    "rotation_rmse_rad": 0.0014170403037848777,
+    "relative_translation_three_sigma_major_m": 0.17458418733228753,
+    "current_rotation_three_sigma_major_rad": 0.033256948956860925,
+    "current_gyro_bias_three_sigma_major_rad_s": 0.0016566208742228876,
+    "initial_exact_modes": 6,
+    "root_rank": 226,
+    "root_columns": 226,
+    "workspace_bound_bytes": 29669760,
+    "rows_rejected": "dvl_support_not_planar",
+    "continued_support": [],
+    "raw_truth_used_only_after_replay": true,
+    "map_qualified": false
+  }
+}

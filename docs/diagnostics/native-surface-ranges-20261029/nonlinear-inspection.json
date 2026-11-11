@@ -1,0 +1,280 @@
+{
+  "dvl-only": {
+    "plane_normal": [
+      0.016991364007020213,
+      -0.003998561269793944,
+      0.9998476409218316
+    ],
+    "plane_distance_m": -2.252080558723498,
+    "plane_delta": [
+      0.017617931155352148,
+      -0.002496699372377018,
+      0.00999198463936753
+    ],
+    "before_conditional_information": {
+      "0": {
+        "cone_rows": 2,
+        "all_rows": 2,
+        "cone_information": {
+          "rank": 2,
+          "singular_values": [
+            408.48283690558696,
+            6.912791818113275
+          ],
+          "unbounded_basis": [
+            [
+              0.07211670046029509
+            ],
+            [
+              0.16536951770799344
+            ],
+            [
+              0.983591431503826
+            ]
+          ],
+          "noise_factor": [
+            [
+              -0.000563024150909303,
+              0.14039454957280872
+            ],
+            [
+              -0.002342392108700293,
+              -0.034577841943335574
+            ],
+            [
+              0.00043510311663400323,
+              -0.00448018403892585
+            ]
+          ]
+        },
+        "all_range_information": {
+          "rank": 2,
+          "singular_values": [
+            408.48283690558696,
+            6.912791818113275
+          ],
+          "unbounded_basis": [
+            [
+              0.07211670046029509
+            ],
+            [
+              0.16536951770799344
+            ],
+            [
+              0.983591431503826
+            ]
+          ],
+          "noise_factor": [
+            [
+              -0.000563024150909303,
+              0.14039454957280872
+            ],
+            [
+              -0.002342392108700293,
+              -0.034577841943335574
+            ],
+            [
+              0.00043510311663400323,
+              -0.00448018403892585
+            ]
+          ]
+        },
+        "fan_predictions": [],
+        "scope": "Selected rows with poses fixed; support-only seeds add no information; excludes owner prior and joint pose uncertainty"
+      }
+    },
+    "before_nonlinear_residual_m": [
+      0.002984652587354253,
+      -0.001566834251017779
+    ],
+    "after_full_geometry_error": null,
+    "after_rows": [
+      {
+        "key": [
+          32010000000,
+          0,
+          1
+        ],
+        "predicted_range_m": 1.3370830450751927,
+        "residual_m": -0.00041133506084944926,
+        "conditional_hit": [
+          1.2048370497445549,
+          5.427574399032871,
+          -2.251192884496615
+        ],
+        "geometry_error": null
+      },
+      {
+        "key": [
+          33010000000,
+          0,
+          1
+        ],
+        "predicted_range_m": 1.3678396105731367,
+        "residual_m": -0.00039616822847121647,
+        "conditional_hit": [
+          1.3805476253723443,
+          5.348878382166451,
+          -2.254493620589227
+        ],
+        "geometry_error": null
+      }
+    ],
+    "all_original_factor_rows_retained": true,
+    "fixed_gaussian_update_is_not_nonlinear_relinearization": true,
+    "physical_identity_verified": false,
+    "noise_calibrated": false,
+    "map_qualified": false
+  },
+  "dvl-fls": {
+    "plane_normal": [
+      0.3689108262311742,
+      0.8114377205135306,
+      0.45329198980043467
+    ],
+    "plane_distance_m": 3.729343959328567,
+    "plane_delta": [
+      0.45604785594525926,
+      1.0031715800996528,
+      5.9914165026914326
+    ],
+    "before_conditional_information": {
+      "0": {
+        "cone_rows": 2,
+        "all_rows": 3,
+        "cone_information": {
+          "rank": 2,
+          "singular_values": [
+            408.48283690558696,
+            6.912791818113275
+          ],
+          "unbounded_basis": [
+            [
+              0.07211670046029509
+            ],
+            [
+              0.16536951770799344
+            ],
+            [
+              0.983591431503826
+            ]
+          ],
+          "noise_factor": [
+            [
+              -0.000563024150909303,
+              0.14039454957280872
+            ],
+            [
+              -0.002342392108700293,
+              -0.034577841943335574
+            ],
+            [
+              0.00043510311663400323,
+              -0.00448018403892585
+            ]
+          ]
+        },
+        "all_range_information": {
+          "rank": 3,
+          "singular_values": [
+            597.8110554811343,
+            15.43220799762696,
+            2.6317331840241978
+          ],
+          "unbounded_basis": [
+            [],
+            [],
+            []
+          ],
+          "noise_factor": [
+            [
+              -0.000420365033429044,
+              -0.057013115663671635,
+              -0.1532839381935502
+            ],
+            [
+              -0.001588017335806686,
+              0.01978385680849353,
+              -0.028310285124523295
+            ],
+            [
+              0.0003156761287562669,
+              0.023602631401072202,
+              -0.34653374581485114
+            ]
+          ]
+        },
+        "fan_predictions": [
+          {
+            "key": [
+              3010000000,
+              1,
+              70
+            ],
+            "unbounded_from_cone_rows": true,
+            "conditional_cone_only_stddev_m": null
+          }
+        ],
+        "scope": "Selected rows with poses fixed; support-only seeds add no information; excludes owner prior and joint pose uncertainty"
+      }
+    },
+    "before_nonlinear_residual_m": [
+      0.002984652587354253,
+      -0.001566834251017779,
+      1.3084639155848352
+    ],
+    "after_full_geometry_error": null,
+    "after_rows": [
+      {
+        "key": [
+          32010000000,
+          0,
+          1
+        ],
+        "predicted_range_m": 1.4243029591250345,
+        "residual_m": -0.0876312491106912,
+        "conditional_hit": [
+          1.164021809060618,
+          5.354186890117028,
+          -2.304619355358574
+        ],
+        "geometry_error": null
+      },
+      {
+        "key": [
+          33010000000,
+          0,
+          1
+        ],
+        "predicted_range_m": 1.4529948118249996,
+        "residual_m": -0.08555136948033404,
+        "conditional_hit": [
+          1.3423763846563337,
+          5.271213960844245,
+          -2.3012430972672147
+        ],
+        "geometry_error": null
+      },
+      {
+        "key": [
+          3010000000,
+          1,
+          70
+        ],
+        "predicted_range_m": 4.280837826733923,
+        "residual_m": -0.26746016026053443,
+        "conditional_hit": [
+          0.9762517204154073,
+          4.362545185676313,
+          -0.3766658013019836
+        ],
+        "geometry_error": null
+      }
+    ],
+    "all_original_factor_rows_retained": true,
+    "fixed_gaussian_update_is_not_nonlinear_relinearization": true,
+    "physical_identity_verified": false,
+    "noise_calibrated": false,
+    "map_qualified": false
+  }
+}

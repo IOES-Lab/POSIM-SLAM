@@ -1,0 +1,32 @@
+[ 78%] Built target opengv
+[ 80%] Building CXX object CMakeFiles/basalt_core.dir/joint_include/sqrt_keypoint_vio.cpp.o
+[ 81%] Linking CXX static library libbasalt_core.a
+[ 98%] Built target basalt_core
+[ 98%] Building CXX object CMakeFiles/basalt_stream.dir/stream.cc.o
+[100%] Linking CXX executable basalt_stream
+[100%] Built target basalt_stream
+[ 78%] Built target opengv
+[ 98%] Built target basalt_core
+[ 98%] Building CXX object CMakeFiles/basalt_surface_owner_probe.dir/surface_owner_probe.cc.o
+[100%] Linking CXX executable basalt_surface_owner_probe
+[100%] Built target basalt_surface_owner_probe
+[ 76%] Built target opengv
+[ 96%] Built target basalt_core
+[ 98%] Building CXX object CMakeFiles/basalt_pressure_factor_probe.dir/pressure_factor_probe.cc.o
+[100%] Linking CXX executable basalt_pressure_factor_probe
+[100%] Built target basalt_pressure_factor_probe
+[ 78%] Built target opengv
+[ 98%] Built target basalt_core
+[ 98%] Building CXX object CMakeFiles/basalt_dvl_factor_probe.dir/dvl_factor_probe.cc.o
+[100%] Linking CXX executable basalt_dvl_factor_probe
+[100%] Built target basalt_dvl_factor_probe
+[ 78%] Built target opengv
+[ 98%] Built target basalt_core
+[100%] Building CXX object CMakeFiles/basalt_initial_prior_probe.dir/initial_prior_probe.cc.o
+[100%] Linking CXX executable basalt_initial_prior_probe
+[100%] Built target basalt_initial_prior_probe
+[ 78%] Built target opengv
+[ 98%] Built target basalt_core
+[100%] Building CXX object CMakeFiles/basalt_imu_interval_probe.dir/imu_interval_probe.cc.o
+[100%] Linking CXX executable basalt_imu_interval_probe
+[100%] Built target basalt_imu_interval_probe

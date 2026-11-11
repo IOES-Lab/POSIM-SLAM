@@ -1,0 +1,3331 @@
+{
+  "frames": 95,
+  "opencv": "4.13.0",
+  "rows": [
+    {
+      "stamp_ns": 1500000000,
+      "input_sha256": "2954b4b0bab155dacbdc4c4bd2f263ce810ac38b8873b7d80e2da4fda1f05504",
+      "image": {
+        "raw": "6daff2b47dda084e5b25bf8adeec1ba380e15e066af7823e20fa732b248c60b5",
+        "echo_boundary": "4221c2cbc9a4117c0cf63e5368a68230dc19a31aa5680852ed705e98722a38bf"
+      },
+      "tracks": {
+        "intensity": "724524eefcf4d40a08d57ddeba5b83fe2621700f3267cdcfef06f87a9cf82a90",
+        "echo_boundary": "4af23a496da65d8b1ab3fe718c0a9c4c0113d1c7d5e40c4066cf539e19cc9969"
+      },
+      "edge": {
+        "image": "4221c2cbc9a4117c0cf63e5368a68230dc19a31aa5680852ed705e98722a38bf",
+        "edge_mask": "8be628fe9738bc657a841a159b5e1d74fdbb6cbc268c42185cf3587839e3d906",
+        "tracking_mask": "600716d9fb62d7681acb2a856bf47666c49ea02fd384da720591be428a9349d4",
+        "gradient_db": "5da478b0a98057cfe18489bb4ba221616f0d27ebfa941e0caf872a11610f2e31"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "1209f00bdcd9e55255dc7ce85da5f793ccb7d746cb1c33f147383372ac7ac287",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "0276ccb64dda04c9f9bd38813184f7e1f25ada84b803a1123abe1b4940dd1fb1"
+      },
+      "surface": {
+        "background_db": "e692f5b4af8719a6a47141c705b31b4b1a745f6dde4c93ffa66fe555e1674b24",
+        "smoothed_db": "821177125960dec9403b99cf6726485280f84abbe19544e575dc12be0e37a9c6",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "ffbcf66e62e70e8eed1c22b23a534307b31f28cf9991c77bfcfe4b887696a0d9",
+      "noise": [
+        -7.92899227142334,
+        -7.92899227142334,
+        -7.92899227142334
+      ]
+    },
+    {
+      "stamp_ns": 2010000000,
+      "input_sha256": "21d8aa20054b6d12a46bc42de356b89628586dac7ce574fcdde3d619c30a908d",
+      "image": {
+        "raw": "d9bfae1f07ec6a61168e5d4671abebcf4b830b57797389dc0852bebb170cae86",
+        "echo_boundary": "e93816c8b8f22821a106274ac6120078ff353dc4b3c8fe51cc47fb1e574cb504"
+      },
+      "tracks": {
+        "intensity": "479b2bf09995a8422f95e7f24d775b565144ae66fc6f678f225a02609985b156",
+        "echo_boundary": "873e679a9b2b2aab3ab09a0aeebbd23c7990fdd7d6f36c96136c31a1d0c7f63f"
+      },
+      "edge": {
+        "image": "e93816c8b8f22821a106274ac6120078ff353dc4b3c8fe51cc47fb1e574cb504",
+        "edge_mask": "7975682c84169f7c786a2af4587e4767db3c002b0d31050c6c0bdefa15838e0c",
+        "tracking_mask": "5d7435b176bf8f5a13e8460a0ec2ad72ec3c48b129335a7d32879cff9939abba",
+        "gradient_db": "ddf65199ed4aaa8f003c8f094b16ba30664d8f53cee00a6c8ac09d1cbb89c278"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "6a15defdbced5734998dd689a0ebf471972d2d8a5578388119c3fb308d20ac21",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "cc2f917982776865e4e34f5995aea32badcd3d11bd7595d73304009f3c93a4fa"
+      },
+      "surface": {
+        "background_db": "16511096ed41ba2c544d966edeb8065e81246913211422ce325729b6ef9271dc",
+        "smoothed_db": "71db0b12a4fb9cdbce42de70acc0375e1f32306954bdb9743627a153a420e053",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "dc9516a9a8b58b02d0f0058b8ef9bb7ecf752cbf52b80ee01d5417d661ed399f",
+      "noise": [
+        -8.301888465881348,
+        -8.301888465881348,
+        -8.301888465881348
+      ]
+    },
+    {
+      "stamp_ns": 2500000000,
+      "input_sha256": "cdfe256f2c96d96a20d1441706f42bb7bbb4df99f46918ab05a290f7863b3ac5",
+      "image": {
+        "raw": "2a1585253f8ab328d1d752713f9b1325eaec3774df74b41bbc309e3f0c22b4bb",
+        "echo_boundary": "cc35aab6cb64384ebb84a52fef9000c982f8ef838de8296587af8d49921fc3b7"
+      },
+      "tracks": {
+        "intensity": "20d208d819b632457fa92c8af33f6440fdd0354b3db247343f27c08ae0041fa1",
+        "echo_boundary": "6a83b4f0cecded5d99da73561727024d2ea009d72ef99188cf6b152cb9b1d8fd"
+      },
+      "edge": {
+        "image": "cc35aab6cb64384ebb84a52fef9000c982f8ef838de8296587af8d49921fc3b7",
+        "edge_mask": "c0bfe4d1bb08dbf3528e39d7aeefcbbb449d70cedf073a51a8ddf818067793a4",
+        "tracking_mask": "9701ba1f3f031baf07cb72529beeba943c122a15374df845c2b218d684da8574",
+        "gradient_db": "ae5a6be627140b6da54edcfa92a1385b8e7e5cc584966759a8ad151a3b91c9ae"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "c75f80117414324c2ab891b30b6ea1b1a9f8957d09cdb1d7157f36546d101196",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "0bef13ca4a0a406d2be24edcb9aaa52ddc0c5a9440c616ba2630e37a30e08847"
+      },
+      "surface": {
+        "background_db": "24dc6a7fbb2393573dbbb8b216bc2abca1f4a70075b1762345361922649475da",
+        "smoothed_db": "0dbe402acac5b144b7e7584ab5aa901d86baa5ba1439c4efa7c3fe8d2a3815b0",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "87400814a94207c1b2599b5d2edf09cff9ecdcebe4a0bd17a6cb357d49662c90",
+      "noise": [
+        -8.474497318267822,
+        -8.474497318267822,
+        -8.474497318267822
+      ]
+    },
+    {
+      "stamp_ns": 3010000000,
+      "input_sha256": "d2c8eb8754c65881e4d09ff9a1497e50c6adde748eaa5b867e0ffba396e0dfe6",
+      "image": {
+        "raw": "a0d6ccff51491e2457c8b7a999755f639e0bb7277a0ad2b03314d72e145ee503",
+        "echo_boundary": "7f5d34cd03890b62d607426a2f868fa104ff12790e76cfc5ce236be1664322fb"
+      },
+      "tracks": {
+        "intensity": "b4e2e1262f60c2b02ab4452ef7397c27e6f69005be25e39af15258a368928066",
+        "echo_boundary": "aa9a51ba1f220f1f9f40fc5e74082e7b7096b73c75408cd0ddf70a575df1eebe"
+      },
+      "edge": {
+        "image": "7f5d34cd03890b62d607426a2f868fa104ff12790e76cfc5ce236be1664322fb",
+        "edge_mask": "5d83be04ca5b297a0947b752f19bf75e11c2375e168786f6b35749fbd9798606",
+        "tracking_mask": "16f1cd7619821c1b8c8f85d5581e8b78ae1dd1f76781620f898c630c38425806",
+        "gradient_db": "4689c8a8cad85787c85b8001de0bd5c0504a57eb3963dabe8035dc09272b2952"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "2d3140e9fdf8b9a7b2fb01dc86e69c5df1e156ff4b7713e1ea041603ce4896ae",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "bc785ceac5e2ed55fa8175493202ecf56240bbadcdaa26423e021d110da6974a"
+      },
+      "surface": {
+        "background_db": "2087b05051c324cbedda6a78fc079b07842b0e0ea567e4ff0c25ad3c19ab2fc8",
+        "smoothed_db": "cd28b00deb7e5304019992641a36247048f067b0e0c01f5e1a740031931e7f3f",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "689daae38ab84143680e495ad64ab40c9a0d73fc01f3e1089e69995156286f7e",
+      "noise": [
+        -8.88019847869873,
+        -8.88019847869873,
+        -8.88019847869873
+      ]
+    },
+    {
+      "stamp_ns": 3510000000,
+      "input_sha256": "803cc1ff740a69d8fcb97a1593e6b8f63ea4096800d1f3783ae004c37e8ea1fa",
+      "image": {
+        "raw": "920008906cfa6dfddeea7a31856a8f2156f185cf62b570280e5017e9bc5117c3",
+        "echo_boundary": "6b45f7e323752aaac36f296f31dd75af2d83200cf429e79eb44c74cb24d41b87"
+      },
+      "tracks": {
+        "intensity": "b5d7dd41956e4574d94ee43be85ba7c7ccbc05b7ebf1c86793f1d0a57dc7eb09",
+        "echo_boundary": "66e17e3905a5e4e3ea5ae3a7af9220b9b507bf54fabc52fbedc776bc363274e6"
+      },
+      "edge": {
+        "image": "6b45f7e323752aaac36f296f31dd75af2d83200cf429e79eb44c74cb24d41b87",
+        "edge_mask": "9d19d1e26efb20974adc703c2e2fbcd49157d3980341eaf3cd53e67e4f60389c",
+        "tracking_mask": "a60d4477207ea0e479f11300568afe80744927f9f05e04eeb794d16cf5d76868",
+        "gradient_db": "574d87e8ccba58b91cb58c5c99eb68078610be46d1c181f8739740a8db52e50d"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "efcd256413aca47d7f5ba081762fb8df5a48545aa41f7ea87d1b3e4f1d6bad66",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "3ceaa6846612610389dd048ea3ee5e7ec85db3a2e6a92efad5e1eb5c1fcf645a"
+      },
+      "surface": {
+        "background_db": "48fda30e3fe1c7c06b42f5ad513df8fddbfa0f055be11a7df633b77e9098c0bd",
+        "smoothed_db": "70be2843528702e94fa8adb5aaad37d6bc10146882c1bfed037251e0fd8d264c",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "fd48ba722bf211b46b999846aefaad2f17ff1ff74fa5c9cc7215d71dd9b7ad0f",
+      "noise": [
+        -9.31369686126709,
+        -9.31369686126709,
+        -9.31369686126709
+      ]
+    },
+    {
+      "stamp_ns": 4010000000,
+      "input_sha256": "e86b39488b33bc502683c699e1a3b2ed3d42486cf46ef19be211a22bdb577944",
+      "image": {
+        "raw": "2a0b5ee09fc316ed36ebb20fea5dc883fb999abc7907dbaf61cdf0ce19073ab1",
+        "echo_boundary": "9b80f92bcce26142c297e04eb31653c38a99051670d146a86528fa44a1833261"
+      },
+      "tracks": {
+        "intensity": "e1bca31e64f6aefb1ab6945c5734a6b5cb37abe83db5401020063180104a539b",
+        "echo_boundary": "e64d1f35d44e1a2f4d027807a692460408a91bce6e4b80b045b8a8a12f663db6"
+      },
+      "edge": {
+        "image": "9b80f92bcce26142c297e04eb31653c38a99051670d146a86528fa44a1833261",
+        "edge_mask": "555e1cf7b5a8ed02a16223d5174d966a4dcf1727762efbcfd8ed7bbf717ff012",
+        "tracking_mask": "225cdead5560ffba7de063fad2d1ecbf8ce58c75610c069860fbbb5d8a5f0ee9",
+        "gradient_db": "f9afa0a79a90a8249a2eb4ed413d867b12ec353c5e6bffdfd1490ce95ba88d91"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "718e84a8f202922b2db3ae09ca06fa079e8d2f23775c7f9c2259207c027fb84e",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "e8ce90c4aa089d0c27d153beef988fb1a38c387003b41f112924779ee1d2b0f3"
+      },
+      "surface": {
+        "background_db": "7a82f990e280411e18dddb57e9addc00179473b3b625e620814c89b5795028c7",
+        "smoothed_db": "3925d17066a86e0d537e7d11a8292ff750875d7aa4b87bb3d1e54275aad81acb",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "f318ccb9c3d22231bf9fc32116a2ee554aa8e9ea05f22b153092ebfb534af659",
+      "noise": [
+        -9.353927612304688,
+        -9.353927612304688,
+        -9.353927612304688
+      ]
+    },
+    {
+      "stamp_ns": 4500000000,
+      "input_sha256": "4d9d2dee0614a7bb01a9f8abb4d1e5507d87edbb22e0b1d69eeb37dd81afa7ca",
+      "image": {
+        "raw": "8975089c02653629443bb9ef07fcb22e73fca6f1f69b1b23ab67e6197c23f788",
+        "echo_boundary": "2b5dfec207fe5794a34d3eb151265422d8ec07c13a4d8d47dc7f8966cb1ad3d0"
+      },
+      "tracks": {
+        "intensity": "916999e2d98d763f8c90ddfaa261a1bca587bff6b520d4e1ed032badaa335ddf",
+        "echo_boundary": "e7634bd559312299ddcff0be090171178b0296c52bad277ed6d2f491c7052744"
+      },
+      "edge": {
+        "image": "2b5dfec207fe5794a34d3eb151265422d8ec07c13a4d8d47dc7f8966cb1ad3d0",
+        "edge_mask": "0c9a23771bad305a4465a161ef3c71ff94043c479917aeacef253473b186e66b",
+        "tracking_mask": "8d39a2b77d9862a14e564895c00c795fea4a568857ff798cca07539976fce320",
+        "gradient_db": "04861407aa5061de545f57a1069f8f6bdc2731b248f33293b0d5da0ed438e441"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "4dcb52fa12c184f9db7c3660e54daea148a9a7adb0caeccdcfe62a6c2b7376ac",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "29233dc051c68cf946e67a2de222331ea22878cb590d2d93e76bff4a87df8b74"
+      },
+      "surface": {
+        "background_db": "9884ceefc505bbf768e5f6e7ac864f24e52d0a6db2f269bf70fc9081f4e9ef0f",
+        "smoothed_db": "ee355821bc73debd8cfdce41b5bc2f3ecd02b40fa5e87d525a5c8823df1158de",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "cac1f53ba4351ccfec90b8596e66c4ca0b41e603735c2b4121f4ca3127075071",
+      "noise": [
+        -9.389044761657715,
+        -9.389044761657715,
+        -9.389044761657715
+      ]
+    },
+    {
+      "stamp_ns": 5010000000,
+      "input_sha256": "224cb6ba32e56ad7297e12e49a8a43acf01ffde5755c394fb6ff6c1b35851f93",
+      "image": {
+        "raw": "0474ffcd7b351d5b2ef16d201843024181215e03215398ebfff9434a59f8efc1",
+        "echo_boundary": "ddc76a736b124a3efd396f5a1031de83d156370ff81bb98ad4301496e8e94904"
+      },
+      "tracks": {
+        "intensity": "a0aa90665ca7b13315220680890a91b4693f00fc83f173c9c08432eaac8ffb5c",
+        "echo_boundary": "07a41482071078c20c464f78dabcb5eb88dddd6b06c2064ac238f6f8ab97bd44"
+      },
+      "edge": {
+        "image": "ddc76a736b124a3efd396f5a1031de83d156370ff81bb98ad4301496e8e94904",
+        "edge_mask": "1a27fb224c51ee5324a1c0987849de275b7300e54e54f293bfa20d5fc8c57fef",
+        "tracking_mask": "8dad5295b7b9be33d1807a04da5dcf1595a3d53330be6f52e303e0c58a1bc5be",
+        "gradient_db": "9e321ec41a0db3870f9044b6aabec7822928f4a881b5dad2c76f1809301f3179"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "7db2df7c3b284fc71b4933445704a0b5ec694739dc45ffa214d80b6406fd9dfe",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "72b290b33187787d9caf38a2602535cfb4ebbc88ad32c9954fce3b91fa544215"
+      },
+      "surface": {
+        "background_db": "824b4c01e6c25a4eb0cb03c1d6f151424fe57731768f017ff4ff1eb06e85846d",
+        "smoothed_db": "34dc19bd3b7c6fd583268892d4e0ed6f40d015e2b884367a13241b8da826c80d",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "696ab52cb2eab88db12c0a526e2abd8d6389c826512c7324a40041b359a1e993",
+      "noise": [
+        -9.550533771514893,
+        -9.550533771514893,
+        -9.550533771514893
+      ]
+    },
+    {
+      "stamp_ns": 5500000000,
+      "input_sha256": "890bf056f2200cabf74a51635a6e5a54aa29af1621cf05ba645cd266e8a2b146",
+      "image": {
+        "raw": "b308694dd7b2c47b14a305599b82dabe0bc86f7bd0d1bcd94f017c80cdd3277a",
+        "echo_boundary": "f1c05c4bcd247cc874cbbed8ab00300614ae1de4b8ae206bae5917d8c36543d2"
+      },
+      "tracks": {
+        "intensity": "74cced86bcd03f34fd260b3707fcecc8c9da4c4df25adac6398fe3f137e142ec",
+        "echo_boundary": "4922ffd08cfa4f0cda3c919dc053d48bb8bea92954e8efc887ecd695ae209894"
+      },
+      "edge": {
+        "image": "f1c05c4bcd247cc874cbbed8ab00300614ae1de4b8ae206bae5917d8c36543d2",
+        "edge_mask": "23b881c94af7819ed2b1958513a4282653af627dc962c63e23e8657d6b494cc2",
+        "tracking_mask": "b14d8ab2d097cf551b422f08e5e706276709e06ab491b15ad2062ccf8deb33c1",
+        "gradient_db": "7e8f9a547242c74f182b7e085bbad87a7c0928f731de3cfa6ffb55c9b04c11b9"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "32b63b8f8143371ad48331d71735a31b3155f5b4fe4efe45ce9909be94a53094",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "869ce344c4e29b9f98e7f026db0c0a84a6b0d225edd8bfd9aa42b446f10799c0"
+      },
+      "surface": {
+        "background_db": "edc19a03b9b9fff9ac66cf07d578aa3cadafa836f9bf76e6539077ebad5f66cb",
+        "smoothed_db": "a973483b18842219f26bccc0873a32a3854bbe59b4173cc20217966df0a29c47",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "94ad7ccc26e5d1a5e2af1cc3c922d52ed3427102e24899044c88ab03fe556066",
+      "noise": [
+        -9.941246032714844,
+        -9.941246032714844,
+        -9.941246032714844
+      ]
+    },
+    {
+      "stamp_ns": 6010000000,
+      "input_sha256": "fb992d37a97c107986f28cd8814fbd655bb5eaeb793421fbd33d7cacda7f7928",
+      "image": {
+        "raw": "28a8c25f9706421ddc8f112bec670584ee8fc6c0daf0c7a2bd6e7a7d8a10d4e1",
+        "echo_boundary": "dc5715f1ff6847e4eb707a22a97b5c8207dbc3291e8b09d317abdb3785ed7992"
+      },
+      "tracks": {
+        "intensity": "ed8df1359f555a8c4dcc90e0b518058a1fcc218427e1547384cec5d171199e77",
+        "echo_boundary": "4254b2179b9b84b679385aa7b90912248fa413293ae97c2ad59d2672b4b207ed"
+      },
+      "edge": {
+        "image": "dc5715f1ff6847e4eb707a22a97b5c8207dbc3291e8b09d317abdb3785ed7992",
+        "edge_mask": "3fac43d331c968f3067b0e5961650ea70224839220005f7ac2adee32518e6cea",
+        "tracking_mask": "94ee1f40485903e034b51c52dd732adee7c81befea446fc99c54e64ac0ba52e4",
+        "gradient_db": "db0446c0f664247335e5bebb69430186a713f451eb13e529787e15c36e95b4f0"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "89d48321788d3cb79b6a909f0741c5774a609c2daa19b027bc123913deb3caf2",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "c38365afa4df577b1bf2223ef2b7942cef2e18db970efc990716eb0865f15338"
+      },
+      "surface": {
+        "background_db": "98e395c1d7c3418f9457abfd8cf94cce8b1ff58b22354f7e71e2944373b50e50",
+        "smoothed_db": "a31a15a5dabb18d514623496d4f7598fa6810fabcd154c05b5081cecb3ad56a1",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "82349b6cccebb0781672e710c5f3d371a58354067ad809dab131dc7b48c7e913",
+      "noise": [
+        -10.515681266784668,
+        -10.515681266784668,
+        -10.515681266784668
+      ]
+    },
+    {
+      "stamp_ns": 6500000000,
+      "input_sha256": "f07c081192611ad0f01c0bd0bfb2e4eff2b9c56ce7bd1b3100b3e2ef90d3e7d6",
+      "image": {
+        "raw": "09c6b182570945f0c26c553161309b6d1e6fedf5da1cf2ca6f7e1c09c2fc589a",
+        "echo_boundary": "5665728b1b8975e60456190acb14f7bc4578519f42b36344038075e9887bac20"
+      },
+      "tracks": {
+        "intensity": "cbf159eb73614f657f97e03913b3b2b0dde534bb01a47807b7704511f0210e25",
+        "echo_boundary": "8990fcd77c4e34806b362e42c9b197ceddccf52de17bd367f78885f8670f433a"
+      },
+      "edge": {
+        "image": "5665728b1b8975e60456190acb14f7bc4578519f42b36344038075e9887bac20",
+        "edge_mask": "1fbd6b0d1c7ac26c1361b45a9671fb2ae265d60b5f43576c9e833e8c7635a37a",
+        "tracking_mask": "8afce51225773af79283a3864f4f9c3ac034d043012dce30a19dc8fd8cdb9dfa",
+        "gradient_db": "fc2788eafa3f25a16cb7d3496ab994cf32aa76df7aaf73ecee821d706bb8738a"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "75bfd2519c9fe4738073a17f6ab4d25acfc7ea19b326dc71b41f2146b5e60397",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "73d492ff6ce611c0c3e4544a3aea7881cbc857bf1948e450e6c0679ab4a3ae5d"
+      },
+      "surface": {
+        "background_db": "b41ad1301fa0d26361b3cc96a37b9651df6901975d8fd0d630069dffb29bea3e",
+        "smoothed_db": "d0af477386d09d8908a52291b6a08264a1ac84544c3b8e4dbfbb788f68b05f8e",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "fd6233e7ecce213f8c3b07527d8cd60168db01e57ddcc6bb206dae8f01941e18",
+      "noise": [
+        -10.360079288482666,
+        -10.360079288482666,
+        -10.360079288482666
+      ]
+    },
+    {
+      "stamp_ns": 7010000000,
+      "input_sha256": "9b966fed4c6139cf4e6083538ab48d5d68291148d6a43c254ab18b3afb4266d6",
+      "image": {
+        "raw": "0657542b77c83a0417183873e019e0b867ecba9397424cc4abdf799a6929e0c0",
+        "echo_boundary": "0205f84b92af74adbebad83fd25925b2fb01ca669a2a276111da62b72ac53b25"
+      },
+      "tracks": {
+        "intensity": "0cdf12bf9f04eb5298d79a002dd8b7aefdfb4a00ae600b643f522e7be388e132",
+        "echo_boundary": "c611231ab8d8374516e760409cf2157365c701b3205f23fcab7324981bbf8e9d"
+      },
+      "edge": {
+        "image": "0205f84b92af74adbebad83fd25925b2fb01ca669a2a276111da62b72ac53b25",
+        "edge_mask": "845310ac7a95f39c39085f17f4d5eb5ebff9c1fbe204a8554e759c1dc707b3e4",
+        "tracking_mask": "b28f8e52112ee062cb975040cf1ee085ec5c49d57a2d1ea14e7295f8b82fa9a5",
+        "gradient_db": "93a8381c98085d4e32db2ccc0b4c0254a39d3394a1bdcfcaca4fba1f1e77049e"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "540f4dfe96fa4ed1b59969d9398ce11ffb993db3424447c494b0a9518d672692",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "215562e3eb67d9597c62e5f22efcdd767f1389b13b345b4be2ed235f8f420f3d"
+      },
+      "surface": {
+        "background_db": "fa8ce41b757c59bb76e6253bd2875ab7d2e959e8567b3d9bcfbca8bbd7fbe53b",
+        "smoothed_db": "4a3366ae697acf64ea9a37d24a2d3022e77c8a1f69a45bd56a12de824b4a4ed1",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "004e439c8f7b557f83c1acd8b4a8f9f8e3c1a25ce2f0d15deebb430fe18ab044",
+      "noise": [
+        -10.093993186950684,
+        -10.093993186950684,
+        -10.093993186950684
+      ]
+    },
+    {
+      "stamp_ns": 7510000000,
+      "input_sha256": "bc7326ff9fc3276c3fe1f432dbc2d3eb365c97ff6c5e325a864bd643e435bd4b",
+      "image": {
+        "raw": "661b9e53c937f7cabf05380b421acf6822e9c9edb16bda642c351d1c17da1c7a",
+        "echo_boundary": "5b79c362fd22ec7db04ea07eb1dca5ee18d8fca56fc2d655e6557f9bbce1083a"
+      },
+      "tracks": {
+        "intensity": "e8e9f4edb2892fce31cc92bf1de6664d8b968deb45afd4ed35a8eb8d99d6d40a",
+        "echo_boundary": "befec1fd1a80d0e55f2fc6dc3fa4a3d62cf2e222f4f2e569f5b1577d91ce3bd4"
+      },
+      "edge": {
+        "image": "5b79c362fd22ec7db04ea07eb1dca5ee18d8fca56fc2d655e6557f9bbce1083a",
+        "edge_mask": "b97bf96ffc482d25132c16328dc4cafb2b6a393e62cc0738116f700e8be0e8b6",
+        "tracking_mask": "3e43e45db7ab1f9b26ea5eaf825ed6d45d925e4997b0ff2bf2f80870c856b4c8",
+        "gradient_db": "eb3eebea72a2e7073e9b1d50dfaeea4bc5e6ef54845fae0926f0b0ae93c1b1c1"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "4b8aeaefc2f2665348e128ad28da64c62623d9bfcb65eb8e099d7cb53f408ace",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "d3e7db35fb64dffd0c1fedb048d5f6a5601961b44255e20373853be4be7bec8e"
+      },
+      "surface": {
+        "background_db": "43cdccd21b9b81fe551962a9747303ea5a1a05b1c3f33fafc149f494352b62e7",
+        "smoothed_db": "bac79690427bb7d5a3b60c912ee05a30c27d9819e30078b8d929eeca73e59bc3",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "968b8ca4ba165dbf2c23e798423ef592469bf8836696b365e9278fde18d5c41b",
+      "noise": [
+        -10.02732801437378,
+        -10.02732801437378,
+        -10.02732801437378
+      ]
+    },
+    {
+      "stamp_ns": 8010000000,
+      "input_sha256": "e294f3dea4304e1d13982a9ab0bf263e8e46e5461097bcc6d7122ea6d5086f44",
+      "image": {
+        "raw": "499c09784b8ddc78718d53e5556bd2565a2ab9b69612e7e4180d06721641968b",
+        "echo_boundary": "c664bec0f1d17a1453bdc86300bb59a90597af977286b375e519a35eaaaac2f7"
+      },
+      "tracks": {
+        "intensity": "0a3c36d586f8e11ae927d336ff78237ad733e6c91ee5ae3731249a3bce955c4a",
+        "echo_boundary": "f6584ec29eb047a62f583e8e6f183b3db10f83aae289f6e6e95446734f60771e"
+      },
+      "edge": {
+        "image": "c664bec0f1d17a1453bdc86300bb59a90597af977286b375e519a35eaaaac2f7",
+        "edge_mask": "64cf8c28d4f4313dfac8f23e2a7cd7e6943c6ed5b2b58e3bb9ea79b0ac86e3ee",
+        "tracking_mask": "e11f0c9356368e2cfd858a7c4935e0f584fabcff827db676cfce5edb95f8626f",
+        "gradient_db": "dbc068a6917a3d23b8871c2d344c5687002e0005e51654e5d377a717561f0093"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "ba2cd40c546cad4ff3966af8d8db9a0faf698b4eb4cd5e04bc009d53d8811f70",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "98b4ee5dcdde4510a7dbc0b332e712cf0aa94a477498c35b7b5f398ef89db8d8"
+      },
+      "surface": {
+        "background_db": "e06993483a8a18121392360e64fa0d91dba818adfb27443d4c00a1b3978da0cd",
+        "smoothed_db": "c23d0673cc2114cd31938ca0384416392603a3f0e8a059043d21a24aba17a52a",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "dbdc261ff3131cb9f29097afa46ecae7a6d0f30cc3b3c73d1f90b65e28d48768",
+      "noise": [
+        -9.99291467666626,
+        -9.99291467666626,
+        -9.99291467666626
+      ]
+    },
+    {
+      "stamp_ns": 8500000000,
+      "input_sha256": "bca1a2253c5623517aec9fe99e2f171ecda740db511b6427a648e09d040d5d35",
+      "image": {
+        "raw": "ace274a18327c4767b3cc4abba66cb6bf221fafe8959a0b829ea529274a8479b",
+        "echo_boundary": "fce3584e444098a446cb1e29b52a932c8cd8998c861d5c2bade376335ee9e12b"
+      },
+      "tracks": {
+        "intensity": "e07577aeffaabe494e0c0158c08b38b0b8e5ce60729d22083f637d6def53b294",
+        "echo_boundary": "d54bfe12e91ebace544a3bf43aeacda2f702a8b70620fcf1c91b5b4bfcc00336"
+      },
+      "edge": {
+        "image": "fce3584e444098a446cb1e29b52a932c8cd8998c861d5c2bade376335ee9e12b",
+        "edge_mask": "58fad0409e5b73b1aba7ac4d299343c1309eb3b968ada795e849f2690ce2cb82",
+        "tracking_mask": "6df68f1e9382855640cd319a084bf95357e14e599e3a94aab94617aeb339ae1c",
+        "gradient_db": "5561ad946f2d6eebdf02ba7a095a43e7c1c56e5c1cef940d23f30a3ca4ef273d"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "e0d2dfd0ba57ad07a0d6358e31f1aa3e0a6b476fb846dcdd185c9e74c8de4785",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "f198890d1240f8137c64ab4c074db1d6fcd42b47ccbcab91495040c8bfd496f1"
+      },
+      "surface": {
+        "background_db": "00fb7d2739f1cbffae0ce7041f7a00872aa7bac281ddc3e0340195fbc6fc042b",
+        "smoothed_db": "8d1ecae1ddaf553e6bc8449b8663ec4124f9b448ef192caf8a3859589f0b35f2",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "c93a539cbfc0bb0623848fdbef3689dbe6c7893986eef3ebb7a12a32c7a8cb61",
+      "noise": [
+        -9.97428035736084,
+        -9.97428035736084,
+        -9.97428035736084
+      ]
+    },
+    {
+      "stamp_ns": 9010000000,
+      "input_sha256": "3a158735db21d1c13d1f16aa9382c53b437f95558f295a3d08191baf5b108200",
+      "image": {
+        "raw": "fdb08f1404fab4c212b5fe2d1c32cfcf20726e9b250b579b4abd2e719654c67b",
+        "echo_boundary": "8ca34542821b703727deb8cf1e2a18233594526a4c87eeff5a5d0440048882b1"
+      },
+      "tracks": {
+        "intensity": "c94669fe49011c8f78e6a5657fec8c9086211571c7ab3833b975eab8ad4b6c86",
+        "echo_boundary": "23ef6fbf6bab03a7c888888bf00880f182913b24ef17e05f899afdc41140d56f"
+      },
+      "edge": {
+        "image": "8ca34542821b703727deb8cf1e2a18233594526a4c87eeff5a5d0440048882b1",
+        "edge_mask": "37ca13d5448c499f2b200d0062291b41d2224112d93c018bcc09da5a2120a98c",
+        "tracking_mask": "7cb3e9faee95469abc7edcf711b3281079ef673101e457e23a342abc0bfb3798",
+        "gradient_db": "a76162d898db10d06a041e5ae6739e651ff2637b2791ea17b6b14a2ac8dcdffe"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "69f77321cc489ba0f8abda80caf43a819f4c5c796f849807bde9464dadd5a133",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "a6f2e508e7983c2cbf67c7200f319e9add81648eea3cd9172f7a33c76e9414ab"
+      },
+      "surface": {
+        "background_db": "a7d401f52d2456b3896e01bf964b01f295583782634be2d4ac0d0cb28917f51d",
+        "smoothed_db": "b2c973d839f78eb59345f3fb2993d0aaf04d151880b32300ce6c51a4cb3e0374",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "b4da1a27c39b318ff137dd0a2f2456d52917a815de0b6817ac3d0d0cbafefecf",
+      "noise": [
+        -10.404396057128906,
+        -10.404396057128906,
+        -10.404396057128906
+      ]
+    },
+    {
+      "stamp_ns": 9500000000,
+      "input_sha256": "704d67e0db53b66f3a26334295b6c0852a3fbb6cc9b8121c8372b479ecabd1a6",
+      "image": {
+        "raw": "58538ee8bbff33eb7620742617b99160ddd4b8cec2ffef6cfad5816c8de0e74b",
+        "echo_boundary": "3e122759def81702f061a81494623bf33acdecc155462bdd7242a96f6295da20"
+      },
+      "tracks": {
+        "intensity": "20635b89cf1826187ff0ca43b65bca47c6da387614e179ad32adb1f3c9e922ae",
+        "echo_boundary": "a010b4a6161c7200dfcae246351f3bbe871ec3e705519cc5a35e9544fea0cbb5"
+      },
+      "edge": {
+        "image": "3e122759def81702f061a81494623bf33acdecc155462bdd7242a96f6295da20",
+        "edge_mask": "43cecbe305cfb986470ae65b4ca6d9aabb4dccbfcadb07e715f0106de32442d5",
+        "tracking_mask": "9ca0a378395656cf93027f8fa2da1f90d50c0e163164bad93d7b3a5584226dbe",
+        "gradient_db": "e905642dcd48387158dec2512d57f85b5f7e9efd163ca7fe2aaf234aba78403c"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "0096fcb0e9852fdad9941576de22c7387245dbcd773119aa036efe60c92f3fc6",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "0c22498f1352df32f7009b7f5334a15c53fd20993023e0ff3a4cca5247d9c58b"
+      },
+      "surface": {
+        "background_db": "d493cc18ba224ed7c55d2b49331894e9178347d2ec5576128b54efc14dd4d351",
+        "smoothed_db": "e3cd4f70f0435c5eedb42a80c879333bc8eaa04bca946359a335024dda465ba6",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "8b5df83bcade26a0761b9ec2d72fb106a7fc4f5feac7c6ce3b44430759ebb56f",
+      "noise": [
+        -10.314065933227539,
+        -10.314065933227539,
+        -10.314065933227539
+      ]
+    },
+    {
+      "stamp_ns": 10010000000,
+      "input_sha256": "c5a71925e1b1aea197d28c129bd3aaf4acf63a8437cacc94b89857d9ba1062b4",
+      "image": {
+        "raw": "5a8987b4b6dcefbc02d962f181ad3d7c9aec5bdd8609b67aba7df8080574712a",
+        "echo_boundary": "c664d030ddbb980748dbf60d97e92a59c5ddb395a9418fe22fa9f94c64a79856"
+      },
+      "tracks": {
+        "intensity": "716c3484c21205d4ec22daa606d8500b25d68894ca2908c223c3fef2056b3ec6",
+        "echo_boundary": "6888dc099101be6fecad38f158cba8d068652df8dd26a34eeee02437509af4f7"
+      },
+      "edge": {
+        "image": "c664d030ddbb980748dbf60d97e92a59c5ddb395a9418fe22fa9f94c64a79856",
+        "edge_mask": "9dd63b25b24710af1653e93c31b27f9452d99d7c8f313579293dd531288ae552",
+        "tracking_mask": "874b4e43686acb16f8194175a972f553afd1b0b60d89fffa461799f27edb7333",
+        "gradient_db": "87dfb7c5015b84128a40920a14287023c21c2359d2bbf52c112544983f00da07"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "c01b98f1742855240542be1fa142d600099309eff4755974239b5a385dded383",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "c6b12827247b469252a8225afac0b0677c2bd35470966d13a259956e045c611b"
+      },
+      "surface": {
+        "background_db": "6f0034f268908a53e897e8b13c83229e5a4650afc62c202e59d6941e48a96d9a",
+        "smoothed_db": "1abc76e4c5d5aea2de3ff8b6306e63c4c91c081c8d318fe12aa4d111d38e6d37",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "669a503a9c9530a862a058d3adff205a05e2d0cf7e30bee9d5e2c7f88ff1b1c9",
+      "noise": [
+        -9.702656745910645,
+        -9.702656745910645,
+        -9.702656745910645
+      ]
+    },
+    {
+      "stamp_ns": 10500000000,
+      "input_sha256": "b577877c5cc7ba564ac86deb9a0ad167a6e9149e8dbc822750196537fc08cd22",
+      "image": {
+        "raw": "6e2ef7719e8723fda6c7b9c8bf04199e9d2269bcaab86731ae55ed5aeeec964e",
+        "echo_boundary": "03f3021d5776192dd568fc66a1ceda264534ea905a355e3fea471ca7046c5ea5"
+      },
+      "tracks": {
+        "intensity": "3a11a3ae11b18ff57833983774affc936485fd329ed08d38c6e484110024e682",
+        "echo_boundary": "4f0e178c82506e06b4d130c81e3f50bdf084be680eabe2663ad49dbd3e59541b"
+      },
+      "edge": {
+        "image": "03f3021d5776192dd568fc66a1ceda264534ea905a355e3fea471ca7046c5ea5",
+        "edge_mask": "fd569f8e950c35e30ad3eb1edb40dfe0a8ed27f1629a0153ce9de214a16ece95",
+        "tracking_mask": "4d6f780c2314beda3de5e8e76a1be2360fe0b12f5a39484dc6b15756f39fbb53",
+        "gradient_db": "38fef4ed8f83da36cd9e4c8ded42ae7db5e50e1f781253320a1683f75e833ed4"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "666106ebf7786292faa80af82c14d36d16eea28c27135b9a6514567d3c7c3e73",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "4fa77a364e0aa25c14485bd0ccf91c4846dfcf4ea0b88caada2bcecbddb11b25"
+      },
+      "surface": {
+        "background_db": "410a901a738be8862758a28eba763d45acd838707e4dc220a30b2e797bf9f530",
+        "smoothed_db": "92fabcf46e0927b880c9a73777a57498fa9cfc25a4667ae480136a533aff450c",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "9498ba4dc24b2d0fa92626f914cab4c5bf2618ec4054fae6fb49acd43532e08c",
+      "noise": [
+        -10.45557451248169,
+        -10.45557451248169,
+        -10.45557451248169
+      ]
+    },
+    {
+      "stamp_ns": 11010000000,
+      "input_sha256": "f8c2d3295f2bc3994bb305cbdf811797d7fae317b4e89f41e8f283cd10e030b1",
+      "image": {
+        "raw": "1a0dc0f0380f5ed0f5d8d394ed95fae1134c5d7a444f8e0896c872c60efc802b",
+        "echo_boundary": "eac5f948ca722064544b44e7fbfa044ba782b9a6ca5b1b033037e8f7c55d3512"
+      },
+      "tracks": {
+        "intensity": "9b430aa62eb38237a53ab619a01be6edd186461344025a7ac2f96a29458cd960",
+        "echo_boundary": "de78d6b03120dc3392037830badf566bc0affa824e98a9ecc95739a2998344c9"
+      },
+      "edge": {
+        "image": "eac5f948ca722064544b44e7fbfa044ba782b9a6ca5b1b033037e8f7c55d3512",
+        "edge_mask": "cbc23d8cfe9f09c68bccdc4a96fb6f636b93260f7a7f5e758b43a70e20255c83",
+        "tracking_mask": "805e9619d50fa69b39160f25c82458f0d37a309fe12e583616b85001fb771053",
+        "gradient_db": "b2fdd753914cd58fb1bb10ffe4cdd1549df9297612d3156b3d54a3caf494b8fc"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "ec36f4fd2bdaab2e1821f0d2f5aa858822525f0bec6aeeeec40eb7c763c1b33b",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "d3ef9bbfb3442d2d299cb3a8f8dab8731e7884d97075a38e275a65ca5f9d9a6f"
+      },
+      "surface": {
+        "background_db": "91f807b72f34ea7ca34d215daa48805cbe4e889e6a24c7cb55462758df8290d7",
+        "smoothed_db": "9902beb3e694e34e48f64a2c351c58a95da290a8c394969e1a081c6fbce73d69",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "e5bd71bf6bb2db060f94e7d68ce6636685bcccf92aef1dd61ccc7b81c384c52a",
+      "noise": [
+        -9.837268829345703,
+        -9.837268829345703,
+        -9.837268829345703
+      ]
+    },
+    {
+      "stamp_ns": 11500000000,
+      "input_sha256": "2a1d5dfb20efbd8f314becac5abf71d759b5d89cfc74542e69c7cf4bc7d136ab",
+      "image": {
+        "raw": "73419602077ed5ef31830328e4b4dc95938c371deab6a91318697ef1c9fd7261",
+        "echo_boundary": "77558cb972e8444f66835ef74c446f14b5c5e9f85c87bea3a390243cee302b9c"
+      },
+      "tracks": {
+        "intensity": "023a62a8f8fa7b0bf63498c3a5c7fdfa8daae082ebc8d692534c6e24351d9db9",
+        "echo_boundary": "2bf5da84ca06b1d5b704e228c7c68912ade6183e23a75751c0eec1fa44d145f7"
+      },
+      "edge": {
+        "image": "77558cb972e8444f66835ef74c446f14b5c5e9f85c87bea3a390243cee302b9c",
+        "edge_mask": "158618b20f194d81aaaf9e43cd189563f82dcae25a600ccbddcada6d40035baf",
+        "tracking_mask": "a2040407bd5cf245fc01075762c30323c63dab505ef0ceb8b15b31954f9702f5",
+        "gradient_db": "4786e12c8820b64312222abc1a6fd699c23ff1b1ecf049932a3d1983294ba8d1"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "8927e71486b9e3dab50eaed39342bb11c74ea29dd973ad7143f49fcda95576ee",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "14777c21457bd82f98beb970147fbf71defa148effdbe33feab70a3c9d601fd9"
+      },
+      "surface": {
+        "background_db": "103edf6265243c972a93379a199eb7deb1fc583effafc4fe56e5334c97ebd8c4",
+        "smoothed_db": "9e765974ac50f3cf776cf6ca8ce7473686041cfa830cd660e8f0ccef2a02bc60",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "d9321f87e18850d1346c08ac895267f717f7f2cefba2035b73706e448748892c",
+      "noise": [
+        -10.149717330932617,
+        -10.149717330932617,
+        -10.149717330932617
+      ]
+    },
+    {
+      "stamp_ns": 12010000000,
+      "input_sha256": "7d40415e636fb66f4d263dfb62a490d80a320db7cdca2b51f532338c1db9146a",
+      "image": {
+        "raw": "c7efaebd31605d1526b36692a4ceec62c40cbc308144be4db5ad1b8eb8da6efe",
+        "echo_boundary": "ad2edde368190112c06c53e4aa7b59b7d50634ac3f8f44f3ca7fce0e668507f0"
+      },
+      "tracks": {
+        "intensity": "f61a7e50a8e56a1ee12320dedc7271a70aac219575ee2ff34ca61e3ded7ee89b",
+        "echo_boundary": "a3d0d4a87c08a8d393894b652c3eecfc9d507b3455a691cccc979bdfd12116a4"
+      },
+      "edge": {
+        "image": "ad2edde368190112c06c53e4aa7b59b7d50634ac3f8f44f3ca7fce0e668507f0",
+        "edge_mask": "8cde24dfcbab5ac2da8acf3d85616e5c9b8e3816bade48187fa9ab6ef3bc08b3",
+        "tracking_mask": "a76bdab8bfa86085c94d7e2620bc661017174f446538c972b6b4c777e31797aa",
+        "gradient_db": "c1ff389a63525693d8fb8a9e49c29947f5debae4c5d79206f84d59d956fac701"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "0058a945743d4d3c51abff414142b970c9bf042a1705ed24c62f00195edce58e",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "480afe47eaa0ffa29014b9a9a8b67dfe46c71bc73789c2d4d7c907df2c7b5420"
+      },
+      "surface": {
+        "background_db": "63005c02701239a7d07a0e4df3d79fe092e138746ad1effdcab0e9d3e9ff5d2b",
+        "smoothed_db": "292c906eaa09931ba074c78f2f86527bc937637518fa85d77ce2eb6988daf5bb",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "1b60148da444e4c043e13e11ddd9f56571127e336469d9202a536fe4482d26a7",
+      "noise": [
+        -10.541533470153809,
+        -10.541533470153809,
+        -10.541533470153809
+      ]
+    },
+    {
+      "stamp_ns": 12510000000,
+      "input_sha256": "55215c229623c8ea7c07369fdc95e1d29b0a845f9134f54f3cfbf8277cc90bcb",
+      "image": {
+        "raw": "50a66342baa0855aa04d854c2c736f10c44e85ecc2648ac9500845eb7f48770f",
+        "echo_boundary": "2b662a0b77a29ad798acac5225c8e98ae9d97926c3e518108f505b89107b43e5"
+      },
+      "tracks": {
+        "intensity": "c5ab2aafdd940fb8903b4e7a367f17c178f4d6b5f6f8b57061b7f4876fcd4b17",
+        "echo_boundary": "6bbff2d3091ce842765295e8fa1e6d871b3ec7278d7d80f27dfa8e9d5955f8de"
+      },
+      "edge": {
+        "image": "2b662a0b77a29ad798acac5225c8e98ae9d97926c3e518108f505b89107b43e5",
+        "edge_mask": "3e36ee3bb5eef091fdbdebb2cb2b9a736052c6af02dccbd68d2f8520e1b18215",
+        "tracking_mask": "711bd038f154b6ca15e6ac6dda850156729d7c904d8d452b0922641b4ffda7d0",
+        "gradient_db": "0bb0191a8f0a89d6fa41de03acf1b516b8d8f789add910bac957cb2011352fdf"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "17a76a38f7407bf6283e23e25d36edf2a1e30226ed5add9df38b48789f573030",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "9e332b7fff46dc7896d63205c36a4149824a9656066f41e2156d691670f4a5b2"
+      },
+      "surface": {
+        "background_db": "5b6eeadb0d6b0295b48ce7797318afb7e6decc12b1af86c1ce19658237d17d55",
+        "smoothed_db": "57caca302ef2931d0d4561f57d4d8b02fde318a8dfe00814a305e7abe333b8e6",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "27693d3ac28e0d0637610f676cb709d184da1c9e76e262a2144f0fe113f2cfc2",
+      "noise": [
+        -10.221607208251953,
+        -10.221607208251953,
+        -10.221607208251953
+      ]
+    },
+    {
+      "stamp_ns": 13010000000,
+      "input_sha256": "a599bc6cc72ab8e70534bfd22713cfa0d74c5c8edf49726a24ad07bb2b52a07d",
+      "image": {
+        "raw": "6bfe7b31b4182d462ec3dbe44da0b98d990b91a5356f6bcdc67325c0f65c8d51",
+        "echo_boundary": "61ad34d08c51ac8a1e3ec519b28fdacc42a75a5129b2723c2e342ec9afe7622d"
+      },
+      "tracks": {
+        "intensity": "7c3a1b58d4bbf8a0da1d8c5ca5201f96426554d80869e0717381e8f7b5ed9ff1",
+        "echo_boundary": "17e4303fa0b73112bfb463091179a22455f7b37ff4eb7b7a1d16fd762cacb8d2"
+      },
+      "edge": {
+        "image": "61ad34d08c51ac8a1e3ec519b28fdacc42a75a5129b2723c2e342ec9afe7622d",
+        "edge_mask": "8c56cd17180f962627ccaf657e8eff6f20a14b85dcde2694857d2240d3843781",
+        "tracking_mask": "e9ebc8abdf6059c868eaf4188822f7f40bab39c1194baccd9abc76c1ead2238c",
+        "gradient_db": "ea1379c06159370d702c453ee247c5b1e565a5a94c16b2d39edbb3c8405d828e"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "147b6599595419f022af2f095bb88abb939d485a517914bc49090d5a8ef3910f",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "8a586ea8a67f6a42e5c19262479566b842641d45fe8d8708fbbc599569f85e10"
+      },
+      "surface": {
+        "background_db": "6c74fd885b397d91b5ba8e576be307af6f4e7219b50b81442054d933adc9dfca",
+        "smoothed_db": "6b38c7a6d63d8216cfe159c77faac4f53e080054e5036de8db40e1e231e0cd7d",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "92a0fcf46bc5c72637ce41afef7a2d6b305b161cecd18536b23d0fe13bc44c66",
+      "noise": [
+        -10.609139919281006,
+        -10.609139919281006,
+        -10.609139919281006
+      ]
+    },
+    {
+      "stamp_ns": 13500000000,
+      "input_sha256": "7f881732b15f7394d4a618cd00b36a3dbfaf740f13b12ca4ef7e2fbe4bde646a",
+      "image": {
+        "raw": "800a56c12b88cffef5b4643c4d004d3abb36ce7ddd9dc6a68b414c31e60c1410",
+        "echo_boundary": "69371e00c1bc420352ee8b3748cd5e51ad3cd398373f98e4d89deb845a43d2a1"
+      },
+      "tracks": {
+        "intensity": "3c1f39c873f769434f28c975b68bb0375f265cdddb71ef86d1e538e67496a0cc",
+        "echo_boundary": "f01f5c7d830995f282b2a63b7b8f124106a8781e129d6787a9a75927a0780b99"
+      },
+      "edge": {
+        "image": "69371e00c1bc420352ee8b3748cd5e51ad3cd398373f98e4d89deb845a43d2a1",
+        "edge_mask": "c0783459a2f029878a2fae024ed63a6c7114b2b3f68414d7cf09100eb275b8cf",
+        "tracking_mask": "7ecd873590e25a24806026b7dd7936c3e7d8d428a1bc8a49ef6d8e5454cd1678",
+        "gradient_db": "21f1eacfbd4ad0338fc08e96e9816f9ddb74ad51eb156d789661fa342c897751"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "b1cacda857973cc64d70a31e8f9dded0136da3f7ead03c73234d9b3f9c60b4c0",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "ddc36a2bd9f5c33867296816bc3ac4732a99a1c1d1f02eb1bd7899f5f67ad0a6"
+      },
+      "surface": {
+        "background_db": "21d133e6a30a897631f6aefb548f555bfe2e71b16507b7ed5a873d714b32a65e",
+        "smoothed_db": "16a5e48781aed8acb1eb08ae0c850338ee944bcea6303376f569a36a1d749567",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "e2d51366ec5442f3f050ad1dd0346f651daffb01a9515fd4a4a7e82b4a1e2d4e",
+      "noise": [
+        -10.986173152923584,
+        -10.986173152923584,
+        -10.986173152923584
+      ]
+    },
+    {
+      "stamp_ns": 14010000000,
+      "input_sha256": "3d0d31a38e35f91513ca740e4fcf296e44689584fe933ea2a66e1f1310f0c5f7",
+      "image": {
+        "raw": "4c8469e04bace369f1a32a7cdb99b6f9bdf348d63cfcfb3b0466c4f953efec37",
+        "echo_boundary": "316fbfcb37ef0a9d5a18d3c7f2be1a625150948e3785a0392e1e03f507a5b2c0"
+      },
+      "tracks": {
+        "intensity": "28058af6424932de81080939a5cdc30bd1ee283e8009b3352589b5cb94f4a8ad",
+        "echo_boundary": "78fcf1209abb54e22d2b7f0dcd8f7914a415b7dcc1e7cf3b69b98d99c1544527"
+      },
+      "edge": {
+        "image": "316fbfcb37ef0a9d5a18d3c7f2be1a625150948e3785a0392e1e03f507a5b2c0",
+        "edge_mask": "2c663011836b40904f85a5b445a6bb3820f1c8d8e3ce3cc986f51026edebcba1",
+        "tracking_mask": "5e86693a175ee8d1f2bbe8021be826589594a123630b454ba7c8499cc65efb4d",
+        "gradient_db": "5854de558dc02269b1058bfddc32aaba3ec12fb0e127ee4bb59b7dcdee4039c4"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "bcfd2e1bb918d8b17c11ec1fa52217ff175fecbb399405fc34d5a8e47562baa5",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "38e3fa8bce4751c4a88ee12197292d85166171aaacb0e31e3f3ebbdeacb36ff9"
+      },
+      "surface": {
+        "background_db": "3be1f1c6e4049b68445831338a0ec8bd1377769df58c4a41a93ac286255e089d",
+        "smoothed_db": "7ae70a6f4c49470a163ff11001057fd7a3cdd3e828dc6c2712a5cb98a83ed975",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "b6c6605e893853e6b4c0fedf0bea67d28ab7de0f571149db7433c08bf81b39e4",
+      "noise": [
+        -9.465211868286133,
+        -9.465211868286133,
+        -9.465211868286133
+      ]
+    },
+    {
+      "stamp_ns": 14500000000,
+      "input_sha256": "ece1b4433cb4b7f8f60139458880c0bec94a15f1809ff728e67fec3b14cd437a",
+      "image": {
+        "raw": "d04a44e90d6e89ba88936f3fad6ec5ebfae2bb098de89e6ab9e4f125361486e2",
+        "echo_boundary": "3706aa7ce07ce7e9e799bdb777d5b1278ec5f3faa92927c0928693eda503f1ec"
+      },
+      "tracks": {
+        "intensity": "0eb2935ff9989867c6b10d7688fd48cc2ffcb75b59915ede9e74209013097f8e",
+        "echo_boundary": "efa7c64ea9a7daf70362ae74da81ec1bf493dc27561a74e3d04a5b186f0e9efb"
+      },
+      "edge": {
+        "image": "3706aa7ce07ce7e9e799bdb777d5b1278ec5f3faa92927c0928693eda503f1ec",
+        "edge_mask": "6ed84c96b84f329263bee5655e4d93b3d88cb54de8aa92cd580445fd767f1920",
+        "tracking_mask": "af996ecb65c0a8f9d94a653c7e984444a4f875eab2422fb996764a85772d65df",
+        "gradient_db": "9911755ff62b28462686e3b5c141445c11a2868e986a1c81c7bb124a6f57ba0d"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "cb74644410cb1502a7c1a15211566b6be84207f60f50b8f3acb9f8bc0f8332bc",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "cd1aefb168286eb0b99feda0cff88880d80f9ef85d6f11caeaab309d72aed5d8"
+      },
+      "surface": {
+        "background_db": "59c579beacce09907347d1bf6af702a0f9bea0f1f5596e2efd38cd8c4109eeae",
+        "smoothed_db": "4bb589260e580806e2620f82da4c508a2d1ade77caa025211ad2c62233a82f99",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "1d40b5bdda269181c620108df0b6772698da6f23ccaedc87dac89391199c87cb",
+      "noise": [
+        -9.416243076324463,
+        -9.416243076324463,
+        -9.416243076324463
+      ]
+    },
+    {
+      "stamp_ns": 15010000000,
+      "input_sha256": "40c6a19a8e70772a57454cd947da0d6ee33c3ca1212a915cd3d8057b920d3a06",
+      "image": {
+        "raw": "109cd88a0f8d2cba528f8ef14f303903634856bb3f04d38a9561a84c65d83147",
+        "echo_boundary": "c8df0b7dbeff2b2a9a89c1b2d375536f77eeb288166ed107c4b68ce54f1557fe"
+      },
+      "tracks": {
+        "intensity": "0239d61ef11a2e64250beb87abf67cd74fc516e451becaa444eba35265868b9d",
+        "echo_boundary": "9fda78f741b1b0ab31ad3123c20872082bf3c7f5e2e34a87d9da7aceef87fa0e"
+      },
+      "edge": {
+        "image": "c8df0b7dbeff2b2a9a89c1b2d375536f77eeb288166ed107c4b68ce54f1557fe",
+        "edge_mask": "d0de3722179f48ad209a3952ca45b65943bb517f146e6c2b52b079d7c15f4f3d",
+        "tracking_mask": "0cf9684defffed07c3859119cf24bb87eb174241ebbb3f4563598428154772b0",
+        "gradient_db": "05b7ee87a4a49f47428a58d549d5f9d91951b9706d3404c1863f9f145d999b4a"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "dadf5868b263fecc045f5121a4029af517b70aa36920160d6dbee135f1ee32b2",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "717f5a5ab2f457f9bbe9e00a6bbef166fb9d834cc39a30aa301c0aac7e0b9f34"
+      },
+      "surface": {
+        "background_db": "285b860507dbb42d599e5720e27aab81eec9004402da6e037a5184a7c5d8be82",
+        "smoothed_db": "102d66430adeeffbb95c620d18831d0202b9b111ce351badbf1b5bfc72a295be",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "6912261caff0e703153073f08d7a55b3da8cc529375fbf89a15085ef6f6533f4",
+      "noise": [
+        -10.241059303283691,
+        -10.241059303283691,
+        -10.241059303283691
+      ]
+    },
+    {
+      "stamp_ns": 15500000000,
+      "input_sha256": "7fb98da3903fd03b31e798546c90ecfd705baafc46784b34875596630e275a03",
+      "image": {
+        "raw": "a7c4b4ae50e0220fe7c17c53d0ad8bc5124da188d1003fc0d6a29f6edf822444",
+        "echo_boundary": "f36afbbe74da06d0a678dab72ff7de67f9a3c597d26692f55bb4735d477929d8"
+      },
+      "tracks": {
+        "intensity": "3d3b7f97174fd0a272e7fb9f4f621331b6a92f2301d5b77cfbe7204a50e4c722",
+        "echo_boundary": "6a94cde3db37dd3d4f75a50d084dd0d302aa9ddc67392838169d6c6af54306ca"
+      },
+      "edge": {
+        "image": "f36afbbe74da06d0a678dab72ff7de67f9a3c597d26692f55bb4735d477929d8",
+        "edge_mask": "496a0b05708dfc6dc0ac89e4e0072a92ec8c9c1a17856cdc49223893d8f5bf98",
+        "tracking_mask": "f897eef0a36cb0ff380ca04cb418baa045d214a42ea9ab3d58d652c1d99e1f5a",
+        "gradient_db": "761336b791a18d606196691dbe96dd46cac72a5db01e16185b7d8a0871a62409"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "382f0ff6c39b05c0a5ae9b2237d22b25db76da97884241cce275bb91c42423d9",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "88a06cbccc3e976bfa141b842e8acf4f849a827c16cea7680df0a002a5fc7015"
+      },
+      "surface": {
+        "background_db": "fb07435aa21ccad1f33ca3d9a0e1e5089e7f39274a4bab4f6b4ecfdbb5cb8467",
+        "smoothed_db": "c2c8681f91aec0e2bf53612e13aa312bb5746e57ded567a57ddbaf84d2b67212",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "3bd474538b1442002b9fd984e8cf998d61d5d490dcfa0093936c173418760eb9",
+      "noise": [
+        -10.418184280395508,
+        -10.418184280395508,
+        -10.418184280395508
+      ]
+    },
+    {
+      "stamp_ns": 16010000000,
+      "input_sha256": "a953add91cc3457142df7c241f52ef28dd131d24d550c28806017908cb35f17d",
+      "image": {
+        "raw": "8e98ee1b8abf32d125a1193f0173a63afd4e8e3ebd5cffbe09a1dbc515ef2287",
+        "echo_boundary": "cb0413a699f18cab6e3f4648d1f5701fde431515b105f5b445a19ea61e434a99"
+      },
+      "tracks": {
+        "intensity": "1a1a7f29d5ef511786c9241fa5a568230fd326c668205985e4d3002c96fc701f",
+        "echo_boundary": "db4b62b93c9e80160f76eeade8a617cec2e585e85e2fee168590a843054c1fb8"
+      },
+      "edge": {
+        "image": "cb0413a699f18cab6e3f4648d1f5701fde431515b105f5b445a19ea61e434a99",
+        "edge_mask": "c528e47a386253b4a45fcbd8fb3159902a3603acdf44eeb9dbf7de256e99d022",
+        "tracking_mask": "3050f9cff95463c45a8adfd5e472845b466bcb957140bfedfdd5800ed5ca47f9",
+        "gradient_db": "5b8b590cec41bc21f177da6ae0b6d1d2ec47a996bd8d3efd02505e9c68bf4928"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "d11cbc6bea18f7c1822f851646f9749cc9396d6e8c3b2b81a32a1a208f0feff8",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "3282e24e4107f24d972219de30e2f1f37ee59a98eb782db80d855ea1c0f835fb"
+      },
+      "surface": {
+        "background_db": "e5439a70be6eb48bdad2bad51f7be6e44e99269e2322d6f09b7ae1f0474ea0ba",
+        "smoothed_db": "5645b6d201275781a9f08b13ade4b1b3e0ab0970b942a82e910b33be21da531b",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "5188134ed3bf49d927a3e97eadcee888da9bdb2d437e2be99a1e953ba5137eab",
+      "noise": [
+        -9.191276550292969,
+        -9.191276550292969,
+        -9.191276550292969
+      ]
+    },
+    {
+      "stamp_ns": 16500000000,
+      "input_sha256": "db3de060863a334e862bf9c9797991417264ef63e8caf7f7d2c46c8c7716694e",
+      "image": {
+        "raw": "6e292405ee6c0882dbc19745dcee66ae5c41faccec47fead95ac827bb11971ef",
+        "echo_boundary": "006f497e658083bf76b06b0918e84a1ed56357863137cb4790e074535805e607"
+      },
+      "tracks": {
+        "intensity": "4e94644982fe63078094f317acc3119cb305ae816b401e9e521f3b9ddd89f7f0",
+        "echo_boundary": "06e3b693cee551e4e7c7b5f3beed85d4d51e44ae954257866776151a6cae4699"
+      },
+      "edge": {
+        "image": "006f497e658083bf76b06b0918e84a1ed56357863137cb4790e074535805e607",
+        "edge_mask": "978e824a055a5ffab02a883a05de797aa1d10855ff5c75b3826987934301d00e",
+        "tracking_mask": "29ca5b87903a022c9b5126c834a99aa0cc5b8a9017d37079b2adbeca44370de9",
+        "gradient_db": "99f7fc3ea3e841248ac52c5645fb8fbd6563b8112306d95c72c3538278d8e694"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "0980b740b76b18995dd892e91defeb969dc7907832e1bb7fd959a51d37ac6da8",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "b6b996b29586e5890e8d57b830311c682478e171d1b6467f88a43c29d4756d86"
+      },
+      "surface": {
+        "background_db": "9c31e4d9bb06c4e2ed96a5a456ce82b6e709854bf070e4b6508bdc7332136b75",
+        "smoothed_db": "bf361f2d2411ad17ddc002a32ff804ff7b4d7a42318264233ef5d5bdc4c92881",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "4793b08f06080c0610501e016b949aab086f6c49ffba5fd4b8c2c029f80a5bef",
+      "noise": [
+        -8.946046829223633,
+        -8.946046829223633,
+        -8.946046829223633
+      ]
+    },
+    {
+      "stamp_ns": 17010000000,
+      "input_sha256": "7b327b253f5105d238c2b3822d7781f1b0eb16bcd5a5855a56d809acc03f7362",
+      "image": {
+        "raw": "5b579e31c13e8a5042222ebb5b1f82182d5e113e5470f99533c6b5c204a49e11",
+        "echo_boundary": "42c805117d69540e67baf743d7a776e04b4ba7e01e2a2d4f105d01f060a068e9"
+      },
+      "tracks": {
+        "intensity": "672d4bd04dfbfef5d316e8d0bd0134f7eaa8cca926ccb0fbc5fb7ad6d65a5820",
+        "echo_boundary": "35a4e35f10f19f5c2d8d856bb77623c74c447b61d480e6919e851a20e3e179d6"
+      },
+      "edge": {
+        "image": "42c805117d69540e67baf743d7a776e04b4ba7e01e2a2d4f105d01f060a068e9",
+        "edge_mask": "f1ea8bfb94067a7f4c4298f2379cf46f151003fb91d33181ed293f8901f7cc4d",
+        "tracking_mask": "341ff8ccba66ebf4d05593c50962e60f3e4714bbbaaca484a53eb813b12035de",
+        "gradient_db": "099d13a99b5bea444d04afdd3e176d40d86f444549c2a63ac87a16186dfd1a08"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "387b5c5aeb17448a0a787cf98a4f2bea746b70dfc618a6eaee089c44ca72de73",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "24bbc5ccf549ec6faa0c8ad1a75fd63d687f94d47590309b2521703ab8cb87ff"
+      },
+      "surface": {
+        "background_db": "71818237173f8d8af877e2aadd69be53f29e1a8f627dd9c16d86cc291cab9a24",
+        "smoothed_db": "9db98723d95a061d70d28ee98df5edc9e4012df4719279c4f9a5a773ce00b93a",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "064be6ba9c5674dc98c572af6d865949d0060eb8830d2c00afb5be4608afa1a1",
+      "noise": [
+        -9.041033744812012,
+        -9.041033744812012,
+        -9.041033744812012
+      ]
+    },
+    {
+      "stamp_ns": 17500000000,
+      "input_sha256": "1aea67ee1869b16cbc9f4e556d247cbef18ccc021296a328856fa19579626665",
+      "image": {
+        "raw": "bb5092417c1d29a5988156571e69fca43ba8ae08f36a2b36432e19f894fa7a96",
+        "echo_boundary": "4f5787ded96c632845016cf3b04f47478f9a00d34b826fea20ca120a549962e6"
+      },
+      "tracks": {
+        "intensity": "3ac46fc676a7fa449473718bba25819e1aad6791e8e13dc91aac164d16ac7239",
+        "echo_boundary": "ba8021e1ed95107a4addb36d8cc26900ffb68093c648ddc88bcb24776954a69e"
+      },
+      "edge": {
+        "image": "4f5787ded96c632845016cf3b04f47478f9a00d34b826fea20ca120a549962e6",
+        "edge_mask": "ae1565c5f2c32234be8e99f951b3729ec0a6b6c2ee8a6e65dce062a5dc656e9e",
+        "tracking_mask": "7d75e00fde64fc28e71b4fc2e3b0cbbccaa07d83f7ec141d84361e48f92c7630",
+        "gradient_db": "374d6a30b1e06f898e3ebcff8c1c9954f0e6d41f78daa5da7f69df8100579a82"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "fb94ca4e825ee3e4e357f8cd9022f7c94b3ef36ee9330a87492949bb9b23cb71",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "6a1e1f7759e641aeff4736e6eae217e36400758110b200da59fc868bca599fb0"
+      },
+      "surface": {
+        "background_db": "8cd78b331d15dbe67ac9d94922881b11261dffc6d1b7ad9fe23f3ac24f6a3aa1",
+        "smoothed_db": "25c2a785d7490f7c5d72ae3d2569101975f00752e6c7ba2b067e1815ff0a6ed4",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "543c6e4884d95225f7ed6f08e84855429d083bed9a2c876b55494e890905218f",
+      "noise": [
+        -8.726502418518066,
+        -8.726502418518066,
+        -8.726502418518066
+      ]
+    },
+    {
+      "stamp_ns": 18010000000,
+      "input_sha256": "7a9af0af9350e770f3fd3c064faabecaa9c48bbe79a3c66adbc73fdf85b3cced",
+      "image": {
+        "raw": "10534c2625789a691732e7f44d31ac58dac54b2ec68eb902afe5b20bfb4e85f3",
+        "echo_boundary": "ab8a1c2c1616f32bb09da7eb7d14ed2b5a7f8731db6f634398ca8020050cbfcb"
+      },
+      "tracks": {
+        "intensity": "a7c59abe4b5849abc58b03d03f23f4e97dbbee0935d269aef9b559ca0ab0115c",
+        "echo_boundary": "f1eff131098d5dc7a1c1e2ea34ff0eb061a62a9e263316ad2f214acdad824b9d"
+      },
+      "edge": {
+        "image": "ab8a1c2c1616f32bb09da7eb7d14ed2b5a7f8731db6f634398ca8020050cbfcb",
+        "edge_mask": "c1d4d673fda8e285c75c089dc2f2fdfaaec22327dc4c5d4abe611e0309b28b8e",
+        "tracking_mask": "12813b5346d193bb120d4a87b93a418809cdcaf343bf5dd7f89cc5781f153cb9",
+        "gradient_db": "91d74e6b36337156ff6bd426668e8a8dc77fa160fe1df29f619fdbb9e669ac76"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "a279a995ea393fdcec2c7a859a32299c0dc5a2fcbbf129a686f984f77a8b2e30",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "003c933cadd337254a9e97047932148b6ab8ba4de60e8d8bafc01256548c7137"
+      },
+      "surface": {
+        "background_db": "2410db869add41945848bde8638058fe3e0dc5830af2d948d5b2f4e52f6b483a",
+        "smoothed_db": "ef2a727eac0ceed50d3dfbc1fc87f7ed7a351fc47bcc6dde86958266195d93ed",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "a2f864e97864484946e7e6048a47e40284b0d1bc6fb796985441198c365b1ff9",
+      "noise": [
+        -8.364355564117432,
+        -8.364355564117432,
+        -8.364355564117432
+      ]
+    },
+    {
+      "stamp_ns": 18500000000,
+      "input_sha256": "28b40300b66e13ea9de76487d7a8f01f59a576ee6f02ae817d6a72d6a4f682a0",
+      "image": {
+        "raw": "1706d6bca5f65c7b3832c17a11ea626d8034bf3768421ea12ff00404e3c016b4",
+        "echo_boundary": "40c40cf6c2ec5c53a808899faf8ff63fe800d692a32c84d51ea9d9e4a6823089"
+      },
+      "tracks": {
+        "intensity": "e5fcc7502a3b4ff149462762417e0ce8aaeb411e9139dcb557da00098d62a5a2",
+        "echo_boundary": "dd17a17004660e9a311cd39fe3bf70acd1cf7f5c02432966f15c0338f08d3e69"
+      },
+      "edge": {
+        "image": "40c40cf6c2ec5c53a808899faf8ff63fe800d692a32c84d51ea9d9e4a6823089",
+        "edge_mask": "d59bb1f081c2f701d9f130b69b3f23ede2be649e65dcb9b6f48bf59a157b5417",
+        "tracking_mask": "0556c415f6c5ee71a2c36736fdb999e3a174fe7722f93482522f7d47cf50df8d",
+        "gradient_db": "48c7d4cdf2dd31f869b9fb4ea82381019161b5310b9239d7d61cc6c52fcef346"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "3cfa0431b5c1a25f62f99186f80adc49487c40222421fc02a7059f4aa233fac7",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "629beb4ce7070b6fee273df0645e3db7efa3ffe6bbec4f7f04bd6e22fd12c9bc"
+      },
+      "surface": {
+        "background_db": "3ef07595877c7b0a2216e4a8a2b9e7cf172f731c10871a909e02440a5373591e",
+        "smoothed_db": "59bea16a99609f53d95af4e85bc931f3e8547beeedef6112c8b8603555c56b27",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "df7556d6329f34f1668e5603648f3fdf9ee6aa18ce9b78a201b83bff60571909",
+      "noise": [
+        -8.280672073364258,
+        -8.280672073364258,
+        -8.280672073364258
+      ]
+    },
+    {
+      "stamp_ns": 19010000000,
+      "input_sha256": "f249c9c83c9746e3110d9c6b75708879286249835ea61992928ee0ae1978059e",
+      "image": {
+        "raw": "ac3f6d38f683f0e8c4ba1250a9c09bf007d551e85a89a93eea85d1e2acc06f65",
+        "echo_boundary": "973e4eeeb1efca244e3756996c7f4edc018ee8ebccc933a6e4f7da00f8dc01b3"
+      },
+      "tracks": {
+        "intensity": "3d64923ada69747ab5b7d923696152cb424394f6856eda04176c9ed02fd527ea",
+        "echo_boundary": "998d370b561a503f1a052b3574f3f7c8527924f916b235b97e042a3735e2295a"
+      },
+      "edge": {
+        "image": "973e4eeeb1efca244e3756996c7f4edc018ee8ebccc933a6e4f7da00f8dc01b3",
+        "edge_mask": "15d09aa1a48bca6f570f75698b82da177bdbb8e7b865a213323d6890a93c7850",
+        "tracking_mask": "7f91adf4eabcf6e3327ecdc62348b1208406dd357d274dfad7a67caed926799d",
+        "gradient_db": "5955bd64e74f0aab5a7c61fabf25716abea07060a85e711750d3e9d335d0e645"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "f4ed6ef5d235fc25b3f5986af186f5dc4efd76cb6160d3c248422819c8428138",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "ff58764ab92ff996abf38944f13ee60811e625579e465639ebc04e6f5d7517cb"
+      },
+      "surface": {
+        "background_db": "33e3370e33360014392a8f772067821ad2fdc78ddcfa352338ec7f02112ca355",
+        "smoothed_db": "a31f76e040dd4d1b3e7531e1b13489ce753cf5250f1e64224d85928ac8beece8",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "fce6590a483fb87d70b566557ed235f10f7d44f681fd229ed196cf333600d518",
+      "noise": [
+        -8.052431106567383,
+        -8.052431106567383,
+        -8.052431106567383
+      ]
+    },
+    {
+      "stamp_ns": 19500000000,
+      "input_sha256": "1afc6a5b4b5b4e13e4ca3d2d709597b748b6a0c4036a70d926a24f7101404e3b",
+      "image": {
+        "raw": "6a8de81dea3cbc7dd421b746922a544d97ff65f39ecfb40e3c25d28d21e6f2d7",
+        "echo_boundary": "36dc88c69edb178081483d873430b4472995ca144e1aaeb602c94119179198ce"
+      },
+      "tracks": {
+        "intensity": "e78d49ca53967c399c4346f25e05bb2cf8e60942e386dd9da53c3c90188b5a19",
+        "echo_boundary": "b5b89402e0095d638e19b65eb983ade595c2bca57e000bbb2b129ba59de23aef"
+      },
+      "edge": {
+        "image": "36dc88c69edb178081483d873430b4472995ca144e1aaeb602c94119179198ce",
+        "edge_mask": "7bdac95772be9cea777d6d134dca20d3e6a8c1214f8230d6c58df2ee59fc37ad",
+        "tracking_mask": "6831f171e037aeb4b350cdd51c71d1dd76c6d75c56867a0338e489cc2e4bb7a3",
+        "gradient_db": "41bb5e41d7e33415df61c273659de92d0947fcfc2f6948e4c744994aa90de74a"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "47fe260e94fb4630f19d2ff58b07cc88cf5dbe7b41b4194d7217a5210d3885cd",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "9a61b8477ade10d33c6c1e0dbcf29ddf6d1e097cc745ba3fa22a42873e7f1fc0"
+      },
+      "surface": {
+        "background_db": "ccaa790ed1d994cb7fb641b5b670be70d87c5e8517cf3fbc1dbf85dc3847b1e0",
+        "smoothed_db": "e11f34b5fb428ad51fc15492d55309c36b6c90cf3b57db47f55af96f557b5ce2",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "0be8a4231d7914fed45c916622e6982997e89616580a4ccc6176a29b35ff4547",
+      "noise": [
+        -8.098435401916504,
+        -8.098435401916504,
+        -8.098435401916504
+      ]
+    },
+    {
+      "stamp_ns": 20010000000,
+      "input_sha256": "3895599bdb53b67300dbf9ea0546fd4b6feaad1e7ee06beb6ad9822d7a6781a7",
+      "image": {
+        "raw": "d38efde6425d2866473aef0dd020a8267fde49f013048b71fadfb87734d3ecd1",
+        "echo_boundary": "dec63eb798371e9be80a4cdd84de7063f7bf05ba82a0383c3346173609ba9a0f"
+      },
+      "tracks": {
+        "intensity": "2c024aa0d20680fc4db7f388f299df985f8b1c21122222c364207bbb3bcf3fe1",
+        "echo_boundary": "3e1155adb04f1e26006b18daecd3e04a31d25d84e701a5cca17213bff7b22b4a"
+      },
+      "edge": {
+        "image": "dec63eb798371e9be80a4cdd84de7063f7bf05ba82a0383c3346173609ba9a0f",
+        "edge_mask": "4746e1affeeb987f6500bd55eee149724ba3b432017ba5a3faf478b4dcbe0aef",
+        "tracking_mask": "8f366c1af753873e00e5fd23e01bac8afdf73d08b25c1f7292a5ee7c1825a90c",
+        "gradient_db": "5aeb468662ee8614b4daf0660a95b544ebe68872cbac0168f957d877c476d06f"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "276cf978ce46a8b697db809ce46700cfb5428334e137d271cd89d6d39d64a6d9",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "9f41fc5e2396e7cb99055401191fc82516effdfacba5ea7813a5e44daeec151d"
+      },
+      "surface": {
+        "background_db": "d31c2121d180fab5ba337bd1b64f390d6a0ed0c5421f5b7bda96049813b2734e",
+        "smoothed_db": "3044c9e3049d30b0001288627ce64e24df6ff903fbdda729d61a5fe429e63d85",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "8f7644d26a7e5a6a009f6206f02aef335e40294625f0506b759479288db66564",
+      "noise": [
+        -8.412322998046875,
+        -8.412322998046875,
+        -8.412322998046875
+      ]
+    },
+    {
+      "stamp_ns": 20500000000,
+      "input_sha256": "6b0d48b9f31553cf62c746729304fbae8677a3a09980cc8d5fc122611f4adb62",
+      "image": {
+        "raw": "941f67a65488cdb4effa3c701aef216d1ba4062240bee4b7ab65c7b36fc87a37",
+        "echo_boundary": "fb7bcdafe89dcb7a437b9aae28c509f9bc8f4210c07bfde6e4e70fb3720b99e0"
+      },
+      "tracks": {
+        "intensity": "92c5a8097e9f3d0428b695318fdeb81adb502fa17687f41092d16a934c3ca921",
+        "echo_boundary": "1ed57a8a0e7c4e572baea0d46d1f4997319827c74ae8d85e470b27edb982d416"
+      },
+      "edge": {
+        "image": "fb7bcdafe89dcb7a437b9aae28c509f9bc8f4210c07bfde6e4e70fb3720b99e0",
+        "edge_mask": "817ad9abd1026e305a5e4673662b8f33894ea1479204cce135077c2c57f67a0c",
+        "tracking_mask": "fdd7dabcec6e50c19beee0d2a65070259a374ea38b4d49d4ca07500f7ac1a39b",
+        "gradient_db": "60a614769e71965965d26bed8d01dc8768c2ac11f71970458a381199da53e72e"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "1106e42bfb682907b4354562be68362a1b30776326741bb8c39f25143cdf7659",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "5a1596a81ebe4f36eafec9a5abf290a3daeb6f8331dd327691c66d2303357d86"
+      },
+      "surface": {
+        "background_db": "adce959f3be5cc148c293ebe29a15f6f27410924706dcc26b435a5ac0264bf81",
+        "smoothed_db": "549cbfa4979a7af6f85b7790c70e87eebc546e25b9899ea2b9692fe088e5edf6",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "fdaaf4b119462f31a834ba3e0c0a81214bb15aad8df776615d68a95bf6de700b",
+      "noise": [
+        -8.390173435211182,
+        -8.390173435211182,
+        -8.390173435211182
+      ]
+    },
+    {
+      "stamp_ns": 21010000000,
+      "input_sha256": "44aab446dc3f9394f45543847d7f1568b9362dc4684ed0aa113bf43a23c59f3d",
+      "image": {
+        "raw": "190ad4b354963b70501d4be1afe5577aea67dbc446039aa1d9de10eadf6dfb3b",
+        "echo_boundary": "13ab72a1540dba89f9cfff9834887b1127ee3b235737328824f79d8c77b072ec"
+      },
+      "tracks": {
+        "intensity": "68035055adeb77587e4bceec81f7541671a4429fc370252a9afc8e7a0fe91c07",
+        "echo_boundary": "e45cb02efae18b30306a3063c586e2996e221536256fbb84c0dd937d8e165880"
+      },
+      "edge": {
+        "image": "13ab72a1540dba89f9cfff9834887b1127ee3b235737328824f79d8c77b072ec",
+        "edge_mask": "74799195fa08f4c4aa4a6334bcfd58f57d649884070caa9631f62d29e22b486c",
+        "tracking_mask": "fcf2e8343859b26f714e18cbe0566aaa24f8250266010b70c904ef072e0d81ef",
+        "gradient_db": "bdcc9e1b6d20f5b2713c91b0eeae62846ef1fc23a603338b5dfa487181e03b18"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "45382614b1d40f7c2fb1bcf0ff1c9c1bafbf5a7c1c87c306385a2b2aebc492f8",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "7786d954b58894be625722cad3043457b73ecfc911c2de9b29cfdbf91677f7c6"
+      },
+      "surface": {
+        "background_db": "7aaccc93c1d3029debb885ddc6eb937c7b21ca612e089d8c6fa5041a13ab2e0b",
+        "smoothed_db": "411a2cf7f12c87d7d26291545452a144a0d1f08bdb519fc4be49c19937d9ca7c",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "f324a84490cdd4079641b1a0d578296a8937dd437d028195dc516ffd646744f6",
+      "noise": [
+        -8.019489288330078,
+        -8.019489288330078,
+        -8.019489288330078
+      ]
+    },
+    {
+      "stamp_ns": 21500000000,
+      "input_sha256": "06ef1eccc7ec29f5e82b730d8c86cc08dd03c60aaa4cb8a3c757ba425170b945",
+      "image": {
+        "raw": "a9f4445def07f48b773e5256639ec79be8124d59b7cab767f9b349cf94bee291",
+        "echo_boundary": "45c75d5b4e38ddf17ad95e65b7fbe4600737b978dc933a9b71d80beef6584498"
+      },
+      "tracks": {
+        "intensity": "95dfd8d34d4c69bc6f36bc2290b6336f98f5971fa18db6e489f0329151c00ade",
+        "echo_boundary": "9b4a5c890525f1751181dcb5a9711d376c2408e7dc46166788dac1c2b6b6bf69"
+      },
+      "edge": {
+        "image": "45c75d5b4e38ddf17ad95e65b7fbe4600737b978dc933a9b71d80beef6584498",
+        "edge_mask": "88b340b49596511046d7e99cd09b07422f08c2b3b241de08730195ed8a85994e",
+        "tracking_mask": "46fae58c5994a44647ed323fb3c9c33eac033ada0d83d780cc91ce5507dc1245",
+        "gradient_db": "0b27c3e8ab1ae8a30a3ebd1e58f1bdfd5d7d2e71e403b580346fdb6c8d007246"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "10f5619be83673be64fd649d117a15454872c6d692b73da9407d9d649c3aeba4",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "fab97ec5af778043de22044132c31a93d3ee2e3c3753cf8c731606c7c35f4173"
+      },
+      "surface": {
+        "background_db": "55df79bae220d29ea0d521a36b36b709828375568520844009a516ab2f078af0",
+        "smoothed_db": "64457ad542d07bdec72b0f9906e4650714689e3d9e1d5ef0e45cc898a558a79e",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "616ae55c3c6bdd55cbdd57566ba03e236ba3b5ad0dce4c9316ce2238b45b54f7",
+      "noise": [
+        -8.465806007385254,
+        -8.465806007385254,
+        -8.465806007385254
+      ]
+    },
+    {
+      "stamp_ns": 22010000000,
+      "input_sha256": "d90a66e4cb4ff733e4a6ec1e0aa4c9cefad8b06ed6573172854044c29f023634",
+      "image": {
+        "raw": "89bfb4fae6794deba4adc7cea5213b189960a1d1a56bd036436d5325340fb494",
+        "echo_boundary": "88fede22bdc1f2743cf13c02d8dfe58937931a20686382ade537f0f88abcd763"
+      },
+      "tracks": {
+        "intensity": "4f5e40d88f15dd8c93b92b7a515ca489e8b8a591f53631b8821cd2bd9cad0b74",
+        "echo_boundary": "77653b29418e086a1ff8f57d1599d968721a4c2d54891e892adc8f3a58a99838"
+      },
+      "edge": {
+        "image": "88fede22bdc1f2743cf13c02d8dfe58937931a20686382ade537f0f88abcd763",
+        "edge_mask": "144e00117bf78f2b676fd507958fe9a375b15a5ebedb1efd99595f62de7771fb",
+        "tracking_mask": "da4f60d53bbfe603a0048b4ee1281757c2436749b8dd389f17dfac57b8198680",
+        "gradient_db": "4ac73867cbc481c4fde5d892d09676f88995a065c180b11fe8c7997c1e9e025a"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "9f0342b47a54f9e5dd256c4cd855511a95b2c9ddda3611aaddcc24f90c6b46d1",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "c90374db599e31e04f819063c1e7794b88a8ac807f44be3ed70b95f1ba46ffce"
+      },
+      "surface": {
+        "background_db": "2cc2abe848c684a1232b3af40dc8039b22bb383136c6db080132a85412ef6bf1",
+        "smoothed_db": "91b6300240f789e707c23416111a966096f1f067fb7efce6c7da61599cfd52d9",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "45e4ff526d5460081067572065109ec3bcb11d783b3d283309bac74cc86bb85d",
+      "noise": [
+        -9.111456871032715,
+        -9.111456871032715,
+        -9.111456871032715
+      ]
+    },
+    {
+      "stamp_ns": 22500000000,
+      "input_sha256": "0a7ff36e94ae9d8b16023efde9e0ddb552b8610275e332ed3bdc9b21bf61b748",
+      "image": {
+        "raw": "4dafa9d38c10fa540bccaa6bceb67834d1210d9ef6a61a126c12f139f604f975",
+        "echo_boundary": "f8b4436b80b992d57fbb131c3cdf0ab69464ba45a111f42db8996e0de5dad49f"
+      },
+      "tracks": {
+        "intensity": "68baff3678d6c55cec09fd85f7dbff31e40cc4148deb2d93d951b150bf8218ed",
+        "echo_boundary": "55cc7f0de6f6e5684edbac11b1d4c6a1419a3f245252abb20118be8042749a53"
+      },
+      "edge": {
+        "image": "f8b4436b80b992d57fbb131c3cdf0ab69464ba45a111f42db8996e0de5dad49f",
+        "edge_mask": "a5c243a6a4c32cdd9ed306a19273f9d35c0042f965bc31ecb071ea88202eb600",
+        "tracking_mask": "a1e0b10dcfa227fcbbc6861363b72d5d21bdda31293d2d7ae9ad2a031f3f8dd6",
+        "gradient_db": "644ae572798ea864008e6059234a08b55cc1980f7b2e0467efd2b66ee6c6497a"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "7c5e748bfc42acb080800e4c768ab10cf657bab8b23800b4faa1d7e09874188a",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "3a0f38b64c153f6f2f6f7a86d7ccf52ff5963b84b1f1ceaf163cdd3d9150ae48"
+      },
+      "surface": {
+        "background_db": "2a37a8a696c972585fe27deb8e2e763eec4fc059af69c4265431f265148817ea",
+        "smoothed_db": "55673cf792f0d3f92bd7091e2174ddaadcf0853fb5ea72154ac2fd149ed78c17",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "f214c7e3ce5465ec543b5ac84c4e662f9b62e721effa251efb70e8e8804954e4",
+      "noise": [
+        -8.446417331695557,
+        -8.446417331695557,
+        -8.446417331695557
+      ]
+    },
+    {
+      "stamp_ns": 23010000000,
+      "input_sha256": "26524e4893dbb822a6ab3dabf78d647c8c1a6016a383de480f9584cbab992b97",
+      "image": {
+        "raw": "d9b4dfcfb55515b4c1e81d8170d91a396e2ac25a4e03cdfa215762e8d36319e5",
+        "echo_boundary": "42bdb4b11603585a051e9e9b7a2277a43a0f8628d3d3abb8411c2f7171edb401"
+      },
+      "tracks": {
+        "intensity": "238688392e6a12447a2eb8fbaaf5ef293a693ea92d9b03f7664598499ec683c9",
+        "echo_boundary": "e75d6e1b85091cef1878e3fedd05b9ee08a63418336d9068184a114fc38c5be9"
+      },
+      "edge": {
+        "image": "42bdb4b11603585a051e9e9b7a2277a43a0f8628d3d3abb8411c2f7171edb401",
+        "edge_mask": "3011134bf1705ab437c6114896d489e1d8f457a66046649facf88141ea4d274b",
+        "tracking_mask": "25644e1e5602c5e664e626930bc955208a26fa7d4e6420d3f7ae3e943669db26",
+        "gradient_db": "52f202c7ddd8303ee0f8034eee4a572c6c3ae3043dc50366ded1bf35096418af"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "5ad4cab2a1b85ffe3252344ec935c2bad9d1a2a592bc57c6b3bbbbc8e9c30475",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "cd6697b40e73e84afd296801227077f732621d7af528e8460666b698f52ae34d"
+      },
+      "surface": {
+        "background_db": "7325aec543f19e2cab71599989fffa0ab9ebe09e8b22e6560b449667df945491",
+        "smoothed_db": "0a4ea32c4a57cc848f9e6857d093bef5cb724215c0d9aa53881db4b8cce96588",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "eaca3eb29efc66699fb7122f73ac9a28cc0aaaec55ba5f42b3f8123dac89ae84",
+      "noise": [
+        -8.3816499710083,
+        -8.3816499710083,
+        -8.3816499710083
+      ]
+    },
+    {
+      "stamp_ns": 23510000000,
+      "input_sha256": "61838fa0486b5fc5b937d6ad3d641e260486f94739541bf1ed544ed229f6ad85",
+      "image": {
+        "raw": "3edceaa759e12ee1013a0a860ab4975f9c4a4a33549f67604d7cfd24f4465a16",
+        "echo_boundary": "a37cfe6dda06569eb8020fc79246192fcefd9c4eb3bd7ccdc292344be8856ff8"
+      },
+      "tracks": {
+        "intensity": "55dde2e212836a61f545c933a698ee46278fdcb6b6d294cdc5cf873a1696d674",
+        "echo_boundary": "4a6b8ee18780d44e32f3506f41b463472fc6bc7f1b33d4689c02bc6e4002a830"
+      },
+      "edge": {
+        "image": "a37cfe6dda06569eb8020fc79246192fcefd9c4eb3bd7ccdc292344be8856ff8",
+        "edge_mask": "adf68a7666a03b79ad6741f0cad17cab91f187ffdae5975b3362bc5ed487d049",
+        "tracking_mask": "a1bcc89eaed294796bb044c850f844100ba915bdd416680cbbd0aba82badfa0a",
+        "gradient_db": "60208724b2a488707531649f7f658193427ffc85ed7f51b6695f484474670854"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "325face4cbc7302c5b2a64179d470248c1263a92316dde379b2138a3304dd25d",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "42c65b9ddb59689e74b4eccfa63a517beca9eb3d72a5ea2088b6b43d2cd9fa59"
+      },
+      "surface": {
+        "background_db": "6cbd1f541bdeedee84b7b98de422b0710e21bce4c63a47972ab51ea71f2f57df",
+        "smoothed_db": "5edd0f28b7c2181bbd916415ddce5295e100eff70df984111bb844c365758a24",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "368c14397055fe65758c2dac8318ccdcbd422a2d87515363b025703edf4efb52",
+      "noise": [
+        -8.221384048461914,
+        -8.221384048461914,
+        -8.221384048461914
+      ]
+    },
+    {
+      "stamp_ns": 24010000000,
+      "input_sha256": "dfeaca058dea1b5ba16221b24b0a530cb249c7df265029f650eb1825a94ba337",
+      "image": {
+        "raw": "f59e24794285afacf0fed6ed085db9556f0a991bda53d6c3824259d43e34df16",
+        "echo_boundary": "c710ff8561da1b0d4154e0ab26f68c28400f608a537ab0561baa1885dfed6d61"
+      },
+      "tracks": {
+        "intensity": "de6d9db8c303405def5c3e9968b7b4e228c74370f760dcf3c27b909158c83d6b",
+        "echo_boundary": "dbd6697208bf021816082e972109d05b790cc78a393ad307b7552d4a26b646f3"
+      },
+      "edge": {
+        "image": "c710ff8561da1b0d4154e0ab26f68c28400f608a537ab0561baa1885dfed6d61",
+        "edge_mask": "6fc3e586b40df72fef7a24bd4185cd3755f6570d7eac83f94c70411dd591273b",
+        "tracking_mask": "50a74bb47d72198a810bb8fd88bd2f94cbec317948fb66cd095799f57ca80ccf",
+        "gradient_db": "7c65a09a11f6d56c00d174cca2b39597d161a89f1f6c4bc67d7babf7110a0dae"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "75e8f6c07cfa3e1d1fdd89e6a486ff1d411ee9d5d0f9a24e84fb8aa15e6adedb",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "37b8249a6f8082e939594ae3090495ab13072f51b23fa7361e19bde03cf81592"
+      },
+      "surface": {
+        "background_db": "18f376c8a3504296d285f4e18f4e436665e6e1b3be917d65e7b7335ae1d06a0f",
+        "smoothed_db": "e4a7d6ff677b40f7ad0b64c451dd3a34f92b952af00e924144b640ed26d277a3",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "19d577a5a3f3d2d0b687884fbc33a152e58c4543c470040bab4cb2c2b607c312",
+      "noise": [
+        -8.597372055053711,
+        -8.597372055053711,
+        -8.597372055053711
+      ]
+    },
+    {
+      "stamp_ns": 24500000000,
+      "input_sha256": "d1a9d33b88101410ff2066b750f4fce4e236a72dae1408cddb64c046d77f7651",
+      "image": {
+        "raw": "3df3d3866c2296f89748d5a7b4817309f4745a3cd7adf181457785711c3994a8",
+        "echo_boundary": "68c0fb0d23ac90845fb199122310a25cb80e92678bf695c2751c63efc2446708"
+      },
+      "tracks": {
+        "intensity": "03d4d52dd5ff22d1057c23a67790944e3f2f007d82c93a8f77b4f4cb8287a32d",
+        "echo_boundary": "4e17a5e7b1324a9202b91082c01b4a6ab0486953313f9f859baa58830284c8eb"
+      },
+      "edge": {
+        "image": "68c0fb0d23ac90845fb199122310a25cb80e92678bf695c2751c63efc2446708",
+        "edge_mask": "0749ce9bd73d71fb93ce98e95c9fd1c3aac885f8e2669ceefde5fe3730e54a84",
+        "tracking_mask": "6c6bb9d75e3b85a702d45b93901c8858cb732b7ec37be60b582513cabadc8394",
+        "gradient_db": "c853361e29218568c5e425af0b7c00a793dae180e0b742f51101d52d7f73f642"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "523a28b74b3012f8ae62df60669ab1d492af885e2d7cb7dff5ba48c231557098",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "ed743174dafbb90c626082edf5bb2bed0c97ca8de1e6083ee7fc5d41d4c94278"
+      },
+      "surface": {
+        "background_db": "20ccb6f20c715fbaef7f4267979206106bbe6a7cad5504ba7942f270101be586",
+        "smoothed_db": "c764780aefcea04c3ca7b1cbc7ef0e5ce7b2a623d16a9d8c1f031b10db6a6c67",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "1d58f5ec0925fa6c05807f8470d70f501229a596081a74e8626b360be1d5796d",
+      "noise": [
+        -8.359037399291992,
+        -8.359037399291992,
+        -8.359037399291992
+      ]
+    },
+    {
+      "stamp_ns": 25010000000,
+      "input_sha256": "0b32058fa1553bb3ca9f0c4faecaf3e7b236a6ee8eab07a61aa128793ae1c409",
+      "image": {
+        "raw": "f4b723b29477c2b0657240c13aec7f053c9d211adf83034d2633b306f38c15ed",
+        "echo_boundary": "41274f80d3465cf16cdf35fa6e9af01d2046cc4135b6332d969eafae46d3d322"
+      },
+      "tracks": {
+        "intensity": "1810b1ccb5ddd8e3ef5927a86b8e097abdd6148d1b34f8138fff64b041be85d6",
+        "echo_boundary": "d0a76fc61e05f92d25fd33f64115afd984e268c148467e7c1cc4a4fa43033455"
+      },
+      "edge": {
+        "image": "41274f80d3465cf16cdf35fa6e9af01d2046cc4135b6332d969eafae46d3d322",
+        "edge_mask": "ed770bca770194eaa2c905d0d2d004019ce27244d719a29812e16dcbaec58163",
+        "tracking_mask": "421672f174455192056239c73e8185fb90b6cd5ee05e0520923e5e7e4b98dc3c",
+        "gradient_db": "3385f92e24638353e20ad435852c735be04db5e5cac354441f1b537e125f7f07"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "387cf23fbc20bb5182264c97167bc0ddd5d745b295e3449770bda8ee893d4fe7",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "d5b1acd5b97d7edf5e01ffbe64763478c416c405701b5c94ffe1aa97829a07af"
+      },
+      "surface": {
+        "background_db": "312969628f6ac34da6c8b63c85e028f4561872b5a41684862e0bbc061a0b3ceb",
+        "smoothed_db": "b2cb790f315949fb44983c5873417af34a8a648bb0810fa1b110baf742021653",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "427b17f0a17c95a113301ef332d29655d967073c69002b662a2bc4a4f7f24268",
+      "noise": [
+        -8.207746028900146,
+        -8.207746028900146,
+        -8.207746028900146
+      ]
+    },
+    {
+      "stamp_ns": 25500000000,
+      "input_sha256": "f010d27271997b19e1b42591148f1ae5174a62beb319ea064a5067cb46601877",
+      "image": {
+        "raw": "5f7dbf794680a84ddcda0b117c3b13fae9f2a2ae1bfa8621cb8620643ecce092",
+        "echo_boundary": "d951537291ed58bf2177a3db3dc95e535322aed3facd53ec38bca6acbe9e5c6b"
+      },
+      "tracks": {
+        "intensity": "cd005dd3025e16cb01495e3bd07e1bef233d6293581eabe4601f7e77fe796065",
+        "echo_boundary": "a4fed4167e5cfc46d0ba2fcf62e963474aca699c0517c5d26af599448e627e71"
+      },
+      "edge": {
+        "image": "d951537291ed58bf2177a3db3dc95e535322aed3facd53ec38bca6acbe9e5c6b",
+        "edge_mask": "8cbc4fff3a649218c113349f39bdc0cc94c23979a46e1d98cd12e5eddc9e3574",
+        "tracking_mask": "039dc0d0d77f3ee401615b98b78cb1025dffd989739b2137985803830cb009d5",
+        "gradient_db": "9e239dee392ff9fc5048828ca6c3d9f8d32ca988113ab7b636bd0e4bc4ba9250"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "a7a40cd7db33e6d79fc088885a41fdd258958af5b6a393060278f7af8c0593b3",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "321b3ed8cf87356aa9f280cdb11430a7ad0e90da6a558d42e50522dfab5b9c4b"
+      },
+      "surface": {
+        "background_db": "2166e1e37ea1ad4358375cc8cb3e7014d2b0c4ded4531397c8c61cdefd1a2961",
+        "smoothed_db": "9f9dba05b7346185b3e7a38172c4049eb50fdc1bb9ddb8aa46896bb92421d02d",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "a4c876e78101106cf0a9bc5967d92b6eed6f05c0eeb6dd7d39887c8e95285538",
+      "noise": [
+        -8.294605255126953,
+        -8.294605255126953,
+        -8.294605255126953
+      ]
+    },
+    {
+      "stamp_ns": 26010000000,
+      "input_sha256": "28151e38f00e76fff0fe54cb55bbaf89c21dca3b979e2fbc1a7f59c649b58c83",
+      "image": {
+        "raw": "7ffa48086ace7969a26acbb6bf1987354286f464ce1e1c237c7f922005fa6b10",
+        "echo_boundary": "2b3d55af5cec3ec81111c7618e8a713d73118486c4ffffe34f0393573e1ebd09"
+      },
+      "tracks": {
+        "intensity": "d5f2d9accaab66d04311b39f3ba3944bd7d25ede81c9bf5aaa5fd6d7102ec141",
+        "echo_boundary": "9c602ca4da7a69e6100a2820a2cacf1339f700b50bbc94f5ba3cf5d943d94d88"
+      },
+      "edge": {
+        "image": "2b3d55af5cec3ec81111c7618e8a713d73118486c4ffffe34f0393573e1ebd09",
+        "edge_mask": "d5ebc042c7c356c130490e7a8a23e285f15dc73687ddd5b88f3c502abdce3fdd",
+        "tracking_mask": "89262444388c8337cc3bfc43e51dd6c6a18e2af3edad7acac7a544ef12b70a45",
+        "gradient_db": "18c186be87a3f034327fa1efb399d36fdf27c972747e3583f926aa2fefa56bf4"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "1a33a990d80e738114d7226ff538b205bf672c5ce805a429658a07d5112bd22c",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "696666ed34cd9e081e04f34de831fe5ab272fefe56fd84ad0990f8da298187fd"
+      },
+      "surface": {
+        "background_db": "10bebcf5aea63cc35b5888b865d557648b31ea7444b8acdd46e06b8bb9ef7607",
+        "smoothed_db": "69f8ebdc2cddb7195e8947d6e085e0db229d56df3aaab320d8867863a120bd5c",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "cae1429fa5ba5ca6259114620704f747d836db09378a510dd5fb932d6b497b79",
+      "noise": [
+        -8.148515224456787,
+        -8.148515224456787,
+        -8.148515224456787
+      ]
+    },
+    {
+      "stamp_ns": 26500000000,
+      "input_sha256": "d1d0fceff5e9e01e68555e931422cc874733ac031e072e61d2fab4f94eb73bef",
+      "image": {
+        "raw": "3c2e3f7dac322192c6fb4639bd04d79f29b725baad096c8c99d4169ffc8b3a6b",
+        "echo_boundary": "d38d7b2de0576b0cadc55d983d791237b741e039e3eb33928318a6bb5af8a63b"
+      },
+      "tracks": {
+        "intensity": "b002d3b9e1452388cfbe1aaff204a351533806f8cb13ad67c3591419106f1c22",
+        "echo_boundary": "9f5bb5078bb9e880f3c5267c6c5b9d0695658d8e4099d15ed0dc8f33431eb155"
+      },
+      "edge": {
+        "image": "d38d7b2de0576b0cadc55d983d791237b741e039e3eb33928318a6bb5af8a63b",
+        "edge_mask": "3777ef7a86acf8c6e0e6df79989232700f918daef8992ce18c7bdc1028690dcc",
+        "tracking_mask": "de1b25801c450492807efe1ebae4a5b42c6205a2ed8793f94f33b2c5750ba955",
+        "gradient_db": "33690fcd643987766cb857180ea3e60bb02b42dd3c7e252d6d0294c046257853"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "26e06ffe3af6ae7c6e2beb5a3a8acf2a7d4c8322801f448b291189497c0cd866",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "67aa8192f55cb4567be76f9187ecb420d969bf49045c518d935b0e17196599ce"
+      },
+      "surface": {
+        "background_db": "fcaa4e750ca2f5c421d1f68d6dee84f68a79d72bf13d2fe9e15eed5410d281a6",
+        "smoothed_db": "1d8992478ef34811d234d32a78462336654003cfd8e34a4d9734391087581c7c",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "e2f700588403960709925cb58c4eeff55b8900da9947f324f46a586874246b71",
+      "noise": [
+        -8.490981101989746,
+        -8.490981101989746,
+        -8.490981101989746
+      ]
+    },
+    {
+      "stamp_ns": 27010000000,
+      "input_sha256": "dfd6848784a2bc48749bc1091fdb76e82c390ecedd472ef6cd2eb0f349da306f",
+      "image": {
+        "raw": "9d574cb1410d1f87c76b8bf022c259864e9b3da3e332dfaf2ce7d74fc1a219b8",
+        "echo_boundary": "0fd32f37b5ebf6a520a09968fa8e28b45fe5f8a8d7f91ba5c58dd69686d8c56c"
+      },
+      "tracks": {
+        "intensity": "282fb76006faaa38e15408ce3fca07380860066bad96aca9bbe909cb94010e33",
+        "echo_boundary": "8ecbe4c7c5a49c785f6b46d5c7880044b2f4508e500d3d85373722e12298bbc5"
+      },
+      "edge": {
+        "image": "0fd32f37b5ebf6a520a09968fa8e28b45fe5f8a8d7f91ba5c58dd69686d8c56c",
+        "edge_mask": "7ce1467a6a4398f85b720d6755864ab7060b24c2c4ed361d80310fec7aadb15d",
+        "tracking_mask": "0e6ab219986c4f809b2cffd788170db99d616a1dd39a764fe66539fb4e83d737",
+        "gradient_db": "a58f1dc4300cf9bcfc4e3816437f7e4f94b06712c5aa2048d64d8ed7639d265e"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "7faf9d2147e2ea74a5d1a8d3e3eda960fa828ddfe0a947fe12c5548eafbdebcc",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "3bad42913b13584bb9edc15e7e57e4f9c830437000028b568fc68e7c28ac4676"
+      },
+      "surface": {
+        "background_db": "8976340a04ce8b5e98e77c52e6145d8b011297f23ea1c2670f591264e6b958f5",
+        "smoothed_db": "5b8d938243406600d337613940131e3aac30515c41250db3d71184ee4eb4d0a7",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "76cba066b42046ba2af5e877dac715615d5bc66138ebe922afedfa1e0fc6ce26",
+      "noise": [
+        -8.594200134277344,
+        -8.594200134277344,
+        -8.594200134277344
+      ]
+    },
+    {
+      "stamp_ns": 27500000000,
+      "input_sha256": "8925f637b79590de38cb24d59b917dc83fd32e3dcf9399de38429c713e7259f8",
+      "image": {
+        "raw": "bfc0d3c8c3b57b5c8752602962478a197f4c284a0fee2fef6e14f4aa0aba8ec5",
+        "echo_boundary": "04a74554bd5b74906c4cb82203e3598a6a504f5917eb920f9a1948963cbd26fb"
+      },
+      "tracks": {
+        "intensity": "c12bd67e76f74560fddddcede3a3cfc68b1411c2094b0f74d50bc3632bcaf9ba",
+        "echo_boundary": "2b75d19ca660d4690c7f20a2a0ccdb0bf4334182f1072fddb0e49f0dbd28f524"
+      },
+      "edge": {
+        "image": "04a74554bd5b74906c4cb82203e3598a6a504f5917eb920f9a1948963cbd26fb",
+        "edge_mask": "be79ff52af37c8b64542272323a8cc7a83aff2ce3879c2813cec70a8c3921f58",
+        "tracking_mask": "5c2845d61702d7fcca6bb354008b8e9c8eaeb77a4d1c61d165929fce049ca778",
+        "gradient_db": "3a01c8add3499d3fc71583372c88012b300784ba3dbfa01298cf14e2945a5f00"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "0640826dcb77fe1b061cbd84f0de3529c4965ccad0b92ebb850f576f8d9b6952",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "1288c08eb3602dfba981e39bcd40c5b93dcc878a4704e7328d121a397ef847fa"
+      },
+      "surface": {
+        "background_db": "23880241dd9217a624b393fd15618736b8457dd7db3af6f1234c8e17f1d08647",
+        "smoothed_db": "f59a3623cb5d11a5b2f66167ead4994d3f8dce76ec3728db7bf12ca03344742d",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "cf67d46a16b310645788324f47248bfbe4c8067d04385bfd487dc36e93efba91",
+      "noise": [
+        -8.176010131835938,
+        -8.176010131835938,
+        -8.176010131835938
+      ]
+    },
+    {
+      "stamp_ns": 28010000000,
+      "input_sha256": "9856dbc1497839b69984982e8d764d913363de2cde04bd6146248225c826f9be",
+      "image": {
+        "raw": "68ada3c7287b4f2ad11df6cd6d5330a50ceeebaaf8579ec2bb5613f7e08c6231",
+        "echo_boundary": "88a6ad5ddd00d92dfb71027cc9cc391203af8e8d1fd39c3349c297cc59e13181"
+      },
+      "tracks": {
+        "intensity": "314af4e1f0d1a7b200d2d7a07fe6d70a664ee67defe02ffff85977e6a18a01a4",
+        "echo_boundary": "89b15071b45e18dbd1118554cd1f785ea3fbb52466f54574570ad6a3607fb1c2"
+      },
+      "edge": {
+        "image": "88a6ad5ddd00d92dfb71027cc9cc391203af8e8d1fd39c3349c297cc59e13181",
+        "edge_mask": "5740d2ffe47ed690ec7b2481faa6e0216958326fe97e123b17762c85b35336ea",
+        "tracking_mask": "becc2e0deef846afdacb9fe7581da07370df07b8bfcfdcf53182204febf74176",
+        "gradient_db": "03f13062e44dd52eeb3727a6cdd5dcc687ee6d268f8da33090adb913f0ff09f7"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "c8f4aab063fae0928455b344fc32165f8513c9f4775f45354b684b779b6b5358",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "0b8eabac3029bdf5acaef1056c7c92960369d8efda5b1be4099f89647efebc0d"
+      },
+      "surface": {
+        "background_db": "343848e5de00381f08f0192c3c7f13e43575de406f23d60195310f7a769ff83e",
+        "smoothed_db": "8553d77ccd639e906a4db04554e5cda9336c0bb1984dd763f2d5e0e8ea119caa",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "99a577ed62076c82e2efbcce04c04defc92cfe1864d12b7d8ce1f7d41c48a442",
+      "noise": [
+        -8.20945930480957,
+        -8.20945930480957,
+        -8.20945930480957
+      ]
+    },
+    {
+      "stamp_ns": 28500000000,
+      "input_sha256": "a9ba36b19e0e16fe49b613d1dc3e12005b0292e700b83a2908f3605e88403c02",
+      "image": {
+        "raw": "5e26535fff00645b460435d67d1003ee79a4db897ba0fe738ec28d8a766ae321",
+        "echo_boundary": "7e24fcb44ec7dbc93d1bfcd6213ddc977ef1d4b653eb422d77f36cfd9b869ac0"
+      },
+      "tracks": {
+        "intensity": "816ea72df7b89c843019b57e58984089bf361dd2594c2e7e952589d229a1af88",
+        "echo_boundary": "88e2b9fafbd2586981883bc4c9d3d32e3cd36a417e90339cfa7f151f34b81f34"
+      },
+      "edge": {
+        "image": "7e24fcb44ec7dbc93d1bfcd6213ddc977ef1d4b653eb422d77f36cfd9b869ac0",
+        "edge_mask": "6e71d790af979b69c458f2ee686b96291b93ba79176131d41e6869dd5e5ea99c",
+        "tracking_mask": "2d1e4645d32cd3d1eb98c7ce3718345d18cc119d0ca3b7c74fb6f95a878294f0",
+        "gradient_db": "96b8fa53d7f01c2ac1b7fd5f5c40e78b2fa97dec97e042ee366840bf0899a3b7"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "6091f2e98eaa12a6a6999d835995c59ccbe3d9fb061a9f6a57f246b0a590ebd8",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "1b30dc6c0b7f46f25ae4249f8788f42f4ca8be5acc19821c1a819ec488653796"
+      },
+      "surface": {
+        "background_db": "0e9fbc7beb198d0364a80a1adb2ef34c68217be93c12678c0fe8af5fd12c90ce",
+        "smoothed_db": "b26c47909b658ed8df48d42345702c3d6b9daeb5d2a7c1c7af4b8a19d57f06fb",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "79fb53915ecdbe325175581924510d4ee4002f2bc2139908f1f9c72acf4d1bc1",
+      "noise": [
+        -8.243511199951172,
+        -8.243511199951172,
+        -8.243511199951172
+      ]
+    },
+    {
+      "stamp_ns": 29010000000,
+      "input_sha256": "5ef6f43fcf9462dc4685de02960a1a56b834925738bdce7e2f91fa3c080e6991",
+      "image": {
+        "raw": "d37097353420d9e2fcb136d0acfe5a05d250e2f629c6d8262c7b3a6988a2b79b",
+        "echo_boundary": "40269085396b5626ba8686cbd965cd3fa3de762c7bbc0b349b19ec7bded1f559"
+      },
+      "tracks": {
+        "intensity": "68ac4958fcda9212b1b67563c2afe10eb2974b7df689ce26eb5a959f574e187d",
+        "echo_boundary": "8d576c695512b58d5ac14e9b27c5326f8c23616089370bfac099cb926d5b67be"
+      },
+      "edge": {
+        "image": "40269085396b5626ba8686cbd965cd3fa3de762c7bbc0b349b19ec7bded1f559",
+        "edge_mask": "3910ef8c9bec397551ac49a0223555fb831ef6f951d7b919521ecea71feb99db",
+        "tracking_mask": "a1a71a1b987c4aa1e8141603facb7c0eb1f8054e96eb5a9a46b56319b0af1c90",
+        "gradient_db": "10d64be60a68d03d944db1bb49ec1137ba5ec00a68e0d10ede3eba8833f7317d"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "9dc8f20819d533f397216946c2afd195ca3630122c2072c839ad47a8079c6f3c",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "5aca8e68b011b1f4aef195ebfb3604a097e0efc33ce394b8ae377ecde028791c"
+      },
+      "surface": {
+        "background_db": "95801c4adbc976868a8acc73aa05b716a9e2b42ce5935db4faa07464b41637ec",
+        "smoothed_db": "e32a68ea988718082e712e63f2b506e33a0f363d5c19a7112df1959cd42dd28c",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "f7c46579e159d1166fc9caa968ee1f0dfebd0c5e4d236002d63cef86c022eebc",
+      "noise": [
+        -8.364789009094238,
+        -8.364789009094238,
+        -8.364789009094238
+      ]
+    },
+    {
+      "stamp_ns": 29500000000,
+      "input_sha256": "53d7a807da356fa1abcbcb6de3f86ac010c9d73b6c5303523e66715401fcef31",
+      "image": {
+        "raw": "786980996a278ece6d5990ba8471efb7c50e301bc758134bb4d40bee1bfac8fc",
+        "echo_boundary": "e6759751f5e08aedc9d503b046892a210330e7c8467e5f4d9f5e7bf6299602b3"
+      },
+      "tracks": {
+        "intensity": "9dc462d9452b7568d317f32ddba984d6897b6ac07884e86a10fa44e6fc9098f3",
+        "echo_boundary": "59795776520c69602d4a3d72795509f7f3fcd409ac549213224696f5a1be1a54"
+      },
+      "edge": {
+        "image": "e6759751f5e08aedc9d503b046892a210330e7c8467e5f4d9f5e7bf6299602b3",
+        "edge_mask": "274864b871b1aa632df26f054df5563dda3aec98a84a8dbde4789a630c74c09a",
+        "tracking_mask": "3e9139930812ebb8e5e2f7eac62c04705ef1dbe285a74dc28ea5c167294618b8",
+        "gradient_db": "363cce73d03611408550653c4372343dc4eb629c49080e0da4dd9a7c2401cad7"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "6d9bd495b8b2755960feda31d7c8dae144bc2a60496d1dddbd6a08b244a9b880",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "99926c799d45da70434bd0a19555a5e8aae470b8f49227fadc636a640a2f21d1"
+      },
+      "surface": {
+        "background_db": "d474e8b324adc4c5b8226bcc40c2154024c97ed59850a405b0e65a1e874f7745",
+        "smoothed_db": "61b4c5e7bae4ad4aab7f598485b82db9615b9270d6e0c07806f03a204b4d7843",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "3d5ad4c1b1c3de86ace3fcac42c0b3e3cb06069f9f662a1a8bce2ba95f0ea453",
+      "noise": [
+        -8.527888298034668,
+        -8.527888298034668,
+        -8.527888298034668
+      ]
+    },
+    {
+      "stamp_ns": 30010000000,
+      "input_sha256": "87996be0ad0e9c2c434cce929c3f7364f6d985425720061261c0de2a84456601",
+      "image": {
+        "raw": "a5687ec2034983bf30463edb685eadd0bc3aabf156ae5f47c5eb8a8c25288cac",
+        "echo_boundary": "671fa48cf288669e302bcf6410b851e09c676d4a6b0034128471f979d79c2ab1"
+      },
+      "tracks": {
+        "intensity": "f9e0026a17ffc3f80954ad1dbf4db44a618f6f0c6d042dc9f7fe74fce47a2943",
+        "echo_boundary": "fff7e0e22753ede1b798bbc8e2ccb0cdfd3c9407a9b187d7226238d76e771a87"
+      },
+      "edge": {
+        "image": "671fa48cf288669e302bcf6410b851e09c676d4a6b0034128471f979d79c2ab1",
+        "edge_mask": "4ee38ae401cbd92081e4f5bc243a756da9170ae80cb2f7df396c66ffbb543bf2",
+        "tracking_mask": "f23c689c269c45f74fed728cbec2b025b99adfe69c4ea49ec35a2c1be0d3422f",
+        "gradient_db": "88cd0300919253e7ed58ba794b08fa5ebd6ca60184bcbf40e04637ec8ee866bb"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "592f7788100c5bf13e8cff7e003efbf50b38182db8ca48ce65603b135696d8fe",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "f7d3ac1f09767a29b35b54a5b99576c490be6f504bfd7624dda42226ec09d452"
+      },
+      "surface": {
+        "background_db": "a3368f831109c290c8d80c7ddeaa1f2ee00f85a216700298ff10d50af53552c1",
+        "smoothed_db": "e81ee8c7b9762cbfcc3aa62809492633e362367de0aacd474ae6a88b6e6453d4",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "c84f1ee40dddaf660d2f4484d2d41170f782fd7983a98a3c47a6092fc3c93d46",
+      "noise": [
+        -8.370519638061523,
+        -8.370519638061523,
+        -8.370519638061523
+      ]
+    },
+    {
+      "stamp_ns": 30510000000,
+      "input_sha256": "d398504ab731f67ee305856d871794274bd1ea543cd485f574a641e153cd0753",
+      "image": {
+        "raw": "38684db65d8969d4ed2258769698772443a0d1499b9c32cd2b555f67826c7307",
+        "echo_boundary": "a055c2d377350f3d45a1a914c13dec0d3dbeb51b9436afcfd9f40f52b08086a5"
+      },
+      "tracks": {
+        "intensity": "a3218fceb8d8f24e1eef0045f724c42ada95fd1b383edc6efc4417a0ca4ff7e3",
+        "echo_boundary": "3e49bbc75e9a01da3c30b31600c7c4c3c52c49bf38af6391de270c5e3c565cb5"
+      },
+      "edge": {
+        "image": "a055c2d377350f3d45a1a914c13dec0d3dbeb51b9436afcfd9f40f52b08086a5",
+        "edge_mask": "b485e6fa321646f2b85d0f6bc1522ff14e8927fe28d268c665d0dfbb2975ca21",
+        "tracking_mask": "844a63a47dac3f7f300ae75abb9e694e2c28db6411ae16a7a4bf6820151e67a0",
+        "gradient_db": "f78c6d5c73316cd31ad326f6c1f81deb1c245a910265696a28042c614f7ce13a"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "da050c3191fb9cdde4c3def611554037439afd7c885fd6c134047333b7c21c8c",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "58310554e8c977100597de3463a9f0c1561678d34b6abe5dad1146422c2b79e9"
+      },
+      "surface": {
+        "background_db": "40b1fc80af70b458b0a80774d09777515d2bc7db59850e4acb1af51a127739fa",
+        "smoothed_db": "ed9cad03d8295f00e7e10014c6760c8428cc4de14a922e67ec0204f4019e673b",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "e470cb7c678443d204b3757742121ff7e6ab6491a946ff6c0a47268a4f294474",
+      "noise": [
+        -8.593588829040527,
+        -8.593588829040527,
+        -8.593588829040527
+      ]
+    },
+    {
+      "stamp_ns": 31010000000,
+      "input_sha256": "79100fa98ba6f0ea77b20f86934572af61bd2e6b82a00648e4e422d596c60378",
+      "image": {
+        "raw": "bcc80a8b269a3d84212cf8fcff6025e6273d84c5279b029a45580144e2635b9a",
+        "echo_boundary": "c4e625dd64d9e358cdca71c8246a1a58c3f02554a2c866809f18ec28fefcc41e"
+      },
+      "tracks": {
+        "intensity": "66f46ad84e8d251a5ffaabb8332291c3dcf410e4b3d616c574b0a530975436ed",
+        "echo_boundary": "6127198f0fcb1e532c9194ed650aa829fb5d10d1379398be123e9e8ca3f82b0c"
+      },
+      "edge": {
+        "image": "c4e625dd64d9e358cdca71c8246a1a58c3f02554a2c866809f18ec28fefcc41e",
+        "edge_mask": "de6f96e5343c4a6ae533e47f1aac8022b956345d82b5445f93b0c1fb4ef11d70",
+        "tracking_mask": "74f6eae25ca67beb519d02de2fda97dc14ceb7362b2e71f3f4edcc9e661924c3",
+        "gradient_db": "89b45cbcc5d749108151a20f92673135c9bc9248e50334d06433a0c9535d43d0"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "4df8687056aa6e2c8c04e89220d9ae27dbb972cafb0678c183bbdbc7cdf302e1",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "6e8b462db6a81bb365cce38fc104cdeb8d5fc81d01b5ba3a59a05a2ac4a12b3c"
+      },
+      "surface": {
+        "background_db": "15cbe77bac586a66df1e676f482b22ac6ce25f868adb29b8f3ec20a130e671b6",
+        "smoothed_db": "cdb6612e624cb0e6d90376b4afc9562533dfb68d632a021d973cfc0132078b96",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "decc100b282a27eae33c749d65218ef4ec8aae691ec104453e9f34c30cc7a1e3",
+      "noise": [
+        -8.336072444915771,
+        -8.336072444915771,
+        -8.336072444915771
+      ]
+    },
+    {
+      "stamp_ns": 31500000000,
+      "input_sha256": "a5b20847e5cc40c8fc6a7b673f362f0ed297a25a0b3b17fad9437bea25f19cd7",
+      "image": {
+        "raw": "acfde8a5f151c324250610acc40a75eecbf64a2e30746a78109c71455f5d4142",
+        "echo_boundary": "c9b736e81884efe4db0c634a82e649dbbf9a91813759766102968d8a056c1bac"
+      },
+      "tracks": {
+        "intensity": "8ae363cded2000338ce74a56dafdc45109d71cd8fb48746071d59b0556a8fbdd",
+        "echo_boundary": "21388fca09179a199167ed5945d8062756cac8a5f16f11445db19dbb9dea8180"
+      },
+      "edge": {
+        "image": "c9b736e81884efe4db0c634a82e649dbbf9a91813759766102968d8a056c1bac",
+        "edge_mask": "5de1dbc3e54c0957d9864a7d81927717a7b2e5d1b75b60a626e447ab9d6e37a9",
+        "tracking_mask": "4f1ddc9b492502488021ebe66ff746fcb4c9fd0f00cf3127f56e3e44ec9d21e2",
+        "gradient_db": "89d23dc026eb4c6639a68c86151d96347de8f130cf2aff7e350caf61069463a4"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "0c84540ec6ab2ba9be0a04b94dbfb2bdf6d9fb6e63473d3116795657f88783f5",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "462757bee345b02a76bfa476e03e2bcb1597f1959cda59e3c7a4f7805bd1185c"
+      },
+      "surface": {
+        "background_db": "0989f628ddfd764dbb475eeb13394facafb0170833a09eb53eb58d1523207799",
+        "smoothed_db": "68d19a7a2a6d9ba86b76eb2e24cf6dca011066ee25e26b6b9d6f62aa57a6555e",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "7578764d426711c9a354380f600bd45674b378940dfbcf24b24da34cf30ec712",
+      "noise": [
+        -8.403138160705566,
+        -8.403138160705566,
+        -8.403138160705566
+      ]
+    },
+    {
+      "stamp_ns": 32010000000,
+      "input_sha256": "e4767694b19c6337e45c79e7817a9c373d4ac6ebc480e10da3c752be9f9316cc",
+      "image": {
+        "raw": "6e0a1890ead70847a38514565b2bbbbd0d64009873be2c400918b8922877eaf3",
+        "echo_boundary": "e46546d280aecb5ac53f29b1d4839eab9da13724162cf0ea07231a41996fd4ef"
+      },
+      "tracks": {
+        "intensity": "bc56621a3d9fa1fbfc51ae91d945c466a47c2097b85f6868db8a9fee6ea24e92",
+        "echo_boundary": "698ca73cb87c31b16358370c352a6577ac2e416fba9ec593a671f2cda9df0b3d"
+      },
+      "edge": {
+        "image": "e46546d280aecb5ac53f29b1d4839eab9da13724162cf0ea07231a41996fd4ef",
+        "edge_mask": "868d43126dc9f1251709087ec057625e3d83188d9513e7f747452574d07f2c83",
+        "tracking_mask": "e8dc5367de28a492437d5b5d733709a696a89fdbe5358636c7dcfbaa2480204c",
+        "gradient_db": "9d0149cfe533e1a6a05d6e31459e7caeedf5d695359e6c7b709a725e27ad94f9"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "5f3ef066b9fc4015bc5d1c0ca8467109868e277c51cb7752ee01b23eca8d526b",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "7a7856f50f7b3220f54e125a829b50c810b2869819c937fc7f8d9ff21050c683"
+      },
+      "surface": {
+        "background_db": "7a07d8024cb35c14f62bf4cedb0c4844fb07c6e21e4c180a80fa404fbc7ca91a",
+        "smoothed_db": "65026fb1d8d780fd8a6cfa3a28e1f076a620ea7276fba7947a81caee654fc1c2",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "987deec3ea12ad5f91149a2e6ed455f9854557f6bc8232f072ca7308ac77dabb",
+      "noise": [
+        -8.268157005310059,
+        -8.268157005310059,
+        -8.268157005310059
+      ]
+    },
+    {
+      "stamp_ns": 32500000000,
+      "input_sha256": "5cf322882775ab1a48f55de27db13f90c69e0d7a437ac53ba0f941d837174191",
+      "image": {
+        "raw": "0ca092c8fa3e3543bec4090867b1befb26266fed1f69012c215d5163c8ce5d31",
+        "echo_boundary": "3526826c23ac398923814ffefe262ea5395963bac2547ae89bf719221b9bbd08"
+      },
+      "tracks": {
+        "intensity": "14770fa01cdc4950328950a59d7ed7f6251eed8932ef8abda703ecaa8f3b3957",
+        "echo_boundary": "e84e9def0abbb736d8ce7096ed9d450cd9e5fe88ae3a79f7a730aa4e52c3764d"
+      },
+      "edge": {
+        "image": "3526826c23ac398923814ffefe262ea5395963bac2547ae89bf719221b9bbd08",
+        "edge_mask": "fc36eef185281528aa8c11e268457a17db9f755e1a335cd59f1f90d41f777ec0",
+        "tracking_mask": "1c6582e271087e7e19453ffaabc0cc63b20c3754c44c86a71fd064baaf13315f",
+        "gradient_db": "5c289d8897c10294d28897c430374884fa4765aa44f2dbf81010144e0618e1b9"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "a751a9d6cdd948e7181f14deac8afe402db0063fd94c7050ba0a532232fb4c85",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "be7d62026f42a20859749b26a5482875811e9af487feffa892148cdd188c3a5c"
+      },
+      "surface": {
+        "background_db": "848ba15bca46432fdfbbeb58f82c671bd81726c0f7e31f3fb21ff7838e074597",
+        "smoothed_db": "788ff81b39b54f8b0dc46d6c2c167061cf6310440592238ba9c12b97763ce5ec",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "80430b52dd6173fb4ab9c7f6aa5a7524da137ca8adb07b9211cc8e3eb4a5a401",
+      "noise": [
+        -8.243066787719727,
+        -8.243066787719727,
+        -8.243066787719727
+      ]
+    },
+    {
+      "stamp_ns": 33010000000,
+      "input_sha256": "e82bf3e170d7bf9735cd7dbdade82f3ec8a5202edb22de4f930cb1fc6bebe919",
+      "image": {
+        "raw": "1f89e30f0f0c6db0638a98620a8571b629eef98c6cc707a7bc09aae14c1c4417",
+        "echo_boundary": "382b1048938d5211b44bd7adf6799330a9430755126679bd23753c5f8e460b5a"
+      },
+      "tracks": {
+        "intensity": "11f87258718766b24436b82cf425f02da24ad2652241837664280eecf48e3eac",
+        "echo_boundary": "97641ad6c66f3dbe78a732ebce9327a9c6fbb0200d25de29a31028cc1725226c"
+      },
+      "edge": {
+        "image": "382b1048938d5211b44bd7adf6799330a9430755126679bd23753c5f8e460b5a",
+        "edge_mask": "8627a9ad321921b337907136d7a2172ca6e668c5f18c5b2595e3002b6741fb18",
+        "tracking_mask": "4b9c067c4cf6afab6123f6cab6373f2cc6da30982289aeccb3c31b879cfb3d44",
+        "gradient_db": "d18f4a05663195550a9c45dbdd4ad6b7ca449efc0a4bcad844ede3cb4e291c26"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "6d24eaa755abd7489518b43b70372ab3140def0ae0595830d35fd7849e60a527",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "8f001b99179d4748fa405727271a9709af039502950cff1cabf8288ce1de24d9"
+      },
+      "surface": {
+        "background_db": "93e6d4ea9ce149330f02971bae80a4da0c7c47c89d88e6a67ff0455b2f94bac5",
+        "smoothed_db": "7caee0ac9ab42f43a3af74d00d70cf3516a2208f4502dd7623da3702ed3cf8d6",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "56778059f376974cb4deb28846ade0ee6afa70eb4e6cb1bb8bbf3865eadff733",
+      "noise": [
+        -8.396861553192139,
+        -8.396861553192139,
+        -8.396861553192139
+      ]
+    },
+    {
+      "stamp_ns": 33500000000,
+      "input_sha256": "31dc94b0e7e4da9ee57c5651785b0b36c85318ac25e6647bbd85d7c2008ea5ff",
+      "image": {
+        "raw": "f60317c322d6676fd7c912ace8ec8b9734ad28fbc258824560915fe9a571f8a9",
+        "echo_boundary": "9bb060043280f0c4a9eda4869c9b54ba646514d0a02b7fd31055a8f12c912052"
+      },
+      "tracks": {
+        "intensity": "2c7e12145a90ae0cf7ba0e5b279642e74e26c8a5c021702bc3c30e11af7e06e5",
+        "echo_boundary": "b4f8f1bf17119f09ff3d649c1e68ea9fc61414b031a32e167b29be691d9b82e9"
+      },
+      "edge": {
+        "image": "9bb060043280f0c4a9eda4869c9b54ba646514d0a02b7fd31055a8f12c912052",
+        "edge_mask": "2c3a7a061260866963c0cf59079d54201fa5fb38c6f6a7282fc375012d36c81e",
+        "tracking_mask": "10e9045133684129bf874887c1780eb21ce5414264184d0fa244cf876d62d847",
+        "gradient_db": "f88fa1152cfe33df21be945a562d2a23047f63473f93174070cbe11c56aaf645"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "0b937c40715df2abe50be7d03be6cfa6e9a6d063f3c1ac32bb38108b8dc87369",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "34bb0a26609befefed4b4c5e218afee978f5627a0eb2ff2dffb44e0926136df8"
+      },
+      "surface": {
+        "background_db": "8e59fd3d571fdf7a4e0711fb7c990cfa9213c07286d9801756f6df5df3cb5bbd",
+        "smoothed_db": "64a1c0a3912edec7c085954601d8c3791c8725a4520f0d685fb58bdaf659e138",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "4ccdf11dffacbe41f8b7e4665badb20e54cd79a1a72e7a395a5fac9dda8814ba",
+      "noise": [
+        -8.001832962036133,
+        -8.001832962036133,
+        -8.001832962036133
+      ]
+    },
+    {
+      "stamp_ns": 34010000000,
+      "input_sha256": "053437fc0dc03cb920f686e10da68a610eca0f0c7ab1b86162dbbc41e4ea2983",
+      "image": {
+        "raw": "2d13ccabe015581cc29c12f181de334803cbd92708912ccf53d556c558c61c79",
+        "echo_boundary": "ac7fa1d42a3ef112921f5d97034878d5a65f10b5fb1dc0065b44851e76ad8bfd"
+      },
+      "tracks": {
+        "intensity": "fc26390ebd266c5265ac2f2dc36782d6e1ace145dd2143312adb36fbe12d8764",
+        "echo_boundary": "b08fad1c6f29765b9fa7d58a7f543c4b2cae45f7183415dbb7d0ba5e0560a709"
+      },
+      "edge": {
+        "image": "ac7fa1d42a3ef112921f5d97034878d5a65f10b5fb1dc0065b44851e76ad8bfd",
+        "edge_mask": "9271d9fb8196652e46e13c6a954eaf15258b8a0ad52c0237adb64573c49ee280",
+        "tracking_mask": "12676b86e3117712f0cfa74430ea052004c57acc697db2fbb3a7c953838dbd00",
+        "gradient_db": "c1bff9065e99e7580b6c975b969d57ec0eeab9278602467687050e51818b77f4"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "55ce147ff5bcf613ffd75b293e6683ce65164e02bd254287ac8782a99574870a",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "f001ab875f4256136917a922559be89a70ff0184556183cdca47185a073c5c46"
+      },
+      "surface": {
+        "background_db": "2f260266d4284addb88886be80a51997d1b14e9b5d6926024f9f03ece4412a10",
+        "smoothed_db": "7d539d15a86dab5cd847cf346e5da562fe5cd50cf4e4802d1e0ac44c059480c8",
+        "ground_onset_m": "49f888fbb5682cecf50e866faa03dbd31b105d1e3a3cba9a8ef853e93259146e"
+      },
+      "regions": "aa74a3f1b00d8fff39baa1916e19c7b3db3df0abc979e3ff7d7fedeb567bd02c",
+      "noise": [
+        -7.717421054840088,
+        -7.717421054840088,
+        -7.717421054840088
+      ]
+    },
+    {
+      "stamp_ns": 34500000000,
+      "input_sha256": "23234f62b294ff6208ddc667866ef9d9a09232ff6c9e845000b0c0946cf4d675",
+      "image": {
+        "raw": "8ffe0b656f6ae6f77bcc5e385b83f4c2c01c5ac84950f1796afada1fd5fe813b",
+        "echo_boundary": "01f7150d7b031c13094fcafba54ec1d16aecb816dce5f9d25de4fd04fba4fc97"
+      },
+      "tracks": {
+        "intensity": "d7cda1bd3e62509792835c944d04cd8124e839aba3eaaa3d0a19c27669c6f2c1",
+        "echo_boundary": "da9bf0c9d380858065ba4ad9bc6d3b65cbc959eee28843315b124129c926d537"
+      },
+      "edge": {
+        "image": "01f7150d7b031c13094fcafba54ec1d16aecb816dce5f9d25de4fd04fba4fc97",
+        "edge_mask": "64948f1796e61b76a92284c7dac842eed70290f87cf07b89fd0e3290568e40bf",
+        "tracking_mask": "2cb4db1fb3a69cafe1341e622455bf862b513609ec5cdac3d3fa3a8baec8985e",
+        "gradient_db": "78d3ae69a60078c8f65d4848cb2ca08bf9e276c9978cd4c998755f665a169ae8"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "03c24da668559f435ccec45f464e26f7d0b98c201e76a7b819feb6879b0ff9bf",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "de81a8cdd1350005fd722fe2ef4ac90b324a6c7182990a378cc737238a4f6d0b"
+      },
+      "surface": {
+        "background_db": "b7254f8270ea9cad64bc9cc1e53226725a6619a06e4bbfeca7a7969ddd3c0698",
+        "smoothed_db": "3168fc833bb77749f9748ed08dcfbd15616984091c8df2296ff75bed0b2cf111",
+        "ground_onset_m": "29d51488da378c64345330144197a3e7db583b1974344eef405047729a7f2a6b"
+      },
+      "regions": "cc299df680295f900e023a2df88112a5b9141cc227d085d8608e6a8fad24c573",
+      "noise": [
+        -7.341731071472168,
+        -7.341731071472168,
+        -7.341731071472168
+      ]
+    },
+    {
+      "stamp_ns": 35010000000,
+      "input_sha256": "dd6ffc2526895e2212a579e2b8c566d6c5b2e554566260022ca50acf62db2c54",
+      "image": {
+        "raw": "e23337d95496e53b5dbf621f8d3d189c401d1d2e02aa2a714276b1b3fa600081",
+        "echo_boundary": "84bb1cbc01a0d401e36923e7a2820fee6358d901dbc401f0e22a977d1d639cb6"
+      },
+      "tracks": {
+        "intensity": "ea04c33757a6497a51878338839efcea128c3a09a33639a7b535ffe756bfec84",
+        "echo_boundary": "4b4e067d8086236d659d9f4bc155cf5351b1c405057c418933bf05ad04ee305a"
+      },
+      "edge": {
+        "image": "84bb1cbc01a0d401e36923e7a2820fee6358d901dbc401f0e22a977d1d639cb6",
+        "edge_mask": "d73b58b64627850fcc73e6cc3432e1a28285520f96705ad2c0e2dab256e2d4fa",
+        "tracking_mask": "461ece79c545a663065a4bf4f5723280b42b61d9452fd1a5fe0178e971ee78b7",
+        "gradient_db": "b5cb0cd23cd604252667a46e21efd49592afc3ba511f600e5dc1e54bc0394294"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "2e63d9d9093389cbe46b4fbe0eafde582be762cae48b6b7bbb70efba4e5b5f97",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "67ae817dfccfb3511e660e2c6e3d8c976302be02d84f552b6bf8bfc1299a956d"
+      },
+      "surface": {
+        "background_db": "b32461aa49650e30738028cb410f8697a726058aa977d563812ac4fe06e319b5",
+        "smoothed_db": "319a24853122f0a83a2e5e0b76ec348f216e9499bae882329963c57815e1f2c7",
+        "ground_onset_m": "5a4dcbfeb62ee30cc5fc1fc9b8388876f3d89416715f0a8549acee73f3f00312"
+      },
+      "regions": "0c7bfd58b407516d01070960596ccb906aab62b204a9f7835ffd44a39f6d0b79",
+      "noise": [
+        -7.1811394691467285,
+        -7.1811394691467285,
+        -7.1811394691467285
+      ]
+    },
+    {
+      "stamp_ns": 35510000000,
+      "input_sha256": "38e502b1fec2da8b9b0cf9a3d7ee353464f31076b802a680452b6a968fd3b004",
+      "image": {
+        "raw": "0c305889845605ee9f63845327d7175e1bc3122905b32b2814ea79ca7b24dc44",
+        "echo_boundary": "2e2d0849cf5726fdbfc59bcfa3dec44558c64341ba46e40bbffc7813a1674efe"
+      },
+      "tracks": {
+        "intensity": "6c73fe21debf93d750483c53f0e5a612befb4ef134445a053a2a162125c7c88c",
+        "echo_boundary": "0062d9ee29e42c33c6a4a82e906567fdab7c7f39d17d2af6778ea7b2832dcc7a"
+      },
+      "edge": {
+        "image": "2e2d0849cf5726fdbfc59bcfa3dec44558c64341ba46e40bbffc7813a1674efe",
+        "edge_mask": "94666c28ec68a20ab9ebb106cfe80937097ce407a5499e19d5ffb013cd245809",
+        "tracking_mask": "357335f5a3deeec844168452f92604614d0abd5e1c8e584809ba4c0b274d80b4",
+        "gradient_db": "37c844b952912a3d72246a64e7aac9b95583dbbcfef2ee14d37f6856fd20467c"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "b66dd6ad33bae8096e62eac4aa090e64468e3b9e57d004b3e74caaa7e9b1e10b",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "cc597c6e99ab1fb96814851507686405c62fe81cea2a010f77531ed090891202"
+      },
+      "surface": {
+        "background_db": "90f283dac38bc4ead20581d03af0201e662c1978e628f5e1bbe007eccef182c2",
+        "smoothed_db": "5e2ed37978833867bedeb164c56bc153c58d5ddc951677cc368b261d450b8ae5",
+        "ground_onset_m": "e2312ade3d52974fc18e89ff0f299f22ba168a81ea90d937dc4aacecd6ba407f"
+      },
+      "regions": "1a81fd86c7da04f2576004f4d8f1b31271beaba43df4b9cfb054b2a0863f7263",
+      "noise": [
+        -7.195129156112671,
+        -7.195129156112671,
+        -7.195129156112671
+      ]
+    },
+    {
+      "stamp_ns": 36010000000,
+      "input_sha256": "0491adba22461bf0e44085c0b8059082b3d909c60ed72fbe3b771bdcdf5e1273",
+      "image": {
+        "raw": "8b51c04d263a58fa087bfaedc37c30aa73519588b8116a2a226d68fcc405ac44",
+        "echo_boundary": "9722898b90e42f8d4a652d3c2b0354269fc45e917832c456fb851a90d2762740"
+      },
+      "tracks": {
+        "intensity": "b86e3bb42d88c9b5270a1e49594b364698acc440e879fdb1d9351e61e4b4060b",
+        "echo_boundary": "7ab943b13609cae1384d3811cd02b0c15d4b23e61d87164c20afa94b76aab0d5"
+      },
+      "edge": {
+        "image": "9722898b90e42f8d4a652d3c2b0354269fc45e917832c456fb851a90d2762740",
+        "edge_mask": "8d93eb29ae5ac5d5c78dc7f11b028816ce67f9872f2789b943c44bf5631d7ac6",
+        "tracking_mask": "d2fc613cdf2393fb46b9399150c0e484e1045e5c8b6649622e26934fba066174",
+        "gradient_db": "818f8b844cc44ee89d83cbb4e4684a150661eae3742a6373c0a609627ba6bbaf"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "5f7f2bda319751218f5bc335c0bc843da09f4457597044db2af70879bd48a71d",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "ca90e3eb6de42241aa496ee086c52284a267a388ff1ecfc1cacf2680151529c4"
+      },
+      "surface": {
+        "background_db": "c4ec4c5de3c0cea0150999c865a4f69585c582f7b43f08fcdcab414e3d13848a",
+        "smoothed_db": "d75bc5c65c039232f7d9e5ffb5482bd46855cf1bbfd3a9e50efddb6cbd4963a7",
+        "ground_onset_m": "2898bafdbd64eef2f34691c5b7670afb753858e1cfeb006f4650676926c78313"
+      },
+      "regions": "be8bd220735f212fff16ee2996c927139f427537ad5922375966b65d047e690b",
+      "noise": [
+        -7.37215518951416,
+        -7.37215518951416,
+        -7.37215518951416
+      ]
+    },
+    {
+      "stamp_ns": 36510000000,
+      "input_sha256": "b6e6ce64d54265395b2dfcf22e538c86369b11e6db89543dfecf014b5821c7dc",
+      "image": {
+        "raw": "79eb5c0dcc6c6777c725c6368fa9deddcd4e16f644af5e735e34e8de54ef355f",
+        "echo_boundary": "89d52f487b8bc01c08eb2bd60f6675c306618e216e9dd74854c62d7d5e9b184c"
+      },
+      "tracks": {
+        "intensity": "cfe4e4a955ff6fa159c1a1687d99f7aad8cabc5e25a0a431c167dd5c7027f90d",
+        "echo_boundary": "d4c84a54364c7dc36aa85ff99e832a7a3b6f997989564a834c66a80944c9ca34"
+      },
+      "edge": {
+        "image": "89d52f487b8bc01c08eb2bd60f6675c306618e216e9dd74854c62d7d5e9b184c",
+        "edge_mask": "021dbed62fd434b6cb09f5599bc9b4f817155fe1c1ef0e35c4463da1fcc155cf",
+        "tracking_mask": "cd7bcdc522f104044f07cfb058f5b645bdcc938b1c857a44c0e69894d20dbdf9",
+        "gradient_db": "e377e9fe2c43805729d5e2b227eb4679965b7622585ea0d357a9612c81a34884"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "94e4e80f958ae821cff8d99c263561aef4829189fb88d7dfda8c5df297b0d7cb",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "cbc5b7ab97c549ebabb68bfb9d61ca076ee79b8aa118151de4fa82044ebe408e"
+      },
+      "surface": {
+        "background_db": "c88fedd65c862779f3b5f39f8f9d20fe6e00df62b2c9f5c30356a41d6ec47209",
+        "smoothed_db": "02e9498d6c027ad82b7f2e102f600768449cb06e56aa177b7307e4ac2227e245",
+        "ground_onset_m": "dcd04f8e3dfaea4faf27f68d235d6983c6cc69a480643e9bac1b7b379dfe327e"
+      },
+      "regions": "f1045812b88a263fe57cda4f21ed0cd5d54ee2f7aac831ac88100322a7943251",
+      "noise": [
+        -6.772475242614746,
+        -6.772475242614746,
+        -6.772475242614746
+      ]
+    },
+    {
+      "stamp_ns": 37010000000,
+      "input_sha256": "8a50d2607ba8743292f818271296e0ba1c93f5fae1fdf6e2bc307d8dbcdd3856",
+      "image": {
+        "raw": "f4f7b42e54bf9008be00b519682a7c28627c67e17c9dd9b066fd8b811b8a5965",
+        "echo_boundary": "1249cdcfe1918afedb12c9cfc6d26114e5c74d27843cd7ffa9a1bafe89f5c45d"
+      },
+      "tracks": {
+        "intensity": "417378dae6f435d53486d29a79c9853c7e302f1fa30aaf086695a66a10f1a9c3",
+        "echo_boundary": "76f0401dcb18bd9d29736dc9a1857dcfe9a82a6d6a1b96ca67b2ba89900283f2"
+      },
+      "edge": {
+        "image": "1249cdcfe1918afedb12c9cfc6d26114e5c74d27843cd7ffa9a1bafe89f5c45d",
+        "edge_mask": "bb39ee7a84863406435a3d0687f95c46cc88e451bfb40c54f861b77b44ff3c2f",
+        "tracking_mask": "9901acbb3315e89e65bfbf69a7161e2bfc11e75854dc4037723fd60133537f69",
+        "gradient_db": "c8a94ffb397705402a16ccba2f53d9972babcb3fe5f0919b04abdf13cd3c4c6d"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "90af2b1c7cf2e2c8f09986d238084ceae51e2b6a8023d38541e4f5ed1af5c67d",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "8e0df939d0ac553e4f1065ef21ddca77482ea655a67d3a70983dd6b3583952d3"
+      },
+      "surface": {
+        "background_db": "0f60bff68c8deaf0da9353149cee8546722d2c87e7d7ca67538e502b130c3419",
+        "smoothed_db": "c7d2bbdca72cbfadd10d8ca6710f759fd940e436115ab86d9b166c90691710fb",
+        "ground_onset_m": "464b20e7184ef2b5441250d013ca58275f3a804b18860326d97d99a37b745c78"
+      },
+      "regions": "a6c8e8890ec6234a59dde50680bce8263676ce6b0d02f24b5bd13ac88e285ec9",
+      "noise": [
+        -7.0832061767578125,
+        -7.0832061767578125,
+        -7.0832061767578125
+      ]
+    },
+    {
+      "stamp_ns": 37510000000,
+      "input_sha256": "eef7646b7864051a0f8ca6fac4d7adf73dde859ff5780a5000b5c4a5e8542cba",
+      "image": {
+        "raw": "21a0c5c625cce2761d4d421ca4762a60335328ea8536bca5106c8a4d612cf864",
+        "echo_boundary": "2d1bf2cb894be1e3ae4cfdf43bf078a05fa02f56417c062db84794bf6e64ab17"
+      },
+      "tracks": {
+        "intensity": "a37aa000f3852bd55c3332c1fbaa6876a26593eef8eb7f3bf96750f665d30932",
+        "echo_boundary": "bb709ace8a2b7992c927cf503d8694e24bdaebe411be9e20f0a3d971785b090c"
+      },
+      "edge": {
+        "image": "2d1bf2cb894be1e3ae4cfdf43bf078a05fa02f56417c062db84794bf6e64ab17",
+        "edge_mask": "57fd54efd0ac613971b43c7ee668450db186f91890771b4a75c8bbbb3d02ef9d",
+        "tracking_mask": "88445d836bde4b9670d05e640a5d4454dfe830183a1ac2bedbd08f902d4ba758",
+        "gradient_db": "dad2cf107d86ace8c49a8bcfad28af3b1e8373652cfcfce9aae95525be5b21be"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "4e502534ee4ca994962edeb2a312637980526225458eda11b1d50783136dbed8",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "59bf690c7ec3d4c1faf6e0d26c3b3af894498551d22878e1e662e13651a14f47"
+      },
+      "surface": {
+        "background_db": "ac7166f88fcdc45d3e3b25bcad0d5472f927e47d9a9e6025d4f418616293ce4e",
+        "smoothed_db": "49f197db9a49c01b4e678600bbe6d3dcf005ec44785f16b54fe303c3c8655567",
+        "ground_onset_m": "0d04d49b4e7b0015542097673b7d699800917229e6bd066be40429151dc64370"
+      },
+      "regions": "cd25e7ba3cf31717a1eacd768f565590f988e997d6f9a7397b749dcd085eac1a",
+      "noise": [
+        -7.679827690124512,
+        -7.679827690124512,
+        -7.679827690124512
+      ]
+    },
+    {
+      "stamp_ns": 38010000000,
+      "input_sha256": "ad1830cf5ef774424fadba7ad5f598b91d88eec5cd035118baa6c7eea9b512c2",
+      "image": {
+        "raw": "df656023e5ba8a46fc154e6c19ffcb777ea043aa2d57574e283665255a367b3c",
+        "echo_boundary": "f1f743c4bfa389ba5504a065a52f7dee0904eaf2075d3cbaac771f5f2da78f77"
+      },
+      "tracks": {
+        "intensity": "a9dce5cd1a2e52a02c410533b970fc6fd3a1381a835f11e4fea6b7487a42c824",
+        "echo_boundary": "365ce493f7975a5dc64a862d6405c815792325137b8bac50c05e8beab55b8f6a"
+      },
+      "edge": {
+        "image": "f1f743c4bfa389ba5504a065a52f7dee0904eaf2075d3cbaac771f5f2da78f77",
+        "edge_mask": "71abb6b7cc786d3c0dc8a95b9b6b970cda390659edf9636a35947245a4ff8f59",
+        "tracking_mask": "d1c8a03ba2576411dc5edf9c97fadd5ad294b5f3a90059e609198bdddfe16f9b",
+        "gradient_db": "8584db57346bd196a1a7a3ad0d11464fd9f37294cf0362714b53f821a0fa14f5"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "3863bd7c1fe3dad91ab1dfea45c1e969fbdcc369611b114b78f85c6d6d83e6ff",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "bd4fd0a9a449796efb441f2e1615ed758253dae216356dd6339092ef9cae4f53"
+      },
+      "surface": {
+        "background_db": "d0c0941b62c9b4eba56c81bd42b51012cb683e06b1b1fc141f3db9671ea4f2e7",
+        "smoothed_db": "c59cd25b6746865793435d858437b96ec138799f43eb450e83b667b0f3bc2ed5",
+        "ground_onset_m": "27d834a3b9fe6b6763f9b1407e2c084e35792196834f46b28ed70b3041528ca1"
+      },
+      "regions": "261dbdb4281e272bafc0610e48c1eb6af302323e4df2e0560ab416624bad6561",
+      "noise": [
+        -7.009829521179199,
+        -7.009829521179199,
+        -7.009829521179199
+      ]
+    },
+    {
+      "stamp_ns": 38500000000,
+      "input_sha256": "22df0a8a301b9d86d580b0a15a5e5c3dae5a673c715cdfc0661e663c59828868",
+      "image": {
+        "raw": "b16244ef9bb2a69f1e6133d711f8690a45e3beecde6b3ae03fdf57b5acad8b36",
+        "echo_boundary": "45a2124160e2dcfe6b118fc56e52f355dbacc42eac68e029b37e18288c0018c4"
+      },
+      "tracks": {
+        "intensity": "c8e8c7f0783cc57542206d07ce1d783be7b8e587c4958210b1058fb2d6cbbe6b",
+        "echo_boundary": "4a80cb39f66147aee1ee8ca2b0ab50bc094f8e00939e17401936136821eb96be"
+      },
+      "edge": {
+        "image": "45a2124160e2dcfe6b118fc56e52f355dbacc42eac68e029b37e18288c0018c4",
+        "edge_mask": "730f50fdddb8ca2bb93ac0828d10cbed2145dbeb6980e99d5715d027ba62e55f",
+        "tracking_mask": "eccbb3d6d11f3fdac322f2e09dd2c29d3b3abfc17319754c475e7b8181d58ea7",
+        "gradient_db": "358ab14c737b885cb64a66f39052abe226e30fd73a12beab8a4fbade852206cf"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "74a5e23c477bf476b898f79bcbbf1ce76cbd797ccf7426ef7f015da41bb9f726",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "9e4dd8f76e8bfd489a2ba132d53fa5678fdcaed33ba20c25173a1422162ddbd3"
+      },
+      "surface": {
+        "background_db": "10a86d2f13389ce1971646db5a94edeba33b70eed6438c6aa71e22c28dc390d2",
+        "smoothed_db": "51f7d84a0e04feee9eb87b9d520de130316304f4b3766e223869bc76c2fd0cc4",
+        "ground_onset_m": "27d6f33bd26b0dd2a7ffbe4a041030ec33d0423c4274050098663e1531bbbb6e"
+      },
+      "regions": "d8f3114414393fe95f31c3d43394fc8b7e43a99ec63af1beecbc2e5395f400dd",
+      "noise": [
+        -7.129342079162598,
+        -7.129342079162598,
+        -7.129342079162598
+      ]
+    },
+    {
+      "stamp_ns": 39010000000,
+      "input_sha256": "1ceeba29b1630ce836fec2e681d36a26c36086d6d27860caeab5fe8caf7f85cc",
+      "image": {
+        "raw": "9ffecdf4e9bdd491f5d9fccbe87ab2522e00e4135f87383168ef7d0630f9777f",
+        "echo_boundary": "fdeb5a9b3100fd613390393e2d2b6725bd8a0ea8e27a8eae4c0918e15424b320"
+      },
+      "tracks": {
+        "intensity": "812a0220a662c58793dff26ed3a343cb4d87b93b389579d0fc2fbb67f499222f",
+        "echo_boundary": "5a4a25b8a2cd56fd3d1ab1a277dac7c165bcc15c1ed94e8002ff6a7cd56ccc3e"
+      },
+      "edge": {
+        "image": "fdeb5a9b3100fd613390393e2d2b6725bd8a0ea8e27a8eae4c0918e15424b320",
+        "edge_mask": "20164ef25b96bc7f5e0318ebe5f4f1b8e0d42cd27fc5f9e22fe42859dcaddf9a",
+        "tracking_mask": "81bd02fe756e9f1846bd2119d044805ddbf5e0bfe7ebd8faab640aa501b1620f",
+        "gradient_db": "8248472a3665b17776c4f3d5316aa7c2920e22d1e565f9837aaaf814f0750f4e"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "050f889ce1665ea10184cb3139bd267730d5954cf86ea667c238b263cd761a78",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "9c46e9b3482d3b5a9f21bb57ceae336d3366b3b6f202341aece2c4d214ea11a9"
+      },
+      "surface": {
+        "background_db": "689426a0fbc0090058cc2d42cf54d2bc0f9fbce4545d5b355a543600f1a86e25",
+        "smoothed_db": "b5b0d336c532acd0aa1b61e45b28d367d15c0b5031a3ebb741a7d49d51dc8f7b",
+        "ground_onset_m": "867be53937e12e8e13e7223cf412fba9796491aac15c9d5234c530beb40a71c8"
+      },
+      "regions": "8aadabf0198ac7be4c1a98b10c98ad6057b2fe09c0c702489967baa6dc45284f",
+      "noise": [
+        -7.474822521209717,
+        -7.474822521209717,
+        -7.474822521209717
+      ]
+    },
+    {
+      "stamp_ns": 39500000000,
+      "input_sha256": "d94e5e720e4e8c7fbc9811b193b5141ce3becd699bad613291a59de7299fd096",
+      "image": {
+        "raw": "1f74869e6b0c718f0336e8b2e6bd62c6faf8650d3113eaa14368fa9ca1fe3d14",
+        "echo_boundary": "7b2e3e1d6c1c84c4ad75a6e1d68acc34b90492ea8642885315453767d90f7faf"
+      },
+      "tracks": {
+        "intensity": "06a1d16b0ab2bd7f3111f3f6107485e5c8808030665dfcd2880aaac562746d15",
+        "echo_boundary": "22a3651b5470598bff23ed3d019b9a38710d65899d9619cc7d0e48503337270f"
+      },
+      "edge": {
+        "image": "7b2e3e1d6c1c84c4ad75a6e1d68acc34b90492ea8642885315453767d90f7faf",
+        "edge_mask": "505c13ecb2cdf11526e377342e7ef157814d5c4a992d62339af415a3fc44e295",
+        "tracking_mask": "7f7e1de931b80bc8693a22cc3f3ba43dae1aca9feb9822354d9f379e160e4bcb",
+        "gradient_db": "605bb279a20b4f04f65aecb175f85d54b0339ca1c3b6db13156079b371bdb2ef"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "7832193eae885697aa88f8ead0357e88930487e087aa65e02f483f999be90f66",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "5ef10e2006384732e0260208f6406dd2a2ed5498eacbe08d1e1cea78579948b9"
+      },
+      "surface": {
+        "background_db": "e2d91b2c7022c58e7ea530bb08d68a46a696b7e417c305a6b49990c1b3a0af04",
+        "smoothed_db": "cee74b119bf60a18c845701227e7a864f824721512400bdc8a57ec8986e5d877",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "301fdfab448aab75354db8ca9e96d067b81300655a501238a97579ac2cbcad14",
+      "noise": [
+        -7.867198944091797,
+        -7.867198944091797,
+        -7.867198944091797
+      ]
+    },
+    {
+      "stamp_ns": 40010000000,
+      "input_sha256": "cca1d6fe4f9efbe7a0fb3e4934e5b056eeac5b99263af27b4216204524845c4f",
+      "image": {
+        "raw": "a46123b9434057c8c6df83e5f3a95f2fd61096b22f0dc782e4ea93ea5cb4d0a4",
+        "echo_boundary": "2d70dfe9da021a134b71e98a11637556f65712b922fece5e931630c1ed89c0bf"
+      },
+      "tracks": {
+        "intensity": "6c00d5236a733893bbb372974029ea83271a83459724cdd2846a8e627f1b90c7",
+        "echo_boundary": "d6f0a446b1048b4025a10674a413a8430b05d90e59f93d5edd047bcaaca45688"
+      },
+      "edge": {
+        "image": "2d70dfe9da021a134b71e98a11637556f65712b922fece5e931630c1ed89c0bf",
+        "edge_mask": "abb3c8bd8d7635e6889d2868469ed1e81628c51a2da22bfab7ec49ea81b874b4",
+        "tracking_mask": "d280061f7b7aec2feb5584cf868ba65687369b0c9a4c707f7992aeda2c714aae",
+        "gradient_db": "d7840ba8edc11b076b99c86f302a58f3ec5ae3608e19913ab7a79f3adb7111c1"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "f4d5c146991f69f060eca5e5223a5aff6fe5c67dd1ec316662227bf42935fe51",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "047e87ede101dd8f49fce934faa7cc17474b9d244dd7fba2f61465771ddf31ed"
+      },
+      "surface": {
+        "background_db": "1d04d51d6197e8c2bae1cd67e27ba540aa57d46c84c41f4fe6d110f087805390",
+        "smoothed_db": "f7ef6af02460dda8de9f43f301f811db4b63b41791c14d5fd9e775293b330a71",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "655a63adea252993029ab5fcbb5a7c5bd4b7ed643c616ef1e4f039e36169d18e",
+      "noise": [
+        -7.889551162719727,
+        -7.889551162719727,
+        -7.889551162719727
+      ]
+    },
+    {
+      "stamp_ns": 40500000000,
+      "input_sha256": "98d00a361a60769cfd35dbe3acd13b4aa9d929f106cdd2ed7a940af6f01ec01e",
+      "image": {
+        "raw": "8ed847a3972f7c64064853dac056acda74165c8e426fe5f44580b3e60362a4aa",
+        "echo_boundary": "0b80d9606b49c3727e83901d9e31d91bfc0cbeae4f1de51f7268f27deb153410"
+      },
+      "tracks": {
+        "intensity": "9cb911db12c1bce05d3825be5a728c7bc9563e94a8ea2da217d3f15d64159005",
+        "echo_boundary": "8ade940e5c75b53768b335a84ae97d2dea3b7a863a9ba41d68151dd4730f82a4"
+      },
+      "edge": {
+        "image": "0b80d9606b49c3727e83901d9e31d91bfc0cbeae4f1de51f7268f27deb153410",
+        "edge_mask": "10c1ec3e72a99620db6a5662cedc09121010700a345a09e2a61f0f226792b954",
+        "tracking_mask": "464d63e9738ee6e71f52a365abf7ccbedb2c42a1fcbd3fa22f28efee50420ac1",
+        "gradient_db": "cc79cf67234cbe8a7c828837af01d5da33315234fcddaffde0bf6725a8c5d6d0"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "5939875f80f0149b2f8b4c79f708b63a3056da24a63c82920ae9cc0896ef1a90",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "cc295ce819beb513bdaa076622ac88cbd8dfbeb38491393f203c2529e1d3e372"
+      },
+      "surface": {
+        "background_db": "b8f65011468edfd5ebd86b8753f0119bfe93d796bd21260f669bcb2adb8bda2b",
+        "smoothed_db": "9bf08e3810d3f458ce020f7a03b87be8d6441c87f1be5fafe5aa92a9030ab662",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "ee6514ad1fafc881d058da68aab4b3be44d6896affd2da2ae6ae2afc79e9ebfc",
+      "noise": [
+        -7.843374252319336,
+        -7.843374252319336,
+        -7.843374252319336
+      ]
+    },
+    {
+      "stamp_ns": 41010000000,
+      "input_sha256": "51840787259d26784ef87840c428de6f4d3025c5c1cb0c0e397033dde98d2372",
+      "image": {
+        "raw": "1097f5212e4200884cddd98277cc8cbc259c63d70729fa970f005f6dc30ab580",
+        "echo_boundary": "e000e67a009d17d4d7ca21ba2ca39627cf91f650e1649d75e61fa4ff00a3c1a5"
+      },
+      "tracks": {
+        "intensity": "90359fca9ceed5b2842126cbe4067f856348354b04429b4781925f74ff516e6c",
+        "echo_boundary": "826cc6ff7333ac2f92199f9be8ae0e341667f2b478d9021a2176322954b2aec8"
+      },
+      "edge": {
+        "image": "e000e67a009d17d4d7ca21ba2ca39627cf91f650e1649d75e61fa4ff00a3c1a5",
+        "edge_mask": "b0ae1af899146b9e2988d95a0584b97267e619cfe22b790938f86c1211e32cb4",
+        "tracking_mask": "07a5f8de91556dadbceda9cdaacd1c8e17c3b458ed863f13b5ffc9f731dbe63b",
+        "gradient_db": "44b72e8d4f861744808c342f9eaebf0f5f37aeb0e97d7b6066a25881615f03f2"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "e9183c463c3a827a8ca4c80c12023fa9672d07090110c512f949a3264a13e732",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "f1f58b6be1cedba357040207fa735a889a78ed6bd8dd1f775c59d15d56a0ce03"
+      },
+      "surface": {
+        "background_db": "847573b086b83e2d1b818aded2372557df0711b93f6d3b3efd5723905ff76008",
+        "smoothed_db": "14326f9871dc97920a69b9978181fee5328d6426c2bb02c6c5724cdfc9c29f1e",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "87e47956784d745a0aad3f5578900098fc4a6d2f9e16527aa436342f076ce0e1",
+      "noise": [
+        -8.10913896560669,
+        -8.10913896560669,
+        -8.10913896560669
+      ]
+    },
+    {
+      "stamp_ns": 41500000000,
+      "input_sha256": "f1adaaa52ec761b7a8bf5c7328ec5565d3332fe86b1f480f946b29a2f0396f8e",
+      "image": {
+        "raw": "6b88353c7f59d0d3fcbff9359fa51abc6effcc1b5d5a466f7c44aeeaf7700a6e",
+        "echo_boundary": "6bcc97b2d01d19f164cae88781f2f18946cafbc4f77316a499ac223302d1eba9"
+      },
+      "tracks": {
+        "intensity": "737772870f6400c815bbe863db1fe2cf5164c7aef795c9194b702181f14e23ba",
+        "echo_boundary": "4d654f1a8d2897a00f82e0a9e4f8c01781b3a93b6f5d06817fa5fc106c21130d"
+      },
+      "edge": {
+        "image": "6bcc97b2d01d19f164cae88781f2f18946cafbc4f77316a499ac223302d1eba9",
+        "edge_mask": "8fa16bc1cc9647bf2d27bf0d98955fe5b18d32cc7e9d3fb5f24d601e75cf7e5a",
+        "tracking_mask": "2f5833ad92b72f901c4064a4fcc7914ba5c8acd3298b699e860cc0812fee59ce",
+        "gradient_db": "ed05e40faa229cf06770bc5a6d617b120d7cfbd6233c8ea27729c0f99440217a"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "a99731c86d1e270a552bde4f417dbf3cd26fe4d6856df4864bf07e8e6cf7b82a",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "cf6fb1b62c4a23981045216ff0cd30a19757730dcfc0eb1b04b94686293fcee8"
+      },
+      "surface": {
+        "background_db": "10680e55d9c4bbf8dda75c196e075a59dadff48b1037303ab6b38c17617d0a12",
+        "smoothed_db": "85e5a2b46fd9a74d35e2a5b85cee8a224c9fcf3c8c8f968a27f981577b29df42",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "123600de2e174d8d37f6059025e4f83e56c79923a4ee4a0b106f9fadc700173e",
+      "noise": [
+        -8.137242794036865,
+        -8.137242794036865,
+        -8.137242794036865
+      ]
+    },
+    {
+      "stamp_ns": 42010000000,
+      "input_sha256": "de7b4ec3b1d70b698a2063ddc10452abf4b4170246d4dc760c7441877c6d1859",
+      "image": {
+        "raw": "e145c3b5ca8f7bc6e4ed48e16fe4106939d59c669569512624c7e2534c0c376c",
+        "echo_boundary": "82e43bed6d7db8d4b9851ec1e56f2b889d933003ae50ddf9b782a185046e9adf"
+      },
+      "tracks": {
+        "intensity": "5109335ec100b96783d075ad8b692a8233db831c792d4b7345effaf633aecc66",
+        "echo_boundary": "c9da60425929f6871576e7830d81e79950f26a746f775a6ce1cb7007e32d512d"
+      },
+      "edge": {
+        "image": "82e43bed6d7db8d4b9851ec1e56f2b889d933003ae50ddf9b782a185046e9adf",
+        "edge_mask": "795f67a93d030d1117deee39a2201a6defd4f1c85f4c48a124a6748fd8a13695",
+        "tracking_mask": "2a9ebf3ffffaba00c4561303b3422528c71268249ca3a5387afca943470176ff",
+        "gradient_db": "e63558fc9c5567be712b0b501b7f31eb3f0758df986f4396f816db31d244c124"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "ca46a98ae863d41cfea248dfb7f27e4825b1a7f21ef5b1a2b92af868cf94c3a3",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "d11c6b7488f98ba992544ed6ab8fc538e1258a5a820860075482382f0dbc276a"
+      },
+      "surface": {
+        "background_db": "66673634e7ac432fe299327d875e97c1498191f2d792cd79b24b39411cdf64a0",
+        "smoothed_db": "7cd6a493ab5dc499172a45a464cb537181297db05ca021c9059f2764532edd5e",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "c8f9c2631923e14dd1e208373b0894f2da4d0fa50ce0ea18e6deff4ea28f2aa8",
+      "noise": [
+        -8.604158401489258,
+        -8.604158401489258,
+        -8.604158401489258
+      ]
+    },
+    {
+      "stamp_ns": 42500000000,
+      "input_sha256": "b3e169d71859a59af4b162f91e5c6fcf29205d39bbe73b4940bbc2e05a9ca159",
+      "image": {
+        "raw": "951ca70886a761ab309681624cbc35fcea8ef791834c4f6f75f7dd10226b107e",
+        "echo_boundary": "930df154060a328797703f9c233f07d9432d3a0b2fb2d10b03c95d68d56cda1e"
+      },
+      "tracks": {
+        "intensity": "83e2b6e1103cab74ae6293231c58fb15d383db306fb92e030c26db648b63d91d",
+        "echo_boundary": "6eda2babb88972992526aaea3f9e3158157e11472e05d3de859c47bb6a2dec7b"
+      },
+      "edge": {
+        "image": "930df154060a328797703f9c233f07d9432d3a0b2fb2d10b03c95d68d56cda1e",
+        "edge_mask": "1c1b63ba0f379007ca6cfa5363c5e6e0033fcf5d4bc76ebf01f5f9595cde555d",
+        "tracking_mask": "86e9880a91b0f5270560cf0d18e5d5dee1ea2246b10aa89d5a5db778f078bf7e",
+        "gradient_db": "676baa476bfc114e83bac766212fc86135b185a650bf747bc04291c6d08b3ffb"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "ee5eb7f80b7c487eae7388a2c38907e8571dc39970b815c51b67cf53993fa916",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "304ba33e0cee5bfc10fa170f51bd2051e33c5659a2d00347c6bc370ab2215c1b"
+      },
+      "surface": {
+        "background_db": "d88b86acdba74e44cdf04b3c026f2b22b71fdee4ce438d9f9888b4f4f6d12dae",
+        "smoothed_db": "3922c6524caaea8d322b0e331d15e85b8d16f34ef7aa698505c9096bb0972de3",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "d232f6aedf66902518c8f36c5186ce2bba119271dfa637a9c772863f93ac1ea5",
+      "noise": [
+        -8.64453935623169,
+        -8.64453935623169,
+        -8.64453935623169
+      ]
+    },
+    {
+      "stamp_ns": 43010000000,
+      "input_sha256": "4ba727f80e8d61f62ec785e5e28bdaf6540f927c0bb3f5ca2be1efb28a74b51e",
+      "image": {
+        "raw": "42a5cb6df518de312a4fc6ce275e892a0d38bb33c0c04c94c0d27e10eb54a98c",
+        "echo_boundary": "fbc0fcc39580a4bb2babe587e4be15281e88c69b565034ec77aea41286a48e6f"
+      },
+      "tracks": {
+        "intensity": "64137a4fc8990d15dcdecc5058226dccf024faf70f72007fe90f151231274efc",
+        "echo_boundary": "2f26d82d7ae720a1ce7aa6cfee0bb9058810325cffc538d701d8b53952fb64ea"
+      },
+      "edge": {
+        "image": "fbc0fcc39580a4bb2babe587e4be15281e88c69b565034ec77aea41286a48e6f",
+        "edge_mask": "ea9dcef76e47efb2e4bbfdd4548d1f156b89e3a1600e0a1556cb6620a25e062d",
+        "tracking_mask": "596b249c3b9f089bd7b6796e4f3f321004234b197d1b2bb067f66f843bb0319c",
+        "gradient_db": "3f7d8303b4145797a72d1e73487ad95fa404fa05a56c14fee11b853835e522c6"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "67f32667292d815d4b8ef8d5b3c222aca8fe459bfc95d61d16e7d6265c0d0a44",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "7e51f8e085d87ea074dc6ee9eec8d9a9e6e4f268c0929cee0e93e7f0d035d8b1"
+      },
+      "surface": {
+        "background_db": "0acba673fd04d8528384eb8e903f6781a758b3672977f206b7498b2e47fc4703",
+        "smoothed_db": "f6060aa94c4d01d83b75bafd3b76ee65eae43e66635c10e7361b9598ced73cb9",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "0b62d23847cfaed90f76832a68bf124edb388ab7d4cd289a0992e8dffa971ccf",
+      "noise": [
+        -8.132833480834961,
+        -8.132833480834961,
+        -8.132833480834961
+      ]
+    },
+    {
+      "stamp_ns": 43500000000,
+      "input_sha256": "b33f14d4742aec863e40c6d1feb8997213ab831bd2f27b6f88a15e2d57cc82fa",
+      "image": {
+        "raw": "c842eeba01f6f73b297323e0f8870f746d14be1628ee50cfda3bb8cae7300450",
+        "echo_boundary": "27a86d58e051d1d80c06e0f0ab465fbba4ae72eeba71e51487da7cd4a22ae7ae"
+      },
+      "tracks": {
+        "intensity": "c9044bc056838a4551528ba2ce2d7ec7db263076c637b9a6266757cf10107846",
+        "echo_boundary": "d191e3344b6b6b7617af483b060c25113cbe0fe1582bc8decabf05ee4770ffc4"
+      },
+      "edge": {
+        "image": "27a86d58e051d1d80c06e0f0ab465fbba4ae72eeba71e51487da7cd4a22ae7ae",
+        "edge_mask": "beb8c4c2c6ae71fe6d8294338d5a58f171d7e52b6ae96ac1266630dc33309530",
+        "tracking_mask": "716b199c62d803e9ae5a4da5ec0b62883514ee640e853b4b3c9f0b685e19300d",
+        "gradient_db": "2b5e3085e4fa3265cee16dd4ad9f6dbfbc8ade79dd8943e18f36134369414faf"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "d44a5acf3ba924daf1209c622fc683dc94f88b80c6ccc343c9fa2ce726043439",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "ac74fd8e9ce4ed44753e69b08f44c05d5e6933e2e83dac77ecc6c8d868b9391a"
+      },
+      "surface": {
+        "background_db": "3b50024759109a7bb38da2002f44405fee524260b577c5973cf31e4eef00a9ff",
+        "smoothed_db": "98dc10bebb027639f275b79a23aefd49cc524b60848b1b644da27215934d4958",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "858f85d6242a16021557ff0f4d085c67c9ba03e93359636344a3da6b2ebe460b",
+      "noise": [
+        -8.426478862762451,
+        -8.426478862762451,
+        -8.426478862762451
+      ]
+    },
+    {
+      "stamp_ns": 44010000000,
+      "input_sha256": "2719a3c7ddbcc08e7afefc3c1012c2078a695ca02f28b6b9e74234dcca9c075e",
+      "image": {
+        "raw": "f17be95f3c0a62c38bb73137a9dad9a3d94d409d5b369dba547180f5a59fe785",
+        "echo_boundary": "8167e7f311acf3b0a47451155e20a9f2cfb45b4f13ef285288d11a5230b5a19e"
+      },
+      "tracks": {
+        "intensity": "c26ce722e80e1e2fb288873e42c23dcafdad47221c5bc6ec4dde0fc88e89d304",
+        "echo_boundary": "b93a2ac19dcb6941bf0e16ff9b6ddd12021adcf893c2eb0eabbc86ce502a9a2f"
+      },
+      "edge": {
+        "image": "8167e7f311acf3b0a47451155e20a9f2cfb45b4f13ef285288d11a5230b5a19e",
+        "edge_mask": "95c3481e9d453f6b9a73b6ce4785a9336039548cd7cae89ad289fb1a4026c060",
+        "tracking_mask": "8356fbab9b1fb9f0900c5297d3f68700342dd3bb80332bf3978f2758c7d82dd7",
+        "gradient_db": "a6f0addf1a10e36125b2b19497169eeeabc1dc11a3bcb44d12d444bc18556142"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "641d33cc5b28a21339fb68f8872a840bce9dac4ab3ee256fe7d5bf6fcfda4f8b",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "2c19dc28ab9e55aec59a14c5269bf9779772c002776984016a6d2218555b225b"
+      },
+      "surface": {
+        "background_db": "64fb2727a385512100663920dbc0e0666af0c11dbf180c9974ad6932f1c583d2",
+        "smoothed_db": "b4a64c1db716b9f079fccc1eaf3ddd1f0054b946f988486ba521b384bba6a8e2",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "92a06a818781b5606e57a224e732afad966c32d913335736693654ef9a4f68be",
+      "noise": [
+        -8.579989433288574,
+        -8.579989433288574,
+        -8.579989433288574
+      ]
+    },
+    {
+      "stamp_ns": 44500000000,
+      "input_sha256": "0b1292df94ef536908bbd8dc9fb3eb6c166a56bd80099813c513dfb623b813f1",
+      "image": {
+        "raw": "f47e77215cbdad0310ac78965908da29215096830e826aa9b89aa5d5dd4d8d6a",
+        "echo_boundary": "8c4f3c03f1f3d65a9aa3e3595b6d760463ce3fd3651567b45c8e74fe521ee1ac"
+      },
+      "tracks": {
+        "intensity": "a8d218cd5365536f38f2a6b0887b2f13335aef7eb8cecfb3c48b215d94bf4ca9",
+        "echo_boundary": "2844a003462511581c9c02f52218394a9cc27772eb59eafdeae67e858a7cf52c"
+      },
+      "edge": {
+        "image": "8c4f3c03f1f3d65a9aa3e3595b6d760463ce3fd3651567b45c8e74fe521ee1ac",
+        "edge_mask": "ba9461c9300f72a7a2ca595f08add567a91948210fb82229dc30a80f32e2b26b",
+        "tracking_mask": "9356db43ead2cb9e3ac66f11dba1197e318e9f476ee977641c70dd274658d22a",
+        "gradient_db": "d5dc8304615070b524fe20b5fdab7df9252d842b85187e07a9a18acef8ec5ede"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "ea2e1ab84c1841c04f4a5a5655f44617bef45fedcc4c51bbd16953ded9a57cb4",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "aac01d783c078e96bfa8a542f528ea75abd4cffe0023ef3916e10963a2cb325a"
+      },
+      "surface": {
+        "background_db": "27497304de617bd3c784d7f3851ea438980246cdab394207b67617d216114d35",
+        "smoothed_db": "cd32ad451149f9a6ab657c365ca33576100dd0cb0a555a9ff620e792be7398af",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "b0a8af0da83b1a2b527342925cb5057adca494d0a9ddadc6ca4e82c88b44a01d",
+      "noise": [
+        -9.178570747375488,
+        -9.178570747375488,
+        -9.178570747375488
+      ]
+    },
+    {
+      "stamp_ns": 45010000000,
+      "input_sha256": "fed55a6532c4c7e8a45696f5697a4eeef8e05d60a4e564c12015e03ccaec20c9",
+      "image": {
+        "raw": "64713f8e8bfbc16526141263904dd397db78a47f74cb904bd37bc4d9017194d8",
+        "echo_boundary": "e04b45f2111ebe966a8000aeb39353d620b0aa1e563c12b0be0df41e3843b273"
+      },
+      "tracks": {
+        "intensity": "1adf59f33052926fb80d7ed32182e717e850265f0256c7780d68d41d4d936561",
+        "echo_boundary": "493d1cc6d2bccc8446069afe044aa8cc8e0666b9b47a6a278dfb0bf36bc8788f"
+      },
+      "edge": {
+        "image": "e04b45f2111ebe966a8000aeb39353d620b0aa1e563c12b0be0df41e3843b273",
+        "edge_mask": "6a8cce2033a61a9fdbc6d36afa3c23c8dd5cd8d1f61f5cfbee475f9970810272",
+        "tracking_mask": "67d3e5cddadc114cace02b0cea8267ee7f450b811350a654f3c7e1c7fa0b6aeb",
+        "gradient_db": "149867a865e013bb4fb1b4b295dd6f7a1b793561fc64a677e5fdcf4ba4fe58ad"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "84c640ca2ace95c1239b80c2924da2bdcfbf7c1a41e9de91e00b0841c160333b",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "b87b968fa94a2412eea65fc3ad5ef49c31a4c268b0e2cb10f570a2dd22436881"
+      },
+      "surface": {
+        "background_db": "e205f7d3860bdc8c51fad0fe2e0969d249dcde1201feb0b69fa18cb2b18c470c",
+        "smoothed_db": "6eabc8125b885dbf6b6d75fea8c3b6f6140605aa1ecfa5f78f2fa1130a685901",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "433dcf8710d5733b7e5133a3130cc023e6adc8030e0f96138311055740e6e0b2",
+      "noise": [
+        -9.827898025512695,
+        -9.827898025512695,
+        -9.827898025512695
+      ]
+    },
+    {
+      "stamp_ns": 45500000000,
+      "input_sha256": "bfa2c32d72acc797d7cc168054b4e6e84eb8b23416cd8c762a6a749e2e9b6abd",
+      "image": {
+        "raw": "db273158656566a0f0d28f5e32aaf8e0bfb391e0647c160ed27a07dc502f1c85",
+        "echo_boundary": "5277ca3c13e5a824db2f9236e0b147b2c268aab519430e6b32d83bc138408df7"
+      },
+      "tracks": {
+        "intensity": "04aa3b5587cf523f2df0846cc504acec458f0d7e112c80327f58abd09d2142f1",
+        "echo_boundary": "f26bd4d20539f0a84b98a2bad526cda09ad6b6cc2501b06f6e57cf9ea98c2d3d"
+      },
+      "edge": {
+        "image": "5277ca3c13e5a824db2f9236e0b147b2c268aab519430e6b32d83bc138408df7",
+        "edge_mask": "583de15e958a3a1088b2526f22d7c2b759212c8133009aa1f2727ae5903cf898",
+        "tracking_mask": "4e52937f81ba04691b4df253ab9bcc926bb4f7bed0a0b964f9a3f30c7d8fb84b",
+        "gradient_db": "f742d3232f58b8c6c7f3fa5706d45393b88f02e39dc3b7b14a947b87dcd709d3"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "929f1c1c9883ab67fba9930c572a063769cddc7099adb39fdd9d4f24e9e62ce5",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "4a7be29708b2cc801283dc2b55b6999a326085df2a9518c7784c7645eaf3ea09"
+      },
+      "surface": {
+        "background_db": "b2313b6f998fe547fc0780e8b6fc384ff5a82755dbc3fea0b0cb31b143ee211c",
+        "smoothed_db": "82b27bf4dea53fd47700afbc5b92baf8b9dfd663495858d8fa27f6c6d02d90a0",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "af3df096e310a9ea4197d2cb301efa2b9815c3b2b880b424aacf5a24462d7b14",
+      "noise": [
+        -9.419797420501709,
+        -9.419797420501709,
+        -9.419797420501709
+      ]
+    },
+    {
+      "stamp_ns": 46010000000,
+      "input_sha256": "3eb9bf324012c2e088eb2ba30c49f0758d1468ebcd6e78f7da16b04ca5e96ffd",
+      "image": {
+        "raw": "ef1ffa733cef05475be0b9a131fb62f696ce1cc442d69bf58ed55170e347f424",
+        "echo_boundary": "8b1611639bad69a6dc8b4820389b0ddef7b99375f96d6d59d66677b2bb0f7836"
+      },
+      "tracks": {
+        "intensity": "051894a521e8f8b75abdedaba60fd33c7edf9f8cfc6e91a79c657ede0cfa8c57",
+        "echo_boundary": "811724f82d2becd1ae7e32aa14666ff14a67f1a3c75ab0f7ce7db093c1d52427"
+      },
+      "edge": {
+        "image": "8b1611639bad69a6dc8b4820389b0ddef7b99375f96d6d59d66677b2bb0f7836",
+        "edge_mask": "83ff7b2a5a009a3474fe8157731d134e3189feb63a40e5684cb6155c2f42fd83",
+        "tracking_mask": "32a6d62b06f9c6ef3b118b18c3a246f2fdc749a5715f3c918af89fc33830f823",
+        "gradient_db": "d1cddebc35d2ea710709d018239cd0714f050e8103f5830d2f085e88136b45e2"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "4691351e738fa9170bdaa4cb15a9da00f4ed643a2140bcbaffedbe02f36b1b11",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "e5c2517a2ab90b53fd8ca3a9801b156e26dd561cc8d599cfa8ab9bbc01780778"
+      },
+      "surface": {
+        "background_db": "a265b6816776d74f7ca54d9595087e8ad43b37d4dc2f96952a05a4b1f2883481",
+        "smoothed_db": "28dc61728347500ee7b9cc6220641ab4d782b5938fd1032663b50a34ec76a88f",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "5e6e72505d4a1d1707ee3590b0c31be7496cd5f85a80f8cfa346225899a5c1ae",
+      "noise": [
+        -9.459078788757324,
+        -9.459078788757324,
+        -9.459078788757324
+      ]
+    },
+    {
+      "stamp_ns": 46500000000,
+      "input_sha256": "558a3d276f01f7727ed5bc39efa84c6d80a3d743d1296ae2fe431da7a687b0e7",
+      "image": {
+        "raw": "ca4b82c1ea6f0f8742168bffb59c163de3eada23f0baa40e2d9717ef6dc0695d",
+        "echo_boundary": "a47266968daa432f5c8519d60ac6565c29717381c611c600c4879f1ed78fc159"
+      },
+      "tracks": {
+        "intensity": "b5e32cbfc5d2d1a65f1d5d0cd296ba045101bd9b86dca8e5e1b50620752fc7c9",
+        "echo_boundary": "512978e7d60817fa3dd32a4543bd5f76100e0cfd55ba2ad4ba1918e3dca9222b"
+      },
+      "edge": {
+        "image": "a47266968daa432f5c8519d60ac6565c29717381c611c600c4879f1ed78fc159",
+        "edge_mask": "add756b7074d5c11a66fa4e36517789516437c78d9714ebab00aed12355af46f",
+        "tracking_mask": "0bc21cb865dce87d6903803b8c09630efba0421c74d1ea252bcbaafa6e1c2797",
+        "gradient_db": "5dc68f959ebbac0532734f3eff3936a0af131ae9afde047e37eeda45281e0d40"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "e19d34f53706ab0df7db7bb1f2be9950d506425dddf1e4b2d32ffa055db80d5f",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "255046a28f7e7f84418ea38c3c939fa25fa611b3ef971c596e82802fdba89847"
+      },
+      "surface": {
+        "background_db": "aa7eef66885304dc0acb8cab107c43206c64e2aa2b8671d7d8fc0d885d102b87",
+        "smoothed_db": "c8cad2c64e39fbd2b9abd350ea77821dae5baed43e0851c408df9116833d29c9",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "f6e3819a07e2b70c6eb1bb4ea111f4558e0c8ab642cb27a0e23be210ac6709f5",
+      "noise": [
+        -9.627655506134033,
+        -9.627655506134033,
+        -9.627655506134033
+      ]
+    },
+    {
+      "stamp_ns": 47010000000,
+      "input_sha256": "0274cec1b99c5d400c44954c8f0c11d3156e2fd46e710fcc0178ffaf823db276",
+      "image": {
+        "raw": "41aec0df6bf6747d0853676873a411591ec9608d2574efe508bb9d6d7404f5a1",
+        "echo_boundary": "52a662c62314eea264ef904c6d837de7e2aa65f02c54335cf3a5cac94f96dc3b"
+      },
+      "tracks": {
+        "intensity": "638bc45b7d8437a26b2f7c55bd99dfa29c09df3eafc4c7e8d25e70bd20e53e03",
+        "echo_boundary": "cd762dec37818d69bcb51aec0dabb1ecdc58c9ad51bcf15b4fd10f84f8355488"
+      },
+      "edge": {
+        "image": "52a662c62314eea264ef904c6d837de7e2aa65f02c54335cf3a5cac94f96dc3b",
+        "edge_mask": "8eab102657b000660aad6eb926b3b4643c9dd706bb44c444a30dd250323a6ee0",
+        "tracking_mask": "6a62f201c49b1a54042a9d0291d70553ba1fd08b848c9ad9633a090b9bd14fb4",
+        "gradient_db": "4e5f3720a5b096c7458da071df018e269888f41c26daabe3d6ecf84a4ab235ba"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "29e4a6fc2c54b5363db9f9b5e95be7f75bbe8343d243784c1de8dda5a996f989",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "a469482458d3e85d6b8bd54c1baadb356e42be246ac9c3f9f99f62d3b4d086bf"
+      },
+      "surface": {
+        "background_db": "0cf60d09686ea7fc8101a334f52eb7cce15e1c2fe5316cc973ce76e407563991",
+        "smoothed_db": "ace36fe82bbdc62c9df5bd9826f230d9c06d613e72585511c1eef25778ef0000",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "4cce86a87544e13419d69ddad4fe20401957d707cae9392a8b18d7a553e82e97",
+      "noise": [
+        -10.12315845489502,
+        -10.12315845489502,
+        -10.12315845489502
+      ]
+    },
+    {
+      "stamp_ns": 47500000000,
+      "input_sha256": "3ec70dccde54b57255e34e507efe58a27245dff510684effea177f408a852bb2",
+      "image": {
+        "raw": "b82048c858e147cec1c25720d65665a73c9ed85675161746fd2c6912cb6b57c2",
+        "echo_boundary": "06ce77b1e129d3ab30a1a28bdb391c5a48fcab2b9964421b803aa3f48667c744"
+      },
+      "tracks": {
+        "intensity": "aa6618540a2868a3de7900c6460b8824333d9ca200a34559582c9b3e0a8e5cb4",
+        "echo_boundary": "fc18bbb86643feeac0ee04f993ee0ec3828f8eace183438ddf68cfe36fa3d8ef"
+      },
+      "edge": {
+        "image": "06ce77b1e129d3ab30a1a28bdb391c5a48fcab2b9964421b803aa3f48667c744",
+        "edge_mask": "0f61b564618be30c883c6e85fb75f7dc319d15c40565ce29dc3d4187ae18ef06",
+        "tracking_mask": "58ceb00bda654d6d03670f4af804f1d18cba0207417d6eb4388d8172d6f28a8f",
+        "gradient_db": "9df85e35ba41a5aa02cad7cebdd1abc9a391b324fef4c2a9ffcd138adf2895fa"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "7d9ba1048c7e7b60d3c9e37155b2d86e313fda1f43516d7a6821d64f98d10dd5",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "b299273535fda69607e90f39d7ac86daa2a900955052e36b48f25c5c3fdf0999"
+      },
+      "surface": {
+        "background_db": "42f5a7727bda9f100ec2cf7ae3a3512f2ba4647b9ee45e5c55fd26c98fb941fd",
+        "smoothed_db": "065739cd9d580583adc5c5a9e33ee4b8e83e40c6b52441692afbd4a69c5faf58",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "8d41e3a932b3d4ac20f54f9f9a47f33628fa9e6523577a71fe9d50df4a1f9983",
+      "noise": [
+        -10.291779518127441,
+        -10.291779518127441,
+        -10.291779518127441
+      ]
+    },
+    {
+      "stamp_ns": 48010000000,
+      "input_sha256": "2576917657fb84502790d964de1b5ee9a01a22be47c7cf51001f18d5819ca673",
+      "image": {
+        "raw": "da1eaf16b398c9a7e07bdd5b10358569312c72341cda99155ba66bf18d88ed19",
+        "echo_boundary": "c33c354697b5916ae1b84ddee49d51252ab091db973a99806942814c54d0d5e2"
+      },
+      "tracks": {
+        "intensity": "b1c4148cffd47d04705c64e2076bb4665d0bec3c8bbbe11c3662e9299bcf624b",
+        "echo_boundary": "7552a61e235a26f962b2eb38675840b11aa56b8e63ffdb43f237a7bb64a197c8"
+      },
+      "edge": {
+        "image": "c33c354697b5916ae1b84ddee49d51252ab091db973a99806942814c54d0d5e2",
+        "edge_mask": "a92110d3d778cfbc6f85daefc9fbd5eba6bf84ee5c4d573210587d2e2d112394",
+        "tracking_mask": "4e0d36bb0e3f1e1fee9915b50abad041b64c4169775fb7ef04ebd1023f430a67",
+        "gradient_db": "f5a60ec778f18cae2b02582f7aa6367a6a3556d6888a6082565018392782d22e"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "ef0c5ec9dff68e1319f22230ce7b12b62be483ac3e8fa0f87f42948f14069437",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "4d5da0994d46a164ccc4a34787f1bd928c43b84fd05094452a8e45b2c1ec3faa"
+      },
+      "surface": {
+        "background_db": "67bbe0540013276a3225a9e0eb3de8ce2fe595c6375b23207de8d7e36816f0f3",
+        "smoothed_db": "3ae89433cc9b749fd8e7a6eef6b64b045bb66ed4490301faf8946120dbbe67d8",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "49feb396cf733d67e5fea7dfadc68a1b06d0317ff0ee19f1719d606ac1ade357",
+      "noise": [
+        -10.032855033874512,
+        -10.032855033874512,
+        -10.032855033874512
+      ]
+    },
+    {
+      "stamp_ns": 48500000000,
+      "input_sha256": "a40cd43eb8c9ab4043e04c13e80e0b474b0c6f9d3c1b8ae55736c83bced4e884",
+      "image": {
+        "raw": "cd7bd077ebd2218df7c5dbcb8b757a4a421174a77f24d9e989fa3bbb10a79bc7",
+        "echo_boundary": "21af24e9f1c66ff21fc473fe01423e170a245a1fa461fe624ca01be6a9a2baeb"
+      },
+      "tracks": {
+        "intensity": "3ce217e0ba98cc846f677c57df2cbb8523b4a67e332bbbdfcb86e7878c7bbe9c",
+        "echo_boundary": "1decf931be58313eed9a2585939d68d0ce85fda546fbefcd680d17fa7087308c"
+      },
+      "edge": {
+        "image": "21af24e9f1c66ff21fc473fe01423e170a245a1fa461fe624ca01be6a9a2baeb",
+        "edge_mask": "ab2cd01d325ecc17728e02064e56af131d333afc0cd874343b3d7a1ce08605f9",
+        "tracking_mask": "84b0d1f9a7cc9dd58e7cba9f719d461b258038b634be5d21dfb279ac93670040",
+        "gradient_db": "deb7be04dcdf81df17303d1b17a2284c7f6e7efcbe3ad309a1249e7994727e1f"
+      },
+      "ground": {
+        "azimuth_rad": "bc39b51b6bc6421cf75fb95fdac35ccdff5836ef4bd1f80b6315d656cf1549ae",
+        "range_m": "1f8a123844f8ce0e35bb9a1a055e1d2f223477adbac98d1716aade649b2b554b",
+        "selected_beams": "a5eda69a6caa670dc1305fa337df92f24756656f7deac4293d0f30b3d0bbca8b",
+        "return_floor_db": "9138f9bed7b2c7fb7d0655bcaef56b46ac3f1362ddd7a64b0caab0f419acb050"
+      },
+      "surface": {
+        "background_db": "90e37038db9ffdaceaaf366c67e6b968c8645b41d0c046ea2f1380e93685d880",
+        "smoothed_db": "4c276ad9c3b8677e4c9d1dc7c7e529153117217df93eeef4ac898da39097cc47",
+        "ground_onset_m": "a9e2a1eafb834ce64943582e2fbd9b005c74d53a111d57f3f459415ea0b7f6d2"
+      },
+      "regions": "11bb7e97646d94c7c1f7f306b5f8d5e21017f58f7f480a5eb50ec91955f92644",
+      "noise": [
+        -9.926582336425781,
+        -9.926582336425781,
+        -9.926582336425781
+      ]
+    }
+  ]
+}

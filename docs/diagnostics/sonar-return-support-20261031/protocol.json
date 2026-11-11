@@ -1,0 +1,19 @@
+{
+  "phase": "bounded projective association diagnostic",
+  "goal_turn_classification": "progress",
+  "application_head": "8ca6009873a11a6b8e66c5827e17335c5ce5ccb0",
+  "library_head": "5ada6d7ce69dccfc1c1caa107042665ea6bc3a70",
+  "source_integration": "ffecee9be9976f68c9e883d6cf3bbd6d40eb7729",
+  "input": "one retained sonar-inspection-scene-20261031 record; no duplicate acquisition",
+  "poses": "causal emitted IMU/DVL/pressure default-navigation means; no acoustic or RGB input",
+  "opencv": "existing research Python 4.10.0; native SDK and ABI unchanged",
+  "detector": "AKAZE defaults, existing raw 20-90 dB / 5x5 image transform, finite support, range >0.4 m; at most 300 features sorted by response",
+  "controls": ["mutual descriptor match with existing 0.8 nearest-neighbour ratio", "mutual unique nominal projective match using full elevation arc"],
+  "projective": {"samples": 257, "match_radius_pixels": 2.0, "new_feature_radius_pixels": 5.0, "database_capacity": 300, "maximum_unseen_seconds": 2.0, "zero_elevation_assumed": false, "covariance_calibrated_gate": false, "sampling_control": "compare decision distances to 65 samples without retuning thresholds"},
+  "reconstruction": {"minimum_observations": 3, "maximum_construction_observations": 8, "selection": "first observations only", "elevation_seeds": 9, "maximum_iterations": 12, "range_sigma_m": 0.025083611719310283, "azimuth_sigma_rad": 0.008213314126139592, "map_qualified": false, "native_fusion": false},
+  "validation": "all tracked observations at least 2 seconds after the last construction observation; retain all missing and out-of-fan counts; scene/truth enter separate assessment only",
+  "primary_method": "Westman et al. ICRA 2018 section IV / Algorithm 1; projective geometry ingredient only, not a reproduction of the complete ASFM backend",
+  "noises_admission_sdk_provider_unchanged": true,
+  "preserve_all_outputs_and_failures": true,
+  "do_not_tune_to_this_record": true
+}

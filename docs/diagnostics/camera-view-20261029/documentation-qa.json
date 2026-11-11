@@ -1,0 +1,24 @@
+{
+  "viewports": [
+    {
+      "width": 1280,
+      "height": 900
+    },
+    {
+      "width": 390,
+      "height": 844
+    }
+  ],
+  "languages": [
+    "en",
+    "ko"
+  ],
+  "horizontal_overflow": false,
+  "api_paragraph_visually_checked": true,
+  "screenshot_sha256": {
+    "ko-mobile.png": "0b7fad35cfd1a6384fddf6942d732e488e73c4ba4753fb0a37b5ab718a73e893",
+    "en-mobile.png": "76452f5264879afda73bc68533e97f83c09196d67b5e2885fbf6090b5e0169c5",
+    "ko-desktop.png": "366fbfbe44f0b8a1a138ee49a3f82c6b8923b2be4ee6157a8585aa7a34599ac8",
+    "en-desktop.png": "c7da49b609ebee313f29cf5a2ea0649011170833354fd4b8f9cdabcdac654ac4"
+  }
+}

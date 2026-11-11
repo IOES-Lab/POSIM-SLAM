@@ -1,0 +1,51 @@
+F.EE
+======================================================================
+ERROR: test_stale_update_is_rejected_without_losing_sensor_owner (__main__.NativeSurfaceStreamTests.test_stale_update_is_rejected_without_losing_sensor_owner)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/native-surface-transport-20261029/library/native/basalt/test_surface_stream_native.py", line 118, in test_stale_update_is_rejected_without_losing_sensor_owner
+    snap, _=self.capture(client, 1);update=self.increment(snap)
+                                           ~~~~~~~~~~~~~~^^^^^^
+  File "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/native-surface-transport-20261029/library/native/basalt/test_surface_stream_native.py", line 65, in increment
+    return prepare_native_ranges(snapshot, order=(pose, plane), delta=current,
+        jacobian=j, residual=[.03], range_keys=[(snapshot.stamp_ns, 4, beam)])
+  File "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/native-surface-transport-20261029/library/src/posim_slam/native_surface.py", line 133, in prepare_native_ranges
+    result=_prepare_range_likelihood(snapshot._archive,snapshot.ledger,order=order,delta=delta,
+        jacobian=jacobian,residual=residual,range_keys=keys,source_stamp_ns=snapshot.stamp_ns,max_workspace_bytes=max_workspace_bytes)
+  File "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/native-surface-transport-20261029/library/src/posim_slam/delayed_surface_update.py", line 180, in _prepare_range_likelihood
+    raise ValueError('late_range_original_measurement_pose_required')
+ValueError: late_range_original_measurement_pose_required
+
+======================================================================
+ERROR: test_successive_delayed_updates_use_fresh_native_snapshots_and_retire (__main__.NativeSurfaceStreamTests.test_successive_delayed_updates_use_fresh_native_snapshots_and_retire)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/native-surface-transport-20261029/library/native/basalt/test_surface_stream_native.py", line 97, in test_successive_delayed_updates_use_fresh_native_snapshots_and_retire
+    update=self.increment(snap)
+  File "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/native-surface-transport-20261029/library/native/basalt/test_surface_stream_native.py", line 65, in increment
+    return prepare_native_ranges(snapshot, order=(pose, plane), delta=current,
+        jacobian=j, residual=[.03], range_keys=[(snapshot.stamp_ns, 4, beam)])
+  File "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/native-surface-transport-20261029/library/src/posim_slam/native_surface.py", line 133, in prepare_native_ranges
+    result=_prepare_range_likelihood(snapshot._archive,snapshot.ledger,order=order,delta=delta,
+        jacobian=jacobian,residual=residual,range_keys=keys,source_stamp_ns=snapshot.stamp_ns,max_workspace_bytes=max_workspace_bytes)
+  File "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/native-surface-transport-20261029/library/src/posim_slam/delayed_surface_update.py", line 180, in _prepare_range_likelihood
+    raise ValueError('late_range_original_measurement_pose_required')
+ValueError: late_range_original_measurement_pose_required
+
+======================================================================
+FAIL: test_expiry_keeps_requested_dependency_closure_and_closes_range_reuse (__main__.NativeSurfaceStreamTests.test_expiry_keeps_requested_dependency_closure_and_closes_range_reuse)
+----------------------------------------------------------------------
+ValueError: late_range_original_measurement_pose_required
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/native-surface-transport-20261029/library/native/basalt/test_surface_stream_native.py", line 140, in test_expiry_keeps_requested_dependency_closure_and_closes_range_reuse
+    with self.assertRaisesRegex(ValueError, 'closed'):
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "closed" does not match "late_range_original_measurement_pose_required"
+
+----------------------------------------------------------------------
+Ran 4 tests in 1.943s
+
+FAILED (failures=1, errors=2)

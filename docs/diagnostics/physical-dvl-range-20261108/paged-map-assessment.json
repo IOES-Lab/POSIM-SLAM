@@ -1,0 +1,41 @@
+{
+  "schema": "timing-only-paged-map-assessment-1",
+  "scope": "Complete native timing-only export; no HTTP or product acceptance",
+  "reference_stamp_ns": 11800000000,
+  "alignment_rotation": [
+    [
+      0.36489139313373353,
+      -0.931050090605722,
+      0.0
+    ],
+    [
+      0.931050090605722,
+      0.36489139313373353,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "alignment_translation": [
+    -0.13348562739817238,
+    0.16691653009900886,
+    -0.1844706004972939
+  ],
+  "gauge": "Initial yaw and translation only, scale1; no trajectory fit or per-phase alignment",
+  "points": 3628,
+  "all_points_retained": true,
+  "median_m": 0.004161727738766885,
+  "p95_m": 0.0191745499442719,
+  "rmse_m": 0.009570343754661684,
+  "maximum_m": 0.09624363089867405,
+  "above_10cm": 0,
+  "above_20cm": 0,
+  "source_ply_sha256": "24c419f20db2a8be885016b02de998288af1979105918667f45d191be2acafc3",
+  "checkpoint_sha256": "55893fa38877dd561c0d512868f6ee260d43994817b29148834f5c2300bcfa03",
+  "source_graph_digest_verified": true,
+  "truth_used_for": "Assessment and annotation only",
+  "product_qualified": false
+}

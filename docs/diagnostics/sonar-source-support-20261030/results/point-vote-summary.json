@@ -1,0 +1,30 @@
+{
+  "candidates": 130451,
+  "positive_seed_cells": 3915,
+  "positive_seed_without_navigation": 99,
+  "settings": {
+    "voxel_m": 0.05,
+    "minimum_positive_views": 3,
+    "minimum_baseline_m": 0.5,
+    "minimum_depth_span_m": 0.25,
+    "maximum_candidates": 300000,
+    "projection": "nominal centroid point to nearest calibrated raw range/bearing cell; not an occupied voxel",
+    "absence": "not negative/free-space evidence",
+    "pose_uncertainty_included": false
+  },
+  "modes": {
+    "positive": {
+      "selected_candidates": 112060,
+      "optimistic_three_sigma_within_010_m": 0,
+      "seconds": 1.2947933750110678
+    },
+    "contrast": {
+      "selected_candidates": 34579,
+      "optimistic_three_sigma_within_010_m": 353,
+      "seconds": 1.3610891249845736
+    }
+  },
+  "map_qualified": false,
+  "joint_uncertainty_available": false,
+  "scope": "nominal point-location hypotheses with repeated source support; not occupied voxels, joint uncertainty or independent XYZ observations"
+}

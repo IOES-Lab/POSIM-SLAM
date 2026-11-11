@@ -1,0 +1,22 @@
+{
+  "source_tests": 451,
+  "source_skipped": 16,
+  "failures": 0,
+  "errors": 0,
+  "clean_source_export": true,
+  "protected_work_excluded": true,
+  "removed_only_duplicate_test_export_archives_bytes": 147704619,
+  "diagnostic_controls": [
+    "supported plane predicts",
+    "changing onset ranges leaves all predictions/support unchanged",
+    "out-of-range plane has no prediction",
+    "sonar-conditioned poses rejected"
+  ],
+  "new_runtime_dependency": false,
+  "native_estimator_changed": false,
+  "source_files_sha256": {
+    "tools/evaluate_dvl_sonar_prediction.py": "e366e52205186a38ed179b1dec547f6bbd8bd2ba2da49a9e3db8ff97c900318e",
+    "tests/test_dvl_sonar_prediction.py": "9c38a9f2ad6b68df52d8eede497b46633d0c754ee6dfe12c41fa8c379d63cc99"
+  },
+  "scope": "CLI prediction/data-leakage controls and complete source suite; no new wheel/native/installed claim"
+}

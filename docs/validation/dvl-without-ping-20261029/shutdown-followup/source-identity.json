@@ -1,0 +1,16 @@
+{
+  "upstream_commit": "23dc7c9f05c6e85033dba4ca7a0c807cbede2a8f",
+  "upstream_url": "https://github.com/python/cpython/commit/23dc7c9f05c6e85033dba4ca7a0c807cbede2a8f",
+  "applied": true,
+  "before_sha256": "760967defab5b28d611c46d7dbd51fd734679837a87a0673837ca5bdff8b1a41",
+  "after_sha256": "a83ae7b4d6fdb149445250f3a844147c5dbdf8d12f7cb9ffcb6d858ac743ce20",
+  "license": "PSF-2.0",
+  "python_version": "3.14.7",
+  "scope": "Only copied asyncio source is patched; shared SDK and existing installations remain unchanged",
+  "builder_source_sha256": {
+    "scripts/patch_asyncio_child_wait.py": "7ce0641765afc50eddc6a62e66a63962c6d9295c4d2f0b6f5669ebcec1f60822",
+    "scripts/probe_asyncio_child_wait.py": "b61a97832af914ed490bcc3403db5fc820c7109fef481a3b5ebcd532fa748da5",
+    "scripts/build_native_mac_engine.py": "0117849c74a88c1845fa1b98ce037f2fbe62812da2e3a71d2f98f16d6084a16f",
+    "scripts/validate_native_mac_application.py": "25d7fc73dedee30bed396ad92db6b2111573aafb1e16c2b018dd056b87b31df1"
+  }
+}

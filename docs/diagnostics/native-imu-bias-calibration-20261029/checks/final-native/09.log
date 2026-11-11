@@ -1,0 +1,7 @@
+..{"states": 101, "pressure_reports": 81, "dvl": false, "camera_packets": 0, "pressure_loss_s": 4, "max_depth_error_m": 0.019470024941522668, "final_depth_error_m": 0.009915167606937392, "datum_m": 17.010546806337175, "scope": "synthetic depth fusion; no terrain or map acceptance"}
+{"states": 101, "pressure_reports": 81, "dvl": true, "camera_packets": 0, "pressure_loss_s": 4, "max_depth_error_m": 0.01237676603249227, "final_depth_error_m": 0.00875185554735447, "datum_m": 17.00841905122018, "scope": "synthetic depth fusion; no terrain or map acceptance"}
+.
+----------------------------------------------------------------------
+Ran 3 tests in 3.411s
+
+OK

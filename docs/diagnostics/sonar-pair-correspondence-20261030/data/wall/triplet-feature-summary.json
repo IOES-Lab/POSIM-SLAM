@@ -1,0 +1,41 @@
+{
+  "triplets": 36,
+  "policy": "non-overlapping A-B-C blocks; preserve every A-B candidate, including lost C observations",
+  "variants": {
+    "lk_raw": {
+      "training_candidates": 2555,
+      "validation_found": 1311,
+      "validation_source_supported": 1311
+    },
+    "lk_source_positive": {
+      "training_candidates": 565,
+      "validation_found": 324,
+      "validation_source_supported": 216
+    },
+    "lk_source_contrast": {
+      "training_candidates": 134,
+      "validation_found": 88,
+      "validation_source_supported": 51
+    },
+    "akaze_raw": {
+      "training_candidates": 201,
+      "validation_found": 84,
+      "validation_source_supported": 84
+    },
+    "akaze_source_positive": {
+      "training_candidates": 79,
+      "validation_found": 31,
+      "validation_source_supported": 22
+    },
+    "akaze_source_contrast": {
+      "training_candidates": 38,
+      "validation_found": 13,
+      "validation_source_supported": 9
+    }
+  },
+  "withheld_tail_frames": [
+    55500000000,
+    56010000000
+  ],
+  "truth_or_pose_used": false
+}

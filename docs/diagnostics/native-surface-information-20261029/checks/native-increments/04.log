@@ -1,0 +1,6 @@
+......{"conditional_nodes_after_28_states": 13, "no_range_max_trajectory_difference": 0.0, "scope": "Synthetic native stream ownership; no physical sonar map", "snapshot_bytes": 614425, "successive_installed_readings": 2}
+
+----------------------------------------------------------------------
+Ran 6 tests in 3.482s
+
+OK

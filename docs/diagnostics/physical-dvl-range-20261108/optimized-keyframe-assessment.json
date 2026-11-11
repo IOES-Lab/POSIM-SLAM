@@ -1,0 +1,71 @@
+{
+  "schema": "optimized-map-keyframe-assessment-1",
+  "scope": "Optimized map keyframes only, not continuous local VIO states; timing-only native run",
+  "metrics": {
+    "evaluated": true,
+    "states": 227,
+    "duration_s": 169.10000000000002,
+    "evaluation_alignment": {
+      "rotation": [
+        [
+          0.364891378031769,
+          -0.9310500965243904,
+          0.0
+        ],
+        [
+          0.9310500965243904,
+          0.364891378031769,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "translation": [
+        -0.13348562739817238,
+        0.16691653009900886,
+        -0.1844706004972939
+      ],
+      "scale": 1.0
+    },
+    "gauge": "initial yaw and translation only; gravity tilt retained; scale fixed at 1; no trajectory fit",
+    "position_rmse_m": 1.5592456531881507,
+    "position_max_m": 4.410369535083604,
+    "rotation_rmse_rad": 0.00440516509672136,
+    "rotation_max_rad": 0.015339296802022336,
+    "truth_distance_m": 84.17233549701726,
+    "estimated_distance_m": 75.39620560522376,
+    "rpe_1s_pairs": 7,
+    "rpe_1s_position_rmse_m": 0.0012164496015171983,
+    "rpe_1s_rotation_rmse_rad": 0.0005899824374878166,
+    "scope": "Recorded trajectory only; does not qualify product accuracy or initialization/recovery"
+  },
+  "phases": {
+    "before_loss": {
+      "keyframes": 81,
+      "rmse_m": 0.008138541911244296,
+      "maximum_m": 0.01581280775328198,
+      "first_error_m": 0.0,
+      "last_error_m": 0.01581280775328198
+    },
+    "during_loss": {
+      "keyframes": 102,
+      "rmse_m": 2.3260752929199406,
+      "maximum_m": 4.410369535083604,
+      "first_error_m": 0.016371812948208532,
+      "last_error_m": 0.0069603893378191685
+    },
+    "returned": {
+      "keyframes": 44,
+      "rmse_m": 0.009325077273316561,
+      "maximum_m": 0.01533493778881226,
+      "first_error_m": 0.006053856386362241,
+      "last_error_m": 0.01331732623326307
+    }
+  },
+  "all_keyframes_retained": true,
+  "truth_used_for": "Assessment only",
+  "product_qualified": false
+}

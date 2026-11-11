@@ -1,0 +1,39 @@
+{
+  "application_parent": "70df5e2ec31abe55dc2e51dd552387b18fea5be3",
+  "current_runtime_source_files": {
+    "worlds/practice.py": "b43af8b5513fb1977c424a1070e0747cfd141e4877985287e13cb218720025e9",
+    "worlds/inspection_scene.py": "b79b30ffba5cdc567d3daca9d96683a981be899ccee93a98ed9f0657c905b0dc",
+    "worlds/buoys.py": "605f340e023db4cb30710b5c1ffc0cc4b68067b172424282ac90cdb46a4d0a13",
+    "browser_adapter/demo_workspace.py": "31804bcff9f5cf4f2fa6cabf9f2227f6cd76c83fdba4ec0d8609237f51e9688b",
+    "browser_adapter/navigation_grid.py": "2cd6a63a4615d60ec208c2c3dc9e8aa95e8a34b7dd12a500e6c5977763c6a270",
+    "browser_adapter/mission.py": "f1881b6306c2a60a839fd654f5d64fad1f39ad41dbe452e3384e29e97fd3b98c"
+  },
+  "component_revisions": {
+    "posim-terrain": "1f06e84f2b3fb354cbc03f24742b70a92a9548df",
+    "posim-routing": "296888947c8dd6b7f6965e340531fdbe9b91fd4e",
+    "posim-control": "486e82a0403ab9c052dc6b7794ced22b50ae99ba",
+    "posim-slam": "0138fb467cfcf88d4bdaffa0e3a44070127f0862"
+  },
+  "source_integration": "ffecee9be9976f68c9e883d6cf3bbd6d40eb7729",
+  "native_worker_sha256": "38ec4ecc26aba87e55ee4abe60446196ed6bc6983fa335fb4461dac105e1e813",
+  "native_worker_source_files_matched": 94,
+  "rendering_library_sha256": "0090433756cb425eea803ce56a70c1af5adf844223054b2f1c25739bee0d8564",
+  "system_library_sha256": "94c6b56393afcbbe8d0343613d4d5af81f42e0a9525c3a07c4a257c500ccd66a",
+  "input_record_estimator_started": false,
+  "installed_sdk_changed": false,
+  "map_qualified": false,
+  "scene_is_estimator_input": false,
+  "raw_archives_retained_once_externally": true,
+  "owned_capture_exit": 0,
+  "owned_context_exit": 0,
+  "native_replay_shutdown": "client close sends SIGTERM; child -15; Python replay 0; no SIGKILL",
+  "failures_preserved": [
+    "missing packaged native helper in private stage",
+    "existing box rejected by common obstacle factory",
+    "surface-owner and point-owner private harness profile conflict"
+  ],
+  "resource_reuse": {
+    "copied_bytes": 271386,
+    "reused_bytes": 752330679
+  }
+}

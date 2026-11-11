@@ -1,0 +1,56 @@
+{
+  "reviewed_at": "2026-10-31 03:07:38 UTC",
+  "source_integration": "ffecee9be9976f68c9e883d6cf3bbd6d40eb7729",
+  "pull_requests": [
+    {
+      "pr": 6,
+      "head": "d51d7b85d7224d7b8420015a63e0f6896ddaa7a7",
+      "branch": "port/dave-pr44-wgpu",
+      "state": "open",
+      "merged": false
+    },
+    {
+      "pr": 31,
+      "head": "7dc9602142cc66d043b53f9a275448867b5c665e",
+      "branch": "fix/sonar-create-once-20261028",
+      "state": "open",
+      "merged": false
+    },
+    {
+      "pr": 32,
+      "head": "f1055f48ebe57d7ea12d9009ce9cd4d554f72364",
+      "branch": "fix/sonar-owned-context-20261028",
+      "state": "open",
+      "merged": false
+    },
+    {
+      "pr": 33,
+      "head": "5f327fd55d4301e4fed125b2a64bead6d5d4ceba",
+      "branch": "fix/wgpu-matmul-partial-tiles-20261028",
+      "state": "open",
+      "merged": false
+    },
+    {
+      "pr": 34,
+      "head": "801f886605f138ff22b8d714a13885d84f36e577",
+      "branch": "fix/wgpu-original-length-fft-20261028",
+      "state": "open",
+      "merged": false
+    },
+    {
+      "pr": 35,
+      "head": "02f6dccd57eee0e0c2dd417317d4a06ee65b907f",
+      "branch": "fix/sonar-empty-return-display-20261029",
+      "state": "open",
+      "merged": false
+    },
+    {
+      "pr": 36,
+      "head": "fbfd000d094675fd301b51ccc29c07a40cc51c15",
+      "branch": "fix/sonar-range-endpoint-20261029",
+      "state": "open",
+      "merged": false
+    }
+  ],
+  "all_heads_ancestors": true
+}

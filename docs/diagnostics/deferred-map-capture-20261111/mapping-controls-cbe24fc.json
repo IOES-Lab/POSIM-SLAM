@@ -1,0 +1,65 @@
+{
+  "schema": "posim-slam-native-mapping-controls-1",
+  "passed": true,
+  "scope": "Complete graph/window/input archive probe; no ROS, renderer or physical replay",
+  "revision": "cbe24fc9e543dfcb70ebe3be027175167a49be83",
+  "sources": {
+    "source": {
+      "repository": "https://github.com/VladyslavUsenko/basalt.git",
+      "revision": "0f3b2b52c807f70ff4e2973ce253c73329eea7bc",
+      "license": "BSD-3-Clause",
+      "notice": "LICENSE"
+    },
+    "headers": {
+      "repository": "https://github.com/VladyslavUsenko/basalt-headers.git",
+      "revision": "b7f915b195c87c8373bf93f97a0710bcdaffd718",
+      "license": "BSD-3-Clause",
+      "notice": "LICENSE"
+    },
+    "sophus": {
+      "repository": "https://github.com/strasdat/Sophus.git",
+      "revision": "d0b7315a0d90fc6143defa54596a3a95d9fa10ec",
+      "license": "MIT",
+      "notice": "LICENSE.txt"
+    },
+    "cereal": {
+      "repository": "https://github.com/USCiLab/cereal.git",
+      "revision": "22a1b369f39be918ca79206a83c4facd759f9105",
+      "license": "BSD-3-Clause",
+      "notice": "LICENSE"
+    },
+    "magic_enum": {
+      "repository": "https://github.com/Neargye/magic_enum.git",
+      "revision": "5de969c9005938a27a34d3af3ea5923d18679ad8",
+      "license": "MIT",
+      "notice": "LICENSE"
+    },
+    "opengv": {
+      "repository": "https://github.com/laurentkneip/opengv.git",
+      "revision": "91f4b19c73450833a40e463ad3648aae80b3a7f3",
+      "license": "BSD-3-Clause",
+      "notice": "License.txt"
+    },
+    "json": {
+      "repository": "https://github.com/nlohmann/json.git",
+      "revision": "55f93686c01528224f448c19128836e7df245f72",
+      "license": "MIT",
+      "notice": "LICENSE.MIT"
+    }
+  },
+  "binary_sha256": "6c6d4f710e618c7662d86780fef13118f43e8b8c6dc1092951dc891cb3c86768",
+  "lock_sha256": "33fa0716398c24a05b2a117664370311eda5b29968e9ae2e8917e62b4b4976a8",
+  "probe_sha256": "f887bbec2306446a529d6993c9e82b9e6f998e1c132af31c2d2f020fb3e42e98",
+  "archive_sha256": {
+    "bad-window.graph.pmap": "bcd793a0297de890067413e1cff919503d585171e3a511ab395b9bae367840a6",
+    "chunks.pmap": "63d19598bfd87d84db47c0f83046e0c9c3a307b234bf39b4e216e956ffdb03cc",
+    "corrupt.graph.pmap": "958504355d2f04f4157b6f44290087f920d289290d9c70e27341dbf7d036848e",
+    "deferred-inputs.pmap": "5f98032c9eea4ad1e89de79fbbdfaf188f38598ce0682c4a6e298817173ca3b4",
+    "fixture.graph.pmap": "c606b897d689a7b19227f585aeef2467500fa61c49b5ba418591666ff3041b9b",
+    "inputs.pmap": "3a212eece8664ab742a446be937139e9fd32f7e9c96cff9cd42fa8f789037ed9",
+    "inputs.pmap.tmp": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "reexport.pmap": "3ae4a70583a903a3c385dff6a1a5b469ad4e5fe04d46b66242ef3908cc35d261",
+    "window.graph.pmap": "2c94555b9c92d9d4562397f146886e18768345d3e7ad2293b71e8b043901b1e0",
+    "without-inputs.pmap": "1c718121b0239e8cbd00ef2973d23035adbec68de4c27b05cc43af7dc4424a51"
+  }
+}

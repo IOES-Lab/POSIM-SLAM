@@ -1,0 +1,242 @@
+{
+  "map_accepted": false,
+  "native_fusion": false,
+  "conditional_fixed_navigation": true,
+  "truth_scene_rgb_used_in_construction": false,
+  "families": {
+    "initial_prism": {
+      "parameters": [
+        0.030000000000000002,
+        -0.030000000000000002,
+        0.1,
+        0.0,
+        0.0,
+        0.8560717079407223,
+        0.5767140348184153,
+        0.36868381366914327,
+        -1.4333662393773814,
+        1.0
+      ],
+      "frames": [
+        {
+          "index": 27,
+          "score": 356.274742224103,
+          "gain": 39.89693069665887,
+          "pixels": 48,
+          "normalized_residual_rms": 5.533358392532832
+        },
+        {
+          "index": 49,
+          "score": 312.4335705195747,
+          "gain": 0.7184190024368302,
+          "pixels": 48,
+          "normalized_residual_rms": 0.9015885727906916
+        },
+        {
+          "index": 81,
+          "score": 469.31961939418443,
+          "gain": 23.04335137407014,
+          "pixels": 48,
+          "normalized_residual_rms": 4.555347442467809
+        },
+        {
+          "index": 88,
+          "score": 370.8496374087913,
+          "gain": 1.8366266990785887,
+          "pixels": 48,
+          "normalized_residual_rms": 1.636670829910352
+        },
+        {
+          "index": 151,
+          "score": 337.1291894908742,
+          "gain": 0.8538545274847605,
+          "pixels": 48,
+          "normalized_residual_rms": 1.1133320276865188
+        },
+        {
+          "index": 51,
+          "score": 383.61387256327924,
+          "gain": 2.528033284104607,
+          "pixels": 48,
+          "normalized_residual_rms": 3.3955147395513503
+        },
+        {
+          "index": 90,
+          "score": 415.6168343742488,
+          "gain": 5.695401087423626,
+          "pixels": 48,
+          "normalized_residual_rms": 3.7987283716312095
+        },
+        {
+          "index": 153,
+          "score": 353.55795324072926,
+          "gain": 1.3655380133873383,
+          "pixels": 48,
+          "normalized_residual_rms": 2.09188507853902
+        }
+      ],
+      "score_groups": {
+        "original_three": 1020.4123974192402,
+        "height_diverse_five": 1846.0067590375277,
+        "unused_temporal": 1152.7886601782573,
+        "new_height_two": 825.5943616182874
+      }
+    },
+    "three_view_control": {
+      "parameters": [
+        0.025,
+        -0.04,
+        0.07500000000000001,
+        0.0,
+        0.0,
+        0.8560717079407223,
+        0.5767140348184153,
+        0.3936838136691433,
+        -1.3583662393773814,
+        0.75
+      ],
+      "frames": [
+        {
+          "index": 27,
+          "score": 358.634244255037,
+          "gain": 37.399117036786116,
+          "pixels": 48,
+          "normalized_residual_rms": 5.731808942562671
+        },
+        {
+          "index": 49,
+          "score": 311.44367199572355,
+          "gain": 0.7035788590638248,
+          "pixels": 48,
+          "normalized_residual_rms": 0.9002050927164397
+        },
+        {
+          "index": 81,
+          "score": 467.5155239114968,
+          "gain": 21.066861158717135,
+          "pixels": 48,
+          "normalized_residual_rms": 5.656177262510674
+        },
+        {
+          "index": 88,
+          "score": 360.70544010253855,
+          "gain": 1.8255339290575578,
+          "pixels": 48,
+          "normalized_residual_rms": 1.4791332277280453
+        },
+        {
+          "index": 151,
+          "score": 333.5026102279945,
+          "gain": 0.8778581849026127,
+          "pixels": 48,
+          "normalized_residual_rms": 1.0243019745349446
+        },
+        {
+          "index": 51,
+          "score": 405.80622957961214,
+          "gain": 4.5688785582024884,
+          "pixels": 48,
+          "normalized_residual_rms": 3.4970302051552227
+        },
+        {
+          "index": 90,
+          "score": 410.3707171915329,
+          "gain": 6.449978987045447,
+          "pixels": 48,
+          "normalized_residual_rms": 3.550673037951032
+        },
+        {
+          "index": 153,
+          "score": 352.45744396405087,
+          "gain": 1.4175504079769947,
+          "pixels": 48,
+          "normalized_residual_rms": 1.9649945146585177
+        }
+      ],
+      "score_groups": {
+        "original_three": 1005.6517223262566,
+        "height_diverse_five": 1831.8014904927904,
+        "unused_temporal": 1168.634390735196,
+        "new_height_two": 826.1497681665338
+      }
+    },
+    "height_diverse_fit": {
+      "parameters": [
+        0.010000000000000004,
+        -0.015000000000000003,
+        0.15000000000000002,
+        0.0,
+        0.05,
+        0.9560717079407223,
+        0.5767140348184153,
+        0.36868381366914327,
+        -1.4333662393773814,
+        0.5
+      ],
+      "frames": [
+        {
+          "index": 27,
+          "score": 332.02363802156583,
+          "gain": 28.065896509584196,
+          "pixels": 48,
+          "normalized_residual_rms": 5.0480083947131575
+        },
+        {
+          "index": 49,
+          "score": 328.02942863211405,
+          "gain": 0.8358605508138472,
+          "pixels": 48,
+          "normalized_residual_rms": 1.6384632982277678
+        },
+        {
+          "index": 81,
+          "score": 368.45596288656446,
+          "gain": 2.498385764296382,
+          "pixels": 48,
+          "normalized_residual_rms": 3.5572077951351018
+        },
+        {
+          "index": 88,
+          "score": 412.2383019103928,
+          "gain": 4.933599853243523,
+          "pixels": 48,
+          "normalized_residual_rms": 3.041531945075095
+        },
+        {
+          "index": 151,
+          "score": 339.68433271332776,
+          "gain": 0.8773115710502006,
+          "pixels": 48,
+          "normalized_residual_rms": 1.0884884466033626
+        },
+        {
+          "index": 51,
+          "score": 360.6112570580612,
+          "gain": 1.368214383708757,
+          "pixels": 48,
+          "normalized_residual_rms": 1.6051606366162374
+        },
+        {
+          "index": 90,
+          "score": 404.6072269410515,
+          "gain": 3.9094014757730187,
+          "pixels": 48,
+          "normalized_residual_rms": 3.883309599501386
+        },
+        {
+          "index": 153,
+          "score": 355.9252348232995,
+          "gain": 1.3989768992862572,
+          "pixels": 48,
+          "normalized_residual_rms": 2.048409345615188
+        }
+      ],
+      "score_groups": {
+        "original_three": 1079.9520632558347,
+        "height_diverse_five": 1780.4316641639648,
+        "unused_temporal": 1121.1437188224122,
+        "new_height_two": 700.4796009081304
+      }
+    }
+  }
+}

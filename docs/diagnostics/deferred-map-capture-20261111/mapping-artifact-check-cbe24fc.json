@@ -1,0 +1,37 @@
+{
+  "schema": "posim-slam-native-mapping-artifact-check-1",
+  "verified_at": "2026-11-11T13:14:28.989968+00:00",
+  "repository": "IOES-Lab/POSIM-SLAM",
+  "revision": "cbe24fc9e543dfcb70ebe3be027175167a49be83",
+  "run_id": 43024427572,
+  "job_id": 130535400582,
+  "artifact_id": 13858140002,
+  "zip_bytes": 732896,
+  "zip_sha256": "ee7dfe51c3b6e68ce901f4419fcaf3a95ebff8a06103281a2bd3952a79a13953",
+  "log_sha256": "44cd962e1be7d96dd793474bff9809288d86bb3bc0ca0da36702793886e8c0b7",
+  "receipt_sha256": "511fc7d92606146472ad4271972f45b68c7c25f55256061cbe4a38a21dcee1f5",
+  "receipt_matches_log": true,
+  "local_probe_matches": true,
+  "local_lock_matches": true,
+  "verified_archive_count": 10,
+  "archive_sha256": {
+    "bad-window.graph.pmap": "bcd793a0297de890067413e1cff919503d585171e3a511ab395b9bae367840a6",
+    "chunks.pmap": "63d19598bfd87d84db47c0f83046e0c9c3a307b234bf39b4e216e956ffdb03cc",
+    "corrupt.graph.pmap": "958504355d2f04f4157b6f44290087f920d289290d9c70e27341dbf7d036848e",
+    "deferred-inputs.pmap": "5f98032c9eea4ad1e89de79fbbdfaf188f38598ce0682c4a6e298817173ca3b4",
+    "fixture.graph.pmap": "c606b897d689a7b19227f585aeef2467500fa61c49b5ba418591666ff3041b9b",
+    "inputs.pmap": "3a212eece8664ab742a446be937139e9fd32f7e9c96cff9cd42fa8f789037ed9",
+    "inputs.pmap.tmp": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "reexport.pmap": "3ae4a70583a903a3c385dff6a1a5b469ad4e5fe04d46b66242ef3908cc35d261",
+    "window.graph.pmap": "2c94555b9c92d9d4562397f146886e18768345d3e7ad2293b71e8b043901b1e0",
+    "without-inputs.pmap": "1c718121b0239e8cbd00ef2973d23035adbec68de4c27b05cc43af7dc4424a51"
+  },
+  "source_sha256": {
+    "native/basalt/mapping_graph.hpp": "366923f0ec52e6a5a7f4c13631d1bf46314d56691b703aaee17d9a9261fdc433",
+    "native/basalt/mapping_graph.cc": "97834b155d52871db1d92263da56690d9ae94af593e23e736c38fe52bfd3946d",
+    "native/basalt/stream.cc": "59b7873493a735f3fdb6f9740848d6d25d557a130421e8b66de31e57518ef329"
+  },
+  "probe_unchanged_since_failed_run": true,
+  "passed": true,
+  "scope": "Linux complete C++ graph/window/input archive probe; no ROS, renderer, arm64 worker or physical replay"
+}

@@ -1,0 +1,59 @@
+{
+  "scope": "Four preselected actual renderer input/output frames; scene and render poses are assessment only",
+  "frames": [
+    {
+      "index": 0,
+      "trace": "traces/sonar-native-0.bin.gz",
+      "trace_sha256": "fc1cd00d1653849272a18304b5b37d5d083d3b0ebdd1e942fb96235ebf36abf6",
+      "raw": "raw/sonar-0047.npz",
+      "raw_sha256": "594fbffacb746169a63e44052a2b450a9316decae77ca05e4bb80cdc8802cc9a",
+      "stamp_ns": 25010000000
+    },
+    {
+      "index": 1,
+      "trace": "traces/sonar-native-1.bin.gz",
+      "trace_sha256": "43a0d04d6ade2b8e19486b4e6bfe419e7ff4fe0e6d5dfc40841f49b55dbb893f",
+      "raw": "raw/sonar-0087.npz",
+      "raw_sha256": "25df3c78656c2e577266b66b313fa5837ca79dac673c288c07f9ef30a70ff7e0",
+      "stamp_ns": 45010000000
+    },
+    {
+      "index": 2,
+      "trace": "traces/sonar-native-2.bin.gz",
+      "trace_sha256": "d2cbff80658fafe57f63a451652fb7f0b5381b8742783397597102334ce8ad73",
+      "raw": "raw/sonar-0127.npz",
+      "raw_sha256": "1c6cb55925110d51e98266a181b525e691970896dfc0caaceb6b588379a10ad9",
+      "stamp_ns": 65010000000
+    },
+    {
+      "index": 3,
+      "trace": "traces/sonar-native-3.bin.gz",
+      "trace_sha256": "7a4876335d705d7c997b2073e3688d08cf215cfe6b4de3d6a74e12872f28717f",
+      "raw": "raw/sonar-0167.npz",
+      "raw_sha256": "986845c65b5ee9370c27e28b632fc4e1ada8285782ab82d434047f5ea3110132",
+      "stamp_ns": 85010000000
+    }
+  ],
+  "source_revision": "8d131df47fd745815bd15f36365a4bd49aa13e47",
+  "scene_record": "../sonar-inspection-scene-20261031/scene-assessment-only.npz",
+  "scene_sha256": "e47b848bd28c46911ee7b4a455343e786b1382737e937f6b8dba0b4e6a6e1678",
+  "acoustic": {
+    "frequency_hz": 700000,
+    "horizontal_fov_deg": 120,
+    "vertical_fov_deg": 20,
+    "beams": 256,
+    "vertical_rays": 256,
+    "range_bins": 599,
+    "range_max_m": 15,
+    "rate_hz": 2
+  },
+  "optical": {
+    "use": "context only",
+    "visibility_m": 2,
+    "surface_waves": true,
+    "particles": true,
+    "caustics": true
+  },
+  "map_accepted": false,
+  "scene_used_for_inference": false
+}

@@ -41,7 +41,8 @@ inline std::map<int,MapLandmarkInformation> jointMapInformation(
     basalt::BundleAdjustmentBase<double>& owner,const basalt::AbsOrderMap& order,
     const std::vector<JointPingGroupSpec>& groups,const basalt::MargLinData<double>& prior,
     const basalt::ImuLinData<double>& imu,SonarFactorStore* sonar=nullptr,
-    DvlFactorStore* dvl=nullptr,PressureFactorStore* pressure=nullptr) {
+    DvlFactorStore* dvl=nullptr,PressureFactorStore* pressure=nullptr,
+    MapPoseInformation* selected_information=nullptr,bool include_landmarks=true) {
   requireStateOrder(order);
   // This development query is bounded independently of the estimator window.
   if(order.total_size>384)throw std::runtime_error("map_information_column_budget");
@@ -52,7 +53,7 @@ inline std::map<int,MapLandmarkInformation> jointMapInformation(
   if(!valid)throw std::runtime_error("invalid_map_information_linearization");
   struct Block {std::vector<basalt::KeypointId> ids;int planes;MapNuisanceInformation local;};
   std::vector<Block> blocks;
-  rows.visitMapRows([&](const auto& ids,int planes,const auto& pose,const auto& local) {
+  if(include_landmarks)rows.visitMapRows([&](const auto& ids,int planes,const auto& pose,const auto& local) {
     blocks.push_back({ids,planes,mapNuisanceInformation(pose,local)});
   });
   // No LM/trial damping, prior replacement or state update is performed here.
@@ -77,7 +78,9 @@ inline std::map<int,MapLandmarkInformation> jointMapInformation(
   if(pressure)pressure_rows=pressure->linearize(owner,order);
   addAuxiliaryNormal(h,b,dvl_rows,sonar_rows,sonar_to_state,pressure_rows);
   const auto pose_information=mapPoseInformation(h);
+  if(selected_information)*selected_information=pose_information;
   std::map<int,MapLandmarkInformation> result;
+  if(!include_landmarks)return result;
   const MapPoseInformation fixed_pose{Eigen::MatrixXd::Zero(h.cols(),0),
       Eigen::MatrixXd::Zero(h.cols(),0)};
   for(auto& block:blocks) {

@@ -1,0 +1,9 @@
+{
+  "binary_sha256": "0090433756cb425eea803ce56a70c1af5adf844223054b2f1c25739bee0d8564",
+  "source": "ffecee9be9976f68c9e883d6cf3bbd6d40eb7729",
+  "input_sha256": "9fd528be4213eb7b1c77099c50a2f270e91c41794b3ca27fdbcfc39462d9c1bf",
+  "median_operator_s": 0.011799562984379008,
+  "max_operator_s": 0.13724700000602752,
+  "symbol_path_matches_requested_binary": true,
+  "binary": "libmultibeam_sonar.dylib"
+}

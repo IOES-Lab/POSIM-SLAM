@@ -1,0 +1,37 @@
+{
+  "overlay": {
+    "revision": "867d214cbe3c68033e80bc1ec4dbd4ef69e3cb41",
+    "archive_sha256": "b8ee249d39f0f427107f367a9f5cf89b88ba907a34ce3aaf0e5390a361b9f432",
+    "patches": {
+      "acoustic-visibility-mask.patch": "d85abb218f3350b40eb5255af9a253ccef01662ceef56bff50af80366e5d6f8e",
+      "fan-image-extent.patch": "0991a5ea65cd36985a59597d087b4d6ff03bcec2030c5c372b3ca43c2d4eeae7",
+      "frequency-window.patch": "c1a267bf548979f84c616953039d2ad0f3e2c7acac01f6e30f74243eb74169ef",
+      "scan-ray-geometry.patch": "b4716dad5ebb96600c9e749c68e3f7ada2d5e7460b327b41b1fce03e70837a9b",
+      "sensor-mount-pose.patch": "82b702f7ce9372b1652d6d4ec91b1dbdbacf204a22c8074ac8b4cd716f300dc5",
+      "simulation-frame-stamp.patch": "3b05718f2c6ce9910b3dcb04aa2cbd89ceab733d1aad27129efc133392393fd9",
+      "spherical-surface-normals.patch": "6c595953e66c5f4836d5413ad1257b56df75cb36f9a419be67e409c21b874a73",
+      "zero-echo-preview.patch": "dfc5f90042cf0fc1f391a9a54ed2724239dfb7f2e407ee9ad4659f7204597f82"
+    },
+    "engine": "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/posim332f629-sdk",
+    "passed": true,
+    "scope": "build and dynamic load only",
+    "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
+    "cargo_target_dir": "/Volumes/ExternalHDD/POSIM/bluerov-slam-vrx/.local/sonar-pr6-integration-20261028/cargo_target",
+    "library_sha256": "60a4ede968b0570c42ff8925c9dd5f9397f96a6e89bd362c6026640d84cd3f08",
+    "rendering_library_sha256": "90b0b2a0a571a534549a73d20182782264fbcc92ea2455f57695065af8927584"
+  },
+  "sensors": {
+    "source_sha256": "52826f34e6018ff3a24210da6a572bb1906519bd860109e8904f5c402a4902f2",
+    "exploratory_difference": "Duplicate Scene readiness guard removed in the assembly source; revalidate the actual assembled binary",
+    "old_stop_patch_sha256": "94fd6442f89614e0417c93a94628fdfb63d60141a81e6f0651e6f82d32a442b5",
+    "render_init_patch_sha256": "500619be164fbd9bedbd6abd0446e3a3b39f2f1f0a62316307fee5bd632a0858",
+    "sdk_changed": false,
+    "retained_patches": [
+      "gz-sim-custom-render-init.patch",
+      "gz-sim-sensor-stop-lifetime.patch"
+    ],
+    "assembled_library_sha256": "0cc6ffaae8fc654595a33364246e310e11b5824f562143ce9942b6d97c92f7cb"
+  },
+  "sdk": "posim332f629-sdk",
+  "scope": "development runtime; installed SDK unchanged; current acoustic integration binaries verified"
+}

@@ -4,7 +4,7 @@ For the corrected 20°/256-ray recording with physical wall/box targets, see
 [the corner-scene comparison](sonar-corner-scene.md). The historical results
 below retain the calibration-mismatch warning.
 
-수정된 20°·256광선과 실제 벽·상자를 사용한 기록은
+수정된 20°·256음선과 실제 벽·상자를 사용한 기록은
 [모서리 시험장 비교](sonar-corner-scene.md)를 참고하세요. 아래 과거 결과의
 보정 불일치 표시는 유지합니다.
 
@@ -16,8 +16,8 @@ accuracy. The integration's scan geometry is corrected and independently checked
 against a 3 m wall; full corrected-recording SLAM evaluation remains outstanding.
 [Measured ray evidence](sonar-scan-geometry.json).
 
-**보존한 기록의 보정 불일치:** 실제 렌더러는 고도각 ±20°·257광선을
-출력했지만 SDF·재생 보정·그림의 주황색 경계는 ±10°·256광선을 가정했습니다.
+**보존한 기록의 보정 불일치:** 실제 렌더러는 고도각 ±20°·257음선을
+출력했지만 SDF·재생 보정·그림의 주황색 경계는 ±10°·256음선을 가정했습니다.
 이 기록의 소나 점·불확실성 판정·해저 평면 실험은 지도 정확도의 합격 근거가
 될 수 없습니다. 통합 플러그인의 스캔 형상을 수정하고 3 m 벽에서 확인했으며,
 수정된 기록을 이용한 전체 SLAM 평가는 아직 필요합니다.
@@ -195,8 +195,8 @@ RMSE 0.023528 m, 최대 오차 0.102329 m입니다. 두 위치 결과는 이 기
 한 빈의 독립 잡음은 진단용 가정입니다. 점 가설 수는 장애물 수가 아닙니다.
 
 요청한 설정은 Sonoptix ECHO 단거리 사양을 참고합니다. 700 kHz, 수평 256빔,
-수평 120°·수직 20° 시야각, 수직 광선 256개, 최대 거리 10 m, 초당 2장을
-사용합니다. 수직 광선은 강도에 기여하며, 399×256 강도 행렬은 거리와
+수평 120°·수직 20° 시야각, 수직 음선 256개, 최대 거리 10 m, 초당 2장을
+사용합니다. 수직 음선은 강도에 기여하며, 399×256 강도 행렬은 거리와
 방위각을 담고 고도를 측정하지 않습니다. 프런트엔드는 20–90 dB를 8비트로
 변환하고 5×5 가우시안 필터, Shi–Tomasi 특징점, 피라미드 Lucas–Kanade
 추적을 사용합니다. 그림의 A–D는 추정기가 실제 소유한 입력 관측과 내보낸

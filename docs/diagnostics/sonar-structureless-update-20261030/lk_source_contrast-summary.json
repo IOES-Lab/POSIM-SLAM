@@ -1,0 +1,537 @@
+{
+  "support": {
+    "variant": "lk_source_contrast",
+    "original_observations": 14,
+    "selected_indices": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "rejected_indices": [
+      13
+    ],
+    "original_pixel_keys": [
+      [
+        35500000000,
+        192,
+        166
+      ],
+      [
+        35500000000,
+        241,
+        147
+      ],
+      [
+        35500000000,
+        229,
+        217
+      ],
+      [
+        35500000000,
+        216,
+        160
+      ],
+      [
+        35500000000,
+        251,
+        159
+      ],
+      [
+        35500000000,
+        166,
+        94
+      ],
+      [
+        35500000000,
+        232,
+        238
+      ],
+      [
+        35500000000,
+        129,
+        123
+      ],
+      [
+        35500000000,
+        229,
+        180
+      ],
+      [
+        35500000000,
+        247,
+        151
+      ],
+      [
+        35500000000,
+        8,
+        132
+      ],
+      [
+        35500000000,
+        55,
+        135
+      ],
+      [
+        35500000000,
+        88,
+        151
+      ],
+      [
+        36010000000,
+        192,
+        166
+      ],
+      [
+        36010000000,
+        241,
+        147
+      ],
+      [
+        36010000000,
+        229,
+        217
+      ],
+      [
+        36010000000,
+        217,
+        160
+      ],
+      [
+        36010000000,
+        250,
+        160
+      ],
+      [
+        36010000000,
+        168,
+        94
+      ],
+      [
+        36010000000,
+        232,
+        235
+      ],
+      [
+        36010000000,
+        129,
+        125
+      ],
+      [
+        36010000000,
+        229,
+        179
+      ],
+      [
+        36010000000,
+        247,
+        151
+      ],
+      [
+        36010000000,
+        12,
+        132
+      ],
+      [
+        36010000000,
+        55,
+        135
+      ],
+      [
+        36010000000,
+        88,
+        151
+      ]
+    ],
+    "duplicate_original_keys": 0,
+    "stationary_training_cost": [
+      0.06004028319357427,
+      0.14493819089621587,
+      0.008539113851594579,
+      0.0738696635118481,
+      0.3294334039946516,
+      0.5256754992101412,
+      4.72091187072196,
+      2.2883776859128613,
+      1.282425917135541,
+      0.16658872962855287,
+      4.689621693248614,
+      1.1095885027404149,
+      0.27317033553710846,
+      11.409229554809913
+    ],
+    "physical_identity_verified": false,
+    "qualified": false
+  },
+  "modes": [
+    {
+      "mode": "best",
+      "status": "conditioned",
+      "observations": 14,
+      "selected": 13,
+      "rows": 13,
+      "nuisance_rank": 39,
+      "nuisance_nullity": 0,
+      "pose_information_singular_values": [
+        176.8028004209017,
+        122.7256727404527,
+        63.11172572739356,
+        22.857114340260257,
+        15.713123188851739,
+        0.8129880532717301,
+        4.9846276898169687e-14,
+        3.8134559871106215e-14,
+        1.3788051770657629e-14,
+        8.340249547704995e-15,
+        4.701122275898817e-15,
+        2.9850077814487797e-15
+      ],
+      "position_step_norm_m": [
+        0.0011703562530515916,
+        0.0026048878535073743
+      ],
+      "attitude_coordinate_step_norm_rad": [
+        0.00020437965181072207,
+        0.00025081904258840903
+      ],
+      "normalized_innovation_cost": 8.921908599863762,
+      "covariance_reduction_minimum_eigenvalue": -1.3544370433094888e-19,
+      "navigation_prior_count": 1,
+      "point_prior_count": 0,
+      "qualified": false
+    },
+    {
+      "mode": "seed-0",
+      "status": "conditioned",
+      "observations": 14,
+      "selected": 13,
+      "rows": 13,
+      "nuisance_rank": 39,
+      "nuisance_nullity": 0,
+      "pose_information_singular_values": [
+        176.80280024977137,
+        122.72567268694335,
+        63.11172592364504,
+        22.85711371682409,
+        15.71312209687662,
+        0.8129878585747344,
+        9.831620071404231e-14,
+        4.582146243145071e-14,
+        2.6649641917955273e-14,
+        2.2284412875944998e-14,
+        1.198094978124461e-14,
+        3.744413962372242e-15
+      ],
+      "position_step_norm_m": [
+        0.00117035624985934,
+        0.0026048878493813666
+      ],
+      "attitude_coordinate_step_norm_rad": [
+        0.0002043796502269834,
+        0.00025081904064141027
+      ],
+      "normalized_innovation_cost": 8.921908600302752,
+      "covariance_reduction_minimum_eigenvalue": -2.3882487189179484e-19,
+      "navigation_prior_count": 1,
+      "point_prior_count": 0,
+      "qualified": false
+    },
+    {
+      "mode": "seed-1",
+      "status": "conditioned",
+      "observations": 14,
+      "selected": 13,
+      "rows": 13,
+      "nuisance_rank": 39,
+      "nuisance_nullity": 0,
+      "pose_information_singular_values": [
+        176.80280062722076,
+        122.72567274875657,
+        63.111725865739864,
+        22.85711418408955,
+        15.713121948999815,
+        0.8129878478993428,
+        1.1503144598241355e-13,
+        2.37034514631448e-14,
+        1.8067644232321285e-14,
+        1.4003931730702988e-14,
+        7.637599388319011e-15,
+        4.87142361742254e-15
+      ],
+      "position_step_norm_m": [
+        0.0011703562566225817,
+        0.002604887861575087
+      ],
+      "attitude_coordinate_step_norm_rad": [
+        0.00020437965220056672,
+        0.0002508190430524459
+      ],
+      "normalized_innovation_cost": 8.921908607810822,
+      "covariance_reduction_minimum_eigenvalue": -5.396795610993991e-19,
+      "navigation_prior_count": 1,
+      "point_prior_count": 0,
+      "qualified": false
+    },
+    {
+      "mode": "seed-2",
+      "status": "conditioned",
+      "observations": 14,
+      "selected": 13,
+      "rows": 13,
+      "nuisance_rank": 39,
+      "nuisance_nullity": 0,
+      "pose_information_singular_values": [
+        176.80280040395496,
+        122.7256727406582,
+        63.111725729562025,
+        22.857114322931682,
+        15.7131231773659,
+        0.8129880517585757,
+        8.979851446913743e-14,
+        4.806413610073406e-14,
+        1.7484212728782802e-14,
+        1.448684586825944e-14,
+        7.063917247950113e-15,
+        3.509788916656615e-15
+      ],
+      "position_step_norm_m": [
+        0.0011703562528094312,
+        0.0026048878531418334
+      ],
+      "attitude_coordinate_step_norm_rad": [
+        0.0002043796517007077,
+        0.0002508190424538205
+      ],
+      "normalized_innovation_cost": 8.921908600136495,
+      "covariance_reduction_minimum_eigenvalue": -8.726642561403932e-19,
+      "navigation_prior_count": 1,
+      "point_prior_count": 0,
+      "qualified": false
+    },
+    {
+      "mode": "seed-3",
+      "status": "conditioned",
+      "observations": 14,
+      "selected": 13,
+      "rows": 13,
+      "nuisance_rank": 39,
+      "nuisance_nullity": 0,
+      "pose_information_singular_values": [
+        176.80280043361358,
+        122.72567273970995,
+        63.11172572671705,
+        22.857114327922393,
+        15.713123117921878,
+        0.8129880619208782,
+        1.2455547157169087e-13,
+        4.7528191151110993e-14,
+        2.88952512677744e-14,
+        1.9097323636666044e-14,
+        5.689139202691374e-15,
+        2.195138549205389e-15
+      ],
+      "position_step_norm_m": [
+        0.0011703562528958607,
+        0.002604887853296426
+      ],
+      "attitude_coordinate_step_norm_rad": [
+        0.0002043796517329992,
+        0.0002508190424930923
+      ],
+      "normalized_innovation_cost": 8.92190859984739,
+      "covariance_reduction_minimum_eigenvalue": -2.2423280260888736e-20,
+      "navigation_prior_count": 1,
+      "point_prior_count": 0,
+      "qualified": false
+    },
+    {
+      "mode": "seed-4",
+      "status": "conditioned",
+      "observations": 14,
+      "selected": 13,
+      "rows": 13,
+      "nuisance_rank": 39,
+      "nuisance_nullity": 0,
+      "pose_information_singular_values": [
+        176.80280041346757,
+        122.72567273736166,
+        63.11172573037689,
+        22.857114316799045,
+        15.713123163977594,
+        0.8129880546919115,
+        1.3562231397475368e-13,
+        4.06854324589982e-14,
+        2.990023614850106e-14,
+        1.0506588573143506e-14,
+        8.263554751950954e-15,
+        3.4070184853781986e-15
+      ],
+      "position_step_norm_m": [
+        0.0011703562528810531,
+        0.002604887853283607
+      ],
+      "attitude_coordinate_step_norm_rad": [
+        0.00020437965171256407,
+        0.00025081904246812943
+      ],
+      "normalized_innovation_cost": 8.921908599805544,
+      "covariance_reduction_minimum_eigenvalue": -1.0268496339740032e-21,
+      "navigation_prior_count": 1,
+      "point_prior_count": 0,
+      "qualified": false
+    },
+    {
+      "mode": "seed-5",
+      "status": "conditioned",
+      "observations": 14,
+      "selected": 13,
+      "rows": 13,
+      "nuisance_rank": 39,
+      "nuisance_nullity": 0,
+      "pose_information_singular_values": [
+        176.80280039964518,
+        122.72567273863761,
+        63.111725730046864,
+        22.857114326338635,
+        15.713123217180074,
+        0.8129880474192385,
+        1.1719747888649627e-13,
+        4.859447732904112e-14,
+        2.5415492444878415e-14,
+        1.0518337816638304e-14,
+        9.926998712505041e-15,
+        4.182879765547579e-15
+      ],
+      "position_step_norm_m": [
+        0.0011703562530243979,
+        0.002604887853464535
+      ],
+      "attitude_coordinate_step_norm_rad": [
+        0.00020437965179189214,
+        0.00025081904256526506
+      ],
+      "normalized_innovation_cost": 8.921908599705459,
+      "covariance_reduction_minimum_eigenvalue": -4.117553282670218e-19,
+      "navigation_prior_count": 1,
+      "point_prior_count": 0,
+      "qualified": false
+    },
+    {
+      "mode": "seed-6",
+      "status": "conditioned",
+      "observations": 14,
+      "selected": 13,
+      "rows": 13,
+      "nuisance_rank": 39,
+      "nuisance_nullity": 0,
+      "pose_information_singular_values": [
+        176.80280045042403,
+        122.72567276840032,
+        63.111725822277016,
+        22.857114234798274,
+        15.71312303895811,
+        0.8129880199977053,
+        1.0595890973707288e-13,
+        2.3015442581520914e-14,
+        1.7022649680874726e-14,
+        9.43511501698995e-15,
+        4.580873118762707e-15,
+        3.2865670849431237e-15
+      ],
+      "position_step_norm_m": [
+        0.00117035625151854,
+        0.0026048878530145246
+      ],
+      "attitude_coordinate_step_norm_rad": [
+        0.00020437965025786207,
+        0.00025081904069373343
+      ],
+      "normalized_innovation_cost": 8.921908614455003,
+      "covariance_reduction_minimum_eigenvalue": -7.212149667719961e-19,
+      "navigation_prior_count": 1,
+      "point_prior_count": 0,
+      "qualified": false
+    },
+    {
+      "mode": "seed-7",
+      "status": "conditioned",
+      "observations": 14,
+      "selected": 13,
+      "rows": 13,
+      "nuisance_rank": 39,
+      "nuisance_nullity": 0,
+      "pose_information_singular_values": [
+        176.80280044992344,
+        122.7256728144897,
+        63.11172594003911,
+        22.85711403178812,
+        15.713121873898194,
+        0.8129878308484279,
+        1.9521259599968824e-13,
+        5.075173901307091e-14,
+        2.1112004591041247e-14,
+        1.1444718115849507e-14,
+        7.0913597903867124e-15,
+        3.3004873134765978e-15
+      ],
+      "position_step_norm_m": [
+        0.0011703562442900827,
+        0.0026048878426281775
+      ],
+      "attitude_coordinate_step_norm_rad": [
+        0.00020437964700934313,
+        0.00025081903671849527
+      ],
+      "normalized_innovation_cost": 8.921908629974604,
+      "covariance_reduction_minimum_eigenvalue": -1.586538037794929e-19,
+      "navigation_prior_count": 1,
+      "point_prior_count": 0,
+      "qualified": false
+    },
+    {
+      "mode": "seed-8",
+      "status": "conditioned",
+      "observations": 14,
+      "selected": 13,
+      "rows": 13,
+      "nuisance_rank": 39,
+      "nuisance_nullity": 0,
+      "pose_information_singular_values": [
+        176.8028004209017,
+        122.7256727404527,
+        63.11172572739356,
+        22.857114340260257,
+        15.713123188851739,
+        0.8129880532717301,
+        4.9846276898169687e-14,
+        3.8134559871106215e-14,
+        1.3788051770657629e-14,
+        8.340249547704995e-15,
+        4.701122275898817e-15,
+        2.9850077814487797e-15
+      ],
+      "position_step_norm_m": [
+        0.0011703562530515916,
+        0.0026048878535073743
+      ],
+      "attitude_coordinate_step_norm_rad": [
+        0.00020437965181072207,
+        0.00025081904258840903
+      ],
+      "normalized_innovation_cost": 8.921908599863762,
+      "covariance_reduction_minimum_eigenvalue": -1.3544370433094888e-19,
+      "navigation_prior_count": 1,
+      "point_prior_count": 0,
+      "qualified": false
+    }
+  ]
+}

@@ -1,0 +1,99 @@
+{
+  "settings": {
+    "akaze": "OpenCV defaults, MLDB descriptors",
+    "maximum_features": 300,
+    "ratio": 0.8,
+    "matching": "global mutual nearest neighbours passing 0.8 ratio in both directions; source masks screen endpoints after matching",
+    "preprocessing": "unchanged acoustic_flow raw 20..90 dB mapping and 5x5 Gaussian",
+    "source_mask": "existing calibrated positive/contrast masks; no geometry or elevation prior",
+    "phase_mask": "endpoint nearest raw pixel support only; not point identity",
+    "opencv": "4.13.0",
+    "baseline_backend": "NativeOpenCV",
+    "baseline_opencv": "4.13.0"
+  },
+  "frames": 110,
+  "pairs": 109,
+  "akaze_keypoints_p50_p90": [
+    19.0,
+    24.10000000000001
+  ],
+  "akaze_extraction_ms_p50_p90": [
+    7.6459579868242145,
+    8.29599968274124
+  ],
+  "variants": {
+    "lk_raw": {
+      "matches": 7780,
+      "matches_p50_p90": [
+        70.0,
+        101.0
+      ],
+      "pairs_with_six_or_more": 109,
+      "milliseconds_p50_p90": [
+        6.218165974132717,
+        8.45908320043236
+      ]
+    },
+    "lk_source_positive": {
+      "matches": 1760,
+      "matches_p50_p90": [
+        16.0,
+        23.0
+      ],
+      "pairs_with_six_or_more": 105,
+      "milliseconds_p50_p90": [
+        4.058333986904472,
+        4.904133023228496
+      ]
+    },
+    "lk_source_contrast": {
+      "matches": 435,
+      "matches_p50_p90": [
+        4.0,
+        7.200000000000003
+      ],
+      "pairs_with_six_or_more": 31,
+      "milliseconds_p50_p90": [
+        2.883500012103468,
+        3.2026994391344488
+      ]
+    },
+    "akaze_raw": {
+      "matches": 571,
+      "matches_p50_p90": [
+        5.0,
+        8.200000000000003
+      ],
+      "pairs_with_six_or_more": 46,
+      "milliseconds_p50_p90": [
+        0.06804196164011955,
+        0.08595021208748221
+      ]
+    },
+    "akaze_source_positive": {
+      "matches": 235,
+      "matches_p50_p90": [
+        2.0,
+        4.0
+      ],
+      "pairs_with_six_or_more": 2,
+      "milliseconds_p50_p90": [
+        0.06804196164011955,
+        0.08595021208748221
+      ]
+    },
+    "akaze_source_contrast": {
+      "matches": 121,
+      "matches_p50_p90": [
+        1.0,
+        3.0
+      ],
+      "pairs_with_six_or_more": 1,
+      "milliseconds_p50_p90": [
+        0.06804196164011955,
+        0.08595021208748221
+      ]
+    }
+  },
+  "no_pose_or_truth_used": true
+}

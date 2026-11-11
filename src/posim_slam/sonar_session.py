@@ -15,6 +15,7 @@ from .gravity_seed import gravity_seed
 from .inertial import ImuWindow
 from .live_client import LiveClient
 from .sensor_events import SensorEvents
+from .event_imu import EventImu
 from .sonar_fusion import SonarFusion
 from .sonar_input import validate_frame
 
@@ -46,6 +47,7 @@ class SonarSession:
         self.fusion = SonarFusion(range_sigma, azimuth_sigma)
         self.tracks = AcousticTracks()
         self.samples = deque(maxlen=4096)
+        self.event_imu = EventImu()
         self.latest = dict(imu=0, sonar=0, dvl=0, pressure=0)
         self.received = dict.fromkeys(self.latest, None)
         self.valid_auxiliary = dict(dvl=False, pressure=False)
@@ -85,8 +87,6 @@ class SonarSession:
         self.samples.append((stamp, list(gyro), list(accel), list(covariance)))
         if self.start_stamp:
             self.events.push('imu', stamp)
-        if self.bootstrapped:
-            self.client.imu(stamp, gyro, accel)
 
     def sonar(self, frame):
         validate_frame(frame)
@@ -117,9 +117,6 @@ class SonarSession:
             window.add(t/1e9, gyro, accel)
         seed = gravity_seed(window, stamp/1e9-1, stamp/1e9, gyro_bias=[0, 0, 0], accel_bias=[0, 0, 0])
         self.client.gravity_seed(stamp, seed['direction_imu'])
-        for t, gyro, accel, _ in self.samples:
-            if t >= stamp-200_000_000:
-                self.client.imu(t, gyro, accel)
         self.bootstrapped = True
 
     def tick(self):
@@ -187,6 +184,8 @@ class SonarSession:
             stamp = event['stamp_ns']
             if not self.bootstrapped:
                 self._bootstrap(stamp)
+            for t, gyro, accel, _ in self.event_imu.select(self.samples, stamp):
+                self.client.imu(t, gyro, accel)
             measured = None
             if event['sonar'] is not None:
                 measured = self.tracks.push(event['sonar'])

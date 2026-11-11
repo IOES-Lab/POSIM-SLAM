@@ -59,11 +59,38 @@ def eliminate_patch(jacobian,residual,*,retained_columns):
         or r.shape!=(j.shape[0],) or not np.isfinite(j).all() or not np.isfinite(r).all()
         or type(retained_columns) is not int or not 0<retained_columns<j.shape[1]):
         raise ValueError('invalid_joint_patch_system')
-    a=j[:,:retained_columns];b=j[:,retained_columns:]
+    return split_patch_information(j,r,retained_columns=retained_columns,include_conditional=False)
+
+
+def split_patch_information(jacobian,residual,*,retained_columns,include_conditional=True):
+    """Separate marginal and conditional square-root information exactly.
+
+    Input columns are retained coordinates followed by retiring coordinates.
+    The two output squared norms sum to the original norm for EVERY coordinate
+    value. A conditional keeps its regression, observable noise factor and
+    unbounded null directions. Its mode is not an independent pose observation.
+    Endpoints (no retiring/retained coordinates) and empty information are valid.
+    Callers may QR-compress [J r] first to bound work without losing constants.
+    """
+    j=np.asarray(jacobian,dtype=float);r=np.asarray(residual,dtype=float)
+    if (j.ndim!=2 or not 0<=j.shape[0]<=4096 or not 0<=j.shape[1]<=1024
+            or r.shape!=(len(j),) or not np.isfinite(j).all() or not np.isfinite(r).all()
+            or type(retained_columns) is not int or not 0<=retained_columns<=j.shape[1]
+            or type(include_conditional) is not bool):raise ValueError('invalid_joint_information_split')
+    a=j[:,:retained_columns];b=j[:,retained_columns:];nuisance=b.shape[1]
+    if nuisance==0 or not len(j):
+        result=dict(jacobian=a.copy(),residual=r.copy(),nuisance_rank=0,nuisance_nullity=nuisance,
+            backsub_offset=np.zeros(nuisance),backsub_matrix=np.zeros((nuisance,retained_columns)))
+        if include_conditional:result.update(conditional_jacobian=np.zeros((0,j.shape[1])),conditional_residual=np.zeros(0),
+            observable_noise_factor=np.zeros((nuisance,0)),unobservable_basis=np.eye(nuisance))
+        return result
     u,s,vt=np.linalg.svd(b,full_matrices=True)
     tolerance=max(b.shape)*np.finfo(float).eps*(s[0] if len(s) else 0.)
     rank=int(np.sum(s>tolerance));null=u[:,rank:]
     inverse=(vt[:rank].T/s[:rank])@u[:,:rank].T
-    return dict(jacobian=null.T@a,residual=null.T@r,nuisance_rank=rank,
+    result=dict(jacobian=null.T@a,residual=null.T@r,nuisance_rank=rank,
                 nuisance_nullity=b.shape[1]-rank,
                 backsub_offset=-inverse@r,backsub_matrix=-inverse@a)
+    if include_conditional:result.update(conditional_jacobian=u[:,:rank].T@j,conditional_residual=u[:,:rank].T@r,
+        observable_noise_factor=vt[:rank].T/s[:rank],unobservable_basis=vt[rank:].T)
+    return result
