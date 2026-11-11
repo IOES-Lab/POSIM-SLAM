@@ -532,6 +532,7 @@ pose/velocity covariance remains positive definite.
 
 The native persistent mapper can expose a separate map-aligned IMU pose mean
 without modifying local VIO. See [map/local coordinates and API](docs/map-local-mean.md)
+and [map export capture](docs/deferred-map-capture.md)
 for worker acknowledgement, causal revision ownership and uncertainty limits.
 
 `InertialDvlSession` owns moving initialization and subsequent IMU/DVL updates.

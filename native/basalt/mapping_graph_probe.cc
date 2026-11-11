@@ -666,6 +666,42 @@ void inputPageControls(const std::filesystem::path& directory) {
   const auto graph=registry.capture(fixture.input,*mapper,10,Sophus::SE3d(),Sophus::SE3d(),&window);
   const auto path=directory/"inputs.pmap";Registry::writeWithInputs(path,graph,7,30);
   const auto loaded=Registry::read(path,"input-pages");assert(loaded.graph->hasInputFrames());
+  const auto contents=[](const std::filesystem::path& file) {
+    std::ifstream input(file,std::ios::binary);
+    return std::vector<uint8_t>((std::istreambuf_iterator<char>(input)),{});
+  };
+  const auto deferred=directory/"deferred-inputs.pmap";
+  int captures=0;
+  Registry::writeWithInputsAtCapture(deferred,graph,7,[&] {
+    ++captures;assert(std::filesystem::file_size(deferred.string()+".tmp")>0);
+    assert(!std::filesystem::exists(deferred));return int64_t(30);
+  });
+  assert(captures==1 && contents(deferred)==contents(path));
+  Registry::writeWithInputs(path,graph,8,60);
+  Registry::writeWithInputsAtCapture(deferred,graph,8,[&] {++captures;return int64_t(60);});
+  assert(captures==2 && contents(deferred)==contents(path));
+  const auto preserved=contents(deferred);
+  for(int64_t stamp:{-1,0,29}) {
+    rejects([&]{Registry::writeWithInputsAtCapture(deferred,graph,9,[&] {
+      ++captures;return stamp;
+    });},"mapping_graph_export_timing");
+    assert(contents(deferred)==preserved);
+  }
+  assert(captures==5);
+  rejects([&]{Registry::writeWithInputsAtCapture(deferred,graph,9,[]()->int64_t {
+    throw std::runtime_error("capture_failed");
+  });},"capture_failed");
+  rejects([&]{Registry::writeWithInputsAtCapture(deferred,graph,9,{});},"mapping_graph_capture_missing");
+  assert(contents(deferred)==preserved);
+  // The callback may replace caller arguments; this export owns their values.
+  auto caller_path=deferred;auto caller_graph=graph;
+  std::function<int64_t()> callback;
+  callback=[&] {
+    caller_path=directory/"unused-callback-path.pmap";caller_graph.reset();callback={};return int64_t(60);
+  };
+  Registry::writeWithInputsAtCapture(caller_path,caller_graph,8,callback);
+  assert(!caller_graph && !callback && !std::filesystem::exists(caller_path));
+  assert(contents(deferred)==preserved);
   const auto restored=Registry::restoreForMatching(loaded.graph);compare(*mapper,*restored);
   auto reopened=posim_slam::NativeMappingCheckpoint::restore(*restored,loaded.graph);
   const auto original_output=posim_slam::mappingOutput(*mapper,Sophus::SE3d(),window.mapInformation(.1),graph);

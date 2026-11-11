@@ -129,6 +129,10 @@ class MappingGraphRegistry {
   // Reading the graph does not load these pages. Old graph-only archives remain
   // readable, but cannot supply inputs that were never recorded.
   static void writeWithInputs(const std::filesystem::path& path,const Snapshot& graph,uint64_t request,int64_t tracking_stamp);
+  // Candidate API: prepare the complete immutable graph first, then obtain
+  // the real tracking snapshot time exactly once before atomic publication.
+  static void writeWithInputsAtCapture(const std::filesystem::path& path,const Snapshot& graph,uint64_t request,
+      const std::function<int64_t()>& capture_tracking_stamp);
   static std::shared_ptr<const MappingInputStore::Frame> inputFrame(const Snapshot& graph,int64_t stamp,
       size_t max_encoded_bytes=96*1024*1024);
   static std::unique_ptr<basalt::NfrMapper> restoreForMatching(const Snapshot& graph,
@@ -143,7 +147,8 @@ class MappingGraphRegistry {
   static Restored read(const std::filesystem::path& path,const std::string& expected_epoch={});
   const std::string& epoch() const {return epoch_;}
  private:
-  static void writeArchive(const std::filesystem::path& path,const Snapshot& graph,uint64_t request,int64_t tracking_stamp,bool inputs);
+  static void writeArchive(const std::filesystem::path& path,const Snapshot& graph,uint64_t request,int64_t tracking_stamp,bool inputs,
+      const std::function<int64_t()>& capture_tracking_stamp={});
   basalt::Calibration<double> calibration_;basalt::VioConfig config_;std::string epoch_;
   std::shared_ptr<const MappingGraph::Ledger> anchors_=std::make_shared<const MappingGraph::Ledger>();
   int next_id_=0;uint64_t revision_=0,last_input_=0;

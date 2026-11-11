@@ -22,6 +22,7 @@
 #include <algorithm>
 #include <chrono>
 #include <cstring>
+#include <functional>
 #include <iostream>
 #include <mutex>
 #include <thread>
@@ -62,8 +63,11 @@ int main(int argc,char** argv) {
   // Upstream informational output must never corrupt the JSON protocol.
   std::cout.rdbuf(std::cerr.rdbuf());
   std::mutex mutex;
-  auto emit=[&](const Json& value) {
+  auto emit=[&](const Json& value,const std::function<void()>& validate_before_write={}) {
     std::lock_guard<std::mutex> lock(mutex);
+    // Include output-lock wait in cooperative export deadline validation.
+    // The existing blocking write/flush still relies on the owner timeout.
+    if(validate_before_write)validate_before_write();
     output<<value.dump()<<'\n';output.flush();
   };
   auto fail=[&](const std::string& reason) {
@@ -624,7 +628,27 @@ int main(int argc,char** argv) {
     std::atomic<bool> export_busy{false};
     tbb::concurrent_bounded_queue<uint64_t> views;views.set_capacity(1);
     std::atomic<bool> view_busy{false};
-    auto write_snapshot=[&](uint64_t request,uint64_t required,const std::shared_ptr<const Snapshot>& full,bool refresh=true) {
+    using SnapshotCapture=std::function<std::shared_ptr<const Snapshot>()>;
+    using SnapshotValidation=std::function<void()>;
+    auto write_snapshot=[&](uint64_t request,uint64_t required,std::shared_ptr<const Snapshot> full,bool refresh=true,
+        const SnapshotCapture& capture={},const SnapshotValidation& validate_completion={}) {
+        bool graph_prepared=false;
+        if(capture) {
+          if(!refresh || !full || !full->mapping || !validate_completion)
+            throw std::invalid_argument("map_snapshot_capture_contract");
+          validate_completion();
+          const auto pinned_mapping=full->mapping;
+          posim_slam::MappingGraphRegistry::writeWithInputsAtCapture(
+            export_file.parent_path()/"worker-map.graph.pmap",pinned_mapping->graph,request,[&] {
+              auto captured=capture();
+              if(!captured || captured->mapping!=pinned_mapping ||
+                  captured->points!=pinned_mapping->points || captured->ids!=pinned_mapping->ids)
+                throw std::invalid_argument("map_snapshot_capture_provenance");
+              full=std::move(captured);return full->stamp;
+            });
+          graph_prepared=true;
+          validate_completion();
+        }
         const fs::path target_file=refresh?export_file:export_file.parent_path()/"worker-view.ply";
         const fs::path temporary=target_file.string()+".tmp";
         if(fs::is_symlink(target_file) || fs::is_symlink(temporary))fail("snapshot_path");
@@ -646,7 +670,7 @@ int main(int argc,char** argv) {
         }
         file.flush();if(!file)fail("snapshot_write_failed");file.close();
         fs::rename(temporary,target_file);
-        if(refresh && full->mapping) {
+        if(refresh && full->mapping && !graph_prepared) {
           posim_slam::MappingGraphRegistry::writeWithInputs(export_file.parent_path()/"worker-map.graph.pmap",full->mapping->graph,request,full->stamp);
         }
         if(refresh && record_mapping_candidates && full->mapping) {
@@ -679,10 +703,12 @@ int main(int argc,char** argv) {
           {"snapshot_policy",refresh?"update":"current"},
           {"optimization_revision",full->mapping->revision},
           {"optimized_through_ns",full->mapping->optimized_through_ns}});
-        emit(response);
+        if(validate_completion)validate_completion();
+        emit(response,validate_completion);
     };
-    auto write_snapshot_result=[&](uint64_t request,uint64_t required,const std::shared_ptr<const Snapshot>& full,bool refresh=true) {
-      try {write_snapshot(request,required,full,refresh);}
+    auto write_snapshot_result=[&](uint64_t request,uint64_t required,const std::shared_ptr<const Snapshot>& full,bool refresh=true,
+        const SnapshotCapture& capture={},const SnapshotValidation& validate_completion={}) {
+      try {write_snapshot(request,required,full,refresh,capture,validate_completion);}
       catch(const std::exception& error) {
         emit({{"type","export"},{"request_id",request},{"success",false},{"reason","map_snapshot_write_failed"},{"detail",error.what()}});
       }
@@ -722,7 +748,39 @@ int main(int argc,char** argv) {
           snapshot_changed.wait_for(lock,std::chrono::milliseconds(20));
         }
         if(error.empty() && (!full || full->points.empty()))error="map_unavailable";
-        if(error.empty())write_snapshot_result(request.id,request.revision,full);
+        if(error.empty() && persistent_map && full->mapping) {
+          // Pin the entire mapping before expensive graph/input preparation.
+          // Newer tracking may carry another map, whose points/IDs must not leak
+          // into this request's graph, candidate, PLY, trace or response.
+          const auto pinned_mapping=full->mapping;
+          const SnapshotValidation validate_completion=[&,pinned_mapping] {
+            if(owner->posim_mapping_handoff_failed.load())
+              persistent_map->invalidate("mapping_handoff_backlog");
+            const auto current_mapping=persistent_map->snapshot();
+            if(!current_mapping || !current_mapping->error.empty() ||
+                !pinned_mapping->error.empty() || pinned_mapping->revision<request.revision)
+              throw std::runtime_error("map_unavailable");
+            // The deadline was established before selection/preparation. Never
+            // restart it when the actual tracking snapshot is captured.
+            if(std::chrono::steady_clock::now()>=deadline)
+              throw std::runtime_error("map_update_timeout");
+          };
+          const SnapshotCapture capture=[&,pinned_mapping] {
+            validate_completion();
+            std::shared_ptr<const Snapshot> latest;
+            {std::lock_guard<std::mutex> lock(snapshot_mutex);latest=snapshot;}
+            if(!latest || latest->stamp<=0 ||
+                pinned_mapping->optimized_through_ns>latest->stamp)
+              throw std::runtime_error("map_unavailable");
+            auto captured=std::make_shared<Snapshot>(*latest);
+            captured->mapping=pinned_mapping;
+            captured->points=pinned_mapping->points;captured->ids=pinned_mapping->ids;
+            validate_completion();
+            return captured;
+          };
+          write_snapshot_result(request.id,request.revision,full,true,capture,validate_completion);
+        }
+        else if(error.empty())write_snapshot_result(request.id,request.revision,full);
         else emit({{"type","export"},{"request_id",request.id},{"success",false},{"reason",error}});
         export_busy.store(false);
       }} catch(const std::exception& error){fail(error.what());}

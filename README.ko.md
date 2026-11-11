@@ -2,7 +2,8 @@
 
 네이티브 지속 매퍼는 로컬 VIO를 유지하면서 지도 좌표계의 IMU 평균 자세를
 별도로 제공할 수 있습니다. 작업자 기능 확인·리비전 적용 시점·불확실성 범위는
-[지도/로컬 좌표와 API](docs/map-local-mean.md)를 참고하세요.
+[지도/로컬 좌표와 API](docs/map-local-mean.md)와
+[지도 내보내기 캡처](docs/deferred-map-capture.md)를 참고하세요.
 
 [카메라·IMU·DVL·수압 예시](docs/examples/camera-dvl.ko.md)에서 전체 희소 지도와
 같은 방향의 현장 RGB·실제 카메라 입력을 비교합니다.

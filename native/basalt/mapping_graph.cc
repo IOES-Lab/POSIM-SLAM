@@ -316,6 +316,15 @@ void MappingGraphRegistry::write(const std::filesystem::path& path,const Snapsho
 void MappingGraphRegistry::writeWithInputs(const std::filesystem::path& path,const Snapshot& graph,uint64_t request,int64_t tracking_stamp) {
   writeArchive(path,graph,request,tracking_stamp,true);
 }
+void MappingGraphRegistry::writeWithInputsAtCapture(const std::filesystem::path& path,const Snapshot& graph,uint64_t request,
+    const std::function<int64_t()>& capture_tracking_stamp) {
+  if(!capture_tracking_stamp)throw std::invalid_argument("mapping_graph_capture_missing");
+  // A callback can change the caller variables. Own the immutable graph,
+  // destination and callable until this operation has finished.
+  const auto target=path;const Snapshot prepared_graph=graph;
+  const auto capture=capture_tracking_stamp;
+  writeArchive(target,prepared_graph,request,0,true,capture);
+}
 std::shared_ptr<const MappingInputStore::Frame> MappingGraphRegistry::inputFrame(const Snapshot& graph,int64_t stamp,size_t maximum) {
   if(!graph || !graph->validated || !graph->hasInputFrames())throw std::invalid_argument("mapping_input_frames_missing");
   if(graph->pages)return graph->pages->read(stamp,maximum);
@@ -370,17 +379,25 @@ MappingInputStore::Snapshot MappingGraphRegistry::restoreInputs(const Snapshot& 
   return input;
 }
 
-void MappingGraphRegistry::writeArchive(const std::filesystem::path& path,const Snapshot& graph,uint64_t request,int64_t tracking_stamp,bool inputs) {
+void MappingGraphRegistry::writeArchive(const std::filesystem::path& path,const Snapshot& graph,uint64_t request,int64_t tracking_stamp,bool inputs,
+    const std::function<int64_t()>& capture_tracking_stamp) {
   using namespace mapping_graph_detail;
-  if(!graph || !graph->validated || !request || tracking_stamp<=0)throw std::invalid_argument("mapping_graph_export");
-  const auto data=document(graph);
-  for(const auto& frame:data.at("frames"))
-    if(frame[0].get<int64_t>()>tracking_stamp)throw std::invalid_argument("mapping_graph_export_timing");
+  if(!graph || !graph->validated || !request || (!capture_tracking_stamp && tracking_stamp<=0))
+    throw std::invalid_argument("mapping_graph_export");
   const auto temporary=path.string()+".tmp";
+  std::fstream output;int64_t latest_frame_stamp=0;uint64_t page_bytes=0;
+  const bool owner=inputs && graph->hasNativeGraph();
+  const auto prepare=[&] {
+  const auto data=document(graph);
+  for(const auto& frame:data.at("frames")) {
+    latest_frame_stamp=std::max(latest_frame_stamp,frame[0].get<int64_t>());
+    if(!capture_tracking_stamp && frame[0].get<int64_t>()>tracking_stamp)
+      throw std::invalid_argument("mapping_graph_export_timing");
+  }
   if(std::filesystem::is_symlink(path) || std::filesystem::is_symlink(temporary))throw std::invalid_argument("mapping_graph_archive_path");
-  std::fstream output(temporary,std::ios::binary|std::ios::in|std::ios::out|std::ios::trunc);
+  output.open(temporary,std::ios::binary|std::ios::in|std::ios::out|std::ios::trunc);
   if(!output)throw std::runtime_error("mapping_graph_archive_unwritable");
-  Json pages=Json::array();uint64_t page_bytes=0;
+  Json pages=Json::array();
   const auto append_frame=[&](const MappingInputFrame& frame,const std::vector<uint8_t>& encoded,const InputDigest::Value& digest) {
     if(pages.size()>=data.at("frames").size() ||
         Json::array({frame.stamp,frame.width,frame.height,frame.features.corners.size(),mapping_frame_io::binary(frame.digest)})!=data.at("frames")[pages.size()])
@@ -393,7 +410,7 @@ void MappingGraphRegistry::writeArchive(const std::filesystem::path& path,const 
   // Stream each original frame once. Native matching uses these exact encoded
   // bytes for its identity, then the archive appends them before the lease ends.
   // Restored and graph-only owners use the same writer without a matching visit.
-  const bool owner=inputs && graph->hasNativeGraph();Json owner_checkpoint;
+  Json owner_checkpoint;
   if(owner && graph->native_owner) {
     owner_checkpoint=NativeMappingGraph::checkpoint(*graph->native_owner,
       [&](const MappingFrameReference& source,const MappingInputFrame& frame,
@@ -423,10 +440,26 @@ void MappingGraphRegistry::writeArchive(const std::filesystem::path& path,const 
     Json::to_cbor("native_graph",bytes);
     Json::to_cbor(owner_checkpoint,bytes);
   }
+  return bytes;
+  };
+  // Release graph/window/matching JSON before selecting the tracking snapshot.
+  // All source reads, identity validation and complete page writes precede it.
+  auto bytes=prepare();
+  if(bytes.size()>archive_limit-page_bytes)throw std::runtime_error("mapping_graph_archive_capacity");
+  InputDigest hash;hash.update(bytes.data(),bytes.size());
+  const size_t prepared_bytes=bytes.size();
+  // Final keys plus two int64 values need at most 49 CBOR bytes. Reserve
+  // before capture so appending identity cannot copy the large envelope.
+  bytes.reserve(prepared_bytes+64);
+  if(capture_tracking_stamp) {
+    tracking_stamp=capture_tracking_stamp();
+    if(tracking_stamp<=0 || tracking_stamp<latest_frame_stamp)
+      throw std::invalid_argument("mapping_graph_export_timing");
+  }
   Json::to_cbor("request_id",bytes);Json::to_cbor(request,bytes);
   Json::to_cbor("tracking_stamp_ns",bytes);Json::to_cbor(tracking_stamp,bytes);
   if(bytes.size()>archive_limit-page_bytes)throw std::runtime_error("mapping_graph_archive_capacity");
-  InputDigest hash;hash.update(bytes.data(),bytes.size());const auto digest=hash.finish();
+  hash.update(bytes.data()+prepared_bytes,bytes.size()-prepared_bytes);const auto digest=hash.finish();
   // Prepend the unchanged envelope inside the same unpublished temporary file.
   // Moving backwards handles overlap with one bounded buffer; decoded frames
   // and page payloads are never accumulated into a second in-memory archive.
