@@ -1,0 +1,80 @@
+{
+  "schema": "posim-slam-arm64-deferred-controls-1",
+  "at": "2026-11-11T14:09:48.657552+00:00",
+  "code_revision": "cbe24fc9e543dfcb70ebe3be027175167a49be83",
+  "platform": "macOS",
+  "architecture": "arm64",
+  "compiler": "Apple clang 21.0.0 (clang-2100.3.34.2)",
+  "compiler_sha256": "1590ac950a3d627817d09ade5cb60b2115f17a72182a3141e010b4bcc482a0c9",
+  "sysroot_name": "MacOSX27.0.sdk",
+  "source_archive_sha256": "b4528bfe73c1b1bc9ddcad5a255181340653c1316be41b81f0a5eac4d5ca16f3",
+  "native_source_sha256": {
+    "mapping_graph.hpp": "366923f0ec52e6a5a7f4c13631d1bf46314d56691b703aaee17d9a9261fdc433",
+    "mapping_graph.cc": "97834b155d52871db1d92263da56690d9ae94af593e23e736c38fe52bfd3946d",
+    "stream.cc": "59b7873493a735f3fdb6f9740848d6d25d557a130421e8b66de31e57518ef329",
+    "mapping_graph_probe.cc": "f887bbec2306446a529d6993c9e82b9e6f998e1c132af31c2d2f020fb3e42e98"
+  },
+  "worker_binary_sha256": "c04797899b52dda99385e11298a15dafd1ddd94491a1d7146b191249c321a8de",
+  "probe_binary_sha256": "c589f266e3ddd95f952ae9a0d1213aaff764c09ff8b77685e9914d36e4e10ebb",
+  "compile_steps": [
+    {
+      "name": "stream",
+      "seconds": 35.913934000000005,
+      "peak_owned_rss_bytes": 2007138304,
+      "object_sha256": "b2a175fcfb7ef084b59467dca92ae5e24c96ac802764eb0f764411c200e3a7a5",
+      "depfile_sha256": "0b0b859c2214bd0586e2d1a70dddfdb168bc8c442dbc019d2e937edfa75218b2",
+      "receipt_sha256": "73b4fe516e5af36ec02c9002036c207080319be421f8412b6619ca0cd3d3f7b6"
+    },
+    {
+      "name": "mapping_graph",
+      "seconds": 17.607362541,
+      "peak_owned_rss_bytes": 1694105600,
+      "object_sha256": "7d2a800e70ab96ea4e877eb8e8c403e6e7839ea3b85fb67eb878538920414256",
+      "depfile_sha256": "c4df8e136876c46a6d4bf54ea7072316e9d5738a131b4053c1fe96df3b7d50fa",
+      "receipt_sha256": "fff74624db3a761fe82b6203364b03b2ea60c52856e9a921d5de5c1064b70cb7"
+    },
+    {
+      "name": "mapping_graph_probe",
+      "seconds": 30.559052291,
+      "peak_owned_rss_bytes": 1649590272,
+      "object_sha256": "d429dc6fb258341d3b23bbcb1b65c566d6bd0893af593fc6381bf06851869dea",
+      "depfile_sha256": "12b4448da2a87135a095259a54cecd6275f70761167e8e9d2df093408c93f784",
+      "receipt_sha256": "2d30548ba93e4960e294e4fb49bcb48e03a272096e1cbf20edd0183002a55cf5"
+    }
+  ],
+  "limits": {
+    "owned_rss_bytes": 3221225472,
+    "output_bytes": 536870912,
+    "memory_free_percent": 20,
+    "ssd_reserve_bytes": 80000000000,
+    "compile_each_seconds": 180,
+    "link_seconds": 60,
+    "probe_seconds": 60
+  },
+  "mapping_graph_symbol_count": 13,
+  "current_registry_object_owns_linked_symbols": true,
+  "original_registry_archive_member_loaded": false,
+  "probe_assertions_enabled": true,
+  "archive_sha256": {
+    "bad-window.graph.pmap": "a0493ef7363177cabce9efb063378399ca973cca528bb1d88d0e85672fbf4f48",
+    "chunks.pmap": "b68693753de2b1c0d7084d672bc0e89d2d17a8224d9b23697e8b01eb084201cc",
+    "corrupt.graph.pmap": "958504355d2f04f4157b6f44290087f920d289290d9c70e27341dbf7d036848e",
+    "deferred-inputs.pmap": "5f98032c9eea4ad1e89de79fbbdfaf188f38598ce0682c4a6e298817173ca3b4",
+    "fixture.graph.pmap": "c606b897d689a7b19227f585aeef2467500fa61c49b5ba418591666ff3041b9b",
+    "inputs.pmap": "3a212eece8664ab742a446be937139e9fd32f7e9c96cff9cd42fa8f789037ed9",
+    "inputs.pmap.tmp": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "reexport.pmap": "3ae4a70583a903a3c385dff6a1a5b469ad4e5fe04d46b66242ef3908cc35d261",
+    "window.graph.pmap": "6cbad2f51c5c1cb56350880c63cff254e3b79e9eb662b6b89fecb1213c1f0ee7",
+    "without-inputs.pmap": "1c718121b0239e8cbd00ef2973d23035adbec68de4c27b05cc43af7dc4424a51"
+  },
+  "probe_passed": true,
+  "worker_executed": false,
+  "physical_replay_190s_accepted": false,
+  "build_method": "Recompile the current stream, registry and complete archive probe; reuse hash-verified unchanged core/static archives.",
+  "reused_static_archives": {
+    "libbasalt_core.a": "3be8f745b42d6adcb15a29e4c381ef4ed73839c220909bfdc3a497698b502da4",
+    "libposim_slam_submap_rows.a": "d3909e92dde23745f5bfcb6deac76045df9607585b1bec62235be61b9582cb2d",
+    "libopengv.a": "f90bc9677e333c9761ff62de938bfb502efcaf3c3cf67cd8aca8994499250f6c"
+  },
+  "scope": "Current arm64 compile/link and complete graph/window/input archive control only; no ROS, renderer or physical replay."
+}

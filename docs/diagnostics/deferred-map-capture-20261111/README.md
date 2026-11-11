@@ -1,5 +1,20 @@
 # Deferred map capture checkpoint — 2026-11-11
 
+## Fresh arm64 build and complete archive control
+
+The current `cbe24fc` stream, registry and complete graph/window/input archive
+probe were compiled and linked on macOS. The new worker SHA-256 is
+`c04797899b52dda99385e11298a15dafd1ddd94491a1d7146b191249c321a8de`.
+The separate arm64 probe passed with assertions enabled; ten archive hashes
+are retained. Link maps bind the current registry object and exclude the
+original registry archive member. Unchanged core/static archives were reused
+with their hashes checked. Peak owned RSS was 2,007,138,304 bytes under the
+unchanged 3 GiB limit. [Portable receipt](arm64-controls-cbe24fc.json).
+
+The worker itself has not run the canonical 190-second HTTP/ROS replay. That
+requires fresh host/profile admission. No installed SDK or host selection was
+activated by this build.
+
 ## Complete native probe after page flush
 
 [Run 43024427572](https://github.com/IOES-Lab/POSIM-SLAM/actions/runs/43024427572)
@@ -13,8 +28,8 @@ source. The receipt also matches the raw job log.
 [Native receipt](mapping-controls-cbe24fc.json) ·
 [Independent artifact checks](mapping-artifact-check-cbe24fc.json).
 
-This is Linux C++ control evidence. A fresh arm64 worker build and the original
-190-second host HTTP/ROS replay remain pending. The earlier arm64 binary is not
+This is Linux C++ control evidence. The fresh arm64 build is recorded above;
+the original 190-second host HTTP/ROS replay remains pending. The earlier arm64 binary is not
 reused as evidence for the changed native source. The independent integrity run
 `43024427418` passed Python 3.10/3.12 and native Ping.
 [Terminal job results](integrity-cbe24fc.json).
@@ -51,6 +66,20 @@ host admission, then check every retained artifact and the original deadlines.
 
 # 지연 지도 캡처 체크포인트 — 2026-11-11
 
+## 새 arm64 빌드와 전체 archive 대조
+
+현재 `cbe24fc`의 stream·registry·전체 graph/window/input archive probe를
+macOS에서 컴파일·링크했습니다. 새 worker SHA-256은 위 영문과 같습니다.
+별도 arm64 probe가 assertion을 활성화한 상태로 통과했고 archive 10개의
+hash를 보존했습니다. Link map으로 현재 registry 객체를 확인하고 원래 registry
+archive member의 사용을 거부했습니다. 변경 없는 core/static archive는 hash를
+검증해 재사용했습니다. 최대 소유 RSS 2,007,138,304 B이며 기존 3 GiB 기준은
+유지했습니다. 위 공개 receipt에 자세한 결과가 있습니다.
+
+Worker 자체의 기준 190초 HTTP/ROS 재생은 아직 실행하지 않았습니다. 현재
+호스트/profile 진입 검사가 필요합니다. 설치 SDK나 호스트의 선택을 활성화하지
+않았습니다.
+
 ## 페이지 flush 수정 후 전체 native probe
 
 `cbe24fc9e543dfcb70ebe3be027175167a49be83`의 run `43024427572`에서 105개
@@ -60,8 +89,8 @@ Artifact `13858140002`의 ZIP SHA-256은 위 영문과 같습니다. 아카이�
 모두 receipt와 대조했고, probe/lock hash가 현재 소스와 같습니다. Receipt도
 원본 job log와 일치합니다. 위 두 JSON에 전체 검증을 보존했습니다.
 
-Linux C++ 대조 범위입니다. 새 arm64 worker build와 원래 190초 호스트
-HTTP/ROS 재생은 남아 있습니다. 변경된 native source의 근거로 이전 arm64
+Linux C++ 대조 범위입니다. 새 arm64 worker build는 위에 기록했고 원래 190초
+호스트 HTTP/ROS 재생은 남아 있습니다. 변경된 native source의 근거로 이전 arm64
 바이너리를 재사용하지 않습니다. 별도 integrity run `43024427418`의 Python
 3.10/3.12와 native Ping 작업도 모두 통과했습니다. 위 JSON에 종료 결과가 있습니다.
 
